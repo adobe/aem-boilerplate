@@ -1,2 +1,4 @@
-# helix-project-boilerplate
-Use this repository template for new Helix projects.
+# helix-pages-starter
+Use this repository template for new Helix Pages projects.
+
+

@@ -1,0 +1,16 @@
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  ci_trigger:
+    runs-on: ubuntu-latest
+    name: Purge changed files from cache 
+    steps:
+      - name: Trigger
+        id: trigger
+        uses: adobe-rnd/github-purge-cache-action@master
+        with:
+          helix-url: https://blog.adobe.com/
+          repo-token: ${{ secrets.GITHUB_TOKEN }}

@@ -11,6 +11,12 @@
  */
 /* global window, document, sessionStorage, Image */
 
+/**
+ * Creates a tag with the given name and attributes.
+ * @param {string} name The tag name
+ * @param {object} attrs An object containing the attributes
+ * @returns {Element} The new tag
+ */
 export function createTag(name, attrs) {
   const el = document.createElement(name);
   if (typeof attrs === 'object') {
@@ -38,12 +44,21 @@ export function loadCSS(href) {
   }
 }
 
+/**
+ * Retrieves the content of a metadata tag.
+ * @param {string} name The metadata name (or property)
+ * @returns {string} The metadata value
+ */
 export function getMetadata(name) {
   const attr = name && name.includes(':') ? 'property' : 'name';
   const $meta = document.head.querySelector(`meta[${attr}="${name}"]`);
   return $meta && $meta.content;
 }
 
+/**
+ * Adds one or more URLs to the dependencies for publishing.
+ * @param {string|[string]} url The URL(s) to add as dependencies
+ */
 export function addPublishDependencies(url) {
   const urls = Array.isArray(url) ? url : [url];
   window.hlx = window.hlx || {};
@@ -54,12 +69,21 @@ export function addPublishDependencies(url) {
   }
 }
 
+/**
+ * Sanitizes a name for use as class name.
+ * @param {*} name The unsanitized name
+ * @returns {string} The class name
+ */
 export function toClassName(name) {
   return name && typeof name === 'string'
     ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-')
     : '';
 }
 
+/**
+ * Wraps each section in an additional {@code div}.
+ * @param {[Element]} $sections The sections
+ */
 function wrapSections($sections) {
   $sections.forEach(($div) => {
     if (!$div.id) {
@@ -70,6 +94,10 @@ function wrapSections($sections) {
   });
 }
 
+/**
+ * Decorates a block.
+ * @param {Element} $block The block element
+ */
 export function decorateBlock($block) {
   const classes = Array.from($block.classList.values());
   const blockName = classes[0];
@@ -82,31 +110,49 @@ export function decorateBlock($block) {
   $block.setAttribute('data-block-name', blockName);
 }
 
+/**
+ * Decorates all blocks in a container element.
+ * @param {Element} $main The container element
+ */
 function decorateBlocks($main) {
   $main
     .querySelectorAll('div.section-wrapper > div > div')
     .forEach(($block) => decorateBlock($block));
 }
 
+/**
+ * Loads JS and CSS for a block.
+ * @param {Element} $block The block element
+ */
 export function loadBlock($block) {
   const blockName = $block.getAttribute('data-block-name');
-  import(`/express/blocks/${blockName}/${blockName}.js`)
+  import(`/scripts/blocks/${blockName}/${blockName}.js`)
     .then((mod) => {
       if (mod.default) {
         mod.default($block, blockName, document);
       }
     })
+    // eslint-disable-next-line no-console
     .catch((err) => console.log(`failed to load module for ${blockName}`, err));
 
-  loadCSS(`/express/blocks/${blockName}/${blockName}.css`);
+  loadCSS(`/scripts/blocks/${blockName}/${blockName}.css`);
 }
 
+/**
+ * Loads JS and CSS for all blocks in a container element.
+ * @param {Element} $main The container element
+ */
 function loadBlocks($main) {
   $main
     .querySelectorAll('div.section-wrapper > div > .block')
     .forEach(async ($block) => loadBlock($block));
 }
 
+/**
+ * Extracts the config from a block.
+ * @param {Element} $block The block element
+ * @returns {object} The block config
+ */
 export function readBlockConfig($block) {
   const config = {};
   $block.querySelectorAll(':scope>div').forEach(($row) => {
@@ -138,7 +184,10 @@ export function readBlockConfig($block) {
   return config;
 }
 
-// Google official webp detection
+/**
+ * Official Google WEBP detection.
+ * @param {Function} callback The callback function
+ */
 function checkWebpFeature(callback) {
   const webpSupport = sessionStorage.getItem('webpSupport');
   if (!webpSupport) {
@@ -162,6 +211,10 @@ function checkWebpFeature(callback) {
   }
 }
 
+/**
+ * Returns an image URL with optimization parameters
+ * @param {string} url The image URL
+ */
 export function getOptimizedImageURL(src) {
   const url = new URL(src, window.location.href);
   let result = src;
@@ -185,6 +238,12 @@ export function getOptimizedImageURL(src) {
   return (result);
 }
 
+/**
+ * Resets an elelemnt's attribute to the optimized image URL.
+ * @see getOptimizedImageURL
+ * @param {Element} $elem The element
+ * @param {string} attrib The attribute
+ */
 function resetOptimizedImageURL($elem, attrib) {
   const src = $elem.getAttribute(attrib);
   if (src) {
@@ -195,20 +254,29 @@ function resetOptimizedImageURL($elem, attrib) {
   }
 }
 
-export function webpPolyfill(element) {
+/**
+ * WEBP Polyfill for older browser versions.
+ * @param {Element} $elem The container element
+ */
+export function webpPolyfill($elem) {
   if (!window.webpSupport) {
-    element.querySelectorAll('img').forEach(($img) => {
+    $elem.querySelectorAll('img').forEach(($img) => {
       resetOptimizedImageURL($img, 'src');
     });
-    element.querySelectorAll('picture source').forEach(($source) => {
+    $elem.querySelectorAll('picture source').forEach(($source) => {
       resetOptimizedImageURL($source, 'srcset');
     });
   }
 }
 
-export function normalizeHeadings($block, allowedHeadings) {
+/**
+ * Normalizes all headings within a container element.
+ * @param {Element} $elem The container element
+ * @param {[string]]} allowedHeadings The list of allowed headings (h1 ... h6)
+ */
+export function normalizeHeadings($elem, allowedHeadings) {
   const allowed = allowedHeadings.map((h) => h.toLowerCase());
-  $block.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((tag) => {
+  $elem.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((tag) => {
     const h = tag.tagName.toLowerCase();
     if (allowed.indexOf(h) === -1) {
       // current heading is not in the allowed list -> try first to "promote" the heading
@@ -229,6 +297,10 @@ export function normalizeHeadings($block, allowedHeadings) {
   });
 }
 
+/**
+ * Decorates the main element.
+ * @param {Element} $main The main element
+ */
 export function decorateMain($main) {
   wrapSections($main.querySelectorAll(':scope > div'));
   checkWebpFeature(() => {
@@ -237,11 +309,15 @@ export function decorateMain($main) {
   decorateBlocks($main);
 }
 
-function addFavIcon() {
+/**
+ * Adds the favicon.
+ * @param {string} href The favicon URL
+ */
+export function addFavIcon(href) {
   const $link = createTag('link', {
     rel: 'icon',
     type: 'image/svg+xml',
-    href: '/favicon.svg',
+    href,
   });
   const $existingLink = document.querySelector('head link[rel="icon"]');
   if ($existingLink) {
@@ -251,6 +327,12 @@ function addFavIcon() {
   }
 }
 
+/**
+ * Sets the trigger for the LCP (Largest Contentful Paint) event.
+ * @see https://web.dev/lcp/
+ * @param {Document} doc The document
+ * @param {Function} postLCP The callback function
+ */
 function setLCPTrigger(doc, postLCP) {
   const $lcpCandidate = doc.querySelector('main > div:first-of-type img');
   if ($lcpCandidate) {
@@ -269,6 +351,10 @@ function setLCPTrigger(doc, postLCP) {
   }
 }
 
+/**
+ * Decorates the page.
+ * @param {Window} win The window
+ */
 async function decoratePage(win = window) {
   const doc = win.document;
   const $main = doc.querySelector('main');
@@ -278,7 +364,7 @@ async function decoratePage(win = window) {
     // post LCP actions go here
     loadBlocks($main);
     loadCSS('/styles/lazy-styles.css');
-    addFavIcon();
+    addFavIcon('/favicon.svg');
   });
 }
 

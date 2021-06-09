@@ -45,14 +45,12 @@ export function getMetadata(name) {
 }
 
 export function addPublishDependencies(url) {
-  if (!Array.isArray(url)) {
-    url = [url];
-  }
+  const urls = Array.isArray(url) ? url : [url];
   window.hlx = window.hlx || {};
   if (window.hlx.dependencies && Array.isArray(window.hlx.dependencies)) {
-    window.hlx.dependencies.concat(url);
+    window.hlx.dependencies.concat(urls);
   } else {
-    window.hlx.dependencies = url;
+    window.hlx.dependencies = urls;
   }
 }
 

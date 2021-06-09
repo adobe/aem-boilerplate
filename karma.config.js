@@ -22,7 +22,8 @@ module.exports = (config) => {
     reporters: ['mocha'],
     port: 9876,
     proxies: {
-      '/': '/base',
+      '/scripts': '/base/scripts',
+      '/blocks': '/base/test/unit/blocks',
     },
     colors: true,
     logLevel: config.LOG_INFO,

@@ -9,9 +9,22 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-/* global */
+/* global window */
+
+import {
+  createTag,
+} from '../../scripts.js';
 
 export default function decorate($block) {
-  // add button class to links within
-  $block.querySelectorAll(':scope a').forEach(($a) => $a.classList.add('button'));
+  // turn links into buttons
+  $block.querySelectorAll(':scope a').forEach(($a) => {
+    const $button = createTag('button', {
+      title: $a.title || $a.textContent,
+    });
+    $button.textContent = $a.textContent;
+    $button.addEventListener('click', () => {
+      window.location.href = $a.href;
+    });
+    $a.replaceWith($button);
+  });
 }

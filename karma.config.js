@@ -15,13 +15,14 @@ module.exports = (config) => {
     frameworks: ['mocha', 'chai'],
     plugins: ['karma-chrome-launcher', 'karma-chai', 'karma-mocha', 'karma-mocha-reporter'],
     files: [
+      { pattern: './scripts/**/*.js', type: 'module', included: false },
       { pattern: './test/unit/**/*.test.js', type: 'module' },
       { pattern: './test/unit/blocks/**/*.html' },
     ],
     reporters: ['mocha'],
     port: 9876,
     proxies: {
-      '/blocks': '/base/test/unit/blocks',
+      '/': '/base',
     },
     colors: true,
     logLevel: config.LOG_INFO,

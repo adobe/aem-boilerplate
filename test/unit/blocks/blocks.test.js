@@ -13,7 +13,12 @@
 /* eslint-env mocha */
 /* eslint-disable no-unused-expressions */
 
-const ROOT_PATH = '/blocks';
+import {
+  decorateBlock,
+  loadBlock,
+} from '../../../scripts/scripts.js';
+
+const ROOT_PATH = '/blocks-test';
 
 const getFragment = (html) => {
   const template = document.createElement('template');
@@ -69,13 +74,8 @@ describe('Block tests', () => {
         block = block.querySelector(':scope > div > div');
       }
 
-      const classes = Array.from(block.classList.values());
-      const blockName = classes[0];
-
-      if (blockName) {
-        const mod = await import(`/scripts/blocks/${blockName}/${blockName}.js`);
-        await mod.default(block, blockName, doc);
-      }
+      decorateBlock(block);
+      loadBlock(block);
 
       expect(fragmentToString(block)).to.be.equal(fragmentToString(expected));
     });

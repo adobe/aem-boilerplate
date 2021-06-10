@@ -1,2 +1,2 @@
-mountpoints:
-  #/: <shared-folder-url>
+# mountpoints:
+#   /: <shared-folder-url>

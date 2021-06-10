@@ -13,7 +13,7 @@
 
 import {
   createTag,
-} from '../../scripts.js';
+} from '../../scripts/scripts.js';
 
 export default function decorate($block) {
   // turn links into buttons

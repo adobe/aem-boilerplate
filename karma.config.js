@@ -15,7 +15,9 @@ module.exports = (config) => {
     frameworks: ['mocha', 'chai'],
     plugins: ['karma-chrome-launcher', 'karma-chai', 'karma-mocha', 'karma-mocha-reporter'],
     files: [
-      { pattern: './scripts/**/*.js', type: 'module', included: false },
+      { pattern: './scripts/*.js', type: 'module', included: false },
+      { pattern: './blocks/**/*.js', type: 'module', included: false },
+      { pattern: './blocks/**/*.css' },
       { pattern: './test/unit/**/*.test.js', type: 'module' },
       { pattern: './test/unit/blocks/**/*.html' },
     ],
@@ -23,7 +25,8 @@ module.exports = (config) => {
     port: 9876,
     proxies: {
       '/scripts': '/base/scripts',
-      '/blocks': '/base/test/unit/blocks',
+      '/blocks': '/base/blocks',
+      '/blocks-test': '/base/test/unit/blocks',
     },
     colors: true,
     logLevel: config.LOG_INFO,

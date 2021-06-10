@@ -124,16 +124,17 @@ function decorateBlocks($main) {
  * Loads JS and CSS for a block.
  * @param {Element} $block The block element
  */
-export function loadBlock($block) {
+export async function loadBlock($block) {
   const blockName = $block.getAttribute('data-block-name');
-  import(`/blocks/${blockName}/${blockName}.js`)
-    .then((mod) => {
-      if (mod.default) {
-        mod.default($block, blockName, document);
-      }
-    })
+  try {
+    const mod = await import(`/blocks/${blockName}/${blockName}.js`);
+    if (mod.default) {
+      await mod.default($block, blockName, document);
+    }
+  } catch (err) {
     // eslint-disable-next-line no-console
-    .catch((err) => console.log(`failed to load module for ${blockName}`, err));
+    console.log(`failed to load module for ${blockName}`, err);
+  }
 
   loadCSS(`/blocks/${blockName}/${blockName}.css`);
 }
@@ -142,7 +143,7 @@ export function loadBlock($block) {
  * Loads JS and CSS for all blocks in a container element.
  * @param {Element} $main The container element
  */
-function loadBlocks($main) {
+async function loadBlocks($main) {
   $main
     .querySelectorAll('div.section-wrapper > div > .block')
     .forEach(async ($block) => loadBlock($block));
@@ -358,14 +359,16 @@ function setLCPTrigger(doc, postLCP) {
 async function decoratePage(win = window) {
   const doc = win.document;
   const $main = doc.querySelector('main');
-  decorateMain($main);
-  doc.querySelector('body').classList.add('appear');
-  setLCPTrigger(doc, () => {
-    // post LCP actions go here
-    loadBlocks($main);
-    loadCSS('/styles/lazy-styles.css');
-    addFavIcon('/favicon.svg');
-  });
+  if ($main) {
+    decorateMain($main);
+    doc.querySelector('body').classList.add('appear');
+    setLCPTrigger(doc, async () => {
+      // post LCP actions go here
+      await loadBlocks($main);
+      loadCSS('/styles/lazy-styles.css');
+      addFavIcon('/favicon.svg');
+    });
+  }
 }
 
 decoratePage(window);

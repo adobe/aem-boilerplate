@@ -75,7 +75,7 @@ describe('Block tests', () => {
       }
 
       decorateBlock(block);
-      loadBlock(block);
+      await loadBlock(block);
 
       expect(fragmentToString(block)).to.be.equal(fragmentToString(expected));
     });

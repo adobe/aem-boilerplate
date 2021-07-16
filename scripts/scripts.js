@@ -9,23 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-/* global window, document, sessionStorage, Image */
-
-/**
- * Creates a tag with the given name and attributes.
- * @param {string} name The tag name
- * @param {object} attrs An object containing the attributes
- * @returns {Element} The new tag
- */
-export function createTag(name, attrs) {
-  const el = document.createElement(name);
-  if (typeof attrs === 'object') {
-    for (const [key, value] of Object.entries(attrs)) {
-      el.setAttribute(key, value);
-    }
-  }
-  return el;
-}
+/* global sessionStorage, Image */
 
 /**
  * Loads a CSS file.
@@ -87,7 +71,8 @@ export function toClassName(name) {
 function wrapSections($sections) {
   $sections.forEach(($div) => {
     if (!$div.id) {
-      const $wrapper = createTag('div', { class: 'section-wrapper' });
+      const $wrapper = document.createElement('div');
+      $wrapper.className = 'section-wrapper';
       $div.parentNode.appendChild($wrapper);
       $wrapper.appendChild($div);
     }
@@ -315,11 +300,10 @@ export function decorateMain($main) {
  * @param {string} href The favicon URL
  */
 export function addFavIcon(href) {
-  const $link = createTag('link', {
-    rel: 'icon',
-    type: 'image/svg+xml',
-    href,
-  });
+  const $link = document.createElement('link');
+  $link.rel = 'icon';
+  $link.type = 'image/svg+xml';
+  $link.href = href;
   const $existingLink = document.querySelector('head link[rel="icon"]');
   if ($existingLink) {
     $existingLink.parentElement.replaceChild($link, $existingLink);

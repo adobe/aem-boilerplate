@@ -15,6 +15,7 @@
 
 import {
   decorateBlock,
+  decorateMain,
   loadBlock,
 } from '../../../scripts/scripts.js';
 
@@ -67,8 +68,9 @@ describe('Block tests', () => {
 
       html = await res.text();
       const expected = getFragment(html);
+      decorateMain(doc.querySelector('main'));
 
-      let block = doc.querySelector('main > div');
+      let block = doc.querySelector('main > div > div');
       if (block.classList.contains('section-wrapper')) {
         // input file contains section, look for block inside it
         block = block.querySelector(':scope > div > div');

@@ -69,7 +69,10 @@ export function toClassName(name) {
  */
 function wrapSections($sections) {
   $sections.forEach(($div) => {
-    if (!$div.id) {
+    if ($div.childNodes.length === 0) {
+      // remove empty sections
+      $div.remove();
+    } else if (!$div.id) {
       const $wrapper = document.createElement('div');
       $wrapper.className = 'section-wrapper';
       $div.parentNode.appendChild($wrapper);

@@ -69,7 +69,7 @@ export function toClassName(name) {
  */
 function wrapSections($sections) {
   $sections.forEach(($div) => {
-    if (!$div.children.length) {
+    if ($div.childNodes.length === 0) {
       // remove empty sections
       $div.remove();
     } else if (!$div.id) {

@@ -7,7 +7,7 @@ indices:
       - '/mysite/**'
     exclude:
       - '**/Document.*'
-    target: # SharePoint URL of your query index, e.g. <shared-folder-url>/query-index.xlsx
+    # target: SharePoint URL of your query index, e.g. <shared-folder-url>/query-index.xlsx
     properties:
       author:
         select: head > meta[name="author"]

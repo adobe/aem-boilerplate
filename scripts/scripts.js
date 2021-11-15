@@ -173,88 +173,57 @@ export function readBlockConfig($block) {
 }
 
 /**
- * Official Google WEBP detection.
- * @param {Function} callback The callback function
+ * Returns a picture element with webp and fallbacks
+ * @param {string} src The image URL
+ * @param {boolean} eager load image eager
+ * @param {Array} breakpoints breakpoints and corresponding params (eg. width)
  */
-function checkWebpFeature(callback) {
-  const webpSupport = sessionStorage.getItem('webpSupport');
-  if (!webpSupport) {
-    const kTestImages = 'UklGRiIAAABXRUJQVlA4IBYAAAAwAQCdASoBAAEADsD+JaQAA3AAAAAA';
-    const img = new Image();
-    img.onload = () => {
-      const result = (img.width > 0) && (img.height > 0);
-      window.webpSupport = result;
-      sessionStorage.setItem('webpSupport', result);
-      callback();
-    };
-    img.onerror = () => {
-      sessionStorage.setItem('webpSupport', false);
-      window.webpSupport = false;
-      callback();
-    };
-    img.src = `data:image/webp;base64,${kTestImages}`;
-  } else {
-    window.webpSupport = (webpSupport === 'true');
-    callback();
-  }
-}
-
-/**
- * Returns an image URL with optimization parameters
- * @param {string} url The image URL
- */
-export function getOptimizedImageURL(src) {
+export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 400px)', width: '2000' }, { width: '750' }]) {
   const url = new URL(src, window.location.href);
-  let result = src;
-  const { pathname, search } = url;
-  if (pathname.includes('media_')) {
-    const usp = new URLSearchParams(search);
-    usp.delete('auto');
-    if (!window.webpSupport) {
-      if (pathname.endsWith('.png')) {
-        usp.set('format', 'png');
-      } else if (pathname.endsWith('.gif')) {
-        usp.set('format', 'gif');
-      } else {
-        usp.set('format', 'pjpg');
-      }
+  const picture = document.createElement('picture');
+  const { pathname } = url;
+  const ext = pathname.substring(pathname.lastIndexOf('.') + 1);
+
+  // webp
+  breakpoints.forEach((br) => {
+    const source = document.createElement('source');
+    if (br.media) source.setAttribute('media', br.media);
+    source.setAttribute('type', 'image/webp');
+    source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
+    picture.appendChild(source);
+  });
+
+  // fallback
+  breakpoints.forEach((br, i) => {
+    if (i < breakpoints.length - 1) {
+      const source = document.createElement('source');
+      if (br.media) source.setAttribute('media', br.media);
+      source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
+      picture.appendChild(source);
     } else {
-      usp.set('format', 'webply');
+      const img = document.createElement('img');
+      img.setAttribute('src', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
+      img.setAttribute('loading', eager ? 'eager' : 'lazy');
+      img.setAttribute('alt', alt);
+      picture.appendChild(img);
     }
-    result = `${src.split('?')[0]}?${usp.toString()}`;
-  }
-  return (result);
+  });
+
+  return picture;
 }
 
 /**
- * Resets an elelemnt's attribute to the optimized image URL.
- * @see getOptimizedImageURL
- * @param {Element} $elem The element
- * @param {string} attrib The attribute
+ * Removes formatting from images.
+ * @param {Element} main The container element
  */
-function resetOptimizedImageURL($elem, attrib) {
-  const src = $elem.getAttribute(attrib);
-  if (src) {
-    const oSrc = getOptimizedImageURL(src);
-    if (oSrc !== src) {
-      $elem.setAttribute(attrib, oSrc);
-    }
-  }
-}
-
-/**
- * WEBP Polyfill for older browser versions.
- * @param {Element} $elem The container element
- */
-export function webpPolyfill($elem) {
-  if (!window.webpSupport) {
-    $elem.querySelectorAll('img').forEach(($img) => {
-      resetOptimizedImageURL($img, 'src');
-    });
-    $elem.querySelectorAll('picture source').forEach(($source) => {
-      resetOptimizedImageURL($source, 'srcset');
-    });
-  }
+ function removeStylingFromImages(main) {
+  // remove styling from images, if any
+  const imgs = [...main.querySelectorAll('strong picture'), ...main.querySelectorAll('em picture')];
+  imgs.forEach((img) => {
+    const parentEl = img.closest('p');
+    parentEl.prepend(img);
+    parentEl.lastChild.remove();
+  });
 }
 
 /**
@@ -286,22 +255,135 @@ export function normalizeHeadings($elem, allowedHeadings) {
 }
 
 /**
- * Decorates the main element.
- * @param {Element} $main The main element
+ * Decorates the picture elements.
+ * @param {Element} main The container element
  */
-export function decorateMain($main) {
-  wrapSections($main.querySelectorAll(':scope > div'));
-  checkWebpFeature(() => {
-    webpPolyfill($main);
+ function decoratePictures(main) {
+  main.querySelectorAll('img[src*="/media_"').forEach((img, i) => {
+    const newPicture = createOptimizedPicture(img.src, img.alt, !i);
+    const picture = img.closest('picture');
+    if (picture) picture.parentElement.replaceChild(newPicture, picture);
   });
-  decorateBlocks($main);
 }
+
+/**
+ * builds images blocks from default content.
+ * @param {Element} main The container element
+ */
+ function buildImageBlocks(main) {
+  // select all non-featured, default (non-images block) images
+  const imgs = [...main.querySelectorAll(':scope > div > p > picture')];
+  imgs.forEach((img) => {
+    const parent = img.parentNode;
+    const imagesBlock = buildBlock('images', {
+      elems: [parentEl.cloneNode(true), getImageCaption(img)],
+    });
+    parent.parentNode.insertBefore(imagesBlock, parent);
+    parent.remove();
+  });
+}
+
+/**
+ * Builds all synthetic blocks in a container element.
+ * @param {Element} main The container element
+ */
+function buildAutoBlocks(main) {
+  removeStylingFromImages(main);
+  try {
+    buildImageBlocks(main);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Auto Blocking failed', error);
+  }
+}
+
+/**
+ * Removes the empty sections from the container element.
+ * @param {Element} main The container element
+ */
+function removeEmptySections(main) {
+  main.querySelectorAll(':scope > div:empty').forEach((div) => {
+    div.remove();
+  });
+}
+
+/**
+ * Decorates the main element.
+ * @param {Element} main The main element
+ */
+ export function decorateMain(main) {
+  // forward compatible pictures redecoration
+  decoratePictures(main);
+  buildAutoBlocks(main);
+  removeEmptySections(main);
+  wrapSections(main.querySelectorAll(':scope > div'));
+  decorateBlocks(main);
+}
+
+const LCP_BLOCKS = []; // add your LCP blocks to the list
+
+/**
+ * loads everything needed to get to LCP.
+ */
+ async function loadEager(doc) {
+  const main = doc.querySelector('main');
+  if (main) {
+    decorateMain(main);
+    doc.querySelector('body').classList.add('appear');
+
+    const block = doc.querySelector('.block');
+    const hasLCPBlock = (block && LCP_BLOCKS.includes(block.getAttribute('data-block-name')));
+    if (hasLCPBlock) await loadBlock(block, true);
+    const lcpCandidate = doc.querySelector('main img');
+    const loaded = {
+      then: (resolve) => {
+        if (lcpCandidate && !lcpCandidate.complete) {
+          lcpCandidate.addEventListener('load', () => resolve());
+          lcpCandidate.addEventListener('error', () => resolve());
+        } else {
+          resolve();
+        }
+      },
+    };
+    await loaded;
+  }
+}
+
+/**
+ * loads everything that doesn't need to be delayed.
+ */
+async function loadLazy(doc) {
+  const main = doc.querySelector('main');
+
+  loadBlocks(main);
+  loadCSS('/styles/lazy-styles.css');
+  addFavIcon('/styles/favicon.svg');
+}
+
+/**
+ * loads everything that happens a lot later, without impacting
+ * the user experience.
+ */
+function loadDelayed(doc) {
+  // load anything that can be postponed to the latest here
+}
+
+/**
+ * Decorates the page.
+ */
+async function decoratePage(doc) {
+  await loadEager(doc);
+  loadLazy(doc);
+  loadDelayed(doc);
+}
+
+decoratePage(document);
 
 /**
  * Adds the favicon.
  * @param {string} href The favicon URL
  */
-export function addFavIcon(href) {
+ export function addFavIcon(href) {
   const $link = document.createElement('link');
   $link.rel = 'icon';
   $link.type = 'image/svg+xml';
@@ -313,48 +395,3 @@ export function addFavIcon(href) {
     document.getElementsByTagName('head')[0].appendChild($link);
   }
 }
-
-/**
- * Sets the trigger for the LCP (Largest Contentful Paint) event.
- * @see https://web.dev/lcp/
- * @param {Document} doc The document
- * @param {Function} postLCP The callback function
- */
-function setLCPTrigger(doc, postLCP) {
-  const $lcpCandidate = doc.querySelector('main > div:first-of-type img');
-  if ($lcpCandidate) {
-    if ($lcpCandidate.complete) {
-      postLCP();
-    } else {
-      $lcpCandidate.addEventListener('load', () => {
-        postLCP();
-      });
-      $lcpCandidate.addEventListener('error', () => {
-        postLCP();
-      });
-    }
-  } else {
-    postLCP();
-  }
-}
-
-/**
- * Decorates the page.
- * @param {Window} win The window
- */
-async function decoratePage(win = window) {
-  const doc = win.document;
-  const $main = doc.querySelector('main');
-  if ($main) {
-    decorateMain($main);
-    doc.querySelector('body').classList.add('appear');
-    setLCPTrigger(doc, async () => {
-      // post LCP actions go here
-      await loadBlocks($main);
-      loadCSS('/styles/lazy-styles.css');
-      addFavIcon('/favicon.svg');
-    });
-  }
-}
-
-decoratePage(window);

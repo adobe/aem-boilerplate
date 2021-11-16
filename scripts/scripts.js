@@ -83,18 +83,28 @@ function wrapSections($sections) {
 
 /**
  * Decorates a block.
- * @param {Element} $block The block element
+ * @param {Element} block The block element
  */
-export function decorateBlock($block) {
-  const classes = Array.from($block.classList.values());
-  const blockName = classes[0];
+export function decorateBlock(block) {
+  const classes = Array.from(block.classList.values());
+  let blockName = classes[0];
   if (!blockName) return;
-  const $section = $block.closest('.section-wrapper');
-  if ($section) {
-    $section.classList.add(`${blockName}-container`.replace(/--/g, '-'));
+  const section = block.closest('.section-wrapper');
+  if (section) {
+    section.classList.add(`${blockName}-container`.replace(/--/g, '-'));
   }
-  $block.classList.add('block');
-  $block.setAttribute('data-block-name', blockName);
+  const blocksWithVariants = ['recommended-articles'];
+  blocksWithVariants.forEach((b) => {
+    if (blockName.startsWith(`${b}-`)) {
+      const options = blockName.substring(b.length + 1).split('-').filter((opt) => !!opt);
+      blockName = b;
+      block.classList.add(b);
+      block.classList.add(...options);
+    }
+  });
+
+  block.classList.add('block');
+  block.setAttribute('data-block-name', blockName);
 }
 
 /**
@@ -105,6 +115,37 @@ function decorateBlocks($main) {
   $main
     .querySelectorAll('div.section-wrapper > div > div')
     .forEach(($block) => decorateBlock($block));
+}
+
+/**
+ * Builds a block DOM Element from a two dimensional array
+ * @param {string} blockName name of the block
+ * @param {any} content two dimensional array or string or object of content
+ */
+function buildBlock(blockName, content) {
+  const table = Array.isArray(content) ? content : [[content]];
+  const blockEl = document.createElement('div');
+  // build image block nested div structure
+  blockEl.classList.add(blockName);
+  table.forEach((row) => {
+    const rowEl = document.createElement('div');
+    row.forEach((col) => {
+      const colEl = document.createElement('div');
+      const vals = col.elems ? col.elems : [col];
+      vals.forEach((val) => {
+        if (val) {
+          if (typeof val === 'string') {
+            colEl.innerHTML += val;
+          } else {
+            colEl.appendChild(val);
+          }
+        }
+      });
+      rowEl.appendChild(colEl);
+    });
+    blockEl.appendChild(rowEl);
+  });
+  return (blockEl);
 }
 
 /**
@@ -216,7 +257,7 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
  * Removes formatting from images.
  * @param {Element} main The container element
  */
- function removeStylingFromImages(main) {
+function removeStylingFromImages(main) {
   // remove styling from images, if any
   const imgs = [...main.querySelectorAll('strong picture'), ...main.querySelectorAll('em picture')];
   imgs.forEach((img) => {
@@ -258,7 +299,7 @@ export function normalizeHeadings($elem, allowedHeadings) {
  * Decorates the picture elements.
  * @param {Element} main The container element
  */
- function decoratePictures(main) {
+function decoratePictures(main) {
   main.querySelectorAll('img[src*="/media_"').forEach((img, i) => {
     const newPicture = createOptimizedPicture(img.src, img.alt, !i);
     const picture = img.closest('picture');
@@ -267,16 +308,26 @@ export function normalizeHeadings($elem, allowedHeadings) {
 }
 
 /**
+ * returns an image caption of a picture elements
+ * @param {Element} picture picture element
+ */
+function getImageCaption(picture) {
+  const parentEl = picture.parentNode;
+  const parentSiblingEl = parentEl.nextElementSibling;
+  return (parentSiblingEl && parentSiblingEl.firstChild.nodeName === 'EM' ? parentSiblingEl : undefined);
+}
+
+/**
  * builds images blocks from default content.
  * @param {Element} main The container element
  */
- function buildImageBlocks(main) {
+function buildImageBlocks(main) {
   // select all non-featured, default (non-images block) images
   const imgs = [...main.querySelectorAll(':scope > div > p > picture')];
   imgs.forEach((img) => {
     const parent = img.parentNode;
     const imagesBlock = buildBlock('images', {
-      elems: [parentEl.cloneNode(true), getImageCaption(img)],
+      elems: [parent.cloneNode(true), getImageCaption(img)],
     });
     parent.parentNode.insertBefore(imagesBlock, parent);
     parent.remove();
@@ -308,10 +359,27 @@ function removeEmptySections(main) {
 }
 
 /**
+ * Adds the favicon.
+ * @param {string} href The favicon URL
+ */
+export function addFavIcon(href) {
+  const link = document.createElement('link');
+  link.rel = 'icon';
+  link.type = 'image/svg+xml';
+  link.href = href;
+  const existingLink = document.querySelector('head link[rel="icon"]');
+  if (existingLink) {
+    existingLink.parentElement.replaceChild(link, existingLink);
+  } else {
+    document.getElementsByTagName('head')[0].appendChild(link);
+  }
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
- export function decorateMain(main) {
+export function decorateMain(main) {
   // forward compatible pictures redecoration
   decoratePictures(main);
   buildAutoBlocks(main);
@@ -325,7 +393,7 @@ const LCP_BLOCKS = []; // add your LCP blocks to the list
 /**
  * loads everything needed to get to LCP.
  */
- async function loadEager(doc) {
+async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
@@ -364,7 +432,7 @@ async function loadLazy(doc) {
  * loads everything that happens a lot later, without impacting
  * the user experience.
  */
-function loadDelayed(doc) {
+function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
@@ -378,20 +446,3 @@ async function decoratePage(doc) {
 }
 
 decoratePage(document);
-
-/**
- * Adds the favicon.
- * @param {string} href The favicon URL
- */
- export function addFavIcon(href) {
-  const $link = document.createElement('link');
-  $link.rel = 'icon';
-  $link.type = 'image/svg+xml';
-  $link.href = href;
-  const $existingLink = document.querySelector('head link[rel="icon"]');
-  if ($existingLink) {
-    $existingLink.parentElement.replaceChild($link, $existingLink);
-  } else {
-    document.getElementsByTagName('head')[0].appendChild($link);
-  }
-}

@@ -1,1 +1,6 @@
 /* above the fold CSS goes here */
+
+main .block[data-block-status='loading'], main .block[data-block-status='initialized'] {
+    visibility: hidden;
+  }
+  

@@ -152,29 +152,42 @@ function buildBlock(blockName, content) {
  * Loads JS and CSS for a block.
  * @param {Element} $block The block element
  */
-export async function loadBlock($block) {
-  const blockName = $block.getAttribute('data-block-name');
-  try {
-    const mod = await import(`/blocks/${blockName}/${blockName}.js`);
-    if (mod.default) {
-      await mod.default($block, blockName, document);
+export async function loadBlock(block, eager = false) {
+  if (!(block.getAttribute('data-block-status') === 'loading' || block.getAttribute('data-block-status') === 'loaded')) {
+    block.setAttribute('data-block-status', 'loading');
+    const blockName = block.getAttribute('data-block-name');
+    try {
+      const cssLoaded = new Promise((resolve) => {
+        loadCSS(`/express/blocks/${blockName}/${blockName}.css${window.hlx.codeSearch}`, resolve);
+      });
+      const decorationComplete = new Promise((resolve) => {
+        (async () => {
+          try {
+            const mod = await import(`/express/blocks/${blockName}/${blockName}.js${window.hlx.codeSearch}`);
+            if (mod.default) {
+              await mod.default(block, blockName, document, eager);
+            }
+          } catch (err) {
+            console.log(`failed to load module for ${blockName}`, err);
+          }
+          resolve();
+        })();
+      });
+      await Promise.all([cssLoaded, decorationComplete]);
+    } catch (err) {
+      console.log(`failed to load block ${blockName}`, err);
     }
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.log(`failed to load module for ${blockName}`, err);
+    block.setAttribute('data-block-status', 'loaded');
   }
-
-  loadCSS(`/blocks/${blockName}/${blockName}.css`);
 }
-
 /**
  * Loads JS and CSS for all blocks in a container element.
  * @param {Element} $main The container element
  */
-async function loadBlocks($main) {
-  $main
-    .querySelectorAll('div.section-wrapper > div > .block')
-    .forEach(async ($block) => loadBlock($block));
+ export function loadBlocks($main) {
+  const blockPromises = [...$main.querySelectorAll('div.section-wrapper > div > .block')]
+    .map(($block) => loadBlock($block));
+  return blockPromises;
 }
 
 /**
@@ -397,23 +410,22 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
-    doc.querySelector('body').classList.add('appear');
 
-    const block = doc.querySelector('.block');
-    const hasLCPBlock = (block && LCP_BLOCKS.includes(block.getAttribute('data-block-name')));
+    const lcpBlocks = [];
+    const block = document.querySelector('.block');
+    const hasLCPBlock = (block && lcpBlocks.includes(block.getAttribute('data-block-name')));
     if (hasLCPBlock) await loadBlock(block, true);
-    const lcpCandidate = doc.querySelector('main img');
-    const loaded = {
-      then: (resolve) => {
-        if (lcpCandidate && !lcpCandidate.complete) {
-          lcpCandidate.addEventListener('load', () => resolve());
-          lcpCandidate.addEventListener('error', () => resolve());
-        } else {
-          resolve();
-        }
-      },
-    };
-    await loaded;
+
+    document.querySelector('body').classList.add('appear');
+    const lcpCandidate = document.querySelector('main img');
+    await new Promise((resolve) => {
+      if (lcpCandidate && !lcpCandidate.complete) {
+        lcpCandidate.addEventListener('load', () => resolve());
+        lcpCandidate.addEventListener('error', () => resolve());
+      } else {
+        resolve();
+      }
+    });
   }
 }
 

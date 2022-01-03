@@ -206,12 +206,12 @@ export async function loadBlock(block, eager = false) {
     const blockName = block.getAttribute('data-block-name');
     try {
       const cssLoaded = new Promise((resolve) => {
-        loadCSS(`/express/blocks/${blockName}/${blockName}.css${window.hlx.codeSearch}`, resolve);
+        loadCSS(`/blocks/${blockName}/${blockName}.css`, resolve);
       });
       const decorationComplete = new Promise((resolve) => {
         (async () => {
           try {
-            const mod = await import(`/express/blocks/${blockName}/${blockName}.js${window.hlx.codeSearch}`);
+            const mod = await import(`/blocks/${blockName}/${blockName}.js`);
             if (mod.default) {
               await mod.default(block, blockName, document, eager);
             }

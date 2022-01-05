@@ -268,7 +268,6 @@ export async function loadBlock(block, eager = false) {
 /**
  * Loads JS and CSS for all blocks in a container element.
  * @param {Element} $main The container element
- * @returns {Array} of Promises to be resolved with blocks are loaded
  */
 export async function loadBlocks($main) {
   const blocks = [...$main.querySelectorAll('div.block')];

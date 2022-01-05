@@ -1,18 +1,18 @@
 /* block specific CSS goes here */
-/*
-main .example button {
-  font-size: 1.5rem;
-}
-*/
-
-main .hero-container > div {
-    margin: 0;
-}
 
 main .hero {
     position: relative;
-    padding: 50px;
+    padding: 2rem;
+    min-height: 300px;
 }
+
+main .hero h1 {
+    max-width: 768px;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+}
+
 
 main .hero picture {
     position: absolute;

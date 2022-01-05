@@ -64,16 +64,18 @@ export function sampleRUM(checkpoint, data = {}) {
  * Loads a CSS file.
  * @param {string} href The path to the CSS file
  */
-export function loadCSS(href) {
+export function loadCSS(href, callback) {
   if (!document.querySelector(`head > link[href="${href}"]`)) {
     const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
     link.setAttribute('href', href);
-    link.onload = () => {
-    };
-    link.onerror = () => {
-    };
+    if (typeof callback === 'function') {
+      link.onload = (e) => callback(e.type);
+      link.onerror = (e) => callback(e.type);
+    }
     document.head.appendChild(link);
+  } else if (typeof callback === 'function') {
+    callback('noop');
   }
 }
 
@@ -169,7 +171,6 @@ function decorateBlocks($main) {
  * @param {string} blockName name of the block
  * @param {any} content two dimensional array or string or object of content
  */
-// eslint-disable-next-line no-unused-vars
 function buildBlock(blockName, content) {
   const table = Array.isArray(content) ? content : [[content]];
   const blockEl = document.createElement('div');
@@ -216,6 +217,7 @@ export async function loadBlock(block, eager = false) {
               await mod.default(block, blockName, document, eager);
             }
           } catch (err) {
+            // eslint-disable-next-line no-console
             console.log(`failed to load module for ${blockName}`, err);
           }
           resolve();
@@ -223,6 +225,7 @@ export async function loadBlock(block, eager = false) {
       });
       await Promise.all([cssLoaded, decorationComplete]);
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.log(`failed to load block ${blockName}`, err);
     }
     block.setAttribute('data-block-status', 'loaded');
@@ -421,8 +424,6 @@ async function loadPage(doc) {
   loadDelayed(doc);
 }
 
-loadPage(document);
-
 /*
  * ------------------------------------------------------------
  * Edit above at your own risk
@@ -436,14 +437,24 @@ sampleRUM('top');
 window.addEventListener('load', () => sampleRUM('load'));
 document.addEventListener('click', () => sampleRUM('click'));
 
+loadPage(document);
+
+function buildHeroBlock(main) {
+  const h1 = main.querySelector('h1');
+  const picture = main.querySelector('picture');
+  // eslint-disable-next-line no-bitwise
+  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+    h1.parentNode.prepend(buildBlock('hero', { elems: [picture, h1] }));
+  }
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-// eslint-disable-next-line no-unused-vars
 function buildAutoBlocks(main) {
   try {
-    /* put auto blocks here */
+    buildHeroBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

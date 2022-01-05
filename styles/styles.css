@@ -1,5 +1,191 @@
+/*
+ * Copyright 2020 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+ :root {
+  --link-color: 3,95,230;
+  --background-color: 255,255,255;
+  --text-color: 0,0,0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+      --link-color: 21,190,236;
+      --background-color: 0,0,0;
+      --text-color: 255,255,255;
+  }
+}
+
+
+html {
+  font-size: 62.5%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
 body {
   margin: 0;
+  font-family: 'helvetica neue', helvetica,
+  ubuntu,
+  roboto, noto,
+  sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  color: rgba(var(--text-color),.9);
+  background-color: rgba(var(--background-color),.92);
+}
+
+main {
+  font-size: 1.6rem;
+  transition: opacity 0.2s;
+}
+
+main.appear {
+  opacity: 1;
+}
+
+h1, h2, h3,
+h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.25;
+  margin-top: 1em;
+  margin-bottom: .5em;
+}
+
+h1 { font-size: 3rem; }
+h2 { font-size: 2.25rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: .875rem; }
+
+p, dl, ol, ul, pre, blockquote {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+a:any-link {
+  color: rgb(var(--link-color));
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+main input, main button {
+  font-size: 1.25rem;
+  width: 100%;
+  max-width: 50rem;
+  display: block;
+  margin-bottom: 1rem;
+  padding: 0.75rem 0.6rem;    
+  border-radius: 0.25rem;
+}
+
+main button {
+  color: rgb(var(--background-color));
+  border: none;
+  background-color: rgba(var(--link-color), 0.9);
+}
+
+main button:hover {
+  background-color: rgba(var(--link-color), 1);
+  cursor: pointer;
+}
+
+main input {
+  border: 1px solid rgba(var(--text-color),0.5);
+  color: rgb(var(--text-color));
+  background-color: rgba(var(--background-color), 0.5);
+}
+
+main input:hover {
+  border: 1px solid rgba(var(--text-color),0.9);
+}
+
+main .section-wrapper {
+  padding: 0 2rem; 
+}
+
+main pre {
+  background-color: rgb(var(--text-color),0.05);;
+  padding: 1em;
+  border-radius: .25em;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+code,
+pre,
+samp {
+font-family:
+  'Roboto Mono',
+  Menlo,
+  Consolas,
+  'Liberation Mono',
+  monospace;
+}
+
+code, samp {
+font-size: 87.5%;
+padding: .125em;
+}
+
+pre {
+font-size: 75%;
+overflow: scroll;
+}
+
+main blockquote {
+  font-style: italic;
+  margin: 3rem;
+  text-indent: -1rem;
+  hanging-punctuation: first;
+}
+
+main blockquote p::before {
+  content: "“";
+  line-height: 0;
+}
+
+main blockquote p::after {
+  content: "”";
+  line-height: 0;
+}
+
+hr {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+  border: 0;
+  border-bottom: 1px solid rgba(var(--text-color),0.2);
+}
+
+main img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (min-width: 600px) {
+  html {
+      font-size: 85%;
+  }
+}
+@media (min-width: 900px) {
+  html {
+      font-size: 100%;
+  }
+  main>.section-wrapper>div {
+      max-width: 30em;
+      margin: auto;
+  }    
 }
 
 /* above the fold CSS goes here */

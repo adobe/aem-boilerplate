@@ -208,12 +208,12 @@ export async function loadBlock(block, eager = false) {
     const blockName = block.getAttribute('data-block-name');
     try {
       const cssLoaded = new Promise((resolve) => {
-        loadCSS(`/blocks/${blockName}/${blockName}.css`, resolve);
+        loadCSS(`${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`, resolve);
       });
       const decorationComplete = new Promise((resolve) => {
         (async () => {
           try {
-            const mod = await import(`/blocks/${blockName}/${blockName}.js`);
+            const mod = await import(`../blocks/${blockName}/${blockName}.js`);
             if (mod.default) {
               await mod.default(block, blockName, document, eager);
             }
@@ -424,6 +424,24 @@ async function loadPage(doc) {
   // eslint-disable-next-line no-use-before-define
   loadDelayed(doc);
 }
+
+function initHlx() {
+  window.hlx = window.hlx || {};
+  window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
+  window.hlx.codeBasePath = '';
+
+  const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
+  if (scriptEl) {
+    try {
+      [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
+      console.log(window.hlx.codeBasePath);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}
+
+initHlx();
 
 /*
  * ------------------------------------------------------------

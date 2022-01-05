@@ -154,6 +154,7 @@ export function decorateBlock(block) {
 
   block.classList.add('block');
   block.setAttribute('data-block-name', shortBlockName);
+  block.setAttribute('data-block-status', 'initialized');
 }
 
 /**
@@ -430,7 +431,7 @@ async function loadPage(doc) {
  * ------------------------------------------------------------
  */
 
-const LCP_BLOCKS = []; // add your LCP blocks to the list
+const LCP_BLOCKS = ['hero']; // add your LCP blocks to the list
 const RUM_GENERATION = 'starter-1'; // add your RUM generation information here
 
 sampleRUM('top');
@@ -505,3 +506,47 @@ async function loadLazy(doc) {
 function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
+
+/*
+ * lighthouse performance instrumentation helper
+ * (needs a refactor)
+ */
+
+export function stamp(message) {
+  if (window.name.includes('performance')) {
+    console.log(`${new Date() - performance.timing.navigationStart}:${message}`);
+  }
+}
+
+stamp('start');
+
+function registerPerformanceLogger() {
+  try {
+    const polcp = new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries();
+      stamp(JSON.stringify(entries));
+      console.log(entries[0].element);
+    });
+    polcp.observe({ type: 'largest-contentful-paint', buffered: true });
+
+    const pols = new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries();
+      stamp(JSON.stringify(entries));
+      console.log(entries[0].sources[0].node);
+    });
+    pols.observe({ type: 'layout-shift', buffered: true });
+
+    const pores = new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries();
+      entries.forEach((entry) => {
+        stamp(`resource loaded: ${entry.name} - [${Math.round(entry.startTime + entry.duration)}]`);
+      });
+    });
+
+    pores.observe({ type: 'resource', buffered: true });
+  } catch (e) {
+    // no output
+  }
+}
+
+if (window.name.includes('performance')) registerPerformanceLogger();

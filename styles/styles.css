@@ -41,15 +41,15 @@ body {
   margin: 0;
   color: rgba(var(--text-color),.9);
   background-color: rgba(var(--background-color),.92);
+  opacity: 0;
+}
+
+body.appear {
+  opacity: 1;
 }
 
 main {
   font-size: 1.6rem;
-  transition: opacity 0.2s;
-}
-
-main.appear {
-  opacity: 1;
 }
 
 h1, h2, h3,
@@ -188,9 +188,19 @@ main img {
   }    
 }
 
-/* above the fold CSS goes here */
+/* above the fold CSS goes here to squash CLS */
+
+main .hero-container > div {
+  min-height: 354px;
+  max-width: unset;
+}
+
+main .hero-container {
+  padding: 0;
+}
+
 
 main .block[data-block-status='loading'], main .block[data-block-status='initialized'] {
-    visibility: hidden;
+    display: none;
   }
   

@@ -513,8 +513,8 @@ async function loadLazy(doc) {
   const main = doc.querySelector('main');
 
   loadBlocks(main);
-  loadCSS('/styles/lazy-styles.css');
-  addFavIcon('/styles/favicon.svg');
+  loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
 }
 
 /**

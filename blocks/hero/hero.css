@@ -1,0 +1,32 @@
+/* block specific CSS goes here */
+/*
+main .example button {
+  font-size: 1.5rem;
+}
+*/
+
+main .hero-container > div {
+    margin: 0;
+}
+
+main .hero {
+    position: relative;
+    padding: 50px;
+}
+
+main .hero picture {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    object-fit: cover;
+    box-sizing: border-box;
+}
+
+main .hero img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}

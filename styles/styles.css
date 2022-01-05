@@ -190,17 +190,7 @@ main img {
 
 /* above the fold CSS goes here to squash CLS */
 
-main .hero-container > div {
-  min-height: 354px;
-  max-width: unset;
-}
-
-main .hero-container {
-  padding: 0;
-}
-
-
-main .block[data-block-status='loading'], main .block[data-block-status='initialized'] {
+main .section-wrapper[data-section-status='loading'], main .section-wrapper[data-section-status='initialized'] {
     display: none;
   }
   

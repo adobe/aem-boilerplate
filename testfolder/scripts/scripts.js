@@ -434,8 +434,8 @@ function initHlx() {
   if (scriptEl) {
     try {
       [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
-      console.log(window.hlx.codeBasePath);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log(e);
     }
   }

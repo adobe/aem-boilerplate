@@ -158,6 +158,38 @@ export function decorateBlock(block) {
 }
 
 /**
+ * Decorates all sections in a container element.
+ * @param {Element} $main The container element
+ */
+function decorateSections($main) {
+  wrapSections($main.querySelectorAll(':scope > div'));
+  $main.querySelectorAll(':scope > div.section-wrapper').forEach((section) => {
+    section.setAttribute('data-section-status', 'initialized');
+  });
+}
+
+/**
+ * Updates all section status in a container element.
+ * @param {Element} $main The container element
+ */
+function updateSectionsStatus($main) {
+  const sections = [...$main.querySelectorAll(':scope > div.section-wrapper')];
+  for (let i = 0; i < sections.length; i += 1) {
+    const section = sections[i];
+    const status = section.getAttribute('data-section-status');
+    if (status !== 'loaded') {
+      const loadingBlock = section.querySelector('.block[data-block-status="initialized"], .block[data-block-status="loading"]');
+      if (loadingBlock) {
+        section.setAttribute('data-section-status', 'loading');
+        break;
+      } else {
+        section.setAttribute('data-section-status', 'loaded');
+      }
+    }
+  }
+}
+
+/**
  * Decorates all blocks in a container element.
  * @param {Element} $main The container element
  */
@@ -236,12 +268,14 @@ export async function loadBlock(block, eager = false) {
 /**
  * Loads JS and CSS for all blocks in a container element.
  * @param {Element} $main The container element
- * @returns {Array} of Promises to be resolved with blocks are loaded
  */
-export function loadBlocks($main) {
-  const blockPromises = [...$main.querySelectorAll('div.section-wrapper > div > .block')]
-    .map(($block) => loadBlock($block));
-  return blockPromises;
+export async function loadBlocks($main) {
+  const blocks = [...$main.querySelectorAll('div.block')];
+  for (let i = 0; i < blocks.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    await loadBlock(blocks[i]);
+    updateSectionsStatus($main);
+  }
 }
 
 /**
@@ -491,7 +525,7 @@ export function decorateMain(main) {
   decoratePictures(main);
   removeStylingFromImages(main);
   buildAutoBlocks(main);
-  wrapSections(main.querySelectorAll(':scope > div'));
+  decorateSections(main);
   decorateBlocks(main);
 }
 
@@ -524,47 +558,3 @@ async function loadLazy(doc) {
 function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
-
-/*
- * lighthouse performance instrumentation helper
- * (needs a refactor)
- */
-
-export function stamp(message) {
-  if (window.name.includes('performance')) {
-    console.log(`${new Date() - performance.timing.navigationStart}:${message}`);
-  }
-}
-
-stamp('start');
-
-function registerPerformanceLogger() {
-  try {
-    const polcp = new PerformanceObserver((entryList) => {
-      const entries = entryList.getEntries();
-      stamp(JSON.stringify(entries));
-      console.log(entries[0].element);
-    });
-    polcp.observe({ type: 'largest-contentful-paint', buffered: true });
-
-    const pols = new PerformanceObserver((entryList) => {
-      const entries = entryList.getEntries();
-      stamp(JSON.stringify(entries));
-      console.log(entries[0].sources[0].node);
-    });
-    pols.observe({ type: 'layout-shift', buffered: true });
-
-    const pores = new PerformanceObserver((entryList) => {
-      const entries = entryList.getEntries();
-      entries.forEach((entry) => {
-        stamp(`resource loaded: ${entry.name} - [${Math.round(entry.startTime + entry.duration)}]`);
-      });
-    });
-
-    pores.observe({ type: 'resource', buffered: true });
-  } catch (e) {
-    // no output
-  }
-}
-
-if (window.name.includes('performance')) registerPerformanceLogger();

@@ -208,12 +208,12 @@ export async function loadBlock(block, eager = false) {
     const blockName = block.getAttribute('data-block-name');
     try {
       const cssLoaded = new Promise((resolve) => {
-        loadCSS(`/blocks/${blockName}/${blockName}.css`, resolve);
+        loadCSS(`${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`, resolve);
       });
       const decorationComplete = new Promise((resolve) => {
         (async () => {
           try {
-            const mod = await import(`/blocks/${blockName}/${blockName}.js`);
+            const mod = await import(`../blocks/${blockName}/${blockName}.js`);
             if (mod.default) {
               await mod.default(block, blockName, document, eager);
             }
@@ -425,6 +425,24 @@ async function loadPage(doc) {
   loadDelayed(doc);
 }
 
+function initHlx() {
+  window.hlx = window.hlx || {};
+  window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
+  window.hlx.codeBasePath = '';
+
+  const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
+  if (scriptEl) {
+    try {
+      [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.log(e);
+    }
+  }
+}
+
+initHlx();
+
 /*
  * ------------------------------------------------------------
  * Edit above at your own risk
@@ -495,8 +513,8 @@ async function loadLazy(doc) {
   const main = doc.querySelector('main');
 
   loadBlocks(main);
-  loadCSS('/styles/lazy-styles.css');
-  addFavIcon('/styles/favicon.svg');
+  loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
 }
 
 /**

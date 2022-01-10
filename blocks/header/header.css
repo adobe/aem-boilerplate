@@ -113,6 +113,10 @@ header .nav-sections li {
 
 header .nav[aria-expanded='true'] .nav-sections {
   display: block;
+  align-self: flex-start;
+}
+
+header .nav[aria-expanded='true'] {
   min-height: 100vh;
 }
 

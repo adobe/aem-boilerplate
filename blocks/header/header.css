@@ -4,15 +4,16 @@ header {
 
 header .nav {
     display: grid;
-    grid-template-areas: 'hamburger brand';
+    grid-template-areas: 'hamburger brand' 'sections sections';
     grid-template-columns: 50px 1fr;
     align-items: center;
-    padding: 0 2rem;
+    padding: 1.5rem 2rem;
     position: fixed;
     z-index: 1;
     background-color: rgba(var(--background-color),.92);
     width: 100vw;
     height: 64px;
+    box-sizing: border-box;
 }
 
 /* hamburger */
@@ -79,6 +80,7 @@ header .nav-brand {
     grid-area: brand;
     font-size: 22px;
     font-weight: 700;
+    line-height: 1em;
 }
 
 header .nav-brand p {
@@ -92,6 +94,8 @@ header .nav-sections {
     display: flex;
     flex-direction: column;
     display: none;
+    background-color: rgba(var(--background-color),.92);
+    width: 100vw;
 }
 
 header .nav-sections h2 {
@@ -118,7 +122,7 @@ header .nav[aria-expanded='true'] .nav-sections {
         grid-template-areas: 'brand sections';
         grid-template-columns: 200px 1fr;
     }
-
+	
     header .nav-hamburger {
         display: none;
     }
@@ -126,10 +130,17 @@ header .nav[aria-expanded='true'] .nav-sections {
     header .nav-sections {
         display: flex;
         flex-direction: row;
+        background-color: unset;
+        width: unset;        
     }
+		
+		header .nav[aria-expanded='true'] .nav-sections {
+			display: flex;
+			min-height: unset;
+		}
 
     header .nav-section {
-        padding: 16px;
+        padding: 0 16px;
         position: relative;
     }
 

@@ -475,7 +475,7 @@ initHlx();
  */
 
 const LCP_BLOCKS = ['hero']; // add your LCP blocks to the list
-const RUM_GENERATION = 'starter-1'; // add your RUM generation information here
+const RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
 sampleRUM('top');
 window.addEventListener('load', () => sampleRUM('load'));

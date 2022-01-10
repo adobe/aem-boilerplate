@@ -161,7 +161,7 @@ export function decorateBlock(block) {
  * Decorates all sections in a container element.
  * @param {Element} $main The container element
  */
-function decorateSections($main) {
+export function decorateSections($main) {
   wrapSections($main.querySelectorAll(':scope > div'));
   $main.querySelectorAll(':scope > div.section-wrapper').forEach((section) => {
     section.setAttribute('data-section-status', 'initialized');
@@ -193,7 +193,7 @@ export function updateSectionsStatus($main) {
  * Decorates all blocks in a container element.
  * @param {Element} $main The container element
  */
-function decorateBlocks($main) {
+export function decorateBlocks($main) {
   $main
     .querySelectorAll('div.section-wrapper > div > div')
     .forEach(($block) => decorateBlock($block));

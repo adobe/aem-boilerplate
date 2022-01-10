@@ -6,7 +6,7 @@ import { expect } from '@esm-bundle/chai';
 
 import example from '../../../blocks/example/example.js';
 
-document.body.innerHTML = await readFile({ path: './example.html' });
+document.body.innerHTML = await readFile({ path: './block.html' });
 
 describe('Example block', () => {
   it('Turns links into buttons', async () => {

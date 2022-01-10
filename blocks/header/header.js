@@ -1,11 +1,11 @@
 function collapseAllNavSections(sections) {
-  sections.querySelectorAll('.nav-section').forEach(section  => {
+  sections.querySelectorAll('.nav-section').forEach((section) => {
     section.setAttribute('aria-expanded', 'false');
-  })
+  });
 }
 
 export default async function decorate(block) {
-  const resp = await fetch ('/nav.plain.html');
+  const resp = await fetch('/nav.plain.html');
   const html = await resp.text();
   const nav = document.createElement('div');
   nav.classList.add('nav');
@@ -28,7 +28,7 @@ export default async function decorate(block) {
         });
       }
     }
-  })
+  });
   nav.append(navSections);
 
   const hamburger = document.createElement('div');
@@ -36,11 +36,7 @@ export default async function decorate(block) {
   hamburger.innerHTML = '<div class="nav-hamburger-icon"></div>';
   hamburger.addEventListener('click', () => {
     const expanded = nav.getAttribute('aria-expanded') === 'true';
-    if (!expanded) { 
-      document.body.style.overflowY = 'hidden';
-    } else {
-      document.body.style.overflowY = '';
-    }
+    document.body.style.overflowY = expanded ? '' : 'hidden';
     nav.setAttribute('aria-expanded', expanded ? 'false' : 'true');
   });
   nav.prepend(hamburger);

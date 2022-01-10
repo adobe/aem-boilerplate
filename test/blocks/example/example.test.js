@@ -18,5 +18,8 @@ describe('Example block', () => {
 
     expect($block.querySelector('a')).to.not.exist;
     expect($block.querySelector('button')).to.exist;
+
+    $block.querySelector('button').click();
+    expect($block.dataset.buttonClicked).to.equal('about:blank');
   });
 });

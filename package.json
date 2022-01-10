@@ -24,7 +24,7 @@
     "chai": "4.3.4",
     "eslint": "8.6.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.25.3",
+    "eslint-plugin-import": "2.25.4",
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@web/test-runner": "0.13.20",
     "@web/test-runner-commands": "0.5.13",

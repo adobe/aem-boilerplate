@@ -5,6 +5,7 @@ function collapseAllNavSections(sections) {
 }
 
 export default async function decorate(block) {
+  block.textContent = '';
   const resp = await fetch('/nav.plain.html');
   const html = await resp.text();
   const nav = document.createElement('div');

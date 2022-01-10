@@ -6,8 +6,9 @@ header .nav {
     display: grid;
     grid-template-areas: 'hamburger brand' 'sections sections';
     grid-template-columns: 50px 1fr;
+    grid-template-rows: 64px 1fr;
     align-items: center;
-    padding: 1.5rem 2rem;
+    padding: 0 2rem;
     position: fixed;
     z-index: 1;
     background-color: rgba(var(--background-color),.92);

@@ -1,9 +1,5 @@
 /* header and nav layout */
 
-header {
-  height: 64px;
-}
-
 header .nav {
   display: grid;
   grid-template-areas: 'hamburger brand' 'sections sections';

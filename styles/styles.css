@@ -48,6 +48,10 @@ body.appear {
   opacity: 1;
 }
 
+header {
+  height: 64px;
+}
+
 main {
   font-size: 1.6rem;
 }

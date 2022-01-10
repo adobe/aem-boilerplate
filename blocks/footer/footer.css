@@ -1,10 +1,10 @@
 footer {
   margin-top: 2rem;
+  padding: 2rem 2rem;
   background-color: rgba(var(--text-color),.2);
 }
 
 footer .footer {
-  padding: 2rem 0;
   max-width: 768px;
   margin: auto;
 }

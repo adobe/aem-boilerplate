@@ -98,7 +98,7 @@ export function addPublishDependencies(url) {
   const urls = Array.isArray(url) ? url : [url];
   window.hlx = window.hlx || {};
   if (window.hlx.dependencies && Array.isArray(window.hlx.dependencies)) {
-    window.hlx.dependencies.concat(urls);
+    window.hlx.dependencies = window.hlx.dependencies.concat(urls);
   } else {
     window.hlx.dependencies = urls;
   }
@@ -172,7 +172,7 @@ function decorateSections($main) {
  * Updates all section status in a container element.
  * @param {Element} $main The container element
  */
-function updateSectionsStatus($main) {
+export function updateSectionsStatus($main) {
   const sections = [...$main.querySelectorAll(':scope > div.section-wrapper')];
   for (let i = 0; i < sections.length; i += 1) {
     const section = sections[i];
@@ -356,20 +356,6 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
 }
 
 /**
- * Removes formatting from images.
- * @param {Element} main The container element
- */
-function removeStylingFromImages(main) {
-  // remove styling from images, if any
-  const imgs = [...main.querySelectorAll('strong picture'), ...main.querySelectorAll('em picture')];
-  imgs.forEach((img) => {
-    const parentEl = img.closest('p');
-    parentEl.prepend(img);
-    parentEl.lastChild.remove();
-  });
-}
-
-/**
  * Normalizes all headings within a container element.
  * @param {Element} $elem The container element
  * @param {[string]]} allowedHeadings The list of allowed headings (h1 ... h6)
@@ -391,21 +377,25 @@ export function normalizeHeadings($elem, allowedHeadings) {
         }
       }
       if (level !== 7) {
-        tag.outerHTML = `<h${level}>${tag.textContent}</h${level}>`;
+        tag.outerHTML = `<h${level} id="${tag.id}">${tag.textContent}</h${level}>`;
       }
     }
   });
 }
 
 /**
- * Decorates the picture elements.
+ * Decorates the picture elements and removes formatting.
  * @param {Element} main The container element
  */
-function decoratePictures(main) {
+export function decoratePictures(main) {
   main.querySelectorAll('img[src*="/media_"').forEach((img, i) => {
     const newPicture = createOptimizedPicture(img.src, img.alt, !i);
     const picture = img.closest('picture');
     if (picture) picture.parentElement.replaceChild(newPicture, picture);
+    if (['EM', 'STRONG'].includes(newPicture.parentElement.tagName)) {
+      const styleEl = newPicture.parentElement;
+      styleEl.parentElement.replaceChild(newPicture, styleEl);
+    }
   });
 }
 
@@ -460,7 +450,7 @@ async function loadPage(doc) {
   loadDelayed(doc);
 }
 
-function initHlx() {
+export function initHlx() {
   window.hlx = window.hlx || {};
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
   window.hlx.codeBasePath = '';
@@ -524,7 +514,6 @@ function buildAutoBlocks(main) {
 export function decorateMain(main) {
   // forward compatible pictures redecoration
   decoratePictures(main);
-  removeStylingFromImages(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);

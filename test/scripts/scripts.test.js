@@ -29,10 +29,16 @@ describe('Core Helix features', () => {
     scripts.initHlx();
     expect(window.hlx.codeBasePath).to.equal('/foo');
     expect(window.hlx.lighthouse).to.equal(true);
+
+    // test error handling
+    const url = sinon.stub(window, 'URL');
+    scripts.initHlx();
+
     // cleanup
+    url.restore();
     window.hlx.codeBasePath = '';
     window.hlx.lighthouse = false;
-    document.querySelector('script[src="/foo/scripts/scripts.js"]').remove();
+    Array.from(document.querySelectorAll('script')).pop().remove();
   });
 
   it('Sanitizes class name', async () => {
@@ -74,9 +80,9 @@ describe('Core Helix features', () => {
 
   it('Collects RUM data', async () => {
     const sendBeacon = sinon.stub(navigator, 'sendBeacon');
-    delete window.hlx.rum;
     // turn on RUM
     window.history.pushState({}, '', `${window.location.href}&rum=on`);
+    delete window.hlx;
 
     // sends checkpoint beacon
     await scripts.sampleRUM('test', { foo: 'bar' });
@@ -86,6 +92,10 @@ describe('Core Helix features', () => {
     // sends cwv beacon
     await scripts.sampleRUM('cwv', { foo: 'bar' });
     expect(sendBeacon.called).to.be.true;
+
+    // test error handling
+    sendBeacon.throws();
+    await scripts.sampleRUM('error', { foo: 'bar' });
 
     sendBeacon.restore();
   });

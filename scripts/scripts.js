@@ -561,7 +561,7 @@ async function loadEager(doc) {
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
 
-  loadBlocks(main);
+  await loadBlocks(main);
 
   loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));

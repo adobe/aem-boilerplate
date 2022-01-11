@@ -54,6 +54,7 @@ header {
 
 main {
   font-size: 1.6rem;
+  min-height: calc(100vh - 156px);
 }
 
 h1, h2, h3,
@@ -181,10 +182,17 @@ main img {
   html {
       font-size: 85%;
   }
+
+  main {
+    min-height: calc(100vh - 190px);
+  }
 }
 @media (min-width: 900px) {
   html {
       font-size: 100%;
+  }
+  main {
+    min-height: calc(100vh - 212px);
   }
   main>.section-wrapper>div {
       max-width: 30em;

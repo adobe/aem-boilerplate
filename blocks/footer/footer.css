@@ -1,0 +1,14 @@
+footer {
+  margin-top: 2rem;
+  padding: 2rem 2rem;
+  background-color: rgba(var(--text-color),.1);
+}
+
+footer .footer {
+  max-width: 768px;
+  margin: auto;
+}
+
+footer .footer p {
+  margin: 0;
+}

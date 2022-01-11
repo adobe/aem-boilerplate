@@ -1,0 +1,174 @@
+/* header and nav layout */
+
+header .nav {
+  display: grid;
+  grid-template-areas: 'hamburger brand' 'sections sections';
+  grid-template-columns: 50px 1fr;
+  grid-template-rows: 64px 1fr;
+  align-items: center;
+  padding: 0 2rem;
+  position: fixed;
+  z-index: 1;
+  background-color: rgba(var(--background-color),.92);
+  width: 100vw;
+  height: 64px;
+  box-sizing: border-box;
+}
+
+/* hamburger */
+
+header .nav-hamburger {
+  grid-area: hamburger;
+  height: 22px;
+  padding-top: 3px;
+}
+
+header .nav[aria-expanded='false'] .nav-hamburger-icon,
+header .nav[aria-expanded='false'] .nav-hamburger-icon::after,
+header .nav[aria-expanded='false'] .nav-hamburger-icon::before {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  top: 8px;
+  width: 20px;
+  height: 2px;
+  border-radius: 3px;
+  background: currentColor;
+}
+header .nav[aria-expanded='false'] .nav-hamburger-icon::after,
+header .nav[aria-expanded='false'] .nav-hamburger-icon::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+}
+header .nav[aria-expanded='false'] .nav-hamburger-icon::after {
+  top: 6px;
+}
+
+header .nav[aria-expanded='true'] .nav-hamburger-icon {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 22px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  transform: translate(-3px, -2px);
+}
+header .nav[aria-expanded='true'] .nav-hamburger-icon::after,
+header .nav[aria-expanded='true'] .nav-hamburger-icon::before {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+  transform: rotate(45deg);
+  border-radius: 5px;
+  top: 8px;
+  left: 1px
+}
+header .nav[aria-expanded='true'] .nav-hamburger-icon::after {
+  transform: rotate(-45deg)
+}
+
+/* brand */
+
+header .nav-brand {
+  grid-area: brand;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1em;
+}
+
+header .nav-brand p {
+  margin: 0;
+}
+
+/* sections */
+
+header .nav-sections {
+  grid-area: sections;
+  display: flex;
+  flex-direction: column;
+  display: none;
+  background-color: rgba(var(--background-color),.92);
+  width: 100vw;
+}
+
+header .nav-sections h2 {
+  font-size: 22px;
+}
+
+header .nav-sections ul {
+  list-style: none;
+  padding-left: 0;
+} 
+
+header .nav-sections li {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+header .nav[aria-expanded='true'] .nav-sections {
+  display: block;
+  align-self: flex-start;
+}
+
+header .nav[aria-expanded='true'] {
+  min-height: 100vh;
+}
+
+/* desktop nav styles */
+
+@media (min-width: 900px) {
+  header .nav {
+    grid-template-areas: 'brand sections';
+    grid-template-columns: 200px 1fr;
+  }
+
+  header .nav-hamburger {
+    display: none;
+  }
+
+  header .nav-sections {
+    display: flex;
+    flex-direction: row;
+    background-color: unset;
+    width: unset;        
+  }
+  
+  header .nav[aria-expanded='true'] .nav-sections {
+    display: flex;
+    min-height: unset;
+  }
+
+  header .nav-section {
+    padding: 0 16px;
+    position: relative;
+  }
+
+  header .nav-sections h2 {
+    font-size: 18px;
+    margin: 0;
+    cursor: pointer;
+  }
+
+  header .nav-section ul {
+    display: none;
+  }
+
+  header .nav-section li {
+    font-size: 18px;
+    padding: 16px;
+  }
+
+  header .nav-section[aria-expanded='true'] ul {
+    display: block;
+    position: absolute;
+    background-color: rgba(var(--background-color),.92);
+    width: 300px;
+    left: 0px;
+  } 
+}

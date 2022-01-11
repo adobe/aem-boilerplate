@@ -494,6 +494,20 @@ function buildHeroBlock(main) {
   }
 }
 
+function loadHeader(header) {
+  const headerBlock = buildBlock('header', '');
+  header.append(headerBlock);
+  decorateBlock(headerBlock);
+  loadBlock(headerBlock);
+}
+
+function loadFooter(footer) {
+  const footerBlock = buildBlock('footer', '');
+  footer.append(footerBlock);
+  decorateBlock(footerBlock);
+  loadBlock(footerBlock);
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -535,8 +549,11 @@ async function loadEager(doc) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
+  await loadBlocks(main);
 
-  loadBlocks(main);
+  loadHeader(doc.querySelector('header'));
+  loadFooter(doc.querySelector('footer'));
+
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
 }

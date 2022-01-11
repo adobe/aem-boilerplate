@@ -5,7 +5,8 @@ export default function decorate($block) {
     $button.title = $a.title || $a.textContent;
     $button.textContent = $a.textContent;
     $button.addEventListener('click', () => {
-      window.location.href = $a.href;
+      $block.dataset.buttonClicked = $a.href;
+      window.open($a.href);
     });
     $a.replaceWith($button);
   });

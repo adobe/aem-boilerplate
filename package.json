@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "description": "Starter project for Adobe Helix Pages",
   "scripts": {
-    "test": "karma start karma.config.js",
-    "integration-test": "mocha integration/*.test.js",
+    "test": "wtr \"./test/**/*.test.js\" --node-resolve --port=2000 --coverage",
+    "test:watch": "npm test -- --watch",
     "lint": "eslint ."
   },
   "repository": {
@@ -24,15 +24,10 @@
     "chai": "4.3.4",
     "eslint": "8.6.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.25.3",
-    "jsdom": "19.0.0",
-    "karma": "6.3.9",
-    "karma-chai": "0.1.0",
-    "karma-chrome-launcher": "3.1.0",
-    "karma-mocha": "2.0.1",
-    "karma-mocha-reporter": "2.2.5",
-    "mocha": "9.1.3",
-    "puppeteer": "13.0.1",
-    "shelljs": "0.8.4"
+    "eslint-plugin-import": "2.25.4",
+    "@esm-bundle/chai": "4.3.4-fix.0",
+    "@web/test-runner": "0.13.20",
+    "@web/test-runner-commands": "0.5.13",
+    "sinon": "12.0.1"
   }
 }

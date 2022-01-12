@@ -1,3 +1,5 @@
+import { readBlockConfig } from '../../scripts/scripts.js';
+
 /**
  * collapses all open nav sections
  * @param {Element} sections The container element
@@ -15,15 +17,18 @@ function collapseAllNavSections(sections) {
  */
 
 export default async function decorate(block) {
+  const cfg = readBlockConfig(block);
   block.textContent = '';
 
   // fetch nav content
-  const resp = await fetch('/nav.plain.html');
+  const navPath = cfg.nav || '/nav';
+  const resp = await fetch(`${navPath}.plain.html`);
   const html = await resp.text();
 
   // decorate nav DOM
   const nav = document.createElement('div');
   nav.classList.add('nav');
+  nav.setAttribute('aria-role', 'navigation');
   const navSections = document.createElement('div');
   navSections.classList.add('nav-sections');
   nav.innerHTML = html;

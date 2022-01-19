@@ -35,12 +35,14 @@ header .nav[aria-expanded='false'] .nav-hamburger-icon::before {
   border-radius: 3px;
   background: currentColor;
 }
+
 header .nav[aria-expanded='false'] .nav-hamburger-icon::after,
 header .nav[aria-expanded='false'] .nav-hamburger-icon::before {
   content: "";
   position: absolute;
   top: -6px;
 }
+
 header .nav[aria-expanded='false'] .nav-hamburger-icon::after {
   top: 6px;
 }
@@ -55,6 +57,7 @@ header .nav[aria-expanded='true'] .nav-hamburger-icon {
   border-radius: 5px;
   transform: translate(-3px, -2px);
 }
+
 header .nav[aria-expanded='true'] .nav-hamburger-icon::after,
 header .nav[aria-expanded='true'] .nav-hamburger-icon::before {
   content: "";
@@ -69,6 +72,7 @@ header .nav[aria-expanded='true'] .nav-hamburger-icon::before {
   top: 8px;
   left: 1px
 }
+
 header .nav[aria-expanded='true'] .nav-hamburger-icon::after {
   transform: rotate(-45deg)
 }
@@ -90,7 +94,6 @@ header .nav-brand p {
 
 header .nav-sections {
   grid-area: sections;
-  display: flex;
   flex-direction: column;
   display: none;
   background-color: rgba(var(--background-color),.92);
@@ -167,8 +170,8 @@ header .nav[aria-expanded='true'] {
   header .nav-section[aria-expanded='true'] ul {
     display: block;
     position: absolute;
-    background-color: rgba(var(--background-color),.92);
+    background-color: rgba(var(--background-color), .92);
     width: 300px;
-    left: 0px;
+    left: 0;
   } 
 }

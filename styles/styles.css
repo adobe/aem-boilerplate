@@ -81,8 +81,30 @@ a:any-link {
   color: rgb(var(--link-color));
   text-decoration: none;
 }
+
 a:hover {
   text-decoration: underline;
+}
+
+code,
+pre,
+samp {
+font-family:
+  'Roboto Mono',
+  Menlo,
+  Consolas,
+  'Liberation Mono',
+  monospace;
+}
+
+code, samp {
+font-size: 87.5%;
+padding: .125em;
+}
+
+pre {
+font-size: 75%;
+overflow: scroll;
 }
 
 main input, main button {
@@ -128,27 +150,6 @@ main pre {
   white-space: pre;
 }
 
-code,
-pre,
-samp {
-font-family:
-  'Roboto Mono',
-  Menlo,
-  Consolas,
-  'Liberation Mono',
-  monospace;
-}
-
-code, samp {
-font-size: 87.5%;
-padding: .125em;
-}
-
-pre {
-font-size: 75%;
-overflow: scroll;
-}
-
 main blockquote {
   font-style: italic;
   margin: 3rem;
@@ -191,18 +192,19 @@ main img {
   html {
       font-size: 100%;
   }
+
   main {
     min-height: calc(100vh - 212px);
   }
+
   main>.section-wrapper>div {
-      max-width: 30em;
-      margin: auto;
+    max-width: 30em;
+    margin: auto;
   }    
 }
 
 /* above the fold CSS goes here to squash CLS */
 
 main .section-wrapper[data-section-status='loading'], main .section-wrapper[data-section-status='initialized'] {
-    display: none;
-  }
-  
+  display: none;
+}

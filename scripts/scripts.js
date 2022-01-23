@@ -49,7 +49,6 @@ export function sampleRUM(checkpoint, data = {}) {
             data.cwv[measurement.name] = measurement.value;
             sendPing();
           };
-          mod.getCLS(console.log);
           mod.getCLS(storeCWV);
           mod.getFID(storeCWV);
           mod.getLCP(storeCWV);

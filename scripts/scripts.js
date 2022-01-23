@@ -43,12 +43,13 @@ export function sampleRUM(checkpoint, data = {}) {
       // special case CWV
       if (checkpoint === 'cwv') {
         // eslint-disable-next-line import/no-unresolved
-        import('./web-vitals-module-2-1-2.js').then((mod) => {
+        import('https://rum.hlx3.page/.rum/web-vitals/dist/web-vitals.js').then((mod) => {
           const storeCWV = (measurement) => {
             data.cwv = {};
             data.cwv[measurement.name] = measurement.value;
             sendPing();
           };
+          mod.getCLS(console.log);
           mod.getCLS(storeCWV);
           mod.getFID(storeCWV);
           mod.getLCP(storeCWV);
@@ -448,6 +449,9 @@ async function loadPage(doc) {
   await loadLazy(doc);
   // eslint-disable-next-line no-use-before-define
   loadDelayed(doc);
+
+  // Core Web Vitals RUM collection
+  sampleRUM('cwv');
 }
 
 export function initHlx() {

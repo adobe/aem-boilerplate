@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/adobe/helix-pages-starter#readme",
   "devDependencies": {
-    "@babel/core": "7.16.7",
+    "@babel/core": "7.16.12",
     "@babel/eslint-parser": "7.16.5",
     "chai": "4.3.4",
     "eslint": "8.7.0",

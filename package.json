@@ -28,6 +28,6 @@
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@web/test-runner": "0.13.26",
     "@web/test-runner-commands": "0.6.1",
-    "sinon": "12.0.1"
+    "sinon": "13.0.0"
   }
 }

@@ -138,7 +138,7 @@ describe('Core Helix features', () => {
 describe('Sections and blocks', () => {
   it('Decorates sections', async () => {
     scripts.decorateSections(document.querySelector('main'));
-    expect(document.querySelectorAll('main .section').length).to.equal(1);
+    expect(document.querySelectorAll('main .section').length).to.equal(2);
   });
 
   it('Decorates blocks', async () => {

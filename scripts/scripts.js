@@ -116,24 +116,6 @@ export function toClassName(name) {
 }
 
 /**
- * Wraps each section in an additional {@code div}.
- * @param {[Element]} $sections The sections
- */
-function wrapSections($sections) {
-  $sections.forEach(($div) => {
-    if ($div.childNodes.length === 0) {
-      // remove empty sections
-      $div.remove();
-    } else if (!$div.id) {
-      const $wrapper = document.createElement('div');
-      $wrapper.className = 'section-wrapper';
-      $div.parentNode.appendChild($wrapper);
-      $wrapper.appendChild($div);
-    }
-  });
-}
-
-/**
  * Decorates a block.
  * @param {Element} block The block element
  */
@@ -142,7 +124,7 @@ export function decorateBlock(block) {
   const classes = Array.from(block.classList.values());
   const blockName = classes[0];
   if (!blockName) return;
-  const section = block.closest('.section-wrapper');
+  const section = block.closest('.section');
   if (section) {
     section.classList.add(`${blockName}-container`.replace(/--/g, '-'));
   }
@@ -155,6 +137,9 @@ export function decorateBlock(block) {
   block.classList.add('block');
   block.setAttribute('data-block-name', shortBlockName);
   block.setAttribute('data-block-status', 'initialized');
+
+  const blockWrapper = block.parentElement;
+  blockWrapper.classList.add(`${shortBlockName}-wrapper`);
 }
 
 /**
@@ -162,18 +147,28 @@ export function decorateBlock(block) {
  * @param {Element} $main The container element
  */
 export function decorateSections($main) {
-  wrapSections($main.querySelectorAll(':scope > div'));
-  $main.querySelectorAll(':scope > div.section-wrapper').forEach((section) => {
+  $main.querySelectorAll(':scope > div').forEach((section) => {
+    const wrappers = [];
+    let defaultContent = false;
+    [...section.children].forEach((e) => {
+      if (e.tagName === 'DIV' || !defaultContent) {
+        const wrapper = document.createElement('div');
+        wrappers.push(wrapper);
+        defaultContent = e.tagName !== 'DIV';
+      }
+      wrappers[wrappers.length - 1].append(e);
+    });
+    wrappers.forEach((wrapper) => section.append(wrapper));
+    section.classList.add('section');
     section.setAttribute('data-section-status', 'initialized');
   });
 }
-
 /**
  * Updates all section status in a container element.
  * @param {Element} $main The container element
  */
 export function updateSectionsStatus($main) {
-  const sections = [...$main.querySelectorAll(':scope > div.section-wrapper')];
+  const sections = [...$main.querySelectorAll(':scope > div.section')];
   for (let i = 0; i < sections.length; i += 1) {
     const section = sections[i];
     const status = section.getAttribute('data-section-status');
@@ -195,7 +190,7 @@ export function updateSectionsStatus($main) {
  */
 export function decorateBlocks($main) {
   $main
-    .querySelectorAll('div.section-wrapper > div > div')
+    .querySelectorAll('div.section > div > div')
     .forEach(($block) => decorateBlock($block));
 }
 

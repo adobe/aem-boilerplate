@@ -116,7 +116,7 @@ main input:hover {
   border: 1px solid rgba(var(--text-color),0.9);
 }
 
-main .section-wrapper {
+main .section {
   padding: 0 2rem; 
 }
 
@@ -194,7 +194,7 @@ main img {
   main {
     min-height: calc(100vh - 212px);
   }
-  main>.section-wrapper>div {
+  main>.section>div {
       max-width: 30em;
       margin: auto;
   }    
@@ -202,7 +202,7 @@ main img {
 
 /* above the fold CSS goes here to squash CLS */
 
-main .section-wrapper[data-section-status='loading'], main .section-wrapper[data-section-status='initialized'] {
+main .section[data-section-status='loading'], main .section[data-section-status='initialized'] {
     display: none;
   }
   

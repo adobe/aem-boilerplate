@@ -138,7 +138,7 @@ describe('Core Helix features', () => {
 describe('Sections and blocks', () => {
   it('Decorates sections', async () => {
     scripts.decorateSections(document.querySelector('main'));
-    expect(document.querySelectorAll('main .section-wrapper').length).to.equal(1);
+    expect(document.querySelectorAll('main .section').length).to.equal(2);
   });
 
   it('Decorates blocks', async () => {
@@ -155,12 +155,12 @@ describe('Sections and blocks', () => {
 
   it('Updates section status', async () => {
     scripts.updateSectionsStatus(document.querySelector('main'));
-    document.querySelectorAll('main .section-wrapper').forEach(($section) => {
+    document.querySelectorAll('main .section').forEach(($section) => {
       expect($section.dataset.sectionStatus).to.equal('loaded');
     });
 
     // test section with block still loading
-    const $section = document.querySelector('main .section-wrapper');
+    const $section = document.querySelector('main .section');
     delete $section.dataset.sectionStatus;
     $section.querySelector(':scope .block').dataset.blockStatus = 'loading';
     scripts.updateSectionsStatus(document.querySelector('main'));
@@ -168,7 +168,7 @@ describe('Sections and blocks', () => {
   });
 
   it('Reads block config', async () => {
-    document.querySelector('main .section-wrapper > div').innerHTML += await readFile({ path: './config.html' });
+    document.querySelector('main .section > div').innerHTML += await readFile({ path: './config.html' });
     const cfg = scripts.readBlockConfig(document.querySelector('main .config'));
     expect(cfg).to.deep.include({
       'prop-0': 'Plain text',

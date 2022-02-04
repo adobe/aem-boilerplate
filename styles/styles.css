@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
- :root {
+:root {
   --link-color: 3,95,230;
   --background-color: 255,255,255;
   --text-color: 0,0,0;
@@ -23,7 +23,6 @@
       --text-color: 255,255,255;
   }
 }
-
 
 html {
   font-size: 62.5%;
@@ -128,25 +127,23 @@ main pre {
   white-space: pre;
 }
 
-code,
-pre,
-samp {
-font-family:
-  'Roboto Mono',
-  Menlo,
-  Consolas,
-  'Liberation Mono',
-  monospace;
+code, pre, samp {
+  font-family:
+    'Roboto Mono',
+    Menlo,
+    Consolas,
+    'Liberation Mono',
+    monospace;
 }
 
 code, samp {
-font-size: 87.5%;
-padding: .125em;
+  font-size: 87.5%;
+  padding: .125em;
 }
 
 pre {
-font-size: 75%;
-overflow: scroll;
+  font-size: 75%;
+  overflow: scroll;
 }
 
 main blockquote {
@@ -180,29 +177,32 @@ main img {
 
 @media (min-width: 600px) {
   html {
-      font-size: 85%;
+    font-size: 85%;
   }
 
   main {
     min-height: calc(100vh - 190px);
   }
 }
+
 @media (min-width: 900px) {
   html {
-      font-size: 100%;
+    font-size: 100%;
   }
+
   main {
     min-height: calc(100vh - 212px);
   }
+
   main>.section>div {
-      max-width: 30em;
-      margin: auto;
+    max-width: 30em;
+    margin: auto;
   }    
 }
 
 /* above the fold CSS goes here to squash CLS */
-
-main .section[data-section-status='loading'], main .section[data-section-status='initialized'] {
-    display: none;
-  }
+main .section[data-section-status='loading'],
+main .section[data-section-status='initialized'] {
+  display: none;
+}
   

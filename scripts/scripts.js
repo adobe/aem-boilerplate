@@ -86,8 +86,8 @@ export function loadCSS(href, callback) {
  */
 export function getMetadata(name) {
   const attr = name && name.includes(':') ? 'property' : 'name';
-  const $meta = document.head.querySelector(`meta[${attr}="${name}"]`);
-  return $meta && $meta.content;
+  const meta = document.head.querySelector(`meta[${attr}="${name}"]`);
+  return meta && meta.content;
 }
 
 /**
@@ -144,10 +144,10 @@ export function decorateBlock(block) {
 
 /**
  * Decorates all sections in a container element.
- * @param {Element} $main The container element
+ * @param {Element} main The container element
  */
-export function decorateSections($main) {
-  $main.querySelectorAll(':scope > div').forEach((section) => {
+export function decorateSections(main) {
+  main.querySelectorAll(':scope > div').forEach((section) => {
     const wrappers = [];
     let defaultContent = false;
     [...section.children].forEach((e) => {
@@ -165,10 +165,10 @@ export function decorateSections($main) {
 }
 /**
  * Updates all section status in a container element.
- * @param {Element} $main The container element
+ * @param {Element} main The container element
  */
-export function updateSectionsStatus($main) {
-  const sections = [...$main.querySelectorAll(':scope > div.section')];
+export function updateSectionsStatus(main) {
+  const sections = [...main.querySelectorAll(':scope > div.section')];
   for (let i = 0; i < sections.length; i += 1) {
     const section = sections[i];
     const status = section.getAttribute('data-section-status');
@@ -186,12 +186,12 @@ export function updateSectionsStatus($main) {
 
 /**
  * Decorates all blocks in a container element.
- * @param {Element} $main The container element
+ * @param {Element} main The container element
  */
-export function decorateBlocks($main) {
-  $main
+export function decorateBlocks(main) {
+  main
     .querySelectorAll('div.section > div > div')
-    .forEach(($block) => decorateBlock($block));
+    .forEach((block) => decorateBlock(block));
 }
 
 /**
@@ -227,7 +227,7 @@ export function buildBlock(blockName, content) {
 
 /**
  * Loads JS and CSS for a block.
- * @param {Element} $block The block element
+ * @param {Element} block The block element
  */
 export async function loadBlock(block, eager = false) {
   if (!(block.getAttribute('data-block-status') === 'loading' || block.getAttribute('data-block-status') === 'loaded')) {
@@ -262,47 +262,47 @@ export async function loadBlock(block, eager = false) {
 
 /**
  * Loads JS and CSS for all blocks in a container element.
- * @param {Element} $main The container element
+ * @param {Element} main The container element
  */
-export async function loadBlocks($main) {
-  updateSectionsStatus($main);
-  const blocks = [...$main.querySelectorAll('div.block')];
+export async function loadBlocks(main) {
+  updateSectionsStatus(main);
+  const blocks = [...main.querySelectorAll('div.block')];
   for (let i = 0; i < blocks.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
     await loadBlock(blocks[i]);
-    updateSectionsStatus($main);
+    updateSectionsStatus(main);
   }
 }
 
 /**
  * Extracts the config from a block.
- * @param {Element} $block The block element
+ * @param {Element} block The block element
  * @returns {object} The block config
  */
-export function readBlockConfig($block) {
+export function readBlockConfig(block) {
   const config = {};
-  $block.querySelectorAll(':scope>div').forEach(($row) => {
-    if ($row.children) {
-      const $cols = [...$row.children];
-      if ($cols[1]) {
-        const $value = $cols[1];
-        const name = toClassName($cols[0].textContent);
+  block.querySelectorAll(':scope>div').forEach((row) => {
+    if (row.children) {
+      const cols = [...row.children];
+      if (cols[1]) {
+        const valueEl = cols[1];
+        const name = toClassName(cols[0].textContent);
         let value = '';
-        if ($value.querySelector('a')) {
-          const $as = [...$value.querySelectorAll('a')];
-          if ($as.length === 1) {
-            value = $as[0].href;
+        if (valueEl.querySelector('a')) {
+          const as = [...valueEl.querySelectorAll('a')];
+          if (as.length === 1) {
+            value = as[0].href;
           } else {
-            value = $as.map(($a) => $a.href);
+            value = as.map((a) => a.href);
           }
-        } else if ($value.querySelector('p')) {
-          const $ps = [...$value.querySelectorAll('p')];
-          if ($ps.length === 1) {
-            value = $ps[0].textContent;
+        } else if (valueEl.querySelector('p')) {
+          const ps = [...valueEl.querySelectorAll('p')];
+          if (ps.length === 1) {
+            value = ps[0].textContent;
           } else {
-            value = $ps.map(($p) => $p.textContent);
+            value = ps.map((p) => p.textContent);
           }
-        } else value = $row.children[1].textContent;
+        } else value = row.children[1].textContent;
         config[name] = value;
       }
     }
@@ -352,12 +352,12 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
 
 /**
  * Normalizes all headings within a container element.
- * @param {Element} $elem The container element
+ * @param {Element} el The container element
  * @param {[string]]} allowedHeadings The list of allowed headings (h1 ... h6)
  */
-export function normalizeHeadings($elem, allowedHeadings) {
+export function normalizeHeadings(el, allowedHeadings) {
   const allowed = allowedHeadings.map((h) => h.toLowerCase());
-  $elem.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((tag) => {
+  el.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((tag) => {
     const h = tag.tagName.toLowerCase();
     if (allowed.indexOf(h) === -1) {
       // current heading is not in the allowed list -> try first to "promote" the heading

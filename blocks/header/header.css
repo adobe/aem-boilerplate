@@ -1,5 +1,4 @@
 /* header and nav layout */
-
 header .nav {
   display: grid;
   grid-template-areas: 'hamburger brand' 'sections sections';
@@ -16,7 +15,6 @@ header .nav {
 }
 
 /* hamburger */
-
 header .nav-hamburger {
   grid-area: hamburger;
   height: 22px;
@@ -35,12 +33,14 @@ header .nav[aria-expanded='false'] .nav-hamburger-icon::before {
   border-radius: 3px;
   background: currentColor;
 }
+
 header .nav[aria-expanded='false'] .nav-hamburger-icon::after,
 header .nav[aria-expanded='false'] .nav-hamburger-icon::before {
   content: "";
   position: absolute;
   top: -6px;
 }
+
 header .nav[aria-expanded='false'] .nav-hamburger-icon::after {
   top: 6px;
 }
@@ -55,6 +55,7 @@ header .nav[aria-expanded='true'] .nav-hamburger-icon {
   border-radius: 5px;
   transform: translate(-3px, -2px);
 }
+
 header .nav[aria-expanded='true'] .nav-hamburger-icon::after,
 header .nav[aria-expanded='true'] .nav-hamburger-icon::before {
   content: "";
@@ -74,7 +75,6 @@ header .nav[aria-expanded='true'] .nav-hamburger-icon::after {
 }
 
 /* brand */
-
 header .nav-brand {
   grid-area: brand;
   font-size: 22px;
@@ -87,7 +87,6 @@ header .nav-brand p {
 }
 
 /* sections */
-
 header .nav-sections {
   grid-area: sections;
   display: flex;
@@ -121,7 +120,6 @@ header .nav[aria-expanded='true'] {
 }
 
 /* desktop nav styles */
-
 @media (min-width: 900px) {
   header .nav {
     grid-template-areas: 'brand sections';

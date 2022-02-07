@@ -1,5 +1,5 @@
 /* block specific CSS goes here */
 main .example {
-  background-color: rgba(var(--link-color), 0.6);
+  background-color: rgba(var(--link-color) / 60%);
   padding: 1em;
 }

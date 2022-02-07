@@ -10,17 +10,17 @@
  * governing permissions and limitations under the License.
  */
 
-:root {
-  --link-color: 3,95,230;
-  --background-color: 255,255,255;
-  --text-color: 0,0,0;
+ :root {
+  --link-color: 3 95 230;
+  --background-color: 255 255 255;
+  --text-color: 0 0 0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-      --link-color: 21,190,236;
-      --background-color: 0,0,0;
-      --text-color: 255,255,255;
+      --link-color: 21 190 236;
+      --background-color: 0 0 0;
+      --text-color: 255 255 255;
   }
 }
 
@@ -32,14 +32,15 @@ html {
 
 body {
   margin: 0;
-  font-family: 'helvetica neue', helvetica,
-  ubuntu,
-  roboto, noto,
-  sans-serif;
+  font-family: 'helvetica neue',
+    helvetica,
+    ubuntu,
+    roboto,
+    noto,
+    sans-serif;
   line-height: 1.6;
-  margin: 0;
-  color: rgba(var(--text-color),.9);
-  background-color: rgba(var(--background-color),.92);
+  color: rgba(var(--text-color) / 90%);
+  background-color: rgba(var(--background-color) / 92%);
   opacity: 0;
 }
 
@@ -80,8 +81,30 @@ a:any-link {
   color: rgb(var(--link-color));
   text-decoration: none;
 }
+
 a:hover {
   text-decoration: underline;
+}
+
+code,
+pre,
+samp {
+font-family:
+  'Roboto Mono',
+  Menlo,
+  Consolas,
+  'Liberation Mono',
+  monospace;
+}
+
+code, samp {
+font-size: 87.5%;
+padding: .125em;
+}
+
+pre {
+font-size: 75%;
+overflow: scroll;
 }
 
 main input, main button {
@@ -97,22 +120,22 @@ main input, main button {
 main button {
   color: rgb(var(--background-color));
   border: none;
-  background-color: rgba(var(--link-color), 0.9);
+  background-color: rgba(var(--link-color) / 90%);
 }
 
 main button:hover {
-  background-color: rgba(var(--link-color), 1);
+  background-color: rgb(var(--link-color));
   cursor: pointer;
 }
 
 main input {
-  border: 1px solid rgba(var(--text-color),0.5);
+  border: 1px solid rgba(var(--text-color) / 50%);
   color: rgb(var(--text-color));
-  background-color: rgba(var(--background-color), 0.5);
+  background-color: rgba(var(--background-color) / 50%);
 }
 
 main input:hover {
-  border: 1px solid rgba(var(--text-color),0.9);
+  border: 1px solid rgba(var(--text-color) / 90%);
 }
 
 main .section {
@@ -120,30 +143,11 @@ main .section {
 }
 
 main pre {
-  background-color: rgb(var(--text-color),0.05);;
+  background-color: rgba(var(--text-color) / 5%);
   padding: 1em;
   border-radius: .25em;
   overflow-x: auto;
   white-space: pre;
-}
-
-code, pre, samp {
-  font-family:
-    'Roboto Mono',
-    Menlo,
-    Consolas,
-    'Liberation Mono',
-    monospace;
-}
-
-code, samp {
-  font-size: 87.5%;
-  padding: .125em;
-}
-
-pre {
-  font-size: 75%;
-  overflow: scroll;
 }
 
 main blockquote {
@@ -167,7 +171,7 @@ hr {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
   border: 0;
-  border-bottom: 1px solid rgba(var(--text-color),0.2);
+  border-bottom: 1px solid rgba(var(--text-color) / 20%);
 }
 
 main img {
@@ -201,8 +205,8 @@ main img {
 }
 
 /* above the fold CSS goes here to squash CLS */
+
 main .section[data-section-status='loading'],
 main .section[data-section-status='initialized'] {
   display: none;
 }
-  

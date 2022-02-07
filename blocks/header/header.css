@@ -1,14 +1,14 @@
 /* header and nav layout */
 header .nav {
   display: grid;
-  grid-template-areas: 'hamburger brand' 'sections sections';
-  grid-template-columns: 50px 1fr;
-  grid-template-rows: 64px 1fr;
+  grid-template:
+    "hamburger brand" 64px
+    "sections sections" 1fr / 50px 1fr;
   align-items: center;
   padding: 0 2rem;
   position: fixed;
   z-index: 1;
-  background-color: rgba(var(--background-color),.92);
+  background-color: rgba(var(--background-color) / 92%);
   width: 100vw;
   height: 64px;
   box-sizing: border-box;
@@ -19,6 +19,7 @@ header .nav-hamburger {
   grid-area: hamburger;
   height: 22px;
   padding-top: 3px;
+  cursor: pointer;
 }
 
 header .nav[aria-expanded='false'] .nav-hamburger-icon,
@@ -70,6 +71,7 @@ header .nav[aria-expanded='true'] .nav-hamburger-icon::before {
   top: 8px;
   left: 1px
 }
+
 header .nav[aria-expanded='true'] .nav-hamburger-icon::after {
   transform: rotate(-45deg)
 }
@@ -89,10 +91,9 @@ header .nav-brand p {
 /* sections */
 header .nav-sections {
   grid-area: sections;
-  display: flex;
   flex-direction: column;
   display: none;
-  background-color: rgba(var(--background-color),.92);
+  background-color: rgba(var(--background-color) / 92%);
   width: 100vw;
 }
 
@@ -165,8 +166,8 @@ header .nav[aria-expanded='true'] {
   header .nav-section[aria-expanded='true'] ul {
     display: block;
     position: absolute;
-    background-color: rgba(var(--background-color),.92);
+    background-color: rgba(var(--background-color) / 92%);
     width: 300px;
-    left: 0px;
+    left: 0;
   } 
 }

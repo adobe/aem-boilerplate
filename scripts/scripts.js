@@ -285,18 +285,18 @@ export function readBlockConfig(block) {
     if (row.children) {
       const cols = [...row.children];
       if (cols[1]) {
-        const valueEl = cols[1];
+        const col = cols[1];
         const name = toClassName(cols[0].textContent);
         let value = '';
-        if (valueEl.querySelector('a')) {
-          const as = [...valueEl.querySelectorAll('a')];
+        if (col.querySelector('a')) {
+          const as = [...col.querySelectorAll('a')];
           if (as.length === 1) {
             value = as[0].href;
           } else {
             value = as.map((a) => a.href);
           }
-        } else if (valueEl.querySelector('p')) {
-          const ps = [...valueEl.querySelectorAll('p')];
+        } else if (col.querySelector('p')) {
+          const ps = [...col.querySelectorAll('p')];
           if (ps.length === 1) {
             value = ps[0].textContent;
           } else {

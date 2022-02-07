@@ -24,7 +24,6 @@
   }
 }
 
-
 html {
   font-size: 62.5%;
   text-rendering: optimizeLegibility;
@@ -182,16 +181,17 @@ main img {
 
 @media (min-width: 600px) {
   html {
-      font-size: 85%;
+    font-size: 85%;
   }
 
   main {
     min-height: calc(100vh - 190px);
   }
 }
+
 @media (min-width: 900px) {
   html {
-      font-size: 100%;
+    font-size: 100%;
   }
 
   main {
@@ -206,6 +206,7 @@ main img {
 
 /* above the fold CSS goes here to squash CLS */
 
-main .section[data-section-status='loading'], main .section[data-section-status='initialized'] {
+main .section[data-section-status='loading'],
+main .section[data-section-status='initialized'] {
   display: none;
 }

@@ -1,5 +1,4 @@
 /* header and nav layout */
-
 header .nav {
   display: grid;
   grid-template:
@@ -16,7 +15,6 @@ header .nav {
 }
 
 /* hamburger */
-
 header .nav-hamburger {
   grid-area: hamburger;
   height: 22px;
@@ -79,7 +77,6 @@ header .nav[aria-expanded='true'] .nav-hamburger-icon::after {
 }
 
 /* brand */
-
 header .nav-brand {
   grid-area: brand;
   font-size: 22px;
@@ -92,7 +89,6 @@ header .nav-brand p {
 }
 
 /* sections */
-
 header .nav-sections {
   grid-area: sections;
   flex-direction: column;
@@ -125,7 +121,6 @@ header .nav[aria-expanded='true'] {
 }
 
 /* desktop nav styles */
-
 @media (min-width: 900px) {
   header .nav {
     grid-template-areas: 'brand sections';

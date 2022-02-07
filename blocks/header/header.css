@@ -20,7 +20,6 @@ header .nav {
 header .nav-hamburger {
   grid-area: hamburger;
   height: 22px;
-  background-color: orange;
   padding-top: 3px;
   cursor: pointer;
 }

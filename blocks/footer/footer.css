@@ -1,7 +1,7 @@
 footer {
   margin-top: 2rem;
   padding: 2rem;
-  background-color: var(--footer-background-color);
+  background-color: rgba(var(--text-color) / 10%);
 }
 
 footer .footer {

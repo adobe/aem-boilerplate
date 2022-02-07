@@ -11,16 +11,16 @@
  */
 
  :root {
-  --link-color: 3,95,230;
-  --background-color: 255,255,255;
-  --text-color: 0,0,0;
+  --link-color: 3 95 230;
+  --background-color: 255 255 255;
+  --text-color: 0 0 0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-      --link-color: 21,190,236;
-      --background-color: 0,0,0;
-      --text-color: 255,255,255;
+      --link-color: 21 190 236;
+      --background-color: 0 0 0;
+      --text-color: 255 255 255;
   }
 }
 
@@ -33,14 +33,15 @@ html {
 
 body {
   margin: 0;
-  font-family: 'helvetica neue', helvetica,
-  ubuntu,
-  roboto, noto,
-  sans-serif;
+  font-family: 'helvetica neue',
+    helvetica,
+    ubuntu,
+    roboto,
+    noto,
+    sans-serif;
   line-height: 1.6;
-  margin: 0;
-  color: rgba(var(--text-color),.9);
-  background-color: rgba(var(--background-color),.92);
+  color: rgba(var(--text-color) / 90%);
+  background-color: rgba(var(--background-color) / 92%);
   opacity: 0;
 }
 
@@ -120,30 +121,30 @@ main input, main button {
 main button {
   color: rgb(var(--background-color));
   border: none;
-  background-color: rgba(var(--link-color), 0.9);
+  background-color: rgba(var(--link-color) / 90%);
 }
 
 main button:hover {
-  background-color: rgba(var(--link-color), 1);
+  background-color: rgb(var(--link-color));
   cursor: pointer;
 }
 
 main input {
-  border: 1px solid rgba(var(--text-color),0.5);
+  border: 1px solid rgba(var(--text-color) / 50%);
   color: rgb(var(--text-color));
-  background-color: rgba(var(--background-color), 0.5);
+  background-color: rgba(var(--background-color) / 50%);
 }
 
 main input:hover {
-  border: 1px solid rgba(var(--text-color),0.9);
+  border: 1px solid rgba(var(--text-color) / 90%);
 }
 
-main .section-wrapper {
+main .section {
   padding: 0 2rem; 
 }
 
 main pre {
-  background-color: rgb(var(--text-color),0.05);;
+  background-color: rgba(var(--text-color) / 5%);
   padding: 1em;
   border-radius: .25em;
   overflow-x: auto;
@@ -171,7 +172,7 @@ hr {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
   border: 0;
-  border-bottom: 1px solid rgba(var(--text-color),0.2);
+  border-bottom: 1px solid rgba(var(--text-color) / 20%);
 }
 
 main img {
@@ -197,7 +198,7 @@ main img {
     min-height: calc(100vh - 212px);
   }
 
-  main>.section-wrapper>div {
+  main>.section>div {
     max-width: 30em;
     margin: auto;
   }    
@@ -205,6 +206,6 @@ main img {
 
 /* above the fold CSS goes here to squash CLS */
 
-main .section-wrapper[data-section-status='loading'], main .section-wrapper[data-section-status='initialized'] {
+main .section[data-section-status='loading'], main .section[data-section-status='initialized'] {
   display: none;
 }

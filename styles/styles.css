@@ -11,19 +11,23 @@
  */
 
  :root {
+  /* colors */
   --link-color: #035fe6;
   --link-hover-color: #136ff6;
-  --background-color: #ffffff;
+  --background-color: #fff;
   --overlay-background-color: #00000020;
-  --text-color: #000000;
+  --text-color: #000;
 
+  /* fonts */
   --body-font-family: 'helvetica neue', helvetica, ubuntu, roboto, noto, sans-serif;
   --heading-font-family: var(var(--body-font-family));
-  --fixed-font-family: 'Roboto Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
+  /* body sizes */
   --body-font-size-m: 22px;
   --body-font-size-s: 18px;
 
+  /* heading sizes */
   --heading-font-size-xxl: 48px;
   --heading-font-size-xl: 40px;
   --heading-font-size-l: 32px;
@@ -37,14 +41,14 @@
   :root {
       --link-color: #15beec;
       --link-hover-color: #05aedc;
-      --background-color: #000000;
+      --background-color: #000;
       --overlay-background-color: #ffffff20;
-      --text-color: #ffffff;
+      --text-color: #fff;
   }
 }
 
 html {
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -193,7 +197,6 @@ main img {
 }
 
 @media (min-width: 900px) {
-
   :root {
     --heading-font-size-xxl: 60px;
     --heading-font-size-xl: 48px;
@@ -202,8 +205,7 @@ main img {
     --heading-font-size-s: 24px;
     --heading-font-size-xs: 22px;  
   }
-
-
+  
   main {
     min-height: calc(100vh - 212px);
   }
@@ -214,8 +216,7 @@ main img {
   }
 }
 
-/* above the fold CSS goes here to squash CLS */
-
+/* progressive section appearance */
 main .section[data-section-status='loading'],
 main .section[data-section-status='initialized'] {
   display: none;

@@ -11,41 +11,55 @@
  */
 
  :root {
-  --link-color: 3 95 230;
-  --background-color: 255 255 255;
-  --text-color: 0 0 0;
+  --link-color: #035fe6;
+  --link-hover-color: #136ff6;
+  --background-color: #ffffff;
+  --overlay-background-color: #00000020;
+  --text-color: #000000;
+
+  --body-font-family: 'helvetica neue', helvetica, ubuntu, roboto, noto, sans-serif;
+  --heading-font-family: var(var(--body-font-family));
+  --fixed-font-family: 'Roboto Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --body-font-size-m: 22px;
+  --body-font-size-s: 18px;
+
+  --heading-font-size-xxl: 48px;
+  --heading-font-size-xl: 40px;
+  --heading-font-size-l: 32px;
+  --heading-font-size-m: 24px;
+  --heading-font-size-s: 20px;
+  --heading-font-size-xs: 18px;
+
 }
 
-@media (prefers-color-scheme: dark) {
+@media (_prefers-color-scheme: dark) {
   :root {
-      --link-color: 21 190 236;
-      --background-color: 0 0 0;
-      --text-color: 255 255 255;
+      --link-color: #15beec;
+      --link-hover-color: #05aedc;
+      --background-color: #000000;
+      --overlay-background-color: #ffffff20;
+      --text-color: #ffffff;
   }
 }
 
 html {
-  font-size: 62.5%;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
 body {
+  font-size: var(--body-font-size-m);
   margin: 0;
-  font-family: 'helvetica neue',
-    helvetica,
-    ubuntu,
-    roboto,
-    noto,
-    sans-serif;
+  font-family: var(--body-font-family);
   line-height: 1.6;
-  color: rgba(var(--text-color) / 90%);
-  background-color: rgba(var(--background-color) / 92%);
-  opacity: 0;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  display: none;
 }
 
 body.appear {
-  opacity: 1;
+  display: unset;
 }
 
 header {
@@ -53,7 +67,6 @@ header {
 }
 
 main {
-  font-size: 1.6rem;
   min-height: calc(100vh - 156px);
 }
 
@@ -65,12 +78,12 @@ h4, h5, h6 {
   margin-bottom: .5em;
 }
 
-h1 { font-size: 3rem; }
-h2 { font-size: 2.25rem; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.25rem; }
-h5 { font-size: 1rem; }
-h6 { font-size: .875rem; }
+h1 { font-size: var(--heading-font-size-xxl) }
+h2 { font-size: var(--heading-font-size-xl) }
+h3 { font-size: var(--heading-font-size-l) }
+h4 { font-size: var(--heading-font-size-m) }
+h5 { font-size: var(--heading-font-size-s) }
+h6 { font-size: var(--heading-font-size-xs) }
 
 p, dl, ol, ul, pre, blockquote {
   margin-top: 1em;
@@ -78,33 +91,26 @@ p, dl, ol, ul, pre, blockquote {
 }
 
 a:any-link {
-  color: rgb(var(--link-color));
+  color: var(--link-color);
   text-decoration: none;
 }
 
 a:hover {
   text-decoration: underline;
+  color: var(--link-hover-color);
 }
 
-code,
-pre,
-samp {
-font-family:
-  'Roboto Mono',
-  Menlo,
-  Consolas,
-  'Liberation Mono',
-  monospace;
+code, pre, samp {
+  font-family: var(--fixed-font-family);
+  font-size: var(--body-font-size-s);
 }
 
 code, samp {
-font-size: 87.5%;
-padding: .125em;
+  padding: .125em;
 }
 
 pre {
-font-size: 75%;
-overflow: scroll;
+  overflow: scroll;
 }
 
 main input, main button {
@@ -115,27 +121,28 @@ main input, main button {
   margin-bottom: 1rem;
   padding: 0.75rem 0.6rem;    
   border-radius: 0.25rem;
+  box-sizing: border-box;
 }
 
 main button {
-  color: rgb(var(--background-color));
+  color: var(--background-color);
   border: none;
-  background-color: rgba(var(--link-color) / 90%);
+  background-color: var(--link-color);
 }
 
 main button:hover {
-  background-color: rgb(var(--link-color));
+  background-color: var(--link-hover-color);
   cursor: pointer;
 }
 
 main input {
-  border: 1px solid rgba(var(--text-color) / 50%);
-  color: rgb(var(--text-color));
-  background-color: rgba(var(--background-color) / 50%);
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+  background-color: var(--background-color);
 }
 
 main input:hover {
-  border: 1px solid rgba(var(--text-color) / 90%);
+  border: 1px solid var(--text-color);
 }
 
 main .section {
@@ -143,7 +150,7 @@ main .section {
 }
 
 main pre {
-  background-color: rgba(var(--text-color) / 5%);
+  background-color: var(--overlay-background-color);
   padding: 1em;
   border-radius: .25em;
   overflow-x: auto;
@@ -171,7 +178,7 @@ hr {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
   border: 0;
-  border-bottom: 1px solid rgba(var(--text-color) / 20%);
+  border-bottom: 1px solid var(--overlay-background-color);
 }
 
 main img {
@@ -180,28 +187,31 @@ main img {
 }
 
 @media (min-width: 600px) {
-  html {
-    font-size: 85%;
-  }
-
   main {
     min-height: calc(100vh - 190px);
   }
 }
 
 @media (min-width: 900px) {
-  html {
-    font-size: 100%;
+
+  :root {
+    --heading-font-size-xxl: 60px;
+    --heading-font-size-xl: 48px;
+    --heading-font-size-l: 36px;
+    --heading-font-size-m: 30px;
+    --heading-font-size-s: 24px;
+    --heading-font-size-xs: 22px;  
   }
+
 
   main {
     min-height: calc(100vh - 212px);
   }
 
-  main>.section>div {
-    max-width: 30em;
+  .section > div {
+    max-width: 800px;
     margin: auto;
-  }    
+  }
 }
 
 /* above the fold CSS goes here to squash CLS */

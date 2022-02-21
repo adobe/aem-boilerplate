@@ -1,5 +1,5 @@
 /* block specific CSS goes here */
 main .example {
-  background-color: rgba(var(--link-color) / 60%);
+  background-color: var(--overlay-background-color);
   padding: 1em;
 }

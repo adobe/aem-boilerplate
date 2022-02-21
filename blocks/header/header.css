@@ -8,7 +8,7 @@ header .nav {
   padding: 0 2rem;
   position: fixed;
   z-index: 1;
-  background-color: rgba(var(--background-color) / 92%);
+  background-color: var(--background-color);
   width: 100vw;
   height: 64px;
   box-sizing: border-box;
@@ -166,7 +166,7 @@ header .nav[aria-expanded='true'] {
   header .nav-section[aria-expanded='true'] ul {
     display: block;
     position: absolute;
-    background-color: rgba(var(--background-color) / 92%);
+    background-color: var(--background-color);
     width: 300px;
     left: 0;
   } 

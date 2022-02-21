@@ -33,7 +33,7 @@
 
 }
 
-@media (_prefers-color-scheme: dark) {
+@media (prefers-color-scheme: dark) {
   :root {
       --link-color: #15beec;
       --link-hover-color: #05aedc;

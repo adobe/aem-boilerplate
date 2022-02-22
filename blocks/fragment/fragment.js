@@ -10,21 +10,13 @@ export default async function decorate(block) {
   if (resp.ok) {
     const main = document.createElement('main');
     main.innerHTML = await resp.text();
-    const img = main.querySelector('img');
-    if (img) img.setAttribute('loading', 'lazy');
     decorateMain(main);
     await loadBlocks(main);
-    const sections = [...main.children];
     const blockSection = block.closest('.section');
-    sections.forEach((section, i) => {
-      if (!i) {
-        while (sections[0].firstChild) {
-          blockSection.insertBefore(sections[0].firstChild, block.closest('.fragment-wrapper'));
-        }
-      } else {
-        blockSection.insertBefore(section, blockSection.nextElementSibling);
-      }
-    });
+    const fragmentSection = main.querySelector(':scope .section');
+    while (fragmentSection && fragmentSection.firstChild) {
+      blockSection.insertBefore(fragmentSection.firstChild, block.closest('.fragment-wrapper'));
+    }
   }
   block.closest('.fragment-wrapper').remove();
 }

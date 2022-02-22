@@ -4,22 +4,23 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
-document.body.innerHTML = await readFile({ path: './block.html' });
+const sectionLoaded = async (section) => new Promise((resolve) => {
+  // wait for section to finish loading
+  const check = setInterval(() => {
+    if (section.dataset.sectionStatus === 'loaded') {
+      clearInterval(check);
+      resolve();
+    }
+  }, 100);
+});
 
 describe('Fragment block', () => {
   it('Replaces fragment block with fragment content', async () => {
+    document.body.innerHTML = await readFile({ path: './block.html' });
     await import('../../../scripts/scripts.js');
-    const text = await new Promise((resolve) => {
-      // wait for section to finish loading
-      const check = setInterval(() => {
-        const section = document.querySelector('.section');
-        if (section.dataset.sectionStatus === 'loaded') {
-          clearInterval(check);
-          resolve(section.textContent.trim());
-        }
-      }, 100);
-    });
-    expect(text).to.equal('Hello world!');
+    const section = document.querySelector('.section');
+    await sectionLoaded(section);
+    expect(section.textContent.trim()).to.equal('Hello world!');
     expect(document.querySelector('.fragment')).to.not.exist;
   });
 });

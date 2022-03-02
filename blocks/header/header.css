@@ -32,7 +32,7 @@ header .nav[aria-expanded='false'] .nav-hamburger-icon::before {
   width: 20px;
   height: 2px;
   border-radius: 3px;
-  background: currentColor;
+  background: currentcolor;
 }
 
 header .nav[aria-expanded='false'] .nav-hamburger-icon::after,
@@ -65,7 +65,7 @@ header .nav[aria-expanded='true'] .nav-hamburger-icon::before {
   position: absolute;
   width: 22px;
   height: 2px;
-  background: currentColor;
+  background: currentcolor;
   transform: rotate(45deg);
   border-radius: 5px;
   top: 8px;

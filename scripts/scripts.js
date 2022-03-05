@@ -552,6 +552,8 @@ function buildAutoBlocks(main) {
 export function decorateMain(main) {
   // forward compatible pictures redecoration
   decoratePictures(main);
+  // forward compatible link rewriting
+  makeLinksRelative(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);

@@ -384,6 +384,28 @@ export function normalizeHeadings(el, allowedHeadings) {
 }
 
 /**
+ * Turns absolute links within the domain into relative links.
+ * @param {Element} main The container element
+ */
+export function makeLinksRelative(main) {
+  main.querySelectorAll('a').forEach((a) => {
+    // eslint-disable-next-line no-use-before-define
+    const hosts = ['hlx3.page', 'hlx.page', 'hlx.live', ...PRODUCTION_DOMAINS];
+    if (a.href) {
+      try {
+        const url = new URL(a.href);
+        const relative = hosts.some((host) => url.hostname.includes(host));
+        if (relative) a.href = `${url.pathname}${url.search}${url.hash}`;
+      } catch (e) {
+        // something went wrong
+        // eslint-disable-next-line no-console
+        console.log(e);
+      }
+    }
+  });
+}
+
+/**
  * Decorates the picture elements and removes formatting.
  * @param {Element} main The container element
  */
@@ -477,6 +499,7 @@ initHlx();
 
 const LCP_BLOCKS = ['hero']; // add your LCP blocks to the list
 const RUM_GENERATION = 'project-1'; // add your RUM generation information here
+const PRODUCTION_DOMAINS = [];
 
 sampleRUM('top');
 window.addEventListener('load', () => sampleRUM('load'));
@@ -529,6 +552,8 @@ function buildAutoBlocks(main) {
 export function decorateMain(main) {
   // forward compatible pictures redecoration
   decoratePictures(main);
+  // forward compatible link rewriting
+  makeLinksRelative(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);

@@ -404,7 +404,7 @@ export function normalizeHeadings(el, allowedHeadings) {
 export function makeLinksRelative(main) {
   main.querySelectorAll('a').forEach((a) => {
     // eslint-disable-next-line no-use-before-define
-    const hosts = ['hlx.page', 'hlx.page', 'hlx.live', ...PRODUCTION_DOMAINS];
+    const hosts = ['hlx.page', 'hlx.live', ...PRODUCTION_DOMAINS];
     if (a.href) {
       try {
         const url = new URL(a.href);

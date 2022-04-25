@@ -1,4 +1,18 @@
-import { readBlockConfig } from '../../scripts/scripts.js';
+import {
+  makeLinksRelative,
+  readBlockConfig,
+} from '../../scripts/scripts.js';
+
+async function decorateIcons(element) {
+  element.querySelectorAll('img.icon').forEach(async (img) => {
+    const resp = await fetch(img.src);
+    const svg = await resp.text();
+    const span = document.createElement('span');
+    span.className = img.className;
+    span.innerHTML = svg;
+    img.replaceWith(span);
+  });
+}
 
 /**
  * collapses all open nav sections
@@ -6,7 +20,7 @@ import { readBlockConfig } from '../../scripts/scripts.js';
  */
 
 function collapseAllNavSections(sections) {
-  sections.querySelectorAll('.nav-section').forEach((section) => {
+  sections.querySelectorAll('.nav-sections > ul > li').forEach((section) => {
     section.setAttribute('aria-expanded', 'false');
   });
 }
@@ -21,37 +35,31 @@ export default async function decorate(block) {
   block.textContent = '';
 
   // fetch nav content
-  const navPath = cfg.nav || '/nav';
+  const navPath = cfg.nav || '/nav-new';
   const resp = await fetch(`${navPath}.plain.html`);
   const html = await resp.text();
 
   // decorate nav DOM
-  const nav = document.createElement('div');
-  nav.classList.add('nav');
-  nav.setAttribute('aria-role', 'navigation');
-  const navSections = document.createElement('div');
-  navSections.classList.add('nav-sections');
+  const nav = document.createElement('nav');
   nav.innerHTML = html;
-  nav.querySelectorAll(':scope > div').forEach((navSection, i) => {
-    if (!i) {
-      // first section is the brand section
-      const brand = navSection;
-      brand.classList.add('nav-brand');
-    } else {
-      // all other sections
-      navSections.append(navSection);
-      navSection.classList.add('nav-section');
-      const h2 = navSection.querySelector('h2');
-      if (h2) {
-        h2.addEventListener('click', () => {
-          const expanded = navSection.getAttribute('aria-expanded') === 'true';
-          collapseAllNavSections(navSections);
-          navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-        });
-      }
-    }
+  decorateIcons(nav);
+  makeLinksRelative(nav);
+
+  const classes = ['brand', 'sections', 'tools'];
+  classes.forEach((e, j) => {
+    nav.children[j].classList.add(`nav-${e}`);
   });
-  nav.append(navSections);
+
+  const navSections = [...nav.children][1];
+
+  navSections.querySelectorAll(':scope > ul > li').forEach((navSection) => {
+    if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
+    navSection.addEventListener('click', () => {
+      const expanded = navSection.getAttribute('aria-expanded') === 'true';
+      collapseAllNavSections(navSections);
+      navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    });
+  });
 
   // hamburger for mobile
   const hamburger = document.createElement('div');

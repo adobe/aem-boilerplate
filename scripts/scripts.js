@@ -133,7 +133,6 @@ export function toCamelCase(name) {
  * Gets placeholders object
  * @param {string} prefix
  */
-
 export async function fetchPlaceholders(prefix = 'default') {
   window.placeholders = window.placeholders || {};
   const loaded = window.placeholders[`${prefix}-loaded`];

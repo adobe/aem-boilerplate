@@ -436,15 +436,14 @@ export function decoratePictures(main) {
 }
 
 /**
- * set Template and Theme.
+ * Set template (page structure) and theme (page styles).
  */
- function decorateTemplateAndTheme() {
+function decorateTemplateAndTheme() {
   const template = getMetadata('template');
   if (template) document.body.classList.add(template);
   const theme = getMetadata('theme');
   if (theme) document.body.classList.add(theme);
 }
-
 
 /**
  * Adds the favicon.

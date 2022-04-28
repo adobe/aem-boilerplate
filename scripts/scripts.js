@@ -436,6 +436,16 @@ export function decoratePictures(main) {
 }
 
 /**
+ * Set template (page structure) and theme (page styles).
+ */
+function decorateTemplateAndTheme() {
+  const template = getMetadata('template');
+  if (template) document.body.classList.add(template);
+  const theme = getMetadata('theme');
+  if (theme) document.body.classList.add(theme);
+}
+
+/**
  * Adds the favicon.
  * @param {string} href The favicon URL
  */
@@ -577,6 +587,7 @@ export function decorateMain(main) {
  * loads everything needed to get to LCP.
  */
 async function loadEager(doc) {
+  decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);

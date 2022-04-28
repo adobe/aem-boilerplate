@@ -121,6 +121,36 @@ export function toClassName(name) {
 }
 
 /**
+ * Replace icons with inline SVG and prefix with codeBasePath.
+ * @param {Element} element
+ */
+function replaceIcons(element) {
+  element.querySelectorAll('img.icon').forEach((img) => {
+    const span = document.createElement('span');
+    span.className = img.className;
+    img.replaceWith(span);
+  });
+}
+
+/**
+ * Replace icons with inline SVG and prefix with codeBasePath.
+ * @param {Element} element
+ */
+export async function decorateIcons(element) {
+  // prepare for forward compatible icon handling
+  replaceIcons(element);
+
+  element.querySelectorAll('span.icon').forEach(async (span) => {
+    const iconName = span.className.split('icon-')[1];
+    const resp = await fetch(`${window.hlx.codeBasePath}/icons/${iconName}.svg`);
+    if (resp.status === 200) {
+      const svg = await resp.text();
+      span.innerHTML = svg;
+    }
+  });
+}
+
+/**
  * Decorates a block.
  * @param {Element} block The block element
  */
@@ -568,6 +598,8 @@ export function decorateMain(main) {
   decoratePictures(main);
   // forward compatible link rewriting
   makeLinksRelative(main);
+
+  decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);

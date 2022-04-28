@@ -1,18 +1,4 @@
-import {
-  makeLinksRelative,
-  readBlockConfig,
-} from '../../scripts/scripts.js';
-
-async function decorateIcons(element) {
-  element.querySelectorAll('img.icon').forEach(async (img) => {
-    const resp = await fetch(img.src);
-    const svg = await resp.text();
-    const span = document.createElement('span');
-    span.className = img.className;
-    span.innerHTML = svg;
-    img.replaceWith(span);
-  });
-}
+import { readBlockConfig, decorateIcons, makeLinksRelative } from '../../scripts/scripts.js';
 
 /**
  * collapses all open nav sections
@@ -72,6 +58,6 @@ export default async function decorate(block) {
   });
   nav.prepend(hamburger);
   nav.setAttribute('aria-expanded', 'false');
-
+  await decorateIcons(nav);
   block.append(nav);
 }

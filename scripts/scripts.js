@@ -111,7 +111,7 @@ export function addPublishDependencies(url) {
 
 /**
  * Sanitizes a name for use as class name.
- * @param {*} name The unsanitized name
+ * @param {string} name The unsanitized name
  * @returns {string} The class name
  */
 export function toClassName(name) {
@@ -121,9 +121,9 @@ export function toClassName(name) {
 }
 
 /**
- * Sanitizes a name for use as class name.
- * @param {*} name The unsanitized name
- * @returns {string} The class name
+ * Sanitizes a name for use as a js property name.
+ * @param {string} name The unsanitized name
+ * @returns {string} The camelCased name
  */
 export function toCamelCase(name) {
   return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());

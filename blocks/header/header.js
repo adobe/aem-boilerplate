@@ -58,6 +58,6 @@ export default async function decorate(block) {
   });
   nav.prepend(hamburger);
   nav.setAttribute('aria-expanded', 'false');
-  await decorateIcons(nav);
+  decorateIcons(nav);
   block.append(nav);
 }

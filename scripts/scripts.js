@@ -129,7 +129,6 @@ export function toCamelCase(name) {
   return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
-
 /**
  * Replace icons with inline SVG and prefix with codeBasePath.
  * @param {Element} element

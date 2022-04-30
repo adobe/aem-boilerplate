@@ -140,13 +140,15 @@ export function decorateIcons(element) {
   // prepare for forward compatible icon handling
   replaceIcons(element);
 
-  element.querySelectorAll('span.icon').forEach(async (span) => {
+  element.querySelectorAll('span.icon').forEach((span) => {
     const iconName = span.className.split('icon-')[1];
-    const resp = await fetch(`${window.hlx.codeBasePath}/icons/${iconName}.svg`);
-    if (resp.status === 200) {
-      const svg = await resp.text();
-      span.innerHTML = svg;
-    }
+    fetch(`${window.hlx.codeBasePath}/icons/${iconName}.svg`).then((resp) => {
+      if (resp.status === 200) {
+        resp.text().then((svg) => {
+          span.innerHTML = svg;
+        });
+      }
+    });
   });
 }
 

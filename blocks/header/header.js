@@ -1,4 +1,4 @@
-import { readBlockConfig } from '../../scripts/scripts.js';
+import { readBlockConfig, decorateIcons } from '../../scripts/scripts.js';
 
 /**
  * collapses all open nav sections
@@ -64,6 +64,6 @@ export default async function decorate(block) {
   });
   nav.prepend(hamburger);
   nav.setAttribute('aria-expanded', 'false');
-
+  decorateIcons(nav);
   block.append(nav);
 }

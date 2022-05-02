@@ -119,27 +119,44 @@ pre {
   overflow: scroll;
 }
 
-main input, main button {
-  font-size: 1.25rem;
-  width: 100%;
-  max-width: 50rem;
-  display: block;
-  margin-bottom: 1rem;
-  padding: 0.75rem 0.6rem;    
-  border-radius: 0.25rem;
+/* buttons */
+
+a.button:any-link, button {
+  font-family: var(--font-family-body);
+  display: inline-block;
   box-sizing: border-box;
-}
-
-main button {
+  text-decoration: none;
+  border: 2px solid transparent;
+  padding: 5px 30px;
+  text-align: center;
+  font-style: normal; 
+  font-weight: 600;
+  cursor: pointer;
   color: var(--background-color);
-  border: none;
   background-color: var(--link-color);
+  margin: 16px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 30px;
 }
 
-main button:hover {
+a.button:hover, a.button:focus, button:hover, button:focus  {
   background-color: var(--link-hover-color);
   cursor: pointer;
 }
+
+button:disabled, button:disabled:hover {
+  background-color: var(--overlay-background-color);
+  cursor: unset;
+}
+
+a.button.secondary, button.secondary {
+  background-color: unset;
+  border: 2px solid currentcolor;
+  color: var(--text-color)
+} 
+
 
 main input {
   border: 1px solid var(--text-color);

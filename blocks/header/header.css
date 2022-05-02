@@ -109,7 +109,6 @@ header nav .nav-sections {
   flex-direction: column;
   display: none;
   background-color: var(--overlay-color);
-  width: 100vw;
   flex: 1 1 auto;
 }
 

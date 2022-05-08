@@ -36,23 +36,8 @@
   --heading-font-size-s: 20px;
   --heading-font-size-xs: 18px;
 
-<<<<<<< HEAD
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-      --link-color: #15beec;
-      --link-hover-color: #05aedc;
-      --background-color: #000;
-      --overlay-background-color: #222;
-      --highlight-background-color: #444;
-      --text-color: #fff;
-  }
-}
-=======
   /* nav height */
   --nav-height: 64px;
->>>>>>> nav-height
 
 }
 

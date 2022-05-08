@@ -2,7 +2,7 @@
 header .nav {
   display: grid;
   grid-template:
-    "hamburger brand" 64px
+    "hamburger brand" var(--nav-height)
     "sections sections" 1fr / 50px 1fr;
   align-items: center;
   padding: 0 2rem;
@@ -10,7 +10,7 @@ header .nav {
   z-index: 1;
   background-color: var(--background-color);
   width: 100vw;
-  height: 64px;
+  height: var(--nav-height);
   box-sizing: border-box;
 }
 

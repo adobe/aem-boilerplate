@@ -21,7 +21,7 @@
 
   /* fonts */
   --body-font-family: 'helvetica neue', helvetica, ubuntu, roboto, noto, sans-serif;
-  --heading-font-family: var(var(--body-font-family));
+  --heading-font-family: var(--body-font-family);
   --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
   /* body sizes */
@@ -36,6 +36,7 @@
   --heading-font-size-s: 20px;
   --heading-font-size-xs: 18px;
 
+<<<<<<< HEAD
 }
 
 @media (prefers-color-scheme: dark) {
@@ -48,10 +49,11 @@
       --text-color: #fff;
   }
 }
+=======
+  /* nav height */
+  --nav-height: 64px;
+>>>>>>> nav-height
 
-html {
-  text-rendering: optimizelegibility;
-  -webkit-font-smoothing: antialiased;
 }
 
 body {
@@ -69,11 +71,7 @@ body.appear {
 }
 
 header {
-  height: 64px;
-}
-
-main {
-  min-height: calc(100vh - 156px);
+  height: var(--nav-height);
 }
 
 h1, h2, h3,
@@ -82,6 +80,7 @@ h4, h5, h6 {
   line-height: 1.25;
   margin-top: 1em;
   margin-bottom: .5em;
+  scroll-margin: var(--nav-height);
 }
 
 h1 { font-size: var(--heading-font-size-xxl) }
@@ -192,12 +191,6 @@ main img {
   height: auto;
 }
 
-@media (min-width: 600px) {
-  main {
-    min-height: calc(100vh - 190px);
-  }
-}
-
 @media (min-width: 900px) {
   :root {
     --heading-font-size-xxl: 60px;
@@ -208,10 +201,6 @@ main img {
     --heading-font-size-xs: 22px;  
   }
   
-  main {
-    min-height: calc(100vh - 212px);
-  }
-
   .section > div {
     max-width: 800px;
     margin: auto;

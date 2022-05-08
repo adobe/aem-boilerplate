@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/adobe/helix-pages-starter#readme",
   "devDependencies": {
-    "@babel/core": "7.17.9",
+    "@babel/core": "7.17.10",
     "@babel/eslint-parser": "7.17.0",
     "chai": "4.3.6",
     "eslint": "8.14.0",
@@ -31,7 +31,7 @@
     "@web/test-runner": "0.13.27",
     "@web/test-runner-commands": "0.6.1",
     "sinon": "13.0.2",
-    "stylelint": "14.8.0",
+    "stylelint": "14.8.1",
     "stylelint-config-prettier": "9.0.3",
     "stylelint-config-standard": "25.0.0"
   }

@@ -1,14 +1,16 @@
 /* header and nav layout */
 header nav {
   display: grid;
-  grid-template: 'hamburger brand tools' 'sections sections sections';
-  grid-template-columns:  56px 1fr 24px;
-  padding: 12px 2rem;
+  grid-template:
+    "hamburger brand" var(--nav-height)
+    "sections sections" 1fr / 50px 1fr;
+  align-items: center;
+  padding: 0 2rem;
   position: fixed;
   z-index: 1;
   background-color: var(--background-color);
   width: 100vw;
-  height: 56px;
+  height: var(--nav-height);
   box-sizing: border-box;
   font-family: var(--body-font-family);
 }

@@ -65,7 +65,7 @@ h4, h5, h6 {
   line-height: 1.25;
   margin-top: 1em;
   margin-bottom: .5em;
-  scroll-margin: var(--nav-height);
+  scroll-margin: calc(var(--nav-height) + 1em);
 }
 
 h1 { font-size: var(--heading-font-size-xxl) }

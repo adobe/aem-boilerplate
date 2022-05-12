@@ -23,7 +23,7 @@ export default async function decorate(block) {
   // fetch nav content
   const navPath = cfg.nav || '/nav-new';
   const resp = await fetch(`${navPath}.plain.html`);
-  if (resp.status === 200) {
+  if (resp.ok) {
     const html = await resp.text();
 
     // decorate nav DOM

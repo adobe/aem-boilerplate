@@ -2,8 +2,8 @@
 header nav {
   display: grid;
   grid-template:
-    "hamburger brand" var(--nav-height)
-    "sections sections" 1fr / 50px 1fr;
+    'hamburger brand tools' var(--nav-height)
+    'sections sections sections' 1fr / 50px 1fr 50px;
   align-items: center;
   padding: 0 2rem;
   position: fixed;
@@ -25,7 +25,6 @@ header nav[aria-expanded='true'] {
   overflow-y: scroll;
   min-height: 100vh;
 }
-
 
 /* brand */
 header .nav-brand {
@@ -66,7 +65,7 @@ header nav[aria-expanded='false'] .nav-hamburger-icon::before {
 
 header nav[aria-expanded='false'] .nav-hamburger-icon::after,
 header nav[aria-expanded='false'] .nav-hamburger-icon::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -6px;
 }
@@ -88,7 +87,7 @@ header nav[aria-expanded='true'] .nav-hamburger-icon {
 
 header nav[aria-expanded='true'] .nav-hamburger-icon::after,
 header nav[aria-expanded='true'] .nav-hamburger-icon::before {
-  content: "";
+  content: '';
   display: block;
   box-sizing: border-box;
   position: absolute;
@@ -132,10 +131,10 @@ header nav[aria-expanded='true'] .nav-sections {
 }
 
 /* tools */
-
 header nav .nav-tools {
   grid-area: tools;
   flex: 0 0 auto;
+  height: 22px;
 }
 
 header nav .nav-tools p {
@@ -154,7 +153,6 @@ header nav[aria-expanded='true'] .nav-tools ul {
 header nav[aria-expanded='true'] .nav-tools li {
   padding: 0;
 }
-
 
 /* desktop nav styles */
 @media (min-width: 1000px) {

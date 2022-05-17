@@ -85,7 +85,7 @@ export function loadCSS(href, callback) {
 }
 
 /**
- * Retrieves the content of a metadata tag.
+ * Retrieves the content of metadata tags.
  * @param {string} name The metadata name (or property)
  * @returns {string} The metadata value(s)
  */

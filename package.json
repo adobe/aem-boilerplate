@@ -1,8 +1,8 @@
 {
-  "name": "@adobe/helix-pages-starter",
+  "name": "@adobe/helix-project-boilerplate",
   "private": true,
   "version": "1.0.0",
-  "description": "Starter project for Adobe Helix Pages",
+  "description": "Starter project for Adobe Helix",
   "scripts": {
     "test": "wtr \"./test/**/*.test.js\" --node-resolve --port=2000 --coverage",
     "test:watch": "npm test -- --watch",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adobe/helix-pages-starter.git"
+    "url": "git+https://github.com/adobe/helix-project-boilerplate.git"
   },
   "author": "Adobe",
   "license": "Apache License 2.0",
   "bugs": {
-    "url": "https://github.com/adobe/helix-pages-starter/issues"
+    "url": "https://github.com/adobe/helix-project-boilerplate/issues"
   },
-  "homepage": "https://github.com/adobe/helix-pages-starter#readme",
+  "homepage": "https://github.com/adobe/helix-project-boilerplate#readme",
   "devDependencies": {
     "@babel/core": "7.18.0",
     "@babel/eslint-parser": "7.17.0",

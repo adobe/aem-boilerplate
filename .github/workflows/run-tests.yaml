@@ -1,15 +1,9 @@
-# Run this action only for pull requests from this repository
-name: Tests
+name: Tests and Linting
 
-on:
-  pull_request:
-    types: [opened, synchronize, reopened, edited]
-    branches:
-      - main
+on: [pull_request]
 
 jobs:
   build:
-    if: github.repository_owner == 'adobe' # replace 'adobe' with repo owner
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -18,9 +12,7 @@ jobs:
       with:
         node-version: '14'
     - run: npm install
-      working-directory: test
     - run: npm run lint
     - run: npm test
-      working-directory: test
       env:
         CI: true

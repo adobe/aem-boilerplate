@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Page not found | Helix Project Boilerplate</title>
+  <script type="text/javascript">
+    window.isErrorPage = true;
+    window.errorCode = '404';
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="Page not found | Helix Project Boilerplate">
+  <meta property="og:image" content="https://main--helix-project-boilerplate--adobe.hlx3.page/media_12637fbb67cddc5d293b20975e89028d919270ac0.jpeg?width=1200&amp;format=pjpg&amp;optimize=medium">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://main--helix-project-boilerplate--adobe.hlx3.page/media_12637fbb67cddc5d293b20975e89028d919270ac0.jpeg?width=1200&amp;format=pjpg&amp;optimize=medium">
+  <script src="/scripts/scripts.js" type="module" crossorigin="use-credentials"></script>
+  <script>
+    window.addEventListener('load', () => {
+      if (document.referrer) {
+        const { origin, pathname } = new URL(document.referrer);
+        if (origin === window.location.origin) {
+          const backBtn = document.createElement('a');
+          backBtn.classList.add('button');
+          backBtn.href = pathname;
+          backBtn.textContent = 'Go back';
+          backBtn.title = 'Go back';
+          const btnContainer = document.querySelector('.button-container');
+          btnContainer.prepend(backBtn);
+        }
+      }
+    });
+  </script>
+  <link rel="stylesheet" href="/styles/styles.css">
+  <style>
+    main.error {
+      min-height: calc(100vh - var(--nav-height));
+      display: flex;
+      align-items: center;
+    }
+
+    main.error .error-logo {
+      margin: 0;
+      font-size: calc(100vw * .25);
+      line-height: 0;
+    }
+
+    main.error .error-helix {
+      box-sizing: border-box;
+      display: inline-block;
+      position: relative;
+      width: calc(100vw * .18);
+      height: calc(100vw * .18);
+      margin: 0 -5%;
+      border: calc(100vw * .02) solid var(--text-color);
+      border-radius: 50%;
+      animation: rotate 6s linear infinite;
+    }
+
+    main.error .error-helix-icon::before, main.error .error-helix-icon::after {
+      display: block;
+      position: absolute;
+      top: calc(100vw * .09);
+      left: 50%;
+      animation: scale 4s ease-in-out infinite;
+      width: calc(100vw * .04);
+      height: calc(100vw * .04);
+      margin-left: -6px;
+      border-radius: 50%;
+      background: currentColor;
+      content: '';
+    }
+
+    main.error .error-helix-icon::after {
+      animation-duration: 2s;
+    }
+    
+    @keyframes rotate {
+      100% { transform: rotate(-360deg); }
+    }
+
+    @keyframes scale {
+      50% { top: 120%; }
+      0%, 50%, 100% { transform: scale(1); }
+      25% { transform: scale(.5); }
+      75% { transform: scale(1.5); }
+    }
+
+    main.error .button-container .button + .button {
+      margin-top: 0;
+    }
+
+    @media (min-width: 1200px) {
+      main.error .error-logo {
+        font-size: 300px;
+      }
+
+      main.error .error-helix {
+        width: 216px;
+        height: 216px;
+        border-width: 24px;
+      }
+
+      main.error .error-helix-icon::before, main.error .error-helix-icon::after {
+        top: 108px;
+        width: 48px;
+        height: 48px;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="/styles/lazy-styles.css">
+</head>
+<body>
+  <header></header>
+  <main class="error">
+    <div class="section">
+      <p class="error-logo" title="404">
+        4
+        <span class="error-helix">
+          <span class="error-helix-icon"></span>
+        </span>
+        4
+      </p>
+      <h2 class="error-message">Page Not Found</h2>
+      <p class="button-container">
+        <a href="/" class="button secondary">Go home</a></p>
+      </p>
+    </div>
+  </main>
+  <footer></footer>
+</body>
+</html>

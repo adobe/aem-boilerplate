@@ -15,7 +15,6 @@
  * @param {string} checkpoint identifies the checkpoint in funnel
  * @param {Object} data additional data for RUM sample
  */
-
 export function sampleRUM(checkpoint, data = {}) {
   try {
     window.hlx = window.hlx || {};
@@ -120,8 +119,8 @@ export function toClassName(name) {
     : '';
 }
 
-/*
- * Sanitizes a name for use as a js property name.
+/**
+ * Sanitizes a name for use as a JS property name.
  * @param {string} name The unsanitized name
  * @returns {string} The camelCased name
  */
@@ -222,7 +221,7 @@ export function decorateBlock(block) {
  */
 export function readBlockConfig(block) {
   const config = {};
-  block.querySelectorAll(':scope>div').forEach((row) => {
+  block.querySelectorAll(':scope > div').forEach((row) => {
     if (row.children) {
       const cols = [...row.children];
       if (cols[1]) {
@@ -253,10 +252,10 @@ export function readBlockConfig(block) {
 
 /**
  * Decorates all sections in a container element.
- * @param {Element} $main The container element
+ * @param {Element} main The container element
  */
-export function decorateSections($main) {
-  $main.querySelectorAll(':scope > div').forEach((section) => {
+export function decorateSections(main) {
+  main.querySelectorAll(':scope > div').forEach((section) => {
     const wrappers = [];
     let defaultContent = false;
     [...section.children].forEach((e) => {
@@ -324,9 +323,9 @@ export function decorateBlocks(main) {
  */
 export function buildBlock(blockName, content) {
   const table = Array.isArray(content) ? content : [[content]];
-  const blockEl = document.createElement('div');
+  const block = document.createElement('div');
   // build image block nested div structure
-  blockEl.classList.add(blockName);
+  block.classList.add(blockName);
   table.forEach((row) => {
     const rowEl = document.createElement('div');
     row.forEach((col) => {
@@ -343,9 +342,9 @@ export function buildBlock(blockName, content) {
       });
       rowEl.appendChild(colEl);
     });
-    blockEl.appendChild(rowEl);
+    block.appendChild(rowEl);
   });
-  return (blockEl);
+  return (block);
 }
 
 /**

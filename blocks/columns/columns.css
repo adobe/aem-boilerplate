@@ -1,0 +1,27 @@
+.columns > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.columns > div:nth-child(odd) {
+    display: flex;
+    align-items: center;
+    flex-direction: column-reverse;
+}
+
+@media (min-width: 900px) {
+    .columns > div {
+        display: flex;
+        align-items: center;
+        flex-direction: unset;
+    }
+
+    .columns > div > div {
+        flex: 1;
+        margin: 16px;
+    }
+
+    .columns > div:nth-child(odd) {
+        flex-direction: unset;
+    }    
+}

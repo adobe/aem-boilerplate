@@ -3,9 +3,13 @@
     flex-direction: column;
 }
 
-.columns > div:nth-child(odd) {
+.columns img {
+    width: 100%;
+}
+
+/* lazy river */
+.columns.lazy-river > div:nth-child(odd) {
     display: flex;
-    align-items: center;
     flex-direction: column-reverse;
 }
 
@@ -13,7 +17,6 @@
     .columns > div {
         display: flex;
         align-items: center;
-        flex-direction: unset;
     }
 
     .columns > div > div {
@@ -21,7 +24,8 @@
         margin: 16px;
     }
 
-    .columns > div:nth-child(odd) {
+    /* lazy river unset */
+    .columns.lazy-river > div, .columns.lazy-river > div:nth-child(odd) {
         flex-direction: unset;
-    }    
+    }
 }

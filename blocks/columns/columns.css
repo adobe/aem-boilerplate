@@ -7,25 +7,19 @@
     width: 100%;
 }
 
-/* lazy river */
-.columns.lazy-river > div:nth-child(odd) {
-    display: flex;
-    flex-direction: column-reverse;
-}
-
 @media (min-width: 900px) {
     .columns > div {
         display: flex;
         align-items: center;
+        flex-direction: unset;
     }
 
     .columns > div > div {
         flex: 1;
-        margin: 16px;
+        margin-left: 32px;
     }
 
-    /* lazy river unset */
-    .columns.lazy-river > div, .columns.lazy-river > div:nth-child(odd) {
-        flex-direction: unset;
+    .columns > div > div:first-of-type {
+        margin-left: unset;
     }
 }

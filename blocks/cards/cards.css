@@ -1,32 +1,31 @@
 .cards > ul {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-    grid-gap: 16px;
     list-style: none;
     margin: 0;
     padding: 0;
-    font-size: var(--body-font-size-xs);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 16px;
 }
 
 .cards > ul > li {
-    border: 1px solid var(--overlay-background-color);
-    border-radius: 10px;
-    transition: all 0.5 ease-out; 
-    box-shadow: 1px 1px 5px #00000020;
-}
-
-.cards > ul > li:hover {
-    box-shadow: 2px 2px 10px #00000040;
-    transform: translate(-1px, -1px)
+    border: 1px solid var(--highlight-background-color);
+    background-color: var(--background-color)
 }
 
 .cards .cards-body {
     margin: 16px;
 }
 
+.cards .cards-image {
+    line-height: 0;
+}
+
+.cards .cards-body *:first-child {
+    margin-top: 0;
+}
+
 .cards > ul > li img {
     width: 100%;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    border-radius: 8px 8px 0 0;
 }

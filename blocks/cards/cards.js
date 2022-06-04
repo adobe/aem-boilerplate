@@ -4,8 +4,10 @@ export default function decorate(block) {
   [...block.children].forEach((row) => {
     const li = document.createElement('li');
     li.innerHTML = row.innerHTML;
-    if (li.children.length === 1 && li.querySelector('picture')) li.className = 'cards-card-image';
-    else li.className('cards-card-body');
+    [...li.children].forEach((div) => {
+      if (div.children.length === 1 && div.querySelector('picture')) div.className = 'cards-card-image';
+      else div.className = 'cards-card-body';
+    });
     ul.append(li);
   });
   block.textContent = '';

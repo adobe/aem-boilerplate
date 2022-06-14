@@ -60,7 +60,7 @@ export function sampleRUM(checkpoint, data = {}) {
         document.head.appendChild(script);
       }
     }
-  } catch (e) {
+  } catch (error) {
     // something went wrong
   }
 }
@@ -177,7 +177,7 @@ export async function fetchPlaceholders(prefix = 'default') {
             window.placeholders[prefix] = placeholders;
             resolve();
           });
-      } catch (e) {
+      } catch (error) {
         // error loading placeholders
         window.placeholders[prefix] = {};
         reject();
@@ -367,17 +367,17 @@ export async function loadBlock(block, eager = false) {
             if (mod.default) {
               await mod.default(block, blockName, document, eager);
             }
-          } catch (err) {
+          } catch (error) {
             // eslint-disable-next-line no-console
-            console.log(`failed to load module for ${blockName}`, err);
+            console.log(`failed to load module for ${blockName}`, error);
           }
           resolve();
         })();
       });
       await Promise.all([cssLoaded, decorationComplete]);
-    } catch (err) {
+    } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(`failed to load block ${blockName}`, err);
+      console.log(`failed to load block ${blockName}`, error);
     }
     block.setAttribute('data-block-status', 'loaded');
   }
@@ -478,10 +478,10 @@ export function makeLinksRelative(main) {
         const url = new URL(a.href);
         const relative = hosts.some((host) => url.hostname.includes(host));
         if (relative) a.href = `${url.pathname}${url.search}${url.hash}`;
-      } catch (e) {
+      } catch (error) {
         // something went wrong
         // eslint-disable-next-line no-console
-        console.log(e);
+        console.log(error);
       }
     }
   });
@@ -605,9 +605,9 @@ export function initHlx() {
   if (scriptEl) {
     try {
       [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
-    } catch (e) {
+    } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(e);
+      console.log(error);
     }
   }
 }

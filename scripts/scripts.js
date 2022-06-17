@@ -273,7 +273,7 @@ export function decorateSections($main) {
       const keys = Object.keys(meta);
       keys.forEach((key) => {
         if (key === 'style') section.classList.add(toClassName(meta.style));
-        else section.dataset[key] = meta[key];
+        else section.dataset[toCamelCase(key)] = meta[key];
       });
       sectionMeta.remove();
     }

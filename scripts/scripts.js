@@ -223,6 +223,13 @@ export function readBlockConfig(block) {
           } else {
             value = as.map((a) => a.href);
           }
+        } else if (col.querySelector('img')) {
+          const imgs = [...col.querySelectorAll('img')];
+          if (imgs.length === 1) {
+            value = imgs[0].src;
+          } else {
+            value = imgs.map((img) => img.src);
+          }
         } else if (col.querySelector('p')) {
           const ps = [...col.querySelectorAll('p')];
           if (ps.length === 1) {

@@ -457,9 +457,9 @@ export function normalizeHeadings(el, allowedHeadings) {
  */
 function decorateTemplateAndTheme() {
   const template = getMetadata('template');
-  if (template) document.body.classList.add(template);
+  if (template) document.body.classList.add(toClassName(template));
   const theme = getMetadata('theme');
-  if (theme) document.body.classList.add(theme);
+  if (theme) document.body.classList.add(toClassName(theme));
 }
 
 /**

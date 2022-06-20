@@ -460,47 +460,6 @@ export function normalizeHeadings(el, allowedHeadings) {
 }
 
 /**
-<<<<<<< HEAD
- * Turns absolute links within the domain into relative links.
- * @param {Element} main The container element
- */
-export function makeLinksRelative(main) {
-  main.querySelectorAll('a').forEach((a) => {
-    // eslint-disable-next-line no-use-before-define
-    const hosts = ['hlx.page', 'hlx.live', ...PRODUCTION_DOMAINS];
-    if (a.href) {
-      try {
-        const url = new URL(a.href);
-        const relative = hosts.some((host) => url.hostname.includes(host));
-        if (relative) a.href = `${url.pathname}${url.search}${url.hash}`;
-      } catch (error) {
-        // something went wrong
-        // eslint-disable-next-line no-console
-        console.log(error);
-      }
-    }
-  });
-}
-
-/**
- * Decorates the picture elements and removes formatting.
- * @param {Element} main The container element
- */
-export function decoratePictures(main) {
-  main.querySelectorAll('img[src*="/media_"').forEach((img, i) => {
-    const newPicture = createOptimizedPicture(img.src, img.alt, !i);
-    const picture = img.closest('picture');
-    if (picture) picture.parentElement.replaceChild(newPicture, picture);
-    if (['EM', 'STRONG'].includes(newPicture.parentElement.tagName)) {
-      const styleEl = newPicture.parentElement;
-      styleEl.parentElement.replaceChild(newPicture, styleEl);
-    }
-  });
-}
-
-/**
-=======
->>>>>>> main
  * Set template (page structure) and theme (page styles).
  */
 function decorateTemplateAndTheme() {

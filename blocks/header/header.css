@@ -26,7 +26,6 @@ header nav[aria-expanded='true'] {
   min-height: 100vh;
 }
 
-
 /* brand */
 header .nav-brand {
   grid-area: brand;

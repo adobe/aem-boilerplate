@@ -1,4 +1,4 @@
-import { readBlockConfig, decorateIcons, makeLinksRelative } from '../../scripts/scripts.js';
+import { readBlockConfig, decorateIcons } from '../../scripts/scripts.js';
 
 /**
  * collapses all open nav sections
@@ -30,7 +30,6 @@ export default async function decorate(block) {
     const nav = document.createElement('nav');
     nav.innerHTML = html;
     decorateIcons(nav);
-    makeLinksRelative(nav);
 
     const classes = ['brand', 'sections', 'tools'];
     classes.forEach((e, j) => {

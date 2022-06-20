@@ -117,16 +117,6 @@ describe('Core Helix features', () => {
     expect($picture.querySelector(':scope img').src).to.include('format=png&optimize=medium'); // default
   });
 
-  it('Decorates pictures', async () => {
-    // add styling to picture and test its removal
-    document.querySelector('p > picture')
-      .parentElement
-      .appendChild(document.createElement('strong'))
-      .appendChild(document.querySelector('p > picture'));
-    scripts.decoratePictures(document.querySelector('main'));
-    // expect(document.querySelectorAll('strong > picture, em > picture').length).to.equal(0);
-  });
-
   it('Normalizes headings', async () => {
     const numHeadings = document.querySelectorAll('h1, h2, h3, h4, h5, h6').length;
     scripts.normalizeHeadings(document.querySelector('main'), ['h1', 'h2', 'h3']);

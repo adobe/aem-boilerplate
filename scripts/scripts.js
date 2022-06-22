@@ -65,6 +65,64 @@ export function sampleRUM(checkpoint, data = {}) {
   }
 }
 
+sampleRUM.blockobserver = (window.IntersectionObserver) ? new IntersectionObserver((entries) => {
+  entries
+    .filter((entry) => entry.isIntersecting)
+    .forEach((entry) => {
+      sampleRUM.blockobserver.unobserve(entry.target); // observe only once
+      const target = sampleRUM.targetselector(entry.target);
+      const source = sampleRUM.sourceselector(entry.target);
+      sampleRUM('viewblock', { target, source });
+    });
+}, { threshold: 0.25 }) : { observe: () => { } };
+
+sampleRUM.mediaobserver = (window.IntersectionObserver) ? new IntersectionObserver((entries) => {
+  entries
+    .filter((entry) => entry.isIntersecting)
+    .forEach((entry) => {
+      sampleRUM.mediaobserver.unobserve(entry.target); // observe only once
+      const target = sampleRUM.targetselector(entry.target);
+      const source = sampleRUM.sourceselector(entry.target);
+      sampleRUM('viewmedia', { target, source });
+    });
+}, { threshold: 0.25 }) : { observe: () => { } };
+
+
+sampleRUM.observe = ((elements) => {
+  elements.forEach((element) => {
+    if (element.tagName.toLowerCase() === 'img'
+      || element.tagName.toLowerCase() === 'video'
+      || element.tagName.toLowerCase() === 'audio'
+      || element.tagName.toLowerCase() === 'iframe') {
+      sampleRUM.mediaobserver.observe(element);
+    } else {
+      sampleRUM.blockobserver.observe(element);
+    }
+  });
+});
+
+sampleRUM.targetselector = (element) => {
+  let value = element.getAttribute('href') || element.currentSrc || element.getAttribute('src');
+  if (value && value.startsWith('https://')) {
+    // resolve relative links
+    value = new URL(value, window.location).href;
+  }
+  return value;
+};
+
+sampleRUM.sourceselector = (element) => {
+  if (element === document.body || element === document.documentElement || !element) {
+    return undefined;
+  }
+  if (element.id) {
+    return `#${element.id}`;
+  }
+  if (element.getAttribute('data-block-name')) {
+    return `.${element.getAttribute('data-block-name')}`;
+  }
+  return sampleRUM.sourceselector(element.parentElement);
+};
+
 /**
  * Loads a CSS file.
  * @param {string} href The path to the CSS file
@@ -581,8 +639,20 @@ const RUM_GENERATION = 'project-1'; // add your RUM generation information here
 const ICON_ROOT = '/icons';
 
 sampleRUM('top');
+
+window.addEventListener('unhandledrejection', event => {
+  sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line })
+});
+
+window.addEventListener('error', event => {
+  sampleRUM('error', { source: event.filename, target: event.lineno })
+});
+
 window.addEventListener('load', () => sampleRUM('load'));
-document.addEventListener('click', () => sampleRUM('click'));
+
+document.addEventListener('click', event => {
+      sampleRUM('click', { target: sampleRUM.targetselector(event.target), source: sampleRUM.sourceselector(event.target) })
+});
 
 loadPage(document);
 
@@ -635,6 +705,8 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
+  window.setTimeout(() => sampleRUM.observe(main.querySelectorAll('picture > img')), 1000);
 }
 
 /**

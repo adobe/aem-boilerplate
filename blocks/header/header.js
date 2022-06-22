@@ -1,4 +1,4 @@
-import { readBlockConfig, decorateIcons } from '../../scripts/scripts.js';
+import { readBlockConfig, decorateIcons } from '../../scripts/helix-web-library.esm.js';
 
 /**
  * collapses all open nav sections

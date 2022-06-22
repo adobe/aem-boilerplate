@@ -1,4 +1,4 @@
-import { createOptimizedPicture } from '../../scripts/scripts.js';
+import { createOptimizedPicture } from '../../scripts/helix-web-library.esm.js';
 
 export default function decorate(block) {
   /* change to ul, li */

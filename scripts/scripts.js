@@ -87,7 +87,6 @@ sampleRUM.mediaobserver = (window.IntersectionObserver) ? new IntersectionObserv
     });
 }, { threshold: 0.25 }) : { observe: () => { } };
 
-
 sampleRUM.observe = ((elements) => {
   elements.forEach((element) => {
     if (element.tagName.toLowerCase() === 'img'
@@ -640,17 +639,17 @@ const ICON_ROOT = '/icons';
 
 sampleRUM('top');
 
-window.addEventListener('unhandledrejection', event => {
-  sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line })
+window.addEventListener('unhandledrejection', (event) => {
+      sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line })
 });
 
-window.addEventListener('error', event => {
-  sampleRUM('error', { source: event.filename, target: event.lineno })
+window.addEventListener('error', (event) => {
+      sampleRUM('error', { source: event.filename, target: event.lineno })
 });
 
 window.addEventListener('load', () => sampleRUM('load'));
 
-document.addEventListener('click', event => {
+document.addEventListener('click', (event) => {
       sampleRUM('click', { target: sampleRUM.targetselector(event.target), source: sampleRUM.sourceselector(event.target) })
 });
 

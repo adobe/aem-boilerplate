@@ -640,17 +640,17 @@ const ICON_ROOT = '/icons';
 sampleRUM('top');
 
 window.addEventListener('unhandledrejection', (event) => {
-      sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line })
+      sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
 });
 
 window.addEventListener('error', (event) => {
-      sampleRUM('error', { source: event.filename, target: event.lineno })
+      sampleRUM('error', { source: event.filename, target: event.lineno });
 });
 
 window.addEventListener('load', () => sampleRUM('load'));
 
 document.addEventListener('click', (event) => {
-      sampleRUM('click', { target: sampleRUM.targetselector(event.target), source: sampleRUM.sourceselector(event.target) })
+      sampleRUM('click', { target: sampleRUM.targetselector(event.target), source: sampleRUM.sourceselector(event.target) });
 });
 
 loadPage(document);

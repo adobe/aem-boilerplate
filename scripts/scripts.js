@@ -65,7 +65,8 @@ export function sampleRUM(checkpoint, data = {}) {
           return true;
         }
       };
-      cases[checkpoint] && cases[checkpoint]() || sendPing(data);
+      sendPing(data);
+      cases[checkpoint] && cases[checkpoint]();
     }
   } catch (error) {
     // something went wrong

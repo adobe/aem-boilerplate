@@ -56,7 +56,7 @@ export function sampleRUM(checkpoint, data = {}) {
       };
       sampleRUM.cases = sampleRUM.cases || {
         cwv: () => sampleRUM.cwv(sendPing) || true,
-        load: () => {
+        lazy: () => {
           // use classic script to avoid CORS issues
           const script = document.createElement('script');
           script.src = 'http://localhost:3001/scripts/advancedrum.js';
@@ -682,6 +682,7 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
+  sampleRUM('lazy');
 }
 
 /**

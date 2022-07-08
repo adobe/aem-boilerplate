@@ -18,11 +18,10 @@
 
 export function sampleRUM(checkpoint, data = {}) {
   sampleRUM.defer = sampleRUM.defer || [];
-  const defer = (fnname) =>
-    sampleRUM[fnname] = sampleRUM[fnname]
+  const defer = (fnname) => sampleRUM[fnname] = sampleRUM[fnname]
     || ((...args) => sampleRUM.defer.push({ fnname, args }));
-  sampleRUM.drain = sampleRUM.drain ||
-    ((fnname, fn) => {
+  sampleRUM.drain = sampleRUM.drain
+    || ((fnname, fn) => {
       sampleRUM[fnname] = fn;
       sampleRUM.defer
         .filter(({ fnname: dfnname }) => dfnname === fnname)
@@ -52,7 +51,7 @@ export function sampleRUM(checkpoint, data = {}) {
         const url = `https://rum.hlx.page/.rum/${weight}`;
         // eslint-disable-next-line no-unused-expressions
         navigator.sendBeacon(url, body);
-        console.debug('ping:' + checkpoint, data);
+        console.debug(`ping:${checkpoint}`, data);
       };
       sampleRUM.cases = sampleRUM.cases || {
         cwv: () => sampleRUM.cwv(data) || true,
@@ -63,7 +62,7 @@ export function sampleRUM(checkpoint, data = {}) {
           document.head.appendChild(script);
           sendPing(data);
           return true;
-        }
+        },
       };
       sendPing(data);
       sampleRUM.cases[checkpoint] && sampleRUM.cases[checkpoint]();

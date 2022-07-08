@@ -55,18 +55,18 @@ export function sampleRUM(checkpoint, data = {}) {
         console.debug('ping:' + checkpoint, data);
       };
       sampleRUM.cases = sampleRUM.cases || {
-        cwv: () => sampleRUM.cwv(sendPing) || true,
+        cwv: () => sampleRUM.cwv(data) || true,
         lazy: () => {
           // use classic script to avoid CORS issues
           const script = document.createElement('script');
-          script.src = 'http://localhost:3001/scripts/advancedrum.js';
+          script.src = 'https://rum.hlx.page/.rum/@adobe/helix-rum-enhancer@^1/src/index.js';
           document.head.appendChild(script);
           sendPing(data);
           return true;
         }
       };
       sendPing(data);
-      cases[checkpoint] && cases[checkpoint]();
+      sampleRUM.cases[checkpoint] && sampleRUM.cases[checkpoint]();
     }
   } catch (error) {
     // something went wrong

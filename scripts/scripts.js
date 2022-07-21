@@ -17,6 +17,21 @@
  */
 
 export function sampleRUM(checkpoint, data = {}) {
+  sampleRUM.defer = sampleRUM.defer || [];
+  const defer = (fnname) => {
+    sampleRUM[fnname] = sampleRUM[fnname]
+      || ((...args) => sampleRUM.defer.push({ fnname, args }));
+  };
+  sampleRUM.drain = sampleRUM.drain
+    || ((dfnname, fn) => {
+      sampleRUM[dfnname] = fn;
+      sampleRUM.defer
+        .filter(({ fnname }) => dfnname === fnname)
+        .forEach(({ fnname, args }) => sampleRUM[fnname](...args));
+    });
+  sampleRUM.on = (chkpnt, fn) => { sampleRUM.cases[chkpnt] = fn; };
+  defer('observe');
+  defer('cwv');
   try {
     window.hlx = window.hlx || {};
     if (!window.hlx.rum) {
@@ -28,37 +43,32 @@ export function sampleRUM(checkpoint, data = {}) {
       const random = Math.random();
       const isSelected = (random * weight < 1);
       // eslint-disable-next-line object-curly-newline
-      window.hlx.rum = { weight, id, random, isSelected };
+      window.hlx.rum = { weight, id, random, isSelected, sampleRUM };
     }
-    const { random, weight, id } = window.hlx.rum;
-    if (random && (random * weight < 1)) {
-      const sendPing = () => {
+    const { weight, id } = window.hlx.rum;
+    if (window.hlx && window.hlx.rum && window.hlx.rum.isSelected) {
+      const sendPing = (pdata = data) => {
         // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
         const body = JSON.stringify({ weight, id, referer: window.location.href, generation: RUM_GENERATION, checkpoint, ...data });
         const url = `https://rum.hlx.page/.rum/${weight}`;
         // eslint-disable-next-line no-unused-expressions
         navigator.sendBeacon(url, body);
+        // eslint-disable-next-line no-console
+        console.debug(`ping:${checkpoint}`, pdata);
       };
-      sendPing();
-      // special case CWV
-      if (checkpoint === 'cwv') {
-        // use classic script to avoid CORS issues
-        const script = document.createElement('script');
-        script.src = 'https://rum.hlx.page/.rum/web-vitals/dist/web-vitals.iife.js';
-        script.onload = () => {
-          const storeCWV = (measurement) => {
-            data.cwv = {};
-            data.cwv[measurement.name] = measurement.value;
-            sendPing();
-          };
-            // When loading `web-vitals` using a classic script, all the public
-            // methods can be found on the `webVitals` global namespace.
-          window.webVitals.getCLS(storeCWV);
-          window.webVitals.getFID(storeCWV);
-          window.webVitals.getLCP(storeCWV);
-        };
-        document.head.appendChild(script);
-      }
+      sampleRUM.cases = sampleRUM.cases || {
+        cwv: () => sampleRUM.cwv(data) || true,
+        lazy: () => {
+          // use classic script to avoid CORS issues
+          const script = document.createElement('script');
+          script.src = 'https://rum.hlx.page/.rum/@adobe/helix-rum-enhancer@^1/src/index.js';
+          document.head.appendChild(script);
+          sendPing(data);
+          return true;
+        },
+      };
+      sendPing(data);
+      if (sampleRUM.cases[checkpoint]) { sampleRUM.cases[checkpoint](); }
     }
   } catch (error) {
     // something went wrong
@@ -486,12 +496,12 @@ export function decorateButtons(element) {
           up.classList.add('button-container');
         }
         if (up.childNodes.length === 1 && up.tagName === 'STRONG'
-            && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
+          && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
           a.className = 'button primary';
           twoup.classList.add('button-container');
         }
         if (up.childNodes.length === 1 && up.tagName === 'EM'
-            && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
+          && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
           a.className = 'button secondary';
           twoup.classList.add('button-container');
         }
@@ -581,8 +591,16 @@ const RUM_GENERATION = 'project-1'; // add your RUM generation information here
 const ICON_ROOT = '/icons';
 
 sampleRUM('top');
+
 window.addEventListener('load', () => sampleRUM('load'));
-document.addEventListener('click', () => sampleRUM('click'));
+
+window.addEventListener('unhandledrejection', (event) => {
+  sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
+});
+
+window.addEventListener('error', (event) => {
+  sampleRUM('error', { source: event.filename, target: event.lineno });
+});
 
 loadPage(document);
 
@@ -635,6 +653,8 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
+  window.setTimeout(() => sampleRUM.observe(main.querySelectorAll('picture > img')), 1000);
 }
 
 /**
@@ -665,6 +685,7 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
+  sampleRUM('lazy');
 }
 
 /**

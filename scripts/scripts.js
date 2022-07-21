@@ -17,6 +17,21 @@
  */
 
 export function sampleRUM(checkpoint, data = {}) {
+  sampleRUM.defer = sampleRUM.defer || [];
+  const defer = (fnname) => {
+    sampleRUM[fnname] = sampleRUM[fnname]
+      || ((...args) => sampleRUM.defer.push({ fnname, args }));
+  };
+  sampleRUM.drain = sampleRUM.drain
+    || ((dfnname, fn) => {
+      sampleRUM[dfnname] = fn;
+      sampleRUM.defer
+        .filter(({ fnname }) => dfnname === fnname)
+        .forEach(({ fnname, args }) => sampleRUM[fnname](...args));
+    });
+  sampleRUM.on = (chkpnt, fn) => { sampleRUM.cases[chkpnt] = fn; };
+  defer('observe');
+  defer('cwv');
   try {
     window.hlx = window.hlx || {};
     if (!window.hlx.rum) {
@@ -28,99 +43,37 @@ export function sampleRUM(checkpoint, data = {}) {
       const random = Math.random();
       const isSelected = (random * weight < 1);
       // eslint-disable-next-line object-curly-newline
-      window.hlx.rum = { weight, id, random, isSelected };
+      window.hlx.rum = { weight, id, random, isSelected, sampleRUM };
     }
-    const { random, weight, id } = window.hlx.rum;
-    if (random && (random * weight < 1)) {
-      const sendPing = () => {
+    const { weight, id } = window.hlx.rum;
+    if (window.hlx && window.hlx.rum && window.hlx.rum.isSelected) {
+      const sendPing = (pdata = data) => {
         // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
         const body = JSON.stringify({ weight, id, referer: window.location.href, generation: RUM_GENERATION, checkpoint, ...data });
         const url = `https://rum.hlx.page/.rum/${weight}`;
         // eslint-disable-next-line no-unused-expressions
         navigator.sendBeacon(url, body);
+        // eslint-disable-next-line no-console
+        console.debug(`ping:${checkpoint}`, pdata);
       };
-      sendPing();
-      // special case CWV
-      if (checkpoint === 'cwv') {
-        // use classic script to avoid CORS issues
-        const script = document.createElement('script');
-        script.src = 'https://rum.hlx.page/.rum/web-vitals/dist/web-vitals.iife.js';
-        script.onload = () => {
-          const storeCWV = (measurement) => {
-            data.cwv = {};
-            data.cwv[measurement.name] = measurement.value;
-            sendPing();
-          };
-            // When loading `web-vitals` using a classic script, all the public
-            // methods can be found on the `webVitals` global namespace.
-          window.webVitals.getCLS(storeCWV);
-          window.webVitals.getFID(storeCWV);
-          window.webVitals.getLCP(storeCWV);
-        };
-        document.head.appendChild(script);
-      }
+      sampleRUM.cases = sampleRUM.cases || {
+        cwv: () => sampleRUM.cwv(data) || true,
+        lazy: () => {
+          // use classic script to avoid CORS issues
+          const script = document.createElement('script');
+          script.src = 'https://rum.hlx.page/.rum/@adobe/helix-rum-enhancer@^1/src/index.js';
+          document.head.appendChild(script);
+          sendPing(data);
+          return true;
+        },
+      };
+      sendPing(data);
+      if (sampleRUM.cases[checkpoint]) { sampleRUM.cases[checkpoint](); }
     }
   } catch (error) {
     // something went wrong
   }
 }
-
-sampleRUM.blockobserver = (window.IntersectionObserver) ? new IntersectionObserver((entries) => {
-  entries
-    .filter((entry) => entry.isIntersecting)
-    .forEach((entry) => {
-      sampleRUM.blockobserver.unobserve(entry.target); // observe only once
-      const target = sampleRUM.targetselector(entry.target);
-      const source = sampleRUM.sourceselector(entry.target);
-      sampleRUM('viewblock', { target, source });
-    });
-}, { threshold: 0.25 }) : { observe: () => { } };
-
-sampleRUM.mediaobserver = (window.IntersectionObserver) ? new IntersectionObserver((entries) => {
-  entries
-    .filter((entry) => entry.isIntersecting)
-    .forEach((entry) => {
-      sampleRUM.mediaobserver.unobserve(entry.target); // observe only once
-      const target = sampleRUM.targetselector(entry.target);
-      const source = sampleRUM.sourceselector(entry.target);
-      sampleRUM('viewmedia', { target, source });
-    });
-}, { threshold: 0.25 }) : { observe: () => { } };
-
-sampleRUM.observe = ((elements) => {
-  elements.forEach((element) => {
-    if (element.tagName.toLowerCase() === 'img'
-      || element.tagName.toLowerCase() === 'video'
-      || element.tagName.toLowerCase() === 'audio'
-      || element.tagName.toLowerCase() === 'iframe') {
-      sampleRUM.mediaobserver.observe(element);
-    } else {
-      sampleRUM.blockobserver.observe(element);
-    }
-  });
-});
-
-sampleRUM.targetselector = (element) => {
-  let value = element.getAttribute('href') || element.currentSrc || element.getAttribute('src');
-  if (value && value.startsWith('https://')) {
-    // resolve relative links
-    value = new URL(value, window.location).href;
-  }
-  return value;
-};
-
-sampleRUM.sourceselector = (element) => {
-  if (element === document.body || element === document.documentElement || !element) {
-    return undefined;
-  }
-  if (element.id) {
-    return `#${element.id}`;
-  }
-  if (element.getAttribute('data-block-name')) {
-    return `.${element.getAttribute('data-block-name')}`;
-  }
-  return sampleRUM.sourceselector(element.parentElement);
-};
 
 /**
  * Loads a CSS file.
@@ -543,12 +496,12 @@ export function decorateButtons(element) {
           up.classList.add('button-container');
         }
         if (up.childNodes.length === 1 && up.tagName === 'STRONG'
-            && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
+          && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
           a.className = 'button primary';
           twoup.classList.add('button-container');
         }
         if (up.childNodes.length === 1 && up.tagName === 'EM'
-            && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
+          && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
           a.className = 'button secondary';
           twoup.classList.add('button-container');
         }
@@ -639,18 +592,14 @@ const ICON_ROOT = '/icons';
 
 sampleRUM('top');
 
+window.addEventListener('load', () => sampleRUM('load'));
+
 window.addEventListener('unhandledrejection', (event) => {
   sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
 });
 
 window.addEventListener('error', (event) => {
   sampleRUM('error', { source: event.filename, target: event.lineno });
-});
-
-window.addEventListener('load', () => sampleRUM('load'));
-
-document.addEventListener('click', (event) => {
-  sampleRUM('click', { target: sampleRUM.targetselector(event.target), source: sampleRUM.sourceselector(event.target) });
 });
 
 loadPage(document);
@@ -736,6 +685,7 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
+  sampleRUM('lazy');
 }
 
 /**

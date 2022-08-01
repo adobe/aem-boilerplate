@@ -21,10 +21,10 @@
   },
   "homepage": "https://github.com/adobe/helix-project-boilerplate#readme",
   "devDependencies": {
-    "@babel/core": "7.18.6",
-    "@babel/eslint-parser": "7.18.2",
+    "@babel/core": "7.18.10",
+    "@babel/eslint-parser": "7.18.9",
     "chai": "4.3.6",
-    "eslint": "8.19.0",
+    "eslint": "8.21.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.26.0",
     "@esm-bundle/chai": "4.3.4-fix.0",

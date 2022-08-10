@@ -18,7 +18,6 @@ const compileAndSave = async (sassFile) => {
 const processFiles = async (parent) => {
     let files = await readdir(parent, { withFileTypes: true});
     for (const file of files) {
-        console.log(`${file.name} with extension ${path.extname(file.name)}`);
         if (file.isDirectory()) {
             await processFiles(path.join(parent, file.name));
         }

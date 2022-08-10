@@ -1,0 +1,27 @@
+.columns {
+    > div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    @media (min-width: 900px) {
+         > div {
+            display: flex;
+            align-items: center;
+            flex-direction: unset;
+
+            > div {
+                flex: 1;
+                margin-left: 32px;
+
+                &:first-of-type {
+                    margin-left: unset;
+                }
+            }
+        } 
+    }
+}

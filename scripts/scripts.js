@@ -285,7 +285,7 @@ export function decorateSections($main) {
         if (key === 'style') section.classList.add(toClassName(meta.style));
         else section.dataset[toCamelCase(key)] = meta[key];
       });
-      sectionMeta.remove();
+      sectionMeta.parentNode.remove();
     }
   });
 }

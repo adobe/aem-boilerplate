@@ -282,8 +282,10 @@ export function decorateSections($main) {
       const meta = readBlockConfig(sectionMeta);
       const keys = Object.keys(meta);
       keys.forEach((key) => {
-        if (key === 'style') section.classList.add(toClassName(meta.style));
-        else section.dataset[toCamelCase(key)] = meta[key];
+        if (key === 'style') {
+          const styles = meta.style.split(',').map((style) => toClassName(style.trim()));
+          styles.forEach((style) => section.classList.add(style));
+        } else section.dataset[toCamelCase(key)] = meta[key];
       });
       sectionMeta.remove();
     }
@@ -473,10 +475,15 @@ export function normalizeHeadings(el, allowedHeadings) {
  * Set template (page structure) and theme (page styles).
  */
 function decorateTemplateAndTheme() {
+  const addClasses = (elem, csv) => {
+    csv.split(',').forEach((v) => {
+      elem.add(toClassName(v.trim()));
+    });
+  };
   const template = getMetadata('template');
-  if (template) document.body.classList.add(toClassName(template));
+  if (template) addClasses(document.body, template);
   const theme = getMetadata('theme');
-  if (theme) document.body.classList.add(toClassName(theme));
+  if (theme) addClasses(document.body, theme);
 }
 
 /**

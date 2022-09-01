@@ -477,7 +477,7 @@ export function normalizeHeadings(el, allowedHeadings) {
 function decorateTemplateAndTheme() {
   const addClasses = (elem, csv) => {
     csv.split(',').forEach((v) => {
-      elem.add(toClassName(v.trim()));
+      elem.classList.add(toClassName(v.trim()));
     });
   };
   const template = getMetadata('template');

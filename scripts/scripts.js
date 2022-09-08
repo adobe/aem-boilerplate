@@ -475,8 +475,8 @@ export function normalizeHeadings(el, allowedHeadings) {
  * Set template (page structure) and theme (page styles).
  */
 function decorateTemplateAndTheme() {
-  const addClasses = (elem, csv) => {
-    csv.split(',').forEach((v) => {
+  const addClasses = (elem, classes) => {
+    classes.split(',').forEach((v) => {
       elem.classList.add(toClassName(v.trim()));
     });
   };

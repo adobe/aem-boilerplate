@@ -572,17 +572,3 @@ export function initHlx() {
 }
 
 initHlx();
-
-/*
- * lighthouse performance instrumentation helper
- * (needs a refactor)
- */
-
-function stamp(message) {
-  if (window.name.includes('performance')) {
-    // eslint-disable-next-line no-console
-    console.log(`${new Date() - performance.timing.navigationStart}:${message}`);
-  }
-}
-
-stamp('start');

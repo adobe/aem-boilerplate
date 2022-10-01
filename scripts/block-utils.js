@@ -523,7 +523,7 @@ export function decorateButtons(element) {
 export async function waitForLCP(lcpBlocks) {
   const block = document.querySelector('.block');
   const hasLCPBlock = (block && lcpBlocks.includes(block.getAttribute('data-block-name')));
-  if (hasLCPBlock) await loadBlock(block, true);
+  if (hasLCPBlock) await loadBlock(block);
 
   document.querySelector('body').classList.add('appear');
   const lcpCandidate = document.querySelector('main img');

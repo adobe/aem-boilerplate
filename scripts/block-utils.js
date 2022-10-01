@@ -358,7 +358,7 @@ export function buildBlock(blockName, content) {
  * Loads JS and CSS for a block.
  * @param {Element} block The block element
  */
-export async function loadBlock(block, eager = false) {
+export async function loadBlock(block) {
   if (!(block.getAttribute('data-block-status') === 'loading' || block.getAttribute('data-block-status') === 'loaded')) {
     block.setAttribute('data-block-status', 'loading');
     const blockName = block.getAttribute('data-block-name');
@@ -371,7 +371,7 @@ export async function loadBlock(block, eager = false) {
           try {
             const mod = await import(`../blocks/${blockName}/${blockName}.js`);
             if (mod.default) {
-              await mod.default(block, blockName, document, eager);
+              await mod.default(block);
             }
           } catch (error) {
             // eslint-disable-next-line no-console
@@ -518,23 +518,6 @@ export function decorateButtons(element) {
 }
 
 /**
- * Adds the favicon.
- * @param {string} href The favicon URL
- */
-export function addFavIcon(href) {
-  const link = document.createElement('link');
-  link.rel = 'icon';
-  link.type = 'image/svg+xml';
-  link.href = href;
-  const existingLink = document.querySelector('head link[rel="icon"]');
-  if (existingLink) {
-    existingLink.parentElement.replaceChild(link, existingLink);
-  } else {
-    document.getElementsByTagName('head')[0].appendChild(link);
-  }
-}
-
-/**
  * load LCP block and/or wait for LCP in default content.
  */
 export async function waitForLCP(lcpBlocks) {
@@ -555,9 +538,34 @@ export async function waitForLCP(lcpBlocks) {
   });
 }
 
-export function initHlx() {
+/**
+ * loads a block named header into body > header
+ */
+
+export function loadHeader(header) {
+  const headerBlock = buildBlock('header', '');
+  header.append(headerBlock);
+  decorateBlock(headerBlock);
+  loadBlock(headerBlock);
+}
+
+/**
+ * loads a block named footer into body > header
+ */
+
+export function loadFooter(footer) {
+  const footerBlock = buildBlock('footer', '');
+  footer.append(footerBlock);
+  decorateBlock(footerBlock);
+  loadBlock(footerBlock);
+}
+
+/**
+ * init block utils
+ */
+
+function init() {
   window.hlx = window.hlx || {};
-  window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
   window.hlx.codeBasePath = '';
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
@@ -569,6 +577,18 @@ export function initHlx() {
       console.log(error);
     }
   }
+
+  sampleRUM('top');
+
+  window.addEventListener('load', () => sampleRUM('load'));
+
+  window.addEventListener('unhandledrejection', (event) => {
+    sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
+  });
+
+  window.addEventListener('error', (event) => {
+    sampleRUM('error', { source: event.filename, target: event.lineno });
+  });
 }
 
-initHlx();
+init();

@@ -1,4 +1,4 @@
-import { readBlockConfig, decorateIcons } from '../../scripts/lib-helix.js';
+import { readBlockConfig, decorateIcons } from '../../scripts/block-utils.js';
 
 /**
  * loads and decorates the footer

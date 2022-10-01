@@ -1,8 +1,8 @@
 import {
   sampleRUM,
   buildBlock,
-  decorateBlock,
-  loadBlock,
+  loadHeader,
+  loadFooter,
   decorateButtons,
   decorateIcons,
   decorateSections,
@@ -11,31 +11,10 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
-  addFavIcon,
-} from './lib-helix.js';
+} from './block-utils.js';
 
-/*
- * ------------------------------------------------------------
- * Edit above at your own risk
- * ------------------------------------------------------------
- */
-
-window.hlx = window.hlx || {};
-
-const LCP_BLOCKS = ['hero']; // add your LCP blocks to the list
+const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
-
-sampleRUM('top');
-
-window.addEventListener('load', () => sampleRUM('load'));
-
-window.addEventListener('unhandledrejection', (event) => {
-  sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
-});
-
-window.addEventListener('error', (event) => {
-  sampleRUM('error', { source: event.filename, target: event.lineno });
-});
 
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');
@@ -46,20 +25,6 @@ function buildHeroBlock(main) {
     section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
   }
-}
-
-function loadHeader(header) {
-  const headerBlock = buildBlock('header', '');
-  header.append(headerBlock);
-  decorateBlock(headerBlock);
-  loadBlock(headerBlock);
-}
-
-function loadFooter(footer) {
-  const footerBlock = buildBlock('footer', '');
-  footer.append(footerBlock);
-  decorateBlock(footerBlock);
-  loadBlock(footerBlock);
 }
 
 /**
@@ -98,6 +63,23 @@ async function loadEager(doc) {
   if (main) {
     decorateMain(main);
     await waitForLCP(LCP_BLOCKS);
+  }
+}
+
+/**
+ * Adds the favicon.
+ * @param {string} href The favicon URL
+ */
+function addFavIcon(href) {
+  const link = document.createElement('link');
+  link.rel = 'icon';
+  link.type = 'image/svg+xml';
+  link.href = href;
+  const existingLink = document.querySelector('head link[rel="icon"]');
+  if (existingLink) {
+    existingLink.parentElement.replaceChild(link, existingLink);
+  } else {
+    document.getElementsByTagName('head')[0].appendChild(link);
   }
 }
 

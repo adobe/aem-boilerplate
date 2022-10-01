@@ -6,7 +6,7 @@ import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: '../../scripts/dummy.html' });
 
-const { buildBlock, decorateBlock, loadBlock } = await import('../../../scripts/scripts.js');
+const { buildBlock, decorateBlock, loadBlock } = await import('../../../scripts/block-utils.js');
 
 document.body.innerHTML = await readFile({ path: '../../scripts/body.html' });
 

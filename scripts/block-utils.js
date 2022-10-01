@@ -539,7 +539,7 @@ export async function waitForLCP(lcpBlocks) {
 }
 
 /**
- * loads a block named header into body > header
+ * loads a block named 'header' into header
  */
 
 export function loadHeader(header) {
@@ -550,7 +550,7 @@ export function loadHeader(header) {
 }
 
 /**
- * loads a block named footer into body > header
+ * loads a block named 'footer' into footer
  */
 
 export function loadFooter(footer) {

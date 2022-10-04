@@ -289,7 +289,7 @@ export function decorateSections($main) {
           section.dataset[toCamelCase(key)] = meta[key];
         }
       });
-      sectionMeta.remove();
+      sectionMeta.parentNode.remove();
     }
   });
 }

@@ -664,10 +664,6 @@ export function decorateMain(main) {
   decorateBlocks(main);
 }
 
-function delay(time) {
-  return new Promise(resolve => setTimeout(resolve, time));
-}
-
 /**
  * loads everything needed to get to LCP.
  */
@@ -676,7 +672,6 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
-    await delay(3000);
     await waitForLCP();
   }
 }

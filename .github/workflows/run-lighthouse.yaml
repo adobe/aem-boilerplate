@@ -5,15 +5,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set CURRENT_BRANCH
-        run: echo "CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v6
       - name: Branch name
-        run: echo running on branch ${{ env.CURRENT_BRANCH}}
+        run: echo running on branch ${{ steps.branch-name.outputs.current_branch }}
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v9
         with:
           urls: |
-            https://${{ env.CURRENT_BRANCH}}--helix-project-boilerplate--dylandepass.hlx.live/
+            https://${{ steps.branch-name.outputs.current_branch }}--helix-project-boilerplate--dylandepass.hlx.live/
           runs: 5
           uploadArtifacts: true # save results as an action artifacts
           temporaryPublicStorage: true # upload lighthouse report to the temporary storage

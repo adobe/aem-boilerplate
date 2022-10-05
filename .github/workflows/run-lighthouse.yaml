@@ -1,0 +1,21 @@
+name: Lighthouse CI
+on: push
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Branch name
+        run: echo running on branch ${GITHUB_REF##*/}
+      - name: Testing branch
+        run: echo ${{format('https://{0}--helix-project-boilerplate--dylandepass.hlx.live/', ${GITHUB_REF##*/})}}
+      - name: Audit URLs using Lighthouse
+        uses: treosh/lighthouse-ci-action@v9
+        env:
+          BRANCH: ${GITHUB_REF##*/}
+        with:
+          urls: |
+            https://$BRANCH--helix-project-boilerplate--dylandepass.hlx.live/
+          runs: 5
+          uploadArtifacts: true # save results as an action artifacts
+          temporaryPublicStorage: true # upload lighthouse report to the temporary storage

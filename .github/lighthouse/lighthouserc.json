@@ -14,7 +14,8 @@
         "splash-screen": "off",
         "themed-omnibox": "off",
         "unminified-javascript": "off",
-        "maskable-icon": "off"
+        "maskable-icon": "off",
+        "apple-touch-icon": "off"
       }
     }
   }

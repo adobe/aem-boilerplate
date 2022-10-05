@@ -21,17 +21,17 @@
   },
   "homepage": "https://github.com/adobe/helix-project-boilerplate#readme",
   "devDependencies": {
-    "@babel/core": "7.18.10",
-    "@babel/eslint-parser": "7.18.9",
+    "@babel/core": "7.19.3",
+    "@babel/eslint-parser": "7.19.1",
     "chai": "4.3.6",
-    "eslint": "8.22.0",
+    "eslint": "8.24.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.26.0",
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@web/test-runner": "0.14.0",
-    "@web/test-runner-commands": "0.6.4",
-    "sinon": "14.0.0",
-    "stylelint": "14.10.0",
+    "@web/test-runner-commands": "0.6.5",
+    "sinon": "14.0.1",
+    "stylelint": "14.13.0",
     "stylelint-config-prettier": "9.0.3",
     "stylelint-config-standard": "25.0.0"
   }

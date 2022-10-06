@@ -1,0 +1,25 @@
+name: Page Speed Insights Check (Main CI)
+on:
+  push:
+    branches:
+      - main
+jobs:
+  PSI:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["./.github/lighthouse/lighthouserc.json"]'
+        env:
+          PSI_API_KEY: ${{ secrets.PSI_API_KEY }}
+      - name: Audit URLs using PSI
+        uses: treosh/lighthouse-ci-action@v9
+        with:
+          urls: |
+            https://main--helix-project-boilerplate--dylandepass.hlx.live/
+          runs: 10
+          configPath: ./.github/lighthouse/lighthouserc.json
+          uploadArtifacts: true # save results as an action artifacts
+          serverBaseUrl: ${{ secrets.LHCI_SERVER_BASE_URL }}
+          serverToken: ${{ secrets.LHCI_SERVER_TOKEN }}

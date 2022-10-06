@@ -18,7 +18,7 @@ jobs:
         with:
           urls: |
             https://${{ steps.branch-name.outputs.current_branch }}--helix-project-boilerplate--dylandepass.hlx.live/
-          runs: 5
+          runs: 10
           configPath: ./.github/lighthouse/lighthouserc.json
           uploadArtifacts: true # save results as an action artifacts
           serverBaseUrl: ${{ secrets.LHCI_SERVER_BASE_URL }}

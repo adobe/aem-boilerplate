@@ -8,8 +8,11 @@ jobs:
       - name: Get branch name
         id: branch-name
         uses: tj-actions/branch-names@v6
-      - name: Branch name
-        run: echo running on branch ${{ steps.branch-name.outputs.current_branch }}
+      - uses: cschleiden/replace-tokens@v1
+        with:
+          files: '["./.github/lighthouse/lighthouserc.json"]'
+        env:
+          PSI_API_KEY: ${{ secrets.PSI_API_KEY }}
       - name: Audit URLs using Lighthouse
         uses: treosh/lighthouse-ci-action@v9
         with:

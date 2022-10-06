@@ -1,7 +1,8 @@
 {
   "ci": {
     "collect": {
-      "method": "psi"
+      "method": "psi",
+      "psiApiKey": "#{PSI_API_KEY}#"
     },
     "assert": {
       "preset": "lighthouse:recommended",

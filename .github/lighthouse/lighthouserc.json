@@ -1,5 +1,8 @@
 {
   "ci": {
+    "collect": {
+      "method": "psi"
+    },
     "assert": {
       "preset": "lighthouse:recommended",
       "assertions": {

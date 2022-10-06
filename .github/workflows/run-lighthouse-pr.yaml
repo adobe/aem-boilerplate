@@ -1,7 +1,7 @@
-name: Lighthouse CI
+name: Page Speed Insights Check (PR CI)
 on: [pull_request]
 jobs:
-  lighthouse:
+  PSI:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -13,7 +13,7 @@ jobs:
           files: '["./.github/lighthouse/lighthouserc.json"]'
         env:
           PSI_API_KEY: ${{ secrets.PSI_API_KEY }}
-      - name: Audit URLs using Lighthouse
+      - name: Audit URLs using PSI
         uses: treosh/lighthouse-ci-action@v9
         with:
           urls: |

@@ -283,7 +283,9 @@ export function decorateSections(main) {
         if (key === 'style') {
           const styles = meta.style.split(',').map((style) => toClassName(style.trim()));
           styles.forEach((style) => section.classList.add(style));
-        } else section.dataset[toCamelCase(key)] = meta[key];
+        } else {
+          section.dataset[toCamelCase(key)] = meta[key];
+        }
       });
       sectionMeta.remove();
     }

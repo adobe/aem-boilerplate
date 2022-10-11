@@ -111,7 +111,7 @@ export function getMetadata(name) {
 export function addPublishDependencies(url) {
   const urls = Array.isArray(url) ? url : [url];
   window.hlx = window.hlx || {};
-  if (window.hlx.dependencies && Array.isArray(window.hlx.dependencies)) {
+  if (Array.isArray(window.hlx.dependencies)) {
     window.hlx.dependencies = window.hlx.dependencies.concat(urls);
   } else {
     window.hlx.dependencies = urls;

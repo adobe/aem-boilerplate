@@ -105,20 +105,6 @@ export function getMetadata(name) {
 }
 
 /**
- * Adds one or more URLs to the dependencies for publishing.
- * @param {string|[string]} url The URL(s) to add as dependencies
- */
-export function addPublishDependencies(url) {
-  const urls = Array.isArray(url) ? url : [url];
-  window.hlx = window.hlx || {};
-  if (Array.isArray(window.hlx.dependencies)) {
-    window.hlx.dependencies = window.hlx.dependencies.concat(urls);
-  } else {
-    window.hlx.dependencies = urls;
-  }
-}
-
-/**
  * Sanitizes a name for use as class name.
  * @param {string} name The unsanitized name
  * @returns {string} The class name
@@ -287,7 +273,7 @@ export function decorateSections(main) {
           section.dataset[toCamelCase(key)] = meta[key];
         }
       });
-      sectionMeta.remove();
+      sectionMeta.parentNode.remove();
     }
   });
 }

@@ -191,7 +191,7 @@ export async function fetchPlaceholders(prefix = 'default') {
     });
   }
   await window.placeholders[`${prefix}-loaded`];
-  return (window.placeholders[prefix]);
+  return window.placeholders[prefix];
 }
 
 /**

@@ -15,7 +15,6 @@
  * @param {string} checkpoint identifies the checkpoint in funnel
  * @param {Object} data additional data for RUM sample
  */
-
 export function sampleRUM(checkpoint, data = {}) {
   sampleRUM.defer = sampleRUM.defer || [];
   const defer = (fnname) => {

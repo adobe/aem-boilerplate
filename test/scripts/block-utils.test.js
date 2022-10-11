@@ -69,16 +69,6 @@ describe('Utils methods', () => {
     sendBeacon.restore();
   });
 
-  it('Adds publish dependencies', async () => {
-    // adds single dependency
-    blockUtils.addPublishDependencies('/foo');
-    expect(window.hlx.dependencies).to.include('/foo');
-
-    // adds multiple dependencies
-    blockUtils.addPublishDependencies(['/bar', '/baz']);
-    expect(window.hlx.dependencies).to.deep.equal(['/foo', '/bar', '/baz']);
-  });
-
   it('Creates optimized picture', async () => {
     const $picture = blockUtils.createOptimizedPicture('/test/scripts/mock.png');
     expect($picture.querySelector(':scope source[type="image/webp"]')).to.exist; // webp

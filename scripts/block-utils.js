@@ -124,7 +124,7 @@ export function addPublishDependencies(url) {
  * @returns {string} The class name
  */
 export function toClassName(name) {
-  return name && typeof name === 'string'
+  return typeof name === 'string'
     ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
     : '';
 }

@@ -319,7 +319,7 @@ export function updateSectionsStatus(main) {
 export function decorateBlocks(main) {
   main
     .querySelectorAll('div.section > div > div')
-    .forEach((block) => decorateBlock(block));
+    .forEach(decorateBlock);
 }
 
 /**

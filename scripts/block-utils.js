@@ -298,8 +298,7 @@ export function decorateSections(main) {
  */
 export function updateSectionsStatus(main) {
   const sections = [...main.querySelectorAll(':scope > div.section')];
-  for (let i = 0; i < sections.length; i += 1) {
-    const section = sections[i];
+  for (const section of sections) {
     const status = section.getAttribute('data-section-status');
     if (status !== 'loaded') {
       const loadingBlock = section.querySelector('.block[data-block-status="initialized"], .block[data-block-status="loading"]');

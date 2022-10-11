@@ -530,8 +530,8 @@ export async function waitForLCP(lcpBlocks) {
   await new Promise((resolve) => {
     if (lcpCandidate && !lcpCandidate.complete) {
       lcpCandidate.setAttribute('loading', 'eager');
-      lcpCandidate.addEventListener('load', () => resolve());
-      lcpCandidate.addEventListener('error', () => resolve());
+      lcpCandidate.addEventListener('load', resolve);
+      lcpCandidate.addEventListener('error', resolve);
     } else {
       resolve();
     }

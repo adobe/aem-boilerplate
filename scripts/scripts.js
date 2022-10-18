@@ -16,7 +16,7 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
-const rum = await withPlugin('./plugins/rum.js');
+const rum = await withPlugin('./plugins/rum.js', { projectName: 'project-1' });
 withPlugin('./plugins/placeholders.js');
 
 function buildHeroBlock(main) {

@@ -1,3 +1,7 @@
+import {
+  toCamelCase,
+} from '../lib-franklin.js';
+
 let placeholders = {};
 
 /**
@@ -5,22 +9,22 @@ let placeholders = {};
  * @param {string} prefix
  */
 async function fetchPlaceholders(prefix = 'default') {
-  const placeholders = {};
   const loaded = placeholders[`${prefix}-loaded`];
   if (!loaded) {
-    placeholders[`${prefix}-loaded`] = new Promise(async (resolve, reject) => {
+    placeholders[`${prefix}-loaded`] = new Promise((resolve, reject) => {
       try {
-        const response = await fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json`);
-        if (!response.ok) {
-          reject();
-        }
-        const json = await resp.json();
-        placeholders = json.data.reduce((results, placeholder) => {
-          results[toCamelCase(placeholder.Key)] = placeholder.Text;
-          return results;
-        }, {});
-        resolve(placeholders);
+        fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json`)
+          .then((resp) => resp.json())
+          .then((json) => {
+            placeholders = json.data.reduce((results, placeholder) => {
+              results[toCamelCase(placeholder.Key)] = placeholder.Text;
+              return results;
+            }, {});
+            resolve(placeholders);
+          });
       } catch (error) {
+        // error loading placeholders
+        placeholders[prefix] = {};
         reject();
       }
     });
@@ -34,10 +38,10 @@ function getPlaceholders() {
 }
 
 export const api = {
-  getPlaceholders
-}
+  getPlaceholders,
+};
 
-export async function withLazy(document, options) {
+export async function withLazy(options) {
   try {
     placeholders = await fetchPlaceholders(options.prefix);
   } catch (err) {

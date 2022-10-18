@@ -3,7 +3,7 @@
  * @param {string} checkpoint identifies the checkpoint in funnel
  * @param {Object} data additional data for RUM sample
  */
- function sampleRUM(checkpoint, data = {}) {
+function sampleRUM(checkpoint, data = {}) {
   sampleRUM.defer = sampleRUM.defer || [];
   const defer = (fnname) => {
     sampleRUM[fnname] = sampleRUM[fnname]
@@ -63,7 +63,7 @@
 }
 
 export const api = {
-  sampleRUM
+  sampleRUM,
 };
 
 export async function withEager(options) {
@@ -81,6 +81,6 @@ export async function withEager(options) {
   });
 }
 
-export async function withDelayed(options) {
+export async function withDelayed() {
   sampleRUM('cwv');
 }

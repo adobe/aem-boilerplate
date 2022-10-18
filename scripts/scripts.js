@@ -10,12 +10,14 @@ import {
   init,
   loadBlocks,
   loadCSS,
-  plugins,
   waitForLCP,
   withPlugin,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
+
+const rum = await withPlugin('./plugins/rum.js');
+withPlugin('./plugins/placeholders.js');
 
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');
@@ -101,9 +103,9 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
-  plugins.rum.api.sampleRUM('lazy');
-  plugins.rum.api.sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  plugins.rum.api.sampleRUM.observe(main.querySelectorAll('picture > img'));
+  rum.sampleRUM('lazy');
+  rum.sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
+  rum.sampleRUM.observe(main.querySelectorAll('picture > img'));
 }
 
 /**
@@ -114,9 +116,6 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
   import('./delayed.js');
 }
-
-withPlugin('./plugins/rum.js');
-withPlugin('./plugins/placeholders.js');
 
 init({
   loadEager,

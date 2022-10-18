@@ -452,32 +452,35 @@ export function loadFooter(footer) {
   return loadBlock(footerBlock);
 }
 
-export const plugins = {};
+const plugins = {};
+export async function withPlugin(path, options = {}) {
+  const pluginName = path.split('/').pop().replace('.js', '');
+  const plugin = await import(path);
+  plugins[pluginName] = { ...plugin, options };
+  return plugin.api || null;
+}
 
 export async function loadPage(options = {}) {
   const pluginsList = Object.values(plugins);
   if (options.loadEager) {
     await options.loadEager(document);
   }
-  await Promise.all(pluginsList.map((p) => p.withEager && p.withEager.call(null, p.options, plugins)));
+  await Promise.all(pluginsList.map((p) => p.withEager
+    && p.withEager.call(null, p.options, plugins)));
 
   if (options.loadLazy) {
     await options.loadLazy(document);
   }
-  await Promise.all(pluginsList.map((p) => p.withLazy && p.withLazy.call(null, p.options, plugins)));
+  await Promise.all(pluginsList.map((p) => p.withLazy
+    && p.withLazy.call(null, p.options, plugins)));
 
   window.setTimeout(() => {
     if (options.loadDelayed) {
       options.loadDelayed();
     }
-    Promise.all(pluginsList.map((p) => p.withDelayed && p.withDelayed.call(null, p.options, plugins)));
+    Promise.all(pluginsList.map((p) => p.withDelayed
+      && p.withDelayed.call(null, p.options, plugins)));
   }, options.delayedDuration || 3000);
-}
-
-export async function withPlugin(path, options = {}) {
-  const pluginName = path.split('/').pop().replace('.js', '');
-  const plugin = await import(path);
-  plugins[pluginName] = { ...plugin, options };
 }
 
 /**

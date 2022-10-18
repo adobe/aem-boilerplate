@@ -66,8 +66,8 @@ export const api = {
   sampleRUM,
 };
 
-export async function withEager(options) {
-  window.hlx.RUM_GENERATION = options.rumGeneration || 'project-1'; // add your RUM generation information here
+export async function preEager(options) {
+  window.hlx.RUM_GENERATION = options.projectName; // add your RUM generation information here
   sampleRUM('top');
 
   window.addEventListener('load', () => sampleRUM('load'));
@@ -81,6 +81,6 @@ export async function withEager(options) {
   });
 }
 
-export async function withDelayed() {
+export async function preDelayed() {
   sampleRUM('cwv');
 }

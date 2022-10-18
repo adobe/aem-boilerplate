@@ -462,24 +462,31 @@ export async function withPlugin(path, options = {}) {
 
 export async function loadPage(options = {}) {
   const pluginsList = Object.values(plugins);
+
+  await Promise.all(pluginsList.map((p) => p.preEager
+    && p.preEager.call(null, p.options, plugins)));
   if (options.loadEager) {
     await options.loadEager(document);
   }
-  await Promise.all(pluginsList.map((p) => p.withEager
-    && p.withEager.call(null, p.options, plugins)));
+  await Promise.all(pluginsList.map((p) => p.postEager
+    && p.postEager.call(null, p.options, plugins)));
 
+  await Promise.all(pluginsList.map((p) => p.preLazy
+    && p.preLazy.call(null, p.options, plugins)));
   if (options.loadLazy) {
     await options.loadLazy(document);
   }
-  await Promise.all(pluginsList.map((p) => p.withLazy
-    && p.withLazy.call(null, p.options, plugins)));
+  await Promise.all(pluginsList.map((p) => p.postLazy
+    && p.postLazy.call(null, p.options, plugins)));
 
-  window.setTimeout(() => {
+  window.setTimeout(async () => {
+    await Promise.all(pluginsList.map((p) => p.preDelayed
+      && p.preDelayed.call(null, p.options, plugins)));
     if (options.loadDelayed) {
-      options.loadDelayed();
+      await options.loadDelayed();
     }
-    Promise.all(pluginsList.map((p) => p.withDelayed
-      && p.withDelayed.call(null, p.options, plugins)));
+    Promise.all(pluginsList.map((p) => p.postDelayed
+      && p.postDelayed.call(null, p.options, plugins)));
   }, options.delayedDuration || 3000);
 }
 

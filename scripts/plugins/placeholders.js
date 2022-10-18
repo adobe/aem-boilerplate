@@ -41,7 +41,7 @@ export const api = {
   getPlaceholders,
 };
 
-export async function withLazy(options) {
+export async function preLazy(options) {
   try {
     placeholders = await fetchPlaceholders(options.prefix);
   } catch (err) {

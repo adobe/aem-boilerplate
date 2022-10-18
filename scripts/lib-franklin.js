@@ -484,21 +484,24 @@ export async function loadPage(options = {}) {
   await Promise.all(pluginsList.map((p) => p.postLazy
     && p.postLazy.call(null, p.options, pluginsApis)));
 
-  window.setTimeout(async () => {
-    await Promise.all(pluginsList.map((p) => p.preDelayed
-      && p.preDelayed.call(null, p.options, pluginsApis)));
-    if (options.loadDelayed) {
-      await options.loadDelayed();
-    }
-    Promise.all(pluginsList.map((p) => p.postDelayed
-      && p.postDelayed.call(null, p.options, pluginsApis)));
-  }, options.delayedDuration || 3000);
+  return new Promise((resolve) => {
+    window.setTimeout(async () => {
+      await Promise.all(pluginsList.map((p) => p.preDelayed
+        && p.preDelayed.call(null, p.options, pluginsApis)));
+      if (options.loadDelayed) {
+        await options.loadDelayed();
+      }
+      await Promise.all(pluginsList.map((p) => p.postDelayed
+        && p.postDelayed.call(null, p.options, pluginsApis)));
+      resolve();
+    }, options.delayedDuration || 3000);
+  })
 }
 
 /**
  * init block utils
  */
-export function init(options) {
+export async function init(options) {
   window.hlx = window.hlx || {};
   window.hlx.codeBasePath = '';
 
@@ -512,5 +515,5 @@ export function init(options) {
     }
   }
 
-  loadPage(options);
+  return loadPage(options);
 }

@@ -1,12 +1,15 @@
 /* eslint-disable no-unused-expressions */
-/* global describe it */
+/* global describe before it */
 
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: '../../scripts/dummy.html' });
 
-const { buildBlock, decorateBlock, loadBlock } = await import('../../../scripts/lib-franklin.js');
+const {
+  buildBlock, decorateBlock, init, loadBlock,
+} = await import('../../../scripts/lib-franklin.js');
+init();
 
 document.body.innerHTML = await readFile({ path: '../../scripts/body.html' });
 

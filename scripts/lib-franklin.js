@@ -456,44 +456,48 @@ const plugins = {};
 export async function withPlugin(path, options = {}) {
   const pluginName = path.split('/').pop().replace('.js', '');
   const plugin = await import(path);
-  plugins[pluginName] = { ...plugin, options };
+  plugins[toCamelCase(pluginName)] = { ...plugin, options };
   return plugin.api || null;
 }
 
 export async function loadPage(options = {}) {
-  const pluginsList = Object.values(plugins);
+  const pluginsList = [];
+  const pluginsApis = {};
+  Object.entries(plugins).forEach(([key, value]) => {
+    pluginsList.push(value);
+    pluginsApis[key] = plugins[key].api;
+  });
 
   await Promise.all(pluginsList.map((p) => p.preEager
-    && p.preEager.call(null, p.options, plugins)));
+    && p.preEager.call(null, p.options, pluginsApis)));
   if (options.loadEager) {
     await options.loadEager(document);
   }
   await Promise.all(pluginsList.map((p) => p.postEager
-    && p.postEager.call(null, p.options, plugins)));
+    && p.postEager.call(null, p.options, pluginsApis)));
 
   await Promise.all(pluginsList.map((p) => p.preLazy
-    && p.preLazy.call(null, p.options, plugins)));
+    && p.preLazy.call(null, p.options, pluginsApis)));
   if (options.loadLazy) {
     await options.loadLazy(document);
   }
   await Promise.all(pluginsList.map((p) => p.postLazy
-    && p.postLazy.call(null, p.options, plugins)));
+    && p.postLazy.call(null, p.options, pluginsApis)));
 
   window.setTimeout(async () => {
     await Promise.all(pluginsList.map((p) => p.preDelayed
-      && p.preDelayed.call(null, p.options, plugins)));
+      && p.preDelayed.call(null, p.options, pluginsApis)));
     if (options.loadDelayed) {
       await options.loadDelayed();
     }
     Promise.all(pluginsList.map((p) => p.postDelayed
-      && p.postDelayed.call(null, p.options, plugins)));
+      && p.postDelayed.call(null, p.options, pluginsApis)));
   }, options.delayedDuration || 3000);
 }
 
 /**
  * init block utils
  */
-
 export function init(options) {
   window.hlx = window.hlx || {};
   window.hlx.codeBasePath = '';

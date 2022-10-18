@@ -21,6 +21,9 @@ async function fetchPlaceholders(prefix = 'default') {
               return results;
             }, {});
             resolve(placeholders);
+          })
+          .catch((err) => {
+            reject(err);
           });
       } catch (error) {
         // error loading placeholders

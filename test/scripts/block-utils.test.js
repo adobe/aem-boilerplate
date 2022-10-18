@@ -16,8 +16,8 @@ describe('Utils methods', () => {
     document.body.innerHTML = await readFile({ path: './body.html' });
   });
 
-  beforeEach(() => {
-    blockUtils.init();
+  beforeEach(async () => {
+    await blockUtils.init({ delayedDuration: 10 });
   });
 
   it('Sanitizes class name', async () => {

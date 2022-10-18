@@ -1,5 +1,4 @@
 import {
-  sampleRUM,
   buildBlock,
   loadHeader,
   loadFooter,
@@ -8,13 +7,15 @@ import {
   decorateSections,
   decorateBlocks,
   decorateTemplateAndTheme,
-  waitForLCP,
+  init,
   loadBlocks,
   loadCSS,
+  plugins,
+  waitForLCP,
+  withPlugin,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
-window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');
@@ -100,9 +101,9 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
-  sampleRUM('lazy');
-  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  sampleRUM.observe(main.querySelectorAll('picture > img'));
+  plugins.rum.api.sampleRUM('lazy');
+  plugins.rum.api.sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
+  plugins.rum.api.sampleRUM.observe(main.querySelectorAll('picture > img'));
 }
 
 /**
@@ -110,15 +111,15 @@ async function loadLazy(doc) {
  * the user experience.
  */
 function loadDelayed() {
-  // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
+  import('./delayed.js');
 }
 
-async function loadPage() {
-  await loadEager(document);
-  await loadLazy(document);
-  loadDelayed();
-}
+withPlugin('./plugins/rum.js');
+withPlugin('./plugins/placeholders.js');
 
-loadPage();
+init({
+  loadEager,
+  loadLazy,
+  loadDelayed,
+});

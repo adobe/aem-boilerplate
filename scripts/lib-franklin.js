@@ -495,7 +495,7 @@ export async function loadPage(options = {}) {
         && p.postDelayed.call(null, p.options, pluginsApis)));
       resolve();
     }, options.delayedDuration || 3000);
-  })
+  });
 }
 
 /**

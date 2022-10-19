@@ -43,4 +43,10 @@ describe('Utils methods', () => {
 
     sendBeacon.restore();
   });
+
+  // it('Reports errors as RUM metrics', async () => {
+  //   const sendBeacon = sinon.stub(navigator, 'sendBeacon');
+  //   window.history.pushState({}, '', `${window.location.href}&rum=on`);
+  //   window.dispatchEvent('error', );
+  // });
 });

@@ -143,9 +143,13 @@ export function decorateButtons(element) {
 
 export const api = {
   decorateBlock,
-  decorateBlocks,
   decorateButtons,
   decorateIcons,
-  decorateSections,
   decorateTemplateAndTheme,
 };
+
+export function postEager() {
+  const main = document.querySelector('main');
+  decorateSections(main);
+  decorateBlocks(main);
+}

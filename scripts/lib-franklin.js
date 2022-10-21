@@ -77,7 +77,7 @@ export async function withPlugin(path, options = {}) {
  * @param {Element} main The container element
  */
 export function updateSectionsStatus(main) {
-  const sections = [...main.querySelectorAll(':scope > div.section')];
+  const sections = [...main.querySelectorAll(':scope>div')];
   for (let i = 0; i < sections.length; i += 1) {
     const section = sections[i];
     const status = section.getAttribute('data-section-status');
@@ -129,9 +129,11 @@ function getBlockConfig(block) {
   const cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
   const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
 
-  return Object.values(plugins).reduce((config, plugin) => {
-    return plugin.patchBlockConfig ? plugin.patchBlockConfig(config) : config;
-  }, {
+  return Object.values(plugins).reduce((config, plugin) => (
+    plugin.patchBlockConfig
+      ? plugin.patchBlockConfig(config)
+      : config
+  ), {
     blockName,
     cssPath,
     jsPath,
@@ -331,6 +333,11 @@ export async function loadPage(options = {}) {
   }
   await Promise.all(pluginsList.map((p) => p.postEager
     && p.postEager.call(null, p.options, pluginsApis)));
+
+  await waitForLCP(options.lcpBlocks || []);
+
+  const main = document.querySelector('main');
+  await loadBlocks(main);
 
   await Promise.all(pluginsList.map((p) => p.preLazy
     && p.preLazy.call(null, p.options, pluginsApis)));

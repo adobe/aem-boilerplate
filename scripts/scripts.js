@@ -2,9 +2,7 @@ import {
   buildBlock,
   init,
   loadBlock,
-  loadBlocks,
   loadCSS,
-  waitForLCP,
   withPlugin,
 } from './lib-franklin.js';
 
@@ -12,10 +10,8 @@ const LCP_BLOCKS = []; // add your LCP blocks to the list
 
 const {
   decorateBlock,
-  decorateBlocks,
   decorateButtons,
   decorateIcons,
-  decorateSections,
   decorateTemplateAndTheme,
 } = await withPlugin('./plugins/decorator.js');
 const rum = await withPlugin('./plugins/rum.js', { projectName: 'project-1' });
@@ -54,8 +50,6 @@ export function decorateMain(main) {
   decorateButtons(main);
   decorateIcons(main);
   buildAutoBlocks(main);
-  decorateSections(main);
-  decorateBlocks(main);
 }
 
 /**
@@ -67,7 +61,6 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
-    await waitForLCP(LCP_BLOCKS);
   }
 }
 
@@ -115,7 +108,6 @@ export function loadFooter(footer) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await loadBlocks(main);
 
   const { hash } = window.location;
   const element = hash ? main.querySelector(hash) : false;
@@ -144,4 +136,5 @@ init({
   loadEager,
   loadLazy,
   loadDelayed,
+  lcpblocks: LCP_BLOCKS,
 });

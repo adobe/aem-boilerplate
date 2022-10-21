@@ -1,4 +1,4 @@
-import { readBlockConfig, decorateIcons } from '../../scripts/lib-franklin.js';
+import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
 /**
  * collapses all open nav sections
@@ -16,7 +16,7 @@ function collapseAllNavSections(sections) {
  * @param {Element} block The header block element
  */
 
-export default async function decorate(block) {
+export default async function decorate(block, plugins) {
   const cfg = readBlockConfig(block);
   block.textContent = '';
 
@@ -29,7 +29,7 @@ export default async function decorate(block) {
     // decorate nav DOM
     const nav = document.createElement('nav');
     nav.innerHTML = html;
-    decorateIcons(nav);
+    plugins.decorator.decorateIcons(nav);
 
     const classes = ['brand', 'sections', 'tools'];
     classes.forEach((e, j) => {
@@ -60,7 +60,7 @@ export default async function decorate(block) {
     });
     nav.prepend(hamburger);
     nav.setAttribute('aria-expanded', 'false');
-    decorateIcons(nav);
+    plugins.decorator.decorateIcons(nav);
     block.append(nav);
   }
 }

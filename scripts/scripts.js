@@ -1,13 +1,7 @@
 import {
   buildBlock,
-  loadHeader,
-  loadFooter,
-  decorateButtons,
-  decorateIcons,
-  decorateSections,
-  decorateBlocks,
-  decorateTemplateAndTheme,
   init,
+  loadBlock,
   loadBlocks,
   loadCSS,
   waitForLCP,
@@ -16,6 +10,14 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
+const {
+  decorateBlock,
+  decorateBlocks,
+  decorateButtons,
+  decorateIcons,
+  decorateSections,
+  decorateTemplateAndTheme,
+} = await withPlugin('./plugins/decorator.js');
 const rum = await withPlugin('./plugins/rum.js', { projectName: 'project-1' });
 
 function buildHeroBlock(main) {
@@ -84,6 +86,28 @@ export function addFavIcon(href) {
   } else {
     document.getElementsByTagName('head')[0].appendChild(link);
   }
+}
+
+/**
+ * loads a block named 'header' into header
+ */
+
+export function loadHeader(header) {
+  const headerBlock = buildBlock('header', '');
+  header.append(headerBlock);
+  decorateBlock(headerBlock);
+  return loadBlock(headerBlock);
+}
+
+/**
+ * loads a block named 'footer' into footer
+ */
+
+export function loadFooter(footer) {
+  const footerBlock = buildBlock('footer', '');
+  footer.append(footerBlock);
+  decorateBlock(footerBlock);
+  return loadBlock(footerBlock);
 }
 
 /**

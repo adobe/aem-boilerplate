@@ -114,7 +114,6 @@ export function decorateTemplateAndTheme() {
  * decorates paragraphs containing a single link as buttons.
  * @param {Element} element container element
  */
-
 export function decorateButtons(element) {
   element.querySelectorAll('a').forEach((a) => {
     a.title = a.title || a.textContent;
@@ -141,6 +140,9 @@ export function decorateButtons(element) {
   });
 }
 
+/**
+ * The plugin API
+ */
 export const api = {
   decorateBlock,
   decorateButtons,
@@ -148,6 +150,9 @@ export const api = {
   decorateTemplateAndTheme,
 };
 
+/**
+ * Logic to execute in the post eager phase
+ */
 export function postEager() {
   const main = document.querySelector('main');
   decorateSections(main);

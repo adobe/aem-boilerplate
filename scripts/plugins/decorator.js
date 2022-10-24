@@ -147,8 +147,14 @@ export const api = {
   decorateBlock,
   decorateButtons,
   decorateIcons,
-  decorateTemplateAndTheme,
 };
+
+/**
+ * Logic to execute in the post eager phase
+ */
+export function preEager() {
+  decorateTemplateAndTheme();
+}
 
 /**
  * Logic to execute in the post eager phase

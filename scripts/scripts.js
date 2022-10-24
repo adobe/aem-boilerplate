@@ -12,7 +12,6 @@ const {
   decorateBlock,
   decorateButtons,
   decorateIcons,
-  decorateTemplateAndTheme,
 } = await withPlugin('./plugins/decorator.js');
 const rum = await withPlugin('./plugins/rum.js', { generation: 'project-1' });
 
@@ -44,7 +43,6 @@ function buildAutoBlocks(main) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-// eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
@@ -57,7 +55,6 @@ export function decorateMain(main) {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
-  decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);

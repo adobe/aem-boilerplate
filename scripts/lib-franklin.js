@@ -73,27 +73,6 @@ export async function withPlugin(path, options = {}) {
 }
 
 /**
- * Updates all section status in a container element.
- * @param {Element} main The container element
- */
-export function updateSectionsStatus(main) {
-  const sections = [...main.querySelectorAll(':scope>div')];
-  for (let i = 0; i < sections.length; i += 1) {
-    const section = sections[i];
-    const status = section.getAttribute('data-section-status');
-    if (status !== 'loaded') {
-      const loadingBlock = section.querySelector('.block[data-block-status="initialized"], .block[data-block-status="loading"]');
-      if (loadingBlock) {
-        section.setAttribute('data-section-status', 'loading');
-        break;
-      } else {
-        section.setAttribute('data-section-status', 'loaded');
-      }
-    }
-  }
-}
-
-/**
  * Builds a block DOM Element from a two dimensional array
  * @param {string} blockName name of the block
  * @param {any} content two dimensional array or string or object of content
@@ -122,22 +101,6 @@ export function buildBlock(blockName, content) {
     blockEl.appendChild(rowEl);
   });
   return (blockEl);
-}
-
-function getBlockConfig(block) {
-  const blockName = block.getAttribute('data-block-name');
-  const cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
-  const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
-
-  return Object.values(plugins).reduce((config, plugin) => (
-    plugin.patchBlockConfig
-      ? plugin.patchBlockConfig(config)
-      : config
-  ), {
-    blockName,
-    cssPath,
-    jsPath,
-  });
 }
 
 /**
@@ -181,57 +144,6 @@ export function readBlockConfig(block) {
     }
   });
   return config;
-}
-
-/**
- * Loads JS and CSS for a block.
- * @param {Element} block The block element
- */
-export async function loadBlock(block) {
-  const status = block.getAttribute('data-block-status');
-  if (status === 'loading' || status === 'loaded') {
-    return;
-  }
-  block.setAttribute('data-block-status', 'loading');
-  const { blockName, cssPath, jsPath } = getBlockConfig(block);
-  try {
-    const cssLoaded = new Promise((resolve) => {
-      loadCSS(cssPath, resolve);
-    });
-    const decorationComplete = new Promise((resolve) => {
-      (async () => {
-        try {
-          const mod = await import(jsPath);
-          if (mod.default) {
-            await mod.default(block, pluginsApis);
-          }
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.log(`failed to load module for ${blockName}`, error);
-        }
-        resolve();
-      })();
-    });
-    await Promise.all([cssLoaded, decorationComplete]);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(`failed to load block ${blockName}`, error);
-  }
-  block.setAttribute('data-block-status', 'loaded');
-}
-
-/**
- * Loads JS and CSS for all blocks in a container element.
- * @param {Element} main The container element
- */
-export async function loadBlocks(main) {
-  updateSectionsStatus(main);
-  const blocks = [...main.querySelectorAll('div.block')];
-  for (let i = 0; i < blocks.length; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    await loadBlock(blocks[i]);
-    updateSectionsStatus(main);
-  }
 }
 
 /**
@@ -303,6 +215,101 @@ export function normalizeHeadings(el, allowedHeadings) {
 }
 
 /**
+ * Updates all section status in a container element.
+ * @param {Element} main The container element
+ */
+export function updateSectionsStatus(main) {
+  const sections = [...main.querySelectorAll(':scope>div')];
+  for (let i = 0; i < sections.length; i += 1) {
+    const section = sections[i];
+    const status = section.getAttribute('data-section-status');
+    if (status !== 'loaded') {
+      const loadingBlock = section.querySelector('.block[data-block-status="initialized"], .block[data-block-status="loading"]');
+      if (loadingBlock) {
+        section.setAttribute('data-section-status', 'loading');
+        break;
+      } else {
+        section.setAttribute('data-section-status', 'loaded');
+      }
+    }
+  }
+}
+
+/**
+ * Gets the configuration for the given glock, and also passes
+ * the config to the `patchBlockConfig` methods in the plugins.
+ *
+ * @param {Element} block The block element
+ * @returns {object} The block config (blockName, cssPath and jsPath)
+ */
+function getBlockConfig(block) {
+  const blockName = block.getAttribute('data-block-name');
+  const cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
+  const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
+
+  return Object.values(plugins).reduce((config, plugin) => (
+    plugin.patchBlockConfig
+      ? plugin.patchBlockConfig(config)
+      : config
+  ), {
+    blockName,
+    cssPath,
+    jsPath,
+  });
+}
+
+/**
+ * Loads JS and CSS for a block.
+ * @param {Element} block The block element
+ */
+export async function loadBlock(block) {
+  const status = block.getAttribute('data-block-status');
+  if (status === 'loading' || status === 'loaded') {
+    return;
+  }
+  block.setAttribute('data-block-status', 'loading');
+  const { blockName, cssPath, jsPath } = getBlockConfig(block);
+  try {
+    const cssLoaded = new Promise((resolve) => {
+      loadCSS(cssPath, resolve);
+    });
+    const decorationComplete = new Promise((resolve) => {
+      (async () => {
+        try {
+          const mod = await import(jsPath);
+          if (mod.default) {
+            await mod.default(block, pluginsApis);
+          }
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.log(`failed to load module for ${blockName}`, error);
+        }
+        resolve();
+      })();
+    });
+    await Promise.all([cssLoaded, decorationComplete]);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(`failed to load block ${blockName}`, error);
+  }
+  block.setAttribute('data-block-status', 'loaded');
+}
+
+/**
+ * Loads JS and CSS for all blocks in a container element.
+ * @param {Element} main The container element
+ */
+export async function loadBlocks(main) {
+  updateSectionsStatus(main);
+  const blocks = [...main.querySelectorAll('div.block')];
+  for (let i = 0; i < blocks.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    await loadBlock(blocks[i]);
+    updateSectionsStatus(main);
+  }
+}
+
+/**
  * load LCP block and/or wait for LCP in default content.
  */
 export async function waitForLCP(lcpBlocks) {
@@ -323,6 +330,14 @@ export async function waitForLCP(lcpBlocks) {
   });
 }
 
+/**
+ * The main loading logic for the page.
+ * It defines the 3 phases (eager, lazy, delayed), and registers both
+ * plugins and project hooks.
+ * 
+ * @param {object} options 
+ * @returns 
+ */
 export async function loadPage(options = {}) {
   const pluginsList = Object.values(plugins);
 

@@ -40,10 +40,16 @@ function getPlaceholders() {
   return placeholders;
 }
 
+/**
+ * The plugin API
+ */
 export const api = {
   getPlaceholders,
 };
 
+/**
+ * Logic to execute in the pre lazy phase
+ */
 export async function preLazy(options) {
   try {
     placeholders = await fetchPlaceholders(options.prefix);

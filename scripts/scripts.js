@@ -115,9 +115,6 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
-  rum.sampleRUM('lazy');
-  rum.sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  rum.sampleRUM.observe(main.querySelectorAll('picture > img'));
 }
 
 /**

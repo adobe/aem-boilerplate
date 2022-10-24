@@ -36,6 +36,9 @@ async function fetchPlaceholders(prefix = 'default') {
   return placeholders[prefix];
 }
 
+/**
+ * Gets the list of placeholders.
+ */
 function getPlaceholders() {
   return placeholders;
 }

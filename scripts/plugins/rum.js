@@ -62,10 +62,16 @@ function sampleRUM(checkpoint, data = {}) {
   }
 }
 
+/**
+ * The plugin API
+ */
 export const api = {
   sampleRUM,
 };
 
+/**
+ * Logic to execute in the pre eager phase
+ */
 export async function preEager(options) {
   window.hlx.RUM_GENERATION = options.generation; // add your RUM generation information here
   sampleRUM('top');
@@ -81,6 +87,19 @@ export async function preEager(options) {
   });
 }
 
+/**
+ * Logic to execute in the post lazy phase
+ */
+export async function postLazy() {
+  const main = document.querySelector('main');
+  sampleRUM('lazy');
+  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
+  sampleRUM.observe(main.querySelectorAll('picture > img'));
+}
+
+/**
+ * Logic to execute in the pre delayed phase
+ */
 export async function preDelayed() {
   sampleRUM('cwv');
 }

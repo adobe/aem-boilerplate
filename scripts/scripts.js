@@ -14,7 +14,7 @@ const {
   decorateIcons,
   decorateTemplateAndTheme,
 } = await withPlugin('./plugins/decorator.js');
-const rum = await withPlugin('./plugins/rum.js', { projectName: 'project-1' });
+const rum = await withPlugin('./plugins/rum.js', { generation: 'project-1' });
 
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');

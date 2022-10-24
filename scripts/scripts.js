@@ -13,7 +13,7 @@ const {
   decorateButtons,
   decorateIcons,
 } = await withPlugin('./plugins/decorator.js');
-const rum = await withPlugin('./plugins/rum.js', { generation: 'project-1' });
+await withPlugin('./plugins/rum.js', { generation: 'project-1' });
 
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');

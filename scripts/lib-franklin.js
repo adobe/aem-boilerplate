@@ -62,7 +62,6 @@ export function sampleRUM(checkpoint, data = {}) {
           const script = document.createElement('script');
           script.src = 'https://rum.hlx.page/.rum/@adobe/helix-rum-enhancer@^1/src/index.js';
           document.head.appendChild(script);
-          sendPing(data);
           return true;
         },
       };

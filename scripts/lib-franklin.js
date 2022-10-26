@@ -66,6 +66,9 @@ export async function withPlugin(path, options = {}) {
   const pluginName = toCamelCase(path.split('/').pop().replace('.js', ''));
   const plugin = await import(path);
   plugins[pluginName] = { ...plugin, options };
+  if (plugin.init) {
+    plugin.init(options);
+  }
   if (plugin.api) {
     pluginsApis[pluginName] = plugin.api;
   }
@@ -379,8 +382,8 @@ export async function loadPage(options = {}) {
 /**
  * init block utils
  */
+window.hlx = window.hlx || {};
 export async function init(options) {
-  window.hlx = window.hlx || {};
   window.hlx.codeBasePath = '';
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');

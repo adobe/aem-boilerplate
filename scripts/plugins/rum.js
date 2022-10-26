@@ -69,15 +69,19 @@ export const api = {
   sampleRUM,
 };
 
+sampleRUM('top');
+
+/**
+ * Logic to execute when the plugin is loaded.
+ */
+export async function init() {
+  sampleRUM('load');
+}
+
 /**
  * Logic to execute in the pre eager phase
  */
-export async function preEager(options) {
-  window.hlx.RUM_GENERATION = options.generation; // add your RUM generation information here
-  sampleRUM('top');
-
-  window.addEventListener('load', () => sampleRUM('load'));
-
+export async function preEager() {
   window.addEventListener('unhandledrejection', (event) => {
     sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
   });

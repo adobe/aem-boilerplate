@@ -62,18 +62,119 @@ export function toCamelCase(name) {
 
 const plugins = {};
 const pluginsApis = {};
-export async function withPlugin(path, options = {}) {
-  const pluginName = toCamelCase(path.split('/').pop().replace('.js', ''));
-  const plugin = await import(path);
-  plugins[pluginName] = { ...plugin, options };
-  if (plugin.init) {
-    plugin.init(options);
+export async function withPlugin(pathOrInstance, options = {}) {
+  let plugin;
+  let pluginName;
+  if (typeof pathOrInstance === 'string') {
+    pluginName = toCamelCase(pathOrInstance.split('/').pop().replace('.js', ''));
+    plugin = await import(pathOrInstance);
+  } else {
+    plugin = pathOrInstance(options);
+    pluginName = pathOrInstance.name || options.name;
   }
+  plugins[pluginName] = { ...plugin, options };
   if (plugin.api) {
     pluginsApis[pluginName] = plugin.api;
   }
   return plugin.api || null;
 }
+
+const RumPlugin = () => {
+  /**
+   * log RUM if part of the sample.
+   * @param {string} checkpoint identifies the checkpoint in funnel
+   * @param {Object} data additional data for RUM sample
+   */
+  function sampleRUM(checkpoint, data = {}) {
+    sampleRUM.defer = sampleRUM.defer || [];
+    const defer = (fnname) => {
+      sampleRUM[fnname] = sampleRUM[fnname]
+        || ((...args) => sampleRUM.defer.push({ fnname, args }));
+    };
+    sampleRUM.drain = sampleRUM.drain
+      || ((dfnname, fn) => {
+        sampleRUM[dfnname] = fn;
+        sampleRUM.defer
+          .filter(({ fnname }) => dfnname === fnname)
+          .forEach(({ fnname, args }) => sampleRUM[fnname](...args));
+      });
+    sampleRUM.on = (chkpnt, fn) => { sampleRUM.cases[chkpnt] = fn; };
+    defer('observe');
+    defer('cwv');
+    try {
+      window.hlx = window.hlx || {};
+      if (!window.hlx.rum) {
+        const usp = new URLSearchParams(window.location.search);
+        const weight = (usp.get('rum') === 'on') ? 1 : 100; // with parameter, weight is 1. Defaults to 100.
+        // eslint-disable-next-line no-bitwise
+        const hashCode = (s) => s.split('').reduce((a, b) => (((a << 5) - a) + b.charCodeAt(0)) | 0, 0);
+        const id = `${hashCode(window.location.href)}-${new Date().getTime()}-${Math.random().toString(16).substr(2, 14)}`;
+        const random = Math.random();
+        const isSelected = (random * weight < 1);
+        // eslint-disable-next-line object-curly-newline
+        window.hlx.rum = { weight, id, random, isSelected, sampleRUM };
+      }
+      const { weight, id } = window.hlx.rum;
+      if (window.hlx && window.hlx.rum && window.hlx.rum.isSelected) {
+        const sendPing = (pdata = data) => {
+          // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
+          const body = JSON.stringify({ weight, id, referer: window.location.href, generation: window.hlx.RUM_GENERATION, checkpoint, ...data });
+          const url = `https://rum.hlx.page/.rum/${weight}`;
+          // eslint-disable-next-line no-unused-expressions
+          navigator.sendBeacon(url, body);
+          // eslint-disable-next-line no-console
+          console.debug(`ping:${checkpoint}`, pdata);
+        };
+        sampleRUM.cases = sampleRUM.cases || {
+          cwv: () => sampleRUM.cwv(data) || true,
+          lazy: () => {
+            // use classic script to avoid CORS issues
+            const script = document.createElement('script');
+            script.src = 'https://rum.hlx.page/.rum/@adobe/helix-rum-enhancer@^1/src/index.js';
+            document.head.appendChild(script);
+            return true;
+          },
+        };
+        sendPing(data);
+        if (sampleRUM.cases[checkpoint]) { sampleRUM.cases[checkpoint](); }
+      }
+    } catch (error) {
+      // something went wrong
+    }
+  }
+
+  sampleRUM('top');
+
+  window.addEventListener('load', () => sampleRUM('load'));
+
+  return {
+    name: 'rum',
+
+    api: {
+      sampleRUM,
+    },
+
+    preEager: async () => {
+      window.addEventListener('unhandledrejection', (event) => {
+        sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
+      });
+      window.addEventListener('error', (event) => {
+        sampleRUM('error', { source: event.filename, target: event.lineno });
+      });
+    },
+
+    postLazy: async () => {
+      const main = document.querySelector('main');
+      sampleRUM('lazy');
+      sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
+      sampleRUM.observe(main.querySelectorAll('picture > img'));
+    },
+
+    preDelayed: async () => {
+      sampleRUM('cwv');
+    },
+  };
+};
 
 /**
  * Builds a block DOM Element from a two dimensional array
@@ -383,6 +484,7 @@ export async function loadPage(options = {}) {
  * init block utils
  */
 window.hlx = window.hlx || {};
+withPlugin(RumPlugin);
 export async function init(options) {
   window.hlx.codeBasePath = '';
 
@@ -398,3 +500,6 @@ export async function init(options) {
 
   return loadPage(options);
 }
+
+console.log(1);
+window.addEventListener('load', () => console.log(2));

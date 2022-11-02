@@ -7,7 +7,7 @@ import {
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
-window.hlx.RUM_GENERATION = 'project-1';
+window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
 const {
   decorateBlock,

@@ -10,77 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-/**
- * Loads a CSS file.
- * @param {string} href The path to the CSS file
- */
-export function loadCSS(href, callback) {
-  if (!document.querySelector(`head > link[href="${href}"]`)) {
-    const link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', href);
-    if (typeof callback === 'function') {
-      link.onload = (e) => callback(e.type);
-      link.onerror = (e) => callback(e.type);
-    }
-    document.head.appendChild(link);
-  } else if (typeof callback === 'function') {
-    callback('noop');
-  }
-}
-
-/**
- * Retrieves the content of metadata tags.
- * @param {string} name The metadata name (or property)
- * @returns {string} The metadata value(s)
- */
-export function getMetadata(name) {
-  const attr = name && name.includes(':') ? 'property' : 'name';
-  const meta = [...document.head.querySelectorAll(`meta[${attr}="${name}"]`)].map((m) => m.content).join(', ');
-  return meta || '';
-}
-
-/**
- * Sanitizes a name for use as class name.
- * @param {string} name The unsanitized name
- * @returns {string} The class name
- */
-export function toClassName(name) {
-  return typeof name === 'string'
-    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
-    : '';
-}
-
-/*
- * Sanitizes a name for use as a js property name.
- * @param {string} name The unsanitized name
- * @returns {string} The camelCased name
- */
-export function toCamelCase(name) {
-  return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-}
-
-const plugins = {};
-const pluginsApis = {};
-export async function withPlugin(pathOrFunction, options = {}) {
-  let plugin;
-  let pluginName;
-  if (typeof pathOrFunction === 'string') {
-    pluginName = toCamelCase(pathOrFunction.split('/').pop().replace('.js', ''));
-    plugin = await import(pathOrFunction);
-  } else if (typeof pathOrFunction === 'function') {
-    plugin = pathOrFunction(options);
-    pluginName = pathOrFunction.name || options.name;
-  } else {
-    throw new Error('Invalid plugin reference', pathOrFunction);
-  }
-  plugins[pluginName] = { ...plugin, options };
-  if (plugin.api) {
-    pluginsApis[pluginName] = plugin.api;
-  }
-  return plugin.api || null;
-}
-
 export const RumPlugin = () => {
   /**
    * log RUM if part of the sample.
@@ -177,6 +106,77 @@ export const RumPlugin = () => {
     },
   };
 };
+
+/**
+ * Loads a CSS file.
+ * @param {string} href The path to the CSS file
+ */
+export function loadCSS(href, callback) {
+  if (!document.querySelector(`head > link[href="${href}"]`)) {
+    const link = document.createElement('link');
+    link.setAttribute('rel', 'stylesheet');
+    link.setAttribute('href', href);
+    if (typeof callback === 'function') {
+      link.onload = (e) => callback(e.type);
+      link.onerror = (e) => callback(e.type);
+    }
+    document.head.appendChild(link);
+  } else if (typeof callback === 'function') {
+    callback('noop');
+  }
+}
+
+/**
+ * Retrieves the content of metadata tags.
+ * @param {string} name The metadata name (or property)
+ * @returns {string} The metadata value(s)
+ */
+export function getMetadata(name) {
+  const attr = name && name.includes(':') ? 'property' : 'name';
+  const meta = [...document.head.querySelectorAll(`meta[${attr}="${name}"]`)].map((m) => m.content).join(', ');
+  return meta || '';
+}
+
+/**
+ * Sanitizes a name for use as class name.
+ * @param {string} name The unsanitized name
+ * @returns {string} The class name
+ */
+export function toClassName(name) {
+  return typeof name === 'string'
+    ? name.toLowerCase().replace(/[^0-9a-z]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
+    : '';
+}
+
+/*
+ * Sanitizes a name for use as a js property name.
+ * @param {string} name The unsanitized name
+ * @returns {string} The camelCased name
+ */
+export function toCamelCase(name) {
+  return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+}
+
+const plugins = {};
+const pluginsApis = {};
+export async function withPlugin(pathOrFunction, options = {}) {
+  let plugin;
+  let pluginName;
+  if (typeof pathOrFunction === 'string') {
+    pluginName = toCamelCase(pathOrFunction.split('/').pop().replace('.js', ''));
+    plugin = await import(pathOrFunction);
+  } else if (typeof pathOrFunction === 'function') {
+    plugin = pathOrFunction(options);
+    pluginName = pathOrFunction.name || options.name;
+  } else {
+    throw new Error('Invalid plugin reference', pathOrFunction);
+  }
+  plugins[pluginName] = { ...plugin, options };
+  if (plugin.api) {
+    pluginsApis[pluginName] = plugin.api;
+  }
+  return plugin.api || null;
+}
 
 /**
  * Builds a block DOM Element from a two dimensional array

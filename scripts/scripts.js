@@ -9,7 +9,6 @@ import {
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
 window.hlx.RUM_GENERATION = 'project-1';
-await withPlugin('./plugins/rum.js');
 const {
   decorateBlock,
   decorateButtons,

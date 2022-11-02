@@ -62,15 +62,17 @@ export function toCamelCase(name) {
 
 const plugins = {};
 const pluginsApis = {};
-export async function withPlugin(pathOrInstance, options = {}) {
+export async function withPlugin(pathOrFunction, options = {}) {
   let plugin;
   let pluginName;
-  if (typeof pathOrInstance === 'string') {
-    pluginName = toCamelCase(pathOrInstance.split('/').pop().replace('.js', ''));
-    plugin = await import(pathOrInstance);
+  if (typeof pathOrFunction === 'string') {
+    pluginName = toCamelCase(pathOrFunction.split('/').pop().replace('.js', ''));
+    plugin = await import(pathOrFunction);
+  } else if (typeof pathOrFunction === 'function') {
+    plugin = pathOrFunction(options);
+    pluginName = pathOrFunction.name || options.name;
   } else {
-    plugin = pathOrInstance(options);
-    pluginName = pathOrInstance.name || options.name;
+    throw new Error('Invalid plugin reference', pathOrFunction);
   }
   plugins[pluginName] = { ...plugin, options };
   if (plugin.api) {
@@ -500,6 +502,3 @@ export async function init(options) {
 
   return loadPage(options);
 }
-
-console.log(1);
-window.addEventListener('load', () => console.log(2));

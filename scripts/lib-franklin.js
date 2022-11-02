@@ -493,3 +493,6 @@ export async function init(options) {
 
   return loadPage(options);
 }
+
+console.log(1);
+window.addEventListener('load', () => console.log(2));

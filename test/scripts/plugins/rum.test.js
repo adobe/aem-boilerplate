@@ -14,7 +14,7 @@ document.head.innerHTML = await readFile({ path: '../head.html' });
 describe('Utils methods', () => {
   before(async () => {
     blockUtils = await import('../../../scripts/lib-franklin.js');
-    rum = await blockUtils.withPlugin('../../../scripts/plugins/rum.js');
+    rum = blockUtils.RumPlugin().api;
     document.body.innerHTML = await readFile({ path: '../body.html' });
   });
 

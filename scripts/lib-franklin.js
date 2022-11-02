@@ -81,7 +81,7 @@ export async function withPlugin(pathOrFunction, options = {}) {
   return plugin.api || null;
 }
 
-const RumPlugin = () => {
+export const RumPlugin = () => {
   /**
    * log RUM if part of the sample.
    * @param {string} checkpoint identifies the checkpoint in funnel
@@ -440,9 +440,9 @@ export async function waitForLCP(lcpBlocks) {
  * The main loading logic for the page.
  * It defines the 3 phases (eager, lazy, delayed), and registers both
  * plugins and project hooks.
- * 
- * @param {object} options 
- * @returns 
+ *
+ * @param {object} options
+ * @returns
  */
 export async function loadPage(options = {}) {
   const pluginsList = Object.values(plugins);

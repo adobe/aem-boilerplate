@@ -85,12 +85,12 @@ describe('Sections and blocks', () => {
 
   it('Updates section status', async () => {
     blockUtils.updateSectionsStatus(document.querySelector('main'));
-    document.querySelectorAll('main > div').forEach(($section) => {
+    document.querySelectorAll('main .section').forEach(($section) => {
       expect($section.dataset.sectionStatus).to.equal('loaded');
     });
 
     // test section with block still loading
-    const $section = document.querySelector('main > div');
+    const $section = document.querySelector('main .section');
     delete $section.dataset.sectionStatus;
     $section.querySelector(':scope .block').dataset.blockStatus = 'loading';
     blockUtils.updateSectionsStatus(document.querySelector('main'));
@@ -98,7 +98,7 @@ describe('Sections and blocks', () => {
   });
 
   it('Reads block config', async () => {
-    document.querySelector('main > div > div').innerHTML += await readFile({ path: './config.html' });
+    document.querySelector('main .section > div').innerHTML += await readFile({ path: './config.html' });
     const cfg = blockUtils.readBlockConfig(document.querySelector('main .config'));
     expect(cfg).to.deep.include({
       'prop-0': 'Plain text',

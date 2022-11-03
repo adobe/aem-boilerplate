@@ -167,7 +167,7 @@ export async function withPlugin(pathOrFunction, options = {}) {
     plugin = await import(pathOrFunction);
   } else if (typeof pathOrFunction === 'function') {
     plugin = pathOrFunction(options);
-    pluginName = pathOrFunction.name || options.name;
+    pluginName = plugin.name || pathOrFunction.name;
   } else {
     throw new Error('Invalid plugin reference', pathOrFunction);
   }

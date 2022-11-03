@@ -14,7 +14,6 @@ const {
   decorateButtons,
   decorateIcons,
 } = await withPlugin('./plugins/decorator.js');
-await withPlugin('./plugins/experimentation-lite/index.js');
 
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');

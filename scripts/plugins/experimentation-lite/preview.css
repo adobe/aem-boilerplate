@@ -1,0 +1,134 @@
+.hlx-preview-overlay {
+  z-index: 99;
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  color: #eee;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.hlx-badge {
+  border-radius: 32px; 
+  background-color: #888;
+  color: #eee;
+  padding: 16px 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.hlx-badge .hlx-open {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 22px;
+  border: 2px solid;
+  border-radius: 100px;
+  margin-left: 16px;
+}
+
+.hlx-badge .hlx-open::after {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-top: 2px solid;
+  border-right: 2px solid;
+  transform: rotate(-45deg);
+  left: 6px;
+  bottom: 5px;
+}
+
+.hlx-badge.hlx-testing {
+  background-color: #fa0f00;
+  color: #fff;
+}
+
+.hlx-popup {
+  position: absolute;
+  bottom: 64px;
+  right: 0;
+  background-color: #444;
+  min-width: 300px;
+  border-radius: 16px;
+  box-shadow: 0 0 10px #000;
+  font-size: 12px;
+}
+
+.hlx-popup a:any-link {
+  color: #eee;
+  border: 2px solid;
+  padding: 5px 12px;
+  display: inline-block;
+  border-radius: 20px;
+  text-decoration: none;
+}
+
+.hlx-popup .hlx-popup-header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #222;
+  border-radius: 16px 16px 0 0;
+  padding: 24px 16px;
+}
+
+.hlx-popup h4, .hlx-popup h5 {
+  margin: 0;
+}
+
+.hlx-popup h4 {
+  font-size: 16px;
+}
+
+.hlx-popup h5 {
+  font-size: 14px;
+}
+
+
+.hlx-popup p {
+  margin: 0;
+}
+
+.hlx-popup::before {
+  content: '';
+  width: 0;
+  height: 0;
+  position: absolute;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;    
+  border-top: 15px solid #444;
+  bottom: -15px;
+  right: 30px;
+}
+
+.hlx-hidden {
+  display: none;
+}
+
+.hlx-badge.hlx-experiment-status-active {
+  background-color: #280;
+}
+
+.hlx-variant {
+  margin: 16px;
+  display: flex;
+  padding: 16px;
+  border-radius: 16px;
+}
+
+.hlx-variant-selected {
+  background-color: #666;
+}
+
+.hlx-variant > div {
+  flex: 1 1 auto;
+}
+
+.hlx-variant > div.hlx-button {
+  flex: 0 0 auto;
+}

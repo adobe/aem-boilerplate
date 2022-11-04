@@ -14,7 +14,10 @@ const {
   decorateButtons,
   decorateIcons,
 } = await withPlugin('./plugins/decorator.js');
-await withPlugin('./plugins/experimentation-lite/index.js', { configFile: 'franklin-experiment.json' });
+await withPlugin('./plugins/experimentation-lite/index.js', {
+  basePath: '/franklin-experiments',
+  configFile: 'franklin-experiment.json',
+});
 
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');

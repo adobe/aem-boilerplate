@@ -157,13 +157,17 @@ export function toCamelCase(name) {
   return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
-const plugins = {};
+const pluginReferences = {};
 const pluginsApis = {};
 export async function withPlugin(pathOrFunction, options = {}) {
   let plugin;
   let pluginName;
   if (typeof pathOrFunction === 'string') {
-    pluginName = toCamelCase(pathOrFunction.split('/').pop().replace('.js', ''));
+    const tokens = pathOrFunction.split('/');
+    pluginName = toCamelCase(tokens.pop().replace('.js', ''));
+    if (pluginName === 'index') {
+      pluginName = toCamelCase(tokens.pop());
+    }
     plugin = await import(pathOrFunction);
   } else if (typeof pathOrFunction === 'function') {
     plugin = pathOrFunction(options);
@@ -171,12 +175,14 @@ export async function withPlugin(pathOrFunction, options = {}) {
   } else {
     throw new Error('Invalid plugin reference', pathOrFunction);
   }
-  plugins[pluginName] = { ...plugin, options };
+  pluginReferences[pluginName] = { ...plugin, options };
   if (plugin.api) {
     pluginsApis[pluginName] = plugin.api;
   }
   return plugin.api || null;
 }
+
+export const plugins = pluginsApis;
 
 /**
  * Builds a block DOM Element from a two dimensional array
@@ -214,13 +220,16 @@ function getBlockConfig(block) {
   const cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
   const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
 
-  return Object.values(plugins).reduce((config, plugin) => {
-    return plugin.patchBlockConfig ? plugin.patchBlockConfig(config) : config;
-  }, {
-    blockName,
-    cssPath,
-    jsPath,
-  });
+  return Object.values(pluginReferences).reduce(
+    (config, plugin) => (plugin.patchBlockConfig
+      ? plugin.patchBlockConfig(config)
+      : config),
+    {
+      blockName,
+      cssPath,
+      jsPath,
+    },
+  );
 }
 
 /**
@@ -436,7 +445,7 @@ export async function waitForLCP(lcpBlocks) {
  * @returns
  */
 export async function loadPage(options = {}) {
-  const pluginsList = Object.values(plugins);
+  const pluginsList = Object.values(pluginReferences);
 
   await Promise.all(pluginsList.map((p) => p.preEager
     && p.preEager.call(null, p.options, pluginsApis)));

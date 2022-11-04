@@ -347,21 +347,27 @@ export function updateSectionsStatus(main) {
   }
 }
 
+/**
+ * Gets the configuration for the given glock, and also passes
+ * the config to the `patchBlockConfig` methods in the plugins.
+ *
+ * @param {Element} block The block element
+ * @returns {object} The block config (blockName, cssPath and jsPath)
+ */
 function getBlockConfig(block) {
   const blockName = block.getAttribute('data-block-name');
   const cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
   const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
 
-  return Object.values(pluginReferences).reduce(
-    (config, plugin) => (plugin.patchBlockConfig
+  return Object.values(pluginReferences).reduce((config, plugin) => (
+    plugin.patchBlockConfig
       ? plugin.patchBlockConfig(config)
-      : config),
-    {
-      blockName,
-      cssPath,
-      jsPath,
-    },
-  );
+      : config
+  ), {
+    blockName,
+    cssPath,
+    jsPath,
+  });
 }
 
 /**

@@ -17,4 +17,3 @@ export default async function decorate(block, plugins) {
   await plugins.decorator.decorateIcons(footer);
   block.append(footer);
 }
-

@@ -164,4 +164,3 @@ export function postEager() {
   decorateSections(main);
   decorateBlocks(main);
 }
-

@@ -6,7 +6,7 @@ import {
 
 const DEFAULT_OPTIONS = {
   basePath: '/experiments',
-  configFile: 'manifest',
+  configFile: 'manifest.json',
   metaTag: 'experiment',
   queryParameter: 'experiment',
   storeKey: 'hlx-experiments',
@@ -103,7 +103,7 @@ function validateConfig(config) {
  * @returns {object} containing the experiment manifest
  */
 export async function getExperimentConfig(experimentId, cfg) {
-  const path = `${cfg.basePath}/${experimentId}/${cfg.configFile}.json`;
+  const path = `${cfg.basePath}/${experimentId}/${cfg.configFile}`;
   try {
     const resp = await fetch(path);
     if (!resp.ok) {
@@ -347,4 +347,3 @@ export async function postEager() {
     import('./preview.js');
   }
 }
-

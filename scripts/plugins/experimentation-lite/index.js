@@ -295,9 +295,9 @@ async function runExperiment(config, plugins) {
     // Block content experiment
     const selector = experimentConfig.blocks.map((blockName) => `.${blockName}`).join(',');
     await Promise.all(
-      document.querySelectorAll(selector).forEach((block) => {
-        replaceInner(content[index], block, true);
-      }),
+      [...document.querySelectorAll(selector)].map((block) => (
+        replaceInner(content[index], block, true)
+      )),
     );
   }
 }

@@ -64,3 +64,4 @@ export default async function decorate(block, plugins) {
     block.append(nav);
   }
 }
+

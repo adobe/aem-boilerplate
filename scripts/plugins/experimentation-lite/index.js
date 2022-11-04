@@ -37,8 +37,10 @@ function parseExperimentConfig(json) {
   try {
     json.settings.data.forEach((row) => {
       const prop = toCamelCase(row.Name);
-      if (['audience', 'label', 'status'].includes(prop)) {
+      if (['audience', 'status'].includes(prop)) {
         config[prop] = row.Value;
+      } else if (prop === 'experimentName') {
+        config.label = row.Value;
       } else if (prop === 'blocks') {
         config[prop] = row.Value.split(/[,\n]/);
       }
@@ -79,8 +81,14 @@ export function getExperiment(tagName) {
 }
 
 function validateConfig(config) {
-  if (!config.variantNames || !config.variants
-    || !config.variants.every((v) => typeof v === 'object' && !!v.code && !!v.content)) {
+  if (!config.variantNames
+    || !config.variants
+    || !Object.values(config.variants).every((v) => (
+      typeof v === 'object'
+      && !!v.code
+      && !!v.content
+      && (v.percentageSplit === '' || !!v.percentageSplit)
+    ))) {
     throw new Error('Invalid experiment config. Please review your sheet and parser.');
   }
 }

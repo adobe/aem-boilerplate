@@ -50,7 +50,8 @@ const bigcountformat = {
  * @return {Object} returns a badge or empty string
  */
 async function createExperiment() {
-  const selectedVariant = (window.hlx && window.hlx.experiment && window.hlx.experiment.selectedVariant) ? window.hlx.experiment.selectedVariant : 'control';
+  const selectedVariant = window?.hlx?.experiment?.selectedVariant
+    || window?.hlx?.experiment?.variantNames[0];
   const experiment = toClassName(getMetadata('experiment'));
   const config = window.hlx.experiment;
   console.log('preview experiment', experiment);
@@ -88,7 +89,7 @@ async function createExperiment() {
     <div class="hlx-popup hlx-hidden">
     <div class="hlx-popup-header">
       <div>
-        <h4>${config.experimentName}</h4>
+        <h4>${config.label}</h4>
         <div class="hlx-details">${config.status}${config.audience ? ', ' : ''}${config.audience}${config.variants[config.variantNames[0]].code.length ? ', Blocks: ' : ''}${config.variants[config.variantNames[0]].code.join(',')}</div>
         <div class="hlx-info">How is it going?</div>
       </div>

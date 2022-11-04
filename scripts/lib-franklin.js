@@ -215,23 +215,6 @@ export function buildBlock(blockName, content) {
   return (blockEl);
 }
 
-function getBlockConfig(block) {
-  const blockName = block.getAttribute('data-block-name');
-  const cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
-  const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
-
-  return Object.values(pluginReferences).reduce(
-    (config, plugin) => (plugin.patchBlockConfig
-      ? plugin.patchBlockConfig(config)
-      : config),
-    {
-      blockName,
-      cssPath,
-      jsPath,
-    },
-  );
-}
-
 /**
  * Extracts the config from a block.
  * @param {Element} block The block element
@@ -362,6 +345,23 @@ export function updateSectionsStatus(main) {
       }
     }
   }
+}
+
+function getBlockConfig(block) {
+  const blockName = block.getAttribute('data-block-name');
+  const cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
+  const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
+
+  return Object.values(pluginReferences).reduce(
+    (config, plugin) => (plugin.patchBlockConfig
+      ? plugin.patchBlockConfig(config)
+      : config),
+    {
+      blockName,
+      cssPath,
+      jsPath,
+    },
+  );
 }
 
 /**

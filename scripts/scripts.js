@@ -21,23 +21,14 @@ await withPlugin('./plugins/experimentation-lite/index.js', {
   parser: (json) => {
     const config = {};
     try {
-      json.settings.data.forEach((row) => {
-        switch (row.Name) {
-          case 'Experiment Name':
-            config.label = row.Value;
-            break;
-          case 'Audience':
-            config.audience = row.Value;
-            break;
-          case 'Status':
-            config.status = row.Value;
-            break;
-          case 'Blocks':
-            config.blocks = row.Value.split(/[,\n]/);
-            break;
-          default:
-        }
-      });
+      const keyMap = {
+        'Experiment Name': 'label',
+      };
+      Object.values(json.settings.data).reduce((cfg, entry) => {
+        const key = keyMap[entry.Name] || toCamelCase(entry.Name);
+        cfg[key] = key === 'blocks' ? entry.Value.split(/[,\n]/) : entry.Value;
+        return cfg;
+      }, config);
 
       config.variantNames = [];
       config.variants = {};

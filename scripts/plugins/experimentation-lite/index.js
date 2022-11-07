@@ -289,17 +289,7 @@ async function runExperiment(config, plugins) {
   }
 
   // Fullpage content experiment
-  if (!experimentConfig.blocks) {
-    await replaceInner(content[0], document.querySelector('main'));
-  } else if (experimentConfig.blocks && experimentConfig.blocks.length && content[index] !== '/') {
-    // Block content experiment
-    const selector = experimentConfig.blocks.map((blockName) => `.${blockName}`).join(',');
-    await Promise.all(
-      [...document.querySelectorAll(selector)].map((block) => (
-        replaceInner(content[index], block, true)
-      )),
-    );
-  }
+  await replaceInner(content[0], document.querySelector('main'));
 }
 
 export function patchBlockConfig(config) {

@@ -312,23 +312,29 @@ export function patchBlockConfig(config) {
     return config;
   }
 
-  if (/^https?:\/\//.test(variant.code[0])) {
-    const { origin } = new URL(variant.code[0]);
-    if (origin !== window.location.origin) {
-      return {
-        ...config,
-        cssPath: `${origin}${window.hlx.codeBasePath}/blocks/${config.blockName}/${config.blockName}.css`,
-        jsPath: `${origin}${window.hlx.codeBasePath}/blocks/${config.blockName}/${config.blockName}.js`,
-      };
+  const index = experiment.variants[experiment.variantNames[0]].code.indexOf(config.blockName);
+  if (index < 0) {
+    return config;
+  }
+
+  let origin = '';
+  let path = `${window.hlx.codeBasePath}/blocks/${config.blockName}`;
+  if (/^https?:\/\//.test(variant.code[index])) {
+    const url = new URL(variant.code[index]);
+    if (url.origin !== window.location.origin) {
+      origin = url.origin;
+    }
+    if (url.pathname !== '/') {
+      path = url.pathname;
     }
   } else {
-    return {
-      ...config,
-      cssPath: `${window.hlx.codeBasePath}${variant.code[0]}/${config.blockName}.css`,
-      jsPath: `${window.hlx.codeBasePath}${variant.code[0]}/${config.blockName}.js`,
-    };
+    path = variant.code[index];
   }
-  return config;
+  return {
+    ...config,
+    cssPath: `${origin}${path}/${config.blockName}.css`,
+    jsPath: `${origin}${path}/${config.blockName}.js`,
+  };
 }
 
 export async function preEager(customOptions, plugins) {

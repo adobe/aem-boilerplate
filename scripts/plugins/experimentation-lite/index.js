@@ -344,7 +344,7 @@ export function patchBlockConfig(config) {
     return config;
   }
 
-  const { codeBasePath } = window.hlx.codeBasePath;
+  const { codeBasePath } = window.hlx;
   return {
     ...config,
     cssPath: `${origin}${codeBasePath}${path}/${config.blockName}.css`,

@@ -51,7 +51,7 @@ const bigcountformat = {
  */
 async function createExperiment() {
   const config = window?.hlx?.experiment;
-  const selectedVariant = config.selectedVariant || window?.hlx?.experiment?.variantNames[0];
+  const selectedVariant = config?.selectedVariant || config?.variantNames[0];
   const experiment = toClassName(getMetadata('experiment'));
   console.log('preview experiment', experiment);
   if (!experiment || !config) {

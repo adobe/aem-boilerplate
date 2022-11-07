@@ -312,7 +312,13 @@ export function patchBlockConfig(config) {
     return config;
   }
 
-  const index = experiment.variants[experiment.variantNames[0]].code.indexOf(config.blockName);
+  let index = experiment.variants[experiment.variantNames[0]].code.indexOf('');
+  if (index < 0) {
+    index = experiment.variants[experiment.variantNames[0]].code.indexOf(config.blockName);
+  }
+  if (index < 0) {
+    index = experiment.variants[experiment.variantNames[0]].code.indexOf(`/blocks/${config.blockName}`);
+  }
   if (index < 0) {
     return config;
   }

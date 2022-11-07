@@ -323,7 +323,7 @@ export function patchBlockConfig(config) {
     return config;
   }
 
-  let origin;
+  let origin = '';
   let path;
   if (/^https?:\/\//.test(variant.code[index])) {
     const url = new URL(variant.code[index]);

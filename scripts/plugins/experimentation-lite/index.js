@@ -334,6 +334,8 @@ export function patchBlockConfig(config) {
     // Experimenting from a block path
     if (url.pathname !== '/') {
       path = url.pathname;
+    } else {
+      path = `/blocks/${config.blockName}`;
     }
   } else { // Experimenting from a different branch on the same branch
     path = variant.code[index];
@@ -342,10 +344,11 @@ export function patchBlockConfig(config) {
     return config;
   }
 
+  const { codeBasePath } = window.hlx.codeBasePath;
   return {
     ...config,
-    cssPath: `${origin}${path}/${config.blockName}.css`,
-    jsPath: `${origin}${path}/${config.blockName}.js`,
+    cssPath: `${origin}${codeBasePath}${path}/${config.blockName}.css`,
+    jsPath: `${origin}${codeBasePath}${path}/${config.blockName}.js`,
   };
 }
 

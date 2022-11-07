@@ -317,19 +317,25 @@ export function patchBlockConfig(config) {
     return config;
   }
 
-  let origin = '';
-  let path = `${window.hlx.codeBasePath}/blocks/${config.blockName}`;
+  let origin;
+  let path;
   if (/^https?:\/\//.test(variant.code[index])) {
     const url = new URL(variant.code[index]);
+    // Experimenting from a different branch
     if (url.origin !== window.location.origin) {
       origin = url.origin;
     }
+    // Experimenting from a block path
     if (url.pathname !== '/') {
       path = url.pathname;
     }
-  } else {
+  } else { // Experimenting from a different branch on the same branch
     path = variant.code[index];
   }
+  if (!origin && !path) {
+    return config;
+  }
+
   return {
     ...config,
     cssPath: `${origin}${path}/${config.blockName}.css`,

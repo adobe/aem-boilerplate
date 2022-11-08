@@ -15,7 +15,7 @@ const {
   decorateButtons,
   decorateIcons,
 } = await withPlugin('./plugins/decorator.js');
-await withPlugin('./plugins/experimentation-lite/index.js', {
+await withPlugin('./plugins/experimentation-ued/index.js', {
   basePath: '/franklin-experiments',
   configFile: 'franklin-experiment.json',
   parser: (json) => {

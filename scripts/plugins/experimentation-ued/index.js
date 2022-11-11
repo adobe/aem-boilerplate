@@ -4,10 +4,6 @@ import {
   toClassName,
 } from '../../lib-franklin.js';
 
-import {
-  evaluateDecisionPolicy,
-} from './ued.min.js';
-
 const DEFAULT_OPTIONS = {
   basePath: '/experiments',
   configFile: 'manifest.json',
@@ -213,7 +209,10 @@ async function runExperiment(config, plugins) {
   const usp = new URLSearchParams(window.location.search);
   const [forcedExperiment, forcedVariant] = usp.has(config.queryParameter) ? usp.get(config.queryParameter).split('/') : [];
 
-  const experimentConfig = await getExperimentConfig(experiment, config);
+  const [ued, experimentConfig] = await Promise.all([
+    import('./ued.min.js'),
+    getExperimentConfig(experiment, config),
+  ]);
   console.debug(experimentConfig);
   if (!experimentConfig || (toCamelCase(experimentConfig.status) !== 'active' && !forcedExperiment)) {
     return;
@@ -231,7 +230,7 @@ async function runExperiment(config, plugins) {
   if (forcedVariant && experimentConfig.variantNames.includes(forcedVariant)) {
     experimentConfig.selectedVariant = forcedVariant;
   } else {
-    const decision = evaluateDecisionPolicy(getDecisionPolicy(experimentConfig), {});
+    const decision = ued.evaluateDecisionPolicy(getDecisionPolicy(experimentConfig), {});
     experimentConfig.selectedVariant = decision.items[0].id;
   }
 

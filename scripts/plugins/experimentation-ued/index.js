@@ -6,7 +6,7 @@ import {
 
 import {
   evaluateDecisionPolicy,
-} from './ued.js';
+} from './ued.min.js';
 
 const DEFAULT_OPTIONS = {
   basePath: '/experiments',

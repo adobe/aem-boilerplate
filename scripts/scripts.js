@@ -1,5 +1,6 @@
 import {
   buildBlock,
+  getMetadata,
   init,
   loadBlock,
   loadCSS,
@@ -16,6 +17,7 @@ const {
   decorateIcons,
 } = await withPlugin('./plugins/decorator.js');
 await withPlugin('./plugins/experimentation-ued/index.js', {
+  condition: () => !!getMetadata('experiment'),
   basePath: '/franklin-experiments',
   configFile: 'franklin-experiment.json',
   parser: (json) => {

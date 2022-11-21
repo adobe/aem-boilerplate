@@ -162,6 +162,9 @@ const pluginsApis = {};
 export async function withPlugin(pathOrFunction, options = {}) {
   let plugin;
   let pluginName;
+  if (options.condition && !options.condition()) {
+    return null;
+  }
   if (typeof pathOrFunction === 'string') {
     const tokens = pathOrFunction.split('/');
     pluginName = toCamelCase(tokens.pop().replace('.js', ''));

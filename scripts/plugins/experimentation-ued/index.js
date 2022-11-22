@@ -257,6 +257,8 @@ async function runExperiment(config, plugins) {
   }
 
   // Fullpage content experiment
+  document.body.classList.add(`experiment-${experimentConfig.id}`);
+  document.body.classList.add(`variant-${experimentConfig.selectedVariant}`);
   await replaceInner(content[0], document.querySelector('main'));
 }
 

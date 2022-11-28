@@ -60,6 +60,7 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+  loadCSS(`${window.hlx.codeBasePath}/styles/lib-franklin.css`);
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);

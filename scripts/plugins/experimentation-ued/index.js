@@ -330,7 +330,7 @@ export async function preEager(customOptions, plugins) {
   await runExperiment(options, plugins);
 }
 
-export async function postEager() {
+export async function postLazy() {
   if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost')) {
     // eslint-disable-next-line import/no-cycle
     import('./preview.js');

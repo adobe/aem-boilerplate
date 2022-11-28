@@ -49,11 +49,6 @@ body {
   line-height: 1.6;
   color: var(--text-color);
   background-color: var(--background-color);
-  display: none;
-}
-
-body.appear {
-  display: unset;
 }
 
 header {
@@ -200,8 +195,6 @@ hr {
 
 main img {
   max-width: 100%;
-  width: auto;
-  height: auto;
 }
 
 @media (min-width: 600px) {
@@ -224,12 +217,6 @@ main img {
     max-width: 1200px;
     margin: auto;
   }
-}
-
-/* progressive section appearance */
-main .section[data-section-status='loading'],
-main .section[data-section-status='initialized'] {
-  display: none;
 }
 
 main .section.highlight {

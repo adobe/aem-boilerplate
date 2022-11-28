@@ -1,0 +1,21 @@
+
+
+/* progressive body appearance */
+body {
+  display: none;
+}
+
+body.appear {
+  display: unset;
+}
+
+/* progressive section appearance */
+main .section[data-section-status='loading'],
+main .section[data-section-status='initialized'] {
+  display: none;
+}
+
+img {
+  width: auto;
+  height: auto;
+}

@@ -127,25 +127,36 @@ export function toCamelCase(name) {
  * Replace icons with inline SVG and prefix with codeBasePath.
  * @param {Element} element
  */
-export function decorateIcons(element = document) {
-  element.querySelectorAll('span.icon').forEach(async (span) => {
+export async function decorateIcons(element = document) {
+  const promises = [];
+  element.querySelectorAll('span.icon').forEach((span) => {
     if (span.classList.length < 2 || !span.classList[1].startsWith('icon-')) {
       return;
     }
-    const icon = span.classList[1].substring(5);
-    // eslint-disable-next-line no-use-before-define
-    const resp = await fetch(`${window.hlx.codeBasePath}/icons/${icon}.svg`);
-    if (resp.ok) {
-      const iconHTML = await resp.text();
-      if (iconHTML.match(/<style/i)) {
-        const img = document.createElement('img');
-        img.src = `data:image/svg+xml,${encodeURIComponent(iconHTML)}`;
-        span.appendChild(img);
-      } else {
-        span.innerHTML = iconHTML;
-      }
-    }
+    promises.push(new Promise((resolve) => {
+      const icon = span.classList[1].substring(5);
+      fetch(`/icons/${icon}.svg`).then((resp) => {
+        if (resp.ok) {
+          resp.text().then((iconHTML) => {
+            if (iconHTML.match(/<style/i)) {
+              const img = document.createElement('img');
+              img.src = `data:image/svg+xml,${encodeURIComponent(iconHTML)}`;
+              span.appendChild(img);
+            } else {
+              span.innerHTML = iconHTML;
+            }
+            resolve();
+          });
+        } else {
+          // eslint-disable-next-line no-console
+          console.warn('Icon not found:', icon);
+          resolve();
+        }
+      });
+    }));
   });
+
+  return Promise.all(promises);
 }
 
 /**

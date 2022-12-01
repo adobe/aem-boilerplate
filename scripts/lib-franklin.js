@@ -148,8 +148,6 @@ export async function decorateIcons(element) {
         const svg = await response.text();
         svgSprite.innerHTML += svg
           .replace('<svg', `<symbol id="${iconName}"`)
-          .replace(/ width=".*?"/, '')
-          .replace(/ height=".*?"/, '')
           .replace('</svg>', '</symbol>');
       } catch (err) {
         console.error(err);

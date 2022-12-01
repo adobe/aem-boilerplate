@@ -142,11 +142,6 @@ header nav .nav-tools p {
   margin: 0;
 }
 
-header nav .nav-tools .icon svg {
-  height: 24px;
-  width: 24px;
-}
-
 header nav[aria-expanded='true'] .nav-tools img {
   display: unset;
 }

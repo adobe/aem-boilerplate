@@ -123,29 +123,63 @@ export function toCamelCase(name) {
   return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
+const ICON_CACHE = {};
+
+const decorateIcon = (span, html) => {
+  span.classList.add('icon-decorated');
+  if (html.match(/<style/i)) {
+    const img = document.createElement('img');
+    img.src = `data:image/svg+xml,${encodeURIComponent(html)}`;
+    span.appendChild(img);
+  } else {
+    span.innerHTML = html;
+  }
+};
+
 /**
  * Replace icons with inline SVG and prefix with codeBasePath.
  * @param {Element} element
  */
 export function decorateIcons(element = document) {
-  element.querySelectorAll('span.icon').forEach(async (span) => {
+  const icons = [];
+  element.querySelectorAll('span.icon:not(.icon-decorated, .icon-decorating)').forEach((span) => {
     if (span.classList.length < 2 || !span.classList[1].startsWith('icon-')) {
       return;
     }
     const icon = span.classList[1].substring(5);
-    // eslint-disable-next-line no-use-before-define
-    const resp = await fetch(`${window.hlx.codeBasePath}/icons/${icon}.svg`);
-    if (resp.ok) {
-      const iconHTML = await resp.text();
-      if (iconHTML.match(/<style/i)) {
-        const img = document.createElement('img');
-        img.src = `data:image/svg+xml,${encodeURIComponent(iconHTML)}`;
-        span.appendChild(img);
-      } else {
-        span.innerHTML = iconHTML;
-      }
+    if (ICON_CACHE[icon]) {
+      // cache hit
+      decorateIcon(span, ICON_CACHE[icon]);
+    } else if (!icons.includes(icon)) {
+      // need to fetch ico
+      span.classList.add('icon-decorating');
+      icons.push(icon);
     }
   });
+
+  const promises = [];
+  icons.forEach((icon) => {
+    promises.push(new Promise((resolve) => {
+      fetch(`${window.hlx.codeBasePath || ''}/icons/${icon}.svg`).then((resp) => {
+        if (resp.ok) {
+          resp.text().then((iconHTML) => {
+            ICON_CACHE[icon] = iconHTML;
+            element.querySelectorAll(`span.icon.icon-${icon}.icon-decorating`).forEach((span) => {
+              decorateIcon(span, iconHTML);
+              span.classList.remove('icon-decorating');
+            });
+            resolve();
+          });
+        } else {
+          // eslint-disable-next-line no-console
+          console.warn('Icon not found:', icon);
+          resolve();
+        }
+      });
+    }));
+  });
+
+  return Promise.all(promises);
 }
 
 /**

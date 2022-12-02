@@ -166,14 +166,18 @@ function getDecisionPolicy(config) {
  * @param {string} audience
  * @return {boolean} is member of this audience
  */
-function isValidAudience(audience) {
-  if (audience === 'mobile') {
-    return window.innerWidth < 600;
-  }
-  if (audience === 'desktop') {
-    return window.innerWidth >= 600;
-  }
-  return true;
+async function isValidAudience(config, selected) {
+  const results = await Promise.all(selected.map(async (audience) => {
+    const [key, value] = audience.split('=');
+    if (config[key] && typeof config[key] === 'function') {
+      return config[key](value);
+    }
+    if (config[key] && config[key][value] && typeof config[key][value] === 'function') {
+      return config[key][value]();
+    }
+    return true;
+  }));
+  return results.every((res) => res);
 }
 
 /**
@@ -220,7 +224,7 @@ async function runExperiment(config, plugins) {
   }
 
   experimentConfig.run = forcedExperiment
-    || isValidAudience(toClassName(experimentConfig.audience));
+    || await isValidAudience(config.audiences, experimentConfig.audience.split(','));
   window.hlx = window.hlx || {};
   window.hlx.experiment = experimentConfig;
   console.debug('run', experimentConfig.run, experimentConfig.audience);

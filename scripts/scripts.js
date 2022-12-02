@@ -20,6 +20,27 @@ await withPlugin('./plugins/experimentation-ued/index.js', {
   condition: () => !!getMetadata('experiment'),
   basePath: '/franklin-experiments',
   configFile: 'franklin-experiment.json',
+  audiences: {
+    device: {
+      mobile: () => window.innerWidth < 600,
+      desktop: () => window.innerWidth >= 600,
+    },
+    geo: async (value) => {
+      const usp = new URLSearchParams(window.location.search);
+      const service = usp.get('geo-service');
+      if (service === 'cf' || service === 'clouflare') {
+        const response = await fetch('https://geo-service.adobe-franklin.workers.dev/');
+        const json = await response.json();
+        return json.country_code.toLowerCase() === value.toLowerCase();
+      }
+      if (service === 'f' || service === 'falsty') {
+        const response = await fetch('https://franklin-geo-service.edgecompute.app/');
+        const json = await response.json();
+        return json.country_code.toLowerCase() === value.toLowerCase();
+      }
+      return navigator.languages.some((l) => l.startsWith(value));
+    },
+  },
   parser: (json) => {
     const config = {};
     try {

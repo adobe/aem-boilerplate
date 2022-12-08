@@ -23,10 +23,6 @@ sampleRUM.proxy.push((details) => {
   document.dispatchEvent(event);
 });
 
-document.addEventListener('franklin-datalayer', (ev) => {
-  console.log(ev);
-});
-
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');

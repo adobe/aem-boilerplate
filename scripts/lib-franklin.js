@@ -10,6 +10,17 @@
  * governing permissions and limitations under the License.
  */
 
+window.franklinDataLayer = [];
+
+const dataLayerProxy = new Proxy(window.franklinDataLayer, {
+  get: (target, prop) => target[prop],
+  set: (target, prop, value) => {
+    target[prop] = value;
+    const event = new CustomEvent('datalayer', value);
+    document.dispatchEvent(event);
+  },
+});
+
 /**
  * log RUM if part of the sample.
  * @param {string} checkpoint identifies the checkpoint in funnel
@@ -49,6 +60,7 @@ export function sampleRUM(checkpoint, data = {}) {
       const sendPing = (pdata = data) => {
         // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
         const body = JSON.stringify({ weight, id, referer: window.location.href, generation: window.hlx.RUM_GENERATION, checkpoint, ...data });
+        dataLayerProxy.push(body);
         const url = `https://rum.hlx.page/.rum/${weight}`;
         // eslint-disable-next-line no-unused-expressions
         navigator.sendBeacon(url, body);

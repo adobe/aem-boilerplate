@@ -59,8 +59,9 @@ export function sampleRUM(checkpoint, data = {}) {
     if (window.hlx && window.hlx.rum && window.hlx.rum.isSelected) {
       const sendPing = (pdata = data) => {
         // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
-        const body = JSON.stringify({ weight, id, referer: window.location.href, generation: window.hlx.RUM_GENERATION, checkpoint, ...data });
-        dataLayerProxy.push(body);
+        const details = { weight, id, referer: window.location.href, generation: window.hlx.RUM_GENERATION, checkpoint, ...data };
+        dataLayerProxy.push(details);
+        const body = JSON.stringify(details);
         const url = `https://rum.hlx.page/.rum/${weight}`;
         // eslint-disable-next-line no-unused-expressions
         navigator.sendBeacon(url, body);

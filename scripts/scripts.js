@@ -16,6 +16,17 @@ import {
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 
+window.franklinDataLayer = [];
+sampleRUM.proxy.push((details) => {
+  window.franklinDataLayer.push(details);
+  const event = new CustomEvent('franklin-datalayer', { detail: details });
+  document.dispatchEvent(event);
+});
+
+document.addEventListener('franklin-datalayer', (ev) => {
+  console.log(ev);
+});
+
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');

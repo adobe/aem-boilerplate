@@ -6,7 +6,7 @@
 	"features": {
 		"ghcr.io/devcontainers/features/common-utils:1": {
 			"installZsh": "true",
-			"username": "node",
+			"username": "rosalind",
 			"upgradePackages": "true"
 		},
 		"ghcr.io/devcontainers/features/node:1": {
@@ -32,9 +32,9 @@
 		3000
 	],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "yarn install",
+	"postCreateCommand": "npm install",
 	// Set `remoteUser` to `root` to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "node",
 	// run this command while the container is running
-	"postStartCommand": "hlx up --open"
+	"postStartCommand": "hlx up"
 }

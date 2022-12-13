@@ -36,5 +36,5 @@
 	// Set `remoteUser` to `root` to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "node",
 	// run this command while the container is running
-	"postStartCommand": "hlx up"
+	"postStartCommand": "hlx up --open"
 }

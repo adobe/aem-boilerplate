@@ -6,7 +6,7 @@
 	"features": {
 		"ghcr.io/devcontainers/features/common-utils:1": {
 			"installZsh": "true",
-			"username": "rosalind",
+			"username": "node",
 			"upgradePackages": "true"
 		},
 		"ghcr.io/devcontainers/features/node:1": {

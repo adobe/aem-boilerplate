@@ -7,7 +7,7 @@ ENV IMAGE_VARIANT="18-bullseye"
 COPY library-scripts/add-patch.sh /tmp/library-scripts/
 RUN bash /tmp/library-scripts/add-patch.sh "${IMAGE_VARIANT}" && rm -rf /tmp/library-scripts
 
-ARG USERNAME=rosalind
+ARG USERNAME=node
 ARG NPM_GLOBAL=/usr/local/share/npm-global
 
 # Add NPM global to PATH.

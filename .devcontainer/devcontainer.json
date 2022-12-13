@@ -15,7 +15,9 @@
 		"ghcr.io/devcontainers/features/git:1": {
 			"version": "latest",
 			"ppa": "false"
-		}
+		},
+		// GitHub CLI
+		"ghcr.io/devcontainers/features/github-cli:1": {}
 	},
 	// Configure tool-specific properties.
 	"customizations": {

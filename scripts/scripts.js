@@ -1,15 +1,7 @@
 import {
-  sampleRUM,
   buildBlock,
-  loadHeader,
-  loadFooter,
-  decorateButtons,
-  decorateIcons,
-  decorateSections,
-  decorateBlocks,
-  decorateTemplateAndTheme,
-  waitForLCP,
-  loadBlocks,
+  init,
+  loadBlock,
   loadCSS,
 } from './lib-franklin.js';
 
@@ -44,14 +36,11 @@ function buildAutoBlocks(main) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-// eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
-  decorateButtons(main);
-  decorateIcons(main);
+  this.plugins.decorator.decorateButtons(main);
+  this.plugins.decorator.decorateIcons(main);
   buildAutoBlocks(main);
-  decorateSections(main);
-  decorateBlocks(main);
 }
 
 /**
@@ -59,11 +48,9 @@ export function decorateMain(main) {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
-  decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
-    decorateMain(main);
-    await waitForLCP(LCP_BLOCKS);
+    decorateMain.call(this, main);
   }
 }
 
@@ -85,24 +72,42 @@ export function addFavIcon(href) {
 }
 
 /**
+ * loads a block named 'header' into header
+ */
+
+export function loadHeader(header) {
+  const headerBlock = buildBlock('header', '');
+  header.append(headerBlock);
+  this.plugins.decorator.decorateBlock(headerBlock);
+  return loadBlock(headerBlock);
+}
+
+/**
+ * loads a block named 'footer' into footer
+ */
+
+export function loadFooter(footer) {
+  const footerBlock = buildBlock('footer', '');
+  footer.append(footerBlock);
+  this.plugins.decorator.decorateBlock(footerBlock);
+  return loadBlock(footerBlock);
+}
+
+/**
  * loads everything that doesn't need to be delayed.
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await loadBlocks(main);
 
   const { hash } = window.location;
   const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
-  loadFooter(doc.querySelector('footer'));
+  loadHeader.call(this, doc.querySelector('header'));
+  loadFooter.call(this, doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
-  sampleRUM('lazy');
-  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  sampleRUM.observe(main.querySelectorAll('picture > img'));
 }
 
 /**
@@ -110,15 +115,13 @@ async function loadLazy(doc) {
  * the user experience.
  */
 function loadDelayed() {
-  // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
+  import('./delayed.js');
 }
 
-async function loadPage() {
-  await loadEager(document);
-  await loadLazy(document);
-  loadDelayed();
-}
-
-loadPage();
+init({
+  loadEager,
+  loadLazy,
+  loadDelayed,
+  lcpblocks: LCP_BLOCKS,
+});

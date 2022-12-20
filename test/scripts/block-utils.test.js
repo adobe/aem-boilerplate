@@ -1,9 +1,8 @@
 /* eslint-disable no-unused-expressions */
-/* global describe before it */
+/* global describe before beforeEach it */
 
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import sinon from 'sinon';
 
 let blockUtils;
 
@@ -14,6 +13,10 @@ describe('Utils methods', () => {
   before(async () => {
     blockUtils = await import('../../scripts/lib-franklin.js');
     document.body.innerHTML = await readFile({ path: './body.html' });
+  });
+
+  beforeEach(async () => {
+    await blockUtils.init({ delayedDuration: 10 });
   });
 
   it('Sanitizes class name', async () => {
@@ -47,28 +50,6 @@ describe('Utils methods', () => {
     expect(error).to.equal('error');
   });
 
-  it('Collects RUM data', async () => {
-    const sendBeacon = sinon.stub(navigator, 'sendBeacon');
-    // turn on RUM
-    window.history.pushState({}, '', `${window.location.href}&rum=on`);
-    delete window.hlx;
-
-    // sends checkpoint beacon
-    await blockUtils.sampleRUM('test', { foo: 'bar' });
-    expect(sendBeacon.called).to.be.true;
-    sendBeacon.resetHistory();
-
-    // sends cwv beacon
-    await blockUtils.sampleRUM('cwv', { foo: 'bar' });
-    expect(sendBeacon.called).to.be.true;
-
-    // test error handling
-    sendBeacon.throws();
-    await blockUtils.sampleRUM('error', { foo: 'bar' });
-
-    sendBeacon.restore();
-  });
-
   it('Creates optimized picture', async () => {
     const $picture = blockUtils.createOptimizedPicture('/test/scripts/mock.png');
     expect($picture.querySelector(':scope source[type="image/webp"]')).to.exist; // webp
@@ -85,14 +66,14 @@ describe('Utils methods', () => {
 });
 
 describe('Sections and blocks', () => {
-  it('Decorates sections', async () => {
-    blockUtils.decorateSections(document.querySelector('main'));
-    expect(document.querySelectorAll('main .section').length).to.equal(2);
+  before(async () => {
+    blockUtils = await import('../../scripts/lib-franklin.js');
+    await blockUtils.withPlugin('../../scripts/plugins/decorator.js');
+    document.body.innerHTML = await readFile({ path: './body.html' });
   });
 
-  it('Decorates blocks', async () => {
-    blockUtils.decorateBlocks(document.querySelector('main'));
-    expect(document.querySelectorAll('main .block').length).to.equal(1);
+  beforeEach(async () => {
+    await blockUtils.init({ delayedDuration: 10 });
   });
 
   it('Loads blocks', async () => {

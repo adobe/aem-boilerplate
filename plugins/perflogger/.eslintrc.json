@@ -1,0 +1,11 @@
+{
+  "root": true,
+  "extends": "airbnb-base",
+  "env": {
+    "browser": true,
+    "mocha": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  }
+}

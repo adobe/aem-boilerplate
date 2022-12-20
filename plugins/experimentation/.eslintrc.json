@@ -1,0 +1,13 @@
+{
+  "root": true,
+  "extends": "airbnb-base",
+  "env": {
+    "browser": true,
+    "mocha": true
+  },
+  "ignorePatterns": ["ued.js"],
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  }
+}

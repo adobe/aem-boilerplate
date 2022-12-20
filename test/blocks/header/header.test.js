@@ -6,7 +6,11 @@ import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: '../../scripts/dummy.html' });
 
-const { buildBlock, decorateBlock, loadBlock } = await import('../../../scripts/lib-franklin.js');
+const {
+  buildBlock, init, loadBlock, withPlugin,
+} = await import('../../../scripts/lib-franklin.js');
+const { decorateBlock } = await withPlugin('../../../scripts/plugins/decorator.js');
+init();
 
 document.body.innerHTML = await readFile({ path: '../../scripts/body.html' });
 

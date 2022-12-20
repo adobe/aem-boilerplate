@@ -8,7 +8,10 @@
     "test:watch": "npm test -- --watch",
     "lint:js": "eslint .",
     "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css'",
-    "lint": "npm run lint:js && npm run lint:css"
+    "lint": "npm run lint:js && npm run lint:css",
+    "franklin:plugin:add": "git remote add -f \"plugins/$npm_config_name\" \"$npm_config_url\" && git subtree add --squash --prefix \"plugins/$npm_config_name\" \"plugins/$npm_config_name\" main",
+    "franklin:plugin:update": "git fetch \"plugins/$npm_config_name\" main && git subtree pull --squash --prefix \"plugins/$npm_config_name\" \"plugins/$npm_config_name\" main",
+    "franklin:plugin:remove": "git remote remove \"plugins/$npm_config_name\" && rimraf \"plugins/$npm_config_name\""
   },
   "repository": {
     "type": "git",
@@ -23,13 +26,14 @@
   "devDependencies": {
     "@babel/core": "7.19.3",
     "@babel/eslint-parser": "7.19.1",
+    "@esm-bundle/chai": "4.3.4-fix.0",
+    "@web/test-runner": "0.14.0",
+    "@web/test-runner-commands": "0.6.5",
     "chai": "4.3.6",
     "eslint": "8.24.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.26.0",
-    "@esm-bundle/chai": "4.3.4-fix.0",
-    "@web/test-runner": "0.14.0",
-    "@web/test-runner-commands": "0.6.5",
+    "rimraf": "3.0.2",
     "sinon": "14.0.1",
     "stylelint": "14.13.0",
     "stylelint-config-prettier": "9.0.3",

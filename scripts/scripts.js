@@ -82,8 +82,8 @@ async function loadLazy(doc) {
   const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader.call(this, doc.querySelector('header'));
-  loadFooter.call(this, doc.querySelector('footer'));
+  loadHeader(doc.querySelector('header'));
+  loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
@@ -102,5 +102,5 @@ init({
   loadEager,
   loadLazy,
   loadDelayed,
-  lcpblocks: LCP_BLOCKS,
+  lcpBlocks: LCP_BLOCKS,
 });

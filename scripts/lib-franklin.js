@@ -294,7 +294,7 @@ export const DecoratorPlugin = () => {
   /**
    * Set template (page structure) and theme (page styles).
    */
-  function decorateTemplateAndTheme(loadCssThemes = false) {
+  function decorateTemplateAndTheme() {
     const addClasses = (elem, classes) => {
       classes.split(',').forEach((v) => {
         elem.classList.add(toClassName(v.trim()));
@@ -305,11 +305,6 @@ export const DecoratorPlugin = () => {
     const theme = getMetadata('theme');
     if (theme) {
       addClasses(document.body, theme);
-      if (loadCssThemes) {
-        theme.split(',').forEach((t) => {
-          loadCSS(`/styles/theme-${toClassName(t)}.css`);
-        });
-      }
     }
   }
 
@@ -354,8 +349,8 @@ export const DecoratorPlugin = () => {
       decorateSections,
     },
 
-    preEager: (options) => {
-      decorateTemplateAndTheme(options.loadCssThemes);
+    preEager: () => {
+      decorateTemplateAndTheme();
     },
 
     postEager: () => {
@@ -421,7 +416,7 @@ export async function setPluginOptions(pluginName, options) {
  * @param {Element} main The container element
  */
 export function updateSectionsStatus(main) {
-  const sections = [...main.querySelectorAll(':scope>div')];
+  const sections = [...main.querySelectorAll(':scope > div.section')];
   for (let i = 0; i < sections.length; i += 1) {
     const section = sections[i];
     const status = section.getAttribute('data-section-status');

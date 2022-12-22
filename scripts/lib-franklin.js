@@ -696,6 +696,7 @@ async function loadPage(options = {}) {
  */
 window.hlx = window.hlx || {};
 window.hlx.codeBasePath = '';
+window.hlx.context = pluginContext;
 const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
 if (scriptEl) {
   try {

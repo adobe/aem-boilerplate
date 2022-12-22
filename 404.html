@@ -9,9 +9,9 @@
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:title" content="Page not found">
-  <script src="/scripts/scripts.js" type="module" crossorigin="use-credentials"></script>
+  <script src="/scripts/lib-franklin.js" type="module"></script>
+  <script src="/scripts/scripts.js" type="module"></script>
   <script type="module">
-    import { plugins } from '/scripts/lib-franklin.js';
 
     window.addEventListener('load', () => {
       if (document.referrer) {
@@ -26,7 +26,8 @@
           btnContainer.append(backBtn);
         }
       }
-      plugins.rum.sampleRUM('404', { source: document.referrer, target: window.location.href });
+
+      window.hlx.context.plugins.rum.sampleRUM('404', { source: document.referrer, target: window.location.href });
     });
   </script>
   <link rel="stylesheet" href="/styles/styles.css">

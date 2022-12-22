@@ -691,9 +691,7 @@ async function loadPage(options = {}) {
   });
 }
 
-/**
- * init block utils
- */
+// Setting hlx context
 window.hlx = window.hlx || {};
 window.hlx.codeBasePath = '';
 window.hlx.context = pluginContext;
@@ -707,8 +705,13 @@ if (scriptEl) {
   }
 }
 
+// Register core plugins
 withPlugin(RumPlugin);
 withPlugin(DecoratorPlugin);
+
+/**
+ * init block utils
+ */
 export async function init(options) {
   return loadPage(options);
 }

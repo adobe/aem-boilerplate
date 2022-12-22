@@ -1,8 +1,9 @@
 import {
   buildBlock,
   init,
-  loadBlock,
   loadCSS,
+  loadFooter,
+  loadHeader,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
@@ -69,28 +70,6 @@ export function addFavIcon(href) {
   } else {
     document.getElementsByTagName('head')[0].appendChild(link);
   }
-}
-
-/**
- * loads a block named 'header' into header
- */
-
-export function loadHeader(header) {
-  const headerBlock = buildBlock('header', '');
-  header.append(headerBlock);
-  this.plugins.decorator.decorateBlock(headerBlock);
-  return loadBlock(headerBlock);
-}
-
-/**
- * loads a block named 'footer' into footer
- */
-
-export function loadFooter(footer) {
-  const footerBlock = buildBlock('footer', '');
-  footer.append(footerBlock);
-  this.plugins.decorator.decorateBlock(footerBlock);
-  return loadBlock(footerBlock);
 }
 
 /**

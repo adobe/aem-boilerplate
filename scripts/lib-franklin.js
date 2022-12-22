@@ -631,6 +631,24 @@ export async function waitForLCP(lcpBlocks) {
   });
 }
 
+async function execPhase(pluginsList, phase, options) {
+  await pluginsList.reduce((promise, plugin) => {
+    if (plugin[`pre${phase}`]) {
+      return promise.then(() => plugin[`pre${phase}`].call(pluginContext, document, options));
+    }
+    return promise;
+  }, Promise.resolve());
+  if (options[`load${phase}`]) {
+    await options[`load${phase}`].call(pluginContext, document, options);
+  }
+  await pluginsList.reduce((promise, plugin) => {
+    if (plugin[`post${phase}`]) {
+      return promise.then(() => plugin[`post${phase}`].call(pluginContext, document, options));
+    }
+    return promise;
+  }, Promise.resolve());
+}
+
 /**
  * The main loading logic for the page.
  * It defines the 3 phases (eager, lazy, delayed), and registers both
@@ -639,39 +657,20 @@ export async function waitForLCP(lcpBlocks) {
  * @param {object} options
  * @returns
  */
-export async function loadPage(options = {}) {
+async function loadPage(options = {}) {
   const pluginsList = Object.values(plugins);
 
-  await Promise.all(pluginsList.map((p) => p.preEager
-    && p.preEager.call(pluginContext, p.options)));
-  if (options.loadEager) {
-    await options.loadEager.call(pluginContext, document, options);
-  }
-  await Promise.all(pluginsList.map((p) => p.postEager
-    && p.postEager.call(pluginContext, p.options)));
+  await execPhase(pluginsList, 'Eager', options);
 
   await waitForLCP(options.lcpBlocks || []);
 
   const main = document.querySelector('main');
   await loadBlocks(main);
 
-  await Promise.all(pluginsList.map((p) => p.preLazy
-    && p.preLazy.call(pluginContext, p.options)));
-  if (options.loadLazy) {
-    await options.loadLazy.call(pluginContext, document, options);
-  }
-  await Promise.all(pluginsList.map((p) => p.postLazy
-    && p.postLazy.call(pluginContext, p.options)));
-
+  await execPhase(pluginsList, 'Lazy', options);
   return new Promise((resolve) => {
     window.setTimeout(async () => {
-      await Promise.all(pluginsList.map((p) => p.preDelayed
-        && p.preDelayed.call(pluginContext, p.options)));
-      if (options.loadDelayed) {
-        await options.loadDelayed.call(pluginContext, document, options);
-      }
-      await Promise.all(pluginsList.map((p) => p.postDelayed
-        && p.postDelayed.call(pluginContext, p.options)));
+      await execPhase(pluginsList, 'Delayed', options);
       resolve();
     }, options.delayedDuration || 3000);
   });

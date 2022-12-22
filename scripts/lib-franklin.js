@@ -511,7 +511,7 @@ export async function loadBlock(block) {
         try {
           const mod = await import(jsPath);
           if (mod.default) {
-            await mod.default(block, pluginsApis);
+            await mod.default.call(pluginContext, block);
           }
         } catch (error) {
           // eslint-disable-next-line no-console

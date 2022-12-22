@@ -16,7 +16,7 @@ function collapseAllNavSections(sections) {
  * @param {Element} block The header block element
  */
 
-export default async function decorate(block, plugins) {
+export default async function decorate(block) {
   const cfg = readBlockConfig(block);
   block.textContent = '';
 
@@ -29,7 +29,7 @@ export default async function decorate(block, plugins) {
     // decorate nav DOM
     const nav = document.createElement('nav');
     nav.innerHTML = html;
-    plugins.decorator.decorateIcons(nav);
+    this.plugins.decorator.decorateIcons(nav);
 
     const classes = ['brand', 'sections', 'tools'];
     classes.forEach((e, j) => {
@@ -60,7 +60,7 @@ export default async function decorate(block, plugins) {
     });
     nav.prepend(hamburger);
     nav.setAttribute('aria-expanded', 'false');
-    plugins.decorator.decorateIcons(nav);
+    this.plugins.decorator.decorateIcons(nav);
     block.append(nav);
   }
 }

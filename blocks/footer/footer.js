@@ -5,7 +5,7 @@ import { readBlockConfig } from '../../scripts/lib-franklin.js';
  * @param {Element} block The header block element
  */
 
-export default async function decorate(block, plugins) {
+export default async function decorate(block) {
   const cfg = readBlockConfig(block);
   block.textContent = '';
 
@@ -14,6 +14,6 @@ export default async function decorate(block, plugins) {
   const html = await resp.text();
   const footer = document.createElement('div');
   footer.innerHTML = html;
-  await plugins.decorator.decorateIcons(footer);
+  await this.plugins.decorator.decorateIcons(footer);
   block.append(footer);
 }

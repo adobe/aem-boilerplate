@@ -53,7 +53,7 @@ export const api = {
 /**
  * Logic to execute in the pre lazy phase
  */
-export async function preLazy(options) {
+export async function preLazy(doc, options) {
   try {
     placeholders = await fetchPlaceholders(options.prefix);
   } catch (err) {

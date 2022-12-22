@@ -303,9 +303,7 @@ export const DecoratorPlugin = () => {
     const template = getMetadata('template');
     if (template) addClasses(document.body, template);
     const theme = getMetadata('theme');
-    if (theme) {
-      addClasses(document.body, theme);
-    }
+    if (theme) addClasses(document.body, theme);
   }
 
   /**
@@ -697,7 +695,6 @@ async function loadPage(options = {}) {
  * init block utils
  */
 window.hlx = window.hlx || {};
-
 window.hlx.codeBasePath = '';
 const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
 if (scriptEl) {

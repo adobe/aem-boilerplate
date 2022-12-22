@@ -37,5 +37,6 @@ export const api = {
  * Logic to execute in the pre lazy phase
  */
 export async function preLazy(doc, options) {
-  await normalizeHeadings(doc, options.allowedHeadings);
+  doc.normalize();
+  normalizeHeadings(doc, options.allowedHeadings);
 }

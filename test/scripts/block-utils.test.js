@@ -68,7 +68,6 @@ describe('Utils methods', () => {
 describe('Sections and blocks', () => {
   before(async () => {
     blockUtils = await import('../../scripts/lib-franklin.js');
-    await blockUtils.withPlugin('../../scripts/plugins/decorator.js');
     document.body.innerHTML = await readFile({ path: './body.html' });
   });
 

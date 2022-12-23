@@ -7,9 +7,10 @@ import { expect } from '@esm-bundle/chai';
 document.body.innerHTML = await readFile({ path: '../../scripts/dummy.html' });
 
 const {
-  buildBlock, init, loadBlock, withPlugin,
+  DecoratorPlugin, buildBlock, init, loadBlock,
 } = await import('../../../scripts/lib-franklin.js');
-const { decorateBlock } = await withPlugin('../../../scripts/plugins/decorator.js');
+const { api } = DecoratorPlugin();
+const { decorateBlock } = api;
 init();
 
 document.body.innerHTML = await readFile({ path: '../../scripts/body.html' });

@@ -56,13 +56,6 @@ describe('Utils methods', () => {
     expect($picture.querySelector(':scope source:not([type="image/webp"])')).to.exist; // fallback
     expect($picture.querySelector(':scope img').src).to.include('format=png&optimize=medium'); // default
   });
-
-  it('Normalizes headings', async () => {
-    const numHeadings = document.querySelectorAll('h1, h2, h3, h4, h5, h6').length;
-    blockUtils.normalizeHeadings(document.querySelector('main'), ['h1', 'h2', 'h3']);
-    expect(document.querySelectorAll('h1, h2, h3, h4, h5, h6').length).to.equal(numHeadings);
-    expect(document.querySelectorAll('h4, h5, h6').length).to.equal(0);
-  });
 });
 
 describe('Sections and blocks', () => {

@@ -3,7 +3,7 @@
  * @param {Element} el The container element
  * @param {[string]} allowedHeadings The list of allowed headings (h1 ... h6)
  */
-function normalizeHeadings(el, allowedHeadings) {
+function normalizeHeadings(el, allowedHeadings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']) {
   const allowed = allowedHeadings.map((h) => h.toLowerCase());
   el.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((tag) => {
     const h = tag.tagName.toLowerCase();
@@ -36,7 +36,12 @@ export const api = {
 /**
  * Logic to execute in the pre lazy phase
  */
-export async function preLazy(doc, options) {
+export async function preLazy(doc, options = {}) {
   doc.normalize();
+  doc.querySelectorAll('*:empty').forEach((el) => {
+    if (!el.classList.length && !el.attributes.length) {
+      el.remove();
+    }
+  });
   normalizeHeadings(doc, options.allowedHeadings);
 }

@@ -527,7 +527,6 @@ export async function waitForLCP(lcpBlocks) {
 /**
  * loads a block named 'header' into header
  */
-
 export function loadHeader(header) {
   const headerBlock = buildBlock('header', '');
   header.append(headerBlock);
@@ -538,7 +537,6 @@ export function loadHeader(header) {
 /**
  * loads a block named 'footer' into footer
  */
-
 export function loadFooter(footer) {
   const footerBlock = buildBlock('footer', '');
   footer.append(footerBlock);
@@ -547,12 +545,12 @@ export function loadFooter(footer) {
 }
 
 /**
- * init block utils
+ * setup block utils
  */
-
-function init() {
+export function setup() {
   window.hlx = window.hlx || {};
   window.hlx.codeBasePath = '';
+  window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {
@@ -563,7 +561,13 @@ function init() {
       console.log(error);
     }
   }
+}
 
+/**
+ * auto init
+ */
+function init() {
+  setup();
   sampleRUM('top');
 
   window.addEventListener('load', () => sampleRUM('load'));

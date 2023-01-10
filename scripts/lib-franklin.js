@@ -310,7 +310,7 @@ export function decorateBlocks(main) {
 }
 
 /**
- * Builds a block DOM Element from a two dimensional array
+ * Builds a block DOM Element from a two dimensional array, string, or object
  * @param {string} blockName name of the block
  * @param {any} content two dimensional array or string or object of content
  */

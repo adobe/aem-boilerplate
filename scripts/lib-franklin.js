@@ -204,7 +204,7 @@ export function decorateBlock(block) {
  */
 export function readBlockConfig(block) {
   const config = {};
-  block.querySelectorAll(':scope>div').forEach((row) => {
+  block.querySelectorAll(':scope > div').forEach((row) => {
     if (row.children) {
       const cols = [...row.children];
       if (cols[1]) {

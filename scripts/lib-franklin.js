@@ -125,7 +125,7 @@ export function toCamelCase(name) {
 
 /**
  * Replace icons with inline SVG and prefix with codeBasePath.
- * @param {Element} element
+ * @param {Element} [element] Element containing icons
  */
 export function decorateIcons(element = document) {
   element.querySelectorAll('span.icon').forEach(async (span) => {
@@ -150,7 +150,7 @@ export function decorateIcons(element = document) {
 
 /**
  * Gets placeholders object.
- * @param {string} prefix Location of placeholders
+ * @param {string} [prefix] Location of placeholders
  * @returns {object} Window placeholders object
  */
 export async function fetchPlaceholders(prefix = 'default') {

@@ -114,9 +114,9 @@ export function toClassName(name) {
     : '';
 }
 
-/*
- * Sanitizes a name for use as a js property name.
- * @param {string} name The unsanitized name
+/**
+ * Sanitizes a string for use as a js property name.
+ * @param {string} name The unsanitized string
  * @returns {string} The camelCased name
  */
 export function toCamelCase(name) {

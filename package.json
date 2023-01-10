@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/adobe/helix-project-boilerplate#readme",
   "devDependencies": {
-    "@babel/core": "7.20.7",
+    "@babel/core": "7.20.12",
     "@babel/eslint-parser": "7.19.1",
     "chai": "4.3.7",
     "eslint": "8.31.0",

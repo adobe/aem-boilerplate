@@ -104,8 +104,8 @@ export function getMetadata(name) {
 }
 
 /**
- * Sanitizes a name for use as class name.
- * @param {string} name The unsanitized name
+ * Sanitizes a string for use as class name.
+ * @param {string} name The unsanitized string
  * @returns {string} The class name
  */
 export function toClassName(name) {

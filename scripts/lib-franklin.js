@@ -476,10 +476,9 @@ export function decorateTemplateAndTheme() {
 }
 
 /**
- * decorates paragraphs containing a single link as buttons.
+ * Decorates paragraphs containing a single link as buttons.
  * @param {Element} element container element
  */
-
 export function decorateButtons(element) {
   element.querySelectorAll('a').forEach((a) => {
     a.title = a.title || a.textContent;

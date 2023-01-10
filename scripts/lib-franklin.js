@@ -464,9 +464,9 @@ export function normalizeHeadings(el, allowedHeadings) {
  * Set template (page structure) and theme (page styles).
  */
 export function decorateTemplateAndTheme() {
-  const addClasses = (elem, classes) => {
-    classes.split(',').forEach((v) => {
-      elem.classList.add(toClassName(v.trim()));
+  const addClasses = (el, classes) => {
+    classes.split(',').forEach((c) => {
+      el.classList.add(toClassName(c.trim()));
     });
   };
   const template = getMetadata('template');

@@ -149,8 +149,9 @@ export function decorateIcons(element = document) {
 }
 
 /**
- * Gets placeholders object
- * @param {string} prefix
+ * Gets placeholders object.
+ * @param {string} prefix Location of placeholders
+ * @returns {object} Window placeholders object
  */
 export async function fetchPlaceholders(prefix = 'default') {
   window.placeholders = window.placeholders || {};

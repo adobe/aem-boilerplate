@@ -435,7 +435,7 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
 /**
  * Normalizes all headings within a container element.
  * @param {Element} el The container element
- * @param {[string]} allowedHeadings The list of allowed headings (h1 ... h6)
+ * @param {string} allowedHeadings The list of allowed headings (h1 ... h6)
  */
 export function normalizeHeadings(el, allowedHeadings) {
   const allowed = allowedHeadings.map((h) => h.toLowerCase());

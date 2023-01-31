@@ -139,27 +139,34 @@ export async function decorateIcons(element) {
 
   const icons = [...element.querySelectorAll('span.icon')];
 
-  icons.forEach(async (span) => {
+  return Promise.all(icons.map(async (span) => {
     const iconName = span.classList[1].substring(5);
+    let html;
     if (!symbols[iconName]) {
       symbols[iconName] = true;
       try {
         const response = await fetch(`${window.hlx.codeBasePath}/icons/${iconName}.svg`);
         const svg = await response.text();
-        svgSprite.innerHTML += svg
-          .replace('<svg', `<symbol id="${iconName}"`)
-          .replace('</svg>', '</symbol>');
+        // Styled svg icons don't play nice with the `<use>` references, so just inline those
+        if (svg.match(/(<style | class=)/)) {
+          html = svg;
+        } else {
+          // Add the icon to the sprite without its hardcoded size so we can style it in css
+          svgSprite.innerHTML += svg
+            .replace('<svg', `<symbol id="${iconName}"`)
+            .replace(/ width=".*?"/, '')
+            .replace(/ height=".*?"/, '')
+            .replace('</svg>', '</symbol>');
+          html = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#${iconName}"/></svg>`;
+        }
       } catch (err) {
         console.error(err);
       }
     }
 
     const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
-    parent.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg">
-        <use href="#${iconName}"/>
-      </svg>`;
-  });
+    parent.innerHTML = html;
+  }));
 }
 
 /**

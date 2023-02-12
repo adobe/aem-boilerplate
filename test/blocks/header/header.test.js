@@ -16,7 +16,11 @@ const sleep = async (time = 1000) => new Promise((resolve) => {
   }, time);
 });
 
-const headerBlock = buildBlock('header', [['Nav', '/test/blocks/header/nav']]);
+const headerBlock = buildBlock('header', [[]]);
+const meta = document.createElement('meta');
+meta.setAttribute('name', 'nav');
+meta.content = '/test/blocks/header/nav';
+document.head.append(meta);
 document.querySelector('header').append(headerBlock);
 decorateBlock(headerBlock);
 await loadBlock(headerBlock);

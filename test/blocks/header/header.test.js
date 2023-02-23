@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 /* global describe it */
 
-import { readFile } from '@web/test-runner-commands';
+import { readFile, setViewport } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: '../../scripts/dummy.html' });
@@ -16,7 +16,11 @@ const sleep = async (time = 1000) => new Promise((resolve) => {
   }, time);
 });
 
-const headerBlock = buildBlock('header', [['Nav', '/test/blocks/header/nav']]);
+const headerBlock = buildBlock('header', [[]]);
+const meta = document.createElement('meta');
+meta.setAttribute('name', 'nav');
+meta.content = '/test/blocks/header/nav';
+document.head.append(meta);
 document.querySelector('header').append(headerBlock);
 decorateBlock(headerBlock);
 await loadBlock(headerBlock);
@@ -34,7 +38,8 @@ describe('Header block', () => {
     expect(nav.getAttribute('aria-expanded')).to.equal('false');
   });
 
-  it('Section title shows and hides section', async () => {
+  it('Section title shows and hides section on desktop', async () => {
+    await setViewport({ width: 900, height: 640 });
     const sections = document.querySelector('.header .nav-sections');
     const title = sections.querySelector(':scope li');
     title.click();

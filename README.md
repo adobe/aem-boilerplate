@@ -17,13 +17,6 @@ npm i
 npm tst
 ```
 
-## Cloud development
-
-1. Click "Use this template" and create a new repository based on the `helix-project-boilerplate` template and add a mountpoint in the `fstab.yaml`
-2. Click "Code" and create a new codespace from your new repository
-3. Start Franklin Proxy: `hlx up` (opens your browser at `http://localhost:3000` or a proxied version)
-4. Start coding, your browser is your IDE now.
-
 ## Local development
 
 1. Create a new repository based on the `helix-project-boilerplate` template and add a mountpoint in the `fstab.yaml`

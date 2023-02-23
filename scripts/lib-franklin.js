@@ -376,6 +376,37 @@ export async function loadBlock(block) {
 }
 
 /**
+ * Loads JS and CSS for a template.
+ * @param {Element} doc the document element
+ * @param {String} templateName the name of the template to load
+ */
+export async function loadTemplate(doc, templateName) {
+  try {
+    const cssLoaded = new Promise((resolve) => {
+      loadCSS(`${window.hlx.codeBasePath}/templates/${templateName}/${templateName}.css`, resolve);
+    });
+    const decorationComplete = new Promise((resolve) => {
+      (async () => {
+        try {
+          const mod = await import(`../templates/${templateName}/${templateName}.js`);
+          if (mod.default) {
+            await mod.default(doc);
+          }
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.log(`failed to load module for ${templateName}`, error);
+        }
+        resolve();
+      })();
+    });
+    await Promise.all([cssLoaded, decorationComplete]);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(`failed to load template ${templateName}`, error);
+  }
+}
+
+/**
  * Loads JS and CSS for all blocks in a container element.
  * @param {Element} main The container element
  */

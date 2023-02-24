@@ -141,11 +141,11 @@ export async function decorateIcons(element) {
   // Download all new icons
   const icons = [...element.querySelectorAll('span.icon')];
   await Promise.all(icons.map(async (span) => {
-    const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).split('-')[1];
+    const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
     if (!ICONS_CACHE[iconName]) {
       ICONS_CACHE[iconName] = true;
       try {
-        const response = await fetch(`${window.hlx.codeBasePath}${window.hlx.codeBasePath}/icons/${iconName}.svg`);
+        const response = await fetch(`${window.hlx.codeBasePath}/icons/${iconName}.svg`);
         if (!response.ok) {
           ICONS_CACHE[iconName] = false;
           return;
@@ -157,7 +157,7 @@ export async function decorateIcons(element) {
         } else {
           ICONS_CACHE[iconName] = {
             html: svg
-              .replace('<svg', `<symbol id="${iconName}"`)
+              .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
               .replace(/ width=".*?"/, '')
               .replace(/ height=".*?"/, '')
               .replace('</svg>', '</symbol>'),

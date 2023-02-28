@@ -204,6 +204,17 @@ main img {
   height: auto;
 }
 
+.icon {
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+}
+
+.icon svg {
+  height: 100%;
+  width: 100%;
+}
+
 @media (min-width: 600px) {
   main .section {
     padding: 64px 32px;

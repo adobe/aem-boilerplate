@@ -163,10 +163,10 @@ export async function decorateIcons(element) {
               .replace('</svg>', '</symbol>'),
           };
         }
-      } catch (err) {
+      } catch (error) {
         ICONS_CACHE[iconName] = false;
         // eslint-disable-next-line no-console
-        console.error(err);
+        console.error(error);
       }
     }
   }));

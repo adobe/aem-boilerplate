@@ -1,4 +1,11 @@
 /* header and nav layout */
+header .nav-wrapper {
+  background-color: var(--background-color);
+  width: 100%;
+  z-index: 2;
+  position: fixed;
+}
+
 header nav {
   box-sizing: border-box;
   display: grid;
@@ -7,15 +14,10 @@ header nav {
     'sections sections sections' 1fr / auto 1fr auto;
   align-items: center;
   gap: 0 2em;
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-  width: 100%;
+  margin: auto;
   max-width: 1264px;
   height: var(--nav-height);
   padding: 0 1rem;
-  background-color: var(--background-color);
   font-family: var(--body-font-family);
 }
 

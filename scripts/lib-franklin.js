@@ -104,8 +104,8 @@ export function getMetadata(name) {
 }
 
 /**
- * Sanitizes a name for use as class name.
- * @param {string} name The unsanitized name
+ * Sanitizes a string for use as class name.
+ * @param {string} name The unsanitized string
  * @returns {string} The class name
  */
 export function toClassName(name) {
@@ -114,9 +114,9 @@ export function toClassName(name) {
     : '';
 }
 
-/*
- * Sanitizes a name for use as a js property name.
- * @param {string} name The unsanitized name
+/**
+ * Sanitizes a string for use as a js property name.
+ * @param {string} name The unsanitized string
  * @returns {string} The camelCased name
  */
 export function toCamelCase(name) {
@@ -126,7 +126,7 @@ export function toCamelCase(name) {
 const ICONS_CACHE = {};
 /**
  * Replace icons with inline SVG and prefix with codeBasePath.
- * @param {Element} element
+ * @param {Element} [element] Element containing icons
  */
 export async function decorateIcons(element) {
   // Prepare the inline sprite
@@ -163,10 +163,10 @@ export async function decorateIcons(element) {
               .replace('</svg>', '</symbol>'),
           };
         }
-      } catch (err) {
+      } catch (error) {
         ICONS_CACHE[iconName] = false;
         // eslint-disable-next-line no-console
-        console.error(err);
+        console.error(error);
       }
     }
   }));
@@ -187,8 +187,9 @@ export async function decorateIcons(element) {
 }
 
 /**
- * Gets placeholders object
- * @param {string} prefix
+ * Gets placeholders object.
+ * @param {string} [prefix] Location of placeholders
+ * @returns {object} Window placeholders object
  */
 export async function fetchPlaceholders(prefix = 'default') {
   window.placeholders = window.placeholders || {};
@@ -225,8 +226,8 @@ export function decorateBlock(block) {
   const shortBlockName = block.classList[0];
   if (shortBlockName) {
     block.classList.add('block');
-    block.setAttribute('data-block-name', shortBlockName);
-    block.setAttribute('data-block-status', 'initialized');
+    block.dataset.blockName = shortBlockName;
+    block.dataset.blockStatus = 'initialized';
     const blockWrapper = block.parentElement;
     blockWrapper.classList.add(`${shortBlockName}-wrapper`);
     const section = block.closest('.section');
@@ -241,7 +242,7 @@ export function decorateBlock(block) {
  */
 export function readBlockConfig(block) {
   const config = {};
-  block.querySelectorAll(':scope>div').forEach((row) => {
+  block.querySelectorAll(':scope > div').forEach((row) => {
     if (row.children) {
       const cols = [...row.children];
       if (cols[1]) {
@@ -279,7 +280,7 @@ export function readBlockConfig(block) {
 
 /**
  * Decorates all sections in a container element.
- * @param {Element} $main The container element
+ * @param {Element} main The container element
  */
 export function decorateSections(main) {
   main.querySelectorAll(':scope > div').forEach((section) => {
@@ -296,7 +297,8 @@ export function decorateSections(main) {
     });
     wrappers.forEach((wrapper) => section.append(wrapper));
     section.classList.add('section');
-    section.setAttribute('data-section-status', 'initialized');
+    section.dataset.sectionStatus = 'initialized';
+    section.style.display = 'none';
 
     /* process section metadata */
     const sectionMeta = section.querySelector('div.section-metadata');
@@ -323,14 +325,15 @@ export function updateSectionsStatus(main) {
   const sections = [...main.querySelectorAll(':scope > div.section')];
   for (let i = 0; i < sections.length; i += 1) {
     const section = sections[i];
-    const status = section.getAttribute('data-section-status');
+    const status = section.dataset.sectionStatus;
     if (status !== 'loaded') {
       const loadingBlock = section.querySelector('.block[data-block-status="initialized"], .block[data-block-status="loading"]');
       if (loadingBlock) {
-        section.setAttribute('data-section-status', 'loading');
+        section.dataset.sectionStatus = 'loading';
         break;
       } else {
-        section.setAttribute('data-section-status', 'loaded');
+        section.dataset.sectionStatus = 'loaded';
+        section.style.display = null;
       }
     }
   }
@@ -347,9 +350,9 @@ export function decorateBlocks(main) {
 }
 
 /**
- * Builds a block DOM Element from a two dimensional array
+ * Builds a block DOM Element from a two dimensional array, string, or object
  * @param {string} blockName name of the block
- * @param {any} content two dimensional array or string or object of content
+ * @param {*} content two dimensional array or string or object of content
  */
 export function buildBlock(blockName, content) {
   const table = Array.isArray(content) ? content : [[content]];
@@ -382,10 +385,10 @@ export function buildBlock(blockName, content) {
  * @param {Element} block The block element
  */
 export async function loadBlock(block) {
-  const status = block.getAttribute('data-block-status');
+  const status = block.dataset.blockStatus;
   if (status !== 'loading' && status !== 'loaded') {
-    block.setAttribute('data-block-status', 'loading');
-    const blockName = block.getAttribute('data-block-name');
+    block.dataset.blockStatus = 'loading';
+    const { blockName } = block.dataset;
     try {
       const cssLoaded = new Promise((resolve) => {
         loadCSS(`${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`, resolve);
@@ -409,7 +412,7 @@ export async function loadBlock(block) {
       // eslint-disable-next-line no-console
       console.log(`failed to load block ${blockName}`, error);
     }
-    block.setAttribute('data-block-status', 'loaded');
+    block.dataset.blockStatus = 'loaded';
   }
 }
 
@@ -430,8 +433,10 @@ export async function loadBlocks(main) {
 /**
  * Returns a picture element with webp and fallbacks
  * @param {string} src The image URL
- * @param {boolean} eager load image eager
- * @param {Array} breakpoints breakpoints and corresponding params (eg. width)
+ * @param {string} [alt] The image alternative text
+ * @param {boolean} [eager] Set loading attribute to eager
+ * @param {Array} [breakpoints] Breakpoints and corresponding params (eg. width)
+ * @returns {Element} The picture element
  */
 export function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 400px)', width: '2000' }, { width: '750' }]) {
   const url = new URL(src, window.location.href);
@@ -470,7 +475,7 @@ export function createOptimizedPicture(src, alt = '', eager = false, breakpoints
 /**
  * Normalizes all headings within a container element.
  * @param {Element} el The container element
- * @param {[string]} allowedHeadings The list of allowed headings (h1 ... h6)
+ * @param {string} allowedHeadings The list of allowed headings (h1 ... h6)
  */
 export function normalizeHeadings(el, allowedHeadings) {
   const allowed = allowedHeadings.map((h) => h.toLowerCase());
@@ -499,9 +504,9 @@ export function normalizeHeadings(el, allowedHeadings) {
  * Set template (page structure) and theme (page styles).
  */
 export function decorateTemplateAndTheme() {
-  const addClasses = (elem, classes) => {
-    classes.split(',').forEach((v) => {
-      elem.classList.add(toClassName(v.trim()));
+  const addClasses = (element, classes) => {
+    classes.split(',').forEach((c) => {
+      element.classList.add(toClassName(c.trim()));
     });
   };
   const template = getMetadata('template');
@@ -511,10 +516,9 @@ export function decorateTemplateAndTheme() {
 }
 
 /**
- * decorates paragraphs containing a single link as buttons.
+ * Decorates paragraphs containing a single link as buttons.
  * @param {Element} element container element
  */
-
 export function decorateButtons(element) {
   element.querySelectorAll('a').forEach((a) => {
     a.title = a.title || a.textContent;
@@ -542,14 +546,14 @@ export function decorateButtons(element) {
 }
 
 /**
- * load LCP block and/or wait for LCP in default content.
+ * Load LCP block and/or wait for LCP in default content.
  */
 export async function waitForLCP(lcpBlocks) {
   const block = document.querySelector('.block');
-  const hasLCPBlock = (block && lcpBlocks.includes(block.getAttribute('data-block-name')));
+  const hasLCPBlock = (block && lcpBlocks.includes(block.dataset.blockName));
   if (hasLCPBlock) await loadBlock(block);
 
-  document.querySelector('body').classList.add('appear');
+  document.body.style.display = null;
   const lcpCandidate = document.querySelector('main img');
   await new Promise((resolve) => {
     if (lcpCandidate && !lcpCandidate.complete) {
@@ -563,7 +567,9 @@ export async function waitForLCP(lcpBlocks) {
 }
 
 /**
- * loads a block named 'header' into header
+ * Loads a block named 'header' into header
+ * @param {Element} header header element
+ * @returns {Promise}
  */
 export function loadHeader(header) {
   const headerBlock = buildBlock('header', '');
@@ -573,7 +579,9 @@ export function loadHeader(header) {
 }
 
 /**
- * loads a block named 'footer' into footer
+ * Loads a block named 'footer' into footer
+ * @param footer footer element
+ * @returns {Promise}
  */
 export function loadFooter(footer) {
   const footerBlock = buildBlock('footer', '');
@@ -583,7 +591,7 @@ export function loadFooter(footer) {
 }
 
 /**
- * setup block utils
+ * Setup block utils.
  */
 export function setup() {
   window.hlx = window.hlx || {};
@@ -602,9 +610,10 @@ export function setup() {
 }
 
 /**
- * auto init
+ * Auto initializiation.
  */
 function init() {
+  document.body.style.display = 'none';
   setup();
   sampleRUM('top');
 

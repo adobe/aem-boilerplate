@@ -32,7 +32,6 @@
     "@web/test-runner-commands": "0.6.5",
     "sinon": "15.0.1",
     "stylelint": "15.2.0",
-    "stylelint-config-prettier": "9.0.5",
     "stylelint-config-standard": "30.0.1"
   }
 }

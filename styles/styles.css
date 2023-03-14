@@ -232,12 +232,6 @@ main .section {
   }
 }
 
-/* progressive section appearance */
-main .section[data-section-status='loading'],
-main .section[data-section-status='initialized'] {
-  display: none;
-}
-
 /* section metadata */
 main .section.highlight {
   background-color: var(--highlight-background-color);

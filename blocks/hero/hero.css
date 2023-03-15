@@ -1,9 +1,11 @@
 /* block specific CSS goes here */
-main .hero-container {
-  padding: 0;
-}
+
 main .hero-container > div {
   max-width: unset;
+}
+  
+main .hero-container {
+  padding: 0;
 }
 main .hero {
   position: relative;

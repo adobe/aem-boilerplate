@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-expressions */
 /* global describe it */
 
-import { readFile } from '@web/test-runner-commands';
+import { readFile, setViewport } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
 document.body.innerHTML = await readFile({ path: '../../scripts/dummy.html' });
 
-const { buildBlock, decorateBlock, loadBlock } = await import('../../../scripts/scripts.js');
+const { buildBlock, decorateBlock, loadBlock } = await import('../../../scripts/lib-franklin.js');
 
 document.body.innerHTML = await readFile({ path: '../../scripts/body.html' });
 
@@ -15,8 +15,12 @@ const sleep = async (time = 1000) => new Promise((resolve) => {
     resolve(true);
   }, time);
 });
+const navMeta = document.createElement('meta');
+navMeta.setAttribute('name', 'nav');
+navMeta.setAttribute('content', 'https://main--helix-project-boilerplate--adobe.hlx.page/test/blocks/header/nav');
+document.head.append(navMeta);
 
-const headerBlock = buildBlock('header', [['Nav', '/test/blocks/header/nav']]);
+const headerBlock = buildBlock('header', [[]]);
 document.querySelector('header').append(headerBlock);
 decorateBlock(headerBlock);
 await loadBlock(headerBlock);
@@ -34,7 +38,8 @@ describe('Header block', () => {
     expect(nav.getAttribute('aria-expanded')).to.equal('false');
   });
 
-  it('Section title shows and hides section', async () => {
+  it('Section title shows and hides section on desktop', async () => {
+    await setViewport({ width: 900, height: 640 });
     const sections = document.querySelector('.header .nav-sections');
     const title = sections.querySelector(':scope li');
     title.click();

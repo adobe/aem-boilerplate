@@ -1,4 +1,4 @@
-import { createOptimizedPicture } from '../../scripts/scripts.js';
+import { createOptimizedPicture } from '../../scripts/lib-franklin.js';
 
 export default function decorate(block) {
   /* change to ul, li */

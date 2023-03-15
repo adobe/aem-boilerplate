@@ -6,6 +6,14 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+const ignoredFiles = [
+    "cards.scss",
+    "columns.scss",
+    "header.scss",
+    "hero.scss",
+    "styles.scss"
+]
+
 const compileAndSave = async (sassFile) => {
     const dest = sassFile.replace(path.extname(sassFile), ".css");
 
@@ -37,6 +45,10 @@ for (const folder of ["styles","blocks"]) {
 
 fs.watch('.', {recursive: true}, (eventType, fileName) => {
     if (path.extname(fileName) === ".scss" && eventType === "change") {
-        compileAndSave(path.join(__dirname, fileName));
+        if (!ignoredFiles.includes(fileName)) {
+            compileAndSave(path.join(__dirname, fileName));
+        } else {
+            console.log(`${fileName} has been explicitly ignored for compilation`);
+        }
     }
 })

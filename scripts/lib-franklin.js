@@ -156,15 +156,16 @@ export async function decorateIcons(element) {
         } else {
           const parser = new DOMParser();
           const parsedSvg = parser.parseFromString(svgSource, 'image/svg+xml');
-          const svgSymbol = document.createElement('symbol');
+          const svgSymbol = document.createElementNS('http://www.w3.org/2000/svg', 'symbol');
 
           const { attributes } = parsedSvg.documentElement;
 
           for (let i = 0; i < attributes.length; i += 1) {
-            // attributes not to be transferred to the new <symbol> elem
-            const skippedAttrs = ['xmlns'];
-            if (!skippedAttrs.includes(attributes[i].name)) {
-              svgSymbol.setAttribute(attributes[i].name, attributes[i].value);
+            const { name, value } = attributes[i];
+
+            // remove XML namespace-related attributes
+            if (!name.startsWith('xmlns:') && name !== 'xmlns') {
+              svgSymbol.setAttribute(name, value);
             }
           }
 

@@ -149,7 +149,7 @@ export async function decorateIcons(element) {
     if (!ICONS_CACHE[iconName]) {
       ICONS_CACHE[iconName] = true;
       try {
-        const response = await fetch(`${window.hlx.codeBasePath}${window.hlx.codeBasePath}/icons/${iconName}.svg`);
+        const response = await fetch(`${window.hlx.codeBasePath}/icons/${iconName}.svg`);
         const svgSource = await response.text();
         if (svgSource.match(/(<style | class=)/)) {
           ICONS_CACHE[iconName] = { styled: true, html: svgSource };

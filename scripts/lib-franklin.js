@@ -201,7 +201,7 @@ export async function decorateIcons(element) {
       const svgElem = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
       const useElem = document.createElement('use');
 
-      useElem.setAttribute('href', `#${iconName}`);
+      useElem.setAttribute('href', `#icons-sprite-${iconName}`);
 
       svgElem.innerHTML = useElem.outerHTML;
       parent.innerHTML = svgElem.outerHTML;

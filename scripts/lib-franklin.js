@@ -156,22 +156,25 @@ export async function decorateIcons(element) {
         } else {
           const parser = new DOMParser();
           const parsedSvg = parser.parseFromString(svgSource, 'image/svg+xml');
-          const newSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          const svgSymbol = document.createElement('symbol');
 
           const { attributes } = parsedSvg.documentElement;
 
           for (let i = 0; i < attributes.length; i += 1) {
-            newSvg.setAttribute(attributes[i].name, attributes[i].value);
+            if(attributes[i].name === 'xmlns') { 
+              continue;
+            }
+            svgSymbol.setAttribute(attributes[i].name, attributes[i].value);
           }
 
-          newSvg.setAttribute('id', iconName);
-          newSvg.removeAttribute('width');
-          newSvg.removeAttribute('height');
+          svgSymbol.setAttribute('id', `icons-sprite-${iconName}`);
+          svgSymbol.removeAttribute('width');
+          svgSymbol.removeAttribute('height');
 
-          newSvg.innerHTML = parsedSvg.documentElement.innerHTML;
+          svgSymbol.innerHTML = parsedSvg.documentElement.innerHTML;
 
           ICONS_CACHE[iconName] = {
-            html: newSvg.outerHTML,
+            html: svgSymbol.outerHTML,
           };
         }
       } catch (err) {

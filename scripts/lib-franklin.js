@@ -163,7 +163,7 @@ export async function decorateIcons(element) {
           for (let i = 0; i < attributes.length; i += 1) {
             // attributes not to be transferred to the new <symbol> elem
             const skippedAttrs = ['xmlns'];
-            if (skippedAttrs.includes(attributes[i].name)) {
+            if (!skippedAttrs.includes(attributes[i].name)) {
               svgSymbol.setAttribute(attributes[i].name, attributes[i].value);
             }
           }

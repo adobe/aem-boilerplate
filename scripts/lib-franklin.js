@@ -168,7 +168,6 @@ export async function decorateIcons(element) {
               svgSymbol.setAttribute(name, value);
             }
           }
-
           svgSymbol.setAttribute('id', `icons-sprite-${iconName}`);
           svgSymbol.removeAttribute('width');
           svgSymbol.removeAttribute('height');

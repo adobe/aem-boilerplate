@@ -41,14 +41,19 @@ export function sampleRUM(checkpoint, data = {}) {
       const id = `${hashCode(window.location.href)}-${new Date().getTime()}-${Math.random().toString(16).substr(2, 14)}`;
       const random = Math.random();
       const isSelected = (random * weight < 1);
-      // eslint-disable-next-line object-curly-newline
-      window.hlx.rum = { weight, id, random, isSelected, sampleRUM };
+      const urlSanitizers = {
+        full: () => window.location.href,
+        origin: () => window.location.origin,
+        path: () => window.location.pathname,
+      };
+      // eslint-disable-next-line object-curly-newline, max-len
+      window.hlx.rum = { weight, id, random, isSelected, sampleRUM, sanitizeURL: urlSanitizers[window.hlx.RUM_MASK_URL || 'full'] };
     }
     const { weight, id } = window.hlx.rum;
     if (window.hlx && window.hlx.rum && window.hlx.rum.isSelected) {
       const sendPing = (pdata = data) => {
         // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
-        const body = JSON.stringify({ weight, id, referer: window.location.href, generation: window.hlx.RUM_GENERATION, checkpoint, ...data });
+        const body = JSON.stringify({ weight, id, referer: window.hlx.rum.sanitizeURL(), checkpoint, ...data });
         const url = `https://rum.hlx.page/.rum/${weight}`;
         // eslint-disable-next-line no-unused-expressions
         navigator.sendBeacon(url, body);
@@ -595,6 +600,7 @@ export function loadFooter(footer) {
  */
 export function setup() {
   window.hlx = window.hlx || {};
+  window.hlx.RUM_MASK_URL = 'full';
   window.hlx.codeBasePath = '';
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
 

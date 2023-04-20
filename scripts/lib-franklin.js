@@ -201,22 +201,26 @@ export async function fetchPlaceholders(prefix = 'default') {
   const loaded = window.placeholders[`${prefix}-loaded`];
   if (!loaded) {
     window.placeholders[`${prefix}-loaded`] = new Promise((resolve, reject) => {
-      try {
-        fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json`)
-          .then((resp) => resp.json())
-          .then((json) => {
-            const placeholders = {};
-            json.data.forEach((placeholder) => {
+      fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json`)
+        .then((resp) => {
+          if (resp.ok) {
+            return resp.json();
+          }
+          throw new Error(`${resp.status}: ${resp.statusText}`);
+        }).then((json) => {
+          const placeholders = {};
+          json.data
+            .filter((placeholder) => placeholder.Key)
+            .forEach((placeholder) => {
               placeholders[toCamelCase(placeholder.Key)] = placeholder.Text;
             });
-            window.placeholders[prefix] = placeholders;
-            resolve();
-          });
-      } catch (error) {
-        // error loading placeholders
-        window.placeholders[prefix] = {};
-        reject();
-      }
+          window.placeholders[prefix] = placeholders;
+          resolve();
+        }).catch((error) => {
+          // error loading placeholders
+          window.placeholders[prefix] = {};
+          reject(error);
+        });
     });
   }
   await window.placeholders[`${prefix}-loaded`];

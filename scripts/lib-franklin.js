@@ -205,7 +205,7 @@ export async function fetchPlaceholders(prefix = 'default') {
         }).then((json) => {
           const placeholders = {};
           json.data
-            .filter((placeholder) => placeholder.Key && placeholder.Text)
+            .filter((placeholder) => placeholder.Key)
             .forEach((placeholder) => {
               placeholders[toCamelCase(placeholder.Key)] = placeholder.Text;
             });

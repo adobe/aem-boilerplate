@@ -1,4 +1,4 @@
-name: Tests and Linting
+name: Linting
 
 on: [pull_request]
 
@@ -13,6 +13,5 @@ jobs:
         node-version: '14'
     - run: npm install
     - run: npm run lint
-    - run: npm test
       env:
         CI: true

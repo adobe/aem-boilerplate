@@ -83,10 +83,9 @@ export function addFavIcon(href) {
   link.href = href;
   const existingLink = document.querySelector('head link[rel="icon"]');
   if (existingLink) {
-    existingLink.parentElement.replaceChild(link, existingLink);
+    existingLink.replaceWith(link);
   } else {
-    document.getElementsByTagName('head')[0].appendChild(link);
-  }
+    document.querySelector('head').appendChild(link);
 }
 
 /**

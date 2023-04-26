@@ -85,7 +85,7 @@ export function addFavIcon(href) {
   if (existingLink) {
     existingLink.replaceWith(link);
   } else {
-    document.querySelector('head').appendChild(link);
+    document.head.appendChild(link);
 }
 
 /**

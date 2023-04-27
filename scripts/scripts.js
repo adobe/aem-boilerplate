@@ -86,6 +86,7 @@ export function addFavIcon(href) {
     existingLink.replaceWith(link);
   } else {
     document.head.appendChild(link);
+  }
 }
 
 /**

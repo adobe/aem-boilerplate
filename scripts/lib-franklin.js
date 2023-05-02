@@ -146,32 +146,46 @@ export async function decorateIcons(element) {
   // Download all new icons
   const icons = [...element.querySelectorAll('span.icon')];
   await Promise.all(icons.map(async (span) => {
-    const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
+    if (span.classList.length < 2 || !span.classList[1].startsWith('icon-')) {
+      return;
+    }
+
+    const iconName = span.classList[1].substring(5);
     if (!ICONS_CACHE[iconName]) {
       ICONS_CACHE[iconName] = true;
       try {
         const response = await fetch(`${window.hlx.codeBasePath}/icons/${iconName}.svg`);
-        if (!response.ok) {
-          ICONS_CACHE[iconName] = false;
-          return;
-        }
-        // Styled icons don't play nice with the sprite approach because of shadow dom isolation
-        const svg = await response.text();
-        if (svg.match(/(<style | class=)/)) {
-          ICONS_CACHE[iconName] = { styled: true, html: svg };
+        const svgSource = await response.text();
+        if (svgSource.match(/(<style | class=)/)) {
+          ICONS_CACHE[iconName] = { styled: true, html: svgSource };
         } else {
+          const parser = new DOMParser();
+          const parsedSvg = parser.parseFromString(svgSource, 'image/svg+xml');
+          const svgSymbol = document.createElementNS('http://www.w3.org/2000/svg', 'symbol');
+
+          const { attributes } = parsedSvg.documentElement;
+
+          for (let i = 0; i < attributes.length; i += 1) {
+            const { name, value } = attributes[i];
+
+            // remove XML namespace-related attributes
+            if (!name.startsWith('xmlns:') && name !== 'xmlns') {
+              svgSymbol.setAttribute(name, value);
+            }
+          }
+          svgSymbol.setAttribute('id', `icons-sprite-${iconName}`);
+          svgSymbol.removeAttribute('width');
+          svgSymbol.removeAttribute('height');
+
+          svgSymbol.innerHTML = parsedSvg.documentElement.innerHTML;
+
           ICONS_CACHE[iconName] = {
-            html: svg
-              .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
-              .replace(/ width=".*?"/, '')
-              .replace(/ height=".*?"/, '')
-              .replace('</svg>', '</symbol>'),
+            html: svgSymbol.outerHTML,
           };
         }
-      } catch (error) {
-        ICONS_CACHE[iconName] = false;
+      } catch (err) {
         // eslint-disable-next-line no-console
-        console.error(error);
+        console.error(err);
       }
     }
   }));
@@ -180,13 +194,22 @@ export async function decorateIcons(element) {
   svgSprite.innerHTML += symbols;
 
   icons.forEach((span) => {
-    const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).split('-')[1];
+    if (span.classList.length < 2 || !span.classList[1].startsWith('icon-')) {
+      return;
+    }
+
+    const iconName = span.classList[1].substring(5);
     const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
-    // Styled icons need to be inlined as-is, while unstyled ones can leverage the sprite
     if (ICONS_CACHE[iconName].styled) {
       parent.innerHTML = ICONS_CACHE[iconName].html;
     } else {
-      parent.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;
+      const svgElem = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      const useElem = document.createElement('use');
+
+      useElem.setAttribute('href', `#icons-sprite-${iconName}`);
+
+      svgElem.innerHTML = useElem.outerHTML;
+      parent.innerHTML = svgElem.outerHTML;
     }
   });
 }

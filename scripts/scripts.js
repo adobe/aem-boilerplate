@@ -70,6 +70,10 @@ async function loadEager(doc) {
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
+  if (window.innerWidth >= 900) loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
+  if (sessionStorage.getItem('fonts-loaded')) {
+    loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
+  }
 }
 
 /**
@@ -105,6 +109,11 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+
+  loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`, () => {
+    if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
+  });
+
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));

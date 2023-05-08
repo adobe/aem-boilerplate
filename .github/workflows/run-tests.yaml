@@ -1,4 +1,4 @@
-name: Tests and Linting
+name: Linting
 
 on: [pull_request]
 
@@ -10,9 +10,8 @@ jobs:
     - name: Use Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '14'
+        node-version: '16' #required for npm 8 or later.
     - run: npm install
     - run: npm run lint
-    - run: npm test
       env:
         CI: true

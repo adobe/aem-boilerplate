@@ -68,6 +68,11 @@ body {
   line-height: 1.6;
   color: var(--text-color);
   background-color: var(--background-color);
+  display: none;
+}
+
+body.appear {
+  display: unset;
 }
 
 header {

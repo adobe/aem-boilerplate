@@ -20,7 +20,7 @@
   --text-color: #000;
 
   /* fonts */
-  --body-font-family: Roboto, Roboto-fallback;
+  --body-font-family: roboto, roboto-fallback;
   --heading-font-family: var(--body-font-family);
   --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
@@ -43,10 +43,10 @@
 }
 
 @font-face {
-  font-family: "Roboto-fallback";
+  font-family: roboto-fallback;
   size-adjust: 100.06%;
   ascent-override: 95%;
-  src: local("Arial");
+  src: local('Arial');
 }
 
 

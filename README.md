@@ -11,10 +11,10 @@ Your project's description...
 npm i
 ```
 
-## Tests
+## Linting
 
 ```sh
-npm tst
+npm run lint
 ```
 
 ## Local development

@@ -4,10 +4,8 @@
   "version": "1.0.0",
   "description": "Starter project for Adobe Helix",
   "scripts": {
-    "test": "wtr \"./test/**/*.test.js\" --node-resolve --port=2000 --coverage",
-    "test:watch": "npm test -- --watch",
     "lint:js": "eslint .",
-    "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css'",
+    "lint:css": "stylelint blocks/**/*.css styles/*.css",
     "lint": "npm run lint:js && npm run lint:css"
   },
   "repository": {
@@ -21,18 +19,17 @@
   },
   "homepage": "https://github.com/adobe/helix-project-boilerplate#readme",
   "devDependencies": {
-    "@babel/core": "7.20.12",
+    "@babel/core": "7.21.0",
     "@babel/eslint-parser": "7.19.1",
     "chai": "4.3.7",
-    "eslint": "8.33.0",
+    "eslint": "8.35.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.27.5",
     "@esm-bundle/chai": "4.3.4-fix.0",
-    "@web/test-runner": "0.15.0",
+    "@web/test-runner": "0.15.1",
     "@web/test-runner-commands": "0.6.5",
     "sinon": "15.0.1",
-    "stylelint": "14.16.1",
-    "stylelint-config-prettier": "9.0.4",
-    "stylelint-config-standard": "29.0.0"
+    "stylelint": "15.2.0",
+    "stylelint-config-standard": "30.0.1"
   }
 }

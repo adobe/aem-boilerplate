@@ -77,16 +77,20 @@ async function loadEager(doc) {
  * @param {string} href The favicon URL
  */
 export function addFavIcon(href) {
-  const link = document.createElement('link');
-  link.rel = 'icon';
-  link.type = 'image/png';
-  link.href = href;
-  const existingLink = document.querySelector('head link[rel="icon"]');
-  if (existingLink) {
-    existingLink.replaceWith(link);
-  } else {
-    document.head.append(link);
-  }
+  const setLink = (rel) => {
+    const link = document.createElement('link');
+    link.rel = rel;
+    link.type = 'image/png';
+    link.href = href;
+    const existingIconLink = document.querySelector(`head link[rel="${rel}"]`);
+    if (existingIconLink) {
+      existingIconLink.replaceWith(link);
+    } else {
+      document.head.append(link);
+    }
+  };
+  setLink('icon');
+  setLink('apple-touch-icon');
 }
 
 /**

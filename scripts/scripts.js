@@ -73,21 +73,6 @@ async function loadEager(doc) {
 }
 
 /**
- * Adds the favicon.
- */
-export function addFavIcon() {
-  const addLink = (rel) => {
-    const link = document.createElement('link');
-    link.rel = rel;
-    link.href = `${window.hlx.codeBasePath}/styles/favicon.png`;
-    link.type = 'image/png';
-    document.head.append(link);
-  };
-  addLink('icon');
-  addLink('apple-touch-icon');
-}
-
-/**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
  */
@@ -103,7 +88,6 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  addFavIcon();
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));

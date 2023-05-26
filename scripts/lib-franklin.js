@@ -200,7 +200,7 @@ export async function fetchPlaceholders(prefix = 'default') {
   window.placeholders = window.placeholders || {};
   const loaded = window.placeholders[`${prefix}-loaded`];
   if (!loaded) {
-    window.placeholders[`${prefix}-loaded`] = new Promise((resolve, reject) => {
+    window.placeholders[`${prefix}-loaded`] = new Promise((resolve) => {
       fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json`)
         .then((resp) => {
           if (resp.ok) {
@@ -218,8 +218,10 @@ export async function fetchPlaceholders(prefix = 'default') {
           resolve();
         }).catch((error) => {
           // error loading placeholders
+          // eslint-disable-next-line no-console
+          console.error('failed to fetch placeholders.', error);
           window.placeholders[prefix] = {};
-          reject(error);
+          resolve();
         });
     });
   }

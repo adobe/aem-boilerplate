@@ -44,7 +44,7 @@ export function sampleRUM(checkpoint, data = {}) {
       const urlSanitizers = {
         full: () => window.location.href,
         origin: () => window.location.origin,
-        path: () => window.location.pathname,
+        path: () => window.location.href.replace(/\?.*$/, ''),
       };
       // eslint-disable-next-line object-curly-newline, max-len
       window.hlx.rum = { weight, id, random, isSelected, sampleRUM, sanitizeURL: urlSanitizers[window.hlx.RUM_MASK_URL || 'path'] };
@@ -623,7 +623,6 @@ export function setup() {
  * Auto initializiation.
  */
 function init() {
-  document.body.style.display = 'none';
   setup();
   sampleRUM('top');
 

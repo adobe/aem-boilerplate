@@ -1,0 +1,14 @@
+{
+  "project": "Testing",
+  "plugins": [
+    {
+      "title": "Preflight",
+      "id": "preflight",
+      "environments": [
+        "preview",
+        "live"
+      ],
+      "event": "preflight"
+    }
+  ]
+}

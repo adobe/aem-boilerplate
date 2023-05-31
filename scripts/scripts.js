@@ -122,7 +122,7 @@ function loadDelayed() {
   const sk = document.querySelector('helix-sidekick');
   if (sk) {
     sk.addEventListener('custom:preflight', () => {
-      alert('load preflight');
+      // alert('load preflight');
     });
   }
 }

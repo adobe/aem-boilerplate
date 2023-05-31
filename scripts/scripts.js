@@ -71,8 +71,13 @@ async function loadEager(doc) {
     await waitForLCP(LCP_BLOCKS);
   }
   if (window.innerWidth >= 900) loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
-  if (sessionStorage.getItem('fonts-loaded')) {
-    loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
+
+  try {
+    if (sessionStorage.getItem('fonts-loaded')) {
+      loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
+    }
+  } catch (e) {
+    // do nothing
   }
 }
 
@@ -94,7 +99,11 @@ async function loadLazy(doc) {
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
 
   loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`, () => {
-    if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
+    try {
+      if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
+    } catch (e) {
+      // do nothing
+    }
   });
 
   sampleRUM('lazy');

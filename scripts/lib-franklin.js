@@ -80,7 +80,7 @@ export function sampleRUM(checkpoint, data = {}) {
 
 /**
  * Loads a CSS file.
- * @param {string} href The path to the CSS file
+ * @param {string} href URL to the CSS file
  */
 export async function loadCSS(href) {
   return new Promise((resolve, reject) => {
@@ -99,23 +99,27 @@ export async function loadCSS(href) {
 
 /**
  * Loads a non module JS file.
- * @param {string} href The path to the CSS file
+ * @param {string} src URL to the JS file
  * @param {Object} attrs additional optional attributes
  */
 
-export async function loadScript(url, attrs) {
+export async function loadScript(src, attrs) {
   return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = url;
-    if (attrs) {
-    // eslint-disable-next-line no-restricted-syntax, guard-for-in
-      for (const attr in attrs) {
-        script.setAttribute(attr, attrs[attr]);
+    if (!document.querySelector(`head > script[src="${src}"]`)) {
+      const script = document.createElement('script');
+      script.src = src;
+      if (attrs) {
+      // eslint-disable-next-line no-restricted-syntax, guard-for-in
+        for (const attr in attrs) {
+          script.setAttribute(attr, attrs[attr]);
+        }
       }
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.append(script);
+    } else {
+      resolve();
     }
-    script.onload = resolve;
-    script.onerror = reject;
-    document.head.append(script);
   });
 }
 

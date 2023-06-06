@@ -369,6 +369,9 @@ export function updateSectionsStatus(main) {
       } else {
         section.dataset.sectionStatus = 'loaded';
         section.style.display = null;
+
+        const event = new CustomEvent('section-display', { detail: { section, index: i } });
+        document.body.dispatchEvent(event);
       }
     }
   }

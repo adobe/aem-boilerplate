@@ -1,2 +1,5 @@
 mountpoints:
   /: https://drive.google.com/drive/folders/1cR0_u_Xg3lYeu9oftZUdpU2uPd2kQ2Kq
+
+folders:
+  /folder/: /folder/landing

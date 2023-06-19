@@ -84,6 +84,7 @@ async function setCSP() {
   const meta = document.createElement('meta');
   meta.setAttribute('http-equiv', 'Content-Security-Policy');
   meta.setAttribute('content', policy);
+  document.addEventListener("securitypolicyviolation", (e) => sampleRUM("csperror", {source: `${e.documentURI}:${e.lineNumber}:${e.columnNumber}`, target: e.blockedURI }));
   document.head.appendChild(meta);
 }
 

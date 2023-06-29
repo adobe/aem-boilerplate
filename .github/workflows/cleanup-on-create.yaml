@@ -17,8 +17,8 @@ jobs:
           rm -rf \
             .github/workflows/cleanup-on-create.yaml \
             .github/workflows/semantic-release.yaml \
-            .releaserc.cjs
-        # run: rm -rf some-other-file
+            .releaserc.cjs \
+            CHANGELOG.md
 
         # commit back to the repository
       - name: Commit changes

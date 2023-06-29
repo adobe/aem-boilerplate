@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/elc9aya2ls612j/helix-project-boilerplate.git"
+    "url": "git+https://github.com/adobe/helix-project-boilerplate.git"
   },
   "author": "Adobe",
   "license": "Apache License 2.0",

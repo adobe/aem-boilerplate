@@ -13,9 +13,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Remove Helper Files
-        run: rm -rf .github/workflows/cleanup-on-create.yaml
+        run: | 
+          rm -rf \
+            .github/workflows/cleanup-on-create.yaml \
+            .github/workflows/semantic-release.yaml \
+            .releaserc.cjs
         # run: rm -rf some-other-file
-        
+
         # commit back to the repository
       - name: Commit changes
         run: |

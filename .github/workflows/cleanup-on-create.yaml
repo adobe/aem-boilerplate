@@ -12,6 +12,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Use Node.js 18
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+      - name: Uninstall dependencies
+        run: |
+          npm uninstall --save-dev \
+            semantic-release \
+            @semantic-release/git \ 
+            @semantic-release/changelog \ 
+            @semantic-release/exec
       - name: Remove Helper Files
         run: | 
           rm -rf \
@@ -19,6 +30,13 @@ jobs:
             .github/workflows/semantic-release.yaml \
             .releaserc.cjs \
             CHANGELOG.md
+
+      - name: Initialize README
+        # replace {repo} and {owner} with the actual values
+        run: |
+          sed -i 's/{repo}/$(basename ${{ github.repository }})/g' README.md
+          sed -i 's/{owner}/$(dirname ${{ github.repository }})/g' README.md
+
 
         # commit back to the repository
       - name: Commit changes

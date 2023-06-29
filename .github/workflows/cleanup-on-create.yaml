@@ -18,11 +18,7 @@ jobs:
           node-version: 18
       - name: Uninstall dependencies
         run: |
-          npm uninstall --save-dev \
-            semantic-release \
-            @semantic-release/git \ 
-            @semantic-release/changelog \ 
-            @semantic-release/exec
+          npm uninstall --save-dev semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/exec
       - name: Remove Helper Files
         run: | 
           rm -rf \
@@ -36,6 +32,10 @@ jobs:
         run: |
           sed -i 's/{repo}/$(basename ${{ github.repository }})/g' README.md
           sed -i 's/{owner}/$(dirname ${{ github.repository }})/g' README.md
+      - name: Initialize Pull Request Template
+        run: |
+          sed -i 's/{repo}/$(basename ${{ github.repository }})/g' .github/pull_request_template.md
+          sed -i 's/{owner}/$(dirname ${{ github.repository }})/g' .github/pull_request_template.md
 
 
         # commit back to the repository

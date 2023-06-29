@@ -1,10 +1,12 @@
 # Generate a changelog with semantic-release
+# Skip if the commit message is "Initial commit"
 on:
   push:
     branches:
       - main
 jobs:
   semantic-release:
+    if: "!contains(github.event.head_commit.message, 'Initial commit')"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

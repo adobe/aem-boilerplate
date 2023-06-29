@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/elc9aya2ls612j/helix-project-boilerplate/compare/v1.2.1...v1.2.2) (2023-06-29)
+
+
+### Bug Fixes
+
+* **github:** use double quotes ([d7e285d](https://github.com/elc9aya2ls612j/helix-project-boilerplate/commit/d7e285dbb452617a5166569f91da4cb376548a38))
+
 ## [1.2.1](https://github.com/elc9aya2ls612j/helix-project-boilerplate/compare/v1.2.0...v1.2.1) (2023-06-29)
 
 

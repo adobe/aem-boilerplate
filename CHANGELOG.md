@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/elc9aya2ls612j/helix-project-boilerplate/compare/v1.2.0...v1.2.1) (2023-06-29)
+
+
+### Bug Fixes
+
+* **github:** create and ignore bak files ([ac087b6](https://github.com/elc9aya2ls612j/helix-project-boilerplate/commit/ac087b61d3e44910d980b0d9e7aead0f2ed83873))
+
 # [1.2.0](https://github.com/elc9aya2ls612j/helix-project-boilerplate/compare/v1.1.0...v1.2.0) (2023-06-29)
 
 

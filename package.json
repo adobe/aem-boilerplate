@@ -1,7 +1,7 @@
 {
   "name": "@adobe/helix-project-boilerplate",
   "private": true,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Starter project for Adobe Helix",
   "scripts": {
     "lint:js": "eslint .",

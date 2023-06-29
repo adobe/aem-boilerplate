@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/elc9aya2ls612j/helix-project-boilerplate/compare/v1.1.0...v1.2.0) (2023-06-29)
+
+
+### Features
+
+* **github:** populate pull request template ([4ccb759](https://github.com/elc9aya2ls612j/helix-project-boilerplate/commit/4ccb7592a84fdc0d3d234fc4da5bdf94a026ff1d))
+
 # [1.1.0](https://github.com/elc9aya2ls612j/helix-project-boilerplate/compare/v1.0.5...v1.1.0) (2023-06-29)
 
 

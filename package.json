@@ -16,7 +16,7 @@
   "author": "Adobe",
   "license": "Apache License 2.0",
   "bugs": {
-    "url": "https://github.com/adobe//helix-project-boilerplate/issues"
+    "url": "https://github.com/adobe/helix-project-boilerplate/issues"
   },
   "homepage": "https://github.com/adobe/helix-project-boilerplate#readme",
   "devDependencies": {

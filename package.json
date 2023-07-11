@@ -1,12 +1,13 @@
 {
   "name": "@adobe/helix-project-boilerplate",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.2.2",
   "description": "Starter project for Adobe Helix",
   "scripts": {
     "lint:js": "eslint .",
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
-    "lint": "npm run lint:js && npm run lint:css"
+    "lint": "npm run lint:js && npm run lint:css",
+    "semantic-release": "semantic-release --debug"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,10 @@
   },
   "homepage": "https://github.com/adobe/helix-project-boilerplate#readme",
   "devDependencies": {
+    "@semantic-release/changelog": "6.0.3",
+    "@semantic-release/exec": "6.0.3",
+    "@semantic-release/git": "10.0.1",
+    "semantic-release": "21.0.5",
     "@babel/core": "7.21.0",
     "@babel/eslint-parser": "7.19.1",
     "chai": "4.3.7",

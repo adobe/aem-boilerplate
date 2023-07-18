@@ -12,6 +12,8 @@ jobs:
     permissions:
       contents: write
       actions: write
+    # only run if commit message is "Initial commit" on main branch
+    if: ${{ github.ref == 'refs/heads/main' && github.event.head_commit.message == 'Initial commit' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3

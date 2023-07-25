@@ -346,8 +346,8 @@ export function decorateSections(main) {
       const meta = readBlockConfig(sectionMeta);
       Object.keys(meta).forEach((key) => {
         if (key === 'style') {
-          const styles = meta.style.split(',').map((style) => toClassName(style.trim())).filter((style) => style);
-          styles.forEach((style) => section.classList.add(style));
+          const styles = meta.style.split(',').map((style) => toClassName(style.trim()));
+          section.classList.add(...styles.filter(style => style));
         } else {
           section.dataset[toCamelCase(key)] = meta[key];
         }

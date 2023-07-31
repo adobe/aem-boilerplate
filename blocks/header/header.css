@@ -158,7 +158,7 @@ header nav .nav-sections {
   flex: 1 1 auto;
   display: none;
   visibility: hidden;
-  background-color: var(--overlay-color);
+  background-color: var(--overlay-background-color);
 }
 
 header nav[aria-expanded="true"] .nav-sections {

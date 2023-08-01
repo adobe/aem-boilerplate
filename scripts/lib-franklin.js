@@ -184,7 +184,7 @@ export async function decorateIcons(element) {
         // Styled icons don't play nice with the sprite approach because of shadow dom isolation
         // and same for internal references
         const svg = await response.text();
-        if (svg.match(/(<style | class=|url\(#[^)]+\))/)) {
+        if (svg.match(/(<style | class=|url\(#| xlink:href="#)/)) {
           ICONS_CACHE[iconName] = {
             styled: true,
             html: svg

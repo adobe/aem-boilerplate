@@ -182,9 +182,17 @@ export async function decorateIcons(element) {
           return;
         }
         // Styled icons don't play nice with the sprite approach because of shadow dom isolation
+        // and same for internal references
         const svg = await response.text();
-        if (svg.match(/(<style | class=)/)) {
-          ICONS_CACHE[iconName] = { styled: true, html: svg };
+        if (svg.match(/(<style | class=|url\(#| xlink:href="#)/)) {
+          ICONS_CACHE[iconName] = {
+            styled: true,
+            html: svg
+              // rescope ids and references to avoid clashes across icons;
+              .replaceAll(/ id="([^"]+)"/g, (_, id) => ` id="${iconName}-${id}"`)
+              .replaceAll(/="url\(#([^)]+)\)"/g, (_, id) => `="url(#${iconName}-${id})"`)
+              .replaceAll(/ xlink:href="#([^"]+)"/g, (_, id) => ` xlink:href="#${iconName}-${id}"`),
+          };
         } else {
           ICONS_CACHE[iconName] = {
             html: svg

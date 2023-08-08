@@ -1,33 +1,33 @@
-.columnsPanera > div {
+.columnspanera > div {
   background-color: #35d315;
   display: flex;
   flex-direction: column;
 }
 
-.columnsPanera img {
+.columnspanera img {
   width: 100%;
 }
 
-.columnsPanera > div > div {
+.columnspanera > div > div {
   order: 1;
 }
 
-.columnsPanera > div > .columnsPanera-img-col {
+.columnspanera > div > .columnspanera-img-col {
   order: 0;
 }
 
-.columnsPanera > div > .columnsPanera-img-col img {
+.columnspanera > div > .columnspanera-img-col img {
   display: block;
 }
 
 @media (min-width: 900px) {
-  .columnsPanera > div {
+  .columnspanera > div {
     align-items: center;
     flex-direction: unset;
     gap: 32px;
   }
 
-  .columnsPanera > div > div {
+  .columnspanera > div > div {
     flex: 1;
     order: unset;
   }

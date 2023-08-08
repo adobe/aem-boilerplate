@@ -14,9 +14,10 @@
   /* colors */
   --link-color: #035fe6;
   --link-hover-color: #136ff6;
-  --background-color: #fff;
+  --background-color: #576C1D;
   --overlay-background-color: #eee;
-  --highlight-background-color: #ccc;
+  --highlight-background-color: #ffffff;
+  --cards-background-color: #F4F3E6;
   --text-color: #000;
 
   /* fonts */

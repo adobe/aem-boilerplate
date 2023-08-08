@@ -1,0 +1,34 @@
+.columnsPanera > div {
+  background-color: #35d315;
+  display: flex;
+  flex-direction: column;
+}
+
+.columnsPanera img {
+  width: 100%;
+}
+
+.columnsPanera > div > div {
+  order: 1;
+}
+
+.columnsPanera > div > .columnsPanera-img-col {
+  order: 0;
+}
+
+.columnsPanera > div > .columnsPanera-img-col img {
+  display: block;
+}
+
+@media (min-width: 900px) {
+  .columnsPanera > div {
+    align-items: center;
+    flex-direction: unset;
+    gap: 32px;
+  }
+
+  .columnsPanera > div > div {
+    flex: 1;
+    order: unset;
+  }
+}

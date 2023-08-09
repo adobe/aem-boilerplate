@@ -4,7 +4,7 @@ header .nav-wrapper {
   width: 100%;
   z-index: 2;
   position: fixed;
-  top:51px;
+  top:51px
 }
 
 header nav {
@@ -13,7 +13,6 @@ header nav {
   grid-template:
     'hamburger brand tools' var(--nav-height)
     'sections sections sections' 1fr / auto 1fr auto;
-  color: #ffffff;
   align-items: center;
   gap: 0 2em;
   margin: auto 50px;
@@ -65,24 +64,34 @@ header .nav-tabs {
   background-color: var(--background-tab-color);
   position: fixed;
   z-index: 5;
-
-  width: 100%;  
+  width: 100%;
 }
 
-header .nav-tabs > .tab-list {
+header .nav-tabs > ul.tab-list {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
   margin: 0 50px;
 }
 
-header .tab-list > button {
+header .tab-list > li {
   background-color: transparent;
   height: 46px;
   color:#011500;
   border-radius: .8rem .8rem 0 0;
   margin: 5px 3px 0;
   cursor: pointer;
+  padding: 0 8px;
 }
 
-header .tab-list > button.selected {
+header .tab-list > li > a {
+  text-decoration: none;
+  color: rgb(1 20 0 );
+  font-size: 15px;
+  font-style: sequel-sans, "Helvetica Neue", helvetica, arial, sans-serif;
+}
+
+header .tab-list > li.selected {
   background-color: var(--background-color);
 }
 
@@ -188,7 +197,6 @@ header nav .nav-sections {
   display: none;
   visibility: hidden;
   background-color: var(--overlay-color);
-  /* background-color: var(--overlay-color); */
 }
 
 header nav[aria-expanded="true"] .nav-sections {
@@ -200,7 +208,6 @@ header nav[aria-expanded="true"] .nav-sections {
 header nav .nav-sections ul  {
   list-style: none;
   padding-left: 0;
-  color: black;
   font-size: var(--body-font-size-s);
   font-weight: 500;
 }
@@ -274,16 +281,20 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections > ul > li[aria-expanded="true"] > ul {
     display: block;
-    position: absolute;
-    left: -1em;
-    width: 200px;
+    position: fixed;
+    left: 0;
+    top:100px;
+    width: 100vw;
     margin-top: 12px;
     padding: 1em;
-    background-color: var(--highlight-background-color);
+    background-color: var(--background-color);
     white-space: initial;
-  }
+    column-count: 3;
+    column-gap: 20px;
+}
+  
 
-  header nav .nav-sections > ul > li > ul::before {
+  /* header nav .nav-sections > ul > li > ul::before {
     content: '';
     position: absolute;
     top: -8px;
@@ -293,10 +304,12 @@ header nav .nav-sections ul > li > ul > li {
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-bottom: 8px solid var(--highlight-background-color);
-  }
+  } */
 
   header nav .nav-sections > ul > li > ul > li {
     padding: 8px 0;
+    font-size: 22px;
+    color:#011500;
   }
 }
 

@@ -85,36 +85,34 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   }
 }
 
-function createTabs(block) {
+async function fetchTabs() {
+  const resp = await fetch('/tabs.json');
+  return resp.json();
+}
+
+async function createTabs(block) {
+  const sites = await fetchTabs();
+
   const tabs = document.createElement('div');
   tabs.classList.add('nav-tabs');
 
-  const tabList = document.createElement('div');
+  const tabList = document.createElement('ul');
   tabList.classList.add('tab-list');
 
-  const sites = {
-    paneraretail: 'Panera',
-    paneraathome: 'Panera At Home',
-    panerashop: 'Panera Shop',
-    panerapress: 'Panera Press',
-  };
+  sites.data.forEach((site) => {
+    const button = document.createElement('li');
+    button.classList.add('tab');
+    const siteUrl = new URL(site.Link);
 
-  let first = true;
-  Object.keys(sites).forEach((site) => {
-    const button = document.createElement('button');
-    button.classList.add(`${site}`);
-    if (first) {
+    if (siteUrl.pathname === window.location.pathname) {
       button.classList.add('selected');
-      first = false;
     }
-    button.addEventListener('click', (e) => {
-      [...document.querySelectorAll('.tab-list > button')].forEach((btn) => {
-        btn.classList = [...btn.classList[0]];
-      });
-      e.currentTarget.classList.add('selected');
-    });
 
-    button.innerHTML = sites[site];
+    const link = document.createElement('a');
+    link.setAttribute('href', `${site.Link}`);
+    link.textContent = site.Name;
+
+    button.append(link);
     tabList.append(button);
   });
   tabs.append(tabList);
@@ -126,7 +124,7 @@ function createTabs(block) {
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
-  createTabs(block);
+  await createTabs(block);
   // fetch nav content
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta).pathname : '/nav';

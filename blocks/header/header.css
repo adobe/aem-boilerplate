@@ -279,19 +279,30 @@ header nav .nav-sections ul > li > ul > li {
     position: relative;
   }
 
+/*
   header nav .nav-sections > ul > li[aria-expanded="true"] > ul {
     display: block;
     position: relative;
     left: -1em;
-    top:161px;
+    top:100px;
     width: 200px;
     margin-top: 12px;
     padding: 1em;
     background-color: var(--background-color);
     white-space: initial;
 }
-  
+*/
 
+header nav .nav-sections > ul > li[aria-expanded="true"] > ul {
+  display: block;
+  position: absolute;
+  left: -1em;
+  width: 200px;
+  margin-top: 12px;
+  padding: 1em;
+  background-color: var(--highlight-background-color);
+  white-space: initial;
+}
   /* header nav .nav-sections > ul > li > ul::before {
     content: '';
     position: absolute;

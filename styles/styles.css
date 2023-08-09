@@ -14,11 +14,11 @@
   /* colors */
   --link-color: #035fe6;
   --link-hover-color: #136ff6;
-  --background-color: #576C1D;
-  --overlay-background-color: #eee;
+  --background-color: #ffffff;
+  --overlay-background-color: #576C1D;
   --highlight-background-color: #ffffff;
   --cards-background-color: #F4F3E6;
-  --background-tab-color:#E0EB5F;
+  --background-tab-color:#576C1D;
   --text-color: #000;
 
   /* fonts */

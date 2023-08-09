@@ -85,11 +85,48 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   }
 }
 
+function createTabs(block) {
+  const tabs = document.createElement('div');
+  tabs.classList.add('nav-tabs');
+
+  const tabList = document.createElement('div');
+  tabList.classList.add('tab-list');
+
+  const sites = {
+    paneratest: 'Panera',
+    paneraathome: 'Panera @ Home',
+    panerabread: 'Panera Bread',
+    paneramerch: 'Panera Merchandising',
+  };
+
+  let first = true;
+  Object.keys(sites).forEach((site) => {
+    const button = document.createElement('button');
+    button.classList.add(`${site}`);
+    if (first) {
+      button.classList.add('selected');
+      first = false;
+    }
+    button.addEventListener('click', (e) => {
+      [...document.querySelectorAll('.tab-list > button')].forEach((btn) => {
+        btn.classList = [...btn.classList[0]];
+      });
+      e.currentTarget.classList.add('selected');
+    });
+
+    button.innerHTML = sites[site];
+    tabList.append(button);
+  });
+  tabs.append(tabList);
+  block.prepend(tabs);
+}
+
 /**
  * decorates the header, mainly the nav
  * @param {Element} block The header block element
  */
 export default async function decorate(block) {
+  createTabs(block);
   // fetch nav content
   const navMeta = getMetadata('nav');
   const navPath = navMeta ? new URL(navMeta).pathname : '/nav';

@@ -12,10 +12,12 @@ header nav {
   grid-template:
     'hamburger brand tools' var(--nav-height)
     'sections sections sections' 1fr / auto 1fr auto;
+  color: #ffffff;
   align-items: center;
   gap: 0 2em;
-  margin: auto;
-  max-width: 1264px;
+  margin: auto 50px;
+
+  /* max-width: 1264px; */
   height: var(--nav-height);
   padding: 0 1rem;
   font-family: var(--body-font-family);
@@ -55,6 +57,28 @@ header nav p {
 
 header nav a:any-link {
   color: currentcolor;
+}
+
+header .nav-tabs {
+  min-height:51px;
+  background-color: var(--background-tab-color);
+}
+
+header .nav-tabs > .tab-list {
+  margin: 0 50px;
+}
+
+header .tab-list > button {
+  background-color: transparent;
+  height: 46px;
+  color:#011500;
+  border-radius: .8rem .8rem 0 0;
+  margin: 5px 3px 0;
+  cursor: pointer;
+}
+
+header .tab-list > button.selected {
+  background-color: var(--background-color);
 }
 
 /* hamburger */
@@ -147,8 +171,8 @@ header .nav-brand {
   line-height: 1;
 }
 
-header nav .nav-brand img {
-  width: 128px;
+header nav .nav-brand img, header nav .nav-brand .icon {
+  width: 100px;
   height: auto;
 }
 

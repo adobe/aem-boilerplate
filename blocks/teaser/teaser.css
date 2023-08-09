@@ -1,0 +1,35 @@
+main .teaser {
+  position: relative;
+  /* width: 100%; */
+  max-width: 1920px;
+  height: 534px;
+  padding: 0;
+  margin: 0;
+  border-radius: 1.6rem;
+}
+
+main .teaser .teaser-content {
+  position: absolute;
+  top:0;
+  left: 0;
+  color: #fff;
+  padding: 0 20px;
+  height: 100%;
+  max-height: 480px;
+  margin: 0;
+  width: 457px;
+  background-color: rgba(1, 20, 0, 0.6);
+  border-radius: 1.6rem 0 0 1.6rem ;
+}
+
+main .teaser .teaser-content .button {
+  background-color: #E0EB60;
+  color: #1D4321;
+}
+
+main .teaser img {
+  max-height: 480px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 1.6rem
+}

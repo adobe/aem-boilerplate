@@ -281,16 +281,14 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections > ul > li[aria-expanded="true"] > ul {
     display: block;
-    position: fixed;
-    left: 0;
-    top:100px;
-    width: 100vw;
+    position: relative;
+    left: -1em;
+    top:161px;
+    width: 200px;
     margin-top: 12px;
     padding: 1em;
     background-color: var(--background-color);
     white-space: initial;
-    column-count: 3;
-    column-gap: 20px;
 }
   
 

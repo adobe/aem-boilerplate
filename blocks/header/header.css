@@ -4,6 +4,7 @@ header .nav-wrapper {
   width: 100%;
   z-index: 2;
   position: fixed;
+  top:51px;
 }
 
 header nav {
@@ -62,6 +63,10 @@ header nav a:any-link {
 header .nav-tabs {
   min-height:51px;
   background-color: var(--background-tab-color);
+  position: fixed;
+  z-index: 5;
+
+  width: 100%;  
 }
 
 header .nav-tabs > .tab-list {

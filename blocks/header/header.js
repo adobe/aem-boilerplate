@@ -93,10 +93,10 @@ function createTabs(block) {
   tabList.classList.add('tab-list');
 
   const sites = {
-    paneratest: 'Panera',
-    paneraathome: 'Panera @ Home',
-    panerabread: 'Panera Bread',
-    paneramerch: 'Panera Merchandising',
+    paneraretail: 'Panera',
+    paneraathome: 'Panera At Home',
+    panerashop: 'Panera Shop',
+    panerapress: 'Panera Press',
   };
 
   let first = true;

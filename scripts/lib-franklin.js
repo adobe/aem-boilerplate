@@ -430,7 +430,7 @@ export function buildBlock(blockName, content) {
 
 /**
  * Gets the configuration for the given glock, and also passes
- * the config to the `patchBlockConfig` methods in the plugins.
+ * the config throw all custom patching helpes added to the project.
  *
  * @param {Element} block The block element
  * @returns {object} The block config (blockName, cssPath and jsPath)

@@ -429,6 +429,24 @@ export function buildBlock(blockName, content) {
 }
 
 /**
+ * Gets the configuration for the given glock, and also passes
+ * the config to the `patchBlockConfig` methods in the plugins.
+ *
+ * @param {Element} block The block element
+ * @returns {object} The block config (blockName, cssPath and jsPath)
+ */
+function getBlockConfig(block) {
+  const { blockName } = block.dataset;
+  const cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
+  const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
+  const original = { blockName, cssPath, jsPath };
+  return window.hlx.patchBlockConfig.reduce(
+    (config, fn) => (typeof fn === 'function' ? fn(config, original) : config),
+    { blockName, cssPath, jsPath },
+  );
+}
+
+/**
  * Loads JS and CSS for a block.
  * @param {Element} block The block element
  */
@@ -436,13 +454,13 @@ export async function loadBlock(block) {
   const status = block.dataset.blockStatus;
   if (status !== 'loading' && status !== 'loaded') {
     block.dataset.blockStatus = 'loading';
-    const { blockName } = block.dataset;
+    const { blockName, cssPath, jsPath } = getBlockConfig(block);
     try {
-      const cssLoaded = loadCSS(`${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`);
+      const cssLoaded = loadCSS(cssPath);
       const decorationComplete = new Promise((resolve) => {
         (async () => {
           try {
-            const mod = await import(`../blocks/${blockName}/${blockName}.js`);
+            const mod = await import(jsPath);
             if (mod.default) {
               await mod.default(block);
             }
@@ -644,6 +662,7 @@ export function setup() {
   window.hlx.RUM_MASK_URL = 'full';
   window.hlx.codeBasePath = '';
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
+  window.hlx.patchBlockConfig = [];
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {

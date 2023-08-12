@@ -1,0 +1,23 @@
+#asset-selector {
+    height: calc(100vh - 80px);
+    width: calc(100vw - 60px);
+    margin: -20px;
+}
+
+footer,
+header {
+    display: none;
+}
+
+.aem-asset-selector-container {
+    display: flex;
+}
+
+.action-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.action-container > button {
+    padding: 10px;
+}

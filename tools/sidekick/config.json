@@ -1,0 +1,16 @@
+{
+  "project": "helix-project-boilerplate",
+  "plugins": [
+    {
+      "id": "asset-library",
+      "title": "AEM Assets Library",
+      "environments": [
+        "edit"
+      ],
+      "url": "/aem-asset-selector",
+      "isPalette": true,
+      "includePaths": [ "**.docx**" ],
+      "paletteRect": "top: auto; bottom: 20px; left: 20px; width:1000px; height:700px"
+    }
+  ]
+}

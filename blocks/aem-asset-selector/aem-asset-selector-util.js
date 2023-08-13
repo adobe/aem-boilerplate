@@ -56,15 +56,17 @@ function onClose() {
 }
 
 async function getAssetBlob(url) {
-  let response = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${imsInstance.getImsToken()}`,
-      'x-api-key': API_KEY,
-      accept: '*/*',
-    },
-  });
-
-  if (true || (response && !response.ok)) {
+  let response;
+  try {
+    response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${imsInstance.getImsToken()}`,
+        'x-api-key': API_KEY,
+        accept: '*/*',
+      },
+    });
+  } catch (e) {
+    console.error('Error fetching asset, trying proxy');
     response = await fetch(`${PROXY}?src=${url}`, {
       headers: {
         Authorization: `Bearer ${imsInstance.getImsToken()}`,

@@ -2,6 +2,7 @@ const AS_MFE = 'https://experience.adobe.com/solutions/CQ-assets-selectors/asset
 const IMS_ENV_STAGE = 'stg1';
 const IMS_ENV_PROD = 'prod';
 const API_KEY = 'franklin';
+const PROXY = 'https://html-transfer-cf-worker.satyadeep.workers.dev';
 
 let imsInstance = null;
 let imsEnvironment;
@@ -55,7 +56,7 @@ function onClose() {
 }
 
 async function getAssetBlob(url) {
-  const response = await fetch(url, {
+  let response = await fetch(url, {
     headers: {
       Authorization: `Bearer ${imsInstance.getImsToken()}`,
       'x-api-key': API_KEY,
@@ -63,11 +64,20 @@ async function getAssetBlob(url) {
     },
   });
 
-  if (response && !response.ok) {
-    throw new Error(response.statusTest);
+  if (true || (response && !response.ok)) {
+    response = await fetch(`${PROXY}?src=${url}`, {
+      headers: {
+        Authorization: `Bearer ${imsInstance.getImsToken()}`,
+        'x-api-key': API_KEY,
+      },
+    });
+    if (response && !response.ok) {
+      throw new Error(response.statusTest);
+    }
   }
 
-  return response.blob();
+  const blob = await response.blob();
+  return blob;
 }
 
 async function handleSelection(selection) {
@@ -80,7 +90,12 @@ async function handleSelection(selection) {
     }
   });
   const assetBlob = await getAssetBlob(maxRendition.href);
+  // Clear the clipboard
+  console.log('Clearing clipboard');
+  await navigator.clipboard.writeText('');
+
   const data = [new ClipboardItem({ [assetBlob.type]: assetBlob })];
+  // Write the new clipboard contents
   await navigator.clipboard.write(data);
   // onClose();
 }

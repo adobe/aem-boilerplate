@@ -443,9 +443,9 @@ function getBlockConfig(block) {
   return window.hlx.patchBlockConfig
     .filter((fn) => typeof fn === 'function')
     .reduce(
-    (config, fn) => fn(config, original),
-    { blockName, cssPath, jsPath },
-  );
+      (config, fn) => fn(config, original),
+      { blockName, cssPath, jsPath },
+    );
 }
 
 /**

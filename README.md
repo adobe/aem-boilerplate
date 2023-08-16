@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-# Your Project's Title...
-Your project's description...
-=======
 # AEM Asset Selector for Franklin Authoring
 Integration between AEM Asset Selector and AEM Franklin to make AEM assets available in Franklin site authoring.
 
@@ -10,7 +6,6 @@ Integration between AEM Asset Selector and AEM Franklin to make AEM assets avail
 [Link to Diagram Source](https://lucid.app/lucidchart/d6db1b7d-144f-4ac9-94a2-fce760ed2ca4/edit?viewport_loc=-368%2C-403%2C1899%2C1069%2C0_0&invitationId=inv_cd6848d0-dfc0-4be9-b0cb-3cae5a1ba757)
 
 ![High Level Flow](/resources/using-asset-selector-with-franklin.jpeg)
->>>>>>> Stashed changes
 
 ## Environments
 - Preview: https://main--{repo}--{owner}.hlx.page/

@@ -52,7 +52,6 @@ export function init(cfg, callback) {
 }
 
 function onClose() {
-  console.log('Closing dialog');
   const selectorDialog = document.getElementById('asset-selector-dialog');
   document.getElementById('asset-selector-dialog').close();
 }

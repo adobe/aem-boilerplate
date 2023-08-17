@@ -3,7 +3,6 @@ const AS_MFE = 'https://experience.adobe.com/solutions/CQ-assets-selectors/asset
 const IMS_ENV_STAGE = 'stg1';
 const IMS_ENV_PROD = 'prod';
 const API_KEY = 'franklin';
-const PROXY = 'https://html-transfer-cf-worker.satyadeep.workers.dev';
 const WEB_TOOLS = 'https://master-sacred-dove.ngrok-free.app';
 
 let imsInstance = null;
@@ -75,33 +74,6 @@ async function getAssetPublicUrl(url) {
   return null;
 }
 
-async function getAssetBlob(url) {
-  let response;
-  try {
-    response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${imsInstance.getImsToken()}`,
-        'x-api-key': API_KEY,
-        accept: '*/*',
-      },
-    });
-  } catch (e) {
-    console.error('Error fetching asset, trying proxy');
-    response = await fetch(`${PROXY}?src=${url}`, {
-      headers: {
-        Authorization: `Bearer ${imsInstance.getImsToken()}`,
-        'x-api-key': API_KEY,
-      },
-    });
-    if (response && !response.ok) {
-      throw new Error(response.statusTest);
-    }
-  }
-
-  const blob = await response.blob();
-  return blob;
-}
-
 async function handleSelection(selection) {
   const selectedAsset = selection[0];
   let maxRendition = null;
@@ -112,9 +84,6 @@ async function handleSelection(selection) {
     }
   });
   console.log('Selected rendition:', maxRendition.href);
-  // const assetBlob = await getAssetBlob(maxRendition.href);
-  // const assetMarkup = `<img src="${URL.createObjectURL(assetBlob)}" alt="${selectedAsset.name}" />`;
-
   const assetPublicUrl = await getAssetPublicUrl(maxRendition.href.substring(0, maxRendition.href.indexOf('?')));
   console.log('Asset public URL:', assetPublicUrl);
   const assetMarkup = `<img src="${assetPublicUrl}"  />`;

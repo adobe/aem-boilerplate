@@ -53,8 +53,9 @@ export function init(cfg, callback) {
 }
 
 function onClose() {
-  // const selectorDialog = document.getElementById('asset-selector-dialog');
-  // selectorDialog.close();
+  console.log('Closing dialog');
+  const selectorDialog = document.getElementById('asset-selector-dialog');
+  selectorDialog.close();
 }
 
 async function getAssetPublicUrl(url) {

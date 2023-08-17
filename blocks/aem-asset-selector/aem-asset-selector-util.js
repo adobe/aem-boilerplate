@@ -54,7 +54,7 @@ export function init(cfg, callback) {
 function onClose() {
   console.log('Closing dialog');
   const selectorDialog = document.getElementById('asset-selector-dialog');
-  selectorDialog.close();
+  document.getElementById('asset-selector-dialog').close();
 }
 
 async function getAssetPublicUrl(url) {

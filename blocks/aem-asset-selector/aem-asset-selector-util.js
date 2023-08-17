@@ -28,6 +28,7 @@ function load(cfg) {
     modalMode: true,
     imsEnvironment,
     env: imsEnvironment,
+    onAccessTokenReceived: cfg.onAccessTokenReceived || (() => {}),
   };
   // eslint-disable-next-line no-undef
   const registeredTokenService = PureJSSelectors.registerAssetsSelectorsAuthService(imsProps);
@@ -81,7 +82,7 @@ async function handleSelection(selection) {
       maxRendition = rendition;
     }
   });
-  console.log('Selected rendition:', maxRendition.href);
+
   const assetPublicUrl = await getAssetPublicUrl(maxRendition.href.substring(0, maxRendition.href.indexOf('?')));
   console.log('Asset public URL:', assetPublicUrl);
   const assetMarkup = `<img src="${assetPublicUrl}"  />`;

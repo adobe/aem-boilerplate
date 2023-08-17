@@ -1,23 +1,40 @@
 #asset-selector {
-    height: calc(100vh - 80px);
-    width: calc(100vw - 60px);
-    margin: -20px;
+  height: calc(100vh - 80px);
+  width: calc(100vw - 60px);
+  margin: -20px;
 }
 
 footer,
 header {
-    display: none;
+  display: none;
 }
 
 .aem-asset-selector-container {
-    display: flex;
+  display: flex;
 }
 
 .action-container {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
 }
 
 .action-container > button {
-    padding: 10px;
+  padding: 10px;
+}
+
+main .asset-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  z-index: 10;
+}
+
+main #login {
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
 }

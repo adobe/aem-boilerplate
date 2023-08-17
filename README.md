@@ -8,8 +8,8 @@ Integration between AEM Asset Selector and AEM Franklin to make AEM assets avail
 ![High Level Flow](/resources/using-asset-selector-with-franklin.jpeg)
 
 ## Environments
-- Preview: https://main--{repo}--{owner}.hlx.page/
-- Live: https://main--{repo}--{owner}.hlx.live/
+- Preview: [https://main--aem-assets-boilerplate--hlxsites.hlx.page/aem-asset-selector](https://main--aem-assets-boilerplate--hlxsites.hlx.page/aem-asset-selector)
+- Live: [https://main--aem-assets-boilerplate--hlxsites.hlx.live/aem-asset-selector](https://main--aem-assets-boilerplate--hlxsites.hlx.live/aem-asset-selector)
 
 ## Installation
 

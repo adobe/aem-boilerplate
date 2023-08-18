@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const AS_MFE = 'https://experience.adobe.com/solutions/CQ-assets-selectors/assets/resources/asset-selectors.js';
+const AS_MFE = 'https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/assets-selectors.js';
 const IMS_ENV_STAGE = 'stg1';
 const IMS_ENV_PROD = 'prod';
 const API_KEY = 'franklin';
@@ -103,8 +103,6 @@ function handleNavigateToAsset(asset) {
 
 export async function renderAssetSelectorWithImsFlow(cfg) {
   const assetSelectorProps = {
-    repositoryId: cfg['repository-id'],
-    imsOrg: cfg['ims-org-id'],
     onClose,
     handleSelection,
     handleNavigateToAsset,

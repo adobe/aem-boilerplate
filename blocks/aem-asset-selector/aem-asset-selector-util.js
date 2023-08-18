@@ -109,6 +109,13 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
     env: cfg.environment.toUpperCase(),
     apiKey: API_KEY,
   };
+
+  if(cfg['repository-id']) {
+    assetSelectorProps.repositoryId = cfg['repository-id'];
+  }
+  if(cfg['ims-org-id']) {
+    assetSelectorProps.imsOrg = cfg['ims-org-id'];
+  }
   const container = document.getElementById('asset-selector');
   // eslint-disable-next-line no-undef
   PureJSSelectors.renderAssetSelectorWithAuthFlow(container, assetSelectorProps, () => {

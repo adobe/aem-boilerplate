@@ -4,9 +4,11 @@ const IMS_ENV_STAGE = 'stg1';
 const IMS_ENV_PROD = 'prod';
 const API_KEY = 'franklin';
 const WEB_TOOLS = 'https://master-sacred-dove.ngrok-free.app';
+// TODO: change this to Asset Link IMS client ID
+const IMS_CLIENT_ID = 'p66302-franklin';
 
 let imsInstance = null;
-let imsEnvironment;
+let imsEnvironment = IMS_ENV_PROD;
 
 function loadScript(url, callback, type) {
   const $head = document.querySelector('head');
@@ -22,13 +24,13 @@ function loadScript(url, callback, type) {
 
 function load(cfg) {
   const imsProps = {
-    imsClientId: cfg['ims-client-id'],
+    imsClientId: cfg['ims-client-id'] ? cfg['ims-client-id'] : IMS_CLIENT_ID,
     imsScope: 'additional_info.projectedProductContext,openid,read_organizations,AdobeID,ab.manage',
     redirectUrl: window.location.href,
     modalMode: true,
     imsEnvironment,
     env: imsEnvironment,
-    onAccessTokenReceived: cfg.onAccessTokenReceived || (() => {}),
+    onAccessTokenReceived: cfg.onAccessTokenReceived || (() => { }),
   };
   // eslint-disable-next-line no-undef
   const registeredTokenService = PureJSSelectors.registerAssetsSelectorsAuthService(imsProps);
@@ -36,14 +38,15 @@ function load(cfg) {
 }
 
 export function init(cfg, callback) {
-  if (cfg.environment.toUpperCase() === 'STAGE') {
-    imsEnvironment = IMS_ENV_STAGE;
-  } else if (cfg.environment.toUpperCase() === 'PROD') {
-    imsEnvironment = IMS_ENV_PROD;
-  } else {
-    throw new Error('Invalid environment setting!');
+  if (cfg.environment) {
+    if (cfg.environment.toUpperCase() === 'STAGE') {
+      imsEnvironment = IMS_ENV_STAGE;
+    } else if (cfg.environment.toUpperCase() === 'PROD') {
+      imsEnvironment = IMS_ENV_PROD;
+    } else {
+      throw new Error('Invalid environment setting!');
+    }
   }
-
   loadScript(AS_MFE, () => {
     load(cfg);
     if (callback) {
@@ -106,14 +109,14 @@ export async function renderAssetSelectorWithImsFlow(cfg) {
     onClose,
     handleSelection,
     handleNavigateToAsset,
-    env: cfg.environment.toUpperCase(),
+    env: cfg.environment ? cfg.environment.toUpperCase() : 'PROD',
     apiKey: API_KEY,
   };
 
-  if(cfg['repository-id']) {
+  if (cfg['repository-id']) {
     assetSelectorProps.repositoryId = cfg['repository-id'];
   }
-  if(cfg['ims-org-id']) {
+  if (cfg['ims-org-id']) {
     assetSelectorProps.imsOrg = cfg['ims-org-id'];
   }
   const container = document.getElementById('asset-selector');

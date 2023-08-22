@@ -74,8 +74,8 @@ export function sampleRUM(checkpoint, data = {}) {
       };
       sendPing(data);
       if (sampleRUM.cases[checkpoint]) { sampleRUM.cases[checkpoint](); }
-      if (sampleRUM.always[checkpoint]) { sampleRUM.always[checkpoint](data); }
     }
+    if (sampleRUM.always[checkpoint]) { sampleRUM.always[checkpoint](data); }
   } catch (error) {
     // something went wrong
   }

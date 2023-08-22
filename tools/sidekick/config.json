@@ -10,7 +10,18 @@
       "url": "/aem-asset-selector",
       "isPalette": true,
       "includePaths": [ "**.docx**" ],
-      "paletteRect": "top: auto; bottom: 20px; left: 20px; width:1000px; height:700px"
+      "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
+    },
+    {
+      "id": "asset-library-stage",
+      "title": "AEM Assets Library Stage",
+      "environments": [
+        "edit"
+      ],
+      "url": "/aem-asset-selector-stage",
+      "isPalette": true,
+      "includePaths": [ "**.docx**" ],
+      "paletteRect": "top: 50px; bottom: 10px; right: 10px; left: auto; width:400px; height: calc(100vh - 60px)"
     }
   ]
 }

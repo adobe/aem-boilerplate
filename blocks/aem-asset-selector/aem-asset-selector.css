@@ -1,40 +1,104 @@
-#asset-selector {
-  height: calc(100vh - 80px);
-  width: calc(100vw - 60px);
-  margin: -20px;
-}
+/*
+Copyright 2023 Adobe. All rights reserved.
+This file is licensed to you under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License. You may obtain a copy
+of the License at http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under
+the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+OF ANY KIND, either express or implied. See the License for the specific language
+governing permissions and limitations under the License.
+*/
 
 footer,
 header {
   display: none;
 }
 
-.aem-asset-selector-container {
-  display: flex;
+main .section.aem-asset-selector-container {
+  padding: 0;
+  margin: 0;
+}
+
+main .section > div.aem-asset-selector-wrapper {
+  padding: 0;
+  margin: 0;
+  max-width: unset;
 }
 
 .action-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  position: absolute;
+  right: 20px;
+  left: 20px;
+  z-index: 1;
+  height: 70px;
+}
+
+.action-container img {
+  max-height: 40px;
+}
+
+.action-container > div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.action-container button {
+  width: 120px;
 }
 
 .action-container > button {
   padding: 10px;
+  flex-grow: auto;
+  display: none;
+}
+
+#asset-selector {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  margin-top: 70px;
 }
 
 main .asset-overlay {
   position: absolute;
-  inset: 0;
+  top: 70px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   background-color: white;
   z-index: 10;
 }
 
+main .asset-overlay.loading {
+  align-items: center;
+}
+
 main #login {
+  display: none;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   text-align: center;
+}
+
+main #login p {
+  font-size: 18px;
+  padding: 1rem 2rem;
+}
+
+main button.disabled {
+  color: gray;
+  background-color: lightgray;
+  cursor: pointer;
+  pointer-events: none;
 }

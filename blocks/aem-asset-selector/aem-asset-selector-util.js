@@ -213,10 +213,6 @@ function getCopyRendition(asset) {
         maxRendition = rendition;
       }
     });
-
-  console.log("~~~~~~~~~ Picked rendition: ")
-  console.log(maxRendition)
-  console.log("~~~~~~~~~  ")
   return maxRendition;
 }
 
@@ -259,10 +255,8 @@ async function loadImageIntoHtmlElement(url) {
  * @returns A conversion promise resolving to a blob of the target mimetype
  */
 async function convertImage(assetPublicUrl, targetMimeType='image/png', asset) {
-  const main = document.querySelector('main');
   const imageElement = await loadImageIntoHtmlElement(assetPublicUrl);
 
-  console.log('## convertImage: ', assetPublicUrl)
   return new Promise(resolve => {
     const canvas = document.createElement('canvas');
     canvas.width = asset['tiff:imageWidth'];
@@ -284,8 +278,7 @@ async function convertImage(assetPublicUrl, targetMimeType='image/png', asset) {
  */
 async function copyToClipboardWithBinary(assetPublicUrl, mimeType, asset) {
   let data;
-  console.log("## copyToClipboardWithBinary")
-  console.log(mimeType);
+
   if (!CLIPBOARD_SUPPORTED_BINARY_MIMETYPES.includes(mimeType)) {
     const copiedBlob = await convertImage(assetPublicUrl, 'image/png', asset);
 
@@ -368,7 +361,7 @@ export async function copyAssetWithRapi(asset) {
   }
   const download = getRel(rendition, REL_DOWNLOAD);
   if (!download || !download.href) {
-    console.log('Rendition does not contain sufficient information');
+    logMessage('Rendition does not contain sufficient information');
     return false;
   }
   try {
@@ -379,17 +372,17 @@ export async function copyAssetWithRapi(asset) {
       },
     });
     if (!res.ok) {
-      console.log(`Download request for rendition binary failed with status code ${res.status}: ${res.statusText}`);
+      logMessage(`Download request for rendition binary failed with status code ${res.status}: ${res.statusText}`);
       return false;
     }
     const downloadJson = await res.json();
     if (!downloadJson) {
-      console.log('Rendition download JSON not provided');
+      logMessage('Rendition download JSON not provided');
       return false;
     }
     await copyToClipboardWithBinary(downloadJson.href, downloadJson.type, asset);
   } catch (e) {
-    console.log('Error copying asset using R-API to clipboard', e);
+    logMessage('Error copying asset using R-API to clipboard', e);
     return false;
   }
 

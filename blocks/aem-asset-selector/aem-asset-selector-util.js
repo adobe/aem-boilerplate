@@ -254,10 +254,10 @@ async function loadImageIntoHtmlElement(url) {
  * @param {*} targetMimeType Target mimetype (target format)
  * @returns A conversion promise resolving to a blob of the target mimetype
  */
-async function convertImage(assetPublicUrl, targetMimeType, asset) {
+async function convertImage(assetPublicUrl, targetMimeType='image/png', asset) {
   const imageElement = await loadImageIntoHtmlElement(assetPublicUrl);
 
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const canvas = document.createElement('canvas');
     canvas.width = asset['tiff:imageWidth'];
     canvas.height = asset['tiff:imageLength'];
@@ -277,16 +277,12 @@ async function convertImage(assetPublicUrl, targetMimeType, asset) {
  * @returns {Promise} Resolves when the item has been written to the clipboard.
  */
 async function copyToClipboardWithBinary(assetPublicUrl, mimeType, asset) {
-  let data;
+  let clipboardOptions = {};
 
   if (!CLIPBOARD_SUPPORTED_BINARY_MIMETYPES.includes(mimeType)) {
-    const copiedBlob = await convertImage(assetPublicUrl, 'image/png', asset);
-
-    const clipboardOptions = {};
-    clipboardOptions['image/png'] = copiedBlob;
-    data = [
-      new ClipboardItem(clipboardOptions),
-    ];
+    const clipboardTargetMimetype = 'image/png';
+    const copiedBlob = await convertImage(assetPublicUrl, clipboardTargetMimetype, asset);
+    clipboardOptions[clipboardTargetMimetype] = copiedBlob;
   } else {
     const binary = await fetch(assetPublicUrl);
 
@@ -298,13 +294,12 @@ async function copyToClipboardWithBinary(assetPublicUrl, mimeType, asset) {
     if (!blob) {
       throw new Error('No blob provided in asset response');
     }
-
-    const clipboardOptions = {};
     clipboardOptions[mimeType] = blob;
-    data = [
-      new ClipboardItem(clipboardOptions),
-    ];
   }
+
+  const data = [
+    new ClipboardItem(clipboardOptions),
+  ];
 
   return navigator.clipboard.write(data);
 }

@@ -352,7 +352,7 @@ function getAssetSelector() {
 function handleAssetSelection(selection, cfg) {
   if (cfg) {
     if (selection.length && cfg.onAssetSelected) {
-      if (selection.length > 0) {
+      if (selection.length > 1) {
         logMessage('Multiple items received in selection, but only the first will be used');
       }
       cfg.onAssetSelected(selection[0]);

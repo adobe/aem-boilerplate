@@ -254,10 +254,10 @@ async function loadImageIntoHtmlElement(url) {
  * @param {*} targetMimeType Target mimetype (target format)
  * @returns A conversion promise resolving to a blob of the target mimetype
  */
-async function convertImage(assetPublicUrl, targetMimeType='image/png', asset) {
+async function convertImage(assetPublicUrl, targetMimeType, asset) {
   const imageElement = await loadImageIntoHtmlElement(assetPublicUrl);
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const canvas = document.createElement('canvas');
     canvas.width = asset['tiff:imageWidth'];
     canvas.height = asset['tiff:imageLength'];

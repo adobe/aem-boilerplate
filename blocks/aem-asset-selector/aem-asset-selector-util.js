@@ -63,6 +63,13 @@ const REL_RENDITIONS = 'http://ns.adobe.com/adobecloud/rel/rendition';
 // TODO: change this to Asset Link IMS client ID
 const IMS_CLIENT_ID = 'p66302-franklin';
 const ASSET_SELECTOR_ID = 'asset-selector';
+const CLIPBOARD_SUPPORTED_BINARY_MIMETYPES = [
+  'image/png',
+];
+const SUPPORTED_RENDITIONS_FORMATS = [
+  'image/png',
+  'image/jpeg',
+];
 
 let imsInstance = null;
 let imsEnvironment = IMS_ENV_PROD;
@@ -200,9 +207,9 @@ function getCopyRendition(asset) {
     // TODO: the clipboard API only supports using PNGs as the blob, so
     // only using PNG renditions. Will be fixed to allow altnernate
     // formats in a follow-up ticket
-    .filter((rendition) => rendition.type === 'image/png')
     .forEach((rendition) => {
-      if ((!maxRendition || maxRendition.width < rendition.width)) {
+      if (SUPPORTED_RENDITIONS_FORMATS.includes(rendition.type)
+        && (!maxRendition || maxRendition.width < rendition.width)) {
         maxRendition = rendition;
       }
     });
@@ -227,6 +234,40 @@ async function copyToClipboardWithHtml(assetPublicUrl) {
   return navigator.clipboard.write(data);
 }
 
+async function loadImageIntoHtmlElement(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    /*
+    crossorigin needs to be anonymous to allow the future canvas export,
+    otherwise the canvas will be considered tainted and the export will fail
+    */
+    img.setAttribute('crossorigin', 'anonymous');
+    img.addEventListener('load', () => resolve(img));
+    img.addEventListener('error', (err) => reject(err));
+    img.src = url;
+  });
+}
+
+/**
+ * Convert an image using an URL to a another image format
+ * @param {*} assetPublicUrl Public asset URL
+ * @param {*} targetMimeType Target mimetype (target format)
+ * @returns A conversion promise resolving to a blob of the target mimetype
+ */
+async function convertImage(assetPublicUrl, targetMimeType, asset) {
+  const imageElement = await loadImageIntoHtmlElement(assetPublicUrl);
+
+  return new Promise((resolve) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = asset['tiff:imageWidth'];
+    canvas.height = asset['tiff:imageLength'];
+
+    const context = canvas.getContext('2d');
+    context.drawImage(imageElement, 0, 0);
+    canvas.toBlob(resolve, targetMimeType);
+  });
+}
+
 /**
  * Uses the navigator global object to write a clipboard item to the clipboard.
  * The clipboard item's content will be a Blob containing the image binary from
@@ -235,22 +276,31 @@ async function copyToClipboardWithHtml(assetPublicUrl) {
  * @param {string} mimeType Content type of the image being retrieved.
  * @returns {Promise} Resolves when the item has been written to the clipboard.
  */
-async function copyToClipboardWithBinary(assetPublicUrl, mimeType) {
-  const binary = await fetch(assetPublicUrl);
-
-  if (!binary || !binary.ok) {
-    throw new Error(`Unexpected status code ${binary.status} retrieving asset binary`);
-  }
-
-  const blob = await binary.blob();
-  if (!blob) {
-    throw new Error('No blob provided in asset response');
-  }
+async function copyToClipboardWithBinary(assetPublicUrl, mimeType, asset) {
   const clipboardOptions = {};
-  clipboardOptions[mimeType] = blob;
+
+  if (!CLIPBOARD_SUPPORTED_BINARY_MIMETYPES.includes(mimeType)) {
+    const clipboardTargetMimetype = 'image/png';
+    const copiedBlob = await convertImage(assetPublicUrl, clipboardTargetMimetype, asset);
+    clipboardOptions[clipboardTargetMimetype] = copiedBlob;
+  } else {
+    const binary = await fetch(assetPublicUrl);
+
+    if (!binary || !binary.ok) {
+      throw new Error(`Unexpected status code ${binary.status} retrieving asset binary`);
+    }
+
+    const blob = await binary.blob();
+    if (!blob) {
+      throw new Error('No blob provided in asset response');
+    }
+    clipboardOptions[mimeType] = blob;
+  }
+
   const data = [
     new ClipboardItem(clipboardOptions),
   ];
+
   return navigator.clipboard.write(data);
 }
 
@@ -325,9 +375,9 @@ export async function copyAssetWithRapi(asset) {
       logMessage('Rendition download JSON not provided');
       return false;
     }
-    await copyToClipboardWithBinary(downloadJson.href, downloadJson.type);
+    await copyToClipboardWithBinary(downloadJson.href, downloadJson.type, asset);
   } catch (e) {
-    logMessage('error copying asset to clipboard', e);
+    logMessage('Error copying asset using R-API to clipboard', e);
     return false;
   }
 

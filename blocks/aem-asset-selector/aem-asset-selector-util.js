@@ -254,10 +254,10 @@ async function loadImageIntoHtmlElement(url) {
  * @param {*} targetMimeType Target mimetype (target format)
  * @returns A conversion promise resolving to a blob of the target mimetype
  */
-async function convertImage(assetPublicUrl, targetMimeType='image/png', asset) {
+async function convertImage(assetPublicUrl, targetMimeType, asset) {
   const imageElement = await loadImageIntoHtmlElement(assetPublicUrl);
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     const canvas = document.createElement('canvas');
     canvas.width = asset['tiff:imageWidth'];
     canvas.height = asset['tiff:imageLength'];
@@ -277,7 +277,7 @@ async function convertImage(assetPublicUrl, targetMimeType='image/png', asset) {
  * @returns {Promise} Resolves when the item has been written to the clipboard.
  */
 async function copyToClipboardWithBinary(assetPublicUrl, mimeType, asset) {
-  let clipboardOptions = {};
+  const clipboardOptions = {};
 
   if (!CLIPBOARD_SUPPORTED_BINARY_MIMETYPES.includes(mimeType)) {
     const clipboardTargetMimetype = 'image/png';

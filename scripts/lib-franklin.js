@@ -189,12 +189,7 @@ export async function decorateIcons(element) {
         const svg = await response.text();
         if (svg.match(/(<style | (class|fill|stroke)=|url\(#| xlink:href="#)/) && !svg.match(/"currentcolor"/i)) {
           ICONS_CACHE[iconName] = {
-            styled: true,
-            html: svg
-              // rescope ids and references to avoid clashes across icons;
-              .replaceAll(/ id="([^"]+)"/g, (_, id) => ` id="${iconName}-${id}"`)
-              .replaceAll(/="url\(#([^)]+)\)"/g, (_, id) => `="url(#${iconName}-${id})"`)
-              .replaceAll(/ xlink:href="#([^"]+)"/g, (_, id) => ` xlink:href="#${iconName}-${id}"`),
+            html: null,
           };
         } else {
           ICONS_CACHE[iconName] = {
@@ -216,7 +211,7 @@ export async function decorateIcons(element) {
   const symbols = Object
     .keys(ICONS_CACHE).filter((k) => !svgSprite.querySelector(`#icons-sprite-${k}`))
     .map((k) => ICONS_CACHE[k])
-    .filter((v) => !v.styled)
+    .filter((v) => !!v.html)
     .map((v) => v.html)
     .join('\n');
   svgSprite.innerHTML += symbols;
@@ -225,7 +220,7 @@ export async function decorateIcons(element) {
     const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
     const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
     // Styled icons need to be inlined as-is, while unstyled ones can leverage the sprite
-    if (ICONS_CACHE[iconName].styled) {
+    if (!ICONS_CACHE[iconName].html) {
       const img = document.createElement('img');
       img.src = `${window.hlx.codeBasePath}/icons/${iconName}.svg`;
       parent.append(img);

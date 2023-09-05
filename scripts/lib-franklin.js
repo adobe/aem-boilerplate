@@ -227,7 +227,7 @@ export async function decorateIcons(element) {
     // Styled icons need to be inlined as-is, while unstyled ones can leverage the sprite
     if (ICONS_CACHE[iconName].styled) {
       const img = document.createElement('img');
-      img.src = `${window.hlx.codeBasePath}/icons/${iconName}.svg`
+      img.src = `${window.hlx.codeBasePath}/icons/${iconName}.svg`;
       parent.append(img);
     } else {
       parent.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;

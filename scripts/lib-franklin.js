@@ -185,9 +185,9 @@ export async function decorateIcons(element) {
           return;
         }
         // Styled icons don't play nice with the sprite approach because of shadow dom isolation
-        // and same for internal references
+        // how colors are defined, and internal references handled
         const svg = await response.text();
-        if (svg.match(/(<style | class=|url\(#| xlink:href="#)/)) {
+        if (svg.match(/(<style | (class|fill|stroke)=|url\(#| xlink:href="#)/) && !svg.match(/"currentcolor"/i)) {
           ICONS_CACHE[iconName] = {
             styled: true,
             html: svg
@@ -226,7 +226,9 @@ export async function decorateIcons(element) {
     const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
     // Styled icons need to be inlined as-is, while unstyled ones can leverage the sprite
     if (ICONS_CACHE[iconName].styled) {
-      parent.innerHTML = ICONS_CACHE[iconName].html;
+      const img = document.createElement('img');
+      img.src = `${window.hlx.codeBasePath}/icons/${iconName}.svg`
+      parent.append(img);
     } else {
       parent.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;
     }

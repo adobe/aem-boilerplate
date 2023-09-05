@@ -184,20 +184,20 @@ export async function decorateIcons(element) {
           ICONS_CACHE[iconName] = false;
           return;
         }
-        // Styled icons don't play nice with the sprite approach because of shadow dom isolation
-        // how colors are defined, and internal references handled
         const svg = await response.text();
-        if (svg.match(/(<style | (class|fill|stroke)=|url\(#| xlink:href="#)/) && !svg.match(/"currentcolor"/i)) {
-          ICONS_CACHE[iconName] = {
-            html: null,
-          };
-        } else {
+        // Icons using the "currentcolor" value are meant to inherit from the current
+        // page context and should be inlined
+        if (svg.match(/"currentcolor"/i)) {
           ICONS_CACHE[iconName] = {
             html: svg
               .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
               .replace(/ width=".*?"/, '')
               .replace(/ height=".*?"/, '')
               .replace('</svg>', '</symbol>'),
+          };
+        } else { // Other icons are just plain images
+          ICONS_CACHE[iconName] = {
+            html: null,
           };
         }
       } catch (error) {

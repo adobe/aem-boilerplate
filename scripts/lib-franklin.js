@@ -659,6 +659,16 @@ export function loadFooter(footer) {
   return loadBlock(footerBlock);
 }
 
+// Define an execution context
+const pluginContext = {
+  getMetadata,
+  loadCSS,
+  loadScript,
+  sampleRUM,
+  toCamelCase,
+  toClassName,
+};
+
 /**
  * Setup block utils.
  */
@@ -667,6 +677,17 @@ export function setup() {
   window.hlx.RUM_MASK_URL = 'full';
   window.hlx.codeBasePath = '';
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
+  window.hlx.plugins = new Map();
+  window.hlx.plugins.run = async (phase) => {
+    return [...window.hlx.plugins.values()]
+      .reduce((promise, plugin) => (
+        plugin[phase] && (!plugin.condition || plugin.condition())
+          ? promise.then(() => function(){
+            plugin[phase]();
+          }.call(pluginContext))
+          : promise
+      ), Promise.resolve());
+  }
   window.hlx.patchBlockConfig = [];
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');

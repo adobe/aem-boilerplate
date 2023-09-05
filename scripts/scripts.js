@@ -15,6 +15,43 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
+window.hlx.plugins.set('template-foo', {
+  condition: () => true,
+  loadEager: () => {
+    console.log('foo: eager');
+  },
+  loadLazy: () => {
+    console.log('foo: lazy');
+  },
+  loadDelayed: () => {
+    console.log('foo: delayed');
+  },
+});
+window.hlx.plugins.set('plugin-bar', {
+  condition: () => true,
+  loadEager: () => {
+    console.log('bar: eager');
+  },
+  loadLazy: () => {
+    console.log('bar: lazy');
+  },
+  loadDelayed: () => {
+    console.log('bar: delayed');
+  },
+});
+window.hlx.plugins.set('plugin-baz', {
+  condition: () => false,
+  loadEager: () => {
+    console.log('baz: eager');
+  },
+  loadLazy: () => {
+    console.log('baz: lazy');
+  },
+  loadDelayed: () => {
+    console.log('baz: delayed');
+  },
+});
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -77,6 +114,7 @@ async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
+  window.hlx.plugins.run('loadEager');
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
@@ -114,6 +152,7 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+  window.hlx.plugins.run('loadLazy');
 }
 
 /**
@@ -122,7 +161,10 @@ async function loadLazy(doc) {
  */
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
+  window.setTimeout(() => {
+    import('./delayed.js');
+    window.hlx.plugins.run('loadDelayed');
+  }, 3000);
   // load anything that can be postponed to the latest here
 }
 

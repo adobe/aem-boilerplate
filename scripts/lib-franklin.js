@@ -667,7 +667,12 @@ export function loadFooter(footer) {
 
 // Define an execution context for plugins
 const pluginContext = {
+  createOptimizedPicture,
   getMetadata,
+  decorateBlock,
+  decorateButtons,
+  decorateIcons,
+  loadBlock,
   loadCSS,
   loadScript,
   sampleRUM,

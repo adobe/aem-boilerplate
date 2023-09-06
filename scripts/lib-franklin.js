@@ -665,7 +665,7 @@ export function loadFooter(footer) {
   return loadBlock(footerBlock);
 }
 
-// Define an execution context
+// Define an execution context for plugins
 const pluginContext = {
   getMetadata,
   loadCSS,
@@ -685,17 +685,20 @@ export function setup() {
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
   window.hlx.plugins = new Map();
   window.hlx.templates = new Proxy(new Map(), {
+    // We proxy here to intercept additions to the map and replicate them on the plugins so
+    // we can guarantee the order of execution matches the order plugins were instrumented
     get: (target, prop, receiver) => {
       const value = Reflect.get(target, prop, receiver);
       if (prop === 'set') {
         return function (name, url) {
+          target[prop].call(target, name, url);
           window.hlx.plugins.set(name, {
             condition: () => document.body.classList.contains(name),
             url,
           });
-          target[prop].call(target, name, url);
         };
       }
+      // Functions need to be properly rescoped
       if (typeof value === 'function') {
         return function (...args) {
           return target[prop].call(target, ...args);
@@ -703,18 +706,16 @@ export function setup() {
       }
       return value;
     },
-    set: (target, prop, val, receiver) => {
-      console.log('set');
-      return Reflect.set(target, prop, val, receiver);
-    },
   });
   window.hlx.plugins.load = async () => Promise.all(
     [...window.hlx.plugins.entries()]
+      // Filter plugins that don't match the execution conditions
       .filter(([, plugin]) => (!plugin.condition
         || (plugin.condition(document, pluginContext) && plugin.url)))
       .map(async ([key, plugin]) => {
         try {
           const pluginApi = await import(plugin.url);
+          // If the plugin has a default export or init function we executed it immediately
           if (plugin.default) {
             await plugin.default();
           }
@@ -729,7 +730,7 @@ export function setup() {
       }),
   );
   window.hlx.plugins.run = async (phase) => [...window.hlx.plugins.values()]
-    .reduce((promise, plugin) => (
+    .reduce((promise, plugin) => ( // Using reduce to execute plugins sequencially
       plugin[phase] && (!plugin.condition || plugin.condition(document, pluginContext))
         ? promise.then(() => plugin[phase](document, pluginContext))
         : promise

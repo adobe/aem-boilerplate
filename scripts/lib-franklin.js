@@ -583,12 +583,7 @@ export async function decorateTemplateAndTheme() {
     addClasses(document.body, template);
     // Load template plugin if we have one defined
     if (window.hlx.templates.has(template)) {
-      try {
-        window.hlx.plugins.set(template, { url: window.hlx.templates.get(template) });
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error('Could not load specified template', template);
-      }
+      window.hlx.plugins.set(template, { url: window.hlx.templates.get(template) });
     }
   }
   const theme = getMetadata('theme');
@@ -716,14 +711,19 @@ export function setup() {
       .filter(([, plugin]) => (!plugin.condition
         || (plugin.condition(document, pluginContext) && plugin.url)))
       .map(async ([key, plugin]) => {
-        const pluginApi = await import(plugin.url);
-        if (plugin.default) {
-          await plugin.default();
+        try {
+          const pluginApi = await import(plugin.url);
+          if (plugin.default) {
+            await plugin.default();
+          }
+          if (plugin.default) {
+            await plugin.init();
+          }
+          window.hlx.plugins.set(key, pluginApi);
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.error('Could not load specified plugin', key);
         }
-        if (plugin.default) {
-          await plugin.init();
-        }
-        window.hlx.plugins.set(key, pluginApi);
       }),
   );
   window.hlx.plugins.run = async (phase) => [...window.hlx.plugins.values()]

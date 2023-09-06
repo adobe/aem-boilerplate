@@ -15,9 +15,18 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
-window.hlx.templates.set('foo', '/templates/foo.js'); // A template that will resolve by default
-window.hlx.templates.set('bar', '/templates/bar.js'); // A template that will not resolve
-window.hlx.plugins.set('inline-plugin-baz', { // An inline plugin
+/* Templates */
+
+// A template that will resolve by default
+window.hlx.templates.set('foo', '/templates/foo.js');
+
+// A template that will not resolve
+window.hlx.templates.set('bar', '/templates/bar.js');
+
+/* Plugins */
+
+// An inline plugin
+window.hlx.plugins.set('inline-plugin-baz', {
   condition: () => true,
   loadEager: () => {
     console.log('plugin baz: eager');
@@ -29,8 +38,16 @@ window.hlx.plugins.set('inline-plugin-baz', { // An inline plugin
     console.log('plugin baz: delayed');
   },
 });
-window.hlx.plugins.set('external-plugin-qux', { // An external plugin
+
+// An external plugin
+window.hlx.plugins.set('external-plugin-qux', {
   url: '/plugins/qux.js',
+});
+
+// An external plugin that will never load
+window.hlx.plugins.set('external-plugin-corge', {
+  condition: () => false,
+  url: '/plugins/corge.js',
 });
 
 /**

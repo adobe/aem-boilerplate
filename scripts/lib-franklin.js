@@ -710,8 +710,10 @@ export function setup() {
   window.hlx.plugins.load = async () => Promise.all(
     [...window.hlx.plugins.entries()]
       // Filter plugins that don't match the execution conditions
-      .filter(([, plugin]) => (!plugin.condition
-        || (plugin.condition(document, pluginContext) && plugin.url)))
+      .filter(([, plugin]) => (
+        (!plugin.condition || plugin.condition(document, pluginContext))
+        && plugin.url
+      ))
       .map(async ([key, plugin]) => {
         try {
           const pluginApi = await import(plugin.url);

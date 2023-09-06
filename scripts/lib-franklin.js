@@ -688,23 +688,25 @@ export function setup() {
     get: (target, prop, receiver) => {
       const value = Reflect.get(target, prop, receiver);
       if (prop === 'set') {
-        return function() {
-          const [name, url] = arguments;
-          window.hlx.plugins.set(name, { condition: () => document.body.classList.contains(name), url });
+        return function (name, url) {
+          window.hlx.plugins.set(name, {
+            condition: () => document.body.classList.contains(name),
+            url,
+          });
           target[prop].call(target, name, url);
-        }
+        };
       }
-      if (typeof value == 'function') {
-        return function() {
-          return target[prop].apply(target, arguments);
-        }
+      if (typeof value === 'function') {
+        return function (...args) {
+          return target[prop].call(target, ...args);
+        };
       }
       return value;
     },
     set: (target, prop, val, receiver) => {
       console.log('set');
       return Reflect.set(target, prop, val, receiver);
-    }
+    },
   });
   window.hlx.plugins.load = async () => Promise.all(
     [...window.hlx.plugins.entries()]

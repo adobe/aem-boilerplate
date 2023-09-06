@@ -578,7 +578,7 @@ export async function decorateTemplateAndTheme() {
       element.classList.add(toClassName(c.trim()));
     });
   };
-  const template = getMetadata('template') || 'foo';
+  const template = getMetadata('template') || 'foo'; // FIXME: just for the PoC
   if (template) {
     addClasses(document.body, template);
     // Load template plugin if we have one defined

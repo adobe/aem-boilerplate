@@ -15,9 +15,9 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
-window.hlx.templates.set('foo', '/templates/foo.js');
-window.hlx.templates.set('bar', '/templates/bar.js');
-window.hlx.plugins.set('inline-plugin-baz', {
+window.hlx.templates.set('foo', '/templates/foo.js'); // A template that will resolve by default
+window.hlx.templates.set('bar', '/templates/bar.js'); // A template that will not resolve
+window.hlx.plugins.set('inline-plugin-baz', { // An inline plugin
   condition: () => true,
   loadEager: () => {
     console.log('plugin baz: eager');
@@ -29,7 +29,7 @@ window.hlx.plugins.set('inline-plugin-baz', {
     console.log('plugin baz: delayed');
   },
 });
-window.hlx.plugins.set('external-plugin-qux', {
+window.hlx.plugins.set('external-plugin-qux', { // An external plugin
   url: '/plugins/qux.js',
 });
 

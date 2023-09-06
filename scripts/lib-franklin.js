@@ -707,6 +707,8 @@ export function setup() {
       return value;
     },
   });
+  // Load all plugins that are referenced by URL, and updated their configuration with the
+  // actual API they expose
   window.hlx.plugins.load = async () => Promise.all(
     [...window.hlx.plugins.entries()]
       // Filter plugins that don't match the execution conditions
@@ -731,6 +733,7 @@ export function setup() {
         }
       }),
   );
+  // Run a specific phase in the plugin
   window.hlx.plugins.run = async (phase) => [...window.hlx.plugins.values()]
     .reduce((promise, plugin) => ( // Using reduce to execute plugins sequencially
       plugin[phase] && (!plugin.condition || plugin.condition(document, pluginContext))

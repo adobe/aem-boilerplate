@@ -572,14 +572,25 @@ export function normalizeHeadings(el, allowedHeadings) {
 /**
  * Set template (page structure) and theme (page styles).
  */
-export function decorateTemplateAndTheme() {
+export async function decorateTemplateAndTheme() {
   const addClasses = (element, classes) => {
     classes.split(',').forEach((c) => {
       element.classList.add(toClassName(c.trim()));
     });
   };
-  const template = getMetadata('template');
-  if (template) addClasses(document.body, template);
+  const template = getMetadata('template') || 'foo';
+  if (template) {
+    addClasses(document.body, template);
+    // Load template plugin if we have one defined
+    if (window.hlx.templates.has(template)) {
+      try {
+        window.hlx.plugins.set(template, { url: window.hlx.templates.get(template) });
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error('Could not load specified template', template);
+      }
+    }
+  }
   const theme = getMetadata('theme');
   if (theme) addClasses(document.body, theme);
 }
@@ -678,16 +689,49 @@ export function setup() {
   window.hlx.codeBasePath = '';
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
   window.hlx.plugins = new Map();
-  window.hlx.plugins.run = async (phase) => {
-    return [...window.hlx.plugins.values()]
-      .reduce((promise, plugin) => (
-        plugin[phase] && (!plugin.condition || plugin.condition())
-          ? promise.then(() => function(){
-            plugin[phase]();
-          }.call(pluginContext))
-          : promise
-      ), Promise.resolve());
-  }
+  window.hlx.templates = new Proxy(new Map(), {
+    get: (target, prop, receiver) => {
+      const value = Reflect.get(target, prop, receiver);
+      if (prop === 'set') {
+        return function() {
+          const [name, url] = arguments;
+          window.hlx.plugins.set(name, { condition: () => document.body.classList.contains(name), url });
+          target[prop].call(target, name, url);
+        }
+      }
+      if (typeof value == 'function') {
+        return function() {
+          return target[prop].apply(target, arguments);
+        }
+      }
+      return value;
+    },
+    set: (target, prop, val, receiver) => {
+      console.log('set');
+      return Reflect.set(target, prop, val, receiver);
+    }
+  });
+  window.hlx.plugins.load = async () => Promise.all(
+    [...window.hlx.plugins.entries()]
+      .filter(([, plugin]) => (!plugin.condition
+        || (plugin.condition(document, pluginContext) && plugin.url)))
+      .map(async ([key, plugin]) => {
+        const pluginApi = await import(plugin.url);
+        if (plugin.default) {
+          await plugin.default();
+        }
+        if (plugin.default) {
+          await plugin.init();
+        }
+        window.hlx.plugins.set(key, pluginApi);
+      }),
+  );
+  window.hlx.plugins.run = async (phase) => [...window.hlx.plugins.values()]
+    .reduce((promise, plugin) => (
+      plugin[phase] && (!plugin.condition || plugin.condition(document, pluginContext))
+        ? promise.then(() => plugin[phase](document, pluginContext))
+        : promise
+    ), Promise.resolve());
   window.hlx.patchBlockConfig = [];
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');

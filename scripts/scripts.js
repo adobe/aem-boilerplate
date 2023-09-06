@@ -15,41 +15,22 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
-window.hlx.plugins.set('template-foo', {
+window.hlx.templates.set('foo', '/templates/foo.js');
+window.hlx.templates.set('bar', '/templates/bar.js');
+window.hlx.plugins.set('inline-plugin-baz', {
   condition: () => true,
   loadEager: () => {
-    console.log('foo: eager');
+    console.log('plugin baz: eager');
   },
   loadLazy: () => {
-    console.log('foo: lazy');
+    console.log('plugin baz: lazy');
   },
   loadDelayed: () => {
-    console.log('foo: delayed');
+    console.log('plugin baz: delayed');
   },
 });
-window.hlx.plugins.set('plugin-bar', {
-  condition: () => true,
-  loadEager: () => {
-    console.log('bar: eager');
-  },
-  loadLazy: () => {
-    console.log('bar: lazy');
-  },
-  loadDelayed: () => {
-    console.log('bar: delayed');
-  },
-});
-window.hlx.plugins.set('plugin-baz', {
-  condition: () => false,
-  loadEager: () => {
-    console.log('baz: eager');
-  },
-  loadLazy: () => {
-    console.log('baz: lazy');
-  },
-  loadDelayed: () => {
-    console.log('baz: delayed');
-  },
+window.hlx.plugins.set('external-plugin-qux', {
+  url: '/plugins/qux.js',
 });
 
 /**
@@ -112,9 +93,10 @@ export function decorateMain(main) {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
-  decorateTemplateAndTheme();
+  await decorateTemplateAndTheme();
   const main = doc.querySelector('main');
-  window.hlx.plugins.run('loadEager');
+  await window.hlx.plugins.load();
+  await window.hlx.plugins.run('loadEager');
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');

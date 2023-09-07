@@ -184,16 +184,23 @@ export async function decorateIcons(element) {
           ICONS_CACHE[iconName] = false;
           return;
         }
-        const svg = await response.text();
-        // Icons using the "currentcolor" value are meant to inherit from the current
-        // page context and should be inlined
-        if (svg.match(/"currentcolor"/i)) {
+        const svgSource = await response.text();
+        // Icons using the "currentcolor" value will be inlined via an svg `<use/>` tag
+        if (svgSource.match(/"currentcolor"/i)) {
+          const parsedSvg = new DOMParser().parseFromString(svgSource, 'image/svg+xml');
+          const svgSymbol = document.createElementNS('http://www.w3.org/2000/svg', 'symbol');
+          [...parsedSvg.documentElement.attributes].forEach(({name, value}) => {
+            if (!name.startsWith('xmlns:') && name !== 'xmlns') {
+              svgSymbol.setAttribute(name, value);
+            }
+          });
+          svgSymbol.setAttribute('id', `icons-sprite-${iconName}`);
+          svgSymbol.removeAttribute('width');
+          svgSymbol.removeAttribute('height');
+
+          svgSymbol.innerHTML = parsedSvg.documentElement.innerHTML;
           ICONS_CACHE[iconName] = {
-            html: svg
-              .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
-              .replace(/ width=".*?"/, '')
-              .replace(/ height=".*?"/, '')
-              .replace('</svg>', '</symbol>'),
+            html: svgSymbol.outerHTML,
           };
         } else { // Other icons are just plain images
           ICONS_CACHE[iconName] = {
@@ -219,13 +226,18 @@ export async function decorateIcons(element) {
   icons.forEach((span) => {
     const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
     const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
-    // Styled icons need to be inlined as-is, while unstyled ones can leverage the sprite
+    // Add icons to the DOM using the svg `<use/>` tag for sprited icons, or a plain `<img/>` tag
+    // AS A FALLBACK
     if (!ICONS_CACHE[iconName].html) {
       const img = document.createElement('img');
       img.src = `${window.hlx.codeBasePath}/icons/${iconName}.svg`;
       parent.append(img);
     } else {
-      parent.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;
+      parent.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg">
+          <use href="#icons-sprite-${iconName}"/>
+        </svg>
+      `;
     }
   });
 }

@@ -663,7 +663,7 @@ export function loadFooter(footer) {
 }
 
 // Define an execution context for plugins
-const pluginContext = {
+export const executionContext = {
   createOptimizedPicture,
   getMetadata,
   decorateBlock,
@@ -705,12 +705,12 @@ class PluginsRegistry {
   // actual API they expose
   async load() {
     [...this.#plugins.entries()]
-      .filter(([, plugin]) => plugin.condition && !plugin.condition(document, pluginContext))
+      .filter(([, plugin]) => plugin.condition && !plugin.condition(document, executionContext))
       .map(([id]) => this.#plugins.delete(id));
     return Promise.all([...this.#plugins.entries()]
       // Filter plugins that don't match the execution conditions
       .filter(([, plugin]) => (
-        (!plugin.condition || plugin.condition(document, pluginContext))
+        (!plugin.condition || plugin.condition(document, executionContext))
         && plugin.url
       ))
       .map(async ([key, plugin]) => {
@@ -734,8 +734,8 @@ class PluginsRegistry {
   async run(phase) {
     return [...this.#plugins.values()]
       .reduce((promise, plugin) => ( // Using reduce to execute plugins sequencially
-        plugin[phase] && (!plugin.condition || plugin.condition(document, pluginContext))
-          ? promise.then(() => plugin[phase](document, pluginContext))
+        plugin[phase] && (!plugin.condition || plugin.condition(document, executionContext))
+          ? promise.then(() => plugin[phase](document, executionContext))
           : promise
       ), Promise.resolve());
   }

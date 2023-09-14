@@ -698,7 +698,7 @@ class Plugins {
   // Load all plugins that are referenced by URL, and updated their configuration with the
   // actual API they expose
   async load() {
-    return [...this.plugins.entries()]
+    return Promise.all([...this.plugins.entries()]
       // Filter plugins that don't match the execution conditions
       .filter(([, plugin]) => (
         (!plugin.condition || plugin.condition(document, pluginContext))
@@ -719,7 +719,7 @@ class Plugins {
           // eslint-disable-next-line no-console
           console.error('Could not load specified plugin', key);
         }
-      });
+      }));
   }
 
   // Run a specific phase in the plugin
@@ -736,9 +736,14 @@ class Plugins {
 class Templates {
   // eslint-disable-next-line class-methods-use-this
   add(id, url) {
-    window.hlx.plugins.add(id, url
-      ? { condition: () => document.body.classList.contains(id), url }
-      : null);
+    const templateId = !url
+      ? id.split('/').pop().replace(/\.js/, '')
+      : id;
+    const templateConfig = {
+      condition: () => document.body.classList.contains(id),
+      url: url || id,
+    };
+    window.hlx.plugins.add(templateId, templateConfig);
   }
 
   // eslint-disable-next-line class-methods-use-this

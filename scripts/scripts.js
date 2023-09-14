@@ -23,7 +23,7 @@ window.hlx.templates.add('foo', '/templates/foo.js');
 // A template that will not resolve
 window.hlx.templates.add('bar', '/templates/bar.js');
 
-// Shorthand
+// Shorthand, also won't resolve
 window.hlx.templates.add('/templates/garply.js');
 
 /* Plugins */

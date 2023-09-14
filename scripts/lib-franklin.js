@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 /*
  * Copyright 2022 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -581,10 +582,6 @@ export async function decorateTemplateAndTheme() {
   const template = getMetadata('template') || 'foo'; // FIXME: just for the PoC
   if (template) {
     addClasses(document.body, template);
-    // Load template plugin if we have one defined
-    if (window.hlx.templates.has(template)) {
-      window.hlx.plugins.set(template, { url: window.hlx.templates.get(template) });
-    }
   }
   const theme = getMetadata('theme');
   if (theme) addClasses(document.body, theme);
@@ -680,42 +677,28 @@ const pluginContext = {
   toClassName,
 };
 
-/**
- * Setup block utils.
- */
-export function setup() {
-  window.hlx = window.hlx || {};
-  window.hlx.RUM_MASK_URL = 'full';
-  window.hlx.codeBasePath = '';
-  window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
-  window.hlx.plugins = new Map();
-  window.hlx.templates = new Proxy(new Map(), {
-    // We proxy here to intercept additions to the map and replicate them on the plugins so
-    // we can guarantee the order of execution matches the order plugins were instrumented
-    get: (target, prop, receiver) => {
-      const value = Reflect.get(target, prop, receiver);
-      if (prop === 'set') {
-        return function (name, url) {
-          target[prop].call(target, name, url);
-          window.hlx.plugins.set(name, {
-            condition: () => document.body.classList.contains(name),
-            url,
-          });
-        };
-      }
-      // Functions need to be properly rescoped
-      if (typeof value === 'function') {
-        return function (...args) {
-          return target[prop].call(target, ...args);
-        };
-      }
-      return value;
-    },
-  });
+class Plugins {
+  constructor() {
+    this.plugins = new Map();
+  }
+
+  // Register a new plugin
+  add(id, config) {
+    const pluginId = !config
+      ? id.split('/').pop().replace(/\.js/, '')
+      : id;
+    const pluginConfig = typeof config === 'string' || !config
+      ? { url: config || id }
+      : config;
+    this.plugins.set(pluginId, pluginConfig);
+  }
+
+  includes(id) { return !!this.plugins.has(id); }
+
   // Load all plugins that are referenced by URL, and updated their configuration with the
   // actual API they expose
-  window.hlx.plugins.load = async () => Promise.all(
-    [...window.hlx.plugins.entries()]
+  async load() {
+    return [...this.plugins.entries()]
       // Filter plugins that don't match the execution conditions
       .filter(([, plugin]) => (
         (!plugin.condition || plugin.condition(document, pluginContext))
@@ -731,21 +714,48 @@ export function setup() {
           if (plugin.default) {
             await plugin.init();
           }
-          window.hlx.plugins.set(key, pluginApi);
+          this.plugins.set(key, pluginApi);
         } catch (err) {
           // eslint-disable-next-line no-console
           console.error('Could not load specified plugin', key);
         }
-      }),
-  );
+      });
+  }
+
   // Run a specific phase in the plugin
-  window.hlx.plugins.run = async (phase) => [...window.hlx.plugins.values()]
-    .reduce((promise, plugin) => ( // Using reduce to execute plugins sequencially
-      plugin[phase] && (!plugin.condition || plugin.condition(document, pluginContext))
-        ? promise.then(() => plugin[phase](document, pluginContext))
-        : promise
-    ), Promise.resolve());
+  async run(phase) {
+    return [...this.plugins.values()]
+      .reduce((promise, plugin) => ( // Using reduce to execute plugins sequencially
+        plugin[phase] && (!plugin.condition || plugin.condition(document, pluginContext))
+          ? promise.then(() => plugin[phase](document, pluginContext))
+          : promise
+      ), Promise.resolve());
+  }
+}
+
+class Templates {
+  // eslint-disable-next-line class-methods-use-this
+  add(id, url) {
+    window.hlx.plugins.add(id, url
+      ? { condition: () => document.body.classList.contains(id), url }
+      : null);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  includes(id) { return window.hlx.plugins.includes(id); }
+}
+
+/**
+ * Setup block utils.
+ */
+export function setup() {
+  window.hlx = window.hlx || {};
+  window.hlx.RUM_MASK_URL = 'full';
+  window.hlx.codeBasePath = '';
+  window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
   window.hlx.patchBlockConfig = [];
+  window.hlx.plugins = new Plugins();
+  window.hlx.templates = new Templates();
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {

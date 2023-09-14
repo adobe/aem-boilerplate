@@ -18,15 +18,18 @@ const LCP_BLOCKS = []; // add your LCP blocks to the list
 /* Templates */
 
 // A template that will resolve by default
-window.hlx.templates.set('foo', '/templates/foo.js');
+window.hlx.templates.add('foo', '/templates/foo.js');
 
 // A template that will not resolve
-window.hlx.templates.set('bar', '/templates/bar.js');
+window.hlx.templates.add('bar', '/templates/bar.js');
+
+// Shorthand
+window.hlx.templates.add('/templates/garply.js');
 
 /* Plugins */
 
 // An inline plugin
-window.hlx.plugins.set('inline-plugin-baz', {
+window.hlx.plugins.add('inline-plugin-baz', {
   condition: () => true,
   loadEager: () => {
     console.log('plugin baz: eager');
@@ -40,15 +43,18 @@ window.hlx.plugins.set('inline-plugin-baz', {
 });
 
 // An external plugin
-window.hlx.plugins.set('external-plugin-qux', {
+window.hlx.plugins.add('external-plugin-qux', {
   url: '/plugins/qux.js',
 });
 
 // An external plugin that will never load
-window.hlx.plugins.set('external-plugin-corge', {
+window.hlx.plugins.add('external-plugin-corge', {
   condition: () => false,
   url: '/plugins/corge.js',
 });
+
+// Shorthand
+window.hlx.plugins.add('/plugins/grault.js');
 
 /**
  * Builds hero block and prepends to main in a new section.

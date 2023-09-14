@@ -677,7 +677,7 @@ const pluginContext = {
   toClassName,
 };
 
-class Plugins {
+class PluginsRegistry {
   constructor() {
     this.plugins = new Map();
   }
@@ -693,6 +693,10 @@ class Plugins {
     this.plugins.set(pluginId, pluginConfig);
   }
 
+  // Get the plugin
+  get(id) { return this.plugins.get(id); }
+
+  // Check if the plugin exists
   includes(id) { return !!this.plugins.has(id); }
 
   // Load all plugins that are referenced by URL, and updated their configuration with the
@@ -710,8 +714,7 @@ class Plugins {
           // If the plugin has a default export or init function we executed it immediately
           if (plugin.default) {
             await plugin.default();
-          }
-          if (plugin.default) {
+          } else if (plugin.init) {
             await plugin.init();
           }
           this.plugins.set(key, pluginApi);
@@ -733,7 +736,8 @@ class Plugins {
   }
 }
 
-class Templates {
+class TemplatesRegistry {
+  // Register a new template
   // eslint-disable-next-line class-methods-use-this
   add(id, url) {
     const templateId = !url
@@ -746,6 +750,11 @@ class Templates {
     window.hlx.plugins.add(templateId, templateConfig);
   }
 
+  // Get the template
+  // eslint-disable-next-line class-methods-use-this
+  get(id) { return window.hlx.plugins.get(id); }
+
+  // Check if the template exists
   // eslint-disable-next-line class-methods-use-this
   includes(id) { return window.hlx.plugins.includes(id); }
 }
@@ -759,8 +768,8 @@ export function setup() {
   window.hlx.codeBasePath = '';
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
   window.hlx.patchBlockConfig = [];
-  window.hlx.plugins = new Plugins();
-  window.hlx.templates = new Templates();
+  window.hlx.plugins = new PluginsRegistry();
+  window.hlx.templates = new TemplatesRegistry();
 
   const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
   if (scriptEl) {

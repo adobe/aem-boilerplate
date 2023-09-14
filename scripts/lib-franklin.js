@@ -678,8 +678,10 @@ const pluginContext = {
 };
 
 class PluginsRegistry {
+  #plugins;
+
   constructor() {
-    this.plugins = new Map();
+    this.#plugins = new Map();
   }
 
   // Register a new plugin
@@ -690,19 +692,22 @@ class PluginsRegistry {
     const pluginConfig = typeof config === 'string' || !config
       ? { url: config || id }
       : config;
-    this.plugins.set(pluginId, pluginConfig);
+    this.#plugins.set(pluginId, pluginConfig);
   }
 
   // Get the plugin
-  get(id) { return this.plugins.get(id); }
+  get(id) { return this.#plugins.get(id); }
 
   // Check if the plugin exists
-  includes(id) { return !!this.plugins.has(id); }
+  includes(id) { return !!this.#plugins.has(id); }
 
   // Load all plugins that are referenced by URL, and updated their configuration with the
   // actual API they expose
   async load() {
-    return Promise.all([...this.plugins.entries()]
+    [...this.#plugins.entries()]
+      .filter(([, plugin]) => plugin.condition && !plugin.condition(document, pluginContext))
+      .map(([id]) => this.#plugins.delete(id));
+    return Promise.all([...this.#plugins.entries()]
       // Filter plugins that don't match the execution conditions
       .filter(([, plugin]) => (
         (!plugin.condition || plugin.condition(document, pluginContext))
@@ -717,7 +722,7 @@ class PluginsRegistry {
           } else if (plugin.init) {
             await plugin.init();
           }
-          this.plugins.set(key, pluginApi);
+          this.#plugins.set(key, pluginApi);
         } catch (err) {
           // eslint-disable-next-line no-console
           console.error('Could not load specified plugin', key);
@@ -727,7 +732,7 @@ class PluginsRegistry {
 
   // Run a specific phase in the plugin
   async run(phase) {
-    return [...this.plugins.values()]
+    return [...this.#plugins.values()]
       .reduce((promise, plugin) => ( // Using reduce to execute plugins sequencially
         plugin[phase] && (!plugin.condition || plugin.condition(document, pluginContext))
           ? promise.then(() => plugin[phase](document, pluginContext))

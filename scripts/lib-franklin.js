@@ -349,7 +349,7 @@ export function decorateSections(main) {
     wrappers.forEach((wrapper) => section.append(wrapper));
     section.classList.add('section');
     section.dataset.sectionStatus = 'initialized';
-    section.style.display = 'none';
+    // section.style.display = 'none';
 
     /* process section metadata */
     const sectionMeta = section.querySelector('div.section-metadata');
@@ -492,10 +492,18 @@ export async function loadBlock(block) {
 export async function loadBlocks(main) {
   updateSectionsStatus(main);
   const blocks = [...main.querySelectorAll('div.block')];
+  const observer = new IntersectionObserver(async (entries) => {
+    const observed = entries.find((entry) => entry.isIntersecting);
+    if (observed) {
+      observer.disconnect();
+      await loadBlock(observed);
+      updateSectionsStatus(main);
+    }
+  }, { threshold: 0 });
+
   for (let i = 0; i < blocks.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
-    await loadBlock(blocks[i]);
-    updateSectionsStatus(main);
+    observer.observe(blocks[i]);
   }
 }
 

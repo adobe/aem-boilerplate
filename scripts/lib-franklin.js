@@ -579,7 +579,7 @@ export async function decorateTemplateAndTheme() {
       element.classList.add(toClassName(c.trim()));
     });
   };
-  const template = getMetadata('template') || 'foo'; // FIXME: just for the PoC
+  const template = getMetadata('template');
   if (template) {
     addClasses(document.body, template);
   }
@@ -691,7 +691,7 @@ class PluginsRegistry {
       : id;
     const pluginConfig = typeof config === 'string' || !config
       ? { url: config || id }
-      : config;
+      : { load: 'eager', ...config };
     this.#plugins.set(pluginId, pluginConfig);
   }
 
@@ -703,7 +703,7 @@ class PluginsRegistry {
 
   // Load all plugins that are referenced by URL, and updated their configuration with the
   // actual API they expose
-  async load() {
+  async load(phase) {
     [...this.#plugins.entries()]
       .filter(([, plugin]) => plugin.condition && !plugin.condition(document, executionContext))
       .map(([id]) => this.#plugins.delete(id));
@@ -711,7 +711,7 @@ class PluginsRegistry {
       // Filter plugins that don't match the execution conditions
       .filter(([, plugin]) => (
         (!plugin.condition || plugin.condition(document, executionContext))
-        && plugin.url
+        && phase === plugin.load && plugin.url
       ))
       .map(async ([key, plugin]) => {
         try {
@@ -722,7 +722,7 @@ class PluginsRegistry {
           } else if (plugin.init) {
             await plugin.init();
           }
-          this.#plugins.set(key, pluginApi);
+          this.#plugins.set(key, { ...plugin, ...pluginApi });
         } catch (err) {
           // eslint-disable-next-line no-console
           console.error('Could not load specified plugin', key);
@@ -749,7 +749,7 @@ class TemplatesRegistry {
       ? id.split('/').pop().replace(/\.js/, '')
       : id;
     const templateConfig = {
-      condition: () => document.body.classList.contains(id),
+      condition: () => toClassName(getMetadata('template')) === id || id === 'foo', // FIXME: just for the PoC,
       url: url || id,
     };
     window.hlx.plugins.add(templateId, templateConfig);

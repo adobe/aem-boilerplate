@@ -42,9 +42,10 @@ window.hlx.plugins.add('inline-plugin-baz', {
   },
 });
 
-// An external plugin
+// An external plugin that loads in the lazy phase
 window.hlx.plugins.add('external-plugin-qux', {
   url: '/plugins/qux.js',
+  load: 'lazy',
 });
 
 // An external plugin that will never load
@@ -118,7 +119,6 @@ async function loadEager(doc) {
   document.documentElement.lang = 'en';
   await decorateTemplateAndTheme();
   const main = doc.querySelector('main');
-  await window.hlx.plugins.load();
   await window.hlx.plugins.run('loadEager');
   if (main) {
     decorateMain(main);
@@ -167,6 +167,7 @@ async function loadLazy(doc) {
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => {
+    window.hlx.plugins.load('delayed');
     import('./delayed.js');
     window.hlx.plugins.run('loadDelayed');
   }, 3000);
@@ -174,7 +175,9 @@ function loadDelayed() {
 }
 
 async function loadPage() {
+  await window.hlx.plugins.load('eager');
   await loadEager(document);
+  await window.hlx.plugins.load('lazy');
   await loadLazy(document);
   loadDelayed();
 }

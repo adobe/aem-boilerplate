@@ -1,5 +1,5 @@
 export const loadEager = (doc, context) => {
-  console.log('plugin qux: eager', context);
+  console.error('plugin qux: eager', context); // should not run as plugin is loaded in lazy phase
 };
 
 export const loadLazy = (doc, context) => {

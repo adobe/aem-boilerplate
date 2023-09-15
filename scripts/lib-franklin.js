@@ -718,9 +718,9 @@ class PluginsRegistry {
           const pluginApi = await import(plugin.url);
           // If the plugin has a default export or init function we executed it immediately
           if (plugin.default) {
-            await plugin.default();
+            await plugin.default(document, executionContext);
           } else if (plugin.init) {
-            await plugin.init();
+            await plugin.init(document, executionContext);
           }
           this.#plugins.set(key, { ...plugin, ...pluginApi });
         } catch (err) {

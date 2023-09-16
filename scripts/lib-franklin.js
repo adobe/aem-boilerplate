@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 /*
  * Copyright 2022 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -10,6 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+/* eslint-disable max-classes-per-file */
 
 /**
  * log RUM if part of the sample.
@@ -433,6 +433,37 @@ export function buildBlock(blockName, content) {
 }
 
 /**
+ * Loads the specified module with its JS and CSS files and returns the JS API if applicable.
+ * @param {String} name The module name
+ * @param {String} cssPath A path to the CSS file to load, or null
+ * @param {String} jsPath A path to the JS file to load, or null
+ * @param  {...any} args Arguments to use to call the default export on the JS file
+ * @returns a promsie that the module was loaded, and that returns the JS API is any
+ */
+async function loadModule(name, cssPath, jsPath, ...args) {
+  const cssLoaded = cssPath ? loadCSS(cssPath) : Promise.resolve();
+  const decorationComplete = jsPath
+    ? new Promise((resolve) => {
+      (async () => {
+        let mod;
+        try {
+          mod = await import(jsPath);
+          if (mod.default) {
+            await mod.default.apply(null, args);
+          }
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.log(`failed to load module for ${name}`, error);
+        }
+        resolve(mod);
+      })();
+    })
+    : Promise.resolve();
+  return Promise.all([cssLoaded, decorationComplete])
+    .then(([, api]) => api);
+}
+
+/**
  * Gets the configuration for the given block, and also passes
  * the config through all custom patching helpers added to the project.
  *
@@ -462,22 +493,7 @@ export async function loadBlock(block) {
     block.dataset.blockStatus = 'loading';
     const { blockName, cssPath, jsPath } = getBlockConfig(block);
     try {
-      const cssLoaded = loadCSS(cssPath);
-      const decorationComplete = new Promise((resolve) => {
-        (async () => {
-          try {
-            const mod = await import(jsPath);
-            if (mod.default) {
-              await mod.default(block);
-            }
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(`failed to load module for ${blockName}`, error);
-          }
-          resolve();
-        })();
-      });
-      await Promise.all([cssLoaded, decorationComplete]);
+      await loadModule(blockName, cssPath, jsPath, block);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(`failed to load block ${blockName}`, error);
@@ -677,6 +693,17 @@ export const executionContext = {
   toClassName,
 };
 
+function parsePluginParams(id, config) {
+  const pluginId = !config
+    ? id.split('/').splice(id.endsWith('/') ? -2 : -1, 1)[0].replace(/\.js/, '')
+    : id;
+  const pluginConfig = typeof config === 'string' || !config
+    ? { url: config || id }
+    : { load: 'eager', ...config };
+  pluginConfig.url = pluginConfig.url.replace(/\/$/, '');
+  return { id: pluginId, config: pluginConfig };
+}
+
 class PluginsRegistry {
   #plugins;
 
@@ -686,12 +713,7 @@ class PluginsRegistry {
 
   // Register a new plugin
   add(id, config) {
-    const pluginId = !config
-      ? id.split('/').pop().replace(/\.js/, '')
-      : id;
-    const pluginConfig = typeof config === 'string' || !config
-      ? { url: config || id }
-      : { load: 'eager', ...config };
+    const { id: pluginId, config: pluginConfig } = parsePluginParams(id, config);
     this.#plugins.set(pluginId, pluginConfig);
   }
 
@@ -715,12 +737,16 @@ class PluginsRegistry {
       ))
       .map(async ([key, plugin]) => {
         try {
-          const pluginApi = await import(plugin.url);
-          // If the plugin has a default export or init function we executed it immediately
-          if (plugin.default) {
-            await plugin.default(document, executionContext);
-          } else if (plugin.init) {
-            await plugin.init(document, executionContext);
+          const pluginApi = (await loadModule(
+            key,
+            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
+            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
+            document,
+            executionContext,
+          )) || {};
+          // If the plugin has an init function we executed it immediately
+          if (pluginApi.init) {
+            await pluginApi.init(document, executionContext);
           }
           this.#plugins.set(key, { ...plugin, ...pluginApi });
         } catch (err) {
@@ -745,14 +771,9 @@ class TemplatesRegistry {
   // Register a new template
   // eslint-disable-next-line class-methods-use-this
   add(id, url) {
-    const templateId = !url
-      ? id.split('/').pop().replace(/\.js/, '')
-      : id;
-    const templateConfig = {
-      condition: () => toClassName(getMetadata('template')) === id || id === 'foo', // FIXME: just for the PoC,
-      url: url || id,
-    };
-    window.hlx.plugins.add(templateId, templateConfig);
+    const { id: templatId, config: templateConfig } = parsePluginParams(id, url);
+    templateConfig.condition = () => toClassName(getMetadata('template')) === templatId;
+    window.hlx.plugins.add(templatId, templateConfig);
   }
 
   // Get the template

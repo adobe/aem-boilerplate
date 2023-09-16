@@ -9,3 +9,5 @@ export const loadLazy = (doc, context) => {
 export const loadDelayed = (doc, context) => {
   console.log('bar: delayed', context);
 };
+
+export default function () {}

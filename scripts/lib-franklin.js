@@ -736,6 +736,7 @@ class PluginsRegistry {
       ))
       .map(async ([key, plugin]) => {
         try {
+          // If the plugin has a default export, it will be executed immediately
           const pluginApi = (await loadModule(
             key,
             !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
@@ -743,10 +744,6 @@ class PluginsRegistry {
             document,
             executionContext,
           )) || {};
-          // If the plugin has an init function we executed it immediately
-          if (pluginApi.init) {
-            await pluginApi.init(document, executionContext);
-          }
           this.#plugins.set(key, { ...plugin, ...pluginApi });
         } catch (err) {
           // eslint-disable-next-line no-console

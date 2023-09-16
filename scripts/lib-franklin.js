@@ -698,9 +698,8 @@ function parsePluginParams(id, config) {
     ? id.split('/').splice(id.endsWith('/') ? -2 : -1, 1)[0].replace(/\.js/, '')
     : id;
   const pluginConfig = typeof config === 'string' || !config
-    ? { url: config || id }
+    ? { url: (config || id).replace(/\/$/, '') }
     : { load: 'eager', ...config };
-  pluginConfig.url = pluginConfig.url.replace(/\/$/, '');
   return { id: pluginId, config: pluginConfig };
 }
 

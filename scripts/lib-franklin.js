@@ -770,9 +770,9 @@ class TemplatesRegistry {
   // Register a new template
   // eslint-disable-next-line class-methods-use-this
   add(id, url) {
-    const { id: templatId, config: templateConfig } = parsePluginParams(id, url);
-    templateConfig.condition = () => toClassName(getMetadata('template')) === templatId;
-    window.hlx.plugins.add(templatId, templateConfig);
+    const { id: templateId, config: templateConfig } = parsePluginParams(id, url);
+    templateConfig.condition = () => toClassName(getMetadata('template')) === templateId || templateId === 'foo'; // FIXME: just for the PoC
+    window.hlx.plugins.add(templateId, templateConfig);
   }
 
   // Get the template

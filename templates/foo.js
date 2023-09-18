@@ -1,11 +1,11 @@
-export const loadEager = (doc, context) => {
-  console.log('template foo: eager', context);
+export const loadEager = (doc, options, context) => {
+  console.log('template foo: eager', options, context);
 };
 
-export const loadLazy = (doc, context) => {
-  console.log('template foo: lazy', context);
+export const loadLazy = (doc, options, context) => {
+  console.log('template foo: lazy', options, context);
 };
 
-export const loadDelayed = (doc, context) => {
-  console.log('template foo: delayed', context);
+export const loadDelayed = (doc, options, context) => {
+  console.log('template foo: delayed', options, context);
 };

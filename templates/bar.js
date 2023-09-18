@@ -1,13 +1,13 @@
-export const loadEager = (doc, context) => {
-  console.log('bar: eager', context);
+export const loadEager = (doc, options, context) => {
+  console.log('bar: eager', options, context);
 };
 
-export const loadLazy = (doc, context) => {
-  console.log('bar: lazy', context);
+export const loadLazy = (doc, options, context) => {
+  console.log('bar: lazy', options, context);
 };
 
-export const loadDelayed = (doc, context) => {
-  console.log('bar: delayed', context);
+export const loadDelayed = (doc, options, context) => {
+  console.log('bar: delayed', options, context);
 };
 
 export default function () {}

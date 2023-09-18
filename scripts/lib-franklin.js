@@ -700,6 +700,7 @@ function parsePluginParams(id, config) {
   const pluginConfig = typeof config === 'string' || !config
     ? { url: (config || id).replace(/\/$/, '') }
     : { load: 'eager', ...config };
+  pluginConfig.options ||= {};
   return { id: pluginId, config: pluginConfig };
 }
 
@@ -726,12 +727,13 @@ class PluginsRegistry {
   // actual API they expose
   async load(phase) {
     [...this.#plugins.entries()]
-      .filter(([, plugin]) => plugin.condition && !plugin.condition(document, executionContext))
+      .filter(([, plugin]) => plugin.condition
+        && !plugin.condition(document, plugin.options, executionContext))
       .map(([id]) => this.#plugins.delete(id));
     return Promise.all([...this.#plugins.entries()]
       // Filter plugins that don't match the execution conditions
       .filter(([, plugin]) => (
-        (!plugin.condition || plugin.condition(document, executionContext))
+        (!plugin.condition || plugin.condition(document, plugin.options, executionContext))
         && phase === plugin.load && plugin.url
       ))
       .map(async ([key, plugin]) => {
@@ -742,6 +744,7 @@ class PluginsRegistry {
             !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
             !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
             document,
+            plugin.options,
             executionContext,
           )) || {};
           this.#plugins.set(key, { ...plugin, ...pluginApi });
@@ -756,8 +759,9 @@ class PluginsRegistry {
   async run(phase) {
     return [...this.#plugins.values()]
       .reduce((promise, plugin) => ( // Using reduce to execute plugins sequencially
-        plugin[phase] && (!plugin.condition || plugin.condition(document, executionContext))
-          ? promise.then(() => plugin[phase](document, executionContext))
+        plugin[phase] && (!plugin.condition
+            || plugin.condition(document, plugin.options, executionContext))
+          ? promise.then(() => plugin[phase](document, plugin.options, executionContext))
           : promise
       ), Promise.resolve());
   }

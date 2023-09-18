@@ -1,11 +1,11 @@
-export const loadEager = (doc, context) => {
-  console.log('plugin grault: eager', context);
+export const loadEager = (doc, options, context) => {
+  console.log('plugin grault: eager', options, context);
 };
 
-export const loadLazy = (doc, context) => {
-  console.log('plugin grault: lazy', context);
+export const loadLazy = (doc, options, context) => {
+  console.log('plugin grault: lazy', options, context);
 };
 
-export const loadDelayed = (doc, context) => {
-  console.log('plugin grault: delayed', context);
+export const loadDelayed = (doc, options, context) => {
+  console.log('plugin grault: delayed', options, context);
 };

@@ -693,6 +693,13 @@ export const executionContext = {
   toClassName,
 };
 
+/**
+ * Parses the plugin id and config paramters and returns a proper config
+ *
+ * @param {String} id A string that idenfies the plugin, or a path to it
+ * @param {String|Object} [config] A string representing the path to the plugin, or a config object
+ * @returns an object returning the the plugin id and its config
+ */
 function parsePluginParams(id, config) {
   const pluginId = !config
     ? id.split('/').splice(id.endsWith('/') ? -2 : -1, 1)[0].replace(/\.js/, '')
@@ -702,6 +709,21 @@ function parsePluginParams(id, config) {
     : { load: 'eager', ...config };
   pluginConfig.options ||= {};
   return { id: pluginId, config: pluginConfig };
+}
+
+/**
+ * Executes a function with the given context and arguments.
+ * An arrow function will have the context as last parameter, while a regular function will also
+ * have the `this` variable set to the same context.
+ * @param {Function} fn the function to execute
+ * @param {Object[]} args the function arugments
+ * @param {Object} context the execution context to use
+ * @returns the result of the function execution
+ */
+function runFunctionWithContext(fn, args, context) {
+  return fn.toString().startsWith('function')
+    ? fn.call(context, ...args, context)
+    : fn(...args, context);
 }
 
 class PluginsRegistry {
@@ -728,12 +750,13 @@ class PluginsRegistry {
   async load(phase) {
     [...this.#plugins.entries()]
       .filter(([, plugin]) => plugin.condition
-        && !plugin.condition(document, plugin.options, executionContext))
+        && !runFunctionWithContext(plugin.condition, [document, plugin.options], executionContext))
       .map(([id]) => this.#plugins.delete(id));
     return Promise.all([...this.#plugins.entries()]
       // Filter plugins that don't match the execution conditions
       .filter(([, plugin]) => (
-        (!plugin.condition || plugin.condition(document, plugin.options, executionContext))
+        (!plugin.condition
+          || runFunctionWithContext(plugin.condition, [document, plugin.options], executionContext))
         && phase === plugin.load && plugin.url
       ))
       .map(async ([key, plugin]) => {
@@ -760,8 +783,12 @@ class PluginsRegistry {
     return [...this.#plugins.values()]
       .reduce((promise, plugin) => ( // Using reduce to execute plugins sequencially
         plugin[phase] && (!plugin.condition
-            || plugin.condition(document, plugin.options, executionContext))
-          ? promise.then(() => plugin[phase](document, plugin.options, executionContext))
+          || runFunctionWithContext(plugin.condition, [document, plugin.options], executionContext))
+          ? promise.then(() => runFunctionWithContext(
+            plugin[phase],
+            [document, plugin.options],
+            executionContext,
+          ))
           : promise
       ), Promise.resolve());
   }

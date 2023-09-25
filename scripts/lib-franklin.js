@@ -605,16 +605,14 @@ export function normalizeHeadings(el, allowedHeadings) {
 /**
  * Set template (page structure) and theme (page styles).
  */
-export async function decorateTemplateAndTheme() {
+export function decorateTemplateAndTheme() {
   const addClasses = (element, classes) => {
     classes.split(',').forEach((c) => {
       element.classList.add(toClassName(c.trim()));
     });
   };
   const template = getMetadata('template');
-  if (template) {
-    addClasses(document.body, template);
-  }
+  if (template) addClasses(document.body, template);
   const theme = getMetadata('theme');
   if (theme) addClasses(document.body, theme);
 }

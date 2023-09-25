@@ -433,6 +433,21 @@ export function buildBlock(blockName, content) {
 }
 
 /**
+ * Executes a function with the given context and arguments.
+ * An arrow function will have the context as last parameter, while a regular function will also
+ * have the `this` variable set to the same context.
+ * @param {Function} fn the function to execute
+ * @param {Object[]} args the function arugments
+ * @param {Object} context the execution context to use
+ * @returns the result of the function execution
+ */
+function runFunctionWithContext(fn, args, context) {
+  return fn.toString().startsWith('function')
+    ? fn.call(context, ...args, context)
+    : fn(...args, context);
+}
+
+/**
  * Loads the specified module with its JS and CSS files and returns the JS API if applicable.
  * @param {String} name The module name
  * @param {String} cssPath A path to the CSS file to load, or null
@@ -449,7 +464,8 @@ async function loadModule(name, cssPath, jsPath, ...args) {
         try {
           mod = await import(jsPath);
           if (mod.default) {
-            await mod.default.apply(null, args);
+            // eslint-disable-next-line no-use-before-define
+            await runFunctionWithContext(mod.default, args, executionContext);
           }
         } catch (error) {
           // eslint-disable-next-line no-console
@@ -705,25 +721,10 @@ function parsePluginParams(id, config) {
     ? id.split('/').splice(id.endsWith('/') ? -2 : -1, 1)[0].replace(/\.js/, '')
     : id;
   const pluginConfig = typeof config === 'string' || !config
-    ? { url: (config || id).replace(/\/$/, '') }
+    ? { load: 'eager', url: (config || id).replace(/\/$/, '') }
     : { load: 'eager', ...config };
   pluginConfig.options ||= {};
-  return { id: pluginId, config: pluginConfig };
-}
-
-/**
- * Executes a function with the given context and arguments.
- * An arrow function will have the context as last parameter, while a regular function will also
- * have the `this` variable set to the same context.
- * @param {Function} fn the function to execute
- * @param {Object[]} args the function arugments
- * @param {Object} context the execution context to use
- * @returns the result of the function execution
- */
-function runFunctionWithContext(fn, args, context) {
-  return fn.toString().startsWith('function')
-    ? fn.call(context, ...args, context)
-    : fn(...args, context);
+  return { id: toClassName(pluginId), config: pluginConfig };
 }
 
 class PluginsRegistry {
@@ -790,7 +791,11 @@ class PluginsRegistry {
             executionContext,
           ))
           : promise
-      ), Promise.resolve());
+      ), Promise.resolve())
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error('Error in plugin', err);
+      });
   }
 }
 

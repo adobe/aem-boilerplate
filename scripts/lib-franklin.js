@@ -452,7 +452,7 @@ function runFunctionWithContext(fn, args, context) {
  * @param {String} name The module name
  * @param {String} cssPath A path to the CSS file to load, or null
  * @param {String} jsPath A path to the JS file to load, or null
- * @param  {...any} args Arguments to use to call the default export on the JS file
+ * @param {...any} args Arguments to use to call the default export on the JS file
  * @returns a promsie that the module was loaded, and that returns the JS API is any
  */
 async function loadModule(name, cssPath, jsPath, ...args) {
@@ -760,11 +760,12 @@ class PluginsRegistry {
       ))
       .map(async ([key, plugin]) => {
         try {
+          const isJsUrl = plugin.url.endsWith('.js');
           // If the plugin has a default export, it will be executed immediately
           const pluginApi = (await loadModule(
             key,
-            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.css` : null,
-            !plugin.url.endsWith('.js') ? `${plugin.url}/${key}.js` : plugin.url,
+            !isJsUrl ? `${plugin.url}/${key}.css` : null,
+            !isJsUrl ? `${plugin.url}/${key}.js` : plugin.url,
             document,
             plugin.options,
             executionContext,

@@ -744,7 +744,7 @@ class PluginsRegistry {
   // Check if the plugin exists
   includes(id) { return !!this.#plugins.has(id); }
 
-  // Load all plugins that are referenced by URL, and updated their configuration with the
+  // Load all plugins that are referenced by URL, and update their configuration with the
   // actual API they expose
   async load(phase) {
     [...this.#plugins.entries()]
@@ -778,7 +778,8 @@ class PluginsRegistry {
       }));
   }
 
-  // Run a specific phase in the plugin
+  // Run a specific method in the plugin
+  // Methods follow the loadEager/loadLazy/loadDelayed phases
   async run(phase) {
     return [...this.#plugins.values()]
       .reduce((promise, plugin) => ( // Using reduce to execute plugins sequencially
@@ -792,6 +793,7 @@ class PluginsRegistry {
           : promise
       ), Promise.resolve())
       .catch((err) => {
+        // Gracefully catch possible errors in the plugins to avoid bubbling up issues
         // eslint-disable-next-line no-console
         console.error('Error in plugin', err);
       });

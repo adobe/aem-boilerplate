@@ -83,7 +83,7 @@ export function decorateMain(main) {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
-  await decorateTemplateAndTheme();
+  decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   await window.hlx.plugins.run('loadEager');
   if (main) {

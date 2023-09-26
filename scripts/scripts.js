@@ -17,11 +17,11 @@ const LCP_BLOCKS = []; // add your LCP blocks to the list
 
 /* Templates */
 
-// window.hlx.templates.add('foo', '/templates/foo.js');
+// window.hlx.templates.add('my-template', '/templates/my-template.js');
 
 /* Plugins */
 
-// window.hlx.plugins.add('external-plugin-qux', '/plugins/qux.js');
+// window.hlx.plugins.add('my-plugin', '/plugins/my-plugin.js');
 
 /**
  * Builds hero block and prepends to main in a new section.

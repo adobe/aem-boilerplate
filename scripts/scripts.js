@@ -15,6 +15,14 @@ import {
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
+/* Templates */
+
+// window.hlx.templates.add('my-template', '/templates/my-template.js');
+
+/* Plugins */
+
+// window.hlx.plugins.add('my-plugin', '/plugins/my-plugin.js');
+
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
@@ -77,6 +85,7 @@ async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
+  await window.hlx.plugins.run('loadEager');
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
@@ -114,6 +123,7 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+  window.hlx.plugins.run('loadLazy');
 }
 
 /**
@@ -122,12 +132,18 @@ async function loadLazy(doc) {
  */
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
+  window.setTimeout(() => {
+    window.hlx.plugins.load('delayed');
+    import('./delayed.js');
+    window.hlx.plugins.run('loadDelayed');
+  }, 3000);
   // load anything that can be postponed to the latest here
 }
 
 async function loadPage() {
+  await window.hlx.plugins.load('eager');
   await loadEager(document);
+  await window.hlx.plugins.load('lazy');
   await loadLazy(document);
   loadDelayed();
 }

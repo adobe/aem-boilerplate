@@ -10,12 +10,17 @@
  * governing permissions and limitations under the License.
  */
 
+/* eslint-env browser */
+
 /**
  * log RUM if part of the sample.
  * @param {string} checkpoint identifies the checkpoint in funnel
  * @param {Object} data additional data for RUM sample
+ * @param {string} data.source DOM node that is the source of a checkpoint event,
+ * identified by #id or .classname
+ * @param {string} data.target subject of the checkpoint event,
+ * for instance the href of a link, or a search term
  */
-// eslint-disable-next-line import/prefer-default-export
 function sampleRUM(checkpoint, data = {}) {
   sampleRUM.defer = sampleRUM.defer || [];
   const defer = (fnname) => {
@@ -28,6 +33,10 @@ function sampleRUM(checkpoint, data = {}) {
         .filter(({ fnname }) => dfnname === fnname)
         .forEach(({ fnname, args }) => sampleRUM[fnname](...args));
     });
+  sampleRUM.always = sampleRUM.always || [];
+  sampleRUM.always.on = (chkpnt, fn) => {
+    sampleRUM.always[chkpnt] = fn;
+  };
   sampleRUM.on = (chkpnt, fn) => {
     sampleRUM.cases[chkpnt] = fn;
   };
@@ -38,13 +47,13 @@ function sampleRUM(checkpoint, data = {}) {
     if (!window.hlx.rum) {
       const usp = new URLSearchParams(window.location.search);
       const weight = usp.get('rum') === 'on' ? 1 : 100; // with parameter, weight is 1. Defaults to 100.
-      // eslint-disable-next-line no-bitwise
-      const hashCode = (s) => s.split('').reduce((a, b) => ((a << 5) - a + b.charCodeAt(0)) | 0, 0);
-      const id = `${hashCode(window.location.href)}-${new Date().getTime()}-${Math.random()
-        .toString(16)
-        .substr(2, 14)}`;
+      const id = Array.from({ length: 75 }, (_, i) => String.fromCharCode(48 + i))
+        .filter((a) => /\d|[A-Z]/i.test(a))
+        .filter(() => Math.random() * 75 > 70)
+        .join('');
       const random = Math.random();
       const isSelected = random * weight < 1;
+      const firstReadTime = Date.now();
       const urlSanitizers = {
         full: () => window.location.href,
         origin: () => window.location.origin,
@@ -56,21 +65,40 @@ function sampleRUM(checkpoint, data = {}) {
         id,
         random,
         isSelected,
+        firstReadTime,
         sampleRUM,
         sanitizeURL: urlSanitizers[window.hlx.RUM_MASK_URL || 'path'],
       };
     }
-    const { weight, id } = window.hlx.rum;
+    const { weight, id, firstReadTime } = window.hlx.rum;
     if (window.hlx && window.hlx.rum && window.hlx.rum.isSelected) {
+      const knownProperties = [
+        'weight',
+        'id',
+        'referer',
+        'checkpoint',
+        't',
+        'source',
+        'target',
+        'cwv',
+        'CLS',
+        'FID',
+        'LCP',
+        'INP',
+      ];
       const sendPing = (pdata = data) => {
         // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
-        const body = JSON.stringify({
-          weight,
-          id,
-          referer: window.hlx.rum.sanitizeURL(),
-          checkpoint,
-          ...data,
-        });
+        const body = JSON.stringify(
+          {
+            weight,
+            id,
+            referer: window.hlx.rum.sanitizeURL(),
+            checkpoint,
+            t: Date.now() - firstReadTime,
+            ...data,
+          },
+          knownProperties,
+        );
         const url = `https://rum.hlx.page/.rum/${weight}`;
         // eslint-disable-next-line no-unused-expressions
         navigator.sendBeacon(url, body);
@@ -91,6 +119,9 @@ function sampleRUM(checkpoint, data = {}) {
       if (sampleRUM.cases[checkpoint]) {
         sampleRUM.cases[checkpoint]();
       }
+    }
+    if (sampleRUM.always[checkpoint]) {
+      sampleRUM.always[checkpoint](data);
     }
   } catch (error) {
     // something went wrong
@@ -251,11 +282,12 @@ async function loadScript(src, attrs) {
 /**
  * Retrieves the content of metadata tags.
  * @param {string} name The metadata name (or property)
+ * @param {Document} doc Document object to query for metadata. Defaults to the window's document
  * @returns {string} The metadata value(s)
  */
-function getMetadata(name) {
+function getMetadata(name, doc = document) {
   const attr = name && name.includes(':') ? 'property' : 'name';
-  const meta = [...document.head.querySelectorAll(`meta[${attr}="${name}"]`)]
+  const meta = [...doc.head.querySelectorAll(`meta[${attr}="${name}"]`)]
     .map((m) => m.content)
     .join(', ');
   return meta || '';
@@ -361,77 +393,31 @@ function decorateButtons(element) {
   });
 }
 
-const ICONS_CACHE = {};
 /**
- * Replace icons with inline SVG and prefix with codeBasePath.
- * @param {Element} [element] Element containing icons
+ * Add <img> for icon, prefixed with codeBasePath and optional prefix.
+ * @param {span} [element] span element with icon classes
+ * @param {string} [prefix] prefix to be added to icon the src
  */
-async function decorateIcons(element) {
-  // Prepare the inline sprite
-  let svgSprite = document.getElementById('franklin-svg-sprite');
-  if (!svgSprite) {
-    const div = document.createElement('div');
-    div.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none"></svg>';
-    svgSprite = div.firstElementChild;
-    document.body.append(div.firstElementChild);
-  }
+function decorateIcon(span, prefix = '') {
+  const iconName = Array.from(span.classList)
+    .find((c) => c.startsWith('icon-'))
+    .substring(5);
+  const img = document.createElement('img');
+  img.dataset.iconName = iconName;
+  img.src = `${window.codeBasePath}${prefix}/icons/${iconName}.svg`;
+  img.loading = 'lazy';
+  span.append(img);
+}
 
-  // Download all new icons
+/**
+ * Add <img> for icons, prefixed with codeBasePath and optional prefix.
+ * @param {Element} [element] Element containing icons
+ * @param {string} [prefix] prefix to be added to icon the src
+ */
+function decorateIcons(element, prefix = '') {
   const icons = [...element.querySelectorAll('span.icon')];
-  await Promise.all(
-    icons.map(async (span) => {
-      const iconName = Array.from(span.classList)
-        .find((c) => c.startsWith('icon-'))
-        .substring(5);
-      if (!ICONS_CACHE[iconName]) {
-        ICONS_CACHE[iconName] = true;
-        try {
-          const response = await fetch(`${window.hlx.codeBasePath}/icons/${iconName}.svg`);
-          if (!response.ok) {
-            ICONS_CACHE[iconName] = false;
-            return;
-          }
-          // Styled icons don't play nice with the sprite approach because of shadow dom isolation
-          const svg = await response.text();
-          if (svg.match(/(<style | class=)/)) {
-            ICONS_CACHE[iconName] = { styled: true, html: svg };
-          } else {
-            ICONS_CACHE[iconName] = {
-              html: svg
-                .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
-                .replace(/ width=".*?"/, '')
-                .replace(/ height=".*?"/, '')
-                .replace('</svg>', '</symbol>'),
-            };
-          }
-        } catch (error) {
-          ICONS_CACHE[iconName] = false;
-          // eslint-disable-next-line no-console
-          console.error(error);
-        }
-      }
-    }),
-  );
-
-  const symbols = Object.keys(ICONS_CACHE)
-    .filter((k) => !svgSprite.querySelector(`#icons-sprite-${k}`))
-    .map((k) => ICONS_CACHE[k])
-    .filter((v) => !v.styled)
-    .map((v) => v.html)
-    .join('\n');
-  svgSprite.innerHTML += symbols;
-
   icons.forEach((span) => {
-    const iconName = Array.from(span.classList)
-      .find((c) => c.startsWith('icon-'))
-      .substring(5);
-    const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
-    // Styled icons need to be inlined as-is, while unstyled ones can leverage the sprite
-    if (ICONS_CACHE[iconName].styled) {
-      parent.innerHTML = ICONS_CACHE[iconName].html;
-    } else {
-      parent.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;
-    }
+    decorateIcon(span, prefix);
   });
 }
 

@@ -569,8 +569,16 @@ async function loadBlock(block) {
             const mod = await import(
               `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`
             );
-            if (mod.default) {
+            if (mod.default && (!Object.getOwnPropertyDescriptor(mod.default, 'prototype') || Object.getOwnPropertyDescriptor(mod.default, 'prototype').writable)) {
               await mod.default(block);
+            } else if (mod.default) {
+              if (!customElements.get(`hlx-${blockName}`)) {
+                customElements.define(`hlx-${blockName}`, mod.default, { extends: 'div' });
+              }
+              const el = document.createElement('div', { is: `hlx-${blockName}` });
+              el.classList.add(...block.classList.values());
+              el.innerHTML = block.innerHTML;
+              block.replaceWith(el);
             }
           } catch (error) {
             // eslint-disable-next-line no-console

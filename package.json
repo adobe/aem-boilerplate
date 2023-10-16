@@ -1,5 +1,5 @@
 {
-  "name": "@adobe/helix-project-boilerplate",
+  "name": "@adobe/aem-boilerplate",
   "private": true,
   "version": "1.2.2",
   "description": "Starter project for Adobe Helix",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/adobe/helix-project-boilerplate.git"
+    "url": "git+https://github.com/adobe/aem-boilerplate.git"
   },
   "author": "Adobe",
   "license": "Apache License 2.0",
   "bugs": {
-    "url": "https://github.com/adobe/helix-project-boilerplate/issues"
+    "url": "https://github.com/adobe/aem-boilerplate/issues"
   },
-  "homepage": "https://github.com/adobe/helix-project-boilerplate#readme",
+  "homepage": "https://github.com/adobe/aem-boilerplate#readme",
   "devDependencies": {
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/exec": "6.0.3",

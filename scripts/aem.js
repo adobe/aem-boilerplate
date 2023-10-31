@@ -10,6 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
+/* eslint-disable max-classes-per-file */
 /* eslint-env browser */
 
 /**
@@ -129,45 +130,6 @@ function sampleRUM(checkpoint, data = {}) {
 }
 
 /**
- * Setup block utils.
- */
-function setup() {
-  window.hlx = window.hlx || {};
-  window.hlx.RUM_MASK_URL = 'full';
-  window.hlx.codeBasePath = '';
-  window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
-
-  const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
-  if (scriptEl) {
-    try {
-      [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
-  }
-}
-
-/**
- * Auto initializiation.
- */
-
-function init() {
-  setup();
-  sampleRUM('top');
-
-  window.addEventListener('load', () => sampleRUM('load'));
-
-  window.addEventListener('unhandledrejection', (event) => {
-    sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
-  });
-
-  window.addEventListener('error', (event) => {
-    sampleRUM('error', { source: event.filename, target: event.lineno });
-  });
-}
-
-/**
  * Sanitizes a string for use as class name.
  * @param {string} name The unsanitized string
  * @returns {string} The class name
@@ -189,50 +151,6 @@ function toClassName(name) {
  */
 function toCamelCase(name) {
   return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-}
-
-/**
- * Extracts the config from a block.
- * @param {Element} block The block element
- * @returns {object} The block config
- */
-// eslint-disable-next-line import/prefer-default-export
-function readBlockConfig(block) {
-  const config = {};
-  block.querySelectorAll(':scope > div').forEach((row) => {
-    if (row.children) {
-      const cols = [...row.children];
-      if (cols[1]) {
-        const col = cols[1];
-        const name = toClassName(cols[0].textContent);
-        let value = '';
-        if (col.querySelector('a')) {
-          const as = [...col.querySelectorAll('a')];
-          if (as.length === 1) {
-            value = as[0].href;
-          } else {
-            value = as.map((a) => a.href);
-          }
-        } else if (col.querySelector('img')) {
-          const imgs = [...col.querySelectorAll('img')];
-          if (imgs.length === 1) {
-            value = imgs[0].src;
-          } else {
-            value = imgs.map((img) => img.src);
-          }
-        } else if (col.querySelector('p')) {
-          const ps = [...col.querySelectorAll('p')];
-          if (ps.length === 1) {
-            value = ps[0].textContent;
-          } else {
-            value = ps.map((p) => p.textContent);
-          }
-        } else value = row.children[1].textContent;
-        config[name] = value;
-      }
-    }
-  });
-  return config;
 }
 
 /**
@@ -277,6 +195,33 @@ async function loadScript(src, attrs) {
       resolve();
     }
   });
+}
+
+/**
+ * Loads JS and CSS for a module and executes it's default export.
+ * @param {string} jsPath The JS file to load
+ * @param {string} [cssPath] An optional CSS file to load
+ * @param {object[]} [args] Parameters to be passed to the default export when it is called
+ */
+async function loadModule(jsPath, cssPath, ...args) {
+  const cssLoaded = cssPath ? loadCSS(cssPath) : Promise.resolve();
+  const decorationComplete = jsPath
+    ? new Promise((resolve, reject) => {
+      (async () => {
+        let mod;
+        try {
+          mod = await import(jsPath);
+          if (mod.default) {
+            await mod.default.apply(null, args);
+          }
+        } catch (error) {
+          reject(error);
+        }
+        resolve(mod);
+      })();
+    })
+    : Promise.resolve();
+  return Promise.all([cssLoaded, decorationComplete]).then(([, api]) => api);
 }
 
 /**
@@ -353,6 +298,213 @@ function decorateTemplateAndTheme() {
   if (template) addClasses(document.body, template);
   const theme = getMetadata('theme');
   if (theme) addClasses(document.body, theme);
+}
+
+class PluginsRegistry {
+  #plugins;
+
+  static parsePluginParams(id, config) {
+    const pluginId = !config
+      ? id
+        .split('/')
+        .splice(id.endsWith('/') ? -2 : -1, 1)[0]
+        .replace(/\.js/, '')
+      : id;
+    const pluginConfig = {
+      load: 'eager',
+      ...(typeof config === 'string' || !config
+        ? { url: (config || id).replace(/\/$/, '') }
+        : config),
+    };
+    pluginConfig.options ||= {};
+    return { id: pluginId, config: pluginConfig };
+  }
+
+  constructor() {
+    this.#plugins = new Map();
+  }
+
+  // Register a new plugin
+  add(id, config) {
+    const { id: pluginId, config: pluginConfig } = PluginsRegistry.parsePluginParams(id, config);
+    this.#plugins.set(pluginId, pluginConfig);
+  }
+
+  // Get the plugin
+  get(id) {
+    return this.#plugins.get(id);
+  }
+
+  // Check if the plugin exists
+  includes(id) {
+    return !!this.#plugins.has(id);
+  }
+
+  // Load all plugins that are referenced by URL, and updated their configuration with the
+  // actual API they expose
+  async load(phase, context) {
+    [...this.#plugins.entries()]
+      .filter(
+        ([, plugin]) => plugin.condition && !plugin.condition(document, plugin.options, context),
+      )
+      .map(([id]) => this.#plugins.delete(id));
+    return Promise.all(
+      [...this.#plugins.entries()]
+        // Filter plugins that don't match the execution conditions
+        .filter(
+          ([, plugin]) => (!plugin.condition || plugin.condition(document, plugin.options, context))
+            && phase === plugin.load
+            && plugin.url,
+        )
+        .map(async ([key, plugin]) => {
+          try {
+            // If the plugin has a default export, it will be executed immediately
+            const pluginApi = (await loadModule(
+              !plugin.url.endsWith('.js')
+                ? `${plugin.url}/${plugin.url.split('/').pop()}.js`
+                : plugin.url,
+              !plugin.url.endsWith('.js')
+                ? `${plugin.url}/${plugin.url.split('/').pop()}.css`
+                : null,
+              document,
+              plugin.options,
+              context,
+            )) || {};
+            this.#plugins.set(key, { ...plugin, ...pluginApi });
+          } catch (err) {
+            // eslint-disable-next-line no-console
+            console.error('Could not load specified plugin', key);
+            this.#plugins.delete(key);
+          }
+        }),
+    );
+  }
+
+  // Run a specific phase in the plugin
+  async run(phase, context) {
+    return [...this.#plugins.values()].reduce(
+      (
+        promise,
+        p, // Using reduce to execute plugins sequencially
+      ) => (p[phase] && (!p.condition || p.condition(document, p.options, context))
+        ? promise.then(() => p[phase](document, p.options, context))
+        : promise),
+      Promise.resolve(),
+    );
+  }
+}
+
+class TemplatesRegistry {
+  // Register a new template
+  // eslint-disable-next-line class-methods-use-this
+  add(id, url) {
+    if (Array.isArray(id)) {
+      id.forEach((i) => this.add(i));
+      return;
+    }
+    const { id: templateId, config: templateConfig } = PluginsRegistry.parsePluginParams(id, url);
+    templateConfig.condition = () => toClassName(getMetadata('template')) === templateId;
+    window.hlx.plugins.add(templateId, templateConfig);
+  }
+
+  // Get the template
+  // eslint-disable-next-line class-methods-use-this
+  get(id) {
+    return window.hlx.plugins.get(id);
+  }
+
+  // Check if the template exists
+  // eslint-disable-next-line class-methods-use-this
+  includes(id) {
+    return window.hlx.plugins.includes(id);
+  }
+}
+
+/**
+ * Setup block utils.
+ */
+function setup() {
+  window.hlx = window.hlx || {};
+  window.hlx.RUM_MASK_URL = 'full';
+  window.hlx.codeBasePath = '';
+  window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
+  window.hlx.patchBlockConfig = [];
+  window.hlx.plugins = new PluginsRegistry();
+  window.hlx.templates = new TemplatesRegistry();
+
+  const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
+
+  if (scriptEl) {
+    try {
+      [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  }
+}
+
+/**
+ * Auto initializiation.
+ */
+
+function init() {
+  setup();
+  sampleRUM('top');
+
+  window.addEventListener('load', () => sampleRUM('load'));
+
+  window.addEventListener('unhandledrejection', (event) => {
+    sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
+  });
+
+  window.addEventListener('error', (event) => {
+    sampleRUM('error', { source: event.filename, target: event.lineno });
+  });
+}
+
+/**
+ * Extracts the config from a block.
+ * @param {Element} block The block element
+ * @returns {object} The block config
+ */
+// eslint-disable-next-line import/prefer-default-export
+function readBlockConfig(block) {
+  const config = {};
+  block.querySelectorAll(':scope > div').forEach((row) => {
+    if (row.children) {
+      const cols = [...row.children];
+      if (cols[1]) {
+        const col = cols[1];
+        const name = toClassName(cols[0].textContent);
+        let value = '';
+        if (col.querySelector('a')) {
+          const as = [...col.querySelectorAll('a')];
+          if (as.length === 1) {
+            value = as[0].href;
+          } else {
+            value = as.map((a) => a.href);
+          }
+        } else if (col.querySelector('img')) {
+          const imgs = [...col.querySelectorAll('img')];
+          if (imgs.length === 1) {
+            value = imgs[0].src;
+          } else {
+            value = imgs.map((img) => img.src);
+          }
+        } else if (col.querySelector('p')) {
+          const ps = [...col.querySelectorAll('p')];
+          if (ps.length === 1) {
+            value = ps[0].textContent;
+          } else {
+            value = ps.map((p) => p.textContent);
+          }
+        } else value = row.children[1].textContent;
+        config[name] = value;
+      }
+    }
+  });
+  return config;
 }
 
 /**
@@ -553,6 +705,23 @@ function buildBlock(blockName, content) {
 }
 
 /**
+ * Gets the configuration for the given block, and also passes
+ * the config through all custom patching helpers added to the project.
+ *
+ * @param {Element} block The block element
+ * @returns {Object} The block config (blockName, cssPath and jsPath)
+ */
+function getBlockConfig(block) {
+  const { blockName } = block.dataset;
+  const cssPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`;
+  const jsPath = `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`;
+  const original = { blockName, cssPath, jsPath };
+  return (window.hlx.patchBlockConfig || [])
+    .filter((fn) => typeof fn === 'function')
+    .reduce((config, fn) => fn(config, original), { blockName, cssPath, jsPath });
+}
+
+/**
  * Loads JS and CSS for a block.
  * @param {Element} block The block element
  */
@@ -560,26 +729,9 @@ async function loadBlock(block) {
   const status = block.dataset.blockStatus;
   if (status !== 'loading' && status !== 'loaded') {
     block.dataset.blockStatus = 'loading';
-    const { blockName } = block.dataset;
+    const { blockName, cssPath, jsPath } = getBlockConfig(block);
     try {
-      const cssLoaded = loadCSS(`${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.css`);
-      const decorationComplete = new Promise((resolve) => {
-        (async () => {
-          try {
-            const mod = await import(
-              `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`
-            );
-            if (mod.default) {
-              await mod.default(block);
-            }
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            console.log(`failed to load module for ${blockName}`, error);
-          }
-          resolve();
-        })();
-      });
-      await Promise.all([cssLoaded, decorationComplete]);
+      await loadModule(jsPath, cssPath, block);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(`failed to load block ${blockName}`, error);

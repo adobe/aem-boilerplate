@@ -273,3 +273,21 @@ header nav .nav-sections ul > li > ul > li {
 header nav .nav-tools {
   grid-area: tools;
 }
+
+header .nav-search-input {
+  position: absolute;
+  top: var(--nav-height);
+  background: var(--background-color);
+  left: 0;
+  right: 0;
+  padding: 10px;
+  z-index: 1;
+}
+
+header .nav-search-input.hidden {
+  display: none;
+}
+
+header .nav-search-input input {
+  width: 100%;
+}

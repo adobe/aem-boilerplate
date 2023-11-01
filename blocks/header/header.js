@@ -123,6 +123,16 @@ export default async function decorate(block) {
       });
     }
 
+    // Search
+    const searchInput = document.createRange().createContextualFragment('<div class="nav-search-input hidden"><form action="/search" method="GET"><input type="search" name="q" placeholder="Search" /></form></div>');
+    document.body.querySelector('header').append(searchInput);
+
+    const searchButton = document.createRange().createContextualFragment('<button type="button" class="nav-search-button">Search</button>');
+    nav.querySelector('.nav-tools').append(searchButton);
+    nav.querySelector('.nav-search-button').addEventListener('click', () => {
+      document.querySelector('header .nav-search-input').classList.toggle('hidden');
+    });
+
     // hamburger for mobile
     const hamburger = document.createElement('div');
     hamburger.classList.add('nav-hamburger');

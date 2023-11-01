@@ -395,16 +395,20 @@ function decorateButtons(element) {
 
 /**
  * Add <img> for icon, prefixed with codeBasePath and optional prefix.
- * @param {span} [element] span element with icon classes
+ * @param {Element} [span] span element with icon classes
  * @param {string} [prefix] prefix to be added to icon the src
  */
-function decorateIcon(span, prefix = '') {
+async function decorateIcon(span, prefix = '') {
+  const langPrefix = document.documentElement.lang === 'en' ? '' : document.documentElement.lang
+  const placeholders = await fetchPlaceholders(langPrefix);
   const iconName = Array.from(span.classList)
     .find((c) => c.startsWith('icon-'))
     .substring(5);
+
   const img = document.createElement('img');
   img.dataset.iconName = iconName;
   img.src = `${window.hlx.codeBasePath}${prefix}/icons/${iconName}.svg`;
+  img.alt =  placeholders[toCamelCase(`icon-${iconName}`)] || iconName;
   img.loading = 'lazy';
   span.append(img);
 }
@@ -414,11 +418,11 @@ function decorateIcon(span, prefix = '') {
  * @param {Element} [element] Element containing icons
  * @param {string} [prefix] prefix to be added to icon the src
  */
-function decorateIcons(element, prefix = '') {
+async function decorateIcons(element, prefix = '') {
   const icons = [...element.querySelectorAll('span.icon')];
-  icons.forEach((span) => {
-    decorateIcon(span, prefix);
-  });
+  await Promise.all(icons.map(async (span) => {
+    await decorateIcon(span, prefix);
+  }));
 }
 
 /**

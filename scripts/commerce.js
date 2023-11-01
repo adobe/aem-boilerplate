@@ -18,6 +18,91 @@ const priceFieldsFragment = `fragment priceFields on ProductViewPrice {
   }
 }`;
 
+/* Queries PDP */
+export const refineProductQuery = `query RefineProductQuery($sku: String!, $variantIds: [String!]!) {
+  refineProduct(
+    sku: $sku,
+    optionIds: $variantIds
+  ) {
+    images(roles: []) {
+      url
+      roles
+      label
+    }
+    ... on SimpleProductView {
+      price {
+        final {
+          amount {
+            currency
+            value
+          }
+        }
+        regular {
+          amount {
+            currency
+            value
+          }
+        }
+      }
+    }
+    addToCartAllowed
+  }
+}`;
+
+export const productDetailQuery = `query ProductQuery($sku: String!) {
+  products(skus: [$sku]) {
+    __typename
+    id
+    sku
+    name
+    description
+    shortDescription
+    urlKey
+    inStock
+    images(roles: []) {
+      url
+      label
+      roles
+    }
+    attributes(roles: []) {
+      name
+      label
+      value
+      roles
+    }
+    ... on SimpleProductView {
+      price {
+        ...priceFields
+      }
+    }
+    ... on ComplexProductView {
+      options {
+        id
+        title
+        required
+        values {
+          id
+          title
+          inStock
+          ...on ProductViewOptionValueSwatch {
+            type
+            value
+          }
+        }
+      }
+      priceRange {
+        maximum {
+          ...priceFields
+        }
+        minimum {
+          ...priceFields
+        }
+      }
+    }
+  }
+}
+${priceFieldsFragment}`;
+
 /* Queries PLP */
 
 export const productSearchQuery = `query ProductSearch(
@@ -67,6 +152,7 @@ export const productSearchQuery = `query ProductSearch(
               images(roles: "thumbnail") {
                 url
               }
+              __typename
               ... on SimpleProductView {
                   price {
                       ...priceFields
@@ -163,11 +249,39 @@ export function renderPrice(product, format, html, Fragment) {
   return null;
 }
 
+/* PDP specific functionality */
+
+export function getSkuFromUrl() {
+  const path = window.location.pathname;
+  const result = path.match(/\/products\/[\w|-]+\/([\w|-]+)$/);
+  return result?.[1];
+}
+
+const productsCache = {};
+export async function getProduct(sku) {
+  // eslint-disable-next-line no-param-reassign
+  sku = sku.toUpperCase();
+  if (productsCache[sku]) {
+    return productsCache[sku];
+  }
+  const rawProductPromise = performCatalogServiceQuery(productDetailQuery, { sku });
+  const productPromise = rawProductPromise.then((productData) => {
+    if (!productData?.products?.[0]) {
+      return null;
+    }
+
+    return productData?.products?.[0];
+  });
+
+  productsCache[sku] = productPromise;
+  return productPromise;
+}
+
 /* PLP specific functionality */
 
 // TODO
 // You can get this list via attributeMetadata query
-export const ALLOWED_FILTER_PARAMETERS = ['page', 'pageSize', 'sort', 'sortDirection', 'q', 'panty_style', 'control_level', 'sleep_loungewear_type', 'silhouette', 'bra_type', 'price', 'shapewear_style', 'size', 'color_family', 'cupsize', 'bandsize', 'strap_type', 'game', 'hook_location'];
+export const ALLOWED_FILTER_PARAMETERS = ['page', 'pageSize', 'sort', 'sortDirection', 'q', 'price', 'size', 'color_family'];
 
 export async function loadCategory(state) {
   try {

@@ -105,7 +105,7 @@ function Facet({
   // Infer display type based on facetTypeMapping, fallback to default
   let displayType = 'radio';
   let displayStyle = '';
-  let buckets = bucketsOrg;
+  const buckets = bucketsOrg;
 
   if (facetTypeMapping[attribute]) {
     displayType = facetTypeMapping[attribute].type;

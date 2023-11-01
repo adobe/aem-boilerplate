@@ -144,14 +144,14 @@ main .section.product-list-page-container > .default-content-wrapper h1:first-ch
   margin-bottom: 6px;
 }
 
-.product-list-page .facets .facet-list .facet.radio .facet-content ol input[type=radio] {
+.product-list-page .facets .facet-list .facet.radio .facet-content ol input[type='radio'] {
   vertical-align: middle;
   position: relative;
   bottom: 2px;
   margin: 3px;
 }
 
-.product-list-page .facets .facet-list .facet.checkbox .facet-content ol input[type=checkbox] {
+.product-list-page .facets .facet-list .facet.checkbox .facet-content ol input[type='checkbox'] {
   vertical-align: middle;
   margin: 3px;
 }
@@ -252,7 +252,7 @@ main .section.product-list-page-container > .default-content-wrapper h1:first-ch
   flex-basis: 100%;
 }
 
-.product-list-page .facets .facet-list .facet .price-facet .price-slider input[type=range] {
+.product-list-page .facets .facet-list .facet .price-facet .price-slider input[type='range'] {
   grid-area: 1 / 1 / 1 / 1;
   -webkit-appearance: none;
   appearance: none;
@@ -264,7 +264,7 @@ main .section.product-list-page-container > .default-content-wrapper h1:first-ch
   pointer-events: none;
 }
 
-.product-list-page .facets .facet-list .facet .price-facet .price-slider input[type=range]::-moz-range-thumb {
+.product-list-page .facets .facet-list .facet .price-facet .price-slider input[type='range']::-moz-range-thumb {
   height: 15px;
   width: 15px;
   border-radius: 50%;
@@ -278,7 +278,7 @@ main .section.product-list-page-container > .default-content-wrapper h1:first-ch
 }
 
 
-.product-list-page .facets .facet-list .facet .price-facet .price-slider input[type=range]::-webkit-slider-thumb {
+.product-list-page .facets .facet-list .facet .price-facet .price-slider input[type='range']::-webkit-slider-thumb {
   height: 15px;
   width: 15px;
   border-radius: 50%;
@@ -293,7 +293,7 @@ main .section.product-list-page-container > .default-content-wrapper h1:first-ch
   margin-top: -5px;
 }
 
-.product-list-page .facets .facet-list .facet .price-facet .price-slider input[type=range]::-webkit-slider-runnable-track {
+.product-list-page .facets .facet-list .facet .price-facet .price-slider input[type='range']::-webkit-slider-runnable-track {
   width: 100%;
   height: 5px;
   background: var(--highlight-background-color);
@@ -301,7 +301,7 @@ main .section.product-list-page-container > .default-content-wrapper h1:first-ch
   border: none;
 }
 
-.product-list-page .facets .facet-list .facet .price-facet .price-slider input[type=range]:first-of-type::-moz-range-track {
+.product-list-page .facets .facet-list .facet .price-facet .price-slider input[type='range']:first-of-type::-moz-range-track {
   width: 100%;
   height: 5px;
   background: var(--highlight-background-color);

@@ -4,7 +4,7 @@ import {
 import htm from '../../scripts/htm.js';
 import ProductList from './ProductList.js';
 import FacetList from './FacetList.js';
-import { readBlockConfig, sampleRUM } from '../../scripts/aem.js';
+import { readBlockConfig } from '../../scripts/aem.js';
 import {
   loadCategory,
   parseQueryParams,
@@ -209,7 +209,8 @@ class ProductListPage extends Component {
       this.loadProducts();
     }
 
-    /* if (this.props.type === 'search' && this.state.loading === false && this.state.products.total === 0) {
+    /* if (this.props.type === 'search'
+    && this.state.loading === false && this.state.products.total === 0) {
       sampleRUM('nullsearch', { source: '.search-input', target: this.state.searchTerm });
     } */
   }

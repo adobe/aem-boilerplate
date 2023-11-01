@@ -1,19 +1,36 @@
 import {
-  sampleRUM,
+  events,
+} from '@dropins/elsie/event-bus.js';
+import { initializers } from '@dropins/elsie/initializer.js';
+import {
   buildBlock,
-  loadHeader,
-  loadFooter,
+  decorateBlocks,
   decorateButtons,
   decorateIcons,
   decorateSections,
-  decorateBlocks,
   decorateTemplateAndTheme,
-  waitForLCP,
   loadBlocks,
   loadCSS,
+  loadFooter,
+  loadHeader,
+  sampleRUM,
+  waitForLCP,
 } from './aem.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
+
+/**
+ * Load/run general storefront @dropins logic
+ */
+function loadDropins() {
+  if (document.readyState === 'complete') {
+    console.log('document already loaded');
+    initializers.mount();
+  } else {
+    window.addEventListener('load', initializers.mount);
+  }
+  events.enableLogger(true);
+}
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -75,6 +92,7 @@ export function decorateMain(main) {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
+  loadDropins();
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {

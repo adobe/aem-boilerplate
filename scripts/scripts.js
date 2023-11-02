@@ -1,6 +1,5 @@
-import {
-  events,
-} from '@dropins/elsie/event-bus.js';
+/* eslint-disable import/no-unresolved */
+import { events } from '@dropins/elsie/event-bus.js';
 import { initializers } from '@dropins/elsie/initializer.js';
 import {
   buildBlock,

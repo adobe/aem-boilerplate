@@ -398,10 +398,7 @@ function decorateButtons(element) {
  * @param {Element} [span] span element with icon classes
  * @param {string} [prefix] prefix to be added to icon the src
  */
-async function decorateIcon(span, prefix = '') {
-  const langPrefix = document.documentElement.lang === 'en' ? '' : document.documentElement.lang;
-  // eslint-disable-next-line no-use-before-define
-  const placeholders = await fetchPlaceholders(langPrefix);
+function decorateIcon(span, prefix = '') {
   const iconName = Array.from(span.classList)
     .find((c) => c.startsWith('icon-'))
     .substring(5);
@@ -409,7 +406,7 @@ async function decorateIcon(span, prefix = '') {
   const img = document.createElement('img');
   img.dataset.iconName = iconName;
   img.src = `${window.hlx.codeBasePath}${prefix}/icons/${iconName}.svg`;
-  img.alt = placeholders[toCamelCase(`icon-${iconName}`)] || iconName;
+  img.alt = iconName;
   img.loading = 'lazy';
   span.append(img);
 }
@@ -419,11 +416,11 @@ async function decorateIcon(span, prefix = '') {
  * @param {Element} [element] Element containing icons
  * @param {string} [prefix] prefix to be added to icon the src
  */
-async function decorateIcons(element, prefix = '') {
+function decorateIcons(element, prefix = '') {
   const icons = [...element.querySelectorAll('span.icon')];
-  await Promise.all(icons.map(async (span) => {
-    await decorateIcon(span, prefix);
-  }));
+  icons.forEach((span) => {
+    decorateIcon(span, prefix);
+  });
 }
 
 /**

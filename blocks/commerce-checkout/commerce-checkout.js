@@ -16,6 +16,8 @@ import { store } from '../../scripts/minicart/api.js';
  */
 export default async function decorate(block) {
   const commerceEndpoint = await getConfigValue('commerce-core-endpoint');
+  const adyenClientKey = await getConfigValue('adyen-client-key');
+
   setEndpoint(commerceEndpoint);
 
   initializers.register(checkoutApi.initialize, {
@@ -23,7 +25,7 @@ export default async function decorate(block) {
   });
 
   initializers.register(adyenApi.initialize, {
-    clientKey: 'test_TBG272DDJZH4ZAAXSBAKQZ44ZQC6LWOU',
+    clientKey: adyenClientKey,
     locale: 'en-US',
     environment: 'test',
   });

@@ -13,7 +13,14 @@ import {
   loadCSS,
 } from './aem.js';
 
-const LCP_BLOCKS = []; // add your LCP blocks to the list
+const LCP_BLOCKS = [
+  'product-list-page',
+  'product-details',
+  'commerce-cart',
+  'commerce-checkout',
+  'commerce-account',
+  'commerce-login',
+]; // add your LCP blocks to the list
 
 /**
  * Builds hero block and prepends to main in a new section.

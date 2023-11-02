@@ -9,23 +9,7 @@ import * as checkoutApi from '@dropins/storefront-checkout/api.js';
 import Checkout from '@dropins/storefront-checkout/containers/Checkout.js';
 import { render as checkoutRenderer } from '@dropins/storefront-checkout/render.js';
 import { getConfigValue } from '../../scripts/configs.js';
-
-// from scripts/cart/init-cart.js@getPWACartId
-function getCartId() {
-  const cartIdField = window.localStorage.getItem(
-    'M2_VENIA_BROWSER_PERSISTENCE__cartId',
-  );
-  if (!cartIdField) {
-    return null;
-  }
-  try {
-    const parsed = JSON.parse(cartIdField);
-    return parsed.value.replaceAll('"', '');
-  } catch (err) {
-    console.error('Could not parse PWA cartId', err);
-    return null;
-  }
-}
+import { store } from '../../scripts/minicart/api.js';
 
 /**
  * Example integration of Checkout Dropin + EDS.
@@ -44,7 +28,7 @@ export default async function decorate(block) {
   );
 
   initializers.register(checkoutApi.initialize, {
-    cartId: getCartId(),
+    cartId: store.getCartId(),
   });
 
   initializers.register(adyenApi.initialize, {

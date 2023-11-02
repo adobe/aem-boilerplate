@@ -212,6 +212,58 @@ export async function performCatalogServiceQuery(query, variables) {
   return queryResponse.data;
 }
 
+export function getSignInToken() {
+  // TODO: Implement in project
+  return '';
+}
+
+export async function performMonolithGraphQLQuery(query, variables, GET = true, USE_TOKEN = false) {
+  const GRAPHQL_ENDPOINT = await getConfigValue('commerce-core-endpoint');
+
+  const headers = {
+    'Content-Type': 'application/json',
+    Store: 'default', // TODO await getConfigValue('commerce-store-code'),
+  };
+
+  if (USE_TOKEN) {
+    if (typeof USE_TOKEN === 'string') {
+      headers.Authorization = `Bearer ${USE_TOKEN}`;
+    } else {
+      const token = getSignInToken();
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+    }
+  }
+
+  let response;
+  if (!GET) {
+    response = await fetch(GRAPHQL_ENDPOINT, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        query: query.replace(/(?:\r\n|\r|\n|\t|[\s]{4})/g, ' ').replace(/\s\s+/g, ' '),
+        variables,
+      }),
+    });
+  } else {
+    const params = new URLSearchParams({
+      query: query.replace(/(?:\r\n|\r|\n|\t|[\s]{4})/g, ' ').replace(/\s\s+/g, ' '),
+      variables: JSON.stringify(variables),
+    });
+    response = await fetch(
+      `${GRAPHQL_ENDPOINT}?${params.toString()}`,
+      { headers },
+    );
+  }
+
+  if (!response.ok) {
+    return null;
+  }
+
+  return response.json();
+}
+
 export function renderPrice(product, format, html, Fragment) {
   // Simple product
   if (product.price) {

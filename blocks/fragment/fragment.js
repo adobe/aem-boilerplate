@@ -1,7 +1,7 @@
 /*
  * Fragment Block
- * Include content from one Helix page in another.
- * https://www.hlx.live/developer/block-collection/fragment
+ * Include content on a page as a fragment.
+ * https://www.aem.live/developer/block-collection/fragment
  */
 
 import {

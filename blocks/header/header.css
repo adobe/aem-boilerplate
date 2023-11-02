@@ -272,6 +272,12 @@ header nav .nav-sections ul > li > ul > li {
 /* tools */
 header nav .nav-tools {
   grid-area: tools;
+  display: flex;
+  gap: 10px;
+}
+
+header nav .nav-tools button {
+  padding: 5px 10px;
 }
 
 header .nav-search-input {

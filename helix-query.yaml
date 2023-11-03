@@ -1,0 +1,23 @@
+version: 1
+indices:
+  enrichment:
+    target: /enrichment/enrichment.json
+    include:
+      - '**/enrichment/**'
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      products:
+        select: head > meta[name="enrichment-products"]
+        values: |
+          match(attribute(el, 'content'), '([^,]+)')
+      categories:
+        select: head > meta[name="enrichment-categories"]
+        values: |
+          match(attribute(el, 'content'), '([^,]+)')
+      positions:
+        select: head > meta[name="enrichment-positions"]
+        values: |
+          match(attribute(el, 'content'), '([^,]+)')

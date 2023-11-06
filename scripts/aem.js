@@ -406,7 +406,12 @@ function decorateIcon(span, prefix = '') {
   const img = document.createElement('img');
   img.dataset.iconName = iconName;
   img.src = `${window.hlx.codeBasePath}${prefix}/icons/${iconName}.svg`;
-  img.alt = iconName;
+  if (alt && alt.trim()) {
+    img.alt = alt;
+  } else {
+    img.alt = ' ';
+    img.setAttribute('role', 'presentation');
+  }
   img.loading = 'lazy';
   span.append(img);
 }

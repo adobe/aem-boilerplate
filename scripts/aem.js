@@ -398,7 +398,7 @@ function decorateButtons(element) {
  * @param {Element} [span] span element with icon classes
  * @param {string} [prefix] prefix to be added to icon the src
  */
-function decorateIcon(span, prefix = '') {
+function decorateIcon(span, prefix = '', alt = '') {
   const iconName = Array.from(span.classList)
     .find((c) => c.startsWith('icon-'))
     .substring(5);

@@ -409,7 +409,6 @@ function decorateIcon(span, prefix = '', alt = '') {
   if (alt && alt.trim()) {
     img.alt = alt;
   } else {
-    img.alt = ' ';
     img.setAttribute('role', 'presentation');
   }
   img.loading = 'lazy';

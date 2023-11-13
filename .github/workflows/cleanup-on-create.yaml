@@ -21,6 +21,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Uninstall dependencies
+        run: |
+          npm uninstall --save-dev semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/exec
+      - name: Remove Helper Files
+        run: | 
+          rm -rf \
+            .github/workflows/cleanup-on-create.yaml \
+            .github/workflows/semantic-release.yaml \
+            .releaserc.cjs \
+            CHANGELOG.md
+
       - name: Initialize README
         # replace {repo} and {owner} with the actual values
         run: |
@@ -30,6 +41,8 @@ jobs:
         run: |
           sed -i.bak "s/{repo}/$(basename ${{ github.repository }})/g" .github/pull_request_template.md
           sed -i.bak "s/{owner}/$(dirname ${{ github.repository }})/g" .github/pull_request_template.md
+
+
         # commit back to the repository
       - name: Commit changes
         run: |

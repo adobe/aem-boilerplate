@@ -21,5 +21,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run semantic-release
-      - name: Show working copy
-        run: ls -la && git status

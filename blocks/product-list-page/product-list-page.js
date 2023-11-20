@@ -4,7 +4,7 @@ import {
 import htm from '../../scripts/htm.js';
 import ProductList from './ProductList.js';
 import FacetList from './FacetList.js';
-import { readBlockConfig } from '../../scripts/aem.js';
+import { readBlockConfig, sampleRUM } from '../../scripts/aem.js';
 import {
   loadCategory,
   parseQueryParams,
@@ -162,10 +162,57 @@ class ProductListPage extends Component {
       this.paginationClick = false;
     }
     this.props.resolve();
-    /* getMagentoStorefrontEvents((mse) => {
-      mse.context.setCategory(loadPageDetails());
-      mse.publish.pageView();
-    }); */
+
+    if (this.props.type === 'search' && this.state.loading === false && this.state.products.total === 0) {
+      sampleRUM('nullsearch', { source: '.search-input', target: this.state.searchTerm });
+    }
+
+    if (this.state.loading === false) {
+      window.adobeDataLayer.push((dl) => {
+        const searchResultsContext = dl.getState('searchResultsContext') ?? { units: [] };
+        const searchRequestId = window.sessionStorage.getItem('searchRequestId');
+        const searchUnitId = 'livesearch-plp';
+        const searchResultUnit = {
+          searchUnitId,
+          searchRequestId,
+          products: this.state.products.items.map((p, index) => ({
+            name: p.name,
+            sku: p.sku,
+            url: new URL(`/products/${p.url_key}/${p.sku.toLowerCase()}`, window.location).toString(),
+            imageUrl: p.images?.length ? p.images[0].url : '',
+            price: p.price?.final?.amount?.value ?? p.priceRange?.minimum?.final?.amount?.value,
+            rank: index,
+          })),
+          categories: [],
+          suggestions: [],
+          page: this.state.currentPage,
+          perPage: this.state.currentPageSize,
+          facets: this.state.facets,
+        };
+        const index = searchResultsContext.units.findIndex((u) => u.searchUnitId === searchUnitId);
+        if (index < 0) {
+          searchResultsContext.units.push(searchResultUnit);
+        } else {
+          searchResultsContext.units[index] = searchResultUnit;
+        }
+        dl.push({ searchResultsContext }, { event: 'search-response-received', eventInfo: { searchUnitId } });
+        if (this.props.type === 'search') {
+          dl.push({ event: 'search-results-view', eventInfo: { searchUnitId } });
+        } else {
+          dl.push(
+            { event: 'category-results-view', eventInfo: { searchUnitId } },
+            {
+              categoryContext: {
+                name: this.state.category.name,
+                urlKey: this.state.category.urlKey,
+                urlPath: this.state.category.urlPath,
+              },
+            },
+          );
+        }
+        dl.push({ event: 'page-view' });
+      });
+    }
   };
 
   loadProducts = async () => {
@@ -208,11 +255,6 @@ class ProductListPage extends Component {
     if (keysToCheck.some((key) => diff.includes(key))) {
       this.loadProducts();
     }
-
-    /* if (this.props.type === 'search'
-    && this.state.loading === false && this.state.products.total === 0) {
-      sampleRUM('nullsearch', { source: '.search-input', target: this.state.searchTerm });
-    } */
   }
 
   onPageChange(page) {

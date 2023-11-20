@@ -1,4 +1,4 @@
-/* eslint-disable object-curly-spacing */
+/* eslint-disable object-curly-spacing, class-methods-use-this */
 import {
   h, Component, Fragment,
 } from '../../scripts/preact.js';
@@ -46,6 +46,10 @@ class ProductCard extends Component {
     </picture>`;
   }
 
+  onProductClick(product) {
+    window.adobeDataLayer.push({ event: 'search-product-click', eventInfo: { searchUnitId: 'searchUnitId', sku: product.sku } });
+  }
+
   render({ product, loading, index }) {
     if (loading) {
       return html`
@@ -69,12 +73,12 @@ class ProductCard extends Component {
     return html`
       <li index=${index}>
         <div class="picture">
-          <a href="/products/${product.urlKey}/${product.sku.toLowerCase()}">
+          <a onClick=${() => this.onProductClick(product)} href="/products/${product.urlKey}/${product.sku.toLowerCase()}">
             ${this.renderImage(index < numberOfEagerImages ? 'eager' : 'lazy')}
           </a>
         </div>
         <div class="name">
-          <a href="/products/${product.urlKey}/${product.sku.toLowerCase()}" dangerouslySetInnerHTML=${{__html: product.name}} />
+          <a onClick=${() => this.onProductClick(product)} href="/products/${product.urlKey}/${product.sku.toLowerCase()}" dangerouslySetInnerHTML=${{__html: product.name}} />
         </div>
         <div class="price">${renderPrice(product, this.formatter.format, html, Fragment)}</div>
       </li>`;

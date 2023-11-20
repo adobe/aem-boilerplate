@@ -150,15 +150,7 @@ class ProductDetailPage extends Component {
     const { loading, product } = this.state;
     if (!loading && product) {
       setJsonLdProduct(product);
-      /* getMagentoStorefrontEvents(async (mse) => {
-        const sku = mse.context.getProduct()?.sku;
-        if (!sku) {
-          mse.context.setProduct({
-            ...mse.context.getProduct(),
-            ...product,
-          });
-        }
-      }); */
+      window.adobeDataLayer.push({ productContext: { productId: 0, ...product } }, { event: 'product-page-view' });
     }
   }
 

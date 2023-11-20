@@ -83,6 +83,31 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+
+  window.adobeDataLayer = window.adobeDataLayer || [];
+
+  let pageType = 'CMS';
+  if (document.body.querySelector('main .product-details')) {
+    pageType = 'Product';
+  } else if (document.body.querySelector('main .product-list-page')) {
+    pageType = 'Category';
+  } else if (document.body.querySelector('main .commerce-cart')) {
+    pageType = 'Cart';
+  } else if (document.body.querySelector('main .commerce-checkout')) {
+    pageType = 'Checkout';
+  }
+  window.adobeDataLayer.push({
+    pageContext: {
+      pageType,
+      pageName: document.title,
+      eventType: 'visibilityHidden',
+      maxXOffset: 0,
+      maxYOffset: 0,
+      minXOffset: 0,
+      minYOffset: 0,
+    },
+  });
+
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);

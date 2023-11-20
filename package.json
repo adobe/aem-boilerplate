@@ -29,7 +29,7 @@
     "chai": "4.3.7",
     "eslint": "8.35.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-import": "2.29.0",
     "stylelint": "15.2.0",
     "stylelint-config-standard": "30.0.1"
   }

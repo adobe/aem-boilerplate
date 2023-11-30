@@ -30,13 +30,13 @@ header nav[aria-expanded="true"] {
   min-height: 100vh;
 }
 
-@media (min-width: 600px) {
+@media (width >= 600px) {
   header nav {
     padding: 0 2rem;
   }
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   header nav {
     display: flex;
     justify-content: space-between;
@@ -131,7 +131,7 @@ header nav[aria-expanded="true"] .nav-hamburger-icon::after {
   transform: rotate(-45deg);
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   header nav .nav-hamburger {
     display: none;
     visibility: hidden;
@@ -186,7 +186,7 @@ header nav .nav-sections ul > li > ul > li {
   font-weight: 500;
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   header nav .nav-sections {
     display: block;
     visibility: visible;

@@ -23,23 +23,24 @@
   "homepage": "https://github.com/adobe/aem-boilerplate#readme",
   "devDependencies": {
     "@adobe/aem-cli": "^16.0.3",
+    "@babel/core": "7.23.5",
+    "@babel/eslint-parser": "7.23.3",
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/exec": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "semantic-release": "22.0.8",
-    "@babel/core": "7.23.5",
-    "@babel/eslint-parser": "7.23.3",
     "chai": "4.3.7",
     "eslint": "8.54.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.29.0",
+    "semantic-release": "22.0.8",
     "stylelint": "15.11.0",
     "stylelint-config-standard": "34.0.0"
   },
   "dependencies": {
     "@dropins/adyen-checkout-extension": "^0.1.0",
     "@dropins/elsie": "^0.10.0",
-    "@dropins/storefront-checkout": "~0.1.0-alpha7"
+    "@dropins/storefront-checkout": "~0.1.0-alpha7",
+    "@dropins/storefront-pdp": "^0.2.1"
   }
 }

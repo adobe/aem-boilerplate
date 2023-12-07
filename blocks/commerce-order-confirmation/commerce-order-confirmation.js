@@ -1,13 +1,21 @@
-import { readBlockConfig } from '../../scripts/aem.js';
+import { setEndpoint } from '@dropins/elsie/fetch-graphql.js';
+import { initializers } from '@dropins/elsie/initializer.js';
+import { getConfigValue } from '../../scripts/configs.js';
+import * as orderConfirmationApi from '@dropins/storefront-order-confirmation/api.js';
+import { render as orderConfirmationRenderer } from '@dropins/storefront-order-confirmation/render.js';
+import { OrderConfirmation } from '@dropins/storefront-order-confirmation/containers/OrderConfirmation.js';
 
-export default function decorate(block) {
-  const config = readBlockConfig(block);
+export default async function decorate(block) {
+  const commerceEndpoint = await getConfigValue('commerce-core-endpoint');
+  setEndpoint(commerceEndpoint);
 
-  const content = document.createRange().createContextualFragment(`<div>
-    Commerce Order Confirmation drop-in
-    <pre>${JSON.stringify(config, null, 2)}</pre>
-  </div>`);
+  const params = new URLSearchParams(window.location.search);
+  const orderRef = params.get('orderRef');
 
-  block.textContent = '';
-  block.append(content);
+  initializers.register(orderConfirmationApi.initialize, {});
+
+  orderConfirmationRenderer.render(OrderConfirmation, {
+    orderRef,
+    onContinueShopping: () => console.log('continue shopping'),
+  })(block);
 }

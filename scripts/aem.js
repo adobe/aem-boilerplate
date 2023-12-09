@@ -498,30 +498,6 @@ async function fetchPlaceholders(prefix = 'default') {
 }
 
 /**
- * Updates all section status in a container element.
- * @param {Element} main The container element
- */
-function updateSectionsStatus(main) {
-  const sections = [...main.querySelectorAll(':scope > div.section')];
-  for (let i = 0; i < sections.length; i += 1) {
-    const section = sections[i];
-    const status = section.dataset.sectionStatus;
-    if (status !== 'loaded') {
-      const loadingBlock = section.querySelector(
-        '.block[data-block-status="initialized"], .block[data-block-status="loading"]',
-      );
-      if (loadingBlock) {
-        section.dataset.sectionStatus = 'loading';
-        break;
-      } else {
-        section.dataset.sectionStatus = 'loaded';
-        section.style.display = null;
-      }
-    }
-  }
-}
-
-/**
  * Builds a block DOM Element from a two dimensional array, string, or object
  * @param {string} blockName name of the block
  * @param {*} content two dimensional array or string or object of content
@@ -590,20 +566,6 @@ async function loadBlock(block) {
 }
 
 /**
- * Loads JS and CSS for all blocks in a container element.
- * @param {Element} main The container element
- */
-async function loadBlocks(main) {
-  updateSectionsStatus(main);
-  const blocks = [...main.querySelectorAll('div.block')];
-  for (let i = 0; i < blocks.length; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    await loadBlock(blocks[i]);
-    updateSectionsStatus(main);
-  }
-}
-
-/**
  * Decorates a block.
  * @param {Element} block The block element
  */
@@ -653,17 +615,11 @@ async function loadFooter(footer) {
 }
 
 /**
- * Load LCP block and/or wait for LCP in default content.
- * @param {Array} lcpBlocks Array of blocks
+ * Wait for Image.
+ * @param {Element} section section element
  */
-async function waitForLCP(lcpBlocks) {
-  const block = document.querySelector('.block');
-  const hasLCPBlock = block && lcpBlocks.includes(block.dataset.blockName);
-  if (hasLCPBlock) await loadBlock(block);
-
-  document.body.style.display = null;
-  const lcpCandidate = document.querySelector('main img');
-
+async function waitForImage(section) {
+  const lcpCandidate = section.querySelector('img');
   await new Promise((resolve) => {
     if (lcpCandidate && !lcpCandidate.complete) {
       lcpCandidate.setAttribute('loading', 'eager');
@@ -673,6 +629,39 @@ async function waitForLCP(lcpBlocks) {
       resolve();
     }
   });
+}
+
+/**
+ * Loads all blocks in a section.
+ * @param {Element} section The section element
+ */
+
+async function loadSection(section, loadCallback) {
+  const status = section.dataset.sectionStatus;
+  if (status === 'initialized') {
+    section.dataset.sectionStatus = 'loading';
+    const blocks = [...section.querySelectorAll('div.block')];
+    for (let i = 0; i < blocks.length; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await loadBlock(blocks[i]);
+    }
+    if (loadCallback) await loadCallback(section);
+    section.dataset.sectionStatus = 'loaded';
+    section.style.display = null;
+  }
+}
+
+/**
+ * Loads all sections.
+ * @param {Element} element The parent element of sections to load
+ */
+
+async function loadSections(element) {
+  const sections = [...element.querySelectorAll('div.section')];
+  for (let i = 0; i < sections.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    await loadSection(sections[i]);
+  }
 }
 
 init();
@@ -689,7 +678,8 @@ export {
   fetchPlaceholders,
   getMetadata,
   loadBlock,
-  loadBlocks,
+  loadSection,
+  loadSections,
   loadCSS,
   loadFooter,
   loadHeader,
@@ -699,6 +689,5 @@ export {
   setup,
   toCamelCase,
   toClassName,
-  updateSectionsStatus,
-  waitForLCP,
+  waitForImage,
 };

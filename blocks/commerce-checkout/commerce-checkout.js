@@ -70,4 +70,9 @@ export default async function decorate(block) {
   //
   // events.emit('locale', 'en_US')
   //--------------------
+  events.on('checkout/order', (data) => {
+    console.log('order placed successfully');
+    // redirect to order confirmation page
+    window.location.replace(`/order-confirmation?orderRef=${data.masked_order_id}`);
+  });
 }

@@ -15,7 +15,7 @@
 
     window.addEventListener('load', () => {
       if (document.referrer) {
-        const { origin, pathname } = new URL(document.referrer, window.location);
+        const { origin, pathname } = new URL(document.referrer);
         if (origin === window.location.origin) {
           const backBtn = document.createElement('a');
           backBtn.classList.add('button', 'error-button-back');

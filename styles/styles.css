@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
- :root {
+:root {
   /* colors */
   --link-color: #035fe6;
   --link-hover-color: #136ff6;
@@ -39,7 +39,6 @@
 
   /* nav height */
   --nav-height: 64px;
-
 }
 
 @font-face {
@@ -48,7 +47,6 @@
   ascent-override: 95%;
   src: local('Arial');
 }
-
 
 @media (width >= 900px) {
   :root {

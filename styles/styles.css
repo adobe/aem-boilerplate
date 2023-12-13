@@ -120,6 +120,7 @@ main pre {
   white-space: pre;
 }
 
+/* links */
 a:any-link {
   color: var(--link-color);
   text-decoration: none;
@@ -167,7 +168,6 @@ a.button.secondary, button.secondary {
   color: var(--text-color)
 }
 
-
 main img {
   max-width: 100%;
   width: auto;
@@ -185,6 +185,7 @@ main img {
   width: 100%;
 }
 
+/* sections */
 main .section {
   padding: 64px 16px;
 }

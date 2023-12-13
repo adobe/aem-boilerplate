@@ -1,11 +1,11 @@
-.hero-container > div {
+main .hero-container > div {
   max-width: unset;
 }
   
-.hero-container {
+main .hero-container {
   padding: 0;
 }
-  
+
 .hero {
   position: relative;
   padding: 32px;

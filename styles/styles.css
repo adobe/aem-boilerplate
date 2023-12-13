@@ -14,10 +14,10 @@
   /* colors */
   --link-color: #035fe6;
   --link-hover-color: #136ff6;
-  --background-color: #fff;
-  --overlay-background-color: #eee;
-  --highlight-background-color: #ccc;
-  --text-color: #000;
+  --background-color: white;
+  --light-color: #eee;
+  --dark-color: #ccc;
+  --text-color: black;
 
   /* fonts */
   --body-font-family: roboto, roboto-fallback;
@@ -103,7 +103,7 @@ hr {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
   border: 0;
-  border-bottom: 1px solid var(--overlay-background-color);
+  border-bottom: 1px solid var(--light-color);
 }
 
 code, pre, samp {
@@ -120,7 +120,7 @@ pre {
 }
 
 main pre {
-  background-color: var(--overlay-background-color);
+  background-color: var(--light-color);
   padding: 1em;
   border-radius: .25em;
   overflow-x: auto;
@@ -164,7 +164,7 @@ a.button:hover, a.button:focus, button:hover, button:focus  {
 }
 
 button:disabled, button:disabled:hover {
-  background-color: var(--overlay-background-color);
+  background-color: var(--light-color);
   cursor: unset;
 }
 
@@ -244,6 +244,7 @@ main .section {
 }
 
 /* section metadata */
+main .section.light,
 main .section.highlight {
-  background-color: var(--highlight-background-color);
+  background-color: var(--light-color);
 }

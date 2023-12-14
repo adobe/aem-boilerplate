@@ -41,7 +41,7 @@
     "@dropins/adyen-checkout-extension": "^0.1.0",
     "@dropins/elsie": "^0.10.0",
     "@dropins/storefront-checkout": "~0.1.0-alpha8",
-    "@dropins/storefront-order-confirmation": "~0.1.0-alpha3",
+    "@dropins/storefront-order-confirmation": "~0.1.0-alpha5",
     "@dropins/storefront-pdp": "^0.2.1"
   }
 }

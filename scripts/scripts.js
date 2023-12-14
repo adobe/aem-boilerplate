@@ -8,7 +8,7 @@ import {
   decorateSections,
   decorateBlocks,
   decorateTemplateAndTheme,
-  waitForImage,
+  waitForFirstImage,
   loadSection,
   loadSections,
   loadCSS,
@@ -79,7 +79,7 @@ async function loadEager(doc) {
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
-    await loadSection(main.querySelector('.section'), waitForImage);
+    await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
 
   try {

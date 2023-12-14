@@ -618,7 +618,7 @@ async function loadFooter(footer) {
  * Wait for Image.
  * @param {Element} section section element
  */
-async function waitForImage(section) {
+async function waitForFirstImage(section) {
   const lcpCandidate = section.querySelector('img');
   await new Promise((resolve) => {
     if (lcpCandidate && !lcpCandidate.complete) {
@@ -689,5 +689,5 @@ export {
   setup,
   toCamelCase,
   toClassName,
-  waitForImage,
+  waitForFirstImage,
 };

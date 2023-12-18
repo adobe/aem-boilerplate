@@ -27,7 +27,7 @@
     "@babel/core": "7.23.5",
     "@babel/eslint-parser": "7.23.3",
     "chai": "4.3.7",
-    "eslint": "8.54.0",
+    "eslint": "8.56.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.29.0",
     "stylelint": "15.11.0",

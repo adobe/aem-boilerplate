@@ -36,7 +36,7 @@
 }
 
 .minicart-panel .minicart-header .title {
-    border-right: 1px solid var(--highlight-background-color);
+    border-right: 1px solid var(--dark-color);
     padding-right: 8px;
 }
 
@@ -67,7 +67,7 @@
 
 .minicart-panel .minicart-list > li {
     padding: 15px 0;
-    border-bottom: 1px solid var(--highlight-background-color);
+    border-bottom: 1px solid var(--dark-color);
 }
 
 .minicart-panel .minicart-list .minicart-product {
@@ -228,12 +228,12 @@
 }
 
 .minicart-panel .minicart-actions button:first-child {
-    background: var(--highlight-background-color);
+    background: var(--dark-color);
     color: var(--text-color);
 }
 
 .minicart-panel .minicart-actions button:nth-child(2) {
-    background: var(--highlight-background-color);
+    background: var(--dark-color);
     color: var(--text-color);
 }
 
@@ -291,7 +291,7 @@
 }
 
 .minicart-panel .overlay > .actions button:nth-child(2) {
-    background: var(--highlight-background-color);
+    background: var(--dark-color);
 }
 
 @media (min-width: 1024px) {

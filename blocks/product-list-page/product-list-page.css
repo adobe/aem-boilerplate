@@ -296,7 +296,7 @@ main .section.product-list-page-container > .default-content-wrapper h1:first-ch
 .product-list-page .facets .facet-list .facet .price-facet .price-slider input[type='range']::-webkit-slider-runnable-track {
   width: 100%;
   height: 5px;
-  background: var(--highlight-background-color);
+  background: var(--dark-color);
   border-radius: 3px;
   border: none;
 }
@@ -304,7 +304,7 @@ main .section.product-list-page-container > .default-content-wrapper h1:first-ch
 .product-list-page .facets .facet-list .facet .price-facet .price-slider input[type='range']:first-of-type::-moz-range-track {
   width: 100%;
   height: 5px;
-  background: var(--highlight-background-color);
+  background: var(--dark-color);
   border-radius: 3px;
   border: none;
 }
@@ -598,7 +598,7 @@ main .section.product-list-page-container > .default-content-wrapper h1:first-ch
     display: block;
     flex: 25;
     max-width: 430px;
-    background: var(--highlight-background-color);
+    background: var(--dark-color);
     padding: 20px 30px;
     position: unset;
     z-index: unset;
@@ -722,7 +722,7 @@ main .section.product-list-page-container > .default-content-wrapper h1:first-ch
 }
 
 .product-list-page .shimmer {
-  background: var(--highlight-background-color);
+  background: var(--dark-color);
   border-radius: 4px;
 }
 

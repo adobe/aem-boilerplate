@@ -1,108 +1,108 @@
 /* stylelint-disable selector-class-pattern */
 main .section.product-details-container {
-    padding: 16px 24px !important;
+  padding: 16px 24px !important;
 }
 
 .section > div.product-details-wrapper {
-    margin-bottom: 24px;
+  margin-bottom: 24px;
 }
 
 .pdp-product__description {
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 32px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 32px;
 }
 
 .product-details {
-    max-width: 1568px;
-    margin: 0 auto;
+  max-width: 1568px;
+  margin: 0 auto;
 }
 
 .pdp-product__buttons {
-    grid-template-columns: 1fr auto;
-    align-items: center;   
+  grid-template-columns: 1fr auto;
+  align-items: center;   
 }
 
 /* Add to Cart Button */
 .pdp-product__buttons>*:nth-child(1) {
-    grid-column: 1;
+  grid-column: 1;
 }
 
 /* Add to Favorite Button */
 .pdp-product__buttons>*:nth-child(2) {
-    grid-column: 2;
-    min-height: 100%;
-    display: grid;
-    min-width: 7.5rem;
+  grid-column: 2;
+  min-height: 100%;
+  display: grid;
+  min-width: 7.5rem;
 }
 
 .pdp-product__buttons .elsie-iconButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Rest of the buttons */
 .pdp-product__buttons>*:nth-child(n + 3) {
-    grid-column: 1 / -1;
+  grid-column: 1 / -1;
 }
 
 .elsie-base-design .pdp-product__title {
-    margin-bottom: 16px;
+  margin-bottom: 16px;
 }
 
 .elsie-base-design .pdp-product__sku {
-    color: var(--color-neutral-700);
-    font-size: 12px;
-    line-height: 1.5;
+  color: var(--color-neutral-700);
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .elsie-base-design .pdp-product__actions {
-    margin-bottom: var(--spacing-big);
-    margin-top: var(--spacing-medium);
+  margin-bottom: var(--spacing-big);
+  margin-top: var(--spacing-medium);
 }
 
 .pdp-product__heading {
-    text-align: center;
-    padding-top: 24px !important;
-    border-top: 1px solid #e0e0e0;
+  text-align: center;
+  padding-top: 24px !important;
+  border-top: 1px solid #e0e0e0;
 }
 
 .pdp-product__short_description,
 .pdp-product__description {
-    font-size: 14px !important;
+  font-size: 14px !important;
 }
 
 .elsie-base-design .pdp-product__prices {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 .elsie-base-design .elsie-incrementer__button-container button {
-    color: var(--text-color);
-    background: none;
-    justify-content: center;
+  color: var(--text-color);
+  background: none;
+  justify-content: center;
 }
 
 @media (min-width: 600px) {
-    main .section.product-details-container {
-        padding: 64px 0;
-    }
+  main .section.product-details-container {
+      padding: 64px 0;
+  }
 
-    .section > div.product-details-wrapper {
-        margin-bottom: 64px;
-    }
+  .section > div.product-details-wrapper {
+      margin-bottom: 64px;
+  }
 }
 
 @media only screen and (min-width: 1024px) {
-    .pdp-product__gallery-column {
-        grid-column: 1 / span 7 !important;
-    }
+  .pdp-product__gallery-column {
+      grid-column: 1 / span 7 !important;
+  }
 
-    .pdp-product__content-column {
-        grid-column: 8 / span 5 !important;
-        padding: 0 40px 24px !important
-    }
+  .pdp-product__content-column {
+      grid-column: 8 / span 5 !important;
+      padding: 0 40px 24px !important
+  }
 
-    .elsie-base-design .pdp-product__title {
-        margin-bottom: 24px !important;
-    }
+  .elsie-base-design .pdp-product__title {
+      margin-bottom: 24px !important;
+  }
 }

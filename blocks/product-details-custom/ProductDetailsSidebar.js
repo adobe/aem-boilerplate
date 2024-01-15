@@ -8,7 +8,7 @@ const html = htm.bind(h);
 function QuantitySelector({ onChange }) {
   const options = Array.from({ length: 15 }, (_, index) => index + 1);
   return html`<div class="sidebar-section quantity-select">
-      <h4 class="selection">QUANTITY:</h4>
+      <h4 class="selection">Quantity</h4>
       <select onchange=${(event) => onChange?.(Number.parseInt(event.target.value, 10))}>
         ${options.map((value) => html`<option key=${value} value=${value}>${value}</option>`)}
       </select>
@@ -86,7 +86,7 @@ function Options({ product, updateSelection, selection }) {
 function CartSection({ onAddToCart, canAddToCart, onAddToWishlist }) {
   return html`<div class="sidebar-section cart">
     <button disabled=${!canAddToCart()} onclick=${onAddToCart} class="button primary cart-button">Add to Bag</button>
-    <button onclick=${onAddToWishlist} class="secondary-action"><${Icon} name="heart" />ADD TO FAVORITES</button>
+    <button onclick=${onAddToWishlist} class="button secondary secondary-action"><${Icon} name="heart" />Add to Favorites</button>
   </div>`;
 }
 

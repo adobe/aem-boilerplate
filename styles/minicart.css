@@ -27,16 +27,14 @@
 
 .minicart-panel .minicart-header .title,
 .minicart-panel .minicart-header .subtotal {
-    font-size: 1rem;
     height: 100%;
-    text-transform: uppercase;
     margin: 0;
     display: flex;
     align-items: center;
 }
 
 .minicart-panel .minicart-header .title {
-    border-right: 1px solid var(--highlight-background-color);
+    border-right: 1px solid var(--color-neutral-500);
     padding-right: 8px;
 }
 
@@ -53,7 +51,6 @@
 }
 
 .minicart-panel .cart-empty {
-    font-size: 1rem;
     text-align: center;
 }
 
@@ -67,7 +64,7 @@
 
 .minicart-panel .minicart-list > li {
     padding: 15px 0;
-    border-bottom: 1px solid var(--highlight-background-color);
+    border-bottom: 1px solid var(--color-neutral-500);
 }
 
 .minicart-panel .minicart-list .minicart-product {
@@ -87,11 +84,13 @@
 }
 
 .minicart-panel .minicart-list .minicart-product .info {
-    font-size: 0.8rem;
+    font: var(--type-details-caption-2-font);
+    letter-spacing: var(--type-details-caption-2-letter-spacing);
 }
 
 .minicart-panel .minicart-list .minicart-product .info .name > a {
-    font-size: 1.2rem;
+    font: var(--type-headline-2-default-font);
+    letter-spacing: var(--type-headline-2-default-letter-spacing);
 }
 
 .minicart-panel .minicart-list .minicart-product .info .options label {
@@ -116,20 +115,16 @@
     flex-flow: row wrap;
     margin: 0;
     padding: 0;
-    font-size: 1rem;
 }
 
 .minicart-panel .minicart-list .minicart-product .info .options dl > dt {
     flex-basis: 50%;
     flex-grow: 1;
-    text-transform: uppercase;
 }
 
 .minicart-panel .minicart-list .minicart-product .info .options dl > dd {
     flex-basis: 50%;
     flex-grow: 1;
-    text-transform: none;
-    color: var(--text-color);
     margin: 0;
     padding: 0;
 }
@@ -158,20 +153,20 @@
     height: 25px;
     padding: 0;
     text-align: center;
-    border: 1px solid var(--text-color);
+    border: 1px solid var(--color-neutral-600);
 }
 
 .minicart-panel .minicart-list .minicart-product .info .quantity input:invalid {
-    border-color: red;
+    border-color: var(--color-alert-800);
 }
 
 .minicart-panel .minicart-list .minicart-product .info .quantity button {
-    font-size: 1rem;
-    text-transform: uppercase;
+    font: var(--type-details-caption-1-font);
+    letter-spacing: var(--type-details-caption-1-letter-spacing);
     padding: 5px 10px;
     margin: 0;
-    background: var(--link-color);
-    color: var(--background-color);
+    background: var(--color-brand-500);
+    color: var(--color-neutral-50);
 }
 
 .minicart-panel .minicart-list .minicart-product .info .quantity button:disabled {
@@ -215,34 +210,17 @@
 }
 
 .minicart-panel .minicart-actions button {
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    padding: 0.5rem;
-    box-sizing: border-box;
     width: 100%;
     margin: 0;
 }
 
 .minicart-panel .minicart-actions button:hover {
-    text-decoration: underline;
-}
-
-.minicart-panel .minicart-actions button:first-child {
-    background: var(--highlight-background-color);
-    color: var(--text-color);
-}
-
-.minicart-panel .minicart-actions button:nth-child(2) {
-    background: var(--highlight-background-color);
-    color: var(--text-color);
+    background-color: var(--color-brand-600);
 }
 
 .minicart-panel .overlay-background {
     position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: rgb(0 0 0 / 60%);
     z-index: 100;
     display: flex;
@@ -253,7 +231,6 @@
 .minicart-panel .overlay {
     background: var(--background-color);
     box-shadow: 0 0 12px 2px rgba(0 0 0 / 35%);
-    font-size: 1rem;
     margin-left: 20px;
     margin-right: 20px;
     width: 100%;
@@ -285,16 +262,7 @@
     gap: 5px;
 }
 
-.minicart-panel .overlay > .actions button {
-    text-transform: uppercase;
-    font-size: 1rem;
-}
-
-.minicart-panel .overlay > .actions button:nth-child(2) {
-    background: var(--highlight-background-color);
-}
-
-@media (min-width: 1024px) {
+@media (width >= 1024px) {
     .minicart-panel {
         width: 398px;
         position: absolute;
@@ -318,7 +286,7 @@
         background-size: contain;
         background-color: transparent;
         background-image: url('../../icons/x-lg.svg');
-        color: var(--text-color);
+        color: var(--color-brand-700);
         line-height: 1.2rem;;
         padding: 5px 3px 0 0;
         text-align: center;

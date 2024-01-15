@@ -172,7 +172,7 @@ class ProductDetailPage extends Component {
           onQuantityChanged=${this.onQuantityChanged}
         />
         <div class="product-detail-description">
-          <h3>PRODUCT DETAILS</h3>
+          <h3>Product Details</h3>
           <div dangerouslySetInnerHTML=${{ __html: this.state.product.description }}></div>
         </div>
       <//>

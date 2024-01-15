@@ -82,7 +82,7 @@ main .section.product-details-container {
   justify-content: center;
 }
 
-@media (min-width: 600px) {
+@media (width >= 600px) {
   main .section.product-details-container {
       padding: 64px 0;
   }
@@ -92,7 +92,7 @@ main .section.product-details-container {
   }
 }
 
-@media only screen and (min-width: 1024px) {
+@media only screen and (width >= 1024px) {
   .pdp-product__gallery-column {
       grid-column: 1 / span 7 !important;
   }

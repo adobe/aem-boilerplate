@@ -385,21 +385,6 @@ main .section.highlight {
 
 /* Base Design System Tokens */
 .elsie-base-design.elsie-base-design {
-  --color-brand-300: #E8E4E4;
-  --color-brand-400: #817C89;
-  --color-brand-500: #512d6d;
-  --color-brand-600: #405;
-  --color-brand-700: #2B0E43;
-  --color-brand-800: #38243C;
-  --color-neutral-400: #E5E5E5;
-  --color-neutral-500: grey;
-  --color-neutral-800: #202020;
-  --color-button-active: #38243c;
-  --color-button-focus: #38243c;
-  --color-button-hover: #38243c;
-  --type-base-font-family: var(--font-family-body);
-  --type-display-3-font: normal normal 400 24px/32px var(--type-base-font-family);
-  --shape-border-width-2: 1px;
   --background-none: none 0 0% no-repeat padding-box;
 }
 

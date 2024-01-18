@@ -1,6 +1,5 @@
-name: Linting
-
-on: [pull_request]
+name: Build
+on: [push]
 
 jobs:
   build:
@@ -11,7 +10,5 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-    - run: npm install
+    - run: npm ci
     - run: npm run lint
-      env:
-        CI: true

@@ -4,8 +4,9 @@ footer {
   font-size: var(--body-font-size-s);
 }
 
-footer .footer {
-  max-width: 1200px;
+footer raqn-footer {
+  display: flex;
+  max-width: var(--scope-max-width, 1200px);
   margin: auto;
 }
 

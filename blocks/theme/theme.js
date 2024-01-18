@@ -135,12 +135,14 @@ export default class Theme extends ComponentBase {
   }
 
   styles() {
-    ['variables', 'tags', 'atomic', 'themes'].forEach((cssSegment) => {
-      const style = document.createElement('style');
-      style.innerHTML = this[cssSegment];
-      style.classList.add(cssSegment);
-      document.head.appendChild(style);
-    });
+    ['variables', 'tags', 'atomic', 'themes', 'fontFace'].forEach(
+      (cssSegment) => {
+        const style = document.createElement('style');
+        style.innerHTML = this[cssSegment];
+        style.classList.add(cssSegment);
+        document.head.appendChild(style);
+      },
+    );
     document.body.classList.add('theme-default');
     document.body.style.display = 'block';
   }

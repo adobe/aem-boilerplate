@@ -1,0 +1,22 @@
+raqn-icon {
+  display: inline-flex;
+  font-size: 1em;
+  line-height: 1em;
+  text-align: center;
+  min-width: var(--scope-icon-size, 1em);
+  min-height: var(--scope-icon-size, 1em);
+  justify-content: var(--scope-icon-align, start);
+  text-transform: none;
+  vertical-align: middle;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+raqn-icon svg {
+  display: inline-block;
+  width: var(--scope-icon-size, 1em);
+  height: var(--scope-icon-size, 1em);
+  fill: currentcolor;
+  overflow: hidden;
+  vertical-align: middle;
+}

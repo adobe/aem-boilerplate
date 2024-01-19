@@ -401,11 +401,6 @@ main .section.highlight {
   padding: 0;
 }
 
-.elsie-base-design hr {
-  border-color: var(--color-neutral-400);
-  margin: 16px 0;
-}
-
 .elsie-base-design ul {
   margin-top: 0;
 }

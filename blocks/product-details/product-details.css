@@ -82,6 +82,32 @@ main .section.product-details-container {
   justify-content: center;
 }
 
+.product-details .elsie-base-design h2 {
+  font: var(--type-body-1-default-font);
+  font-weight: 600;
+  letter-spacing: .2em;
+  line-height: 1.5;
+}
+
+.product-details .elsie-base-design button {
+  border-radius: 4px;
+  color: var(--color-neutral-50);
+  font-size: 12px;
+  line-height: 1.25;
+  margin: 0;
+  padding: var(--spacing-small) var(--spacing-medium);
+  text-transform: none;
+}
+
+.product-details .elsie-base-design .elsie-button-icon {
+  height: 16px;
+}
+
+.product-details .elsie-base-design hr {
+  border-color: var(--color-neutral-400);
+  margin: 16px 0;
+}
+
 @media (width >= 600px) {
   main .section.product-details-container {
       padding: 64px 0;

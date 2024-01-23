@@ -29,18 +29,18 @@
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/exec": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "semantic-release": "23.0.0",
     "chai": "5.0.0",
     "eslint": "8.56.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.29.1",
+    "semantic-release": "23.0.0",
     "stylelint": "16.1.0",
     "stylelint-config-standard": "36.0.0"
   },
   "dependencies": {
     "@dropins/adyen-checkout-extension": "^0.1.0",
     "@dropins/elsie": "^0.10.0",
-    "@dropins/storefront-checkout": "~0.1.0-alpha8",
+    "@dropins/storefront-checkout": "~0.1.0-alpha9",
     "@dropins/storefront-order-confirmation": "~0.1.0-alpha6",
     "@dropins/storefront-pdp": "^0.2.1"
   }

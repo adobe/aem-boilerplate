@@ -307,20 +307,6 @@ button.secondary:hover {
   color: var(--color-brand-600)
 }
 
-main input {
-  font: var(--type-body-2-strong-font);
-  letter-spacing: var(--type-body-2-strong-letter-spacing);
-  width: 100%;
-  max-width: 50rem;
-  display: block;
-  margin-bottom: 1rem;
-  padding: 4px 1.6rem;
-  border-radius: var(--shape-border-radius-1);
-  box-sizing: border-box;
-  border: 1px solid var(--color-neutral-600);
-  background-color: var(--background-color);
-}
-
 main input:hover {
   border: 1px solid var(--color-neutral-700);
 }
@@ -393,12 +379,6 @@ main .section.highlight {
 .elsie-base-design input[class^="elsie-incrementer__"] {
   margin: unset;
   padding: unset;
-}
-
-.elsie-base-design h1, .elsie-base-design h2, .elsie-base-design h3,
-.elsie-base-design h4, .elsie-base-design h5, .elsie-base-design h6 {
-  margin: 0;
-  padding: 0;
 }
 
 .elsie-base-design ul {

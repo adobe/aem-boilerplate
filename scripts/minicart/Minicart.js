@@ -170,6 +170,7 @@ export class Minicart extends Component {
       </ul>
       <div class="minicart-actions">
         <button onClick=${() => { window.location.href = '/cart'; }}>Go to cart</button>
+        <button onClick=${() => { window.location.href = '/checkout'; }}>Go to checkout</button>
       </div>
     </div>`;
   }

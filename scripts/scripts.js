@@ -33,13 +33,12 @@ async function loadFonts() {
  */
 
 function buildFragmentBlocks(container) {
-  console.log('building blocks');
   container.querySelectorAll('a[href*="/fragments/"]:only-child').forEach((a) => {
     const parent = a.parentNode;
-    const fragment =buildBlock('fragment', [[ a.cloneNode(true) ]]) 
+    const fragment = buildBlock('fragment', [[a.cloneNode(true)]]);
     if (parent.tagName === 'P') {
       parent.before(fragment);
-      parent.remove();  
+      parent.remove();
     } else {
       a.before(fragment);
       a.remove();

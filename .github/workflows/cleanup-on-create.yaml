@@ -17,19 +17,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Use Node.js 18
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-      - name: Uninstall dependencies
-        run: |
-          npm uninstall --save-dev semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/exec
+          node-version: 20
       - name: Remove Helper Files
         run: | 
           rm -rf \
             .github/workflows/cleanup-on-create.yaml \
-            .github/workflows/semantic-release.yaml \
-            .releaserc.cjs \
             CHANGELOG.md
 
       - name: Initialize README

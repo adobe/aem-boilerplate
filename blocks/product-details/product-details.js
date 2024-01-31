@@ -108,10 +108,7 @@ class ProductDetailPage extends Component {
     if (Object.keys(this.state.selection).length === (this.state.product.options?.length || 0)) {
       const optionsUIDs = Object.values(this.state.selection).map((option) => option.id);
       const { cartApi } = await import('../../scripts/minicart/api.js');
-      console.debug('onAddToCart', {
-        sku: this.state.product.sku, optionsUIDs, quantity: this.state.selectedQuantity ?? 1,
-      });
-      cartApi.addToCart(this.state.product.sku, optionsUIDs, this.state.selectedQuantity ?? 1);
+      cartApi.addToCart(this.state.product.sku, optionsUIDs, this.state.selectedQuantity ?? 1, 'product-detail');
     }
   };
 

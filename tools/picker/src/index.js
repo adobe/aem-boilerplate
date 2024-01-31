@@ -51,12 +51,16 @@ const blocks = {
                 <th colspan="2" style="border: 1px solid black; background: lightgray;">Product Teaser</th>
             </tr>
             <tr>
-                <td style="border: 1px solid black">sku</td>
+                <td style="border: 1px solid black">SKU</td>
                 <td style="border: 1px solid black">${i.sku}</td>
             </tr>
             <tr>
-                <td style="border: 1px solid black">action</td>
-                <td style="border: 1px solid black">link</td>
+                <td style="border: 1px solid black">Details Button</td>
+                <td style="border: 1px solid black">true</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black">Cart Button</td>
+                <td style="border: 1px solid black">true</td>
             </tr>
         </table>`,
         'selection': 'single',

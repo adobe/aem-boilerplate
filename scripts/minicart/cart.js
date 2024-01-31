@@ -98,6 +98,43 @@ export {
 };
 
 /* Methods */
+function mapCartItem(item) {
+  return {
+    id: item.uid,
+    prices: {
+      price: {
+        value: item.prices?.price?.value,
+        currency: item.prices?.price?.currency,
+      },
+    },
+    product: {
+      // TODO: productId not exposed by core GraphQL as number
+      productId: 0,
+      name: item.product?.name,
+      sku: item.product?.sku,
+    },
+    configurableOptions: item.configurable_options?.map((option) => ({
+      optionLabel: option?.option_label,
+      valueLabel: option?.value_label,
+    })),
+    quantity: item.quantity,
+  };
+}
+
+function mapCartToMSE(cart, source) {
+  return {
+    id: cart.id,
+    items: cart.items.map(mapCartItem),
+    prices: {
+      subtotalExcludingTax: {
+        value: cart.prices?.subtotal_excluding_tax?.value,
+        currency: cart.prices?.subtotal_excluding_tax?.currency,
+      },
+    },
+    totalQuantity: cart.total_quantity,
+    source,
+  };
+}
 
 const handleCartErrors = (errors) => {
   if (!errors) {
@@ -173,7 +210,7 @@ export async function createCart() {
   }
 }
 
-export async function addToCart(sku, options, quantity) {
+export async function addToCart(sku, options, quantity, source) {
   const done = waitForCart();
   try {
     const variables = {
@@ -200,6 +237,15 @@ export async function addToCart(sku, options, quantity) {
 
     cart.items = cart.items.filter((item) => item);
     store.setCart(cart);
+    const mseCart = mapCartToMSE(cart, source);
+
+    // TODO: Find exact item by comparing options UIDs
+    const mseChangedItems = cart.items.filter((item) => item.product.sku === sku).map(mapCartItem);
+    window.adobeDataLayer.push(
+      { shoppingCartContext: mseCart },
+      { changedProductsContext: { items: mseChangedItems } },
+      { event: 'add-to-cart' },
+    );
 
     console.debug('Added items to cart', variables, cart);
   } catch (err) {

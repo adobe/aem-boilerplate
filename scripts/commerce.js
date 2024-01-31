@@ -270,7 +270,7 @@ export async function performMonolithGraphQLQuery(query, variables, GET = true, 
   return response.json();
 }
 
-export function renderPrice(product, format, html, Fragment) {
+export function renderPrice(product, format, html = (strings, ...values) => strings.reduce((result, string, i) => result + string + (values[i] || ''), ''), Fragment = null) {
   // Simple product
   if (product.price) {
     const { regular, final } = product.price;
@@ -290,14 +290,14 @@ export function renderPrice(product, format, html, Fragment) {
     if (finalMin.amount.value !== finalMax.amount.value) {
       return html`
       <div class="price-range">
-        <span class="price-from">${format(finalMin.amount.value)}</span><span class="price-from">${format(finalMax.amount.value)}</span>
         ${finalMin.amount.value !== regularMin.amount.value ? html`<span class="price-regular">${format(regularMin.amount.value)}</span>` : ''}
+        <span class="price-from">${format(finalMin.amount.value)} - ${format(finalMax.amount.value)}</span>
       </div>`;
     }
 
     if (finalMin.amount.value !== regularMin.amount.value) {
       return html`<${Fragment}>
-      <span class="price-final">${format(finalMin.amount.value)}</span> <span class="price-regular">${format(regularMin.amount.value)}</span> 
+      <span class="price-final">${format(finalMin.amount.value)} - ${format(regularMin.amount.value)}</span> 
     </${Fragment}>`;
     }
 

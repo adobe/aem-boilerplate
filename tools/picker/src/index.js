@@ -7,8 +7,8 @@ import getProductsInCategory from './queries/products.graphql.js';
 
 import './styles.css';
 
-const endpoint = 'https://catalog-service-sandbox.adobe.io/graphql';
-const rootCategoryKey = '2';
+const configFile = ' https://main--aem-boilerplate-commerce--hlxsites.hlx.live/configs.json';
+const defaultConfig = 'prod';
 
 /**
  * List of blocks to be available in the picker.
@@ -100,18 +100,18 @@ const blocks = {
     },
 };
 
-async function performCatalogServiceQuery(query, variables) {
+async function performCatalogServiceQuery(query, config, variables) {
     const headers = {
-        'Magento-Environment-Id': '3b0cc8f4-7dd3-4bcb-bb65-b9e11358a080',
-        'Magento-Store-View-Code': 'default',
-        'Magento-Website-Code': 'base',
-        'x-api-key': 'ba7fa6fca7a64922a533e8c28426aa44',
-        'Magento-Store-Code': 'main_website_store',
-        'Magento-Customer-Group': 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c',
+        'Magento-Environment-Id': config['commerce-environment-id'],
+        'Magento-Store-View-Code': config['commerce-store-view-code'],
+        'Magento-Website-Code': config['commerce-website-code'],
+        'x-api-key': config['commerce-x-api-key'],
+        'Magento-Store-Code': config['commerce-store-code'],
+        'Magento-Customer-Group': config['commerce-customer-group'],
         'Content-Type': 'application/json',
     };
 
-    const apiCall = new URL(endpoint);
+    const apiCall = new URL(config['commerce-endpoint']);
     apiCall.searchParams.append('query', query.replace(/(?:\r\n|\r|\n|\t|[\s]{4})/g, ' ')
         .replace(/\s\s+/g, ' '));
     apiCall.searchParams.append('variables', variables ? JSON.stringify(variables) : null);
@@ -130,11 +130,11 @@ async function performCatalogServiceQuery(query, variables) {
     return queryResponse.data;
 }
 
-const getItems = async (folderKey, page = 1) => {
+const getItems = async (folderKey, page = 1, config) => {
     let newItems = {};
     let pageInfo = {};
     try {
-        const products = await performCatalogServiceQuery(getProductsInCategory, { id: folderKey, currentPage: page });
+        const products = await performCatalogServiceQuery(getProductsInCategory, config, { id: folderKey, currentPage: page });
         products?.productSearch?.items.forEach(product => {
             const { productView } = product;
 
@@ -158,11 +158,11 @@ const getItems = async (folderKey, page = 1) => {
     return [newItems, pageInfo];
 };
 
-const getCategories = async (folderKey) => {
+const getCategories = async (folderKey, config) => {
     let categoryObject = {};
 
     try {
-        const categories = await performCatalogServiceQuery(getCategoriesInCategory, { id: folderKey });
+        const categories = await performCatalogServiceQuery(getCategoriesInCategory, config, { id: folderKey });
         categories?.categories.forEach(category => {
             categoryObject[category.id] = category;
         });
@@ -175,5 +175,10 @@ const getCategories = async (folderKey) => {
 
 const app = document.getElementById("app");
 if (app) {
-    ReactDOM.render(<Picker blocks={blocks} getCategories={getCategories} getItems={getItems} rootCategoryKey={rootCategoryKey} />, app);
+    ReactDOM.render(<Picker
+        blocks={blocks}
+        getCategories={getCategories}
+        getItems={getItems}
+        configFile={configFile}
+        defaultConfig={defaultConfig} />, app);
 }

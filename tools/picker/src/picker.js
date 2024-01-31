@@ -1,28 +1,37 @@
 import React, { useEffect, useState } from 'react';
 
-import { defaultTheme, Provider, ListView, Item, Text, Image, Heading, Breadcrumbs, ActionButton, Flex, Picker as RSPicker, View, IllustratedMessage } from '@adobe/react-spectrum';
+import { defaultTheme, Provider, ListView, Item, Text, Image, Heading, Content, Breadcrumbs, ActionButton, Flex, Picker as RSPicker, View, IllustratedMessage } from '@adobe/react-spectrum';
 import Folder from '@spectrum-icons/illustrations/Folder';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
+import Error from '@spectrum-icons/illustrations/Error';
 import Copy from '@spectrum-icons/workflow/Copy';
+import Settings from '@spectrum-icons/workflow/Settings';
+
 
 const Picker = props => {
-    const { blocks, getItems, getCategories, rootCategoryKey } = props;
+    const { blocks, getItems, getCategories, configFile, defaultConfig } = props;
 
     const [state, setState] = useState({
         items: {},
-        folder: rootCategoryKey,
+        configs: {},
+        selectedConfig: null,
+        folder: null,
         path: [],
         categories: {},
         loadingState: 'loading',
         block: null,
         disabledKeys: new Set(),
         selectedItems: new Set(),
+        showSettings: false,
+        error: null,
         pageInfo: {
             current_page: 1,
             page_size: 0,
             total_pages: 0,
         },
     });
+
+    const activeConfig = state.selectedConfig ? state.configs[state.selectedConfig] : null;
 
     const clickListItem = (key) => {
         const block = blocks[state.block] || {};
@@ -118,8 +127,16 @@ const Picker = props => {
         </IllustratedMessage>
     );
 
+    const renderErrorState = () => (
+        <IllustratedMessage>
+            <Error />
+            <Heading>Something went wrong</Heading>
+            <Content>{state.error}</Content>
+        </IllustratedMessage>
+    );
+
     const onLoadMore = async () => {
-        if (state.pageInfo.current_page >= state.pageInfo.total_pages || state.loadingState === 'loading') {
+        if (!state.pageInfo || state.pageInfo.current_page >= state.pageInfo.total_pages || state.loadingState === 'loading') {
             return;
         }
 
@@ -128,7 +145,7 @@ const Picker = props => {
             loadingState: 'loading',
         }));
 
-        const [items, pageInfo] = await getItems(state.folder, state.pageInfo.current_page + 1);
+        const [items, pageInfo] = await getItems(state.folder, state.pageInfo?.current_page + 1, activeConfig);
         Object.values(items).forEach(i => {
             i.key = i.sku;
         });
@@ -148,9 +165,101 @@ const Picker = props => {
         });
     }
 
+    const toggleSettings = () => {
+        setState(state => ({
+            ...state,
+            showSettings: !state.showSettings,
+        }));
+    }
+
+    const changeSelectedConfig = (config) => {
+        setState(state => ({
+            ...state,
+            selectedConfig: config,
+            folder: state.configs[config]['commerce-root-category-id'],
+            path: [],
+            categories: {},
+            loadingState: 'loading',
+            disabledKeys: new Set(),
+            selectedItems: new Set(),
+            pageInfo: {
+                current_page: 1,
+                page_size: 0,
+                total_pages: 0,
+            },
+        }));
+    }
+
     useEffect(() => {
         (async () => {
-            const categories = await getCategories(rootCategoryKey);            
+            // Get configs and select default config
+            let configs = {};
+            try {
+                configs = await fetch(configFile).then(r => r.json());
+            } catch (err) {
+                console.error(err);
+                setState(state => ({
+                    ...state,
+                    error: 'Could not load config file',
+                }));
+                return;
+            }
+            // Ignore metadata
+            Object.keys(configs).forEach(key => {
+                if (key.startsWith(':')) {
+                    delete configs[key];
+                }
+            });
+
+            // Flatten values
+            Object.keys(configs).forEach(key => {
+                const values = {};
+                configs[key].data.forEach(e => {
+                    values[e.key] = e.value;
+                });
+                configs[key] = values;
+            });
+
+            const selectedConfig = defaultConfig || Object.keys(configs)[0];
+            const rootCategoryKey = configs[selectedConfig]['commerce-root-category-id'];
+
+            setState(state => ({
+                ...state,
+                configs,
+                selectedConfig,
+                folder: rootCategoryKey,
+                path: [],
+                categories: {},
+                loadingState: 'loading',
+                disabledKeys: new Set(),
+                selectedItems: new Set(),
+                pageInfo: {
+                    current_page: 1,
+                    page_size: 0,
+                    total_pages: 0,
+                },
+            }));
+        })();
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            if (!activeConfig) {
+                return;
+            }
+
+            let categories = {};
+            try {
+                categories = await getCategories(activeConfig['commerce-root-category-id'], activeConfig);
+            } catch(err) {
+                console.error(err);
+                setState(state => ({
+                    ...state,
+                    error: 'Could not load categories',
+                }));
+                return;
+            }
+
             Object.values(categories).forEach(c => {
                 c.key = `category:${c.id}`;
                 c.isFolder = true;
@@ -165,11 +274,27 @@ const Picker = props => {
                 }
             });
         })();
-    }, []);
+    }, [state.selectedConfig])
 
     useEffect(() => {
         (async () => {
-            let [items, pageInfo] = await getItems(state.folder);
+            if (!activeConfig) {
+                return;
+            }
+
+            let items = {};
+            let pageInfo = {};
+            try {
+                ([items, pageInfo]) = await getItems(state.folder, 1, activeConfig);
+            } catch(err) {
+                console.error(err);
+                setState(state => ({
+                    ...state,
+                    error: 'Could not load items',
+                }));
+                return;
+            }
+
             Object.values(items).forEach(i => {
                 i.key = i.sku;
             });
@@ -189,15 +314,37 @@ const Picker = props => {
                 }
             });
         })();
-    }, [state.folder]);
+    }, [state.selectedConfig, state.folder]);
 
     const currentBlock = blocks[state.block] || {};
     const items = [...getCategoriesToDisplay(state.categories), ...Object.values(state.items)];
 
+    if (state.error) {
+        return <Provider theme={defaultTheme} height="100%">
+            <Flex direction="column" height="100%">
+                <View padding="size-500">
+                    {renderErrorState()}
+                </View>
+            </Flex>
+        </Provider>;
+    }
+
     return <Provider theme={defaultTheme} height="100%">
         <Flex direction="column" height="100%">
+            {state.showSettings && <View padding="size-100">
+                <RSPicker label="Configuration"
+                    isRequired
+                    width="100%"
+                    selectedKey={state.selectedConfig}
+                    onSelectionChange={key => changeSelectedConfig(key)}>
+                    {Object.keys(state.configs).map(key => (
+                        <Item key={key} value={key}>{key}</Item>
+                    ))}
+                </RSPicker>
+            </View>}
             <View padding="size-100">
                 <Flex direction="row" gap="size-100">
+                    <ActionButton aria-label="Settings" isQuiet onPress={toggleSettings}><Settings /></ActionButton>
                     <RSPicker width="100%"
                         items={Object.values(blocks)}
                         aria-label="Select a block"

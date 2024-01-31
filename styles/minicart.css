@@ -6,8 +6,8 @@
     top: var(--nav-height);
     right: 0;
     left: 0;
-    box-shadow: 3px 4px 4px 0 rgb(0 0 0 / 50%);
-    padding: 0 20px 40px;
+    box-shadow: var(--shape-shadow-2);
+    padding: 20px;
     background: var(--background-color);
     display: flex;
     flex-direction: column;
@@ -21,7 +21,7 @@
 
 .minicart-panel .minicart-header {
     display: flex;
-    height: 55px;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -31,19 +31,6 @@
     margin: 0;
     display: flex;
     align-items: center;
-}
-
-.minicart-panel .minicart-header .title {
-    border-right: 1px solid var(--color-neutral-500);
-    padding-right: 8px;
-}
-
-.minicart-panel .minicart-header .subtotal {
-    padding-left: 8px;
-}
-
-.minicart-panel .minicart-header .price {
-    padding-left: 8px;
 }
 
 .minicart-panel .minicart-header .close {
@@ -268,19 +255,19 @@
         position: absolute;
         right: 20px;
         top: var(--nav-height);
-        padding: 0 30px 40px;
+        padding: 20px;
         left: unset;
+    }
+
+    .minicart-panel .minicart-header > button:only-child {
+        margin-left: auto;
     }
 
     .minicart-panel .minicart-header .close {
         display: block;
-        position: relative;
-        right: -17px;
-        top: 2px;
         width: 22px;
         height: 22px;
         border: 0;
-        margin: 0 0 0 auto;
         border-radius: 0;
         background-repeat: no-repeat;
         background-size: contain;
@@ -288,7 +275,8 @@
         background-image: url('../../icons/x-lg.svg');
         color: var(--color-brand-700);
         line-height: 1.2rem;;
-        padding: 5px 3px 0 0;
+        padding: 0;
+        margin: 0;
         text-align: center;
         font-size: 0;
     }

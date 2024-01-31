@@ -273,7 +273,7 @@ header nav .nav-tools {
   gap: 10px;
 }
 
-header nav .nav-tools button {
+header nav .nav-tools > button, header nav .nav-tools .minicart-wrapper > button {
   color: var(--color-brand-700);
   background: transparent;
   padding: 5px 10px;
@@ -296,12 +296,13 @@ header nav .nav-tools button.nav-search-button {
 
 header .nav-search-input {
   position: absolute;
+  z-index: 99;
   top: var(--nav-height);
+  box-shadow: var(--shape-shadow-2);
   background: var(--color-neutral-50);
   left: 0;
   right: 0;
-  padding: 10px;
-  z-index: 1;
+  padding: 20px;
 }
 
 header .nav-search-input.hidden {
@@ -310,4 +311,16 @@ header .nav-search-input.hidden {
 
 header .nav-search-input input {
   width: 100%;
+  padding: 5px;
+}
+
+@media (width >= 1024px) {
+  header .nav-search-input {
+    left: unset;
+    right: 20px;
+  }
+
+  header .nav-search-input input {
+    min-width: 400px;
+  }
 }

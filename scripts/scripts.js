@@ -223,11 +223,6 @@ function loadDelayed() {
   window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
   initSidekick();
-
-  // this code is only to make demoing references easier
-  if (window.location.hash === '#showReferences') {
-    sidekickBlockListener('references')();
-  }
 }
 
 async function loadPage() {

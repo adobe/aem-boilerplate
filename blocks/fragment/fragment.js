@@ -14,7 +14,7 @@ import {
 /**
  * Loads a fragment.
  * @param {string} path The path to the fragment
- * @returns {HTMLElement} The root element of the fragment
+ * @returns {Promise<HTMLElement>} The root element of the fragment
  */
 export async function loadFragment(path) {
   if (path && path.startsWith('/')) {
@@ -32,7 +32,7 @@ export async function loadFragment(path) {
       resetAttributeBase('img', 'src');
       resetAttributeBase('source', 'srcset');
 
-      decorateMain(main);
+      await decorateMain(main);
       await loadBlocks(main);
       return main;
     }
@@ -47,6 +47,7 @@ export default async function decorate(block) {
   if (fragment) {
     const fragmentSection = fragment.querySelector(':scope .section');
     if (fragmentSection) {
+      fragmentSection.dataset.fragmentPath = path;
       block.closest('.section').classList.add(...fragmentSection.classList);
       block.closest('.fragment').replaceWith(...fragment.childNodes);
     }

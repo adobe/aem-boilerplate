@@ -1,14 +1,14 @@
 {
-  "project": "Testing",
+  "project": "Franklin Playground",
   "plugins": [
     {
-      "title": "Preflight",
-      "id": "preflight",
+      "title": "References",
+      "id": "references",
       "environments": [
         "preview",
-        "live"
+        "dev"
       ],
-      "event": "preflight"
+      "event": "references"
     }
   ]
 }

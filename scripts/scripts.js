@@ -12,6 +12,7 @@ import {
   loadBlocks,
   loadCSS,
 } from './aem.js';
+import { getOrigin, checkDomain } from './utils.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
 
@@ -55,15 +56,73 @@ function buildAutoBlocks(main) {
   }
 }
 
+function decorateLinks(main) {
+  main.querySelectorAll('a').forEach((link) => {
+    const url = new URL(a.href);
+    const domainCheck = checkDomain(url);
+    // protect against maito: links or other weirdness
+    const isHttp = url.protocol === 'https:' || url.protocol === 'http:';
+
+    if (isHttp && domainCheck.isKnown) {
+      // local links are rewritten to be relative
+      a.href = `${url.pathname.replace('.html', '')}${url.search}${url.hash}`;
+    } else if (isHttp && domainCheck.isExternal) {
+      // non local open in a new tab
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+    }
+
+    return a;
+  });
+}
+
+async function loadTemplate(main) {
+  const template = toClassName(getMetadata('template'));
+  if (template) {
+    try {
+      let templateMod;
+      const cssLoaded = new Promise((resolve) => {
+        try {
+          loadCSS(`${window.hlx.codeBasePath}/templates/${template}/${template}.css`);
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.log(`failed to load styles for ${template}`, error);
+        }
+        resolve();
+      });
+      const jsLoaded = new Promise((resolve) => {
+        (async () => {
+          try {
+            mod = await import(`../templates/${template}/${template}.js`);
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(`failed to load module for ${template}`, error);
+          }
+          resolve();
+        })();
+      });
+      await Promise.all([cssLoaded, jsLoaded]);
+      if (templateMod && templateMod.default) {
+        await templateMod.default(main);
+      }
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Template Loading failed.', err);
+    }
+  }
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
  */
 // eslint-disable-next-line import/prefer-default-export
-export function decorateMain(main) {
+export async function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
+  decorateLinks(main);
   decorateIcons(main);
+  await loadTemplate(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
@@ -78,7 +137,7 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
-    decorateMain(main);
+    await decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
@@ -116,6 +175,40 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 }
 
+function sidekickBlockListener(blockName) {
+  return () => {
+    const blockModal = document.querySelector(`#${blockName}-dialog`);
+    if (!blockModal) {
+      const block = buildBlock(blockName, '');
+      document.querySelector('main').append(block);
+      decorateBlock(block);
+      loadBlock(block);
+    } else {
+      window.postMessage({ sidekickInit: true, block: blockName }, getOrigin());
+    }
+  };
+}
+
+function initSidekick() {
+  let sk = document.querySelector('helix-sidekick');
+
+  const dialogPlugins = ['references'];
+
+  if (sk) {
+    dialogPlugins.forEach((plugin) => {
+      sk.addEventListener(`custom:${plugin}`, sidekickBlockListener(plugin));
+    });
+  } else {
+    // wait for sidekick to be loaded
+    document.addEventListener('helix-sidekick-ready', () => {
+      sk = document.querySelector('helix-sidekick');
+      dialogPlugins.forEach((plugin) => {
+        sk.addEventListener(`custom:${plugin}`, sidekickBlockListener(plugin));
+      });
+    }, { once: true });
+  }
+}
+
 /**
  * Loads everything that happens a lot later,
  * without impacting the user experience.
@@ -124,12 +217,7 @@ function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
-  const sk = document.querySelector('helix-sidekick');
-  if (sk) {
-    sk.addEventListener('custom:preflight', () => {
-      // alert('load preflight');
-    });
-  }
+  initSidekick();
 }
 
 async function loadPage() {

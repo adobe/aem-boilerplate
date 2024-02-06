@@ -48,7 +48,7 @@
   width: 3px;
   height: 22px;
   display: inline-block;
-  background-color: var(--clr-black);
+  background-color: var(--text-color);
   rotate: 225deg;
 }
 

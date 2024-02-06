@@ -150,12 +150,13 @@ async function checkReferences(dialog) {
     updateStatus(row);
   });
 
-  const links = document.querySelectorAll('main a[href^="/"]');
+  const links = document.querySelectorAll('main a');
   const linkPaths = new Set();
   links.forEach((link) => {
     if (link.closest('.references')) return;
+    if (checkDomain(link.href).isExternal) return;
 
-    const linkPath = link.getAttribute('href');
+    const linkPath = new URL(link.href).pathname;
     if (linkPaths.has(linkPath)) return;
     linkPaths.add(linkPath);
 

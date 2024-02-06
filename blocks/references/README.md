@@ -1,5 +1,7 @@
 # AEM References Check Sidekick Plugin
 
+![alt text](image.png)
+
 This block is used by the references sidekick plugin to check for page references (forms, fragments, links, etc.). Injecting it into the page is based on the sidekick event model, see [`initSidekick`](../../scripts/scripts.js#L197) in `script.js`.
 
 ## How it Works

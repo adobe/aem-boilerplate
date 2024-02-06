@@ -38,6 +38,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 22px;
+  height: 22px;
 }
 
 .references #references-dialog .references-header .references-close::before,

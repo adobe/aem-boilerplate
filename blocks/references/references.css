@@ -40,13 +40,13 @@
   align-items: center;
   width: 22px;
   height: 22px;
+  left: -.5rem;
 }
 
 .references #references-dialog .references-header .references-close::before,
 .references #references-dialog .references-header .references-close::after {
   content: '';
   position: absolute;
-  right: 1rem;
   width: 3px;
   height: 22px;
   display: inline-block;

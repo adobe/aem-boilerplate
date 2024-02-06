@@ -37,6 +37,11 @@ async function updateStatus(row) {
 
         if (json.live && json.live.status === 200) {
           status.textContent = 'Live';
+          const mod = new Date(json.live.lastModified);
+          const sourceMod = new Date(json.live.sourceLastModified);
+          if (sourceMod > mod) {
+            status.textContent += ' (Modified)';
+          }
         } else if (json.preview && json.preview.status === 200) {
           status.textContent = 'Unpublished';
         }

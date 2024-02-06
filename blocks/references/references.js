@@ -157,6 +157,7 @@ async function checkReferences(dialog) {
     if (checkDomain(link.href).isExternal) return;
 
     const linkPath = new URL(link.href).pathname;
+    if (linkPath === window.location.pathname) return;
     if (linkPaths.has(linkPath)) return;
     linkPaths.add(linkPath);
 

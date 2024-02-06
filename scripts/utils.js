@@ -27,13 +27,17 @@ export function addOutsideClickListener(elem, callback) {
   document.addEventListener('click', outsideClickListener);
 }
 
+/**
+ * The production domains for the curent site.
+ * Used by link rewriting and domain checking.
+ */
 export const PRODUCTION_DOMAINS = ['www.mysite.com'];
 
 /**
  * Check a domain to determine how it relates to the current site.
  *
  * @param {string | URL} url the url to check
- * @returns an object containing properties indicating the type domain of the addressed URL
+ * @returns an object containing properties indicating the type domain
  */
 export function checkDomain(url) {
   const urlToCheck = typeof url === 'string' ? new URL(url) : url;
@@ -56,8 +60,8 @@ export function checkDomain(url) {
 
 let browserDomainCheck;
 /**
-   * A convenienve wrapper around `checkDomain` for the current browser url
-   * @returns n object containing properties indicating the type domain of the current url addresses
+   * A convenience wrapper around {@link checkDomain} for checking the current browser url
+   * @returns an object containing properties indicating the type domain
    */
 export function checkBrowserDomain() {
   if (!browserDomainCheck) {

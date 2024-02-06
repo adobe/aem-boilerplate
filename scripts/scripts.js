@@ -181,13 +181,14 @@ async function loadLazy(doc) {
 
 function sidekickBlockListener(blockName) {
   return () => {
-    const blockModal = document.querySelector(`#${blockName}-dialog`);
-    if (!blockModal) {
+    const blockExists = document.querySelector(`.block.${blockName}`);
+    if (!blockExists) {
       const block = buildBlock(blockName, '');
       document.querySelector('main').append(block);
       decorateBlock(block);
       loadBlock(block);
     } else {
+      // block already exists, post a message for block to handle to update/display
       window.postMessage({ sidekickInit: true, block: blockName }, getOrigin());
     }
   };
@@ -196,17 +197,17 @@ function sidekickBlockListener(blockName) {
 function initSidekick() {
   let sk = document.querySelector('helix-sidekick');
 
-  const dialogPlugins = ['references'];
+  const blockPlugins = ['references'];
 
   if (sk) {
-    dialogPlugins.forEach((plugin) => {
+    blockPlugins.forEach((plugin) => {
       sk.addEventListener(`custom:${plugin}`, sidekickBlockListener(plugin));
     });
   } else {
     // wait for sidekick to be loaded
     document.addEventListener('helix-sidekick-ready', () => {
       sk = document.querySelector('helix-sidekick');
-      dialogPlugins.forEach((plugin) => {
+      blockPlugins.forEach((plugin) => {
         sk.addEventListener(`custom:${plugin}`, sidekickBlockListener(plugin));
       });
     }, { once: true });

@@ -30,9 +30,10 @@ export function addOutsideClickListener(elem, callback) {
 export const PRODUCTION_DOMAINS = ['www.mysite.com'];
 
 /**
+ * Check a domain to determine how it relates to the current site.
  *
  * @param {string | URL} url the url to check
- * @returns an object containing properties indicating the type domain of the url addresses
+ * @returns an object containing properties indicating the type domain of the addressed URL
  */
 export function checkDomain(url) {
   const urlToCheck = typeof url === 'string' ? new URL(url) : url;

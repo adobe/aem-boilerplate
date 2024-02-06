@@ -9,7 +9,7 @@ function createReference(type, link) {
   row.innerHTML = `
       <span>${type}</span>
       <span class="status">...</span>
-      <span class="edit-link">...</span>
+      <a class="edit-link">...</a>
     `;
   row.prepend(link);
   return row;

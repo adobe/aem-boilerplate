@@ -69,13 +69,11 @@ async function processIncomingReferenceChecks(dialogBody, button) {
           const linkUrl = new URL(link.href);
           const domainCheck = checkDomain(linkUrl);
           if (domainCheck.isKnown && linkUrl.pathname === thisPagePath) {
-            const rowLink = createElement('a', { href: path, target: '_blank' }, path);
-            const row = createElement('div', { class: 'reference-row' }, [
-              rowLink,
-              createElement('span', {}, 'Incoming'),
-              createElement('span', { class: 'status' }, '...'),
-              createElement('a', { class: 'edit-link' }, '...'),
-            ]);
+            const rowLink = document.createElement('a');
+            rowLink.setAttribute('target', '_blank');
+            rowLink.setAttribute('href', path);
+            rowLink.textContent = path;
+            const row = createReference('Incoming', rowLink);
             dialogBody.append(row);
             updateTitle(row);
             updateStatus(row);
@@ -96,6 +94,18 @@ async function processIncomingReferenceChecks(dialogBody, button) {
     button.dataset.processed = procesedCount;
     button.textContent = `Loading Incoming References (${procesedCount}/${total})...`;
   }
+}
+
+function createReference(type, link) {
+  const row = document.createElement('div');
+  row.className = 'reference-row';
+  row.innerHTML = `
+      <span>${type}</span>
+      <span class="status">...</span>
+      <span class="edit-link">...</span>
+    `;
+  row.prepend(link);
+  return row;
 }
 
 async function checkIncomingReferences(dialog, button) {
@@ -129,13 +139,11 @@ async function checkReferences(dialog) {
 
   const fragments = document.querySelectorAll('[data-fragment-path]');
   fragments.forEach((fragmentWrapper) => {
-    const fragmentLink = createElement('a', { href: fragmentWrapper.dataset.fragmentPath, target: '_blank' }, fragmentWrapper.dataset.fragmentPath);
-    const row = createElement('div', { class: 'reference-row' }, [
-      fragmentLink,
-      createElement('span', {}, 'Fragment'),
-      createElement('span', { class: 'status' }, '...'),
-      createElement('a', { class: 'edit-link' }, '...'),
-    ]);
+    const rowLink = document.createElement('a');
+    rowLink.setAttribute('target', '_blank');
+    rowLink.setAttribute('href', fragmentWrapper.dataset.fragmentPath);
+    rowLink.textContent = fragmentWrapper.dataset.fragmentPath;
+    const row = createReference('Fragment', rowLink);
     dialogBody.append(row);
     updateTitle(row);
     updateStatus(row);
@@ -144,26 +152,22 @@ async function checkReferences(dialog) {
   const links = document.querySelectorAll('main a[href^="/"]');
   links.forEach((link) => {
     if (link.closest('.references')) return;
-    const rowLink = createElement('a', { href: link.getAttribute('href'), target: '_blank' }, link.textContent);
-    const row = createElement('div', { class: 'reference-row' }, [
-      rowLink,
-      createElement('span', {}, 'Link'),
-      createElement('span', { class: 'status' }, '...'),
-      createElement('a', { class: 'edit-link' }, '...'),
-    ]);
+    const rowLink = document.createElement('a');
+    rowLink.setAttribute('target', '_blank');
+    rowLink.setAttribute('href', link.getAttribute('href'));
+    rowLink.textContent = link.textContent;
+    const row = createReference('Link', rowLink);
     dialogBody.append(row);
     updateStatus(row);
   });
 
   const forms = document.querySelectorAll('[data-form-path]');
   forms.forEach((formBlock) => {
-    const formLink = createElement('a', { href: formBlock.dataset.formPath, target: '_blank' }, formBlock.dataset.formPath.split('/').pop());
-    const row = createElement('div', { class: 'reference-row' }, [
-      formLink,
-      createElement('span', {}, 'Form'),
-      createElement('span', { class: 'status' }, '...'),
-      createElement('a', { class: 'edit-link' }, '...'),
-    ]);
+    const link = document.createElement('a');
+    link.setAttribute('target', '_blank');
+    link.setAttribute('href', formBlock.dataset.formPath);
+    link.textContent = formBlock.dataset.formPath.split('/').pop();
+    const row = createReference('Form', link);
     dialogBody.append(row);
     updateStatus(row);
   });

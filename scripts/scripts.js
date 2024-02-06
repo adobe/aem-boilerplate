@@ -226,7 +226,7 @@ function loadDelayed() {
 
   // this code is only to make demoing references easier
   if (window.location.hash === '#showReferences') {
-    sidekickBlockListener('references');
+    sidekickBlockListener('references')();
   }
 }
 

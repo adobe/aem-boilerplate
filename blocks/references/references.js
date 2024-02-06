@@ -3,6 +3,18 @@ import {
   getOrigin, addOutsideClickListener, checkDomain, checkBrowserDomain,
 } from '../../scripts/utils.js';
 
+function createReference(type, link) {
+  const row = document.createElement('div');
+  row.className = 'reference-row';
+  row.innerHTML = `
+      <span>${type}</span>
+      <span class="status">...</span>
+      <span class="edit-link">...</span>
+    `;
+  row.prepend(link);
+  return row;
+}
+
 async function updateStatus(row) {
   const link = row.querySelector('a');
   const editLink = row.querySelector('.edit-link');
@@ -94,18 +106,6 @@ async function processIncomingReferenceChecks(dialogBody, button) {
     button.dataset.processed = procesedCount;
     button.textContent = `Loading Incoming References (${procesedCount}/${total})...`;
   }
-}
-
-function createReference(type, link) {
-  const row = document.createElement('div');
-  row.className = 'reference-row';
-  row.innerHTML = `
-      <span>${type}</span>
-      <span class="status">...</span>
-      <span class="edit-link">...</span>
-    `;
-  row.prepend(link);
-  return row;
 }
 
 async function checkIncomingReferences(dialog, button) {

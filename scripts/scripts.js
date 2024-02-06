@@ -11,6 +11,10 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  toClassName,
+  getMetadata,
+  decorateBlock,
+  loadBlock,
 } from './aem.js';
 import { getOrigin, checkDomain } from './utils.js';
 
@@ -57,7 +61,7 @@ function buildAutoBlocks(main) {
 }
 
 function decorateLinks(main) {
-  main.querySelectorAll('a').forEach((link) => {
+  main.querySelectorAll('a').forEach((a) => {
     const url = new URL(a.href);
     const domainCheck = checkDomain(url);
     // protect against maito: links or other weirdness
@@ -93,7 +97,7 @@ async function loadTemplate(main) {
       const jsLoaded = new Promise((resolve) => {
         (async () => {
           try {
-            mod = await import(`../templates/${template}/${template}.js`);
+            templateMod = await import(`../templates/${template}/${template}.js`);
           } catch (error) {
             // eslint-disable-next-line no-console
             console.log(`failed to load module for ${template}`, error);

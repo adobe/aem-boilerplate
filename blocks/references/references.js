@@ -61,77 +61,51 @@ async function updateTitle(row) {
   }
 }
 
-const toProcessPaths = [];
-const maxConcurrent = 5;
-async function processIncomingReferenceChecks(dialogBody, button) {
-  while (toProcessPaths.length > 0) {
-    const path = toProcessPaths.shift();
-    try {
-      // eslint-disable-next-line no-await-in-loop
-      const resp = await fetch(`${path}.plain.html`);
-      if (resp.ok) {
-        // eslint-disable-next-line no-await-in-loop
-        const html = await resp.text();
-        const dp = new DOMParser();
-        const doc = dp.parseFromString(html, 'text/html');
-
-        const thisPagePath = window.location.pathname;
-        const links = doc.querySelectorAll(`a[href*="${thisPagePath}"]`);
-        links.forEach((link) => {
-          const linkUrl = new URL(link.href);
-          const domainCheck = checkDomain(linkUrl);
-          if (domainCheck.isKnown && linkUrl.pathname === thisPagePath) {
-            const rowLink = document.createElement('a');
-            rowLink.setAttribute('target', '_blank');
-            rowLink.setAttribute('href', path);
-            rowLink.textContent = path;
-            const row = createReference('Incoming', rowLink);
-            dialogBody.append(row);
-            updateTitle(row);
-            updateStatus(row);
-
-            const found = parseInt(button.dataset.found, 10);
-            button.dataset.found = found + 1;
-          }
-        });
-      }
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log(`failed to load ${path}`, e);
-    }
-
-    const { processed, total } = button.dataset;
-    let procesedCount = parseInt(processed, 10);
-    procesedCount += 1;
-    button.dataset.processed = procesedCount;
-    button.textContent = `Loading Incoming References (${procesedCount}/${total})...`;
-  }
-}
-
 async function checkIncomingReferences(dialog, button) {
   button.dataset.total = 0;
   button.dataset.processed = 0;
   button.dataset.found = 0;
   button.textContent = 'Loading Incoming References (0/0)...';
   const dialogBody = dialog.querySelector('.references-body');
-  const res = ffetch('/query-index.json');
+  const res = ffetch('/references-index.json');
   let total = 1000;
   // eslint-disable-next-line no-restricted-syntax
   for await (const page of res) {
-    const { path } = page;
-    toProcessPaths.push(path);
-
     total = res.total;
     button.dataset.total = total;
+
+    const { path, title, links } = page;
+    const linksArr = JSON.parse(links);
+
+    // check if one of links is the current page
+    const hasLinkToThisPage = linksArr.some((linkHref) => {
+      const linkUrl = new URL(linkHref);
+      const linkDomainCheck = checkDomain(linkUrl);
+      return linkDomainCheck.isKnown && linkUrl.pathname === window.location.pathname;
+    });
+
+    if (hasLinkToThisPage) {
+      const rowLink = document.createElement('a');
+      rowLink.setAttribute('href', path);
+      rowLink.setAttribute('target', '_blank');
+      rowLink.textContent = title;
+      const row = createReference('Incoming', rowLink);
+      dialogBody.append(row);
+      updateTitle(row);
+      updateStatus(row);
+
+      const found = parseInt(button.dataset.found, 10);
+      button.dataset.found = found + 1;
+    }
+
+    const { processed } = button.dataset;
+    let procesedCount = parseInt(processed, 10);
+    procesedCount += 1;
+    button.dataset.processed = procesedCount;
+    button.textContent = `Finding Incoming References (${procesedCount}/${total})...`;
   }
 
-  const promises = [];
-  for (let i = 0; i < maxConcurrent; i += 1) {
-    promises.push(processIncomingReferenceChecks(dialogBody, button));
-  }
-
-  await Promise.all(promises);
-  button.textContent = `Incoming References Loaded - ${button.dataset.found} Found`;
+  button.textContent = `${button.dataset.found} Incoming References Found`;
 }
 
 async function checkReferences(dialog) {
@@ -205,7 +179,7 @@ function init(block) {
 
 export default async function decorate(block) {
   block.innerHTML = `
-    <dialog id="references-dialog">
+    < dialog id = "references-dialog" >
       <div class="references-dialog-wrapper">
         <div class="references-header">
           <h2>References Check</h2>
@@ -220,11 +194,11 @@ export default async function decorate(block) {
           </div>
         </div>
         <div class="references-footer">
-          <button class="button primary load-incoming">Load Incoming References (Warning: Slow)</button>
+          <button class="button primary load-incoming">Find Incoming References</button>
         </div>
       </div>
-    </dialog>
-  `;
+    </dialog >
+    `;
   init(block);
   block.querySelector('#references-dialog .references-close').addEventListener('click', () => {
     const dialog = block.querySelector('#references-dialog');

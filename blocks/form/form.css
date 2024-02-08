@@ -13,7 +13,7 @@
   padding: 0;
 }
 
-@media (min-width: 900px) {
+@media (width >=900px) {
   .form fieldset {
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;

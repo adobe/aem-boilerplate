@@ -12,4 +12,4 @@ Once a reference is discovered, an admin api call is triggerred to get it's edit
 
 ### Incoming References
 
-Finding incoming references relies on the presence of a query index. Each path in the index is fetched and then parsed for any links to the current page. This process is slow for sites with a non-trivial number of pages, hence why it requires the user to initiate it sepearately from the plugin.
+Finding incoming references relies on a special query index with a `links` property containing an aray of all the links in the page. See [helix-query.yaml](../../helix-query.yaml#L32) for how this index is defined.

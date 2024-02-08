@@ -84,7 +84,7 @@ async function checkIncomingReferences(dialog, button) {
       return linkDomainCheck.isKnown && linkUrl.pathname === window.location.pathname;
     });
 
-    if (hasLinkToThisPage) {
+    if (path !== window.location.pathname && hasLinkToThisPage) {
       const rowLink = document.createElement('a');
       rowLink.setAttribute('href', path);
       rowLink.setAttribute('target', '_blank');

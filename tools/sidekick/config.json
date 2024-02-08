@@ -4,7 +4,11 @@
     {
       "title": "Tools",
       "id": "tools",
-      "isContainer": true
+      "isContainer": true,
+      "environments": [
+        "preview",
+        "dev"
+      ]
     },
     {
       "title": "References",

@@ -2,13 +2,19 @@
   "project": "Franklin Playground",
   "plugins": [
     {
+      "title": "Tools",
+      "id": "tools",
+      "isContainer": true
+    },
+    {
       "title": "References",
       "id": "references",
       "environments": [
         "preview",
         "dev"
       ],
-      "event": "references"
+      "event": "references",
+      "containerId": "tools"
     }
   ]
 }

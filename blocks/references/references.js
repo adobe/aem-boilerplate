@@ -179,7 +179,7 @@ function init(block) {
 
 export default async function decorate(block) {
   block.innerHTML = `
-    < dialog id = "references-dialog" >
+    <dialog id="references-dialog">
       <div class="references-dialog-wrapper">
         <div class="references-header">
           <h2>References Check</h2>
@@ -197,7 +197,7 @@ export default async function decorate(block) {
           <button class="button primary load-incoming">Find Incoming References</button>
         </div>
       </div>
-    </dialog >
+    </dialog>
     `;
   init(block);
   block.querySelector('#references-dialog .references-close').addEventListener('click', () => {

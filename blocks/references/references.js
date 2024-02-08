@@ -79,7 +79,7 @@ async function checkIncomingReferences(dialog, button) {
 
     // check if one of links is the current page
     const hasLinkToThisPage = linksArr.some((linkHref) => {
-      const linkUrl = new URL(linkHref);
+      const linkUrl = new URL(linkHref, getOrigin());
       const linkDomainCheck = checkDomain(linkUrl);
       return linkDomainCheck.isKnown && linkUrl.pathname === window.location.pathname;
     });

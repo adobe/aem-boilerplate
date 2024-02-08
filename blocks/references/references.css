@@ -3,13 +3,6 @@
   --_references-text: var(--text-color);
 }
 
-@media (prefers-color-scheme: dark) {
-  .references {
-    --_references-bg: rgb(48, 48, 48);
-    --_references-text: var(--light-color);
-  }
-}
-
 .references #references-dialog {
   background-color: var(--_references-bg);
   color: var(--_references-text);

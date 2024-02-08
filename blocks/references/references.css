@@ -1,3 +1,20 @@
+.references {
+  --_references-bg: var(--background-color);
+  --_references-text: var(--text-color);
+}
+
+@media (prefers-color-scheme: dark) {
+  .references {
+    --_references-bg: rgb(48, 48, 48);
+    --_references-text: var(--light-color);
+  }
+}
+
+.references #references-dialog {
+  background-color: var(--_references-bg);
+  color: var(--_references-text);
+}
+
 .references #references-dialog[open] {
   width: 800px;
   height: 600px;
@@ -50,7 +67,7 @@
   width: 3px;
   height: 22px;
   display: inline-block;
-  background-color: var(--text-color);
+  background-color: var(--_references-text);
   rotate: 225deg;
 }
 

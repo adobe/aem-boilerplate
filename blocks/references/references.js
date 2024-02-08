@@ -91,7 +91,6 @@ async function checkIncomingReferences(dialog, button) {
       rowLink.textContent = title;
       const row = createReference('Incoming', rowLink);
       dialogBody.append(row);
-      updateTitle(row);
       updateStatus(row);
 
       const found = parseInt(button.dataset.found, 10);

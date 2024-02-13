@@ -13,7 +13,13 @@ export default async function decorate(block) {
   }
 
   if (type === 'category') {
-    const categoryId = document.querySelector('.block.product-list-page')?.dataset?.category;
+    const plpBlock = document.querySelector('.block.product-list-page');
+    if (!plpBlock) return;
+
+    let categoryId = plpBlock.dataset?.category;
+    if (!categoryId) {
+      categoryId = readBlockConfig(plpBlock).category;
+    }
     if (!categoryId) return;
     filters.categories = categoryId;
   }
@@ -36,7 +42,8 @@ export default async function decorate(block) {
       const section = fragment.querySelector(':scope .section');
       if (section) {
         block.closest('.section').classList.add(...section.classList);
-        block.closest('.section').append(...section.childNodes);
+        const wrapper = block.closest('.enrichment-wrapper');
+        section.childNodes.forEach((child) => wrapper.parentNode.insertBefore(child, wrapper));
       }
     });
 

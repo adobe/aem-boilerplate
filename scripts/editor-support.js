@@ -51,6 +51,7 @@ async function applyChanges(event) {
         block.insertAdjacentElement('afterend', newBlock);
         decorateButtons(newBlock);
         decorateIcons(newBlock);
+        decorateRichtext(newBlock);
         decorateBlock(newBlock);
         await loadBlock(newBlock);
         block.remove();

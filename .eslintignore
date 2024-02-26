@@ -2,3 +2,4 @@ helix-importer-ui
 scripts/preact.js
 scripts/htm.js
 tools/picker
+scripts/widgets

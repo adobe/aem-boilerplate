@@ -145,12 +145,18 @@ export default async function decorate(block) {
   });
 
   // Search
-  const searchInput = document.createRange().createContextualFragment('<div class="nav-search-input hidden"><form action="/search" method="GET"><input type="search" name="q" placeholder="Search" /></form></div>');
+  const searchInput = document.createRange().createContextualFragment(`<div class="nav-search-input hidden">
+      <form id="search_mini_form" action="/search" method="GET">
+        <input id="search" type="search" name="q" placeholder="Search" />
+        <div id="search_autocomplete" class="search-autocomplete"></div>
+      </form>
+    </div>`);
   document.body.querySelector('header').append(searchInput);
 
   const searchButton = document.createRange().createContextualFragment('<button type="button" class="nav-search-button">Search</button>');
   navTools.append(searchButton);
-  navTools.querySelector('.nav-search-button').addEventListener('click', () => {
+  navTools.querySelector('.nav-search-button').addEventListener('click', async () => {
+    await import('./searchbar.js');
     document.querySelector('header .nav-search-input').classList.toggle('hidden');
   });
 

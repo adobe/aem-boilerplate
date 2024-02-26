@@ -1,3 +1,5 @@
+/* stylelint-disable selector-class-pattern */
+
 /* header and nav layout */
 header .nav-wrapper {
   background-color: var(--background-color);
@@ -312,6 +314,10 @@ header .nav-search-input.hidden {
 header .nav-search-input input {
   width: 100%;
   padding: 5px;
+}
+
+header .nav-search-input .search_autocomplete .popover-container {
+  width: 100%;
 }
 
 @media (width >= 1024px) {

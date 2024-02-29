@@ -356,37 +356,33 @@ function decorateTemplateAndTheme() {
 }
 
 /**
- * Decorates paragraphs containing a single link as buttons.
+ * Decorates single links in paragraphs within a container element as buttons.
  * @param {Element} element container element
  */
 function decorateButtons(element) {
-  element.querySelectorAll('a').forEach((a) => {
+  element.querySelectorAll('a[href]').forEach((a) => {
     a.title = a.title || a.textContent;
     if (a.href !== a.textContent) {
-      const up = a.parentElement;
-      const twoup = a.parentElement.parentElement;
-      if (!a.querySelector('img')) {
-        if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
-          a.className = 'button'; // default
-          up.classList.add('button-container');
+      const linkedImg = a.querySelector('img');
+      if (!linkedImg) {
+        let wrapper = a.closest('p');
+        if (!wrapper) {
+          const inList = a.closest('li');
+          const inBlock = a.closest('[class]');
+          if (!inList && inBlock) {
+            // wrap unwrapped block links in paragraph tag
+            const cell = a.closest('div');
+            const p = document.createElement('p');
+            while (cell.firstChild) p.append(cell.firstChild);
+            cell.replaceChildren(p);
+            wrapper = p;
+          }
         }
-        if (
-          up.childNodes.length === 1
-          && up.tagName === 'STRONG'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
-        ) {
-          a.className = 'button primary';
-          twoup.classList.add('button-container');
-        }
-        if (
-          up.childNodes.length === 1
-          && up.tagName === 'EM'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
-        ) {
-          a.className = 'button secondary';
-          twoup.classList.add('button-container');
+        if (wrapper && wrapper.childNodes.length === 1) {
+          wrapper.className = 'button-container';
+          a.className = 'button';
+          if (wrapper.querySelector('strong')) a.classList.add('primary');
+          if (wrapper.querySelector('em')) a.classList.add('secondary');
         }
       }
     }

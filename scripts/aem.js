@@ -628,8 +628,7 @@ function decorateBlock(block) {
       const cellText = cell.textContent.trim();
       if ((!firstChild && cellText)
         || (firstChild && !firstChild.tagName.match(/^(P(RE)?|H[1-6]|(U|O)L|TABLE)$/))) {
-        const tag = firstChild && firstChild.tagName === 'CODE' && cellText === firstChild.textContent.trim() ? 'pre' : 'p';
-        const paragraph = document.createElement(tag);
+        const paragraph = document.createElement('p');
         paragraph.append(...cell.childNodes);
         cell.replaceChildren(paragraph);
       }

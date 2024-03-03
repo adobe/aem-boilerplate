@@ -1,23 +1,29 @@
-// group editable texts in single wrappers if applicable
-//
-// this script should execute after script.js by editor-support.js
+/* eslint-disable no-cond-assign */
+/* eslint-disable import/prefer-default-export */
 
-// eslint-disable-next-line import/prefer-default-export
+// group editable texts in single wrappers if applicable.
+// this script should execute after script.js but before the the universal editor cors script
+// and any block being loaded
+
 export function decorateRichtext(container = document) {
   function deleteInstrumentation(element) {
     delete element.dataset.richtextResource;
     delete element.dataset.richtextProp;
     delete element.dataset.richtextFilter;
+    delete element.dataset.richtextLabel;
   }
 
   let element;
-  // eslint-disable-next-line no-cond-assign
-  while (element = container.querySelector('[data-richtext-resource]')) {
-    const { richtextResource, richtextProp, richtextFilter } = element.dataset;
+  while (element = container.querySelector('[data-richtext-prop]:not(div)')) {
+    const {
+      richtextResource,
+      richtextProp,
+      richtextFilter,
+      richtextLabel,
+    } = element.dataset;
     deleteInstrumentation(element);
     const siblings = [];
     let sibling = element;
-    // eslint-disable-next-line no-cond-assign
     while (sibling = sibling.nextElementSibling) {
       if (sibling.dataset.richtextResource === richtextResource
         && sibling.dataset.richtextProp === richtextProp) {
@@ -25,16 +31,29 @@ export function decorateRichtext(container = document) {
         siblings.push(sibling);
       } else break;
     }
-    const orphanElements = document.querySelectorAll(`[data-richtext-id="${richtextResource}"][data-richtext-prop="${richtextProp}"]`);
+
+    let orphanElements;
+    if (richtextResource && richtextProp) {
+      orphanElements = document.querySelectorAll(`[data-richtext-id="${richtextResource}"][data-richtext-prop="${richtextProp}"]`);
+    } else {
+      const editable = element.closest('[data-aue-resource]');
+      if (editable) {
+        orphanElements = editable.querySelectorAll(`[data-richtext-prop="${richtextProp}"]`);
+      } else {
+        console.warn(`Editable parent not found or richtext property ${richtextProp}`);
+        return;
+      }
+    }
+
     if (orphanElements.length) {
-      // eslint-disable-next-line no-console
       console.warn('Found orphan elements of a richtext, that were not consecutive siblings of '
-        + 'the first paragraph.', orphanElements);
-      orphanElements.forEach((el) => deleteInstrumentation(el));
+        + 'the first paragraph', orphanElements);
+      orphanElements.forEach((orphanElement) => deleteInstrumentation(orphanElement));
     } else {
       const group = document.createElement('div');
-      group.dataset.aueResource = richtextResource;
-      group.dataset.aueProp = richtextProp;
+      if (richtextResource) group.dataset.aueResource = richtextResource;
+      if (richtextProp) group.dataset.aueProp = richtextProp;
+      if (richtextLabel) group.dataset.aueLabel = richtextLabel;
       if (richtextFilter) group.dataset.aueFilter = richtextFilter;
       group.dataset.aueBehavior = 'component';
       group.dataset.aueType = 'richtext';

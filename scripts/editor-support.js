@@ -7,7 +7,6 @@ import {
   loadBlock,
   loadBlocks,
 } from './aem.js';
-// eslint-disable-next-line import/no-unresolved
 import { decorateRichtext } from './editor-support-rte.js';
 import { decorateMain } from './scripts.js';
 

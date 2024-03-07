@@ -19,7 +19,7 @@ export default async function decorate(block) {
       pageSize: 8,
       perPageConfig: {
         pageSizeOptions: '12,24,36',
-        defaultPageSizeOption: '24',
+        defaultPageSizeOption: '12',
       },
       minQueryLength: '2',
       currencySymbol: '$',
@@ -59,5 +59,5 @@ export default async function decorate(block) {
     }, 200);
   });
 
-  window.LiveSearchPLP({ storeDetails, root: block });
+  return window.LiveSearchPLP({ storeDetails, root: block });
 }

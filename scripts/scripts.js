@@ -15,6 +15,7 @@ import {
 
 const LCP_BLOCKS = [
   'product-list-page',
+  'product-list-page-custom',
   'product-details',
   'commerce-cart',
   'commerce-checkout',

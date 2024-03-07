@@ -147,6 +147,7 @@ class ProductDetailPage extends Component {
     const { loading, product } = this.state;
     if (!loading && product) {
       setJsonLdProduct(product);
+      document.title = product.name;
       // TODO: productId not exposed by catalog service as number
       window.adobeDataLayer.push({ productContext: { productId: 0, ...product } }, { event: 'product-page-view' });
     }

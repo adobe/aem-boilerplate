@@ -63,4 +63,9 @@ export function decorateRichtext(container = document) {
   }
 }
 
+// in cases where the block decoration is not done in one synchronous iteration we need to listen
+// for new richtext-instrumented elements
+const observer = new MutationObserver(() => decorateRichtext());
+observer.observe(document, { attributeFilter: ['data-richtext-prop'], subtree: true });
+
 decorateRichtext();

@@ -4,7 +4,7 @@ Copyright 2024 Adobe, Inc.
  
 You may access and use of this software solely as governed by your applicable enterprise license agreement with Adobe, Inc. for Adobe Experience Manager: Forms Edge Delivery Services. This software is NOT open source and may not be used without the foregoing license.
 
-/blocks/form is under Adobe Proprietary and all other code within this repo is covered under Apache 2.0
+The Adaptive Form located under /blocks/form is under Adobe Proprietary and all other code within this repo is covered under Apache 2.0
 
 
                                  Apache License

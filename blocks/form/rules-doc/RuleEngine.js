@@ -51,7 +51,7 @@ function constructData(elements) {
 
 function getFieldsetPayload(form, fieldsetName) {
   let fieldsets = form.elements[fieldsetName];
-  if (!(fieldsets instanceof RadioNodeList)) {
+  if (!(fieldsets instanceof NodeList)) {
     fieldsets = [fieldsets];
   }
   const payload = {};
@@ -203,8 +203,10 @@ export default class RuleEngine {
         }
         if (field.type === 'radio') {
           const radios = this.formTag.elements[field.name];
-          if (radios instanceof RadioNodeList) {
+          if (radios instanceof NodeList) {
             rules = [...radios].flatMap((f) => this.getRules(f.id));
+          } else {
+            rules = this.getRules(radios.id);
           }
         } else {
           rules = this.getRules(fieldId);

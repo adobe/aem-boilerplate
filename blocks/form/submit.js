@@ -38,8 +38,8 @@ function generateUnique() {
 
 function getFieldValue(fe, payload) {
   if (fe.type === 'radio') {
-    if (fe.checked) return fe.value;
-  } else if (fe.type === 'checkbox') {
+    return fe.form.elements[fe.name].value;
+  } if (fe.type === 'checkbox') {
     if (fe.checked) {
       if (payload[fe.name]) {
         return `${payload[fe.name]},${fe.value}`;

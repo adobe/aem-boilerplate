@@ -94,7 +94,26 @@ const createSelect = withFieldWrapper((fd) => {
 
   const options = fd?.enum || [];
   const optionNames = fd?.enumNames ?? options;
-  options.forEach((value, index) => addOption(optionNames?.[index], value));
+
+  if (options.length === 1
+    && options?.[0]?.startsWith('https://')) {
+    const optionsUrl = new URL(options?.[0]);
+    // using async to avoid rendering
+    if (optionsUrl.hostname.endsWith('hlx.page')
+    || optionsUrl.hostname.endsWith('hlx.live')) {
+      fetch(`${optionsUrl.pathname}${optionsUrl.search}`)
+        .then(async (response) => {
+          const json = await response.json();
+          const values = [];
+          json.data.forEach((opt) => {
+            addOption(opt.Option, opt.Value);
+            values.push(opt.Value || opt.Option);
+          });
+        });
+    }
+  } else {
+    options.forEach((value, index) => addOption(optionNames?.[index], value));
+  }
 
   if (ph && optionSelected === false) {
     ph.setAttribute('selected', '');
@@ -125,7 +144,7 @@ function createFieldSet(fd) {
   if (fd.fieldType === 'panel') {
     wrapper.classList.add('panel-wrapper');
   }
-  if (fd.repeatable === 'true' || fd.repeatable === true) {
+  if (fd.repeatable === true) {
     setConstraints(wrapper, fd);
     wrapper.dataset.repeatable = true;
     wrapper.dataset.index = fd.index || 0;
@@ -371,7 +390,7 @@ export async function createForm(formDef, data) {
 
   let captcha;
   if (captchaField) {
-    const siteKey = captchaField?.properties?.['fd:captcha']?.config?.siteKey;
+    const siteKey = captchaField?.properties?.['fd:captcha']?.config?.siteKey || captchaField?.value;
     captcha = new GoogleReCaptcha(siteKey, captchaField.id);
     captcha.loadCaptcha(form);
   }
@@ -386,7 +405,7 @@ export async function createForm(formDef, data) {
   }
 
   form.addEventListener('submit', (e) => {
-    handleSubmit(e, form);
+    handleSubmit(e, form, captcha);
   });
 
   return form;

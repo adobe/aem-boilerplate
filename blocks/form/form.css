@@ -48,7 +48,8 @@
     --form-upload-background-color: var(--background-color-primary);
     --form-submit-width: 100%;
     --form-width: 95%;
-    --form-wizard-background-color: #f2f2f2;
+    --form-wizard-border: 0;
+    --form-wizard-background-color: var(--background-color-primary);
     --form-wizard-border-color: #757575;
     --form-wizard-number-color: var(--button-primary-color);
     --form-wizard-padding: 30px;
@@ -185,6 +186,7 @@ main .form form .repeat-wrapper,
 main .form form .field-wrapper {
     margin: var(--form-field-gap);
     color: var(--form-label-color);
+    grid-column: span 12;
 }
 
 main .form form p {
@@ -275,13 +277,13 @@ main .form form .item-remove span {
     display: block;
     width: 20px;
     height: 20px;
-    background: url('./icons/delete.svg') no-repeat;
+    background: url('/icons/delete.svg') no-repeat;
 }
 
 main .file-wrapper .file-description button {
     --form-button-padding: 15px;
 
-    background: url('./icons/delete.svg') no-repeat;
+    background: url('/icons/delete.svg') no-repeat;
     width: unset;
     border: unset;
     text-align: center;
@@ -307,16 +309,12 @@ main .form .button-wrapper button[disabled]:hover {
     background-color: transparent;
 }
 
-main .form form .field-wrapper {
-  grid-column: span 12;
-}
-
 /** Wizard Styling */
 main .form form .wizard  {
   display: grid;
   counter-reset: wizard-step-counter;
   grid-template-columns: minmax(0, 1fr);
-  border: 2px solid var(--form-wizard-border-color);
+  border: var(--form-wizard-border) solid var(--form-wizard-border-color);
   background-color: var( --form-wizard-background-color);
   gap: unset;
   padding: 20px var(--form-wizard-padding);
@@ -441,6 +439,8 @@ main .form .form-message.success-message {
     background-color: #d1e7dd;
     border-color: #badbcc;
     flex: 100%;
+    grid-column: span 12;
+    padding: 10px;
 }
 
 main .form .form-message.error-message {
@@ -448,6 +448,8 @@ main .form .form-message.error-message {
     background-color: #f8d7da;
     border-color: #f5c2c7;
     flex: 100%;
+    grid-column: span 12;
+    padding: 10px;
 }
 
 main .form .file-wrapper .file-drag-area {

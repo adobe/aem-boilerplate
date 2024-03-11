@@ -28,9 +28,15 @@ function toClassName(name) {
     : '';
 }
 
+const clear = Symbol('clear');
+
 export const getId = (function getId() {
-  const ids = {};
+  let ids = {};
   return (name) => {
+    if (name === clear) {
+      ids = {};
+      return '';
+    }
     const slug = toClassName(name);
     ids[slug] = ids[slug] || 0;
     const idSuffix = ids[slug] ? `-${ids[slug]}` : '';
@@ -38,6 +44,14 @@ export const getId = (function getId() {
     return `${slug}${idSuffix}`;
   };
 }());
+
+/**
+ * Resets the ids for the getId function
+ * @returns {void}
+ */
+export function resetIds() {
+  getId(clear);
+}
 
 export function createLabel(fd, tagName = 'label') {
   if (fd.label && fd.label.value) {

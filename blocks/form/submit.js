@@ -38,8 +38,8 @@ function generateUnique() {
 
 function getFieldValue(fe, payload) {
   if (fe.type === 'radio') {
-    if (fe.checked) return fe.value;
-  } else if (fe.type === 'checkbox') {
+    return fe.form.elements[fe.name].value;
+  } if (fe.type === 'checkbox') {
     if (fe.checked) {
       if (payload[fe.name]) {
         return `${payload[fe.name]},${fe.value}`;
@@ -72,18 +72,23 @@ async function prepareRequest(form) {
   const headers = {
     'Content-Type': 'application/json',
   };
-  const body = JSON.stringify({ data: payload });
+  const body = { data: payload };
   const url = form.dataset.submit || form.dataset.action;
   return { headers, body, url };
 }
 
-async function submitDocBasedForm(form) {
+async function submitDocBasedForm(form, captcha) {
   try {
-    const { headers, body, url } = await prepareRequest(form);
+    const { headers, body, url } = await prepareRequest(form, captcha);
+    let token = null;
+    if (captcha) {
+      token = await captcha.getToken();
+      body.data['g-recaptcha-response'] = token;
+    }
     const response = await fetch(url, {
       method: 'POST',
       headers,
-      body,
+      body: JSON.stringify(body),
     });
     if (response.ok) {
       submitSuccess(response, form);
@@ -96,7 +101,7 @@ async function submitDocBasedForm(form) {
   }
 }
 
-export async function handleSubmit(e, form) {
+export async function handleSubmit(e, form, captcha) {
   e.preventDefault();
   const valid = form.checkValidity();
   if (valid) {
@@ -108,7 +113,7 @@ export async function handleSubmit(e, form) {
       form.querySelectorAll('.form-message.show').forEach((el) => el.classList.remove('show'));
 
       if (form.dataset.source === 'sheet') {
-        await submitDocBasedForm(form);
+        await submitDocBasedForm(form, captcha);
       }
     }
   } else {

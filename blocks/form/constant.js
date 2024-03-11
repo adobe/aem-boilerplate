@@ -8,4 +8,12 @@ export const defaultErrorMessages = {
   minItems: 'Specify a number of items equal to or greater than $0.',
 };
 
-export const submitBaseUrl = '';
+let submitBaseUrl = '';
+
+export function setSubmitBaseUrl(url) {
+  submitBaseUrl = url;
+}
+
+export function getSubmitBaseUrl() {
+  return submitBaseUrl;
+}

@@ -1,4 +1,4 @@
-import { submitBaseUrl } from '../constant.js';
+import { getSubmitBaseUrl } from '../constant.js';
 
 /**
  * Converts a JSON string to an object.
@@ -19,6 +19,7 @@ export function toObject(str) {
  * @returns {string} - The externalized URL.
  */
 export function externalize(url) {
+  const submitBaseUrl = getSubmitBaseUrl();
   if (submitBaseUrl) {
     return `${submitBaseUrl}${url}`;
   }

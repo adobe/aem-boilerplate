@@ -186,6 +186,7 @@ main .form form .repeat-wrapper,
 main .form form .field-wrapper {
     margin: var(--form-field-gap);
     color: var(--form-label-color);
+    grid-column: span 12;
 }
 
 main .form form p {
@@ -276,13 +277,13 @@ main .form form .item-remove span {
     display: block;
     width: 20px;
     height: 20px;
-    background: url('./icons/delete.svg') no-repeat;
+    background: url('/icons/delete.svg') no-repeat;
 }
 
 main .file-wrapper .file-description button {
     --form-button-padding: 15px;
 
-    background: url('./icons/delete.svg') no-repeat;
+    background: url('/icons/delete.svg') no-repeat;
     width: unset;
     border: unset;
     text-align: center;
@@ -306,10 +307,6 @@ main .form .button-wrapper button[disabled]:hover {
     border: 3px solid var(--button-secondary-color);
     color: var(--button-secondary-color);
     background-color: transparent;
-}
-
-main .form form .field-wrapper {
-  grid-column: span 12;
 }
 
 /** Wizard Styling */

@@ -1,6 +1,7 @@
 /* eslint-disable max-classes-per-file */
 import Formula from './parser/Formula.js';
 import transformRule from './RuleCompiler.js';
+import * as customFunctions from '../functions.js';
 
 function stripTags(input, allowd) {
   const allowed = ((`${allowd || ''}`)
@@ -81,13 +82,33 @@ function constructPayload(form) {
   }, payload);
 }
 
+function registerFunctions(functions) {
+  const functionsMap = {};
+  Object.entries(functions).forEach(([name, funcDef]) => {
+    let finalFunction = funcDef;
+    if (typeof funcDef === 'function') {
+      finalFunction = {
+        _func: (args, data) => funcDef(...args, data),
+        _signature: [],
+      };
+    }
+
+    if (!Object.prototype.hasOwnProperty.call(finalFunction, '_func')) {
+      console.warn(`Unable to register function with name ${name}.`);
+    } else {
+      functionsMap[name?.toLowerCase()] = finalFunction;
+    }
+  });
+  return functionsMap;
+}
+
 export default class RuleEngine {
   rulesOrder = {};
 
   constructor(formRules, fieldIdMap, formTag) {
     this.formTag = formTag;
     this.data = constructPayload(formTag);
-    this.formula = new Formula();
+    this.formula = new Formula(registerFunctions(customFunctions));
     const newRules = formRules.map(([fieldId, fieldRules]) => [
       fieldId,
       fieldRules.map((rule) => transformRule(rule, fieldIdMap, this.formula)),

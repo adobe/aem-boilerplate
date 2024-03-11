@@ -3,6 +3,7 @@ import {
   createHelpText, createLabel, updateOrCreateInvalidMsg, getCheckboxGroupValue,
 } from '../util.js';
 import registerCustomFunctions from './functionRegistration.js';
+import { externalize } from './functions.js';
 import initializeRuleEngineWorker from './worker.js';
 
 function disableElement(el, value) {
@@ -26,7 +27,7 @@ async function fieldChanged(payload, form, generateFormRendition) {
     const {
       id, fieldType, readOnly, type, displayValue, displayFormat,
     } = fieldModel;
-    const { propertyName, currentValue } = change;
+    const { propertyName, currentValue, prevValue } = change;
     const field = form.querySelector(`#${id}`);
     if (!field) {
       return;
@@ -128,7 +129,12 @@ async function fieldChanged(payload, form, generateFormRendition) {
         }
         break;
       case 'items':
-        generateFormRendition({ items: [currentValue] }, field?.querySelector('.repeat-wrapper'));
+        if (currentValue === null) {
+          const removeId = prevValue.id;
+          field?.querySelector(`#${removeId}`)?.remove();
+        } else {
+          generateFormRendition({ items: [currentValue] }, field?.querySelector('.repeat-wrapper'));
+        }
         break;
       default:
         break;
@@ -210,7 +216,8 @@ export async function loadRuleEngine(formDef, htmlForm, captcha, genFormRenditio
 async function fetchData({ id }) {
   try {
     const { search = '' } = window.location;
-    const response = await fetch(`/adobe/forms/af/data/${id}${search}`);
+    const url = externalize(`/adobe/forms/af/data/${id}${search}`);
+    const response = await fetch(url);
     const json = await response.json();
     const { data } = json;
     const { data: { afData: { afBoundData = {} } = {} } = {} } = json;

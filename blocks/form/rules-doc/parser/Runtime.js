@@ -1,9 +1,9 @@
 import functions from './functions.js';
 
 export default class Runtime {
-  constructor(debug, toNumber) {
-    this.toNumber = toNumber;
-    this.functionTable = functions(debug);
+  constructor(debug, customFunctions) {
+    const funs = functions(debug);
+    this.functionTable = { ...funs, ...customFunctions };
   }
 
   callFunction(name, resolvedArgs, data, interpreter) {
@@ -11,6 +11,7 @@ export default class Runtime {
     if (!Object.prototype.hasOwnProperty.call(this.functionTable, name)) throw new Error(`Unknown function: ${name}()`);
 
     const functionEntry = this.functionTable[name];
-    return functionEntry.func.call(this, resolvedArgs, data, interpreter);
+    // eslint-disable-next-line no-underscore-dangle
+    return functionEntry._func.call(functionEntry, resolvedArgs, data, interpreter);
   }
 }

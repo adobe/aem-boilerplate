@@ -144,7 +144,7 @@ function createFieldSet(fd) {
   if (fd.fieldType === 'panel') {
     wrapper.classList.add('panel-wrapper');
   }
-  if (fd.repeatable === 'true' || fd.repeatable === true) {
+  if (fd.repeatable === true) {
     setConstraints(wrapper, fd);
     wrapper.dataset.repeatable = true;
     wrapper.dataset.index = fd.index || 0;
@@ -390,7 +390,7 @@ export async function createForm(formDef, data) {
 
   let captcha;
   if (captchaField) {
-    const siteKey = captchaField?.properties?.['fd:captcha']?.config?.siteKey;
+    const siteKey = captchaField?.properties?.['fd:captcha']?.config?.siteKey || captchaField?.value;
     captcha = new GoogleReCaptcha(siteKey, captchaField.id);
     captcha.loadCaptcha(form);
   }
@@ -405,7 +405,7 @@ export async function createForm(formDef, data) {
   }
 
   form.addEventListener('submit', (e) => {
-    handleSubmit(e, form);
+    handleSubmit(e, form, captcha);
   });
 
   return form;

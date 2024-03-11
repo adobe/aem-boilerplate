@@ -76,9 +76,24 @@ function handleMultiValues(item, key) {
   }
 }
 
+const booleanProperty = ['required', 'visible', 'enabled', 'readOnly', 'repeatable'];
+
+function convertStringToBoolean(value) {
+  if (typeof value === 'boolean') {
+    return value;
+  }
+  const trimmedValue = value?.trim();
+  return trimmedValue === 'true' || trimmedValue === 'x';
+}
+
 function handleFranklinSpecialCases(item) {
+  booleanProperty.forEach((prop) => {
+    if (item[prop]) {
+      item[prop] = convertStringToBoolean(item[prop]);
+    }
+  });
   // Franklin Mandatory uses x for true.
-  item.required = (item.required === 'x' || item.required === 'true' || item.required === true);
+  item.required = (item.required === 'x' || item.required === true);
 
   if (item.Max || item.Min) {
     if (item.fieldType === 'number' || item.fieldType === 'date' || item.fieldType === 'range') {
@@ -129,6 +144,7 @@ export default class DocBasedFormToAF {
     Mandatory: 'required',
     Options: 'enum',
     OptionNames: 'enumNames',
+    Visible: 'visible',
     Repeatable: 'repeatable',
     Style: 'appliedCssClassNames',
   };

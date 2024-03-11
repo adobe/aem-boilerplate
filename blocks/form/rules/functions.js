@@ -1,3 +1,5 @@
+import { submitBaseUrl } from '../constant.js';
+
 /**
  * Converts a JSON string to an object.
  * @param {string} str - The JSON string to convert to an object.
@@ -17,9 +19,9 @@ export function toObject(str) {
  * @returns {string} - The externalized URL.
  */
 export function externalize(url) {
-  // if (window?.Granite?.HTTP && typeof (window.Granite.HTTP.externalize === 'function')) {
-  //   return window.Granite.HTTP.externalize(url);
-  // }
+  if (submitBaseUrl) {
+    return `${submitBaseUrl}${url}`;
+  }
   return url;
 }
 

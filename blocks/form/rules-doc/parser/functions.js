@@ -6,7 +6,7 @@ export default function functions(debug) {
   const toNumber = getToNumber(debug);
   const fnMap = {
     and: {
-      func: (resolvedArgs) => {
+      _func: (resolvedArgs) => {
         let result = !!getValueOf(resolvedArgs[0]);
         resolvedArgs.slice(1).forEach((arg) => {
           result = result && !!getValueOf(arg);
@@ -16,11 +16,11 @@ export default function functions(debug) {
     },
 
     false: {
-      func: () => false,
+      _func: () => false,
     },
 
     if: {
-      func: (unresolvedArgs, data, interpreter) => {
+      _func: (unresolvedArgs, data, interpreter) => {
         const conditionNode = unresolvedArgs[0];
         const leftBranchNode = unresolvedArgs[1];
         const rightBranchNode = unresolvedArgs[2];
@@ -33,11 +33,11 @@ export default function functions(debug) {
     },
 
     not: {
-      func: (resolveArgs) => !getValueOf(resolveArgs[0]),
+      _func: (resolveArgs) => !getValueOf(resolveArgs[0]),
     },
 
     or: {
-      func: (resolvedArgs) => {
+      _func: (resolvedArgs) => {
         let result = !!getValueOf(resolvedArgs[0]);
         resolvedArgs.slice(1).forEach((arg) => {
           result = result || !!getValueOf(arg);
@@ -47,11 +47,11 @@ export default function functions(debug) {
     },
 
     true: {
-      func: () => true,
+      _func: () => true,
     },
 
     power: {
-      func: (args) => {
+      _func: (args) => {
         const base = toNumber(args[0]);
         const power = toNumber(args[1]);
         return base ** power;
@@ -59,7 +59,7 @@ export default function functions(debug) {
     },
 
     round: {
-      func: (args) => {
+      _func: (args) => {
         const num = toNumber(args[0]);
         const digits = toNumber(args[1]);
         const precision = 10 ** digits;
@@ -68,7 +68,7 @@ export default function functions(debug) {
     },
 
     ceiling: {
-      func: (args) => {
+      _func: (args) => {
         const num = toNumber(args[0]);
         const significance = toNumber(args[1]);
         if (num === 0 || significance === 0) {
@@ -79,7 +79,7 @@ export default function functions(debug) {
     },
 
     min: {
-      func: (args) => {
+      _func: (args) => {
         // flatten the args into a single array
         const array = args.reduce((prev, cur) => {
           if (Array.isArray(cur)) prev.push(...cur);
@@ -106,7 +106,7 @@ export default function functions(debug) {
     },
 
     sum: {
-      func: (args) => args.reduce((sum, x) => {
+      _func: (args) => args.reduce((sum, x) => {
         if (Array.isArray(x)) return sum + fnMap.sum.func(x);
         return sum + toNumber(x);
       }, 0),

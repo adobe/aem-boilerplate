@@ -19,6 +19,13 @@ main .hero-container {
   color: white;
 }
 
+.hero p {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+}
+
 .hero picture {
   position: absolute;
   z-index: -1;

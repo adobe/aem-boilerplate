@@ -144,6 +144,11 @@ async function loadLazy(doc) {
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
 
+  await import('./acdl/adobe-client-data-layer.min.js');
+  if (sessionStorage.getItem('acdl:debug')) {
+    import('./acdl/validate.js');
+  }
+
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));

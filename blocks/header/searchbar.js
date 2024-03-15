@@ -7,7 +7,7 @@ import { getConfigValue } from '../../scripts/configs.js';
 
   const storeDetails = {
     environmentId: await getConfigValue('commerce-environment-id'),
-    environmentType: (await getConfigValue('commerce-environment-id')).includes('sandbox') ? 'testing' : '',
+    environmentType: (await getConfigValue('commerce-endpoint')).includes('sandbox') ? 'testing' : '',
     apiKey: await getConfigValue('commerce-x-api-key'),
     websiteCode: await getConfigValue('commerce-website-code'),
     storeCode: await getConfigValue('commerce-store-code'),
@@ -27,7 +27,7 @@ import { getConfigValue } from '../../scripts/configs.js';
     context: {
       customerGroup: await getConfigValue('commerce-customer-group'),
     },
-    route: ({ sku }) => `/products/missing-url-key/${sku}`, // TODO: We need urlKey as parameter as well!
+    route: ({ sku, urlKey }) => `/products/${urlKey}/${sku}`,
     searchRoute: {
       route: '/search',
       query: 'q',

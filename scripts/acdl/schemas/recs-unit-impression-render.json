@@ -1,0 +1,19 @@
+{
+    "type": "object",
+    "properties": {
+      "event": {
+        "type": "string",
+        "const": "recs-unit-impression-render"
+      },
+      "eventInfo": {
+        "type": "object",
+        "properties": {
+          "unitId": {
+            "type": "string"
+          }
+        },
+        "required": ["unitId"]
+      }
+    },
+    "required": ["event", "eventInfo"]
+  }

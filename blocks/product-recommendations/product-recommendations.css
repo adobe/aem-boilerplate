@@ -1,0 +1,80 @@
+main .section>div.product-recommendations-wrapper {
+    max-width: 100%;
+    padding: 0;
+    text-align: left;
+    margin: 0 0 5rem;
+}
+
+.product-recommendations {
+    overflow: hidden;
+    min-height: 512px;
+}
+
+.product-recommendations .scrollable {
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 1rem;
+}
+
+.product-recommendations .product-grid {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    gap: 2rem;
+    margin: 0;
+}
+
+.product-recommendations .product-grid-item img {
+    width: 100%;
+}
+
+.product-recommendations .product-grid .product-grid-item a {
+    text-decoration: none;
+}
+
+.product-recommendations .product-grid .product-grid-item a:hover,
+.product-recommendations .product-grid .product-grid-item a:focus {
+    text-decoration: underline;
+}
+
+.product-recommendations .product-grid .product-grid-item span {
+    overflow: hidden;
+    box-sizing: border-box;
+    margin: 0;
+    padding: .5rem 1rem 0 0;
+    display: inline-block;
+}
+
+.product-recommendations .product-grid picture {
+    background: none;
+    display: block;
+    width: 300px;
+    aspect-ratio: 1 / 1.25;
+}
+
+.product-recommendations .product-grid img {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    object-fit: contain;
+    background: none;
+}
+
+.product-recommendations .product-grid .placeholder {
+    background-color: var(--color-neutral-500);
+    scroll-snap-align: start;
+}
+
+.product-recommendations .product-grid .placeholder img {
+    display: none;
+}
+
+.product-recommendations .product-grid-item {
+    margin: 0;
+    scroll-snap-align: start;
+}
+
+@media (width >= 900px) {
+    .product-recommendations {
+        min-height: 534px;
+    }
+}

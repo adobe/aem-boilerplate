@@ -2,7 +2,7 @@ import { loadScript, readBlockConfig } from '../../scripts/aem.js';
 import { getConfigValue } from '../../scripts/configs.js';
 
 export default async function decorate(block) {
-  const { urlpath, category, type } = readBlockConfig(block);
+  const { category, type } = readBlockConfig(block);
   block.textContent = '';
 
   const widgetProd = '/scripts/widgets/search.js';
@@ -44,7 +44,7 @@ export default async function decorate(block) {
 
   if (type !== 'search') {
     storeDetails.config.categoryName = document.querySelector('.default-content-wrapper > h1')?.innerText;
-    storeDetails.config.currentCategoryUrlPath = urlpath;
+    storeDetails.config.currentCategoryId = category;
 
     // Enable enrichment
     block.dataset.category = category;

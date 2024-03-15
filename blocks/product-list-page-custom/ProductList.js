@@ -47,7 +47,10 @@ class ProductCard extends Component {
   }
 
   onProductClick(product) {
-    window.adobeDataLayer.push({ event: 'search-product-click', eventInfo: { searchUnitId: 'searchUnitId', sku: product.sku } });
+    window.adobeDataLayer.push((dl) => {
+      // TODO: Remove eventInfo once collector is updated
+      dl.push({ event: 'search-product-click', eventInfo: { ...dl.getState(), searchUnitId: 'searchUnitId', sku: product.sku } });
+    });
   }
 
   render({ product, loading, index }) {

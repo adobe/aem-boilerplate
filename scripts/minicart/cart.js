@@ -241,11 +241,12 @@ export async function addToCart(sku, options, quantity, source) {
 
     // TODO: Find exact item by comparing options UIDs
     const mseChangedItems = cart.items.filter((item) => item.product.sku === sku).map(mapCartItem);
-    window.adobeDataLayer.push(
-      { shoppingCartContext: mseCart },
-      { changedProductsContext: { items: mseChangedItems } },
-      { event: 'add-to-cart' },
-    );
+    window.adobeDataLayer.push((dl) => {
+      dl.push({ shoppingCartContext: mseCart });
+      dl.push({ changedProductsContext: { items: mseChangedItems } });
+      // TODO: Remove eventInfo once collector is updated
+      dl.push({ event: 'add-to-cart', eventInfo: { ...dl.getState() } });
+    });
 
     console.debug('Added items to cart', variables, cart);
   } catch (err) {

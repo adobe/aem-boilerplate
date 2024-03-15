@@ -146,7 +146,9 @@ async function loadCategory(state) {
       } else {
         searchInputContext.units[index] = unit;
       }
-      dl.push({ searchInputContext }, { event: 'search-request-sent', eventInfo: { searchUnitId } });
+      dl.push({ searchInputContext });
+      // TODO: Remove eventInfo once collector is updated
+      dl.push({ event: 'search-request-sent', eventInfo: { ...dl.getState(), searchUnitId } });
     });
 
     const response = await performCatalogServiceQuery(productSearchQuery(state.type === 'category'), variables);
@@ -389,22 +391,24 @@ class ProductListPage extends Component {
         } else {
           searchResultsContext.units[index] = searchResultUnit;
         }
-        dl.push({ searchResultsContext }, { event: 'search-response-received', eventInfo: { searchUnitId } });
+        dl.push({ searchResultsContext });
+        // TODO: Remove eventInfo once collector is updated
+        dl.push({ event: 'search-response-received', eventInfo: { ...dl.getState(), searchUnitId } });
         if (this.props.type === 'search') {
-          dl.push({ event: 'search-results-view', eventInfo: { searchUnitId } });
+          // TODO: Remove eventInfo once collector is updated
+          dl.push({ event: 'search-results-view', eventInfo: { ...dl.getState(), searchUnitId } });
         } else {
-          dl.push(
-            { event: 'category-results-view', eventInfo: { searchUnitId } },
-            {
-              categoryContext: {
-                name: this.state.category.name,
-                urlKey: this.state.category.urlKey,
-                urlPath: this.state.category.urlPath,
-              },
+          dl.push({
+            categoryContext: {
+              name: this.state.category.name,
+              urlKey: this.state.category.urlKey,
+              urlPath: this.state.category.urlPath,
             },
-          );
+          });
+          // TODO: Remove eventInfo once collector is updated
+          dl.push({ event: 'category-results-view', eventInfo: { ...dl.getState(), searchUnitId } });
         }
-        dl.push({ event: 'page-view' });
+        dl.push({ event: 'page-view', eventInfo: { ...dl.getState() } });
       });
     }
   };

@@ -108,9 +108,6 @@
 
 .references #references-dialog .references-body .reference-row .status:has(.publish-reference) {
   overflow: initial;
-  display: grid;
-  place-items: center;
-  grid-template-columns: 1fr min-content;
 }
 
 .references #references-dialog .references-body .reference-row .status .publish-reference {

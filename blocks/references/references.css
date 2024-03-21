@@ -105,3 +105,11 @@
 .references #references-dialog .references-body .reference-row.reference-header-row {
   font-weight: 700;
 }
+
+.references #references-dialog .references-body .reference-row .status {
+  overflow: initial;
+}
+
+.references #references-dialog .references-body .reference-row .status .publish-reference {
+  margin: 0;
+}

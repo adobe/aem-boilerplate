@@ -42,8 +42,9 @@ async function updateStatus(row) {
           status.textContent = 'Unpublished';
           const publishBtn = document.createElement('button');
           publishBtn.setAttribute('role', 'button');
+          publishBtn.setAttribute('title', 'Publish');
           publishBtn.className = 'publish-reference';
-          publishBtn.innerHTML = '<span class="sr-only">Publish</span><span class="icon icon-publish"></span>';
+          publishBtn.innerHTML = '<span class="icon icon-publish"></span>';
           decorateIcons(publishBtn);
           status.append(publishBtn);
         }

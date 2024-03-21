@@ -112,6 +112,6 @@
   margin: 0;
   padding: 0 8px;
   background: none;
-  mask-image: url('/icons/publish.svg');
+  mask: url('/icons/publish.svg') no-repeat;
   background-color: blue;
 }

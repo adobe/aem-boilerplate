@@ -45,6 +45,12 @@ async function updateStatus(row) {
           publishBtn.setAttribute('title', 'Publish');
           publishBtn.className = 'publish-reference';
           publishBtn.innerHTML = '<span class="icon icon-publish"></span>';
+          publishBtn.addEventListener('click', () => {
+            const result = confirm(`Publish ${link.getAttribute('href')}?`);
+            if (result) {
+              console.log('publish it.');
+            }
+          });
           decorateIcons(publishBtn);
           status.append(publishBtn);
         }

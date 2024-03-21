@@ -114,3 +114,8 @@
   background: none;
   border: 1px var(--link-color) dashed;
 }
+
+.references #references-dialog .references-body .reference-row .status .publish-reference .icon {
+  width: 16px;
+  height: 16px;
+}

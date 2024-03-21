@@ -1,4 +1,5 @@
 import ffetch from '../../scripts/ffetch.js';
+import { decorateIcons } from '../../scripts/aem.js';
 import {
   getOrigin, addOutsideClickListener, checkDomain, checkBrowserDomain,
 } from '../../scripts/utils.js';
@@ -39,6 +40,12 @@ async function updateStatus(row) {
           status.textContent = 'Live';
         } else if (json.preview && json.preview.status === 200) {
           status.textContent = 'Unpublished';
+          const publishBtn = document.createElement('button');
+          publishBtn.setAttribute('role', 'button');
+          publishBtn.className = 'publish-reference';
+          publishBtn.innerHTML = '<span class="sr-only">Publish</span><span class="icon icon-publish"></span>';
+          decorateIcons(publishBtn);
+          status.append(publishBtn);
         }
       }
     }

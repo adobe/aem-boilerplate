@@ -112,6 +112,5 @@
   margin: 0;
   padding: 0 8px;
   background: none;
-  mask: url('/icons/publish.svg') no-repeat;
-  background-color: blue;
+  border: 1px var(--link-color) dashed;
 }

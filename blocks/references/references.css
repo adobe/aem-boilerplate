@@ -106,7 +106,7 @@
   font-weight: 700;
 }
 
-.references #references-dialog .references-body .reference-row .status {
+.references #references-dialog .references-body .reference-row .status:has(.publish-reference) {
   overflow: initial;
   display: grid;
   place-items: center;

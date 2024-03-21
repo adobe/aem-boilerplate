@@ -82,7 +82,7 @@
 
 .references #references-dialog .references-body {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr 2fr 1fr;
   grid-auto-rows: 3rem;
   gap: .5rem;
   padding-block: 2rem;
@@ -108,8 +108,11 @@
 
 .references #references-dialog .references-body .reference-row .status {
   overflow: initial;
+  display: grid;
+  place-items: center;
 }
 
 .references #references-dialog .references-body .reference-row .status .publish-reference {
-  margin: 0;
+  margin: 0 8px;
+  background: none;
 }

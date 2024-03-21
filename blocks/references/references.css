@@ -100,17 +100,16 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
 }
 
 .references #references-dialog .references-body .reference-row.reference-header-row {
   font-weight: 700;
 }
 
-.references #references-dialog .references-body .reference-row .status:has(.publish-reference) {
-  overflow: initial;
-}
-
 .references #references-dialog .references-body .reference-row .status .publish-reference {
-  margin: 0 8px;
+  margin: 0;
+  padding: 0;
   background: none;
 }

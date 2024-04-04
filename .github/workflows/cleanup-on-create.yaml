@@ -13,7 +13,7 @@ jobs:
       contents: write
       actions: write
     # only run if commit message is "Initial commit" on main branch
-    if: ${{  github.ref == 'refs/heads/main' &&  ( !(contains(github.event, 'head_commit') || github.event.head_commit.message == 'Initial commit') ) }}
+    if: ${{ github.ref == 'refs/heads/main' && ( !(contains(github.event, 'head_commit') || github.event.head_commit.message == 'Initial commit') ) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

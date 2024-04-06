@@ -1,0 +1,10 @@
+indices:
+  assets-index:
+    target: /assets-index.json
+    properties:
+      aem-assets:
+        select: a
+        values: |
+          attribute(el, 'href')
+        # match(attribute(el, 'href'), 'https:\/\/[^\/]+\/adobe\/assets\/urn:aaid:aem:.*')
+

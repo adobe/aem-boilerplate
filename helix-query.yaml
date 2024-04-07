@@ -2,9 +2,15 @@ indices:
   assets-index:
     target: /assets-index.json
     properties:
-      aem-assets:
+      polaris-assets:
         select: a
         values: |
-          attribute(el, 'href')
-        # match(attribute(el, 'href'), 'https:\/\/[^\/]+\/adobe\/assets\/urn:aaid:aem:.*')
-
+          match(attribute(el, 'href'), 'https:\/\/[^\/]+\/adobe\/assets\/urn:aaid:aem:.*')
+      dm-next-assets:
+        select: a
+        values: |
+          match(attribute(el, 'href'), 'https:\/\/[^\/]+\/adobe\/dynamicmedia\/deliver\/urn:aaid:aem:.*')
+      scene7-assets:
+        select: a
+        values: |
+          match(attribute(el, 'href'), 'https:\/\/.*scene7.com\/is\/image\/.*')

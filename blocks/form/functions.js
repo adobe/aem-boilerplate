@@ -6,14 +6,14 @@
  * @return {string}
  */
 function getFullName(firstname, lastname) {
-  return `${firstname} ${lastname}`?.trim();
+  return `${firstname} ${lastname}`.trim();
 }
 
 /**
  * Calculate the number of days between two dates.
  * @param {*} endDate
  * @param {*} startDate
- * @returns returns the number of days between two dates
+ * @returns {number} returns the number of days between two dates
  */
 function days(endDate, startDate) {
   const start = typeof startDate === 'string' ? new Date(startDate) : startDate;

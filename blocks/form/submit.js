@@ -1,14 +1,18 @@
+import { DEFAULT_THANK_YOU_MESSAGE } from './constant.js';
+
 export function submitSuccess(e, form) {
   const { payload } = e;
-  if (payload?.body?.redirectUrl) {
-    window.location.assign(encodeURI(payload.body.redirectUrl));
+  const redirectUrl = form.dataset.redirectUrl || payload?.body?.redirectUrl;
+  const thankYouMsg = form.dataset.thankYouMsg || payload?.body?.thankYouMessage;
+  if (redirectUrl) {
+    window.location.assign(encodeURI(redirectUrl));
   } else {
     let thankYouMessage = form.querySelector('.form-message.success-message');
     if (!thankYouMessage) {
       thankYouMessage = document.createElement('div');
       thankYouMessage.className = 'form-message success-message';
     }
-    thankYouMessage.innerHTML = payload?.body?.thankYouMessage || 'Thanks for your submission';
+    thankYouMessage.innerHTML = thankYouMsg || DEFAULT_THANK_YOU_MESSAGE;
     form.prepend(thankYouMessage);
     if (thankYouMessage.scrollIntoView) {
       thankYouMessage.scrollIntoView({ behavior: 'smooth' });

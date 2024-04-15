@@ -7,3 +7,6 @@ helix-importer-ui
 .DS_Store
 *.bak
 .idea
+
+.env*
+.vscode

@@ -589,6 +589,526 @@ const resolveData = (data, input, create) => {
     }
     return result;
 };
+class FileObject {
+    data;
+    mediaType = 'application/octet-stream';
+    name = 'unknown';
+    size = 0;
+    constructor(init) {
+        Object.assign(this, init);
+    }
+    get type() {
+        return this.mediaType;
+    }
+    toJSON() {
+        return {
+            'name': this.name,
+            'size': this.size,
+            'mediaType': this.mediaType,
+            'data': this.data.toString()
+        };
+    }
+    equals(obj) {
+        return (this.data === obj.data &&
+            this.mediaType === obj.mediaType &&
+            this.name === obj.name &&
+            this.size === obj.size);
+    }
+}
+const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'.split('');
+const fileSizeRegex = /^(\d*\.?\d+)(\\?(?=[KMGT])([KMGT])(?:i?B)?|B?)$/i;
+const randomWord = (l) => {
+    const ret = [];
+    for (let i = 0; i <= l; i++) {
+        let randIndex;
+        if (i === 0) {
+            randIndex = Math.floor(Math.random() * (chars.length - 11));
+        }
+        else {
+            randIndex = Math.floor(Math.random() * (chars.length));
+        }
+        ret.push(chars[randIndex]);
+    }
+    return ret.join('');
+};
+const getAttachments = (input, excludeUnbound = false) => {
+    const items = input.items || [];
+    return items?.reduce((acc, item) => {
+        if (excludeUnbound && item.dataRef === null) {
+            return acc;
+        }
+        let ret = null;
+        if (item.isContainer) {
+            ret = getAttachments(item, excludeUnbound);
+        }
+        else {
+            if (isFile(item.getState())) {
+                ret = {};
+                const name = item.name || '';
+                const dataRef = (item.dataRef != null)
+                    ? item.dataRef
+                    : (name.length > 0 ? item.name : undefined);
+                if (item.value instanceof Array) {
+                    ret[item.id] = item.value.map((x) => {
+                        return { ...x, 'dataRef': dataRef };
+                    });
+                }
+                else if (item.value != null) {
+                    ret[item.id] = { ...item.value, 'dataRef': dataRef };
+                }
+            }
+        }
+        return Object.assign(acc, ret);
+    }, {});
+};
+const getFileSizeInBytes = (str) => {
+    let retVal = 0;
+    if (typeof str === 'string') {
+        const matches = fileSizeRegex.exec(str.trim());
+        if (matches != null) {
+            retVal = sizeToBytes(parseFloat(matches[1]), (matches[2] || 'kb').toUpperCase());
+        }
+    }
+    return retVal;
+};
+const sizeToBytes = (size, symbol) => {
+    const sizes = { 'KB': 1, 'MB': 2, 'GB': 3, 'TB': 4 };
+    const i = Math.pow(1024, sizes[symbol]);
+    return Math.round(size * i);
+};
+const IdGenerator = function* (initial = 50) {
+    const initialize = function () {
+        const arr = [];
+        for (let i = 0; i < initial; i++) {
+            arr.push(randomWord(10));
+        }
+        return arr;
+    };
+    const passedIds = {};
+    let ids = initialize();
+    do {
+        let x = ids.pop();
+        while (x in passedIds) {
+            if (ids.length === 0) {
+                ids = initialize();
+            }
+            x = ids.pop();
+        }
+        passedIds[x] = true;
+        yield ids.pop();
+        if (ids.length === 0) {
+            ids = initialize();
+        }
+    } while (ids.length > 0);
+};
+const isDataUrl = (str) => {
+    const dataUrlRegex = /^data:([a-z]+\/[a-z0-9-+.]+)?;(?:name=(.*);)?base64,(.*)$/;
+    return dataUrlRegex.exec(str.trim()) != null;
+};
+const extractFileInfo = (file) => {
+    if (file !== null) {
+        let retVal = null;
+        if (file instanceof FileObject) {
+            retVal = file;
+        }
+        else if (typeof File !== 'undefined' && file instanceof File) {
+            retVal = {
+                name: file.name,
+                mediaType: file.type,
+                size: file.size,
+                data: file
+            };
+        }
+        else if (typeof file === 'string' && isDataUrl(file)) {
+            const result = dataURItoBlob(file);
+            if (result !== null) {
+                const { blob, name } = result;
+                retVal = {
+                    name: name,
+                    mediaType: blob.type,
+                    size: blob.size,
+                    data: blob
+                };
+            }
+        }
+        else {
+            let jFile = file;
+            try {
+                jFile = JSON.parse(file);
+                retVal = jFile;
+                if (!retVal.mediaType) {
+                    retVal.mediaType = retVal.type;
+                }
+            }
+            catch (ex) {
+            }
+            if (typeof jFile?.data === 'string' && isDataUrl(jFile?.data)) {
+                const result = dataURItoBlob(jFile?.data);
+                if (result !== null) {
+                    const blob = result.blob;
+                    retVal = {
+                        name: jFile?.name,
+                        mediaType: jFile?.type || jFile?.mediaType,
+                        size: blob.size,
+                        data: blob
+                    };
+                }
+            }
+            else if (typeof jFile === 'string') {
+                const fileName = jFile.split('/').pop();
+                retVal = {
+                    name: fileName,
+                    mediaType: 'application/octet-stream',
+                    size: 0,
+                    data: jFile
+                };
+            }
+            else if (typeof jFile === 'object') {
+                retVal = {
+                    name: jFile?.name,
+                    mediaType: jFile?.type || jFile?.mediaType,
+                    size: jFile?.size,
+                    data: jFile?.data
+                };
+            }
+        }
+        if (retVal !== null && retVal.data != null) {
+            return new FileObject(retVal);
+        }
+        return null;
+    }
+    else {
+        return null;
+    }
+};
+const dataURItoBlob = (dataURI) => {
+    const regex = /^data:([a-z]+\/[a-z0-9-+.]+)?(?:;name=([^;]+))?(;base64)?,(.+)$/;
+    const groups = regex.exec(dataURI);
+    if (groups !== null) {
+        const type = groups[1] || '';
+        const name = groups[2] || 'unknown';
+        const isBase64 = typeof groups[3] === 'string';
+        if (isBase64) {
+            const binary = atob(groups[4]);
+            const array = [];
+            for (let i = 0; i < binary.length; i++) {
+                array.push(binary.charCodeAt(i));
+            }
+            const blob = new window.Blob([new Uint8Array(array)], { type });
+            return { name, blob };
+        }
+        else {
+            const blob = new window.Blob([groups[4]], { type });
+            return { name, blob };
+        }
+    }
+    else {
+        return null;
+    }
+};
+const isFormOrSiteContainer = (model) => {
+    return (':items' in model || 'cqItems' in model) && (':itemsOrder' in model || 'cqItemsOrder' in model);
+};
+const sitesModelToFormModel = (sitesModel) => {
+    if (!sitesModel || !Object.keys(sitesModel).length) {
+        return sitesModel;
+    }
+    if (isFormOrSiteContainer(sitesModel)) {
+        const itemsArr = [];
+        const itemsOrder = sitesModel[':itemsOrder'] || sitesModel.cqItemsOrder;
+        const items = sitesModel[':items'] || sitesModel.cqItems;
+        itemsOrder.forEach((elemName) => {
+            itemsArr.push(sitesModelToFormModel(items[elemName]));
+        });
+        sitesModel.items = itemsArr;
+    }
+    return sitesModel;
+};
+const replaceTemplatePlaceholders = (str, values = []) => {
+    return str?.replace(/\${(\d+)}/g, (match, index) => {
+        const replacement = values[index];
+        return typeof replacement !== 'undefined' ? replacement : match;
+    });
+};
+const dateRegex = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
+const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const daysInMonth = (leapYear, month) => {
+    if (leapYear && month == 2) {
+        return 29;
+    }
+    return days[month - 1];
+};
+const isLeapYear = (year) => {
+    return year % 400 === 0 || year % 4 === 0 && year % 100 !== 0;
+};
+const coerceType = (param, type) => {
+    let num;
+    switch (type) {
+        case 'string':
+            return param + '';
+        case 'number':
+            num = +param;
+            if (!isNaN(num)) {
+                return num;
+            }
+            break;
+        case 'boolean':
+            if (typeof param === 'string') {
+                return param === 'true';
+            }
+            else if (typeof param === 'number') {
+                return param !== 0;
+            }
+    }
+    throw `${param} has invalid type. Expected : ${type}, Actual ${typeof param}`;
+};
+const checkNumber = (inputVal) => {
+    if (inputVal === '' || inputVal == null) {
+        return {
+            value: '', valid: true
+        };
+    }
+    let value = parseFloat(inputVal);
+    const valid = !isNaN(value);
+    if (!valid) {
+        value = inputVal;
+    }
+    return {
+        value, valid
+    };
+};
+const checkInteger = (inputVal) => {
+    if (inputVal == '' || inputVal == null) {
+        return {
+            value: '', valid: true
+        };
+    }
+    let value = parseFloat(inputVal);
+    const valid = !isNaN(value) && Math.round(value) === value;
+    if (!valid) {
+        value = inputVal;
+    }
+    return {
+        value, valid
+    };
+};
+const toArray = (inputVal) => {
+    if (inputVal != null && !(inputVal instanceof Array)) {
+        return [inputVal];
+    }
+    return inputVal;
+};
+const checkBool = (inputVal) => {
+    const valid = typeof inputVal === 'boolean' || inputVal === 'true' || inputVal === 'false';
+    const value = typeof inputVal === 'boolean' ? inputVal : (valid ? inputVal === 'true' : inputVal);
+    return { valid, value };
+};
+const checkFile = (inputVal) => {
+    const value = extractFileInfo(inputVal);
+    const valid = value !== null;
+    return {
+        value: valid ? value : inputVal,
+        valid
+    };
+};
+const matchMediaType = (mediaType, accepts) => {
+    return !mediaType || accepts.some((accept) => {
+        const trimmedAccept = accept.trim();
+        const prefixAccept = trimmedAccept.split('/')[0];
+        const suffixAccept = trimmedAccept.split('.')[1];
+        return ((trimmedAccept.includes('*') && mediaType.startsWith(prefixAccept)) ||
+            (trimmedAccept.includes('.') && mediaType.endsWith(suffixAccept)) ||
+            (trimmedAccept === mediaType));
+    });
+};
+const partitionArray = (inputVal, validatorFn) => {
+    const value = toArray(inputVal);
+    if (value == null) {
+        return [[], [value]];
+    }
+    return value.reduce((acc, x) => {
+        if (acc[1].length == 0) {
+            const r = validatorFn(x);
+            const index = r.valid ? 0 : 1;
+            acc[index].push(r.value);
+        }
+        return acc;
+    }, [[], []]);
+};
+const ValidConstraints = {
+    date: ['minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum', 'format'],
+    string: ['minLength', 'maxLength', 'pattern'],
+    number: ['minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum'],
+    array: ['minItems', 'maxItems', 'uniqueItems'],
+    file: ['accept', 'maxFileSize'],
+    email: ['minLength', 'maxLength', 'format', 'pattern']
+};
+const validationConstraintsList = ['type', 'format', 'minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum', 'minItems',
+    'maxItems', 'uniqueItems', 'minLength', 'maxLength', 'pattern', 'required', 'enum', 'accept', 'maxFileSize'];
+const Constraints = {
+    type: (constraint, inputVal) => {
+        let value = inputVal;
+        if (inputVal == undefined) {
+            return {
+                valid: true,
+                value: inputVal
+            };
+        }
+        let valid = true, res;
+        switch (constraint) {
+            case 'string':
+                valid = true;
+                value = inputVal.toString();
+                break;
+            case 'string[]':
+                value = toArray(inputVal);
+                break;
+            case 'number':
+                res = checkNumber(inputVal);
+                value = res.value;
+                valid = res.valid;
+                break;
+            case 'boolean':
+                res = checkBool(inputVal);
+                valid = res.valid;
+                value = res.value;
+                break;
+            case 'integer':
+                res = checkInteger(inputVal);
+                valid = res.valid;
+                value = res.value;
+                break;
+            case 'integer[]':
+                res = partitionArray(inputVal, checkInteger);
+                valid = res[1].length === 0;
+                value = valid ? res[0] : inputVal;
+                break;
+            case 'file':
+                res = checkFile(inputVal instanceof Array ? inputVal[0] : inputVal);
+                valid = res.valid;
+                value = res.value;
+                break;
+            case 'file[]':
+                res = partitionArray(inputVal, checkFile);
+                valid = res[1].length === 0;
+                value = valid ? res[0] : inputVal;
+                break;
+            case 'number[]':
+                res = partitionArray(inputVal, checkNumber);
+                valid = res[1].length === 0;
+                value = valid ? res[0] : inputVal;
+                break;
+            case 'boolean[]':
+                res = partitionArray(inputVal, checkBool);
+                valid = res[1].length === 0;
+                value = valid ? res[0] : inputVal;
+                break;
+        }
+        return {
+            valid,
+            value
+        };
+    },
+    format: (constraint, input) => {
+        let valid = true;
+        const value = input;
+        if (input === null) {
+            return { value, valid };
+        }
+        let res;
+        switch (constraint) {
+            case 'date':
+                res = dateRegex.exec((input || '').trim());
+                if (res != null) {
+                    const [match, year, month, date] = res;
+                    const [nMonth, nDate] = [+month, +date];
+                    const leapYear = isLeapYear(+year);
+                    valid = (nMonth >= 1 && nMonth <= 12) &&
+                        (nDate >= 1 && nDate <= daysInMonth(leapYear, nMonth));
+                }
+                else {
+                    valid = false;
+                }
+                break;
+            case 'email':
+                valid = new RegExp(emailRegex).test((input || '').trim());
+                break;
+            case 'data-url':
+                valid = true;
+                break;
+        }
+        return { valid, value };
+    },
+    minimum: (constraint, value) => {
+        return { valid: value >= constraint, value };
+    },
+    maximum: (constraint, value) => {
+        return { valid: value <= constraint, value };
+    },
+    exclusiveMinimum: (constraint, value) => {
+        return { valid: value > constraint, value };
+    },
+    exclusiveMaximum: (constraint, value) => {
+        return { valid: value < constraint, value };
+    },
+    minItems: (constraint, value) => {
+        return { valid: (value instanceof Array) && value.length >= constraint, value };
+    },
+    maxItems: (constraint, value) => {
+        return { valid: (value instanceof Array) && value.length <= constraint, value };
+    },
+    uniqueItems: (constraint, value) => {
+        return { valid: !constraint || ((value instanceof Array) && value.length === new Set(value).size), value };
+    },
+    minLength: (constraint, value) => {
+        return { ...Constraints.minimum(constraint, typeof value === 'string' ? value.length : 0), value };
+    },
+    maxLength: (constraint, value) => {
+        return { ...Constraints.maximum(constraint, typeof value === 'string' ? value.length : 0), value };
+    },
+    pattern: (constraint, value) => {
+        let regex;
+        if (typeof constraint === 'string') {
+            regex = new RegExp(constraint);
+        }
+        else {
+            regex = constraint;
+        }
+        return { valid: regex.test(value), value };
+    },
+    required: (constraint, value) => {
+        const valid = constraint ? value != null && value !== '' : true;
+        return { valid, value };
+    },
+    enum: (constraint, value) => {
+        return {
+            valid: constraint.indexOf(value) > -1,
+            value
+        };
+    },
+    accept: (constraint, value) => {
+        if (!constraint || constraint.length === 0 || value === null || value === undefined) {
+            return {
+                valid: true,
+                value
+            };
+        }
+        const tempValue = value instanceof Array ? value : [value];
+        const invalidFile = tempValue.some((file) => !matchMediaType(file.type, constraint));
+        return {
+            valid: !invalidFile,
+            value
+        };
+    },
+    maxFileSize: (constraint, value) => {
+        const sizeLimit = typeof constraint === 'string' ? getFileSizeInBytes(constraint) : constraint;
+        return {
+            valid: !(value instanceof FileObject) || value.size <= sizeLimit,
+            value
+        };
+    }
+};
 const editableProperties = [
     'value',
     'label',
@@ -607,7 +1127,8 @@ const editableProperties = [
     'maximum',
     'maxItems',
     'minimum',
-    'minItems'
+    'minItems',
+    'checked'
 ];
 const dynamicProps = [
     ...editableProperties,
@@ -918,6 +1439,9 @@ class BaseNode {
                 this.notifyDependents(changeAction);
             }
             notifyChildren.call(this, changeAction);
+            if (validationConstraintsList.includes(prop)) {
+                this.validate();
+            }
             return changeAction.payload.changes;
         }
         return [];
@@ -1852,247 +2376,6 @@ class EventQueue {
         this._isProcessing = false;
     }
 }
-class FileObject {
-    data;
-    mediaType = 'application/octet-stream';
-    name = 'unknown';
-    size = 0;
-    constructor(init) {
-        Object.assign(this, init);
-    }
-    get type() {
-        return this.mediaType;
-    }
-    toJSON() {
-        return {
-            'name': this.name,
-            'size': this.size,
-            'mediaType': this.mediaType,
-            'data': this.data.toString()
-        };
-    }
-    equals(obj) {
-        return (this.data === obj.data &&
-            this.mediaType === obj.mediaType &&
-            this.name === obj.name &&
-            this.size === obj.size);
-    }
-}
-const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_'.split('');
-const fileSizeRegex = /^(\d*\.?\d+)(\\?(?=[KMGT])([KMGT])(?:i?B)?|B?)$/i;
-const randomWord = (l) => {
-    const ret = [];
-    for (let i = 0; i <= l; i++) {
-        let randIndex;
-        if (i === 0) {
-            randIndex = Math.floor(Math.random() * (chars.length - 11));
-        }
-        else {
-            randIndex = Math.floor(Math.random() * (chars.length));
-        }
-        ret.push(chars[randIndex]);
-    }
-    return ret.join('');
-};
-const getAttachments = (input, excludeUnbound = false) => {
-    const items = input.items || [];
-    return items?.reduce((acc, item) => {
-        if (excludeUnbound && item.dataRef === null) {
-            return acc;
-        }
-        let ret = null;
-        if (item.isContainer) {
-            ret = getAttachments(item, excludeUnbound);
-        }
-        else {
-            if (isFile(item.getState())) {
-                ret = {};
-                const name = item.name || '';
-                const dataRef = (item.dataRef != null)
-                    ? item.dataRef
-                    : (name.length > 0 ? item.name : undefined);
-                if (item.value instanceof Array) {
-                    ret[item.id] = item.value.map((x) => {
-                        return { ...x, 'dataRef': dataRef };
-                    });
-                }
-                else if (item.value != null) {
-                    ret[item.id] = { ...item.value, 'dataRef': dataRef };
-                }
-            }
-        }
-        return Object.assign(acc, ret);
-    }, {});
-};
-const getFileSizeInBytes = (str) => {
-    let retVal = 0;
-    if (typeof str === 'string') {
-        const matches = fileSizeRegex.exec(str.trim());
-        if (matches != null) {
-            retVal = sizeToBytes(parseFloat(matches[1]), (matches[2] || 'kb').toUpperCase());
-        }
-    }
-    return retVal;
-};
-const sizeToBytes = (size, symbol) => {
-    const sizes = { 'KB': 1, 'MB': 2, 'GB': 3, 'TB': 4 };
-    const i = Math.pow(1024, sizes[symbol]);
-    return Math.round(size * i);
-};
-const IdGenerator = function* (initial = 50) {
-    const initialize = function () {
-        const arr = [];
-        for (let i = 0; i < initial; i++) {
-            arr.push(randomWord(10));
-        }
-        return arr;
-    };
-    const passedIds = {};
-    let ids = initialize();
-    do {
-        let x = ids.pop();
-        while (x in passedIds) {
-            if (ids.length === 0) {
-                ids = initialize();
-            }
-            x = ids.pop();
-        }
-        passedIds[x] = true;
-        yield ids.pop();
-        if (ids.length === 0) {
-            ids = initialize();
-        }
-    } while (ids.length > 0);
-};
-const isDataUrl = (str) => {
-    const dataUrlRegex = /^data:([a-z]+\/[a-z0-9-+.]+)?;(?:name=(.*);)?base64,(.*)$/;
-    return dataUrlRegex.exec(str.trim()) != null;
-};
-const extractFileInfo = (file) => {
-    if (file !== null) {
-        let retVal = null;
-        if (file instanceof FileObject) {
-            retVal = file;
-        }
-        else if (typeof File !== 'undefined' && file instanceof File) {
-            retVal = {
-                name: file.name,
-                mediaType: file.type,
-                size: file.size,
-                data: file
-            };
-        }
-        else if (typeof file === 'string' && isDataUrl(file)) {
-            const result = dataURItoBlob(file);
-            if (result !== null) {
-                const { blob, name } = result;
-                retVal = {
-                    name: name,
-                    mediaType: blob.type,
-                    size: blob.size,
-                    data: blob
-                };
-            }
-        }
-        else {
-            let jFile = file;
-            try {
-                jFile = JSON.parse(file);
-                retVal = jFile;
-                if (!retVal.mediaType) {
-                    retVal.mediaType = retVal.type;
-                }
-            }
-            catch (ex) {
-            }
-            if (typeof jFile?.data === 'string' && isDataUrl(jFile?.data)) {
-                const result = dataURItoBlob(jFile?.data);
-                if (result !== null) {
-                    const blob = result.blob;
-                    retVal = {
-                        name: jFile?.name,
-                        mediaType: jFile?.type || jFile?.mediaType,
-                        size: blob.size,
-                        data: blob
-                    };
-                }
-            }
-            else if (typeof jFile === 'string') {
-                const fileName = jFile.split('/').pop();
-                retVal = {
-                    name: fileName,
-                    mediaType: 'application/octet-stream',
-                    size: 0,
-                    data: jFile
-                };
-            }
-            else if (typeof jFile === 'object') {
-                retVal = {
-                    name: jFile?.name,
-                    mediaType: jFile?.type || jFile?.mediaType,
-                    size: jFile?.size,
-                    data: jFile?.data
-                };
-            }
-        }
-        if (retVal !== null && retVal.data != null) {
-            return new FileObject(retVal);
-        }
-        return null;
-    }
-    else {
-        return null;
-    }
-};
-const dataURItoBlob = (dataURI) => {
-    const regex = /^data:([a-z]+\/[a-z0-9-+.]+)?(?:;name=([^;]+))?(;base64)?,(.+)$/;
-    const groups = regex.exec(dataURI);
-    if (groups !== null) {
-        const type = groups[1] || '';
-        const name = groups[2] || 'unknown';
-        const isBase64 = typeof groups[3] === 'string';
-        if (isBase64) {
-            const binary = atob(groups[4]);
-            const array = [];
-            for (let i = 0; i < binary.length; i++) {
-                array.push(binary.charCodeAt(i));
-            }
-            const blob = new window.Blob([new Uint8Array(array)], { type });
-            return { name, blob };
-        }
-        else {
-            const blob = new window.Blob([groups[4]], { type });
-            return { name, blob };
-        }
-    }
-    else {
-        return null;
-    }
-};
-const isFormOrSiteContainer = (model) => {
-    return (':items' in model || 'cqItems' in model) && (':itemsOrder' in model || 'cqItemsOrder' in model);
-};
-const sitesModelToFormModel = (sitesModel) => {
-    if (!sitesModel || !Object.keys(sitesModel).length) {
-        return sitesModel;
-    }
-    if (isFormOrSiteContainer(sitesModel)) {
-        const itemsArr = [];
-        const itemsOrder = sitesModel[':itemsOrder'] || sitesModel.cqItemsOrder;
-        const items = sitesModel[':items'] || sitesModel.cqItems;
-        itemsOrder.forEach((elemName) => {
-            itemsArr.push(sitesModelToFormModel(items[elemName]));
-        });
-        sitesModel.items = itemsArr;
-    }
-    return sitesModel;
-};
-const replaceTemplatePlaceholders = (str, values = []) => {
-    return str?.replace(/\${(\d+)}/g, (match, index) => {
-        const replacement = values[index];
-        return typeof replacement !== 'undefined' ? replacement : match;
-    });
-};
 const request$1 = (url, data = null, options = {}) => {
     const opts = { ...defaultRequestOptions, ...options };
     const updatedUrl = opts.method === 'GET' && data ? convertQueryString(url, data) : url;
@@ -2339,6 +2622,11 @@ class FunctionRuntimeImpl {
                                 },
                                 exportData: () => {
                                     return FunctionRuntimeImpl.getInstance().getFunctions().exportData._func.call(undefined, args, data, interpreter);
+                                },
+                                submitForm: (payload, validateForm, contentType) => {
+                                    const submitAs = contentType || 'multipart/form-data';
+                                    const args = ['custom:submitSuccess', 'custom:submitError', submitAs, payload, validateForm];
+                                    return FunctionRuntimeImpl.getInstance().getFunctions().submitForm._func.call(undefined, args, data, interpreter);
                                 }
                             }
                         };
@@ -2440,11 +2728,24 @@ class FunctionRuntimeImpl {
             },
             submitForm: {
                 _func: (args, data, interpreter) => {
-                    const success = toString(args[0]);
-                    const error = toString(args[1]);
-                    const submit_as = args.length > 2 ? toString(args[2]) : 'multipart/form-data';
-                    const submit_data = args.length > 3 ? valueOf(args[3]) : null;
-                    const validate_form = args.length > 4 ? valueOf(args[4]) : true;
+                    let success = 'custom:submitSuccess';
+                    let error = 'custom:submitError';
+                    let submit_data;
+                    let validate_form;
+                    let submit_as;
+                    if (args.length > 0 && typeof valueOf(args[0]) === 'object') {
+                        submit_data = args.length > 0 ? valueOf(args[0]) : null;
+                        validate_form = args.length > 1 ? valueOf(args[1]) : true;
+                        submit_as = args.length > 2 ? toString(args[2]) : 'multipart/form-data';
+                    }
+                    else {
+                        interpreter.globals.form.logger.warn('This usage of submitForm is deprecated. Please see the documentation and update');
+                        success = toString(args[0]);
+                        error = toString(args[1]);
+                        submit_as = args.length > 2 ? toString(args[2]) : 'multipart/form-data';
+                        submit_data = args.length > 3 ? valueOf(args[3]) : null;
+                        validate_form = args.length > 4 ? valueOf(args[4]) : true;
+                    }
                     interpreter.globals.form.dispatch(new Submit({
                         success,
                         error,
@@ -2947,283 +3248,6 @@ __decorate([
 __decorate([
     dependencyTracked()
 ], InstanceManager.prototype, "minOccur", null);
-const dateRegex = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
-const emailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-const days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-const daysInMonth = (leapYear, month) => {
-    if (leapYear && month == 2) {
-        return 29;
-    }
-    return days[month - 1];
-};
-const isLeapYear = (year) => {
-    return year % 400 === 0 || year % 4 === 0 && year % 100 !== 0;
-};
-const coerceType = (param, type) => {
-    let num;
-    switch (type) {
-        case 'string':
-            return param + '';
-        case 'number':
-            num = +param;
-            if (!isNaN(num)) {
-                return num;
-            }
-            break;
-        case 'boolean':
-            if (typeof param === 'string') {
-                return param === 'true';
-            }
-            else if (typeof param === 'number') {
-                return param !== 0;
-            }
-    }
-    throw `${param} has invalid type. Expected : ${type}, Actual ${typeof param}`;
-};
-const checkNumber = (inputVal) => {
-    if (inputVal === '' || inputVal == null) {
-        return {
-            value: '', valid: true
-        };
-    }
-    let value = parseFloat(inputVal);
-    const valid = !isNaN(value);
-    if (!valid) {
-        value = inputVal;
-    }
-    return {
-        value, valid
-    };
-};
-const checkInteger = (inputVal) => {
-    if (inputVal == '' || inputVal == null) {
-        return {
-            value: '', valid: true
-        };
-    }
-    let value = parseFloat(inputVal);
-    const valid = !isNaN(value) && Math.round(value) === value;
-    if (!valid) {
-        value = inputVal;
-    }
-    return {
-        value, valid
-    };
-};
-const toArray = (inputVal) => {
-    if (inputVal != null && !(inputVal instanceof Array)) {
-        return [inputVal];
-    }
-    return inputVal;
-};
-const checkBool = (inputVal) => {
-    const valid = typeof inputVal === 'boolean' || inputVal === 'true' || inputVal === 'false';
-    const value = typeof inputVal === 'boolean' ? inputVal : (valid ? inputVal === 'true' : inputVal);
-    return { valid, value };
-};
-const checkFile = (inputVal) => {
-    const value = extractFileInfo(inputVal);
-    const valid = value !== null;
-    return {
-        value: valid ? value : inputVal,
-        valid
-    };
-};
-const matchMediaType = (mediaType, accepts) => {
-    return !mediaType || accepts.some((accept) => {
-        const trimmedAccept = accept.trim();
-        const prefixAccept = trimmedAccept.split('/')[0];
-        const suffixAccept = trimmedAccept.split('.')[1];
-        return ((trimmedAccept.includes('*') && mediaType.startsWith(prefixAccept)) ||
-            (trimmedAccept.includes('.') && mediaType.endsWith(suffixAccept)) ||
-            (trimmedAccept === mediaType));
-    });
-};
-const partitionArray = (inputVal, validatorFn) => {
-    const value = toArray(inputVal);
-    if (value == null) {
-        return [[], [value]];
-    }
-    return value.reduce((acc, x) => {
-        if (acc[1].length == 0) {
-            const r = validatorFn(x);
-            const index = r.valid ? 0 : 1;
-            acc[index].push(r.value);
-        }
-        return acc;
-    }, [[], []]);
-};
-const ValidConstraints = {
-    date: ['minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum', 'format'],
-    string: ['minLength', 'maxLength', 'pattern'],
-    number: ['minimum', 'maximum', 'exclusiveMinimum', 'exclusiveMaximum'],
-    array: ['minItems', 'maxItems', 'uniqueItems'],
-    file: ['accept', 'maxFileSize'],
-    email: ['minLength', 'maxLength', 'format', 'pattern']
-};
-const Constraints = {
-    type: (constraint, inputVal) => {
-        let value = inputVal;
-        if (inputVal == undefined) {
-            return {
-                valid: true,
-                value: inputVal
-            };
-        }
-        let valid = true, res;
-        switch (constraint) {
-            case 'string':
-                valid = true;
-                value = inputVal.toString();
-                break;
-            case 'string[]':
-                value = toArray(inputVal);
-                break;
-            case 'number':
-                res = checkNumber(inputVal);
-                value = res.value;
-                valid = res.valid;
-                break;
-            case 'boolean':
-                res = checkBool(inputVal);
-                valid = res.valid;
-                value = res.value;
-                break;
-            case 'integer':
-                res = checkInteger(inputVal);
-                valid = res.valid;
-                value = res.value;
-                break;
-            case 'integer[]':
-                res = partitionArray(inputVal, checkInteger);
-                valid = res[1].length === 0;
-                value = valid ? res[0] : inputVal;
-                break;
-            case 'file':
-                res = checkFile(inputVal instanceof Array ? inputVal[0] : inputVal);
-                valid = res.valid;
-                value = res.value;
-                break;
-            case 'file[]':
-                res = partitionArray(inputVal, checkFile);
-                valid = res[1].length === 0;
-                value = valid ? res[0] : inputVal;
-                break;
-            case 'number[]':
-                res = partitionArray(inputVal, checkNumber);
-                valid = res[1].length === 0;
-                value = valid ? res[0] : inputVal;
-                break;
-            case 'boolean[]':
-                res = partitionArray(inputVal, checkBool);
-                valid = res[1].length === 0;
-                value = valid ? res[0] : inputVal;
-                break;
-        }
-        return {
-            valid,
-            value
-        };
-    },
-    format: (constraint, input) => {
-        let valid = true;
-        const value = input;
-        if (input === null) {
-            return { value, valid };
-        }
-        let res;
-        switch (constraint) {
-            case 'date':
-                res = dateRegex.exec((input || '').trim());
-                if (res != null) {
-                    const [match, year, month, date] = res;
-                    const [nMonth, nDate] = [+month, +date];
-                    const leapYear = isLeapYear(+year);
-                    valid = (nMonth >= 1 && nMonth <= 12) &&
-                        (nDate >= 1 && nDate <= daysInMonth(leapYear, nMonth));
-                }
-                else {
-                    valid = false;
-                }
-                break;
-            case 'email':
-                valid = new RegExp(emailRegex).test((input || '').trim());
-                break;
-            case 'data-url':
-                valid = true;
-                break;
-        }
-        return { valid, value };
-    },
-    minimum: (constraint, value) => {
-        return { valid: value >= constraint, value };
-    },
-    maximum: (constraint, value) => {
-        return { valid: value <= constraint, value };
-    },
-    exclusiveMinimum: (constraint, value) => {
-        return { valid: value > constraint, value };
-    },
-    exclusiveMaximum: (constraint, value) => {
-        return { valid: value < constraint, value };
-    },
-    minItems: (constraint, value) => {
-        return { valid: (value instanceof Array) && value.length >= constraint, value };
-    },
-    maxItems: (constraint, value) => {
-        return { valid: (value instanceof Array) && value.length <= constraint, value };
-    },
-    uniqueItems: (constraint, value) => {
-        return { valid: !constraint || ((value instanceof Array) && value.length === new Set(value).size), value };
-    },
-    minLength: (constraint, value) => {
-        return { ...Constraints.minimum(constraint, typeof value === 'string' ? value.length : 0), value };
-    },
-    maxLength: (constraint, value) => {
-        return { ...Constraints.maximum(constraint, typeof value === 'string' ? value.length : 0), value };
-    },
-    pattern: (constraint, value) => {
-        let regex;
-        if (typeof constraint === 'string') {
-            regex = new RegExp(constraint);
-        }
-        else {
-            regex = constraint;
-        }
-        return { valid: regex.test(value), value };
-    },
-    required: (constraint, value) => {
-        const valid = constraint ? value != null && value !== '' : true;
-        return { valid, value };
-    },
-    enum: (constraint, value) => {
-        return {
-            valid: constraint.indexOf(value) > -1,
-            value
-        };
-    },
-    accept: (constraint, value) => {
-        if (!constraint || constraint.length === 0 || value === null || value === undefined) {
-            return {
-                valid: true,
-                value
-            };
-        }
-        const tempValue = value instanceof Array ? value : [value];
-        const invalidFile = tempValue.some((file) => !matchMediaType(file.type, constraint));
-        return {
-            valid: !invalidFile,
-            value
-        };
-    },
-    maxFileSize: (constraint, value) => {
-        const sizeLimit = typeof constraint === 'string' ? getFileSizeInBytes(constraint) : constraint;
-        return {
-            valid: !(value instanceof FileObject) || value.size <= sizeLimit,
-            value
-        };
-    }
-};
 const validTypes = ['string', 'number', 'integer', 'boolean', 'file', 'string[]', 'number[]', 'integer[]', 'boolean[]', 'file[]', 'array', 'object'];
 class Field extends Scriptable {
     constructor(params, _options) {
@@ -3381,6 +3405,9 @@ class Field extends Scriptable {
     get displayFormat() {
         return this.withCategory(this._jsonModel.displayFormat);
     }
+    get displayValueExpression() {
+        return this._jsonModel.displayValueExpression;
+    }
     get placeholder() {
         return this._jsonModel.placeholder;
     }
@@ -3447,7 +3474,6 @@ class Field extends Scriptable {
     }
     set required(r) {
         this._setProperty('required', r);
-        this.validate();
     }
     get maximum() {
         if (this.type === 'number' || this.format === 'date' || this.type === 'integer') {
@@ -3499,6 +3525,9 @@ class Field extends Scriptable {
         }
     }
     get displayValue() {
+        if (this.displayValueExpression && typeof this.displayValueExpression === 'string' && this.displayValueExpression.length !== 0) {
+            return this.executeExpression(this.displayValueExpression);
+        }
         const df = this.displayFormat;
         if (df && this.isNotEmpty(this.value) && this.valid !== false) {
             try {
@@ -4074,6 +4103,17 @@ class Checkbox extends Field {
         baseConstraints.required = requiredConstraint(this.offValue());
         return baseConstraints;
     }
+    _applyDefaults() {
+        if (typeof this._jsonModel.checked === 'boolean') {
+            if (this._jsonModel.checked) {
+                this._jsonModel.default = this._jsonModel.enum?.[0];
+            }
+            else {
+                this._jsonModel.default = this._jsonModel.enum?.[1];
+            }
+        }
+        super._applyDefaults();
+    }
     _getDefaults() {
         return {
             ...super._getDefaults(),
@@ -4083,7 +4123,43 @@ class Checkbox extends Field {
     get enum() {
         return this._jsonModel.enum || [];
     }
+    updateDataNodeAndTypedValue(val) {
+        const changes = super.updateDataNodeAndTypedValue(val);
+        const valueChange = changes.find((c) => c.propertyName === 'value');
+        if (valueChange) {
+            const oldChecked = valueChange.prevValue === this._jsonModel.enum?.[0];
+            const newChecked = valueChange.currentValue === this._jsonModel.enum?.[0];
+            if (oldChecked !== newChecked) {
+                changes.push({
+                    propertyName: 'checked',
+                    prevValue: oldChecked,
+                    currentValue: newChecked
+                });
+            }
+        }
+        return changes;
+    }
+    set checked(check) {
+        if (check) {
+            this.value = this._jsonModel.enum?.[0];
+        }
+        else {
+            this.value = this._jsonModel.enum?.[1];
+        }
+    }
+    get checked() {
+        return this.value === this._jsonModel.enum?.[0];
+    }
+    getState(isRepeatableChild = false, forRestore = false) {
+        return {
+            ...super.getState(isRepeatableChild, forRestore),
+            checked: this.checked
+        };
+    }
 }
+__decorate([
+    dependencyTracked()
+], Checkbox.prototype, "checked", null);
 class CheckboxGroup extends Field {
     constructor(params, _options) {
         super(params, _options);

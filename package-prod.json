@@ -1,0 +1,30 @@
+{
+    "name": "@adobe-rnd/aem-boilerplate-forms",
+    "version": "1.3.0",
+    "description": "Starter project for AEM Forms for Edge Delivery",
+    "scripts": {
+      "lint:js": "eslint .",
+      "lint:css": "stylelint blocks/**/*.css styles/*.css",
+      "lint": "npm run lint:js && npm run lint:css"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/adobe-rnd/aem-boilerplate-forms.git"
+    },
+    "author": "Adobe",
+    "license": "Adobe Proprietary",
+    "bugs": {
+      "url": "https://github.com/adobe-rnd/aem-boilerplate-forms/issues"
+    },
+    "homepage": "https://github.com/adobe-rnd/aem-boilerplate-forms#readme",
+    "devDependencies": {
+      "@babel/core": "7.24.0",
+      "@babel/eslint-parser": "7.23.10",
+      "chai": "5.1.0",
+      "eslint": "8.57.0",
+      "eslint-config-airbnb-base": "15.0.0",
+      "eslint-plugin-import": "2.29.1",
+      "stylelint": "16.2.1",
+      "stylelint-config-standard": "36.0.0"
+    }
+  }

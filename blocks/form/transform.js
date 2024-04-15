@@ -50,6 +50,12 @@ function handleSpecialButtons(field) {
   }
 }
 
+function setProperty(field, key, value) {
+  if (field && value) {
+    field[key] = value;
+  }
+}
+
 function transformFlatToHierarchy(item) {
   Object.keys(item).forEach((key) => {
     if (key.includes('.')) {
@@ -95,19 +101,27 @@ function handleFranklinSpecialCases(item) {
   // Franklin Mandatory uses x for true.
   item.required = (item.required === 'x' || item.required === true);
 
-  if (item.Max || item.Min) {
-    if (item.fieldType === 'number' || item.fieldType === 'date' || item.fieldType === 'range') {
+  if (item.Max || item.Min || item?.constraintMessages?.max || item?.constraintMessages?.min) {
+    if (item.fieldType === 'number-input' || item.fieldType === 'date' || item.fieldType === 'range') {
       item.maximum = item.Max;
       item.minimum = item.Min;
+      setProperty(item.constraintMessages, 'maximum', item?.constraintMessages?.max);
+      setProperty(item.constraintMessages, 'minimum', item?.constraintMessages?.min);
     } else if (item.fieldType === 'panel') {
       item.maxOccur = item.Max;
       item.minOccur = item.Min;
+      setProperty(item.constraintMessages, 'maxOccur', item?.constraintMessages?.max);
+      setProperty(item.constraintMessages, 'minOccur', item?.constraintMessages?.min);
     } else {
       item.maxLength = item.Max;
       item.minLength = item.Min;
+      setProperty(item.constraintMessages, 'maxLength', item?.constraintMessages?.max);
+      setProperty(item.constraintMessages, 'minLength', item?.constraintMessages?.min);
     }
     delete item.Max;
     delete item.Min;
+    delete item?.constraintMessages?.max;
+    delete item?.constraintMessages?.min;
   }
 
   if (item.fieldType === 'plain-text' && !item.value) {
@@ -142,11 +156,16 @@ export default class DocBasedFormToAF {
     Type: 'fieldType',
     Label: 'label.value',
     Mandatory: 'required',
+    Accept: 'accept',
     Options: 'enum',
     OptionNames: 'enumNames',
     Visible: 'visible',
     Repeatable: 'repeatable',
     Style: 'appliedCssClassNames',
+    'Required Error Message': 'constraintMessages.required',
+    'Pattern Error Message': 'constraintMessages.pattern',
+    'Min Error Message': 'constraintMessages.min',
+    'Max Error Message': 'constraintMessages.max',
   };
 
   fieldMapping = new Map([
@@ -194,6 +213,15 @@ export default class DocBasedFormToAF {
         field.id = field.Id || getId(field.Name);
         field.value = field.Value || '';
         this.#transformFieldNames(field);
+
+        if (field?.fieldType === 'submit') {
+          const submitValue = field.value;
+          if (submitValue.startsWith('https')) {
+            formDef.redirectUrl = submitValue;
+          } else if (submitValue) {
+            formDef.thankYouMsg = submitValue;
+          }
+        }
 
         if (field?.fieldType === 'fieldset') {
           this.panelMap.set(field?.name, field);

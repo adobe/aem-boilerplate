@@ -6,6 +6,7 @@ on:
   create:
     branches:
       - main
+  workflow_dispatch:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
@@ -13,7 +14,7 @@ jobs:
       contents: write
       actions: write
     # only run if commit message is "Initial commit" on main branch
-    if: ${{ github.ref == 'refs/heads/main' && github.event.head_commit.message == 'Initial commit' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || ( github.ref == 'refs/heads/main' && !(contains(github.event, 'head_commit') || github.event.head_commit.message == 'Initial commit' )) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -26,6 +27,21 @@ jobs:
           rm -rf \
             .github/workflows/cleanup-on-create.yaml \
             CHANGELOG.md
+
+      - name: Remove Form Developement Files
+        run: |
+          rm -rf \
+            .circleci .npmrc test rollup
+
+      - name: Update .eslintignore
+        run: |
+          sed -i '/^rollup/d' .eslintignore
+          sed -i '/^helix-importer-ui/d' .eslintignore 
+
+      - name: Update Package.json
+        run: |
+          rm -rf package.json package-lock.json
+          mv package-prod.json package.json
 
       - name: Initialize README
         # replace {repo} and {owner} with the actual values
@@ -42,7 +58,7 @@ jobs:
       - name: Commit changes
         run: |
           git config --local user.email "helix@adobe.com"
-          git config --local user.name "Helix Bot"
+          git config --local user.name "AEM Bot"
           git add .
           git commit -m "chore: cleanup repository template"
           git push

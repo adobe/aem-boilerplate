@@ -17,5 +17,6 @@ module.exports = {
     'import/extensions': ['error', {
       js: 'always',
     }],
+    'no-console': 'on',
   },
 };

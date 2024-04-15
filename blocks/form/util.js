@@ -84,6 +84,7 @@ export function createFieldWrapper(fd, tagName = 'div', labelFn = createLabel) {
   const renderType = getHTMLRenderType(fd);
   const fieldId = `${renderType}-wrapper${nameStyle}`;
   fieldWrapper.className = fieldId;
+  fieldWrapper.dataset.id = fd.id;
   if (fd.visible === false) {
     fieldWrapper.dataset.visible = fd.visible;
   }

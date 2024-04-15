@@ -1,0 +1,63 @@
+<form data-action="undefined" novalidate="" data-redirect-url="" data-thank-you-msg="" data-source="sheet"
+    data-rules="false" data-id="undefined">
+    <div class="date-wrapper field-startdate field-wrapper col-6" data-id="startdate"
+        data-required-error-message="This field is required" data-required="true"><label for="startdate"
+            class="field-label">Start Date</label><input type="date" id="startdate" name="startDate" autocomplete="off"
+            required="required"></div>
+    <div class="date-wrapper field-enddate field-wrapper col-6" data-id="enddate"
+        data-required-error-message="Please fill in this field."
+        data-maximum-error-message="End date should be less than 10 days"
+        data-minimum-error-message="End date should be greater than start date" data-required="true"><label
+            for="enddate" class="field-label">End Date</label><input type="date" id="enddate" name="endDate"
+            autocomplete="off" required="required"></div>
+    <div class="drop-down-wrapper field-destination field-wrapper col-6" data-id="destination"
+        data-required-error-message="Please fill in this field." data-required="false"><label for="destination"
+            class="field-label">Destination</label><select title="" id="destination" name="destination">
+            <option disabled="" value="" selected="">Select your destination</option>
+            <option value="United States">United States</option>
+            <option value="India">India</option>
+            <option value="Australia">Australia</option>
+            <option value="United Kindom">United Kindom</option>
+        </select></div>
+    <div class="drop-down-wrapper field-class field-wrapper col-6" data-id="class"
+        data-required-error-message="Please fill in this field." data-required="false"><label for="class"
+            class="field-label">Class of service</label><select title="" id="class" name="class">
+            <option disabled="" value="" selected="">Please Select</option>
+            <option value="Economy">Economy Class</option>
+            <option value="Business">Business Class</option>
+            <option value="First">First Class</option>
+        </select></div>
+    <div class="number-wrapper field-budget field-wrapper col-6" data-id="budget"
+        data-required-error-message="Please fill in this field." data-maximum-error-message="Maximum of Xyz"
+        data-minimum-error-message="Minimum of Xyz" data-required="false"><label for="budget" class="field-label">Room
+            Budget</label><input type="number" max="10000" min="500" step="500" id="budget" name="budget"
+            autocomplete="off"></div>
+    <div class="number-wrapper field-amount field-wrapper col-6" data-id="amount"
+        data-required-error-message="Please fill in this field." data-required="false"><label for="amount"
+            class="field-label">Estimated Trip Cost</label><input type="number" id="amount" name="amount"
+            autocomplete="off"></div>
+    <fieldset class="panel-wrapper field-panel-1 field-wrapper col-12" data-id="panel-1" id="panel-1" name="panel-1">
+        <legend for="panel-1" class="field-label">Traveler Info</legend>
+        <div class="text-wrapper field-name field-wrapper col-6" data-id="name"
+            data-required-error-message="Please fill in this field." data-required="false"><label for="name"
+                class="field-label">Name</label><input type="text" id="name" name="name" autocomplete="off"></div>
+        <div class="number-wrapper field-age field-wrapper col-6" data-id="age"
+            data-required-error-message="Please fill in this field." data-required="false"><label for="age"
+                class="field-label">Age</label><input type="number" id="age" name="age" autocomplete="off"></div>
+    </fieldset>
+    <div class="checkbox-wrapper field-subscribe field-wrapper" data-id="subscribe"
+        data-required-error-message="Please fill in this field." data-required="false"><input type="checkbox"
+            value="true" id="subscribe" name="subscribe" autocomplete="off"><label for="subscribe"
+            class="field-label">Do you like subscribe for Magazine &amp; Activities?</label></div>
+    <div class="email-wrapper field-email field-wrapper" data-id="email"
+        data-required-error-message="Please fill in this field." data-required="false"><label for="email"
+            class="field-label">Email</label><input type="email" id="email" name="email" autocomplete="off"
+            pattern="([A-Za-z0-9][._]?)+[A-Za-z0-9]@[A-Za-z0-9]+(.?[A-Za-z0-9]){2}.([A-Za-z0-9]{2,4})?"></div>
+    <div class="button-wrapper field-submit field-wrapper submit-wrapper" data-id="submit"><button type="submit"
+            class="button" id="submit" name="submit">Submit</button></div>
+    <div class="file-wrapper field-attach field-wrapper decorated" data-id="attach" data-required-error-message="Please fill in this field." data-required="false"><label for="attach" class="field-label">Attach</label><div class="file-drag-area">
+        <div class="file-dragIcon"></div>
+        <div class="file-dragText">Drag and Drop To Upload</div>
+        <button class="file-attachButton" type="button">Attach</button>
+        <input type="file" accept="application/pdf" id="attach" name="attach" autocomplete="off"></div><div class="files-list"></div></div>
+</form>

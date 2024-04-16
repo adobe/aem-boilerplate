@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "properties": {
+        "eventForwardingContext": {
+            "type": "object",
+            "properties": {
+                "commerce": {
+                    "type": "boolean"
+                },
+                "aep": {
+                    "type": "boolean"
+                }
+            },
+            "additionalProperties": false
+        }
+    }
+}

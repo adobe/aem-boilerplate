@@ -6,6 +6,7 @@ const validator = new AcdlValidator();
 // Add schemas
 const schemas = [
     'pageContext',
+    'page-view',
     'productContext',
     'categoryContext',
     'product-page-view',
@@ -14,7 +15,9 @@ const schemas = [
     'recs-api-response-received',
     'recs-item-click',
     'recs-unit-impression-render',
-    'recs-unit-view'
+    'recs-unit-view',
+    'storefrontInstanceContext',
+    'eventForwardingContext',
 ];
 (await Promise.all(
     schemas.map(async schema => {

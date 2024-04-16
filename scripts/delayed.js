@@ -10,13 +10,13 @@ sampleRUM('cwv');
 // Load Commerce events SDK and collector
 const config = {
   environmentId: await getConfigValue('commerce-environment-id'),
-  environment: await getConfigValue('commerce-environment'),
+  environment: await getConfigValue('commerce-environment') === 'Production' ? 'prod' : 'non-prod',
   storeUrl: await getConfigValue('commerce-store-url'),
-  websiteId: await getConfigValue('commerce-website-id'),
+  websiteId: parseInt(await getConfigValue('commerce-website-id'), 10),
   websiteCode: await getConfigValue('commerce-website-code'),
-  storeId: await getConfigValue('commerce-store-id'),
+  storeId: parseInt(await getConfigValue('commerce-store-id'), 10),
   storeCode: await getConfigValue('commerce-store-code'),
-  storeViewId: await getConfigValue('commerce-store-view-id'),
+  storeViewId: parseInt(await getConfigValue('commerce-store-view-id'), 10),
   storeViewCode: await getConfigValue('commerce-store-view-code'),
   websiteName: await getConfigValue('commerce-website-name'),
   storeName: await getConfigValue('commerce-store-name'),

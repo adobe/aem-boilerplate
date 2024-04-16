@@ -108,6 +108,9 @@ async function loadEager(doc) {
       minYOffset: 0,
     },
   });
+  window.adobeDataLayer.push((dl) => {
+    dl.push({ event: 'page-view', eventInfo: { ...dl.getState() } });
+  });
 
   const main = doc.querySelector('main');
   if (main) {

@@ -1,0 +1,12 @@
+{
+    "type": "object",
+    "properties": {
+        "event": {
+            "type": "string",
+            "const": "page-view"
+        }
+    },
+    "required": [
+        "event"
+    ]
+}

@@ -1,5 +1,6 @@
 {
   "mappings": [
-    "/content/aem-boilerplate/:/"
+    "/content/aem-boilerplate/:/",
+    "/content/aem-boilerplate/configuration:/.helix/config.json"
   ]
 }

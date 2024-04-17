@@ -162,7 +162,7 @@ async function loadCategory(state) {
           .filter((product) => product !== null),
         total: response.productSearch.total_count,
       },
-      category: response.categories?.[0] ?? {},
+      category: { ...state.category, ...response.categories?.[0] ?? {} },
       facets: response.productSearch.facets.filter((facet) => facet.attribute !== 'categories'),
     };
   } catch (e) {

@@ -6,6 +6,7 @@
 .references #references-dialog {
   background-color: var(--_references-bg);
   color: var(--_references-text);
+  position: relative;
 }
 
 .references #references-dialog[open] {
@@ -26,7 +27,7 @@
   height: 100%;
 }
 
-.references #references-dialog .references-dialog-wrapper>* {
+.references #references-dialog .references-dialog-wrapper > * {
   padding-inline: 1rem;
 }
 
@@ -96,7 +97,7 @@
   grid-column: 1 / -1;
 }
 
-.references #references-dialog .references-body .reference-row>* {
+.references #references-dialog .references-body .reference-row > * {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -118,4 +119,11 @@
 .references #references-dialog .references-body .reference-row .status .publish-reference .icon {
   width: 16px;
   height: 16px;
+}
+
+.references #references-dialog .publish-prompt {
+  position: absolute;
+  inset: 1rem;
+  border: 3px solid black;
+  background-color: white;
 }

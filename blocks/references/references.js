@@ -16,6 +16,31 @@ function createReference(type, link) {
   return row;
 }
 
+function confirmPrompt(str, successCallback) {
+  const prompt = document.createElement('dialog');
+  prompt.className = 'publish-prompt-dialog';
+  prompt.innerHTML = `
+    <form method="dialog" class="publish-prompt-form">
+      <p class="prompt-msg">${str}</p>
+      <div class="button-container">
+        <button type="submit" value="true" autofocus>Confirm</button>
+        <button type="button" value="false">Cancel</button>
+      </div>
+    </div>
+  `;
+  prompt.querySelector('button[type="button"]').addEventListener('click', () => {
+    prompt.close();
+  });
+  prompt.addEventListener('close', () => {
+    if (prompt.returnValue === 'true') {
+      successCallback();
+    }
+    prompt.remove();
+  });
+  document.querySelector('#references-dialog').append(prompt);
+  prompt.showModal();
+}
+
 async function updateStatus(row) {
   const link = row.querySelector('a');
   const editLink = row.querySelector('.edit-link');
@@ -46,10 +71,9 @@ async function updateStatus(row) {
           publishBtn.className = 'publish-reference';
           publishBtn.innerHTML = '<span class="icon icon-publish"></span>';
           publishBtn.addEventListener('click', () => {
-            const result = confirm(`Publish ${link.getAttribute('href')}?`);
-            if (result) {
-              console.log('publish it.');
-            }
+            confirmPrompt(`Publish ${link.getAttribute('href')}?`, () => {
+              console.log('publish it');
+            });
           });
           decorateIcons(publishBtn);
           status.append(publishBtn);
@@ -184,6 +208,7 @@ function init(block) {
 
   dialog.showModal();
   document.body.style.overflowY = 'hidden';
+  confirmPrompt('this is a test', () => { });
   addOutsideClickListener(dialog.querySelector('.references-dialog-wrapper'), () => {
     dialog.close();
     document.body.style.overflowY = null;

@@ -125,8 +125,25 @@
 .references #references-dialog .publish-prompt-dialog {
   border: 1px solid var(--dark-color);
   border-radius: 1rem;
+  width: 400px;
 }
 
 .references #references-dialog .publish-prompt-dialog::backdrop {
   background-color: rgba(0 0 0 / 33%);
+}
+
+.references #references-dialog .publish-prompt-dialog .button-container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.references #references-dialog .publish-prompt-dialog .prompt-msg {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.references #references-dialog .publish-prompt-dialog .publish-prompt-path {
+  font-family: var(--fixed-font-family);
+  font-weight: 500;
 }

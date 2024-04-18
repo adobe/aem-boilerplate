@@ -16,12 +16,12 @@ function createReference(type, link) {
   return row;
 }
 
-function confirmPrompt(str, successCallback) {
+function confirmPrompt(path, successCallback) {
   const prompt = document.createElement('dialog');
   prompt.className = 'publish-prompt-dialog';
   prompt.innerHTML = `
     <form method="dialog" class="publish-prompt-form">
-      <p class="prompt-msg">${str}</p>
+      <p class="prompt-msg">Publish <span class="publish-prompt-path">${path}</span>?</p>
       <div class="button-container">
         <button type="submit" value="true" autofocus>Confirm</button>
         <button type="button"  class="secondary" value="false">Cancel</button>
@@ -85,19 +85,26 @@ async function updateStatus(row) {
           publishBtn.setAttribute('title', 'Publish');
           publishBtn.className = 'publish-reference';
           publishBtn.innerHTML = '<span class="icon icon-publish"></span>';
+          decorateIcons(publishBtn);
+          status.append(publishBtn);
+
           publishBtn.addEventListener('click', () => {
-            confirmPrompt(`Publish ${link.getAttribute('href')}?`, () => {
+            confirmPrompt(link.getAttribute('href'), () => {
+              publishBtn.remove();
+              status.textContent = 'Publishing...';
               fetch(`https://admin.hlx.page/live/${ownerRepoBranch}${link.getAttribute('href')}`, {
                 method: 'POST',
               }).then((pubResp) => {
-                console.log(pubResp.status);
-              }).catch((err) => {
-                console.error(err);
+                if (pubResp.ok) {
+                  setTimeout(() => {
+                    updateStatus(row);
+                  }, 5000);
+                }
+              }).catch(() => {
+                status.textContent = 'Publishing Failed!';
               });
             });
           });
-          decorateIcons(publishBtn);
-          status.append(publishBtn);
         }
       }
     }

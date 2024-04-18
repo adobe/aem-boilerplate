@@ -90,9 +90,13 @@ async function updateStatus(row) {
               fetch(`https://admin.hlx.page/publish/${ownerRepoBranch}${link.getAttribute('href')}`, {
                 method: 'POST',
                 'content-type': 'application/json',
-              }).then((pubResp) => pubResp.json())
-                .then((pubJson) => console.log(pubJson))
-                .catch((err) => console.error(err));
+              }).then((pubResp) => {
+                return pubResp.json();
+              }).then((pubJson) => {
+                console.log(pubJson);
+              }).catch((err) => {
+                console.error(err);
+              });
             });
           });
           decorateIcons(publishBtn);

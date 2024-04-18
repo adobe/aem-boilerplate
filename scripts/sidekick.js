@@ -35,17 +35,30 @@ async function getElement(sk, selector) {
   });
 }
 
+function shouldHidePlugin(plugin) {
+  const [pluginCls] = plugin.classList;
+  return ['edit', 'reload', 'publish', 'delete', 'unpublish'].indexOf(pluginCls) !== -1;
+}
+
 async function customizeButtons(sk) {
-  // hide the default buttons
   const container = await getElement(sk, '.plugin-container');
   container.style.visibility = 'hidden';
-  const actions = ['edit', 'reload', 'publish', 'delete', 'unpublish'];
-  for (let i = 0; i < actions.length; i += 1) {
-    const action = actions[i];
-    // eslint-disable-next-line no-await-in-loop
-    const btn = await getElement(sk, `.${action}.plugin`);
-    btn.style.display = 'none';
-  }
+
+  // hide the default buttons once
+  container.querySelectorAll('.plugin').forEach((plugin) => {
+    if (shouldHidePlugin(plugin)) {
+      plugin.style.display = 'none';
+    }
+  });
+  // listen for new buttons and hide them
+  new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => mutation.addedNodes.forEach((node) => {
+      if (shouldHidePlugin(node)) {
+        node.style.display = 'none';
+      }
+    }));
+  }).observe(container, { childList: true });
+
   container.style.visibility = 'visible';
 
   // initialize the custom edit button

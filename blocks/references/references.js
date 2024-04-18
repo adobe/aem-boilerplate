@@ -89,7 +89,9 @@ async function updateStatus(row) {
             confirmPrompt(`Publish ${link.getAttribute('href')}?`, () => {
               fetch(`https://admin.hlx.page/publish/${ownerRepoBranch}${link.getAttribute('href')}`, {
                 method: 'POST',
-                'content-type': 'application/json',
+                headers: {
+                  'content-type': 'application/json',
+                },
               }).then((pubResp) => {
                 return pubResp.json();
               }).then((pubJson) => {

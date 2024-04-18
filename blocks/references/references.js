@@ -87,7 +87,7 @@ async function updateStatus(row) {
           publishBtn.innerHTML = '<span class="icon icon-publish"></span>';
           publishBtn.addEventListener('click', () => {
             confirmPrompt(`Publish ${link.getAttribute('href')}?`, () => {
-              fetch(`https://admin.hlx.page/publish/${ownerRepoBranch}${link.getAttribute('href')}`, {
+              fetch(`https://admin.hlx.page/live/${ownerRepoBranch}${link.getAttribute('href')}`, {
                 method: 'POST',
               }).then((pubResp) => {
                 console.log(pubResp.status);

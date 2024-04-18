@@ -1,7 +1,7 @@
 import ffetch from '../../scripts/ffetch.js';
 import { decorateIcons } from '../../scripts/aem.js';
 import {
-  getOrigin, addOutsideClickListener, checkDomain, checkBrowserDomain,
+  getOrigin, checkDomain, checkBrowserDomain,
 } from '../../scripts/utils.js';
 
 function createReference(type, link) {
@@ -24,7 +24,7 @@ function confirmPrompt(str, successCallback) {
       <p class="prompt-msg">${str}</p>
       <div class="button-container">
         <button type="submit" value="true" autofocus>Confirm</button>
-        <button type="button" value="false">Cancel</button>
+        <button type="button"  class="secondary" value="false">Cancel</button>
       </div>
     </div>
   `;
@@ -41,14 +41,29 @@ function confirmPrompt(str, successCallback) {
   prompt.showModal();
 }
 
+function closeDialog(dlg) {
+  const prompt = dlg.querySelector('.publish-prompt-dialog');
+  if (prompt) {
+    prompt.close();
+    prompt.remove();
+  }
+
+  dlg.close();
+  document.body.style.overflowY = null;
+}
+
 async function updateStatus(row) {
   const link = row.querySelector('a');
   const editLink = row.querySelector('.edit-link');
   const status = row.querySelector('.status');
-  if (checkBrowserDomain().isHlx) {
-    const curHost = window.location.hostname.split('.');
-    const repoInfo = curHost[0].split('--');
-    const ownerRepoBranch = `${repoInfo[2]}/${repoInfo[1]}/${repoInfo[0]}`;
+  const browserDomainCheck = checkBrowserDomain();
+  if (browserDomainCheck.isHlx || browserDomainCheck.isLocal) {
+    let ownerRepoBranch = 'shsteimer/franklin-playground/main';
+    if (browserDomainCheck.isHlx) {
+      const curHost = window.location.hostname.split('.');
+      const repoInfo = curHost[0].split('--');
+      ownerRepoBranch = `${repoInfo[2]}/${repoInfo[1]}/${repoInfo[0]}`;
+    }
     const statusResp = await fetch(`https://admin.hlx.page/status/${ownerRepoBranch}${link.getAttribute('href')}?editUrl=auto`);
     if (statusResp.ok) {
       const json = await statusResp.json();
@@ -72,7 +87,12 @@ async function updateStatus(row) {
           publishBtn.innerHTML = '<span class="icon icon-publish"></span>';
           publishBtn.addEventListener('click', () => {
             confirmPrompt(`Publish ${link.getAttribute('href')}?`, () => {
-              console.log('publish it');
+              fetch(`https://admin.hlx.page/publish/${ownerRepoBranch}${link.getAttribute('href')}`, {
+                method: 'POST',
+                'content-type': 'application/json',
+              }).then((pubResp) => pubResp.json())
+                .then((pubJson) => console.log(pubJson))
+                .catch((err) => console.error(err));
             });
           });
           decorateIcons(publishBtn);
@@ -208,10 +228,12 @@ function init(block) {
 
   dialog.showModal();
   document.body.style.overflowY = 'hidden';
-  confirmPrompt('this is a test', () => { });
-  addOutsideClickListener(dialog.querySelector('.references-dialog-wrapper'), () => {
-    dialog.close();
-    document.body.style.overflowY = null;
+  dialog.addEventListener('click', (event) => {
+    const dialogDimensions = dialog.getBoundingClientRect();
+    if (event.clientX < dialogDimensions.left || event.clientX > dialogDimensions.right
+      || event.clientY < dialogDimensions.top || event.clientY > dialogDimensions.bottom) {
+      closeDialog(dialog);
+    }
   });
 }
 
@@ -240,8 +262,7 @@ export default async function decorate(block) {
   init(block);
   block.querySelector('#references-dialog .references-close').addEventListener('click', () => {
     const dialog = block.querySelector('#references-dialog');
-    dialog.close();
-    document.body.style.overflowY = null;
+    closeDialog(dialog);
   });
 
   window.addEventListener('message', (msg) => {

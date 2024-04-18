@@ -8,26 +8,6 @@ export function getOrigin() {
 }
 
 /**
-* Add a listener for clicks outside an element, and execute the callback when they happen.
-* useful for closing menus when they are clicked outside of.
-* @param {Element} elem the element
-* @param {function} callback the callback function
-*/
-export function addOutsideClickListener(elem, callback) {
-  let outsideClickListener;
-  const removeClickListener = (() => {
-    document.removeEventListener('click', outsideClickListener);
-  });
-  outsideClickListener = ((event) => {
-    if (!elem.contains(event.target)) {
-      callback();
-      removeClickListener();
-    }
-  });
-  document.addEventListener('click', outsideClickListener);
-}
-
-/**
  * The production domains for the curent site.
  * Used by link rewriting and domain checking.
  */

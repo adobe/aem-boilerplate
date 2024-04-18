@@ -121,9 +121,12 @@
   height: 16px;
 }
 
-.references #references-dialog .publish-prompt {
-  position: absolute;
-  inset: 1rem;
-  border: 3px solid black;
-  background-color: white;
+/* publish prompt */
+.references #references-dialog .publish-prompt-dialog {
+  border: 1px solid var(--dark-color);
+  border-radius: 1rem;
+}
+
+.references #references-dialog .publish-prompt-dialog::backdrop {
+  background-color: rgba(0 0 0 / 33%);
 }

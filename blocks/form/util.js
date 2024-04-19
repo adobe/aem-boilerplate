@@ -1,4 +1,6 @@
 // create a string containing head tags from h1 to h5
+import { defaultErrorMessages } from './constant.js';
+
 const headings = Array.from({ length: 5 }, (_, i) => `<h${i + 1}>`).join('');
 const allowedTags = `${headings}<a><b><p><i><em><strong><ul><li>`;
 
@@ -172,12 +174,12 @@ function removeInvalidMsg(fieldElement) {
 }
 
 export const validityKeyMsgMap = {
-  patternMismatch: 'patternErrorMessage',
-  rangeOverflow: 'maximumErrorMessage',
-  rangeUnderflow: 'minimumErrorMessage',
-  tooLong: 'maxLengthErrorMessage',
-  tooShort: 'minLengthErrorMessage',
-  valueMissing: 'requiredErrorMessage',
+  patternMismatch: { key: 'pattern', attribute: 'type' },
+  rangeOverflow: { key: 'maximum', attribute: 'max' },
+  rangeUnderflow: { key: 'minimum', attribute: 'min' },
+  tooLong: { key: 'maxLength', attribute: 'maxlength' },
+  tooShort: { key: 'minLength', attribute: 'minlength' },
+  valueMissing: { key: 'required' },
 };
 
 export function getCheckboxGroupValue(name, htmlForm) {
@@ -202,6 +204,14 @@ function updateRequiredCheckboxGroup(name, htmlForm) {
   });
 }
 
+function getValidationMessage(fieldElement) {
+  const [invalidProperty] = Object.keys(validityKeyMsgMap)
+    .filter((state) => fieldElement.validity[state]);
+  const { key, attribute } = validityKeyMsgMap[invalidProperty] || {};
+  const message = attribute ? defaultErrorMessages[key].replace(/\$0/, fieldElement.getAttribute(attribute)) : defaultErrorMessages[key];
+  return message || fieldElement.validationMessage;
+}
+
 export function checkValidation(fieldElement) {
   const wrapper = fieldElement.closest('.field-wrapper');
   const isCheckboxGroup = fieldElement.dataset.fieldType === 'checkbox-group';
@@ -214,10 +224,6 @@ export function checkValidation(fieldElement) {
     return;
   }
 
-  const [invalidProperty] = Object.keys(validityKeyMsgMap)
-    .filter((state) => fieldElement.validity[state]);
-
-  const message = wrapper.dataset[validityKeyMsgMap[invalidProperty]]
-  || fieldElement.validationMessage;
+  const message = getValidationMessage(fieldElement);
   updateOrCreateInvalidMsg(fieldElement, message);
 }

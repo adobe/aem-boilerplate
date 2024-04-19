@@ -63,6 +63,15 @@ export const sample = {
       },
     },
     {
+      fieldType: 'email',
+      id: 'f6',
+      name: 'f6_text',
+      required: true,
+      constraintMessages: {
+        required: 'Please fill in this field.',
+      },
+    },
+    {
       fieldType: 'button',
       id: 'button',
       buttonType: 'submit',
@@ -85,15 +94,21 @@ export function expect(block) {
   const f1 = block.querySelector('#f1').parentElement;
   const f1Message = f1.querySelector('.field-invalid .field-description');
   assert.equal(f1Message.textContent, 'Please fill in this field.', 'Required error message for text input');
-  setValue(block, '#f1', 'a');
-  assert.equal(f1.querySelector('.field-description.field-invalid'), undefined, 'Not required error message for text input');
+  setValue(block, '#f1', 'abc');
+  assert.equal(f1.querySelector('.field-invalid .field-description'), undefined, 'Not Required error message for text input');
 
   // number input error message
   const f2 = block.querySelector('#f2').parentElement;
   const f2Message = f2.querySelector('.field-invalid .field-description');
   assert.equal(f2Message.textContent, 'Please fill in this field.', 'Required error message for number input');
+  setValue(block, '#f2', 5);
+  assert.equal(f2.querySelector('.field-invalid .field-description'), undefined, 'Not Required error message for number input');
   setValue(block, '#f2', 1);
-  assert.equal(f2Message.querySelector('.field-description.field-invalid'), undefined, 'Not Required error message for number input');
+  const minMessage = f2.querySelector('.field-invalid .field-description').textContent;
+  assert.equal(minMessage, 'Value must be greater than or equal to 2.', 'minimum error message for number input');
+  setValue(block, '#f2', 11);
+  const maxMessage = f2.querySelector('.field-invalid .field-description').textContent;
+  assert.equal(maxMessage, 'Value must be less than or equal to 10.', 'maximum error message for number input');
 
   // radio buttons error message
   const f3 = block.querySelector('#f3');
@@ -116,6 +131,7 @@ export function expect(block) {
   // file input error message
   const f5 = block.querySelector('#f5').closest('.field-wrapper');
   const f5Message = f5.querySelector('.field-invalid .field-description');
+  // eslint-disable-next-line max-len
   assert.equal(f5Message.textContent, 'Please fill in this field.', 'Required error message for file input');
   const input = block.querySelector('#f5');
   const file = new File([new ArrayBuffer(1024)], 'file1.png', { type: 'image/png' });
@@ -125,6 +141,13 @@ export function expect(block) {
   });
   event.files = [file];
   input.dispatchEvent(event);
+
+  // email input error message
+  const f6 = block.querySelector('#f6').closest('.field-wrapper');
+  const f6Message = f6.querySelector('.field-invalid .field-description');
+  assert.equal(f6Message.textContent, 'Please fill in this field.', 'Required error message for file input');
+  setValue(block, '#f6', 'abc');
+  assert.equal(f6.querySelector('.field-invalid .field-description').textContent, 'Specify the value in allowed format : email.', 'Invalid email error message');
 }
 
 export const opDelay = 100;

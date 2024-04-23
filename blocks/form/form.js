@@ -502,5 +502,32 @@ export default async function decorate(block) {
       form.dataset.formpath = formDef.properties['fd:path'];
     }
     container.replaceWith(form);
+
+    /** custom code starts here */
+
+    const inputs = document.querySelectorAll('.field-wrapper input, .field-wrapper textarea, .field-wrapper select');
+    // check if the input value is empty
+    // if the input is of type select then check if the selected option is empty
+    const isEmpty = (input) => (input.tagName !== 'SELECT' && !input.value)
+      || (input.tagName === 'SELECT' && input.querySelector('option[selected]') == null);
+
+    // exclude types that should not have the floating label effect
+    const excludeTypes = ['checkbox', 'radio'];
+
+    inputs.forEach((input) => {
+      if (!excludeTypes.includes(input.type)) {
+        const wrapper = input.closest('.field-wrapper');
+        input.addEventListener('focus', () => {
+          wrapper.dataset.active = 'true';
+          wrapper.dataset.empty = isEmpty(input);
+        });
+        input.addEventListener('blur', () => {
+          wrapper.removeAttribute('data-active');
+          wrapper.dataset.empty = isEmpty(input);
+        });
+        // Initialize the state based on the input's current value
+        wrapper.dataset.empty = isEmpty(input);
+      }
+    });
   }
 }

@@ -546,3 +546,39 @@ main form .wizard > .current-wizard-step.panel-wrapper:first-of-type ~ .wizard-b
 main form .wizard > .current-wizard-step.panel-wrapper:last-of-type ~ .wizard-button-wrapper > .wizard-button-next {
     display: none;
 }
+
+/** custom css goes here */
+
+/* Base style for labels */
+main .form :not(.checkbox-wrapper, .radio-wrapper) > label {
+    margin: 15px 5px 0;
+    position: absolute;
+    transition: .3s cubic-bezier(.25,.8,.5,1);
+ }
+
+main .form [data-empty='true'] > input:not(:focus) {
+    color: transparent;
+}
+
+/* Style for labels when input is active or not empty */
+main .form [data-active='true'] > label,
+main .form [data-empty='false'] > label {
+    margin-left: 0;
+    font-size: var(--form-font-size-xs);
+    color: var(--label-color);
+    transform: translateY(-30px); /* move as per the height of input elements */
+    z-index: 1;
+}
+
+/* remove placeholder when not focused */
+main .form input:placeholder-shown:not(:focus)::placeholder {
+    color: transparent;
+}
+
+/* remove default browser placeholder for date field when not focused */
+input[type='date']:not(:focus):in-range::-webkit-datetime-edit-year-field,
+input[type='date']:not(:focus):in-range::-webkit-datetime-edit-month-field,
+input[type='date']:not(:focus):in-range::-webkit-datetime-edit-day-field,
+input[type='date']:not(:focus):in-range::-webkit-datetime-edit-text {
+    color: transparent;
+}

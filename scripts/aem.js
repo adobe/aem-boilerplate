@@ -378,6 +378,58 @@ function decorateTemplateAndTheme() {
 }
 
 /**
+ * Wrap inline text content of block cells within a <p> tag.
+ * @param {Element} block the block element
+ */
+function wrapTextNodes(block) {
+  const validWrappers = [
+    'P',
+    'PRE',
+    'UL',
+    'OL',
+    'PICTURE',
+    'TABLE',
+    'H1',
+    'H2',
+    'H3',
+    'H4',
+    'H5',
+    'H6',
+  ];
+
+  const wrap = (el) => {
+    const wrapper = document.createElement('p');
+    wrapper.append(...el.childNodes);
+    [...el.attributes]
+      // move the instrumentation from the cell to the new paragraph, also keep the class
+      // in case the content is a buttton and the cell the button-container
+      .filter(({ nodeName }) => nodeName === 'class'
+        || nodeName.startsWith('data-aue')
+        || nodeName.startsWith('data-richtext'))
+      .forEach(({ nodeName, nodeValue }) => {
+        wrapper.setAttribute(nodeName, nodeValue);
+        el.removeAttribute(nodeName);
+      });
+    el.append(wrapper);
+  };
+
+  block.querySelectorAll(':scope > div > div').forEach((blockColumn) => {
+    if (blockColumn.hasChildNodes()) {
+      const hasWrapper = !!blockColumn.firstElementChild
+        && validWrappers.some((tagName) => blockColumn.firstElementChild.tagName === tagName);
+      if (!hasWrapper) {
+        wrap(blockColumn);
+      } else if (
+        blockColumn.firstElementChild.tagName === 'PICTURE'
+        && (blockColumn.children.length > 1 || !!blockColumn.textContent.trim())
+      ) {
+        wrap(blockColumn);
+      }
+    }
+  });
+}
+
+/**
  * Decorates paragraphs containing a single link as buttons.
  * @param {Element} element container element
  */
@@ -640,31 +692,11 @@ function decorateBlock(block) {
     block.classList.add('block');
     block.dataset.blockName = shortBlockName;
     block.dataset.blockStatus = 'initialized';
+    wrapTextNodes(block);
     const blockWrapper = block.parentElement;
     blockWrapper.classList.add(`${shortBlockName}-wrapper`);
     const section = block.closest('.section');
     if (section) section.classList.add(`${shortBlockName}-container`);
-    // wrap plain text and non-block elements in a <p> or <pre>
-    block.querySelectorAll(':scope > div > div').forEach((cell) => {
-      const firstChild = cell.firstElementChild;
-      const cellText = cell.textContent.trim();
-      if ((!firstChild && cellText)
-        || (firstChild && !firstChild.tagName.match(/^(P(RE)?|H[1-6]|(U|O)L|TABLE)$/))) {
-        const paragraph = document.createElement('p');
-        [...cell.attributes]
-          // move the instrumentation from the cell to the new paragraph, also keep the class
-          // in case the content is a buttton and the cell the button-container
-          .filter(({ nodeName }) => nodeName === 'class'
-            || nodeName.startsWith('data-aue')
-            || nodeName.startsWith('data-richtext'))
-          .forEach(({ nodeName, nodeValue }) => {
-            paragraph.setAttribute(nodeName, nodeValue);
-            cell.removeAttribute(nodeName);
-          });
-        paragraph.append(...cell.childNodes);
-        cell.replaceChildren(paragraph);
-      }
-    });
     // eslint-disable-next-line no-use-before-define
     decorateButtons(block);
   }
@@ -751,4 +783,5 @@ export {
   toClassName,
   updateSectionsStatus,
   waitForLCP,
+  wrapTextNodes,
 };

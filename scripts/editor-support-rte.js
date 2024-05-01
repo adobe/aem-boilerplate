@@ -39,7 +39,7 @@ export function decorateRichtext(container = document) {
     } else {
       const editable = element.closest('[data-aue-resource]');
       if (editable) {
-        orphanElements = editable.querySelectorAll(`[data-richtext-prop="${richtextProp}"]`);
+        orphanElements = editable.querySelectorAll(`:scope > :not([data-aue-resource]) [data-richtext-prop="${richtextProp}"]`);
       } else {
         console.warn(`Editable parent not found or richtext property ${richtextProp}`);
         return;

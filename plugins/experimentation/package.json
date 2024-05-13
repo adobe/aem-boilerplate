@@ -1,0 +1,37 @@
+{
+  "name": "@adobe/aem-experimentation",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "lint:js": "eslint src",
+    "lint:css": "stylelint src/**/*.css",
+    "lint": "npm run lint:js && npm run lint:css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/adobe/aem-experimentation.git"
+  },
+  "author": "Adobe Inc.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "aem",
+    "experimentation",
+    "experience",
+    "decisioning",
+    "plugin",
+    "campaigns",
+    "audiences"
+  ],
+  "bugs": {
+    "url": "https://github.com/adobe/aem-experimentation/issues"
+  },
+  "homepage": "https://github.com/adobe/aem-experimentation#readme",
+  "devDependencies": {
+    "@babel/eslint-parser": "7.22.15",
+    "eslint": "8.48.0",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-plugin-import": "2.28.1",
+    "stylelint": "15.10.3",
+    "stylelint-config-standard": "34.0.0"
+  }
+}

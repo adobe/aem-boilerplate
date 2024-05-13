@@ -1,0 +1,289 @@
+/*
+ * Copyright 2022 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+[hidden] {
+  display: none !important;
+}
+
+.hlx-highlight {
+  --highlight-size: .5rem;
+
+  outline-color: #888;
+  outline-offset: calc(-1 * var(--highlight-size));
+  outline-style: dashed;
+  outline-width: var(--highlight-size);
+  background-color: #8882;
+}
+
+.hlx-preview-overlay {
+  z-index: 99999;
+  position: fixed;
+  color: #eee;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  inset: auto auto 1em;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.hlx-badge {
+  --color: #888;
+
+  border-radius: 2em;
+  background-color: var(--color);
+  border-style: solid;
+  border-color: #fff;
+  color: #eee;
+  padding: 1em 1.5em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+  font-size: inherit;
+  overflow: initial;
+  margin: 0;
+  justify-content: space-between;
+  text-transform: none;
+}
+
+.hlx-badge:focus,
+.hlx-badge:hover {
+  --color: #888;
+}
+
+.hlx-badge:focus-visible {
+  outline-style: solid;
+  outline-width: .25em;
+}
+
+.hlx-badge > span {
+  user-select: none;
+}
+
+.hlx-badge .hlx-open {
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  width: 22px;
+  height: 22px;
+  border: 2px solid;
+  border-radius: 100px;
+  margin-left: 16px;
+}
+
+.hlx-badge .hlx-open::after {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-top: 2px solid;
+  border-right: 2px solid;
+  transform: rotate(-45deg);
+  left: 6px;
+  bottom: 5px;
+}
+
+.hlx-badge.hlx-testing {
+  background-color: #fa0f00;
+  color: #fff;
+}
+
+.hlx-popup {
+  position: absolute;
+  display: grid;
+  grid-template:
+    "header" min-content
+    "content" 1fr;
+  bottom: 6.5em;
+  left: 50%;
+  transform: translateX(-50%);
+  max-height: calc(100vh - 100px - var(--nav-height, 100px));
+  max-width: calc(100vw - 2em);
+  min-width: calc(300px - 2em);
+  background-color: #444;
+  border-radius: 16px;
+  box-shadow: 0 0 10px #000;
+  font-size: 12px;
+  text-align: initial;
+  white-space: initial;
+}
+
+.hlx-popup a:any-link {
+  color: #eee;
+  border: 2px solid;
+  padding: 5px 12px;
+  display: inline-block;
+  border-radius: 20px;
+  text-decoration: none;
+}
+
+.hlx-popup-header {
+  display: grid;
+  grid-area: header;
+  grid-template:
+    "label actions" 
+    "description actions"
+    / 1fr min-content;
+  background-color: #222;
+  border-radius: 16px 16px 0 0;
+  padding: 24px 16px;
+}
+
+.hlx-popup-items {
+  overflow-y: auto;
+  grid-area: content;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+}
+
+.hlx-popup-header-label {
+  grid-area: label;
+}
+
+.hlx-popup-header-description {
+  grid-area: description;
+}
+
+.hlx-popup-header-actions {
+  grid-area: actions;
+  display: flex;
+  flex-direction: column;
+}
+
+.hlx-popup h4, .hlx-popup h5 {
+  margin: 0;
+}
+
+.hlx-popup h4 {
+  font-size: 16px;
+}
+
+.hlx-popup h5 {
+  font-size: 14px;
+}
+
+
+.hlx-popup p {
+  margin: 0;
+}
+
+.hlx-popup::before {
+  content: '';
+  width: 0;
+  height: 0;
+  position: absolute;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 15px solid #444;
+  bottom: -15px;
+  right: 50%;
+  transform: translateX(50%);
+}
+
+.hlx-hidden {
+  display: none;
+}
+
+.hlx-badge.is-active,
+.hlx-badge[aria-pressed="true"] {
+  --color: #280;
+}
+
+.hlx-badge.is-inactive,
+.hlx-badge[aria-pressed="false"] {
+  --color: #fa0f00;
+}
+
+.hlx-popup-item {
+  display: grid;
+  grid-template:
+    "label actions"
+    "description actions"
+    / 1fr min-content;
+  margin: 1em;
+  padding: 1em;
+  border-radius: 1em;
+  gap: .5em 1em;
+}
+
+.hlx-popup-item-label {
+  grid-area: label;
+  white-space: nowrap;
+}
+
+.hlx-popup-item-description {
+  grid-area: description;
+}
+
+.hlx-popup-item-actions {
+  grid-area: actions;
+  display: flex;
+  flex-direction: column;
+}
+
+.hlx-popup-item.is-selected {
+  background-color: #666;
+}
+
+.hlx-popup-item .hlx-button {
+  flex: 0 0 auto;
+}
+
+@media (width >= 600px) {
+  .hlx-highlight {
+    --highlight-size: .75rem;
+  }
+
+  .hlx-preview-overlay {
+    right: 1em;
+    align-items: end;
+    font-size: 1.25rem;
+  }
+
+  .hlx-popup {
+    right: 0;
+    left: auto;
+    transform: none;
+    min-width: 300px;
+    bottom: 8em;
+  }
+
+  .hlx-popup::before {
+    right: 26px;
+    transform: none;
+  }
+}
+
+@media (width >= 900px) {
+  .hlx-highlight {
+    --highlight-size: 1rem;
+  }
+  
+  .hlx-preview-overlay {
+    flex-flow: row wrap-reverse;
+    justify-content: flex-end;
+    font-size: 1.5rem;
+  }
+
+  .hlx-popup {
+    bottom: 9em;
+  }
+
+  .hlx-popup::before {
+    right: 32px;
+  }
+}

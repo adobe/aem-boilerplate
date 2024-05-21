@@ -281,6 +281,17 @@ export async function loadFragment(path) {
   return null;
 }
 
+/**
+ * Check if consent was given for a specific topic.
+ * @param {*} topic Topic identifier
+ * @returns {boolean} True if consent was given
+ */
+// eslint-disable-next-line no-unused-vars
+export function getConsent(topic) {
+  console.warn('getConsent not implemented');
+  return true;
+}
+
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);

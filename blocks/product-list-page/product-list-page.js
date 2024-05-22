@@ -1,12 +1,12 @@
-import { loadScript, readBlockConfig } from '../../scripts/aem.js';
+import { readBlockConfig } from '../../scripts/aem.js';
 import { getConfigValue } from '../../scripts/configs.js';
 
 export default async function decorate(block) {
-  const { category, type } = readBlockConfig(block);
-  block.textContent = '';
+  // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
+  await import('/scripts/widgets/search.js');
 
-  const widgetProd = '/scripts/widgets/search.js';
-  await loadScript(widgetProd);
+  const { category, urlpath, type } = readBlockConfig(block);
+  block.textContent = '';
 
   const storeDetails = {
     environmentId: await getConfigValue('commerce-environment-id'),
@@ -45,6 +45,7 @@ export default async function decorate(block) {
   if (type !== 'search') {
     storeDetails.config.categoryName = document.querySelector('.default-content-wrapper > h1')?.innerText;
     storeDetails.config.currentCategoryId = category;
+    storeDetails.config.currentCategoryUrlPath = urlpath;
 
     // Enable enrichment
     block.dataset.category = category;

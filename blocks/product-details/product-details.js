@@ -91,9 +91,16 @@ class ProductDetailPage extends Component {
   }
 
   async componentDidMount() {
-    const product = await getProduct(getSkuFromUrl());
-
-    if (!product) {
+    let product;
+    try {
+      if (!window.getProductPromise) {
+        window.getProductPromise = getProduct(this.props.sku);
+      }
+      product = await window.getProductPromise;
+      if (!product) {
+        throw new Error("Couldn't get product");
+      }
+    } catch (e) {
       errorGettingProduct();
     }
 

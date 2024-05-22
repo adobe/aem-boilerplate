@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   sampleRUM,
   buildBlock,
@@ -15,7 +16,9 @@ import {
   loadScript,
   toCamelCase,
   toClassName,
+  readBlockConfig,
 } from './aem.js';
+import { getProduct, getSkuFromUrl, trackHistory } from './commerce.js';
 
 const LCP_BLOCKS = [
   'product-list-page',
@@ -114,6 +117,15 @@ export function decorateMain(main) {
   decorateBlocks(main);
 }
 
+function preloadFile(href, as) {
+  const link = document.createElement('link');
+  link.rel = 'preload';
+  link.as = as;
+  link.crossOrigin = 'anonymous';
+  link.href = href;
+  document.head.appendChild(link);
+}
+
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
@@ -136,8 +148,29 @@ async function loadEager(doc) {
   let pageType = 'CMS';
   if (document.body.querySelector('main .product-details')) {
     pageType = 'Product';
+    preloadFile('/scripts/preact.js', 'script');
+    preloadFile('/scripts/htm.js', 'script');
+    preloadFile('/blocks/product-details/ProductDetailsCarousel.js', 'script');
+    preloadFile('/blocks/product-details/ProductDetailsSidebar.js', 'script');
+    preloadFile('/blocks/product-details/ProductDetailsShimmer.js', 'script');
+    preloadFile('/blocks/product-details/Icon.js', 'script');
+
+    const sku = getSkuFromUrl();
+    window.getProductPromise = getProduct(sku);
   } else if (document.body.querySelector('main .product-list-page')) {
     pageType = 'Category';
+    preloadFile('/scripts/widgets/search.js', 'script');
+  } else if (document.body.querySelector('main .product-list-page-custom')) {
+    // TODO Remove this bracket if not using custom PLP
+    pageType = 'Category';
+    const plpBlock = document.body.querySelector('main .product-list-page-custom');
+    const { category, urlpath } = readBlockConfig(plpBlock);
+
+    if (category && urlpath) {
+      // eslint-disable-next-line import/no-unresolved, import/no-absolute-path
+      const { preloadCategory } = await import('/blocks/product-list-page-custom/product-list-page-custom.js');
+      preloadCategory({ id: category, urlPath: urlpath });
+    }
   } else if (document.body.querySelector('main .commerce-cart')) {
     pageType = 'Cart';
   } else if (document.body.querySelector('main .commerce-checkout')) {
@@ -198,6 +231,8 @@ async function loadLazy(doc) {
     import('./acdl/validate.js');
   }
 
+  trackHistory();
+
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
@@ -217,7 +252,6 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
-  // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
   // load anything that can be postponed to the latest here
 }

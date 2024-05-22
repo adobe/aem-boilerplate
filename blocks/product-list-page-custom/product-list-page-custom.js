@@ -11,6 +11,7 @@ const html = htm.bind(h);
 
 // You can get this list via attributeMetadata query
 export const ALLOWED_FILTER_PARAMETERS = ['page', 'pageSize', 'sort', 'sortDirection', 'q', 'price', 'size', 'color_family'];
+const isMobile = window.matchMedia('only screen and (max-width: 900px)').matches;
 
 export const productSearchQuery = (addCategory = false) => `query ProductSearch(
   $currentPage: Int = 1
@@ -126,7 +127,11 @@ async function loadCategory(state) {
     if (state.type === 'category' && state.category.id) {
       variables.categoryId = state.category.id;
       variables.filter = variables.filter || [];
-      variables.filter.push({ attribute: 'categoryIds', eq: state.category.id });
+      if (state.category.urlPath) {
+        variables.filter.push({ attribute: 'categoryPath', eq: state.category.urlPath });
+      } else if (state.category.id) {
+        variables.filter.push({ attribute: 'categoryIds', eq: state.category.id });
+      }
     }
 
     window.adobeDataLayer.push((dl) => {
@@ -193,7 +198,7 @@ function parseQueryParams() {
     if (key === 'page') {
       newState.currentPage = parseInt(value, 10) || 1;
     } else if (key === 'pageSize') {
-      newState.currentPageSize = parseInt(value, 10) || 10;
+      newState.currentPageSize = parseInt(value, 10) || 12;
     } else if (key === 'sort') {
       newState.sort = value;
     } else if (key === 'sortDirection') {
@@ -207,6 +212,23 @@ function parseQueryParams() {
     }
   });
   return newState;
+}
+
+export async function preloadCategory(category) {
+  const queryParams = parseQueryParams();
+  window.loadCategoryPromise = loadCategory({
+    pages: 1,
+    currentPage: 1,
+    category,
+    basePageSize: isMobile ? 6 : 12,
+    currentPageSize: isMobile ? 6 : 12,
+    locale: 'en-US',
+    currency: 'USD',
+    type: 'category',
+    sort: 'position',
+    sortDirection: 'asc',
+    ...queryParams,
+  });
 }
 
 function Pagination(props) {
@@ -271,11 +293,13 @@ class ProductListPage extends Component {
     const {
       type = 'category',
       category,
+      urlpath,
     } = props;
     super();
 
     this.facetMenuRef = createRef();
     this.sortMenuRef = createRef();
+    this.secondLastProduct = createRef();
 
     const queryParams = parseQueryParams();
 
@@ -304,6 +328,7 @@ class ProductListPage extends Component {
       category: {
         name: headline,
         id: category || null,
+        urlPath: urlpath || null,
       },
       sort,
       sortDirection,
@@ -427,6 +452,22 @@ class ProductListPage extends Component {
     } else {
       await this.loadProducts();
     }
+
+    // Special optimization for mobile
+    if ('IntersectionObserver' in window && isMobile && this.state.products.items.length === 6 && this.state.products.total > 6) {
+      const scrollToBottomObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Load products with real page size
+            this.loadProducts();
+            scrollToBottomObserver.unobserve(entry.target);
+          }
+        });
+      });
+      if (this.secondLastProduct.current) {
+        scrollToBottomObserver.observe(this.secondLastProduct.current);
+      }
+    }
   }
 
   componentDidUpdate(_, prevState) {
@@ -492,7 +533,11 @@ class ProductListPage extends Component {
         <button disabled=${state.loading} id="toggle-filters" onClick=${() => this.facetMenuRef.current.classList.toggle('active')}>Filters</button>
         <button disabled=${state.loading} id="toggle-sortby" onClick=${() => this.sortMenuRef.current.classList.toggle('active')}>Sort By</button>
       </div>
-      <${ProductList} products=${state.products} disruptors=${state.disruptors} loading=${state.loading} currentPageSize=${state.currentPageSize} />
+      <${ProductList}
+        products=${state.products}
+        secondLastProduct=${this.secondLastProduct}
+        loading=${state.loading}
+        currentPageSize=${state.currentPageSize} />
       <${Pagination}
         pages=${state.pages}
         currentPage=${state.currentPage}
@@ -511,6 +556,7 @@ export default async function decorate(block) {
 
   block.textContent = '';
   block.dataset.category = config.category;
+  block.dataset.urlpath = config.urlpath;
 
   return new Promise((resolve) => {
     const app = html`<${ProductListPage} ...${config} block=${block} resolve=${resolve} />`;

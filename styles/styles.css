@@ -12,12 +12,12 @@
 
 :root {
   /* colors */
-  --link-color: #035fe6;
-  --link-hover-color: #136ff6;
   --background-color: white;
-  --light-color: #eee;
-  --dark-color: #ccc;
-  --text-color: black;
+  --light-color: #e1e1e1;
+  --dark-color: #c6c6c6;
+  --text-color: #292929;
+  --link-color: #274dea;
+  --link-hover-color: #1d3ecf;
 
   /* fonts */
   --body-font-family: roboto, roboto-fallback;
@@ -63,8 +63,8 @@ body {
   margin: 0;
   font-family: var(--body-font-family);
   line-height: 1.6;
-  color: var(--text-color);
   background-color: var(--background-color);
+  color: var(--text-color);
   display: none;
 }
 
@@ -152,8 +152,8 @@ button {
   font-style: normal;
   font-weight: 600;
   cursor: pointer;
-  color: var(--background-color);
   background-color: var(--link-color);
+  color: var(--background-color);
   margin: 16px 0;
   white-space: nowrap;
   overflow: hidden;

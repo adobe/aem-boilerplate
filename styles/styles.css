@@ -71,10 +71,10 @@
 }
 
 body {
-  font-size: var(--body-font-size-m);
   margin: 0;
   font-family: var(--body-font-family);
-  line-height: 1.6;
+  font-size: var(--body-font-size-m);
+  line-height: 1.5;
   color: var(--text-color);
   background-color: var(--background-color);
   display: none;
@@ -95,8 +95,8 @@ h4,
 h5,
 h6 {
   font-family: var(--heading-font-family);
-  font-weight: 600;
-  line-height: 1.25;
+  font-weight: 700;
+  line-height: 1.3;
   margin-top: 1em;
   margin-bottom: 0.5em;
   scroll-margin: calc(var(--nav-height) + 1em);
@@ -119,11 +119,6 @@ blockquote {
   margin-bottom: 1em;
 }
 
-code,
-pre {
-  font-size: var(--body-font-size-s);
-}
-
 code {
   padding: 0.125em;
 }
@@ -140,6 +135,13 @@ main pre {
   white-space: pre;
 }
 
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
 /* links */
 a:any-link {
   color: var(--link-color);
@@ -154,15 +156,14 @@ a:hover {
 /* buttons */
 a.button:any-link,
 button {
-  font-family: var(--body-font-family);
   display: inline-block;
   box-sizing: border-box;
   text-decoration: none;
   border: 2px solid transparent;
   padding: 5px 30px;
   text-align: center;
+  font-weight: 500;
   font-style: normal;
-  font-weight: 600;
   cursor: pointer;
   color: var(--background-color);
   background-color: var(--link-color);

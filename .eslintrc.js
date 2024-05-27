@@ -1,8 +1,8 @@
 module.exports = {
   root: true,
-  extends: 'airbnb-base',
-  plugins: [
-    'json',
+  extends: [
+    'airbnb-base',
+    'plugin:json/recommended',
   ],
   env: {
     browser: true,
@@ -14,12 +14,8 @@ module.exports = {
     requireConfigFile: false,
   },
   rules: {
-    'json/*': 'error',
-    // allow reassigning param
-    'no-param-reassign': [2, { props: false }],
-    'linebreak-style': ['error', 'unix'],
-    'import/extensions': ['error', {
-      js: 'always',
-    }],
+    'import/extensions': ['error', { js: 'always' }], // require js file extensions in imports
+    'linebreak-style': ['error', 'unix'], // enforce unix linebreaks
+    'no-param-reassign': [2, { props: false }], // allow modifying properties of param
   },
 };

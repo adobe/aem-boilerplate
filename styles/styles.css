@@ -59,8 +59,8 @@
 }
 
 body {
-  font-size: var(--body-font-size-m);
   margin: 0;
+  font-size: var(--body-font-size-m);
   font-family: var(--body-font-family);
   line-height: 1.6;
   color: var(--text-color);
@@ -82,12 +82,12 @@ h3,
 h4,
 h5,
 h6 {
+  margin-top: 0.8em;
+  margin-bottom: 0.25em;
   font-family: var(--heading-font-family);
   font-weight: 600;
   line-height: 1.25;
-  margin-top: 1em;
-  margin-bottom: 0.5em;
-  scroll-margin: calc(var(--nav-height) + 1em);
+  scroll-margin: 40px;
 }
 
 h1 { font-size: var(--heading-font-size-xxl); }
@@ -103,8 +103,8 @@ ol,
 ul,
 pre,
 blockquote {
-  margin-top: 1em;
-  margin-bottom: 1em;
+  margin-top: 0.8em;
+  margin-bottom: 0.25em;
 }
 
 code,
@@ -112,18 +112,18 @@ pre {
   font-size: var(--body-font-size-s);
 }
 
-code {
-  padding: 0.125em;
+pre {
+  overflow-y: auto;
 }
 
-pre {
-  overflow: scroll;
+main > div {
+  margin: 40px 16px;
 }
 
 main pre {
   background-color: var(--light-color);
-  padding: 1em;
-  border-radius: 0.25em;
+  padding: 16px;
+  border-radius: 8px;
   overflow-x: auto;
   white-space: pre;
 }
@@ -132,6 +132,7 @@ main pre {
 a:any-link {
   color: var(--link-color);
   text-decoration: none;
+  word-break: break-word;
 }
 
 a:hover {
@@ -142,23 +143,25 @@ a:hover {
 /* buttons */
 a.button:any-link,
 button {
+  max-width: 100%;
   font-family: var(--body-font-family);
   display: inline-block;
   box-sizing: border-box;
   text-decoration: none;
   border: 2px solid transparent;
-  padding: 5px 30px;
+  padding: 0.5em 1.2em;
   text-align: center;
   font-style: normal;
   font-weight: 600;
+  line-height: 1.25;
   cursor: pointer;
   color: var(--background-color);
   background-color: var(--link-color);
-  margin: 16px 0;
+  margin: 12px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-radius: 30px;
+  border-radius: 2.4em;
 }
 
 a.button:hover,
@@ -200,20 +203,23 @@ main img {
 }
 
 /* sections */
-main .section {
-  padding: 64px 16px;
+main > .section {
+  margin: 40px 0;
 }
 
-@media (width >= 600px) {
-  main .section {
-    padding: 64px 32px;
-  }
+main > .section > div {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 24px;
+}
+
+main > .section:first-of-type {
+  margin-top: 0;
 }
 
 @media (width >= 900px) {
-  .section > div {
-    max-width: 1200px;
-    margin: auto;
+  main > .section > div {
+    padding: 0 32px;
   }
 }
 
@@ -221,4 +227,6 @@ main .section {
 main .section.light,
 main .section.highlight {
   background-color: var(--light-color);
+  margin: 0;
+  padding: 40px 0;
 }

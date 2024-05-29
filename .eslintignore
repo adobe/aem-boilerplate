@@ -3,6 +3,8 @@ scripts/preact.js
 scripts/htm.js
 scripts/acdl
 tools/picker
+scripts/dropins
+scripts/__dropins__
 scripts/commerce-events-collector.js
 scripts/commerce-events-sdk.js
 scripts/widgets

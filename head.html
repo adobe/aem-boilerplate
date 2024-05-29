@@ -1,4 +1,4 @@
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <script type="speculationrules">
     {
         "prerender": [{
@@ -9,8 +9,27 @@
         }]
     }
 </script>
+<script type="importmap">
+    {
+        "imports": {
+            "@dropins/tools/": "/scripts/__dropins__/tools/",
+            "@dropins/storefront-pdp/": "/scripts/__dropins__/storefront-pdp/"
+        }
+    }
+</script>
+
 <script src="/scripts/aem.js" type="module"></script>
 <script src="/scripts/scripts.js" type="module"></script>
 <script src="/scripts/configs.js" type="module"></script>
 <script src="/scripts/commerce.js" type="module"></script>
-<link rel="stylesheet" href="/styles/styles.css"/>
+
+<link rel="modulepreload" href="/scripts/dropins.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/event-bus.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/fetch-graphql.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/initializer.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/runtime.js" />
+
+<link rel="stylesheet" href="/styles/styles.css" />
+
+<link rel="preconnect" href="https://catalog-service-sandbox.adobe.io" crossorigin="" />
+<link rel="preconnect" href="https://catalog-service.adobe.io" crossorigin="" />

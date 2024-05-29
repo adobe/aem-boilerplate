@@ -50,6 +50,9 @@ export const productDetailQuery = `query ProductQuery($sku: String!) {
     shortDescription
     urlKey
     inStock
+    metaTitle
+    metaKeyword
+    metaDescription
     images(roles: []) {
       url
       label

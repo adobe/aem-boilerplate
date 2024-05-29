@@ -11,7 +11,7 @@
  */
 
 :root {
-  /* Elsie base design */
+  /* Adobe Commerce Dropin design tokens */
   --color-brand-300: #6d6d6d;
   --color-brand-500: #454545;
   --color-brand-600: #383838;
@@ -165,7 +165,7 @@ h1 {
 
 h2 {
   font: var(--type-display-2-font);
-  letter-spacing: var(--type-display-2-letter-spacingg);
+  letter-spacing: var(--type-display-2-letter-spacing);
 }
 
 h3 {
@@ -231,20 +231,20 @@ main pre {
 }
 
 /* links */
-a:any-link {
+a:not(.dropin-design a) {
   color: var(--color-brand-500);
   font: var(--type-body-1-strong-font);
   letter-spacing: var(--type-body-1-strong-letter-spacing);
   text-decoration: none;
 }
 
-a:hover {
+a:not(.dropin-design a):hover {
   text-decoration: solid underline var(--color-brand-700);
   text-underline-offset: 6px;
   color: var(--color-brand-700);
 }
 
-a:focus-visible {
+a:not(.dropin-design a):focus-visible {
   outline: solid var(--shape-border-width-4) var(--color-neutral-400);
   border: var(--shape-border-width-1) solid var(--color-neutral-800);
   border-radius: var(--shape-border-radius-1);
@@ -259,8 +259,8 @@ a > u, button > u {
 }
 
 /* buttons */
-a.button:any-link,
-button {
+main a.button:any-link,
+button.button {
   font: var(--type-button-2-font);
   letter-spacing: var(--type-button-2-letter-spacing);
   display: inline-block;
@@ -272,37 +272,37 @@ button {
   cursor: pointer;
   color: var(--color-neutral-50);
   background-color: var(--color-brand-500);
-  margin: 16px 0;
+  margin: var(--spacing-small) 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-radius: 30px;
+  border-radius: var(--shape-border-radius-3);
 }
 
-a.button:hover,
-a.button:focus,
-button:hover,
-button:focus {
+main a.button:hover,
+main a.button:focus,
+button.button:hover,
+button.button:focus {
   background-color: var(--color-brand-600);
   cursor: pointer;
 }
 
-a.button.disabled,
-button:disabled,
-button:disabled:hover {
+main a.button.disabled,
+button.button:disabled,
+button.button:disabled:hover {
   background-color: var(--color-neutral-300);
   cursor: unset;
 }
 
-a.button.secondary,
-button.secondary {
+main a.button.secondary,
+button.button.secondary {
   background-color: unset;
   border: var(--shape-border-width-3) solid currentcolor;
   color: var(--color-brand-500)
 }
 
-a.button.secondary:hover,
-button.secondary:hover {
+main a.button.secondary:hover,
+button.button.secondary:hover {
   color: var(--color-brand-600)
 }
 
@@ -360,17 +360,17 @@ main img {
 
 /* sections */
 main .section {
-  padding: 64px 16px;
+  padding: var(--spacing-large) var(--spacing-small);
 }
 
 @media (width >=600px) {
   main .section {
-    padding: 64px 32px;
+    padding: var(--spacing-large) var(--spacing-big);
   }
 }
 
 @media (width >=900px) {
-  .section>div {
+  main .section > div {
     max-width: 1200px;
     margin: auto;
   }
@@ -380,4 +380,9 @@ main .section {
 main .section.light,
 main .section.highlight {
   background-color: var(--color-neutral-500);
+}
+
+/* Base Design System Tokens */
+.dropin-design.dropin-design {
+  --background-none: none 0 0% no-repeat padding-box;
 }

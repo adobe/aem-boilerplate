@@ -1,4 +1,5 @@
 /* eslint-disable import/no-cycle */
+import { events } from '@dropins/tools/event-bus.js';
 import {
   sampleRUM,
   buildBlock,
@@ -19,6 +20,7 @@ import {
   readBlockConfig,
 } from './aem.js';
 import { getProduct, getSkuFromUrl, trackHistory } from './commerce.js';
+import initializeDropins from './dropins.js';
 
 const LCP_BLOCKS = [
   'product-list-page',
@@ -132,6 +134,7 @@ function preloadFile(href, as) {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
+  await initializeDropins();
   decorateTemplateAndTheme();
 
   // Instrument experimentation plugin
@@ -148,14 +151,28 @@ async function loadEager(doc) {
   let pageType = 'CMS';
   if (document.body.querySelector('main .product-details')) {
     pageType = 'Product';
+    const sku = getSkuFromUrl();
+    window.getProductPromise = getProduct(sku);
+
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductDetails.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/api.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/render.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/runtime.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/713.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/275.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/918.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/148.js', 'script');
+  } else if (document.body.querySelector('main .product-details-custom')) {
+    pageType = 'Product';
     preloadFile('/scripts/preact.js', 'script');
     preloadFile('/scripts/htm.js', 'script');
-    preloadFile('/blocks/product-details/ProductDetailsCarousel.js', 'script');
-    preloadFile('/blocks/product-details/ProductDetailsSidebar.js', 'script');
-    preloadFile('/blocks/product-details/ProductDetailsShimmer.js', 'script');
-    preloadFile('/blocks/product-details/Icon.js', 'script');
+    preloadFile('/blocks/product-details-custom/ProductDetailsCarousel.js', 'script');
+    preloadFile('/blocks/product-details-custom/ProductDetailsSidebar.js', 'script');
+    preloadFile('/blocks/product-details-custom/ProductDetailsShimmer.js', 'script');
+    preloadFile('/blocks/product-details-custom/Icon.js', 'script');
 
-    const sku = getSkuFromUrl();
+    const blockConfig = readBlockConfig(document.body.querySelector('main .product-details-custom'));
+    const sku = getSkuFromUrl() || blockConfig.sku;
     window.getProductPromise = getProduct(sku);
   } else if (document.body.querySelector('main .product-list-page')) {
     pageType = 'Category';
@@ -176,6 +193,7 @@ async function loadEager(doc) {
   } else if (document.body.querySelector('main .commerce-checkout')) {
     pageType = 'Checkout';
   }
+
   window.adobeDataLayer.push({
     pageContext: {
       pageType,
@@ -187,9 +205,11 @@ async function loadEager(doc) {
       minYOffset: 0,
     },
   });
-  window.adobeDataLayer.push((dl) => {
-    dl.push({ event: 'page-view', eventInfo: { ...dl.getState() } });
-  });
+  if (pageType !== 'Product') {
+    window.adobeDataLayer.push((dl) => {
+      dl.push({ event: 'page-view', eventInfo: { ...dl.getState() } });
+    });
+  }
 
   const main = doc.querySelector('main');
   if (main) {
@@ -197,6 +217,8 @@ async function loadEager(doc) {
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
   }
+
+  events.emit('eds/lcp', true);
 
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
@@ -220,11 +242,12 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
-  loadFooter(doc.querySelector('footer'));
-
-  loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  loadFonts();
+  await Promise.all([
+    loadHeader(doc.querySelector('header')),
+    loadFooter(doc.querySelector('footer')),
+    loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`),
+    loadFonts(),
+  ]);
 
   await import('./acdl/adobe-client-data-layer.min.js');
   if (sessionStorage.getItem('acdl:debug')) {
@@ -294,25 +317,6 @@ export async function fetchIndex(indexFile, pageSize = 500) {
   window.index[indexFile] = newIndex;
 
   return newIndex;
-}
-
-/**
- * Loads a fragment.
- * @param {string} path The path to the fragment
- * @returns {HTMLElement} The root element of the fragment
- */
-export async function loadFragment(path) {
-  if (path && path.startsWith('/')) {
-    const resp = await fetch(`${path}.plain.html`);
-    if (resp.ok) {
-      const main = document.createElement('main');
-      main.innerHTML = await resp.text();
-      decorateMain(main);
-      await loadBlocks(main);
-      return main;
-    }
-  }
-  return null;
 }
 
 /**

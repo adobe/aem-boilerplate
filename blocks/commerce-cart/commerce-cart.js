@@ -4,7 +4,7 @@ export default function decorate(block) {
   const config = readBlockConfig(block);
 
   const content = document.createRange().createContextualFragment(`<div>
-    Commerce Cart drop-in
+    Commerce Cart dropin
     <pre>${JSON.stringify(config, null, 2)}</pre>
   </div>`);
 

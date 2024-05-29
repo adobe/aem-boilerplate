@@ -3,7 +3,6 @@ import {
 } from '../../scripts/preact.js';
 import htm from '../../scripts/htm.js';
 import Icon from './Icon.js';
-import { getSkuFromUrl } from '../../scripts/commerce.js';
 
 const html = htm.bind(h);
 
@@ -113,7 +112,7 @@ export default class Carousel extends Component {
     this.getImages();
 
     if (!this.images || !this.thumbnailImages) {
-      this.images = [`${window.origin}/${this.props.productImageFolder}/${getSkuFromUrl().toLowerCase()}.jpg`];
+      this.images = [`${window.origin}/${this.props.productImageFolder}/${this.props.sku}.jpg`];
       this.thumbnailImages = [];
     }
 
@@ -121,8 +120,8 @@ export default class Carousel extends Component {
         <div class="product-detail-carousel">
             <div class="carousel-thumbnails-wrapper">
                 <div class="thumbnail-controls">
-                    <button name="thumbnail-prev" disabled=${this.props.shimmer} onClick=${() => this.updateThumbnailSlide((index) => index - 1)}><${Icon} name="caret-up-fill" /></button>
-                    <button name="thumbnail-next" disabled=${this.props.shimmer} onClick=${() => this.updateThumbnailSlide((index) => index + 1)}><${Icon} name="caret-down-fill" /></button>
+                    <button class="button" name="thumbnail-prev" disabled=${this.props.shimmer} onClick=${() => this.updateThumbnailSlide((index) => index - 1)}><${Icon} name="caret-up-fill" /></button>
+                    <button class="button" name="thumbnail-next" disabled=${this.props.shimmer} onClick=${() => this.updateThumbnailSlide((index) => index + 1)}><${Icon} name="caret-down-fill" /></button>
                 </div>
                 <ul class="carousel-thumbnails" style="transform: translateY(-${(this.state.thumbnailSlide === 0 ? 0 : 1) * -252.7 + (this.state.thumbnailSlide) * 322.6}px)">
                     ${!this.props.loading && this.thumbnailImages.map((image, i) => html`
@@ -140,8 +139,8 @@ export default class Carousel extends Component {
                 ${this.renderLabel()}
                 ${!this.props.loading && html`
                     <div class="main-controls">
-                        <button name="stage-prev" onClick=${() => this.updateSlide((index) => index - 1)}><${Icon} name="caret-left-fill" /></button>
-                        <button name="stage-next" onClick=${() => this.updateSlide((index) => index + 1)}><${Icon} name="caret-right-fill" /></button>
+                        <button class="button" name="stage-prev" onClick=${() => this.updateSlide((index) => index - 1)}><${Icon} name="caret-left-fill" /></button>
+                        <button class="button" name="stage-next" onClick=${() => this.updateSlide((index) => index + 1)}><${Icon} name="caret-right-fill" /></button>
                     </div>
                 `}
                 <ul

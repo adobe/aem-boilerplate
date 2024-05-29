@@ -433,7 +433,6 @@ class ProductListPage extends Component {
           // TODO: Remove eventInfo once collector is updated
           dl.push({ event: 'category-results-view', eventInfo: { ...dl.getState(), searchUnitId } });
         }
-        dl.push({ event: 'page-view', eventInfo: { ...dl.getState() } });
       });
     }
   };

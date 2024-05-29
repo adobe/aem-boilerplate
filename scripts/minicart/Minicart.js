@@ -169,7 +169,7 @@ export class Minicart extends Component {
         ${state.cart.items.map((item, index) => html`<${ProductCard} index=${index} item=${item} formatter=${this.formatter} api=${props.api} />`)}
       </ul>
       <div class="minicart-actions">
-        <button onClick=${() => { window.location.href = '/cart'; }}>Go to cart</button>
+        <button class="button" onClick=${() => { window.location.href = '/cart'; }}>Go to cart</button>
       </div>
     </div>`;
   }

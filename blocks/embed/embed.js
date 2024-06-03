@@ -83,6 +83,18 @@ const loadEmbed = (block, link, autoplay) => {
   } else {
     block.innerHTML = getDefaultEmbed(url);
     block.classList = 'block embed';
+    const videoConfig = {
+      autoplay,
+    };
+    window.addEventListener('message', (event) => {
+      switch (event?.data?.name) {
+        case 'video-config':
+          event.source.window.postMessage(JSON.stringify(videoConfig), '*');
+          break;
+        default:
+          break;
+      }
+    });
   }
   block.classList.add('embed-is-loaded');
 };
@@ -90,6 +102,7 @@ const loadEmbed = (block, link, autoplay) => {
 export default function decorate(block) {
   const placeholder = block.querySelector('picture');
   const link = block.querySelector('a').href;
+
   block.textContent = '';
 
   if (placeholder) {
@@ -105,7 +118,11 @@ export default function decorate(block) {
     const observer = new IntersectionObserver((entries) => {
       if (entries.some((e) => e.isIntersecting)) {
         observer.disconnect();
-        loadEmbed(block, link);
+        // Check if link has a query parameter autoplay
+        const url = new URL(link);
+        const autoplay = url.searchParams.get('autoplay');
+
+        loadEmbed(block, link, autoplay);
       }
     });
     observer.observe(block);

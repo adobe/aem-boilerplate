@@ -1,3 +1,5 @@
+const ALLOWED_CONFIGS = ['prod', 'stage', 'dev'];
+
 /**
  * This function calculates the environment in which the site is running based on the URL.
  * It defaults to 'prod'. In non 'prod' environments, the value can be overwritten using
@@ -16,7 +18,7 @@ export const calcEnvironment = () => {
   }
 
   const environmentFromConfig = window.sessionStorage.getItem('environment');
-  if (environmentFromConfig && environment !== 'prod') {
+  if (environmentFromConfig && ALLOWED_CONFIGS.includes(environmentFromConfig) && environment !== 'prod') {
     return environmentFromConfig;
   }
 
@@ -25,8 +27,11 @@ export const calcEnvironment = () => {
 
 function buildConfigURL(environment) {
   const env = environment || calcEnvironment();
-  const configURL = new URL(`${window.location.origin}/configs.json`);
-  configURL.searchParams.set('sheet', env);
+  let fileName = 'configs.json?sheet=prod';
+  if (env !== 'prod') {
+    fileName = `configs-${env}.json`;
+  }
+  const configURL = new URL(`${window.location.origin}/${fileName}`);
   return configURL;
 }
 

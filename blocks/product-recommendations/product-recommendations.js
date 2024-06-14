@@ -1,6 +1,9 @@
 /* eslint-disable no-underscore-dangle */
+import { readBlockConfig } from '../../scripts/aem.js';
 import { performCatalogServiceQuery } from '../../scripts/commerce.js';
 import { getConfigValue } from '../../scripts/configs.js';
+
+const isMobile = window.matchMedia('only screen and (max-width: 900px)').matches;
 
 const recommendationsQuery = `query GetRecommendations(
   $pageType: PageType!
@@ -41,7 +44,7 @@ const recommendationsQuery = `query GetRecommendations(
   }
 }`;
 
-let recommendationsPromise;
+let unitsPromise;
 
 function renderPlaceholder(block) {
   block.innerHTML = `<h2></h2>
@@ -81,9 +84,9 @@ function renderItem(unitId, product) {
   return item;
 }
 
-function renderItems(block, recommendations) {
+function renderItems(block, results) {
   // Render only first recommendation
-  const [recommendation] = recommendations.results;
+  const [recommendation] = results;
   if (!recommendation) {
     // Hide block content if no recommendations are available
     block.textContent = '';
@@ -134,7 +137,12 @@ const mapUnit = (unit) => ({
   })),
 });
 
-async function loadRecommendation(block, context) {
+async function loadRecommendation(block, context, visibility, filters) {
+  // Only load once the recommendation becomes visible
+  if (!visibility) {
+    return;
+  }
+
   // Only proceed if all required data is available
   if (!context.pageType
     || (context.pageType === 'Product' && !context.currentSku)
@@ -143,67 +151,74 @@ async function loadRecommendation(block, context) {
     return;
   }
 
-  if (recommendationsPromise) {
-    return;
+  if (!unitsPromise) {
+    const storeViewCode = await getConfigValue('commerce-store-view-code');
+    // Get product view history
+    try {
+      const viewHistory = window.localStorage.getItem(`${storeViewCode}:productViewHistory`) || '[]';
+      context.userViewHistory = JSON.parse(viewHistory);
+    } catch (e) {
+      window.localStorage.removeItem('productViewHistory');
+      console.error('Error parsing product view history', e);
+    }
+
+    // Get purchase history
+    try {
+      const purchaseHistory = window.localStorage.getItem(`${storeViewCode}:purchaseHistory`) || '[]';
+      context.userPurchaseHistory = JSON.parse(purchaseHistory);
+    } catch (e) {
+      window.localStorage.removeItem('purchaseHistory');
+      console.error('Error parsing purchase history', e);
+    }
+
+    window.adobeDataLayer.push((dl) => {
+      dl.push({ event: 'recs-api-request-sent', eventInfo: { ...dl.getState() } });
+    });
+
+    unitsPromise = performCatalogServiceQuery(recommendationsQuery, context);
+    const { recommendations } = await unitsPromise;
+
+    window.adobeDataLayer.push((dl) => {
+      dl.push({ recommendationsContext: { units: recommendations.results.map(mapUnit) } });
+      dl.push({ event: 'recs-api-response-received', eventInfo: { ...dl.getState() } });
+    });
   }
 
-  const storeViewCode = await getConfigValue('commerce-store-view-code');
-  // Get product view history
-  try {
-    const viewHistory = window.localStorage.getItem(`${storeViewCode}:productViewHistory`) || '[]';
-    context.userViewHistory = JSON.parse(viewHistory);
-  } catch (e) {
-    window.localStorage.removeItem('productViewHistory');
-    console.error('Error parsing product view history', e);
-  }
+  let { results } = (await unitsPromise).recommendations;
+  results = results.filter((unit) => (filters.typeId ? unit.typeId === filters.typeId : true));
 
-  // Get purchase history
-  try {
-    const purchaseHistory = window.localStorage.getItem(`${storeViewCode}:purchaseHistory`) || '[]';
-    context.userPurchaseHistory = JSON.parse(purchaseHistory);
-  } catch (e) {
-    window.localStorage.removeItem('purchaseHistory');
-    console.error('Error parsing purchase history', e);
-  }
-
-  window.adobeDataLayer.push((dl) => {
-    dl.push({ event: 'recs-api-request-sent', eventInfo: { ...dl.getState() } });
-  });
-
-  recommendationsPromise = performCatalogServiceQuery(recommendationsQuery, context);
-  const { recommendations } = await recommendationsPromise;
-
-  window.adobeDataLayer.push((dl) => {
-    dl.push({ recommendationsContext: { units: recommendations.results.map(mapUnit) } });
-    dl.push({ event: 'recs-api-response-received', eventInfo: { ...dl.getState() } });
-  });
-
-  renderItems(block, recommendations);
+  renderItems(block, results);
 }
 
 export default async function decorate(block) {
+  const config = readBlockConfig(block);
+  const filters = {};
+  if (config.typeid) {
+    filters.typeId = config.typeid;
+  }
   renderPlaceholder(block);
 
   const context = {};
+  let visibility = !isMobile;
 
   function handleProductChanges({ productContext }) {
-    context.currentSku = productContext.sku;
-    loadRecommendation(block, context);
+    context.currentSku = productContext?.sku;
+    loadRecommendation(block, context, visibility, filters);
   }
 
   function handleCategoryChanges({ categoryContext }) {
-    context.category = categoryContext.name;
-    loadRecommendation(block, context);
+    context.category = categoryContext?.name;
+    loadRecommendation(block, context, visibility, filters);
   }
 
   function handlePageTypeChanges({ pageContext }) {
-    context.pageType = pageContext.pageType;
-    loadRecommendation(block, context);
+    context.pageType = pageContext?.pageType;
+    loadRecommendation(block, context, visibility, filters);
   }
 
   function handleCartChanges({ shoppingCartContext }) {
-    context.cartSkus = shoppingCartContext.items.map(({ product }) => product.sku);
-    loadRecommendation(block, context);
+    context.cartSkus = shoppingCartContext?.items?.map(({ product }) => product.sku);
+    loadRecommendation(block, context, visibility, filters);
   }
 
   window.adobeDataLayer.push((dl) => {
@@ -212,4 +227,18 @@ export default async function decorate(block) {
     dl.addEventListener('adobeDataLayer:change', handleCategoryChanges, { path: 'categoryContext' });
     dl.addEventListener('adobeDataLayer:change', handleCartChanges, { path: 'shoppingCartContext' });
   });
+
+  if (isMobile) {
+    const section = block.closest('.section');
+    const inViewObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          visibility = true;
+          loadRecommendation(block, context, visibility, filters);
+          inViewObserver.disconnect();
+        }
+      });
+    });
+    inViewObserver.observe(section);
+  }
 }

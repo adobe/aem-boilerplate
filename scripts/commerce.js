@@ -253,6 +253,9 @@ export async function trackHistory() {
   const storeViewCode = await getConfigValue('commerce-store-view-code');
   window.adobeDataLayer.push((dl) => {
     dl.addEventListener('adobeDataLayer:change', (event) => {
+      if (!event.productContext) {
+        return;
+      }
       const key = `${storeViewCode}:productViewHistory`;
       let viewHistory = JSON.parse(window.localStorage.getItem(key) || '[]');
       viewHistory = viewHistory.filter((item) => item.sku !== event.productContext.sku);

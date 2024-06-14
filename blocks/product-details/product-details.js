@@ -9,6 +9,7 @@ import ProductDetails from '@dropins/storefront-pdp/containers/ProductDetails.js
 // Libs
 import { getProduct, getSkuFromUrl, setJsonLd } from '../../scripts/commerce.js';
 import { getConfigValue } from '../../scripts/configs.js';
+import { fetchPlaceholders } from '../../scripts/aem.js';
 
 // Error Handling (404)
 async function errorGettingProduct(code = 404) {
@@ -117,12 +118,53 @@ export default async function decorate(block) {
   if (!window.getProductPromise) {
     window.getProductPromise = getProduct(this.props.sku);
   }
-  const product = await window.getProductPromise;
+
+  const [product, placeholders] = await Promise.all([
+    window.getProductPromise, fetchPlaceholders()]);
 
   if (!product) {
     await errorGettingProduct();
     return Promise.reject();
   }
+
+  const langDefinitions = {
+    default: {
+      PDP: {
+        Product: {
+          Incrementer: { label: placeholders.pdpProductIncrementer },
+          OutOfStock: { label: placeholders.pdpProductOutofstock },
+          AddToCart: { label: placeholders.pdpProductAddtocart },
+          Details: { label: placeholders.pdpProductDetails },
+          RegularPrice: { label: placeholders.pdpProductRegularprice },
+          SpecialPrice: { label: placeholders.pdpProductSpecialprice },
+          PriceRange: {
+            From: { label: placeholders.pdpProductPricerangeFrom },
+            To: { label: placeholders.pdpProductPricerangeTo },
+          },
+          Image: { label: placeholders.pdpProductImage },
+        },
+        Swatches: {
+          Required: { label: placeholders.pdpSwatchesRequired },
+        },
+        Carousel: {
+          label: placeholders.pdpCarousel,
+          Next: { label: placeholders.pdpCarouselNext },
+          Previous: { label: placeholders.pdpCarouselPrevious },
+          Slide: { label: placeholders.pdpCarouselSlide },
+          Controls: {
+            label: placeholders.pdpCarouselControls,
+            Button: { label: placeholders.pdpCarouselControlsButton },
+          },
+        },
+        Overlay: {
+          Close: { label: placeholders.pdpOverlayClose },
+        },
+      },
+      Custom: {
+        AddingToCart: { label: placeholders.pdpCustomAddingtocart },
+      },
+    },
+  };
 
   const models = {
     ProductDetails: {
@@ -132,6 +174,7 @@ export default async function decorate(block) {
 
   // Initialize Dropins
   initializers.register(productApi.initialize, {
+    langDefinitions,
     models,
   });
 
@@ -192,7 +235,9 @@ export default async function decorate(block) {
               ctx.appendButton((next, state) => {
                 const adding = state.get('adding');
                 return {
-                  text: adding ? 'Adding to Cart' : 'Add to Cart',
+                  text: adding
+                    ? next.dictionary.Custom.AddingToCart?.label
+                    : next.dictionary.PDP.Product.AddToCart?.label,
                   icon: 'Cart',
                   variant: 'primary',
                   disabled: adding || !next.data?.inStock || !next.valid,

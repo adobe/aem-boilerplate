@@ -9,7 +9,7 @@ top: 3205px;
 background: #FFFFFF;
 } */
 
-.sampleBlock {
+.sampleblock {
     background: #444;
     color: #fff;
     padding: 6px;
@@ -21,7 +21,7 @@ background: #FFFFFF;
     z-index: 10;
   }
   
-  .sampleBlock button {
+  .sampleblock button {
     text-decoration: none;
     background: #222;
     color: #fff;
@@ -34,7 +34,7 @@ background: #FFFFFF;
     transition: background 0.07s, color 0.07s, border-color 0.07s;
   }
   
-  .sampleBlock button:hover {
+  .sampleblock button:hover {
     background: #fff;
     color: #222;
   }

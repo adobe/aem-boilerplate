@@ -25,7 +25,7 @@ body {
   
 ::selection { 
     color: #fff; 
-    background: #229a0f; 
+    background: #fff; 
 } 
   
 .sampleblock p { 
@@ -54,14 +54,14 @@ body {
 } 
   
 .sampleblock { 
-    background: #2a910b; 
+    background: #fff; 
     margin-right: 10px; 
 } 
   
 .rejectButton { 
     color: #111211; 
     background: transparent; 
-    border: 2px solid #099c2c; 
+    border: 2px solid #fff; 
     text-decoration: none; 
 } 
   

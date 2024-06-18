@@ -1,5 +1,5 @@
 /* Rectangle 22234 */
-.samplebox {
+.sampleblock {
 position: absolute;
 width: 627px;
 height: 332px;
@@ -11,7 +11,7 @@ background: #FFFFFF;
 
 
 
-.samplebox .accept {
+.sampleblock .accept {
     /* APPLY NOW CTA */
 
 box-sizing: border-box;
@@ -34,7 +34,7 @@ border: 1px solid #000000;
 border-radius: 2px;
 
 }
-.samplebox .decline {
+.sampleblock .decline {
     /* APPLY NOW CTA */
 
 /* Auto layout */
@@ -56,7 +56,7 @@ border-radius: 2px;
 
 }
 
-.samplebox .manage {
+.sampleblock .manage {
    
 box-sizing: border-box;
 

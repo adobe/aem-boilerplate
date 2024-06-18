@@ -3,7 +3,7 @@ export default async function decorate(block) {
     console.log(block)
 }
 
-const getCookie = (name) => {
+const getCookie = (block) => {
     const value = " " + document.cookie;
     console.log("value", `==${value}==`);
     const parts = value.split(" " + name + "=");

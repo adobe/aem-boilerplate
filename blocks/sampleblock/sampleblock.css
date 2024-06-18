@@ -10,15 +10,18 @@ background: #FFFFFF;
 } */
 
 .sampleblock {
-    background: #444;
-    color: #fff;
+    background: #FFFFFF;
+    color: hsla(0, 0%, 13%, 1);
     padding: 6px;
-    font-size: 13px;
-    text-align: center;
-    position: fixed;
+    font-size: 14px;
+    text-align: left;
     bottom: 0;
-    width: 100%;
     z-index: 10;
+    position: absolute;
+    width: 550px;
+    height: 195px;
+    left: 390px;
+    top: 3271px;
   }
   
   .sampleblock button {

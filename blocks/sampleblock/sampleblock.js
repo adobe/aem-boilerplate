@@ -11,16 +11,22 @@ createAcceptButton(label) {
 createRejectButton(label) {
     // CREATE BUTTON with class name = ".reject"
 }
+.accept.click() {
+    
+}
 
+.reject.click() {
+    //
+}
 
-const consentBox = 
+const samplebox = 
 	document.getElementById("samplebox"); 
 const acceptBtn = 
 	document.querySelector(".acceptButton"); 
 const rejectBtn = 
 	document.querySelector(".rejectButton"); 
 
-acceptBtn.onclick = () => { 
+accept.onclick = () => { 
 	document.cookie = "CookieBy=GeeksForGeeks; max-age="
 		+ 60 * 60 * 24; 
 	if (document.cookie) { 
@@ -33,7 +39,7 @@ acceptBtn.onclick = () => {
 	} 
 }; 
 
-rejectBtn.onclick = () => { 
+reject.onclick = () => { 
 	alert( 
 		"Cookies rejected. Some functionality may be limited."); 
 	consentBox.classList.add("hide"); 

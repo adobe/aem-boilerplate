@@ -1,4 +1,4 @@
-/* Rectangle 22234
+/* Rectangle 22234 */
 .sampleBlock {
 position: absolute;
 width: 627px;
@@ -7,8 +7,8 @@ left: 840px;
 top: 3205px;
 
 background: #FFFFFF;
-} */
-
+}
+/* 
 .sampleblock {
     background: #444;
     color: #fff;
@@ -37,4 +37,4 @@ background: #FFFFFF;
   .sampleblock button:hover {
     background: #fff;
     color: #222;
-  }
+  } */

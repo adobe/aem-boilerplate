@@ -48,7 +48,7 @@ align-items: center;
 color: #000000;
 }
 
-.samplebox {
+.samplebox .accept {
     /* APPLY NOW CTA */
 
 box-sizing: border-box;
@@ -71,7 +71,7 @@ border: 1px solid #000000;
 border-radius: 2px;
 
 }
-.samplebox {
+.samplebox .decline {
     /* APPLY NOW CTA */
 
 /* Auto layout */
@@ -93,7 +93,7 @@ border-radius: 2px;
 
 }
 
-.samplebox{
+.samplebox .mange {
     /* APPLY NOW CTA */
 
 box-sizing: border-box;

@@ -1,76 +1,43 @@
-body { 
-    font-family: Arial, sans-serif; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
-    height: 100vh; 
-    margin: 0; 
-    background: #f3f3f3; 
-} 
+/* Rectangle 22234
+.sampleBlock {
+position: absolute;
+width: 627px;
+height: 332px;
+left: 840px;
+top: 3205px;
+
+background: #FFFFFF;
+} */
+
+.sampleblock {
+    background: #FFFFFF;
+    color: hsla(0, 0%, 13%, 1);
+    padding: 6px;
+    font-size: 14px;
+    text-align: left;
+    bottom: 0;
+    z-index: 10;
+    position: absolute;
+    width: 550px;
+    height: 195px;
+    left: 390px;
+    top: 3271px;
+  }
   
-.sampleblock { 
-    background: #fff; 
-    padding: 20px; 
-    border-radius: 15px; 
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
-    text-align: center; 
-} 
+  .sampleblock button {
+    text-decoration: none;
+    background: #222;
+    color: #fff;
+    border: 1px solid #000;
+    cursor: pointer;
+    padding: 4px 7px;
+    margin: 2px 0;
+    font-size: 13px;
+    font-weight: 700;
+    transition: background 0.07s, color 0.07s, border-color 0.07s;
+  }
   
-.sampleblock.hide { 
-    opacity: 0; 
-    pointer-events: none; 
-    transform: scale(0.8); 
-    transition: all 0.3s ease; 
-} 
-  
-::selection { 
-    color: #fff; 
-    background: #fff; 
-} 
-  
-.sampleblock p { 
-    color: #858585; 
-    margin: 10px 0 20px 0; 
-} 
-  
-.sampleblock .buttons { 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    margin-top: 20px; 
-} 
-  
-.sampleblock, 
-.rejectButton { 
-    padding: 12px 30px; 
-    border: none; 
-    outline: none; 
-    color: #fff; 
-    font-size: 16px; 
-    font-weight: 500; 
-    border-radius: 5px; 
-    cursor: pointer; 
-    transition: all 0.3s ease; 
-} 
-  
-.sampleblock { 
-    background: #fff; 
-    margin-right: 10px; 
-} 
-  
-.rejectButton { 
-    color: #111211; 
-    background: transparent; 
-    border: 2px solid #fff; 
-    text-decoration: none; 
-} 
-  
-.sampleblock img { 
-    max-width: 90px; 
-} 
-  
-.sampleblock { 
-    font-size: 25px; 
-    font-weight: 600; 
-    margin-top: 10px; 
-}
+  .sampleblock button:hover {
+    background: #fff;
+    color: #222;
+  }

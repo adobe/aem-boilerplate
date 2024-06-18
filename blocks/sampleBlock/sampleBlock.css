@@ -1,4 +1,4 @@
-/* Rectangle 22234 */
+/* Rectangle 22234
 .sampleBlock {
 position: absolute;
 width: 627px;
@@ -7,4 +7,34 @@ left: 840px;
 top: 3205px;
 
 background: #FFFFFF;
-}
+} */
+
+.sampleBlock {
+    background: #444;
+    color: #fff;
+    padding: 6px;
+    font-size: 13px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 10;
+  }
+  
+  .sampleBlock button {
+    text-decoration: none;
+    background: #222;
+    color: #fff;
+    border: 1px solid #000;
+    cursor: pointer;
+    padding: 4px 7px;
+    margin: 2px 0;
+    font-size: 13px;
+    font-weight: 700;
+    transition: background 0.07s, color 0.07s, border-color 0.07s;
+  }
+  
+  .sampleBlock button:hover {
+    background: #fff;
+    color: #222;
+  }

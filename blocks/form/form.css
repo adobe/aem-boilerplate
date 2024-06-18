@@ -1,0 +1,136 @@
+.form .field-wrapper {
+  display: grid;
+  grid-auto-flow: row;
+  align-items: center;
+  padding: 8px;
+}
+
+.form fieldset {
+  display: grid;
+  grid-auto-flow: row;
+  gap: 8px;
+  border: none;
+  padding: 0;
+}
+
+@media (width >= 900px) {
+  .form fieldset {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+.form fieldset > legend {
+  font-weight: 700;
+  font-size: var(--heading-font-size-xs);
+}
+
+.form label {
+  font-weight: 700;
+  font-size: var(--body-font-size-xs);
+  margin-bottom: 0.25em;
+}
+
+.form input,
+.form select,
+.form textarea {
+  font-size: var(--body-font-size-s);
+  width: 100%;
+  max-width: 50rem;
+  display: block;
+  padding: 12px 8px;
+  border-radius: 4px;
+  box-sizing: border-box;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+.form textarea {
+  resize: vertical;
+}
+
+.form .selection-wrapper input {
+  width: 16px;
+}
+
+.form .selection-wrapper label {
+  margin-bottom: 0;
+}
+
+.form input:hover {
+  border: 1px solid var(--text-color);
+}
+
+.form .button {
+  max-width: 225px;
+  font-size: var(--body-font-size-m);
+  padding: 0.2em 0.4em;
+}
+
+.form .field-wrapper.selection-wrapper {
+  grid-auto-flow: column;
+  justify-content: start;
+  gap: 16px;
+}
+
+.form .field-wrapper > label {
+  order: -1;
+}
+
+.form .field-wrapper.selection-wrapper > label {
+  order: 1;
+}
+
+.form input[required] + label::after {
+  content: "*";
+  color: firebrick;
+  margin-inline-start: 1ch;
+}
+
+.form .toggle-wrapper .switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.form .toggle-wrapper input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.form .toggle-wrapper .slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: var(--dark-color);
+  transition: 0.4s;
+  border-radius: 30px;
+}
+
+.form .toggle-wrapper .slider::before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 2px;
+  background-color: var(--background-color);
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.form .toggle-wrapper input:checked + .slider {
+  background-color: var(--link-color);
+}
+
+.form .toggle-wrapper input:focus + .slider {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
+.form .toggle-wrapper input:checked + .slider::before {
+  transform: translateX(24px);
+}

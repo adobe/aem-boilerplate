@@ -27,3 +27,29 @@ const getCookie = (name) => {
       (domain ? ";domain=" + domain : "") +
       (secure ? ";secure" : "");
   };
+  (() => {
+    const $cookiesBanner = document.querySelector(".cookies-eu-banner");
+    const $cookiesBannerButton = $cookiesBanner.querySelector("button");
+  
+    $cookiesBannerButton.addEventListener("click", () => {
+      $cookiesBanner.remove();
+    });
+  })();
+  .hidden {
+    display: none;
+  }
+  <div class="cookies-eu-banner hidden">
+...
+const $cookiesBanner = document.querySelector(".cookies-eu-banner");
+const $cookiesBannerButton = $cookiesBanner.querySelector("button");
+const cookieName = "cookiesBanner";
+const hasCookie = getCookie(cookieName);
+
+if (!hasCookie) {
+  $cookiesBanner.classList.remove("hidden");
+}
+
+$cookiesBannerButton.addEventListener("click", () => {
+  setCookie(cookieName, "closed");
+  $cookiesBanner.remove();
+});

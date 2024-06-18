@@ -1,8 +1,3 @@
-export default async function decorate(block) {
-    console.log("hello from sample block")
-    console.log(block)
-}
-
 const getCookie = (name) => {
     const value = " " + document.cookie;
     console.log("value", `==${value}==`);

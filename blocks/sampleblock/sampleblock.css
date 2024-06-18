@@ -9,44 +9,7 @@ top: 3205px;
 background: #FFFFFF;
 }
 
-/* We respect your privacy */
-.samplebox {
-position: absolute;
-width: 511px;
-height: 26px;
-left: 892px;
-top: 3267px;
 
-font-family: 'Work Sans';
-font-style: normal;
-font-weight: 500;
-font-size: 22px;
-line-height: 26px;
-/* identical to box height */
-display: flex;
-align-items: center;
-
-color: #000000;
-}
-
-/* We use cookies to operate this website, improve usability, personalise your experience, and improve our marketing. Your privacy is important to us, and we will never sell your data. Privacy Policy */
-.samplebox {
-position: absolute;
-width: 486px;
-height: 80px;
-left: 894px;
-top: 3315px;
-
-font-family: 'Work Sans';
-font-style: normal;
-font-weight: 300;
-font-size: 16px;
-line-height: 20px;
-display: flex;
-align-items: center;
-
-color: #000000;
-}
 
 .samplebox .accept {
     /* APPLY NOW CTA */
@@ -94,8 +57,7 @@ border-radius: 2px;
 }
 
 .samplebox .manage {
-    /* APPLY NOW CTA */
-
+   
 box-sizing: border-box;
 
 /* Auto layout */

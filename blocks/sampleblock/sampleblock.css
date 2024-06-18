@@ -25,16 +25,27 @@ background: #FFFFFF;
   }
   
   .sampleblock button {
-    text-decoration: none;
-    background: #222;
-    color: #fff;
-    border: 1px solid #000;
-    cursor: pointer;
-    padding: 4px 7px;
-    margin: 2px 0;
-    font-size: 13px;
-    font-weight: 700;
-    transition: background 0.07s, color 0.07s, border-color 0.07s;
+    /* APPLY NOW CTA */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px 60px;
+gap: 10px;
+
+position: absolute;
+width: 164px;
+height: 36px;
+left: 892px;
+top: 3435px;
+
+border: 1px solid #000000;
+border-radius: 2px;
+
   }
   
   .sampleblock button:hover {

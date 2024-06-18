@@ -9,7 +9,7 @@ top: 3205px;
 background: #FFFFFF;
 } */
 
-.sampleblock {
+.sampleBlock {
     background: #444;
     color: #fff;
     padding: 6px;
@@ -18,10 +18,10 @@ background: #FFFFFF;
     position: fixed;
     bottom: 0;
     width: 100%;
-    z-index: 11;
+    z-index: 10;
   }
   
-  .sampleblock button {
+  .sampleBlock button {
     text-decoration: none;
     background: #222;
     color: #fff;
@@ -34,7 +34,7 @@ background: #FFFFFF;
     transition: background 0.07s, color 0.07s, border-color 0.07s;
   }
   
-  .sampleblock button:hover {
+  .sampleBlock button:hover {
     background: #fff;
     color: #222;
   }

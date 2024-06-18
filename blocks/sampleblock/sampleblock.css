@@ -1,5 +1,5 @@
-/* Rectangle 22234
-.sampleBlock {
+/* Rectangle 22234 */
+.samplebox {
 position: absolute;
 width: 627px;
 height: 332px;
@@ -7,37 +7,112 @@ left: 840px;
 top: 3205px;
 
 background: #FFFFFF;
-} */
+}
 
-.sampleblock {
-    background: #FFFFFF;
-    color: hsla(0, 0%, 13%, 1);
-    padding: 6px;
-    font-size: 14px;
-    text-align: left;
-    bottom: 0;
-    z-index: 10;
-    position: absolute;
-    width: 550px;
-    height: 195px;
-    left: 390px;
-    top: 3271px;
-  }
-  
-  .sampleblock button {
-    text-decoration: none;
-    background: #222;
-    color: #fff;
-    border: 1px solid #000;
-    cursor: pointer;
-    padding: 4px 7px;
-    margin: 2px 0;
-    font-size: 13px;
-    font-weight: 700;
-    transition: background 0.07s, color 0.07s, border-color 0.07s;
-  }
-  
-  .sampleblock button:hover {
-    background: #fff;
-    color: #222;
-  }
+/* We respect your privacy */
+.samplebox {
+position: absolute;
+width: 511px;
+height: 26px;
+left: 892px;
+top: 3267px;
+
+font-family: 'Work Sans';
+font-style: normal;
+font-weight: 500;
+font-size: 22px;
+line-height: 26px;
+/* identical to box height */
+display: flex;
+align-items: center;
+
+color: #000000;
+}
+
+/* We use cookies to operate this website, improve usability, personalise your experience, and improve our marketing. Your privacy is important to us, and we will never sell your data. Privacy Policy */
+.samplebox {
+position: absolute;
+width: 486px;
+height: 80px;
+left: 894px;
+top: 3315px;
+
+font-family: 'Work Sans';
+font-style: normal;
+font-weight: 300;
+font-size: 16px;
+line-height: 20px;
+display: flex;
+align-items: center;
+
+color: #000000;
+}
+
+.samplebox {
+    /* APPLY NOW CTA */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px 60px;
+gap: 10px;
+
+position: absolute;
+width: 164px;
+height: 36px;
+left: 892px;
+top: 3435px;
+
+border: 1px solid #000000;
+border-radius: 2px;
+
+}
+.samplebox {
+    /* APPLY NOW CTA */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px 60px;
+gap: 10px;
+
+position: absolute;
+width: 163px;
+height: 36px;
+left: 1076px;
+top: 3435px;
+
+background: #000000;
+border-radius: 2px;
+
+}
+
+.samplebox{
+    /* APPLY NOW CTA */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px 60px;
+gap: 10px;
+
+position: absolute;
+width: 164px;
+height: 36px;
+left: 1259px;
+top: 3435px;
+
+border: 1px solid #000000;
+border-radius: 2px;
+
+}

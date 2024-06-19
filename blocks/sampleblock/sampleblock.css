@@ -25,26 +25,8 @@ background: #FFFFFF;
   }
   
   .button {
-    /* APPLY NOW CTA */
+    
 
-box-sizing: border-box;
-
-/* Auto layout */
-display: flex;
-flex-direction: row;
-justify-content: center;
-align-items: center;
-padding: 10px 60px;
-gap: 10px;
-
-position: absolute;
-width: 164px;
-height: 36px;
-left: 892px;
-top: 3435px;
-
-border: 1px solid #000000;
-border-radius: 2px;
 
   }
   
@@ -52,3 +34,4 @@ border-radius: 2px;
     background: #fff;
     color: #222;
   }
+  

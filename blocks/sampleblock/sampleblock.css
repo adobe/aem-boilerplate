@@ -24,7 +24,7 @@ background: #FFFFFF;
     top: 3271px;
   }
   
-  .sampleblock .accept {
+  .button {
     /* APPLY NOW CTA */
 
 box-sizing: border-box;
@@ -48,7 +48,7 @@ border-radius: 2px;
 
   }
   
-  .sampleblock button:hover {
+  .button button:hover {
     background: #fff;
     color: #222;
   }

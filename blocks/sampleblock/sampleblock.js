@@ -1,19 +1,60 @@
 // export default async function decorate(block) {
-//     const rows= [...block.children];
-// 	[...block.children].forEach((row,r) => {
-// 		if(r==0){
-// 			const declinebtn = document.createElement('button');
-// 			declinebtn.classList.decline('btn');
-// 			declinebtn.classList.decline('btn-decline');
-// 			const node = documnet.createTextNode(row.textContent;
-// 				declinebtn.append(node);
-// 				row.replaceWith(declinebtn);
+//     var acceptLabel = block(data-accept-button-label);
+//     var rejectLabel = block(data-reject-button-label);
 
-// 			}else if(r==rows.length-1{
-// 				const acceptbtn = document.createElement('button');
-// 				prebtn.classList.accept('btn-accept');
-// 				const node = document.createTextNode(row.textContent);
-// 				acceptbtnn.append(node;
-// 					row.replaceWith(acceptbtn);
-// 		}
+//     createButton()
+// }
+
+// createAcceptButton(label) {
+//     // CREATE BUTTON with class name = ".accept"
+// }
+// createRejectButton(label) {
+//     // CREATE BUTTON with class name = ".reject"
+// }
+// .accept.click() {
+//     document.cookie = "CookieBy=GeeksForGeeks; max-age="
+// 		+ 60 * 60 * 24; 
+// 	if (document.cookie) { 
+// 		consentBox.classList.add("hide"); 
+// 	} else { 
+// 		alert 
+// 			("Cookie can't be set! Please"+ 
+// 			" unblock this site from the cookie"+ 
+// 			" setting of your browser."); 
 // 	}
+// }
+
+// .reject.click() {
+//     alert( 
+// 		"Cookies rejected. Some functionality may be limited."); 
+// 	consentBox.classList.add("hide");
+// }
+
+
+// let checkCookie = 
+// 	document.cookie.indexOf("CookieBy=GeeksForGeeks"); 
+// checkCookie !== -1 ? consentBox.classList.add("hide") : 
+// 	samplebox.classList.remove("hide");
+document.addEventListener("DOMContentLoaded", function() {
+    // Create a div container for the button
+    var container = document.createElement("div");
+    container.id = "button-container";
+
+    // Create a button element
+    var button = document.createElement("button");
+    button.innerHTML = "Accept Cookies";
+
+    // Add an event listener to handle the click event
+    button.addEventListener("click", function() {
+        // Set data-cookieStatus attribute to true
+        button.setAttribute("data-cookieStatus", "true");
+        // Add the class "accept" to the button
+        button.classList.add("accept");
+    });
+
+    // Append the button to the container
+    container.appendChild(button);
+
+    // Append the container to the body
+    document.body.appendChild(container);
+});

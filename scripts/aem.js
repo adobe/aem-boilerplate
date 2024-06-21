@@ -693,27 +693,6 @@ async function waitForLCP(lcpBlocks) {
   });
 }
 
-// function withPlugin(url, condition, options = {}) {
-//   const conditionFn = typeof condition === 'function' ? condition : () => true;
-//   const optionsObj = (typeof condition === 'function' ? options : condition) || {};
-//   document.addEventListener(optionsObj.event || 'aem:lazy', (ev) => {
-//     if (conditionFn()) {
-//       ev.await = import(url)
-//         .then((module) => module.default(optionsObj))
-//         .then((api) => {
-//           window.hlx.plugins['foo'] = api;
-//         });
-//     }
-//   });
-// }
-
-// function withTemplate(url) {
-//   withPlugin(url, () => {
-//     const templateName = toClassName(getMetadata('template'));
-//     return new URL(url, window.location).pathname.endsWith(templateName);
-//   }, { event: 'aem:eager' });
-// }
-
 /**
  * Parses the plugin id and config paramters and returns a proper config
  *

@@ -762,8 +762,11 @@ class TemplatesRegistry {
   // eslint-disable-next-line class-methods-use-this
   add(id, url) {
     const { id: templateId, config: templateConfig } = parsePluginParams(id, url);
-    templateConfig.condition = () => toClassName(getMetadata('template')) === templateId;
-    window.hlx.plugins.add(templateId, templateConfig);
+    window.hlx.plugins.add(templateId, {
+      ...templateConfig,
+      condition: () => toClassName(getMetadata('template')) === templateId,
+      load: 'eager',
+    });
   }
 
   // Get the template

@@ -134,9 +134,6 @@ async function loadPage() {
   await dispatchAsyncEvent('aem:lazy');
   await loadLazy(document);
   loadDelayed();
-  window.setTimeout(async () => {
-    await dispatchAsyncEvent('aem:delayed');
-  }, 3000);
 }
 
 loadPage();

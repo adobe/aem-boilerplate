@@ -11,6 +11,10 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  getMetadata,
+  toClassName,
+  dispatchAsyncEvent,
+  withPlugin,
 } from './aem.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
@@ -71,12 +75,11 @@ export function decorateMain(main) {
 
 /**
  * Loads everything needed to get to LCP.
- * @param {Element} doc The container element
  */
-async function loadEager(doc) {
+document.addEventListener('aem:eager', async () => {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
-  const main = doc.querySelector('main');
+  const main = document.querySelector('main');
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
@@ -91,22 +94,21 @@ async function loadEager(doc) {
   } catch (e) {
     // do nothing
   }
-}
+});
 
 /**
  * Loads everything that doesn't need to be delayed.
- * @param {Element} doc The container element
  */
-async function loadLazy(doc) {
-  const main = doc.querySelector('main');
+document.addEventListener('aem:lazy', async () => {
+  const main = document.querySelector('main');
   await loadBlocks(main);
 
   const { hash } = window.location;
-  const element = hash ? doc.getElementById(hash.substring(1)) : false;
+  const element = hash ? document.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
-  loadFooter(doc.querySelector('footer'));
+  loadHeader(document.querySelector('header'));
+  loadFooter(document.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
@@ -114,22 +116,57 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
-}
+});
 
 /**
  * Loads everything that happens a lot later,
  * without impacting the user experience.
  */
-function loadDelayed() {
-  // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
-  // load anything that can be postponed to the latest here
-}
+document.addEventListener('aem:delayed', async () => {
+  import('./delayed.js');
+});
+
+document.addEventListener('aem:eager', (ev) => {
+  console.log(1, ev.type, ev.detail);
+  ev.await(new Promise((res) => {
+    setTimeout(() => {
+      console.log('foo from', ev.type);
+      res();
+    }, 1000);
+  }));
+});
+
+document.addEventListener('aem:eager', (ev) => {
+  console.log(2, ev.type, ev.detail);
+});
+
+withPlugin('dummy-plugin', {
+  eager: () => console.log('plugin:eager'),
+  lazy: () => console.log('plugin:lazy'),
+  delayed: () => console.log('plugin:delayed'),
+});
+
+withPlugin('block-debugger', {
+  condition: () => true,
+  run: () => {
+    document.addEventListener('aem:block:config', (ev) => console.group(ev.detail.name) && console.log(ev.type, ev.detail));
+    document.addEventListener('aem:block:decorated', (ev) => console.log(ev.type, ev.detail));
+    document.addEventListener('aem:block:loaded', (ev) => console.log(ev.type, ev.detail) && console.groupEnd());
+  },
+});
+
+window.addEventListener('load', (ev) => console.log(ev.type, ev.detail));
+document.addEventListener('DOMContentLoaded', (ev) => console.log(ev.type, ev.detail));
+document.addEventListener('aem:eager', (ev) => console.log(ev.type, ev.detail));
+document.addEventListener('aem:lazy', (ev) => console.log(ev.type, ev.detail));
+document.addEventListener('aem:delayed', (ev) => console.log(ev.type, ev.detail));
 
 async function loadPage() {
-  await loadEager(document);
-  await loadLazy(document);
-  loadDelayed();
+  await dispatchAsyncEvent('aem:eager');
+  await dispatchAsyncEvent('aem:lazy');
+  window.setTimeout(async () => {
+    await dispatchAsyncEvent('aem:delayed');
+  }, 3000);
 }
 
 loadPage();

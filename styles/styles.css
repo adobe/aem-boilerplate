@@ -10,14 +10,14 @@
  * governing permissions and limitations under the License.
  */
 
- :root {
+:root {
   /* colors */
   --link-color: #035fe6;
   --link-hover-color: #136ff6;
-  --background-color: #fff;
-  --overlay-background-color: #eee;
-  --highlight-background-color: #ccc;
-  --text-color: #000;
+  --background-color: white;
+  --light-color: #eee;
+  --dark-color: #ccc;
+  --text-color: black;
 
   /* fonts */
   --body-font-family: roboto, roboto-fallback;
@@ -39,7 +39,6 @@
 
   /* nav height */
   --nav-height: 64px;
-
 }
 
 @font-face {
@@ -49,8 +48,7 @@
   src: local('Arial');
 }
 
-
-@media (min-width: 900px) {
+@media (width >= 900px) {
   :root {
     --heading-font-size-xxl: 60px;
     --heading-font-size-xl: 48px;
@@ -79,42 +77,45 @@ header {
   height: var(--nav-height);
 }
 
-h1, h2, h3,
-h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--heading-font-family);
   font-weight: 600;
   line-height: 1.25;
   margin-top: 1em;
-  margin-bottom: .5em;
+  margin-bottom: 0.5em;
   scroll-margin: calc(var(--nav-height) + 1em);
 }
 
-h1 { font-size: var(--heading-font-size-xxl) }
-h2 { font-size: var(--heading-font-size-xl) }
-h3 { font-size: var(--heading-font-size-l) }
-h4 { font-size: var(--heading-font-size-m) }
-h5 { font-size: var(--heading-font-size-s) }
-h6 { font-size: var(--heading-font-size-xs) }
+h1 { font-size: var(--heading-font-size-xxl); }
+h2 { font-size: var(--heading-font-size-xl); }
+h3 { font-size: var(--heading-font-size-l); }
+h4 { font-size: var(--heading-font-size-m); }
+h5 { font-size: var(--heading-font-size-s); }
+h6 { font-size: var(--heading-font-size-xs); }
 
-p, dl, ol, ul, pre, blockquote {
+p,
+dl,
+ol,
+ul,
+pre,
+blockquote {
   margin-top: 1em;
   margin-bottom: 1em;
 }
 
-hr {
-  margin-top: 1.5em;
-  margin-bottom: 1.5em;
-  border: 0;
-  border-bottom: 1px solid var(--overlay-background-color);
-}
-
-code, pre, samp {
+code,
+pre {
   font-family: var(--fixed-font-family);
   font-size: var(--body-font-size-s);
 }
 
-code, samp {
-  padding: .125em;
+code {
+  padding: 0.125em;
 }
 
 pre {
@@ -122,13 +123,14 @@ pre {
 }
 
 main pre {
-  background-color: var(--overlay-background-color);
+  background-color: var(--light-color);
   padding: 1em;
-  border-radius: .25em;
+  border-radius: 0.25em;
   overflow-x: auto;
   white-space: pre;
 }
 
+/* links */
 a:any-link {
   color: var(--link-color);
   text-decoration: none;
@@ -140,7 +142,8 @@ a:hover {
 }
 
 /* buttons */
-a.button:any-link, button {
+a.button:any-link,
+button {
   font-family: var(--body-font-family);
   display: inline-block;
   box-sizing: border-box;
@@ -160,55 +163,25 @@ a.button:any-link, button {
   border-radius: 30px;
 }
 
-a.button:hover, a.button:focus, button:hover, button:focus  {
+a.button:hover,
+a.button:focus,
+button:hover,
+button:focus {
   background-color: var(--link-hover-color);
   cursor: pointer;
 }
 
-button:disabled, button:disabled:hover {
-  background-color: var(--overlay-background-color);
+button:disabled,
+button:disabled:hover {
+  background-color: var(--light-color);
   cursor: unset;
 }
 
-a.button.secondary, button.secondary {
+a.button.secondary,
+button.secondary {
   background-color: unset;
   border: 2px solid currentcolor;
-  color: var(--text-color)
-}
-
-main input {
-  font-size: 1.25rem;
-  width: 100%;
-  max-width: 50rem;
-  display: block;
-  margin-bottom: 1rem;
-  padding: 0.75rem 0.6rem;
-  border-radius: 0.25rem;
-  box-sizing: border-box;
-  border: 1px solid var(--text-color);
   color: var(--text-color);
-  background-color: var(--background-color);
-}
-
-main input:hover {
-  border: 1px solid var(--text-color);
-}
-
-main blockquote {
-  font-style: italic;
-  margin: 3rem;
-  text-indent: -1rem;
-  hanging-punctuation: first;
-}
-
-main blockquote p::before {
-  content: "“";
-  line-height: 0;
-}
-
-main blockquote p::after {
-  content: "”";
-  line-height: 0;
 }
 
 main img {
@@ -228,17 +201,18 @@ main img {
   width: 100%;
 }
 
+/* sections */
 main .section {
   padding: 64px 16px;
 }
 
-@media (min-width: 600px) {
+@media (width >= 600px) {
   main .section {
     padding: 64px 32px;
   }
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .section > div {
     max-width: 1200px;
     margin: auto;
@@ -246,6 +220,7 @@ main .section {
 }
 
 /* section metadata */
+main .section.light,
 main .section.highlight {
-  background-color: var(--highlight-background-color);
+  background-color: var(--light-color);
 }

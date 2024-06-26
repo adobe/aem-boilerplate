@@ -384,10 +384,6 @@ class ProductListPage extends Component {
     }
     this.props.resolve();
 
-    if (this.props.type === 'search' && this.state.loading === false && this.state.products.total === 0) {
-      sampleRUM('nullsearch', { source: '.search-input', target: this.state.searchTerm });
-    }
-
     if (this.state.loading === false) {
       window.adobeDataLayer.push((dl) => {
         const searchResultsContext = dl.getState('searchResultsContext') ?? { units: [] };

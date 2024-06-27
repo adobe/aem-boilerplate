@@ -128,12 +128,18 @@ function init() {
 
   window.addEventListener('load', () => sampleRUM('load'));
 
-  window.addEventListener('unhandledrejection', (event) => {
-    sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
-  });
-
-  window.addEventListener('error', (event) => {
-    sampleRUM('error', { source: event.filename, target: event.lineno });
+  ['error', 'unhandledrejection'].forEach((event) => {
+    window.addEventListener(event, ({ reason, error }) => {
+      const errData = { source: 'undefined error' };
+      try {
+        errData.target = (reason || error).toString();
+        errData.source = (reason || error).stack.split('\n')
+          .filter((line) => line.match(/https?:\/\//)).shift()
+          .replace(/at ([^ ]+) \((.+)\)/, '$1@$2')
+          .trim();
+      } catch (err) { /* error structure was not as expected */ }
+      sampleRUM('error', errData);
+    });
   });
 }
 

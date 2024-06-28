@@ -43,16 +43,19 @@ ${priceFieldsFragment}`;
 export const productDetailQuery = `query ProductQuery($sku: String!) {
   products(skus: [$sku]) {
     __typename
+    id
     externalId
     sku
     name
     description
     shortDescription
+    url
     urlKey
     inStock
     metaTitle
     metaKeyword
     metaDescription
+    addToCartAllowed
     images(roles: []) {
       url
       label

@@ -200,17 +200,6 @@ export default async function decorate(block) {
     setJsonLdProduct(product);
     setMetaTags(product);
     document.title = product.name;
-
-    window.adobeDataLayer.push((dl) => {
-      dl.push({
-        productContext: {
-          productId: parseInt(product.externalId, 10) || 0,
-          ...product,
-        },
-      });
-      // TODO: Remove eventInfo once collector is updated
-      dl.push({ event: 'product-page-view', eventInfo: { ...dl.getState() } });
-    });
   }, { eager: true });
 
   // Render Containers
@@ -260,6 +249,7 @@ export default async function decorate(block) {
               });
             },
           },
+          useACDL: true,
         })(block);
       } catch (e) {
         console.error(e);

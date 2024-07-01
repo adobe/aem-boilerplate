@@ -12,6 +12,8 @@
   left: 385px;
   top: 3323px;
   border-radius: 7px;
+
+  
 }
 .accept {
   padding: 10px 20px;
@@ -27,13 +29,7 @@
   align-items: center;
   padding: 10px 60px;
   gap: 10px;
-
   position: absolute;
-  width: 163px;
-  height: 36px;
-  left: 1076px;
-  top: 3435px;
-
   background: #000000;
   border-radius: 2px;
 
@@ -55,13 +51,7 @@
   /* Rectangle 22234 */
 
   position: absolute;
-  width: 627px;
-  height: 332px;
-  left: 840px;
-  top: 3205px;
-
   background: #FFFFFF;
-
   margin-right: 10px; /* Adjust spacing between buttons */
 }
 

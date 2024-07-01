@@ -25,23 +25,32 @@
 //     convertHeadingToButton(id);
 // });
 
-// Step 1: Create a main <div> container
-const mainDiv = document.createElement('div');
-mainDiv.id = 'mainContainer'; // Assign an ID for future reference or styling
-document.body.appendChild(mainDiv); // Append the <div> to the body or another container
+// Select the main container where buttons will be placed
+const mainContainer = document.querySelector('.main-container');
 
-// Step 2: Convert headings to buttons
-const headingsToConvert = ['accept', 'decline']; // IDs of headings to convert
+// Select all headings (you can adjust the selector as needed)
+const headings = document.querySelectorAll('accept, decline');
 
-headingsToConvert.forEach(id => {
-    const heading = document.getElementById(id);
-    if (heading) {
-        const button = document.createElement('button');
-        button.textContent = heading.textContent; // Use heading text as button text
-        button.addEventListener('click', () => {
-            // Example action on button click
-            console.log(`Button ${id} clicked`);
-        });
-        heading.parentNode.replaceChild(button, heading); // Replace heading with button
-    }
+// Loop through each heading
+headings.forEach(heading => {
+    // Get the id of the heading
+    const id = heading.id;
+
+    // Create a button element
+    const button = document.createElement('button');
+    
+    // Set button text to heading text
+    button.textContent = heading.textContent;
+
+    // Set button attributes or classes as needed
+    button.setAttribute('type', 'button'); // Optional: set type attribute
+    
+    // Add event listener or any additional customization
+    button.addEventListener('click', () => {
+        // Add functionality if needed
+        console.log(`Button for ${id} clicked`);
+    });
+
+    // Append button to the main container
+    mainContainer.appendChild(button);
 });

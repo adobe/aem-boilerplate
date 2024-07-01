@@ -15,7 +15,7 @@
 }
 .accept {
   padding: 10px 20px;
-  background-color: #4CAF50;
+  background-color: #1a625c;
   color: white;
   border: none;
   border-radius: 5px;
@@ -24,11 +24,11 @@
   margin-right: 10px; /* Adjust spacing between buttons */
 }
 .accept:hover {
-  background-color: #45a049;
+  background-color: #367ebd;
 }
 .decline {
   padding: 10px 20px;
-  background-color: #4CAF50;
+  background-color: #1a625c;
   color: white;
   border: none;
   border-radius: 5px;
@@ -38,5 +38,5 @@
 }
 
 .decline:hover {
-  background-color: #45a049;
+  background-color: #367ebd;
 }

@@ -7,7 +7,7 @@ function convertHeadingToButtonAndAddToContainer(id, container) {
         // Set the button's text content to the heading's text content
         button.textContent = heading.textContent;
         // Add a class to the button for styling
-        button.className = "buttons";
+        button.className = "custom-button";
         // Add a click event listener to the button
         button.addEventListener("click", function() {
             alert("Button for " + heading.textContent + " clicked!");
@@ -18,12 +18,12 @@ function convertHeadingToButtonAndAddToContainer(id, container) {
 }
 
 // Get the button container element
-var buttonContainer = document.getElementById("buttonContainer");
+var buttonContainer = document.getElementById("buttonsContainer");
 
 // List of heading ids to be converted
 var headingIds = ["accept", "decline"];
 
 // Loop through the list and convert each heading to a button and add to container
 headingIds.forEach(function(id) {
-    convertHeadingToButtonAndAddToContainer(id, buttonContainer);
+    convertHeadingToButtonAndAddToContainer(id, buttonsContainer);
 });

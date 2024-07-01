@@ -1,16 +1,5 @@
-/* Rectangle 22234
-.sampleBlock {
-position: absolute;
-width: 627px;
-height: 332px;
-left: 840px;
-top: 3205px;
-
-background: #FFFFFF;
-} */
-
 .sampleblock {
-    background: #FFFFFF;
+    background: #b56565;
     color: hsla(0, 0%, 13%, 1);
     padding: 6px;
     font-size: 14px;
@@ -23,15 +12,3 @@ background: #FFFFFF;
     left: 390px;
     top: 3271px;
   }
-  
-  .button {
-    
-
-
-  }
-  
-  .button button:hover {
-    background: #fff;
-    color: #222;
-  }
-  

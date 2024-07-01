@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Function to convert heading to button
     function convertHeadingToButton(id) {
-        const heading = document.getElementById(id);
-        if (heading) {
+        const headingIDs = document.getElementById(id);
+        if (headingIDs) {
             const button = document.createElement('button');
             button.innerText = heading.innerText;
             heading.replaceWith(button);

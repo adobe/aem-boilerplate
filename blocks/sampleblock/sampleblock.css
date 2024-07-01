@@ -27,10 +27,3 @@
 .accept.decline:hover {
   background-color: #45a049;
 }
-
-/* Container styles */
-.buttons-container {
-  display: flex; /* Use flexbox for layout */
-  justify-content: center; /* Center align buttons */
-  margin-top: 20px; /* Add margin to top */
-}

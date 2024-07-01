@@ -6,6 +6,10 @@ function convertHeadingToButton(id) {
         var button = document.createElement("button");
         // Set the button's text content to the heading's text content
         button.textContent = heading.textContent;
+        // Add a click event listener to the button
+        button.addEventListener("click", function() {
+            alert("Button for " + heading.textContent + " clicked!");
+        });
         // Replace the heading with the button
         heading.parentNode.replaceChild(button, heading);
     }

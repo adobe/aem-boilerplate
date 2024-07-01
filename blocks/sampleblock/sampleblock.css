@@ -43,11 +43,16 @@
 .decline {
   padding: 10px 20px;
   background-color: #1a625c;
-  color: white;
+  color: #0e0101;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  /* Rectangle 22234 */
+
+  position: absolute;
+  background: #FFFFFF;
+
   margin-right: 10px; /* Adjust spacing between buttons */
 }
 

@@ -8,9 +8,10 @@
   z-index: 10;
   position: absolute;
   width: 550px;
-  height: 195px;
+  height: 158px;
   left: 390px;
   top: 3271px;
+  border-radius: 7px;
 }
 .buttons {
   padding: 10px 20px;

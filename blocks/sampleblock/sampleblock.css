@@ -31,7 +31,7 @@
   gap: 10px;
   position: absolute;
   background: #000000;
-  border-radius: 2px;
+  border-radius: 5px;
 
   margin-right: 10px; /* Adjust spacing between buttons */
 }
@@ -48,7 +48,7 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  /* Rectangle 22234 */
+  padding: 10px 60px;
 
   position: absolute;
   background: #FFFFFF;

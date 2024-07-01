@@ -12,12 +12,13 @@
   left: 390px;
   top: 3271px;
 }
-.buttonscontainer {
+.buttons-container {
   display: flex; /* Use flexbox for layout */
   justify-content: center; /* Center align the buttons */
   gap: 10px; /* Gap between buttons */
 }
 
+/* Button styles */
 .buttons {
   padding: 10px 20px;
   background-color: #4CAF50;
@@ -26,9 +27,6 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
 }
 
 .buttons:hover {

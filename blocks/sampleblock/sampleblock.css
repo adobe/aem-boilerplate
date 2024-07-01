@@ -13,7 +13,7 @@
   top: 3323px;
   border-radius: 7px;
 }
-.buttons {
+.accept.decline {
   padding: 10px 20px;
   background-color: #4CAF50;
   color: white;
@@ -24,7 +24,7 @@
   margin-right: 10px; /* Adjust spacing between buttons */
 }
 
-.buttons:hover {
+.accept.decline:hover {
   background-color: #45a049;
 }
 

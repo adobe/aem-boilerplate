@@ -13,15 +13,16 @@ function convertHeadingToButton(id) {
             alert("Button for " + heading.textContent + " clicked!");
         });
         
+        // Replace the heading with the button
+        heading.parentNode.replaceChild(button, heading);
+    }
+}
+
         // Append the button to the button container
         var buttonContainer = document.getElementById("buttonContainer");
         if (buttonContainer) {
             buttonContainer.appendChild(button);
         }
-        // Replace the heading with the button
-        heading.parentNode.replaceChild(button, heading);
-    }
-}
 
 // List of heading ids to be converted
 var headingIds = ["accept", "decline"];

@@ -1,7 +1,7 @@
 // Function to convert heading to button
 function convertHeadingToButton() {
     // Get the heading element by its ID
-    const heading = document.getElementById('accept', 'decline');
+    const heading = document.getElementById['accept', 'decline'];
 
     // Create a new button element
     const button = document.createElement('button');

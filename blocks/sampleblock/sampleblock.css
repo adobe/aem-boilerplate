@@ -1,27 +1,44 @@
 .sampleblock {
-    background: #b56565;
-    color: hsla(0, 0%, 13%, 1);
-    padding: 6px;
-    font-size: 15px;
-    text-align: left;
-    bottom: 0;
-    z-index: 10;
-    position: absolute;
-    width: 550px;
-    height: 195px;
-    left: 390px;
-    top: 3271px;
-  }
-  .custom-button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+  background: #b56565;
+  color: hsla(0, 0%, 13%, 1);
+  padding: 6px;
+  font-size: 15px;
+  text-align: left;
+  bottom: 0;
+  z-index: 10;
+  position: absolute;
+  width: 550px;
+  height: 195px;
+  left: 390px;
+  top: 3271px;
+}
+
+.custom-button {
+  /* padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px; */
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 60px;
+  gap: 10px;
+
+  position: absolute;
+  width: 164px;
+  height: 36px;
+  left: 892px;
+  top: 3435px;
+
+  border: 1px solid #000000;
+  border-radius: 2px;
 }
 
 .custom-button:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }

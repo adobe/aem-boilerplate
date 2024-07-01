@@ -15,16 +15,27 @@
 }
 .accept {
   padding: 10px 20px;
+  background-color: #1a625c;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  position: relative;
-  overflow-y: scroll;
-  background: #FFFFFF;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 60px;
+  gap: 10px;
+
+  position: absolute;
+
+  background: #000000;
+  border-radius: 2px;
+
   margin-right: 10px; /* Adjust spacing between buttons */
 }
+
 
 .accept:hover {
   background-color: #367ebd;

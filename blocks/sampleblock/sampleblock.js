@@ -7,7 +7,7 @@ function convertHeadingToButton(id) {
         // Set the button's text content to the heading's text content
         button.textContent = heading.textContent;
         // Add a class to the button for styling
-        button.className = "custom-button";
+        button.className = "buttons";
         // Add a click event listener to the button
         button.addEventListener("click", function() {
             alert("Button for " + heading.textContent + " clicked!");

@@ -10,7 +10,7 @@ function convertHeadingToButton(id) {
         button.className = "buttons";
         // Add a click event listener to the button
         button.addEventListener("click", function() {
-            alert("Button for " + heading.textContent + " clicked!");
+            alert("Thankyou for your response " + heading.textContent + " clicked!");
         });
         // Replace the heading with the button
         heading.parentNode.replaceChild(button, heading);

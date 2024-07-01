@@ -13,28 +13,19 @@
   top: 3323px;
   border-radius: 7px;
 }
-/* .accept {
+.accept {
   padding: 10px 20px;
-  background-color: #1a625c;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  margin-right: 10px; /* Adjust spacing between buttons */
-} */
-
-.accept {
-  /* Desktop - Default */
-
   position: relative;
-  width: 1512px;
-  height: 3597px;
   overflow-y: scroll;
-
   background: #FFFFFF;
-
+  margin-right: 10px; /* Adjust spacing between buttons */
 }
+
 .accept:hover {
   background-color: #367ebd;
 }

@@ -12,6 +12,11 @@
   left: 390px;
   top: 3271px;
 }
+.buttons-container {
+  display: flex; /* Use flexbox for layout */
+  justify-content: center; /* Center align the buttons */
+  gap: 10px; /* Gap between buttons */
+}
 
 .buttons {
   padding: 10px 20px;

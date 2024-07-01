@@ -25,30 +25,23 @@
 //     convertHeadingToButton(id);
 // });
 
-// Step 1: Create a new div element
-var divElement = document.createElement('div');
+// Step 1: Create a main <div> container
+const mainDiv = document.createElement('div');
+mainDiv.id = 'mainContainer'; // Assign an ID for future reference or styling
+document.body.appendChild(mainDiv); // Append the <div> to the body or another container
 
-// Step 2: Set any attributes or properties for the div
-divElement.id = 'myDiv'; // Example ID for the div
-divElement.className = 'container'; // Example class for styling
+// Step 2: Convert headings to buttons
+const headingsToConvert = ['accept', 'decline']; // IDs of headings to convert
 
-// Step 3: Append the div to an existing element or to the document body
-document.body.appendChild(divElement); // Appends to the end of the document body
-// Alternatively, you can append it to another existing element:
-// document.getElementById('parentElementId').appendChild(divElement);
-
-// Step 1: Retrieve the headings by their IDs
-var heading1 = document.getElementById('accept');
-var heading2 = document.getElementById('decline');
-
-// Step 2: Create new button elements
-var button1 = document.createElement('button');
-var button2 = document.createElement('button');
-
-// Step 3: Set inner text or HTML content for the buttons
-button1.innerText = heading1.innerText; // Example: Copies the text from heading1
-button2.innerText = heading2.innerText; // Example: Copies the text from heading2
-
-// Step 4: Replace the headings with the newly created buttons
-heading1.parentNode.replaceChild(button1, heading1);
-heading2.parentNode.replaceChild(button2, heading2);
+headingsToConvert.forEach(id => {
+    const heading = document.getElementById(id);
+    if (heading) {
+        const button = document.createElement('button');
+        button.textContent = heading.textContent; // Use heading text as button text
+        button.addEventListener('click', () => {
+            // Example action on button click
+            console.log(`Button ${id} clicked`);
+        });
+        heading.parentNode.replaceChild(button, heading); // Replace heading with button
+    }
+});

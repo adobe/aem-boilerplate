@@ -12,13 +12,6 @@
   left: 390px;
   top: 3271px;
 }
-.buttons-container {
-  display: flex; /* Use flexbox for layout */
-  justify-content: center; /* Center align the buttons */
-  gap: 10px; /* Gap between buttons */
-}
-
-/* Button styles */
 .buttons {
   padding: 10px 20px;
   background-color: #4CAF50;
@@ -27,8 +20,16 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  margin-right: 10px; /* Adjust spacing between buttons */
 }
 
 .buttons:hover {
   background-color: #45a049;
+}
+
+/* Container styles */
+.button-container {
+  display: flex; /* Use flexbox for layout */
+  justify-content: center; /* Center align buttons */
+  margin-top: 20px; /* Add margin to top */
 }

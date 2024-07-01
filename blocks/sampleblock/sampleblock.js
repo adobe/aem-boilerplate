@@ -1,4 +1,4 @@
-function convertHeadingToButton(id) {
+function convertHeadingToButtonAndAddToContainer(id, container) {
     // Get the heading element by id
     var heading = document.getElementById(id);
     if (heading) {
@@ -12,15 +12,18 @@ function convertHeadingToButton(id) {
         button.addEventListener("click", function() {
             alert("Button for " + heading.textContent + " clicked!");
         });
-        // Replace the heading with the button
-        heading.parentNode.replaceChild(button, heading);
+        // Append the button to the container
+        container.appendChild(button);
     }
 }
+
+// Get the button container element
+var buttonContainer = document.getElementById("buttonContainer");
 
 // List of heading ids to be converted
 var headingIds = ["accept", "decline"];
 
-// Loop through the list and convert each heading to a button
+// Loop through the list and convert each heading to a button and add to container
 headingIds.forEach(function(id) {
-    convertHeadingToButton(id);
+    convertHeadingToButtonAndAddToContainer(id, buttonContainer);
 });

@@ -14,3 +14,10 @@ indices:
         select: a
         values: |
           match(attribute(el, 'href'), 'https:\/\/.*scene7.com\/is\/image\/.*')
+  site:
+    target: /query-index.json
+    properties:
+      tags:
+        select: head > meta[property="article:tag"]
+        values: |
+          attribute(el, 'content')

@@ -247,6 +247,24 @@ export default async function decorate(block) {
                   },
                 };
               });
+
+              ctx.appendButton((next, state) => {
+                const adding = state.get('adding');
+                return ({
+                  disabled: adding,
+                  icon: 'Heart',
+                  variant: 'secondary',
+                  onClick: async () => {
+                    try {
+                      state.set('adding', true);
+                      const { addToWishlist } = await import('../../scripts/wishlist/api.js');
+                      await addToWishlist(next.values.sku);
+                    } finally {
+                      state.set('adding', false);
+                    }
+                  },
+                });
+              });
             },
           },
           useACDL: true,

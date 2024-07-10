@@ -201,6 +201,9 @@ async function loadEager(doc) {
       minXOffset: 0,
       minYOffset: 0,
     },
+    shoppingCartContext: {
+      totalQuantity: 0,
+    },
   });
   if (pageType !== 'Product') {
     window.adobeDataLayer.push((dl) => {

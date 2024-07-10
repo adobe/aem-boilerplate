@@ -132,9 +132,10 @@ const mapUnit = (unit) => ({
     rank: index,
     score: 0,
     productId: parseInt(product.externalId, 10) || 0,
-    type: '?',
-    queryType: product.__typename,
+    type: product.__typename,
+    queryType: 'primary',
   })),
+  pagePlacement: '',
 });
 
 async function loadRecommendation(block, context, visibility, filters) {

@@ -8,6 +8,7 @@ import {
 } from '../../scripts/commerce.js';
 
 const html = htm.bind(h);
+const searchUnitId = 'livesearch-plp';
 
 class ProductCard extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ class ProductCard extends Component {
   onProductClick(product) {
     window.adobeDataLayer.push((dl) => {
       // TODO: Remove eventInfo once collector is updated
-      dl.push({ event: 'search-product-click', eventInfo: { ...dl.getState(), searchUnitId: 'searchUnitId', sku: product.sku } });
+      dl.push({ event: 'search-product-click', eventInfo: { ...dl.getState(), searchUnitId, sku: product.sku } });
     });
   }
 

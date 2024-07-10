@@ -117,34 +117,22 @@ async function loadLazy(doc) {
 }
 
 /**
- * Loads everything that happens a lot later,
- * without impacting the user experience.
+ * Checks consent asynchronously and returns true if consented.js
+ * can be loaded (which should contain the tag manager).
  */
-async function loadMarketingTech() {
-  const mapStatus = (consentStatus) => {
-    if (consentStatus === 'declineAll') return false;
-    return true;
-  };
-  const checkConsent = () => {
-    const consentStatus = localStorage.getItem('consentStatus');
-    if (consentStatus !== null) return mapStatus(consentStatus);
-    return new Promise((resolve) => {
-      // display consent banner
-      document.addEventListener('aem:changeconsent', (e) => {
-        localStorage.setItem('consentStatus', e.detail.consentStatus);
-        resolve(mapStatus(e.detail.consentStatus));
-      });
-    });
-  };
-  // eslint-disable-next-line import/no-cycle
-  if (await checkConsent()) import('./marketing-tech.js');
-  // load anything that can be postponed to the latest here
+async function checkConsent() {
+  const mod = await import('./consent.js');
+  return mod.default();
+}
+
+async function loadConsented() {
+  import('./consented.js');
 }
 
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
-  loadMarketingTech();
+  if (await checkConsent()) loadConsented();
 }
 
 loadPage();

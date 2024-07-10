@@ -1,1 +1,50 @@
 /* add global styles that can be loaded post LCP here */
+
+dialog#consent-banner, div#consent-link {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background-color: var(--light-color);
+    max-width: 600px;
+    padding: 16px;
+    font-size: var(--body-font-size-xs);
+    margin: 16px;
+    border-radius: 32px;
+    border: 0;
+    box-shadow: 3px 3px 10px #0004;
+}
+
+dialog#consent-banner {
+    border-radius: 16px;
+    padding-right: 40px;
+}
+
+dialog#consent-banner p {
+    margin: 0px;
+}
+
+dialog#consent-banner .consent-banner-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+dialog#consent-banner .consent-banner-buttons button {
+    margin: 8px 0;
+}
+
+dialog#consent-banner .consent-banner-close {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    right: 16px;
+    top: 12px;
+    border: unset;
+    padding: unset;
+    color: unset;
+    background-color: unset;
+    margin: 0;
+}
+
+div#consent-link button {
+    margin: 0;
+} 

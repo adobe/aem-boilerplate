@@ -698,7 +698,7 @@ async function waitForFirstImage(section) {
 
 async function loadSection(section, loadCallback) {
   const status = section.dataset.sectionStatus;
-  if (status === 'initialized') {
+  if (!status || status === 'initialized') {
     section.dataset.sectionStatus = 'loading';
     const blocks = [...section.querySelectorAll('div.block')];
     for (let i = 0; i < blocks.length; i += 1) {
@@ -738,12 +738,12 @@ export {
   fetchPlaceholders,
   getMetadata,
   loadBlock,
-  loadSection,
-  loadSections,
   loadCSS,
   loadFooter,
   loadHeader,
   loadScript,
+  loadSection,
+  loadSections,
   readBlockConfig,
   sampleRUM,
   setup,

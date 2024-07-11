@@ -6,8 +6,7 @@
   "scripts": {
     "lint:js": "eslint .",
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
-    "lint": "npm run lint:js && npm run lint:css",
-    "semantic-release": "semantic-release --debug"
+    "lint": "npm run lint:js && npm run lint:css"
   },
   "repository": {
     "type": "git",
@@ -20,17 +19,11 @@
   },
   "homepage": "https://github.com/adobe/aem-boilerplate#readme",
   "devDependencies": {
-    "@semantic-release/changelog": "6.0.3",
-    "@semantic-release/exec": "6.0.3",
-    "@semantic-release/git": "10.0.1",
-    "semantic-release": "22.0.8",
-    "@babel/core": "7.23.5",
-    "@babel/eslint-parser": "7.23.3",
-    "chai": "4.3.7",
-    "eslint": "8.54.0",
+    "@babel/eslint-parser": "7.24.7",
+    "eslint": "8.57.0",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.29.0",
-    "stylelint": "15.11.0",
-    "stylelint-config-standard": "34.0.0"
+    "eslint-plugin-import": "2.29.1",
+    "stylelint": "16.6.1",
+    "stylelint-config-standard": "36.0.0"
   }
 }

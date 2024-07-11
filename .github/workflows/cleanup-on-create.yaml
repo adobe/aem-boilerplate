@@ -6,6 +6,7 @@ on:
   create:
     branches:
       - main
+  workflow_dispatch:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
@@ -13,23 +14,18 @@ jobs:
       contents: write
       actions: write
     # only run if commit message is "Initial commit" on main branch
-    if: ${{ github.ref == 'refs/heads/main' && github.event.head_commit.message == 'Initial commit' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || ( github.ref == 'refs/heads/main' && !(contains(github.event, 'head_commit') || github.event.head_commit.message == 'Initial commit' )) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Use Node.js 18
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 18
-      - name: Uninstall dependencies
-        run: |
-          npm uninstall --save-dev semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/exec
+          node-version: 20
       - name: Remove Helper Files
         run: | 
           rm -rf \
             .github/workflows/cleanup-on-create.yaml \
-            .github/workflows/semantic-release.yaml \
-            .releaserc.cjs \
             CHANGELOG.md
 
       - name: Initialize README
@@ -47,7 +43,7 @@ jobs:
       - name: Commit changes
         run: |
           git config --local user.email "helix@adobe.com"
-          git config --local user.name "Helix Bot"
+          git config --local user.name "AEM Bot"
           git add .
           git commit -m "chore: cleanup repository template"
           git push

@@ -116,23 +116,15 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 }
 
-/**
- * Checks consent asynchronously and returns true if consented.js
- * can be loaded (which should contain the tag manager).
- */
-async function checkConsent() {
+async function handleConsent() {
   const mod = await import('./consent.js');
   return mod.default();
-}
-
-async function loadConsented() {
-  import('./consented.js');
 }
 
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
-  if (await checkConsent()) loadConsented();
+  handleConsent();
 }
 
 loadPage();

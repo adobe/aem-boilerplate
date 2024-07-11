@@ -1,5 +1,8 @@
 /**
- * Display Consent Banner and return consent details
+ * Handles consent, including the loading of consented.js
+ * where needed.
+ *
+ * Dispatches `consent` event on document on change
  */
 
 // eslint-disable-next-line import/no-cycle
@@ -16,7 +19,9 @@ function createButton(text, clickHandler, style, label) {
 }
 
 /* display consent banner */
-function displayConsentBanner(consentBanner) {
+export async function displayConsentBanner() {
+  const consentBanner = (await loadFragment('/drafts/uncled/consent-banner')).firstElementChild;
+
   const bannerClose = new Promise((resolve) => {
     const dialog = document.createElement('dialog');
 
@@ -24,8 +29,9 @@ function displayConsentBanner(consentBanner) {
       localStorage.setItem('consentStatus', status);
       dialog.remove();
       resolve(status);
-      // eslint-disable-next-line no-use-before-define
-      displayConsentLink(consentBanner);
+      document.dispatchEvent(new CustomEvent('consent', { detail: { consentStatus: status } }));
+      const loc = window.location;
+      if (loc.hash === '#consent') window.history.pushState({}, null, `${loc.pathname}${loc.search}`);
     };
 
     const close = () => { storeAndClose('declineAll'); };
@@ -48,30 +54,26 @@ function displayConsentBanner(consentBanner) {
   return bannerClose;
 }
 
-/* display consent link */
-function displayConsentLink(consentBanner) {
-  const div = document.createElement('div');
-  div.id = 'consent-link';
-  const button = createButton(consentBanner.dataset.shortTitle, async () => {
-    div.remove();
-    await displayConsentBanner(consentBanner);
-  }, 'secondary');
-  div.append(button);
-  document.body.append(div);
-}
-
 /* main consent handler */
 export default async function handleConsent() {
   const mapStatus = (consentStatus) => {
     if (consentStatus === 'declineAll') return false;
     return true;
   };
+
+  document.addEventListener('consent', (e) => {
+    if (mapStatus(e.detail.consentStatus)) import('./consented.js');
+  });
+
   const consentStatus = localStorage.getItem('consentStatus');
-  const consentBanner = (await loadFragment('/drafts/uncled/consent-banner')).firstElementChild;
 
   if (consentStatus === null) {
-    return mapStatus(await displayConsentBanner(consentBanner));
+    return mapStatus(await displayConsentBanner());
   }
-  displayConsentLink(consentBanner);
+
+  window.addEventListener('hashchange', (e) => {
+    if (new URL(e.newURL).hash === '#consent') displayConsentBanner();
+  });
+
   return mapStatus(consentStatus);
 }

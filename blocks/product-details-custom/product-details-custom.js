@@ -13,25 +13,11 @@ import {
   performCatalogServiceQuery,
   refineProductQuery,
   setJsonLd,
+  loadErrorPage,
 } from '../../scripts/commerce.js';
 import { readBlockConfig } from '../../scripts/aem.js';
 
 const html = htm.bind(h);
-
-export function errorGettingProduct(code = 404) {
-  fetch(`/${code}.html`).then((response) => {
-    if (response.ok) {
-      return response.text();
-    }
-    throw new Error(`Error getting ${code} page`);
-  }).then((htmlText) => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlText, 'text/html');
-    document.body.innerHTML = doc.body.innerHTML;
-    document.head.innerHTML = doc.head.innerHTML;
-  });
-  document.body.innerHTML = '';
-}
 
 async function getVariantDetails(variantIds, sku) {
   const result = await performCatalogServiceQuery(
@@ -101,15 +87,17 @@ class ProductDetailPage extends Component {
       if (!product) {
         throw new Error("Couldn't get product");
       }
-    } catch (e) {
-      errorGettingProduct();
-    }
 
-    this.setState({
-      product,
-      loading: false,
-      selection: {},
-    });
+      this.setState({
+        product,
+        loading: false,
+        selection: {},
+      });
+    } catch (e) {
+      await loadErrorPage();
+    } finally {
+      this.props.resolve();
+    }
   }
 
   onAddToCart = async () => {
@@ -200,10 +188,12 @@ export default async function decorate($block) {
 
   const skuFromUrl = getSkuFromUrl() || blockConfig.sku;
   if (!skuFromUrl) {
-    errorGettingProduct();
+    await loadErrorPage();
+    return Promise.reject();
   }
 
-  const app = html`<${ProductDetailPage} sku=${skuFromUrl} />`;
-
-  render(app, $block);
+  return new Promise((resolve) => {
+    const app = html`<${ProductDetailPage} sku=${skuFromUrl} resolve=${resolve} />`;
+    render(app, $block);
+  });
 }

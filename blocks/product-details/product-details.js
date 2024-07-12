@@ -7,23 +7,14 @@ import { render as productRenderer } from '@dropins/storefront-pdp/render.js';
 import ProductDetails from '@dropins/storefront-pdp/containers/ProductDetails.js';
 
 // Libs
-import { getProduct, getSkuFromUrl, setJsonLd } from '../../scripts/commerce.js';
+import {
+  getProduct,
+  getSkuFromUrl,
+  setJsonLd,
+  loadErrorPage,
+} from '../../scripts/commerce.js';
 import { getConfigValue } from '../../scripts/configs.js';
 import { fetchPlaceholders } from '../../scripts/aem.js';
-
-// Error Handling (404)
-async function errorGettingProduct(code = 404) {
-  const htmlText = await fetch(`/${code}.html`).then((response) => {
-    if (response.ok) {
-      return response.text();
-    }
-    throw new Error(`Error getting ${code} page`);
-  });
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlText, 'text/html');
-  document.body.innerHTML = doc.body.innerHTML;
-  document.head.innerHTML = doc.head.innerHTML;
-}
 
 async function addToCart({
   sku, quantity, optionsUIDs, product,
@@ -123,7 +114,7 @@ export default async function decorate(block) {
     window.getProductPromise, fetchPlaceholders()]);
 
   if (!product) {
-    await errorGettingProduct();
+    await loadErrorPage();
     return Promise.reject();
   }
 
@@ -273,7 +264,7 @@ export default async function decorate(block) {
         })(block);
       } catch (e) {
         console.error(e);
-        await errorGettingProduct();
+        await loadErrorPage();
       } finally {
         resolve();
       }

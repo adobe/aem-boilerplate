@@ -34,7 +34,7 @@
   "dependencies": {
     "@adobe/magento-storefront-event-collector": "^1.8.0",
     "@adobe/magento-storefront-events-sdk": "^1.8.0",
-    "@dropins/storefront-pdp": "^0.2.3-alpha7",
+    "@dropins/storefront-pdp": "^0.3.0",
     "@dropins/tools": "^0.25.0"
   }
 }

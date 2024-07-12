@@ -15,13 +15,15 @@ type DefaultSlotContext = {
     valid: boolean;
 };
 export type CarouselConfig = {
-    mobile?: boolean;
-    controls?: 'thumbnailsRow' | 'thumbnailsColumn' | 'dots' | null;
+    controls?: {
+        desktop?: 'thumbnailsRow' | 'thumbnailsColumn' | 'dots' | null;
+        mobile?: 'dots' | 'thumbnailsRow' | null;
+    };
     arrowsOnMainImage?: boolean;
     loopable?: boolean;
     peak?: {
-        mobile: boolean;
         desktop: boolean;
+        mobile: boolean;
     };
     gap?: 'small' | 'medium' | 'large' | null;
     thumbnailsLoadingMode?: 'lazy' | 'eager';

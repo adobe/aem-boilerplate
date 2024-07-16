@@ -11,120 +11,83 @@
  */
 
 /* eslint-env browser */
-
-/**
- * log RUM if part of the sample.
- * @param {string} checkpoint identifies the checkpoint in funnel
- * @param {Object} data additional data for RUM sample
- * @param {string} data.source DOM node that is the source of a checkpoint event,
- * identified by #id or .classname
- * @param {string} data.target subject of the checkpoint event,
- * for instance the href of a link, or a search term
- */
-function sampleRUM(checkpoint, data = {}) {
-  sampleRUM.baseURL = sampleRUM.baseURL
-    || new URL(window.RUM_BASE == null ? 'https://rum.hlx.page' : window.RUM_BASE, window.location);
-  sampleRUM.defer = sampleRUM.defer || [];
-  const defer = (fnname) => {
-    sampleRUM[fnname] = sampleRUM[fnname] || ((...args) => sampleRUM.defer.push({ fnname, args }));
-  };
-  sampleRUM.drain = sampleRUM.drain
-    || ((dfnname, fn) => {
-      sampleRUM[dfnname] = fn;
-      sampleRUM.defer
-        .filter(({ fnname }) => dfnname === fnname)
-        .forEach(({ fnname, args }) => sampleRUM[fnname](...args));
-    });
-  sampleRUM.always = sampleRUM.always || [];
-  sampleRUM.always.on = (chkpnt, fn) => {
-    sampleRUM.always[chkpnt] = fn;
-  };
-  sampleRUM.on = (chkpnt, fn) => {
-    sampleRUM.cases[chkpnt] = fn;
-  };
-  defer('observe');
-  defer('cwv');
+function sampleRUM(checkpoint, data) {
+  // eslint-disable-next-line max-len
+  const timeShift = () => (window.performance ? window.performance.now() : Date.now() - window.hlx.rum.firstReadTime);
   try {
     window.hlx = window.hlx || {};
+    sampleRUM.enhance = () => {};
     if (!window.hlx.rum) {
-      const usp = new URLSearchParams(window.location.search);
-      const weight = usp.get('rum') === 'on' ? 1 : 100; // with parameter, weight is 1. Defaults to 100.
+      const weight = new URLSearchParams(window.location.search).get('rum') === 'on' ? 1 : 100;
       const id = Math.random().toString(36).slice(-4);
-      const random = Math.random();
-      const isSelected = random * weight < 1;
-      const firstReadTime = window.performance ? window.performance.timeOrigin : Date.now();
-      const urlSanitizers = {
-        full: () => window.location.href,
-        origin: () => window.location.origin,
-        path: () => window.location.href.replace(/\?.*$/, ''),
-      };
+      const isSelected = Math.random() * weight < 1;
       // eslint-disable-next-line object-curly-newline, max-len
       window.hlx.rum = {
         weight,
         id,
-        random,
         isSelected,
-        firstReadTime,
+        firstReadTime: window.performance ? window.performance.timeOrigin : Date.now(),
         sampleRUM,
-        sanitizeURL: urlSanitizers[window.hlx.RUM_MASK_URL || 'path'],
+        queue: [],
+        collector: (...args) => window.hlx.rum.queue.push(args),
       };
-    }
+      if (isSelected) {
+        ['error', 'unhandledrejection'].forEach((event) => {
+          window.addEventListener(event, ({ reason, error }) => {
+            const errData = { source: 'undefined error' };
+            try {
+              errData.target = (reason || error).toString();
+              errData.source = (reason || error).stack
+                .split('\n')
+                .filter((line) => line.match(/https?:\/\//))
+                .shift()
+                .replace(/at ([^ ]+) \((.+)\)/, '$1@$2')
+                .trim();
+            } catch (err) {
+              /* error structure was not as expected */
+            }
+            sampleRUM('error', errData);
+          });
+        });
+        sampleRUM.baseURL = sampleRUM.baseURL || new URL(window.RUM_BASE || '/', new URL('https://rum.hlx.page'));
+        sampleRUM.collectBaseURL = sampleRUM.collectBaseURL || sampleRUM.baseURL;
+        sampleRUM.sendPing = (ck, time, pingData = {}) => {
+          // eslint-disable-next-line max-len, object-curly-newline
+          const rumData = JSON.stringify({
+            weight,
+            id,
+            referer: window.location.href,
+            checkpoint: ck,
+            t: time,
+            ...pingData,
+          });
+          const { href: url, origin } = new URL(`.rum/${weight}`, sampleRUM.collectBaseURL);
+          const body = origin === window.location.origin
+            ? new Blob([rumData], { type: 'application/json' })
+            : rumData;
+          navigator.sendBeacon(url, body);
+          // eslint-disable-next-line no-console
+          console.debug(`ping:${ck}`, pingData);
+        };
+        sampleRUM.sendPing('top', timeShift());
 
-    const { weight, id, firstReadTime } = window.hlx.rum;
-    if (window.hlx && window.hlx.rum && window.hlx.rum.isSelected) {
-      const knownProperties = [
-        'weight',
-        'id',
-        'referer',
-        'checkpoint',
-        't',
-        'source',
-        'target',
-        'cwv',
-        'CLS',
-        'FID',
-        'LCP',
-        'INP',
-        'TTFB',
-      ];
-      const sendPing = (pdata = data) => {
-        // eslint-disable-next-line max-len
-        const t = Math.round(
-          window.performance ? window.performance.now() : Date.now() - firstReadTime,
-        );
-        // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
-        const body = JSON.stringify(
-          {
-            weight, id, referer: window.hlx.rum.sanitizeURL(), checkpoint, t, ...data,
-          },
-          knownProperties,
-        );
-        const url = new URL(`.rum/${weight}`, sampleRUM.baseURL).href;
-        navigator.sendBeacon(url, body);
-        // eslint-disable-next-line no-console
-        console.debug(`ping:${checkpoint}`, pdata);
-      };
-      sampleRUM.cases = sampleRUM.cases || {
-        cwv: () => sampleRUM.cwv(data) || true,
-        lazy: () => {
-          // use classic script to avoid CORS issues
+        sampleRUM.enhance = () => {
           const script = document.createElement('script');
           script.src = new URL(
-            '.rum/@adobe/helix-rum-enhancer@^1/src/index.js',
+            '.rum/@adobe/helix-rum-enhancer@^2/src/index.js',
             sampleRUM.baseURL,
           ).href;
           document.head.appendChild(script);
-          return true;
-        },
-      };
-      sendPing(data);
-      if (sampleRUM.cases[checkpoint]) {
-        sampleRUM.cases[checkpoint]();
+        };
+        if (!window.hlx.RUM_MANUAL_ENHANCE) {
+          sampleRUM.enhance();
+        }
       }
     }
-    if (sampleRUM.always[checkpoint]) {
-      sampleRUM.always[checkpoint](data);
+    if (window.hlx.rum && window.hlx.rum.isSelected && checkpoint) {
+      window.hlx.rum.collector(checkpoint, data, timeShift());
     }
+    document.dispatchEvent(new CustomEvent('rum', { detail: { checkpoint, data } }));
   } catch (error) {
     // something went wrong
   }
@@ -136,6 +99,7 @@ function sampleRUM(checkpoint, data = {}) {
 function setup() {
   window.hlx = window.hlx || {};
   window.hlx.RUM_MASK_URL = 'full';
+  window.hlx.RUM_MANUAL_ENHANCE = true;
   window.hlx.codeBasePath = '';
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
 
@@ -156,27 +120,7 @@ function setup() {
 
 function init() {
   setup();
-  sampleRUM('top');
-
-  window.addEventListener('load', () => sampleRUM('load'));
-
-  ['error', 'unhandledrejection'].forEach((event) => {
-    window.addEventListener(event, ({ reason, error }) => {
-      const errData = { source: 'undefined error' };
-      try {
-        errData.target = (reason || error).toString();
-        errData.source = (reason || error).stack
-          .split('\n')
-          .filter((line) => line.match(/https?:\/\//))
-          .shift()
-          .replace(/at ([^ ]+) \((.+)\)/, '$1@$2')
-          .trim();
-      } catch (err) {
-        /* error structure was not as expected */
-      }
-      sampleRUM('error', errData);
-    });
-  });
+  sampleRUM();
 }
 
 /**

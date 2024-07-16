@@ -1,12 +1,6 @@
 /* eslint-disable import/no-cycle */
-import { sampleRUM } from './aem.js';
 import { getConfigValue } from './configs.js';
 import { getConsent } from './scripts.js';
-
-// Core Web Vitals RUM collection
-sampleRUM('cwv');
-
-// add more delayed functionality here
 
 // Load Commerce events SDK and collector
 if (getConsent('commerce-collection')) {
@@ -37,3 +31,5 @@ if (getConsent('commerce-collection')) {
   import('./commerce-events-sdk.js');
   import('./commerce-events-collector.js');
 }
+
+// add delayed functionality here

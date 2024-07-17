@@ -39,7 +39,11 @@ export default async function decorate(block) {
     context: {
       customerGroup: await getConfigValue('commerce-customer-group'),
     },
-    route: ({ sku, urlKey }) => `/products/${urlKey}/${sku}`,
+    route: ({ sku, urlKey }) => {
+      const a = new URL(window.location.origin);
+      a.pathname = `/products/${urlKey}/${sku}`;
+      return a.toString();
+    },
   };
 
   if (type !== 'search') {

@@ -6,7 +6,7 @@ import { getConsent } from './scripts.js';
 if (getConsent('commerce-collection')) {
   const config = {
     environmentId: await getConfigValue('commerce-environment-id'),
-    environment: await getConfigValue('commerce-environment') === 'Production' ? 'prod' : 'non-prod',
+    environment: await getConfigValue('commerce-environment'),
     storeUrl: await getConfigValue('commerce-store-url'),
     websiteId: parseInt(await getConfigValue('commerce-website-id'), 10),
     websiteCode: await getConfigValue('commerce-website-code'),

@@ -7,3 +7,4 @@ package-lock.json
 test/*
 postinstall.js
 tools/picker/src/*
+tools/pdp-metadata/*

@@ -230,8 +230,6 @@ export function getSkuFromUrl() {
 
 const productsCache = {};
 export async function getProduct(sku) {
-  // eslint-disable-next-line no-param-reassign
-  sku = sku.toUpperCase();
   if (productsCache[sku]) {
     return productsCache[sku];
   }

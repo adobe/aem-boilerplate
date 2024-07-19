@@ -92,10 +92,10 @@ class ProductCard extends Component {
     return html`<li>
       <div class="minicart-product">
         <div class="image">
-          <a href=${`/products/${product.url_key}/${product.sku.toLowerCase()}`}>${ProductCard.renderImage(item)}</a>
+          <a href=${`/products/${product.url_key}/${product.sku}`}>${ProductCard.renderImage(item)}</a>
         </div>
         <div class="info">
-          <div class="name"><a href=${`/products/${product.url_key}/${product.sku.toLowerCase()}`} dangerouslySetInnerHTML=${{ __html: product.name }} /></div>
+          <div class="name"><a href=${`/products/${product.url_key}/${product.sku}`} dangerouslySetInnerHTML=${{ __html: product.name }} /></div>
           ${configurable_options && (html`<div class="options">
             <input type="checkbox" id="see-options-${index}" />
             <label for="see-options-${index}">See Details</label>

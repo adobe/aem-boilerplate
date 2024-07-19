@@ -411,7 +411,7 @@ class ProductListPage extends Component {
           products: this.state.products.items.map((p, index) => ({
             name: p.name,
             sku: p.sku,
-            url: new URL(`/products/${p.urlKey}/${p.sku.toLowerCase()}`, window.location).toString(),
+            url: new URL(`/products/${p.urlKey}/${p.sku}`, window.location).toString(),
             imageUrl: p.images?.length ? p.images[0].url : '',
             price: p.price?.final?.amount?.value ?? p.priceRange?.minimum?.final?.amount?.value,
             rank: index,

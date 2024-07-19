@@ -23,7 +23,7 @@ async function getVariantDetails(variantIds, sku) {
   const result = await performCatalogServiceQuery(
     refineProductQuery,
     {
-      sku: sku.toUpperCase(),
+      sku,
       variantIds,
     },
   );
@@ -57,9 +57,9 @@ async function setJsonLdProduct(product) {
       '@type': 'Brand',
       name: brand?.value,
     },
-    url: new URL(`/products/${urlKey}/${sku.toLowerCase()}`, window.location),
+    url: new URL(`/products/${urlKey}/${sku}`, window.location),
     sku,
-    '@id': new URL(`/products/${urlKey}/${sku.toLowerCase()}`, window.location),
+    '@id': new URL(`/products/${urlKey}/${sku}`, window.location),
   }, 'product');
 }
 

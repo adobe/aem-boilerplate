@@ -84,13 +84,12 @@ const getProducts = async (config, pageNumber) => {
         productView: {
           ...item.productView,
           image: baseImageUrl,
-          path: `/products/${urlKey}/${sku.toLowerCase()}`,
+          path: `/products/${urlKey}/${sku}`,
           meta_keyword: (metaKeyword !== null) ? metaKeyword : '',
           meta_title: he.decode((metaTitle !== '') ? metaTitle : name),
           meta_description: finalDescription,
           'og:image': baseImageUrl,
           'og:image:secure_url': baseImageUrl,
-          'twitter:image': baseImageUrl,
         },
       };
     }));
@@ -131,9 +130,6 @@ const getProducts = async (config, pageNumber) => {
       'og:url',
       'og:image',
       'og:image:secure_url',
-      'twitter:card',
-      'twitter:title',
-      'twitter:image'
     ],
   ];
   products.forEach(({ productView: metaData }) => {
@@ -149,9 +145,6 @@ const getProducts = async (config, pageNumber) => {
         `${basePath}${metaData.path}`, // og:url
         metaData['og:image'], // og:image
         metaData['og:image:secure_url'], // og:image:secure_url
-        metaData.meta_description, // twitter:card
-        metaData.meta_title, // twitter:title
-        metaData['twitter:image'], // twitter:image
       ],
     );
   });

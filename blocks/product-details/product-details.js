@@ -48,9 +48,9 @@ async function setJsonLdProduct(product) {
       '@type': 'Brand',
       name: brand?.value,
     },
-    url: new URL(`/products/${urlKey}/${sku.toLowerCase()}`, window.location),
+    url: new URL(`/products/${urlKey}/${sku}`, window.location),
     sku,
-    '@id': new URL(`/products/${urlKey}/${sku.toLowerCase()}`, window.location),
+    '@id': new URL(`/products/${urlKey}/${sku}`, window.location),
   }, 'product');
 }
 
@@ -99,10 +99,6 @@ function setMetaTags(product) {
   createMetaTag('og:image:secure_url', metaImage, 'property');
   createMetaTag('og:product:price:amount', price.value, 'property');
   createMetaTag('og:product:price:currency', price.currency, 'property');
-
-  createMetaTag('twitter:card', product.shortDescription, 'name');
-  createMetaTag('twitter:title', product.metaTitle, 'name');
-  createMetaTag('twitter:image', metaImage, 'name');
 }
 
 export default async function decorate(block) {

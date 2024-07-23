@@ -9,7 +9,7 @@ import {
 } from '../../scripts/scripts.js';
 
 import {
-  loadBlocks,
+  loadSections,
 } from '../../scripts/aem.js';
 
 /**
@@ -34,7 +34,7 @@ export async function loadFragment(path) {
       resetAttributeBase('source', 'srcset');
 
       decorateMain(main);
-      await loadBlocks(main);
+      await loadSections(main);
       return main;
     }
   }

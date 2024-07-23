@@ -682,7 +682,6 @@ async function loadSections(element) {
 }
 
 /**
-<<<<<<< HEAD
  * Parses the plugin id and config paramters and returns a proper config
  *
  * @param {String} id A string that idenfies the plugin, or a path to it

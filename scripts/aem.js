@@ -653,6 +653,7 @@ async function waitForFirstImage(section) {
  * Loads all blocks in a section.
  * @param {Element} section The section element
  */
+
 async function loadSection(section, loadCallback) {
   const status = section.dataset.sectionStatus;
   if (!status || status === 'initialized') {
@@ -673,6 +674,7 @@ async function loadSection(section, loadCallback) {
  * Loads all sections.
  * @param {Element} element The parent element of sections to load
  */
+
 async function loadSections(element) {
   const sections = [...element.querySelectorAll('div.section')];
   for (let i = 0; i < sections.length; i += 1) {

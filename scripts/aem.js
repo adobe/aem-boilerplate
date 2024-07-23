@@ -97,7 +97,7 @@ function sampleRUM(checkpoint, data) {
 /**
  * Dispatches a custom DOM event and awaits all listeners before returning.
  * @param {String} eventName The custom event to trigger
- * @param {Object} [detail] Optional detail objec to pass to the event
+ * @param {Object} [detail] Optional detail object to pass to the event
  * @returns a promise that all async listeners have run
  */
 async function dispatchAsyncEvent(eventName, detail = {}) {

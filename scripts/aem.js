@@ -95,20 +95,6 @@ function sampleRUM(checkpoint, data) {
 }
 
 /**
- * Dispatches a custom DOM event and awaits all listeners before returning.
- * @param {String} eventName The custom event to trigger
- * @param {Object} [detail] Optional detail object to pass to the event
- * @returns a promise that all async listeners have run
- */
-async function dispatchAsyncEvent(eventName, detail = {}) {
-  const promises = [];
-  const event = new CustomEvent(eventName, { detail });
-  event.await = (p) => promises.push(p);
-  document.dispatchEvent(event);
-  return Promise.all(promises);
-}
-
-/**
  * Sanitizes a string for use as class name.
  * @param {string} name The unsanitized string
  * @returns {string} The class name
@@ -514,6 +500,20 @@ function buildBlock(blockName, content) {
     blockEl.appendChild(rowEl);
   });
   return blockEl;
+}
+
+/**
+ * Dispatches a custom DOM event and awaits all listeners before returning.
+ * @param {String} eventName The custom event to trigger
+ * @param {Object} [detail] Optional detail object to pass to the event
+ * @returns a promise that all async listeners have run
+ */
+async function dispatchAsyncEvent(eventName, detail = {}) {
+  const promises = [];
+  const event = new CustomEvent(eventName, { detail });
+  event.await = (p) => promises.push(p);
+  document.dispatchEvent(event);
+  return Promise.all(promises);
 }
 
 /**

@@ -11,10 +11,13 @@ export default async function initializeDropins() {
   // Set Fetch Endpoint (Global)
   setEndpoint(await getConfigValue('commerce-core-endpoint'));
 
-  // Mount all registered dropins
+  // Mount all registered drop-ins
   if (document.readyState === 'complete') {
     initializers.mount();
   } else {
+    // Handle on prerendering document activated
+    document.addEventListener('prerenderingchange', initializers.mount);
+    // Handle on page load
     window.addEventListener('load', initializers.mount);
   }
 

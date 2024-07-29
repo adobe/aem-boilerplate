@@ -1,15 +1,17 @@
 import { decorateIcons } from '../../scripts/aem.js';
 
 function parseConfig(block) {
-    const videoUrl = block.querySelector(':scope > div > div:first-child').textContent;
-    const title = block.querySelector(':scope > div > div:nth-child(2) > h1').textContent;
-    const description = block.querySelector(':scope > div > div:nth-child(2) > p').textContent;
+    return [...block.children].map((child) => {
+        const videoUrl = child.querySelector(':scope > div:first-child').textContent;
+        const title = child.querySelector(':scope > div:nth-child(2) > h1').textContent;
+        const description = child.querySelector(':scope > div:nth-child(2) > p').textContent;
 
-    return {
-        videoUrl,
-        title,
-        description
-    };
+        return {
+            videoUrl,
+            title,
+            description
+        };
+    });
 }
 
 async function loadVideoJs() {
@@ -88,9 +90,7 @@ function setupPlayer(videoContainer, config) {
     });
 }
 
-export default async function decorate(block) {
-    const config = parseConfig(block);
-
+function decorateVideoCard(container, config) {
     const videoContainer = document.createElement('div');
     videoContainer.classList.add('video-container');
 
@@ -112,12 +112,28 @@ export default async function decorate(block) {
     article.append(videoContainer);
     article.append(content);
 
-    block.innerHTML = '';
-    block.append(article);
-
-    await loadVideoJs();
-
     setupPlayer(videoContainer, {
         url: config.videoUrl
+    });
+
+    container.append(article);
+}
+
+export default async function decorate(block) {
+    await loadVideoJs();
+
+    const config = parseConfig(block);
+    const gridContainer = document.createElement('ul');
+    gridContainer.classList.add('video-card-grid');
+
+    block.innerHTML = '';
+    block.append(gridContainer);
+
+    config.forEach((videoConfig) => {
+        const gridItem = document.createElement('li');
+        gridItem.classList.add('video-card-grid__item');
+        gridContainer.append(gridItem);
+        
+        decorateVideoCard(gridItem, videoConfig);
     });
 }

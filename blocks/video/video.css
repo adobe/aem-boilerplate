@@ -1,6 +1,13 @@
-.video-wrapper {
-    max-width: 1280px;
-    margin: 0 auto;
+.video-card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 16px;
+    list-style: none;
+}
+
+.video-card-grid__item:nth-child(odd):last-child {
+    grid-column: 1 / -1;;
 }
 
 .video-card {
@@ -9,8 +16,20 @@
     background-color: #f7f7f7;
     border-radius: 8px;
     overflow: hidden;
-    max-width: 500px;
     position: relative;
+}
+
+.video-card-grid__item:nth-child(odd):last-child .video-card {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.video-card-grid__item:nth-child(odd):last-child .video-card .video-container {
+    flex: 1 0 50%;
+}
+
+.video-card-grid__item:nth-child(odd):last-child .video-card .video-card__content {
+    justify-content: center;
 }
 
 .video-card .video-container {
@@ -40,7 +59,6 @@
 .video-card .video-container .custom-play-button .icon-pause {
     display: none;
 }
-
 .video-card .video-container.video-playing .custom-play-button .icon-play {
     display: none;
 }

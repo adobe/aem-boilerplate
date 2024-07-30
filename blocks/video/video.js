@@ -1,7 +1,22 @@
 import { decorateIcons } from '../../scripts/aem.js';
 
 function parseConfig(block) {
-    return [...block.children].map((child) => {
+    if (block.classList.contains('hero')) {
+        const videoUrl = block.querySelector(':scope > div > div:first-child').textContent;
+        const title = block.querySelector(':scope > div > div:nth-child(2) > h1').textContent;
+        const description = block.querySelector(':scope > div > div:nth-child(2) > p').textContent;
+        const button = block.querySelector(':scope > div > div:nth-child(2) > p:last-child').textContent;
+
+        return {
+            isHeroBlock: true,
+            videoUrl,
+            title,
+            description,
+            button
+        };
+    }
+
+    const cards = [...block.children].map((child) => {
         const videoUrl = child.querySelector(':scope > div:first-child').textContent;
         const title = child.querySelector(':scope > div:nth-child(2) > h1').textContent;
         const description = child.querySelector(':scope > div:nth-child(2) > p').textContent;
@@ -12,6 +27,11 @@ function parseConfig(block) {
             description
         };
     });
+
+    return {
+        isHeroBlock: false,
+        cards
+    };
 }
 
 async function loadVideoJs() {
@@ -37,16 +57,6 @@ async function loadVideoJs() {
 }
 
 function createPlayButton(container, player) {
-    const button = document.createElement('button');
-    button.classList.add('custom-play-button');
-    button.addEventListener('click', () => {
-      if (player.paused()) {
-        player.play();
-      } else {
-        player.pause();
-      }
-    });
-  
     const pauseIcon = document.createElement('span');
     pauseIcon.classList.add('icon');
     pauseIcon.classList.add('icon-pause');
@@ -55,8 +65,35 @@ function createPlayButton(container, player) {
     playIcon.classList.add('icon');
     playIcon.classList.add('icon-play');
 
+    function updateIcons(isPaused) {
+        if (isPaused) {
+            playIcon.style.display = '';
+            pauseIcon.style.display = 'none';
+        } else {
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = '';
+        }
+    }
+
+    const button = document.createElement('button');
+    button.classList.add('custom-play-button');
+    button.addEventListener('click', () => {
+        if (player.paused()) {
+            player.play();
+        } else {
+            player.pause();
+        }
+    });
+
     button.append(pauseIcon);
     button.append(playIcon);
+
+    player.on('play', () => {
+        updateIcons(false);
+    });
+    player.on('pause', () => {
+        updateIcons(true);
+    });
 
     decorateIcons(button);
 
@@ -66,6 +103,8 @@ function createPlayButton(container, player) {
 function setupPlayer(videoContainer, config) {
     const videoElement = document.createElement('video');
     videoElement.classList.add('video-js');
+    videoElement.id = `video-${Math.random().toString(36).substr(2, 9)}`;
+    
     videoContainer.append(videoElement);
     
     // eslint-disable-next-line no-undef
@@ -81,13 +120,6 @@ function setupPlayer(videoContainer, config) {
     player.src(config.url);
 
     createPlayButton(videoContainer, player);
-
-    player.on('play', () => {
-      videoContainer.classList.add('video-playing');
-    });
-    player.on('pause', () => {
-      videoContainer.classList.remove('video-playing');
-    });
 }
 
 function decorateVideoCard(container, config) {
@@ -119,21 +151,62 @@ function decorateVideoCard(container, config) {
     container.append(article);
 }
 
-export default async function decorate(block) {
-    await loadVideoJs();
+function decorateHeroBlock(block, config) {
+    const container = document.createElement('div');
+    container.classList.add('video-hero');
 
-    const config = parseConfig(block);
+    const title = document.createElement('h1');
+    title.classList.add('video-hero__title');
+    title.textContent = config.title;
+
+    const description = document.createElement('p');
+    description.classList.add('video-hero__description');
+    description.textContent = config.description;
+
+    const button = document.createElement('button');
+    button.classList.add('video-hero__button');
+    button.textContent = config.button;
+
+    const content = document.createElement('div');
+    content.classList.add('video-hero__content');
+    content.append(title);
+    content.append(description);
+    content.append(button);
+
+    container.append(content);
+
+    block.innerHTML = '';
+    block.append(container);
+
+    setupPlayer(container, {
+        url: config.videoUrl
+    });
+}
+
+function decorateVideoCards(block, config) {
     const gridContainer = document.createElement('ul');
     gridContainer.classList.add('video-card-grid');
 
     block.innerHTML = '';
     block.append(gridContainer);
 
-    config.forEach((videoConfig) => {
+    config.cards.forEach((videoConfig) => {
         const gridItem = document.createElement('li');
         gridItem.classList.add('video-card-grid__item');
         gridContainer.append(gridItem);
         
         decorateVideoCard(gridItem, videoConfig);
     });
+}
+
+export default async function decorate(block) {
+    await loadVideoJs();
+
+    const config = parseConfig(block);
+    if (config.isHeroBlock) {
+        decorateHeroBlock(block, config);
+        return;
+    }
+
+    decorateVideoCards(block, config);
 }

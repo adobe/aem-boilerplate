@@ -155,7 +155,6 @@ header nav .nav-sections {
   flex: 1 1 auto;
   display: none;
   visibility: hidden;
-  background-color: var(--overlay-color);
 }
 
 header nav[aria-expanded='true'] .nav-sections {
@@ -168,11 +167,10 @@ header nav .nav-sections ul {
   list-style: none;
   padding-left: 0;
   font-size: var(--body-font-size-s);
-  font-weight: 500;
 }
 
 header nav .nav-sections ul > li {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 header nav .nav-sections ul > li > ul {
@@ -180,7 +178,7 @@ header nav .nav-sections ul > li > ul {
 }
 
 header nav .nav-sections ul > li > ul > li {
-  font-weight: 500;
+  font-weight: 400;
 }
 
 @media (width >= 900px) {
@@ -224,13 +222,11 @@ header nav .nav-sections ul > li > ul > li {
     display: flex;
     gap: 24px;
     margin: 0;
-    font-size: var(--body-font-size-xs);
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li {
     flex: 0 1 auto;
     position: relative;
-    font-weight: 500;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul {

@@ -12,60 +12,72 @@
 
 :root {
   /* colors */
-  --link-color: #035fe6;
-  --link-hover-color: #136ff6;
   --background-color: white;
-  --light-color: #eee;
-  --dark-color: #ccc;
-  --text-color: black;
+  --light-color: #f8f8f8;
+  --dark-color: #e9e9e9;
+  --text-color: #131313;
+  --link-color: #3a63fb;
+  --link-hover-color: #264dea;
 
   /* fonts */
-  --body-font-family: roboto, roboto-fallback;
-  --heading-font-family: var(--body-font-family);
+  --body-font-family: roboto, roboto-fallback, sans-serif;
+  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
 
   /* body sizes */
   --body-font-size-m: 22px;
-  --body-font-size-s: 18px;
-  --body-font-size-xs: 16px;
+  --body-font-size-s: 19px;
+  --body-font-size-xs: 17px;
 
   /* heading sizes */
-  --heading-font-size-xxl: 48px;
-  --heading-font-size-xl: 40px;
-  --heading-font-size-l: 32px;
-  --heading-font-size-m: 24px;
-  --heading-font-size-s: 20px;
-  --heading-font-size-xs: 18px;
+  --heading-font-size-xxl: 55px;
+  --heading-font-size-xl: 44px;
+  --heading-font-size-l: 34px;
+  --heading-font-size-m: 27px;
+  --heading-font-size-s: 24px;
+  --heading-font-size-xs: 22px;
 
   /* nav height */
   --nav-height: 64px;
 }
 
+/* fallback fonts */
+@font-face {
+  font-family: roboto-condensed-fallback;
+  size-adjust: 88.82%;
+  src: local('Arial');
+}
+
 @font-face {
   font-family: roboto-fallback;
-  size-adjust: 100.06%;
-  ascent-override: 95%;
+  size-adjust: 99.529%;
   src: local('Arial');
 }
 
 @media (width >= 900px) {
   :root {
-    --heading-font-size-xxl: 60px;
-    --heading-font-size-xl: 48px;
-    --heading-font-size-l: 36px;
-    --heading-font-size-m: 30px;
-    --heading-font-size-s: 24px;
-    --heading-font-size-xs: 22px;
+    /* body sizes */
+    --body-font-size-m: 18px;
+    --body-font-size-s: 16px;
+    --body-font-size-xs: 14px;
+
+    /* heading sizes */
+    --heading-font-size-xxl: 45px;
+    --heading-font-size-xl: 36px;
+    --heading-font-size-l: 28px;
+    --heading-font-size-m: 22px;
+    --heading-font-size-s: 20px;
+    --heading-font-size-xs: 18px;
   }
 }
 
 body {
-  margin: 0;
-  font-size: var(--body-font-size-m);
-  font-family: var(--body-font-family);
-  line-height: 1.6;
-  color: var(--text-color);
-  background-color: var(--background-color);
   display: none;
+  margin: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  line-height: 1.6;
 }
 
 body.appear {
@@ -113,19 +125,22 @@ pre {
 }
 
 pre {
-  overflow-y: auto;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: var(--light-color);
+  overflow-x: auto;
+  white-space: pre;
 }
 
 main > div {
   margin: 40px 16px;
 }
 
-main pre {
-  background-color: var(--light-color);
-  padding: 16px;
-  border-radius: 8px;
-  overflow-x: auto;
-  white-space: pre;
+input,
+textarea,
+select,
+button {
+  font: inherit;
 }
 
 /* links */
@@ -136,32 +151,32 @@ a:any-link {
 }
 
 a:hover {
-  text-decoration: underline;
   color: var(--link-hover-color);
+  text-decoration: underline;
 }
 
 /* buttons */
 a.button:any-link,
 button {
-  max-width: 100%;
-  font-family: var(--body-font-family);
-  display: inline-block;
   box-sizing: border-box;
-  text-decoration: none;
-  border: 2px solid transparent;
-  padding: 0.5em 1.2em;
-  text-align: center;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 1.25;
-  cursor: pointer;
-  color: var(--background-color);
-  background-color: var(--link-color);
+  display: inline-block;
+  max-width: 100%;
   margin: 12px 0;
-  white-space: nowrap;
+  border: 2px solid transparent;
+  border-radius: 2.4em;
+  padding: 0.5em 1.2em;
+  font-family: var(--body-font-family);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  background-color: var(--link-color);
+  color: var(--background-color);
+  cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-radius: 2.4em;
+  white-space: nowrap;
 }
 
 a.button:hover,

@@ -13,7 +13,7 @@
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  color: white;
+  color: var(--background-color);
 }
 
 .hero picture {

@@ -12,12 +12,12 @@
 
 :root {
   /* colors */
-  --link-color: #035fe6;
-  --link-hover-color: #136ff6;
   --background-color: white;
-  --light-color: #eee;
-  --dark-color: #ccc;
-  --text-color: black;
+  --light-color: #f8f8f8;
+  --dark-color: #e9e9e9;
+  --text-color: #131313;
+  --link-color: #3a63fb;
+  --link-hover-color: #264dea;
 
   /* fonts */
   --body-font-family: roboto, roboto-fallback, sans-serif;
@@ -71,13 +71,13 @@
 }
 
 body {
+  display: none;
   margin: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
   line-height: 1.5;
-  color: var(--text-color);
-  background-color: var(--background-color);
-  display: none;
 }
 
 body.appear {
@@ -149,8 +149,8 @@ a:any-link {
 }
 
 a:hover {
-  text-decoration: underline;
   color: var(--link-hover-color);
+  text-decoration: underline;
 }
 
 /* buttons */
@@ -165,8 +165,8 @@ button {
   font-weight: 500;
   font-style: normal;
   cursor: pointer;
-  color: var(--background-color);
   background-color: var(--link-color);
+  color: var(--background-color);
   margin: 16px 0;
   white-space: nowrap;
   overflow: hidden;

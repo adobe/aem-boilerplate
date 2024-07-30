@@ -13,11 +13,11 @@
 :root {
   /* colors */
   --background-color: white;
-  --light-color: #e1e1e1;
-  --dark-color: #c6c6c6;
-  --text-color: #292929;
-  --link-color: #4565F2;
-  --link-hover-color: #2f4de1;
+  --light-color: #f8f8f8;
+  --dark-color: #e9e9e9;
+  --text-color: #131313;
+  --link-color: #3a63fb;
+  --link-hover-color: #264dea;
 
   /* fonts */
   --body-font-family: roboto, roboto-fallback, sans-serif;
@@ -145,11 +145,12 @@ button {
 /* links */
 a:any-link {
   color: var(--link-color);
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 a:hover {
   color: var(--link-hover-color);
+  text-decoration: underline;
 }
 
 /* buttons */

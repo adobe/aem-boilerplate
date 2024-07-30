@@ -151,10 +151,6 @@ header nav .nav-brand img {
   height: auto;
 }
 
-header nav .nav-brand a {
-  text-decoration: none;
-}
-
 /* sections */
 header nav .nav-sections {
   grid-area: sections;

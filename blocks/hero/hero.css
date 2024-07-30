@@ -1,27 +1,22 @@
-/* block specific CSS goes here */
-
-main .hero-container > div {
+.hero-container .hero-wrapper {
   max-width: unset;
-}
-  
-main .hero-container {
   padding: 0;
 }
-  
-main .hero {
+
+.hero {
   position: relative;
-  padding: 32px;
+  padding: 40px 24px;
   min-height: 300px;
 }
 
-main .hero h1 {
+.hero h1 {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  color: white;
+  color: var(--background-color);
 }
 
-main .hero picture {
+.hero picture {
   position: absolute;
   z-index: -1;
   inset: 0;
@@ -29,8 +24,14 @@ main .hero picture {
   box-sizing: border-box;
 }
 
-main .hero img {
+.hero img {
   object-fit: cover;
   width: 100%;
   height: 100%;
+}
+
+@media (width >= 900px) {
+  .hero {
+    padding: 40px 32px;
+  }
 }

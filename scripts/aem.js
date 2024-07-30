@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Adobe. All rights reserved.
+ * Copyright 2024 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
  * of the License at http://www.apache.org/licenses/LICENSE-2.0
@@ -11,118 +11,83 @@
  */
 
 /* eslint-env browser */
-
-/**
- * log RUM if part of the sample.
- * @param {string} checkpoint identifies the checkpoint in funnel
- * @param {Object} data additional data for RUM sample
- * @param {string} data.source DOM node that is the source of a checkpoint event,
- * identified by #id or .classname
- * @param {string} data.target subject of the checkpoint event,
- * for instance the href of a link, or a search term
- */
-function sampleRUM(checkpoint, data = {}) {
-  sampleRUM.defer = sampleRUM.defer || [];
-  const defer = (fnname) => {
-    sampleRUM[fnname] = sampleRUM[fnname] || ((...args) => sampleRUM.defer.push({ fnname, args }));
-  };
-  sampleRUM.drain = sampleRUM.drain
-    || ((dfnname, fn) => {
-      sampleRUM[dfnname] = fn;
-      sampleRUM.defer
-        .filter(({ fnname }) => dfnname === fnname)
-        .forEach(({ fnname, args }) => sampleRUM[fnname](...args));
-    });
-  sampleRUM.always = sampleRUM.always || [];
-  sampleRUM.always.on = (chkpnt, fn) => {
-    sampleRUM.always[chkpnt] = fn;
-  };
-  sampleRUM.on = (chkpnt, fn) => {
-    sampleRUM.cases[chkpnt] = fn;
-  };
-  defer('observe');
-  defer('cwv');
+function sampleRUM(checkpoint, data) {
+  // eslint-disable-next-line max-len
+  const timeShift = () => (window.performance ? window.performance.now() : Date.now() - window.hlx.rum.firstReadTime);
   try {
     window.hlx = window.hlx || {};
+    sampleRUM.enhance = () => {};
     if (!window.hlx.rum) {
-      const usp = new URLSearchParams(window.location.search);
-      const weight = usp.get('rum') === 'on' ? 1 : 100; // with parameter, weight is 1. Defaults to 100.
-      const id = Array.from({ length: 75 }, (_, i) => String.fromCharCode(48 + i))
-        .filter((a) => /\d|[A-Z]/i.test(a))
-        .filter(() => Math.random() * 75 > 70)
-        .join('');
-      const random = Math.random();
-      const isSelected = random * weight < 1;
-      const firstReadTime = Date.now();
-      const urlSanitizers = {
-        full: () => window.location.href,
-        origin: () => window.location.origin,
-        path: () => window.location.href.replace(/\?.*$/, ''),
-      };
+      const weight = new URLSearchParams(window.location.search).get('rum') === 'on' ? 1 : 100;
+      const id = Math.random().toString(36).slice(-4);
+      const isSelected = Math.random() * weight < 1;
       // eslint-disable-next-line object-curly-newline, max-len
       window.hlx.rum = {
         weight,
         id,
-        random,
         isSelected,
-        firstReadTime,
+        firstReadTime: window.performance ? window.performance.timeOrigin : Date.now(),
         sampleRUM,
-        sanitizeURL: urlSanitizers[window.hlx.RUM_MASK_URL || 'path'],
+        queue: [],
+        collector: (...args) => window.hlx.rum.queue.push(args),
       };
-    }
-    const { weight, id, firstReadTime } = window.hlx.rum;
-    if (window.hlx && window.hlx.rum && window.hlx.rum.isSelected) {
-      const knownProperties = [
-        'weight',
-        'id',
-        'referer',
-        'checkpoint',
-        't',
-        'source',
-        'target',
-        'cwv',
-        'CLS',
-        'FID',
-        'LCP',
-        'INP',
-      ];
-      const sendPing = (pdata = data) => {
-        // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
-        const body = JSON.stringify(
-          {
+      if (isSelected) {
+        ['error', 'unhandledrejection'].forEach((event) => {
+          window.addEventListener(event, ({ reason, error }) => {
+            const errData = { source: 'undefined error' };
+            try {
+              errData.target = (reason || error).toString();
+              errData.source = (reason || error).stack
+                .split('\n')
+                .filter((line) => line.match(/https?:\/\//))
+                .shift()
+                .replace(/at ([^ ]+) \((.+)\)/, '$1@$2')
+                .trim();
+            } catch (err) {
+              /* error structure was not as expected */
+            }
+            sampleRUM('error', errData);
+          });
+        });
+        sampleRUM.baseURL = sampleRUM.baseURL || new URL(window.RUM_BASE || '/', new URL('https://rum.hlx.page'));
+        sampleRUM.collectBaseURL = sampleRUM.collectBaseURL || sampleRUM.baseURL;
+        sampleRUM.sendPing = (ck, time, pingData = {}) => {
+          // eslint-disable-next-line max-len, object-curly-newline
+          const rumData = JSON.stringify({
             weight,
             id,
-            referer: window.hlx.rum.sanitizeURL(),
-            checkpoint,
-            t: Date.now() - firstReadTime,
-            ...data,
-          },
-          knownProperties,
-        );
-        const url = `https://rum.hlx.page/.rum/${weight}`;
-        // eslint-disable-next-line no-unused-expressions
-        navigator.sendBeacon(url, body);
-        // eslint-disable-next-line no-console
-        console.debug(`ping:${checkpoint}`, pdata);
-      };
-      sampleRUM.cases = sampleRUM.cases || {
-        cwv: () => sampleRUM.cwv(data) || true,
-        lazy: () => {
-          // use classic script to avoid CORS issues
+            referer: window.location.href,
+            checkpoint: ck,
+            t: time,
+            ...pingData,
+          });
+          const { href: url, origin } = new URL(`.rum/${weight}`, sampleRUM.collectBaseURL);
+          const body = origin === window.location.origin
+            ? new Blob([rumData], { type: 'application/json' })
+            : rumData;
+          navigator.sendBeacon(url, body);
+          // eslint-disable-next-line no-console
+          console.debug(`ping:${ck}`, pingData);
+        };
+        sampleRUM.sendPing('top', timeShift());
+
+        sampleRUM.enhance = () => {
           const script = document.createElement('script');
-          script.src = 'https://rum.hlx.page/.rum/@adobe/helix-rum-enhancer@^1/src/index.js';
+          script.src = new URL(
+            '.rum/@adobe/helix-rum-enhancer@^2/src/index.js',
+            sampleRUM.baseURL,
+          ).href;
           document.head.appendChild(script);
-          return true;
-        },
-      };
-      sendPing(data);
-      if (sampleRUM.cases[checkpoint]) {
-        sampleRUM.cases[checkpoint]();
+        };
+        if (!window.hlx.RUM_MANUAL_ENHANCE) {
+          sampleRUM.enhance();
+        }
       }
     }
-    if (sampleRUM.always[checkpoint]) {
-      sampleRUM.always[checkpoint](data);
+    if (window.hlx.rum && window.hlx.rum.isSelected && checkpoint) {
+      window.hlx.rum.collector(checkpoint, data, timeShift());
     }
+    document.dispatchEvent(new CustomEvent('rum', { detail: { checkpoint, data } }));
   } catch (error) {
     // something went wrong
   }
@@ -134,6 +99,7 @@ function sampleRUM(checkpoint, data = {}) {
 function setup() {
   window.hlx = window.hlx || {};
   window.hlx.RUM_MASK_URL = 'full';
+  window.hlx.RUM_MANUAL_ENHANCE = true;
   window.hlx.codeBasePath = '';
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
 
@@ -154,17 +120,7 @@ function setup() {
 
 function init() {
   setup();
-  sampleRUM('top');
-
-  window.addEventListener('load', () => sampleRUM('load'));
-
-  window.addEventListener('unhandledrejection', (event) => {
-    sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
-  });
-
-  window.addEventListener('error', (event) => {
-    sampleRUM('error', { source: event.filename, target: event.lineno });
-  });
+  sampleRUM();
 }
 
 /**
@@ -356,6 +312,48 @@ function decorateTemplateAndTheme() {
 }
 
 /**
+ * Wrap inline text content of block cells within a <p> tag.
+ * @param {Element} block the block element
+ */
+function wrapTextNodes(block) {
+  const validWrappers = [
+    'P',
+    'PRE',
+    'UL',
+    'OL',
+    'PICTURE',
+    'TABLE',
+    'H1',
+    'H2',
+    'H3',
+    'H4',
+    'H5',
+    'H6',
+  ];
+
+  const wrap = (el) => {
+    const wrapper = document.createElement('p');
+    wrapper.append(...el.childNodes);
+    el.append(wrapper);
+  };
+
+  block.querySelectorAll(':scope > div > div').forEach((blockColumn) => {
+    if (blockColumn.hasChildNodes()) {
+      const hasWrapper = !!blockColumn.firstElementChild
+        && validWrappers.some((tagName) => blockColumn.firstElementChild.tagName === tagName);
+      if (!hasWrapper) {
+        wrap(blockColumn);
+      } else if (
+        blockColumn.firstElementChild.tagName === 'PICTURE'
+        && (blockColumn.children.length > 1 || !!blockColumn.textContent.trim())
+      ) {
+        wrap(blockColumn);
+      }
+    }
+  });
+}
+
+/**
  * Decorates paragraphs containing a single link as buttons.
  * @param {Element} element container element
  */
@@ -395,16 +393,18 @@ function decorateButtons(element) {
 
 /**
  * Add <img> for icon, prefixed with codeBasePath and optional prefix.
- * @param {span} [element] span element with icon classes
- * @param {string} [prefix] prefix to be added to icon the src
+ * @param {Element} [span] span element with icon classes
+ * @param {string} [prefix] prefix to be added to icon src
+ * @param {string} [alt] alt text to be added to icon
  */
-function decorateIcon(span, prefix = '') {
+function decorateIcon(span, prefix = '', alt = '') {
   const iconName = Array.from(span.classList)
     .find((c) => c.startsWith('icon-'))
     .substring(5);
   const img = document.createElement('img');
   img.dataset.iconName = iconName;
   img.src = `${window.hlx.codeBasePath}${prefix}/icons/${iconName}.svg`;
+  img.alt = alt;
   img.loading = 'lazy';
   span.append(img);
 }
@@ -449,7 +449,10 @@ function decorateSections(main) {
       const meta = readBlockConfig(sectionMeta);
       Object.keys(meta).forEach((key) => {
         if (key === 'style') {
-          const styles = meta.style.split(',').map((style) => toClassName(style.trim()));
+          const styles = meta.style
+            .split(',')
+            .filter((style) => style)
+            .map((style) => toClassName(style.trim()));
           styles.forEach((style) => section.classList.add(style));
         } else {
           section.dataset[toCamelCase(key)] = meta[key];
@@ -495,30 +498,6 @@ async function fetchPlaceholders(prefix = 'default') {
     });
   }
   return window.placeholders[`${prefix}`];
-}
-
-/**
- * Updates all section status in a container element.
- * @param {Element} main The container element
- */
-function updateSectionsStatus(main) {
-  const sections = [...main.querySelectorAll(':scope > div.section')];
-  for (let i = 0; i < sections.length; i += 1) {
-    const section = sections[i];
-    const status = section.dataset.sectionStatus;
-    if (status !== 'loaded') {
-      const loadingBlock = section.querySelector(
-        '.block[data-block-status="initialized"], .block[data-block-status="loading"]',
-      );
-      if (loadingBlock) {
-        section.dataset.sectionStatus = 'loading';
-        break;
-      } else {
-        section.dataset.sectionStatus = 'loaded';
-        section.style.display = null;
-      }
-    }
-  }
 }
 
 /**
@@ -590,20 +569,6 @@ async function loadBlock(block) {
 }
 
 /**
- * Loads JS and CSS for all blocks in a container element.
- * @param {Element} main The container element
- */
-async function loadBlocks(main) {
-  updateSectionsStatus(main);
-  const blocks = [...main.querySelectorAll('div.block')];
-  for (let i = 0; i < blocks.length; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    await loadBlock(blocks[i]);
-    updateSectionsStatus(main);
-  }
-}
-
-/**
  * Decorates a block.
  * @param {Element} block The block element
  */
@@ -613,6 +578,7 @@ function decorateBlock(block) {
     block.classList.add('block');
     block.dataset.blockName = shortBlockName;
     block.dataset.blockStatus = 'initialized';
+    wrapTextNodes(block);
     const blockWrapper = block.parentElement;
     blockWrapper.classList.add(`${shortBlockName}-wrapper`);
     const section = block.closest('.section');
@@ -653,17 +619,11 @@ async function loadFooter(footer) {
 }
 
 /**
- * Load LCP block and/or wait for LCP in default content.
- * @param {Array} lcpBlocks Array of blocks
+ * Wait for Image.
+ * @param {Element} section section element
  */
-async function waitForLCP(lcpBlocks) {
-  const block = document.querySelector('.block');
-  const hasLCPBlock = block && lcpBlocks.includes(block.dataset.blockName);
-  if (hasLCPBlock) await loadBlock(block);
-
-  document.body.style.display = null;
-  const lcpCandidate = document.querySelector('main img');
-
+async function waitForFirstImage(section) {
+  const lcpCandidate = section.querySelector('img');
   await new Promise((resolve) => {
     if (lcpCandidate && !lcpCandidate.complete) {
       lcpCandidate.setAttribute('loading', 'eager');
@@ -673,6 +633,39 @@ async function waitForLCP(lcpBlocks) {
       resolve();
     }
   });
+}
+
+/**
+ * Loads all blocks in a section.
+ * @param {Element} section The section element
+ */
+
+async function loadSection(section, loadCallback) {
+  const status = section.dataset.sectionStatus;
+  if (!status || status === 'initialized') {
+    section.dataset.sectionStatus = 'loading';
+    const blocks = [...section.querySelectorAll('div.block')];
+    for (let i = 0; i < blocks.length; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await loadBlock(blocks[i]);
+    }
+    if (loadCallback) await loadCallback(section);
+    section.dataset.sectionStatus = 'loaded';
+    section.style.display = null;
+  }
+}
+
+/**
+ * Loads all sections.
+ * @param {Element} element The parent element of sections to load
+ */
+
+async function loadSections(element) {
+  const sections = [...element.querySelectorAll('div.section')];
+  for (let i = 0; i < sections.length; i += 1) {
+    // eslint-disable-next-line no-await-in-loop
+    await loadSection(sections[i]);
+  }
 }
 
 init();
@@ -689,16 +682,17 @@ export {
   fetchPlaceholders,
   getMetadata,
   loadBlock,
-  loadBlocks,
   loadCSS,
   loadFooter,
   loadHeader,
   loadScript,
+  loadSection,
+  loadSections,
   readBlockConfig,
   sampleRUM,
   setup,
   toCamelCase,
   toClassName,
-  updateSectionsStatus,
-  waitForLCP,
+  waitForFirstImage,
+  wrapTextNodes,
 };

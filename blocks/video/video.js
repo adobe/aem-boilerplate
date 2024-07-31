@@ -1,51 +1,80 @@
 import { decorateIcons } from '../../scripts/aem.js';
 
+let videoJsScriptPromise;
+
+function scriptExists(src) {
+  const scripts = document.head.getElementsByTagName('script');
+
+  return [...scripts].some((script) => script.src === src);
+}
+
 function parseConfig(block) {
+  const isAutoPlay = block.classList.contains('autoplay');
+
   if (block.classList.contains('hero')) {
     const videoUrl = block.querySelector(':scope > div > div:first-child').textContent;
-    const title = block.querySelector(':scope > div > div:nth-child(2) > h1').textContent;
-    const description = block.querySelector(':scope > div > div:nth-child(2) > p').textContent;
-    const button = block.querySelector(':scope > div > div:nth-child(2) > p:last-child').textContent;
+    const title = block.querySelector(':scope > div > div:nth-child(2) > h1')?.textContent;
+    const description = block.querySelector(':scope > div > div:nth-child(2) > p')?.textContent;
+    const button = block.querySelector(':scope > div > div:nth-child(2) > p:last-child')?.textContent;
 
     return {
-      isHeroBlock: true,
+      type: 'hero',
       videoUrl,
+      isAutoPlay,
       title,
       description,
       button,
     };
   }
 
-  const cards = [...block.children].map((child) => {
-    const videoUrl = child.querySelector(':scope > div:first-child').textContent;
-    const title = child.querySelector(':scope > div:nth-child(2) > h1').textContent;
-    const description = child.querySelector(':scope > div:nth-child(2) > p').textContent;
+  if (block.classList.contains('inline')) {
+    const cards = [...block.children].map((child) => {
+      const videoUrl = child.querySelector(':scope > div:first-child').textContent;
+      const title = child.querySelector(':scope > div:nth-child(2) > h1')?.textContent;
+      const description = child.querySelector(':scope > div:nth-child(2) > p')?.textContent;
+
+      return {
+        videoUrl,
+        isAutoPlay,
+        title,
+        description,
+      };
+    });
 
     return {
-      videoUrl,
-      title,
-      description,
+      type: 'cards',
+      cards,
     };
-  });
+  }
+
+  const videoUrl = block.querySelector(':scope div p:first-child').textContent;
+  const posterImage = block.querySelector(':scope div p:nth-child(2)')?.firstElementChild;
 
   return {
-    isHeroBlock: false,
-    cards,
+    type: 'modal',
+    videoUrl,
+    posterImage,
   };
 }
 
 async function loadVideoJs() {
+  const videoJsScrriptUrl = 'https://vjs.zencdn.net/8.3.0/video.min.js';
+  const videoJsCssUrl = 'https://vjs.zencdn.net/8.3.0/video-js.min.css';
+  if (scriptExists(videoJsScrriptUrl)) {
+    return videoJsScriptPromise;
+  }
+
   let resolvePromise;
-  const promise = new Promise((resolve) => {
+  videoJsScriptPromise = new Promise((resolve) => {
     resolvePromise = resolve;
   });
 
   const css = document.createElement('link');
-  css.setAttribute('href', 'https://vjs.zencdn.net/8.3.0/video-js.css');
+  css.setAttribute('href', videoJsCssUrl);
   css.setAttribute('rel', 'stylesheet');
 
   const mainScript = document.createElement('script');
-  mainScript.setAttribute('src', 'https://vjs.zencdn.net/8.3.0/video.min.js');
+  mainScript.setAttribute('src', videoJsScrriptUrl);
   mainScript.setAttribute('async', 'true');
   mainScript.onload = () => resolvePromise();
 
@@ -53,7 +82,7 @@ async function loadVideoJs() {
   header.append(css);
   header.append(mainScript);
 
-  await promise;
+  return videoJsScriptPromise;
 }
 
 function createPlayButton(container, player) {
@@ -96,6 +125,7 @@ function createPlayButton(container, player) {
   });
 
   decorateIcons(button);
+  updateIcons(player.paused());
 
   container.append(button);
 }
@@ -109,12 +139,12 @@ function setupPlayer(videoContainer, config) {
 
   // eslint-disable-next-line no-undef
   const player = videojs(videoElement, {
-    controls: false,
+    controls: config.controls,
     bigPlayButton: false,
-    autoplay: true,
-    muted: true,
+    autoplay: config.autoplay,
+    muted: config.autoplay,
     fluid: true,
-    loop: true,
+    loop: config.autoplay,
   });
 
   player.src(config.url);
@@ -126,26 +156,34 @@ function decorateVideoCard(container, config) {
   const videoContainer = document.createElement('div');
   videoContainer.classList.add('video-container');
 
-  const title = document.createElement('h3');
-  title.classList.add('video-card-title');
-  title.textContent = config.title;
-
-  const description = document.createElement('p');
-  description.classList.add('video-card-description');
-  description.textContent = config.description;
-
-  const content = document.createElement('div');
-  content.classList.add('video-card-content');
-  content.append(title);
-  content.append(description);
-
   const article = document.createElement('article');
   article.classList.add('video-card');
   article.append(videoContainer);
-  article.append(content);
+
+  if (config.title || config.description) {
+    const content = document.createElement('div');
+    content.classList.add('video-card-content');
+
+    if (config.title) {
+      const title = document.createElement('h3');
+      title.classList.add('video-card-title');
+      title.textContent = config.title;
+      content.append(title);
+    }
+
+    if (config.description) {
+      const description = document.createElement('p');
+      description.classList.add('video-card-description');
+      description.textContent = config.description;
+      content.append(description);
+    }
+
+    article.append(content);
+  }
 
   setupPlayer(videoContainer, {
     url: config.videoUrl,
+    autoplay: config.isAutoPlay,
   });
 
   container.append(article);
@@ -155,23 +193,29 @@ function decorateHeroBlock(block, config) {
   const container = document.createElement('div');
   container.classList.add('video-hero');
 
-  const title = document.createElement('h1');
-  title.classList.add('video-hero-title');
-  title.textContent = config.title;
-
-  const description = document.createElement('p');
-  description.classList.add('video-hero-description');
-  description.textContent = config.description;
-
-  const button = document.createElement('button');
-  button.classList.add('video-hero-button');
-  button.textContent = config.button;
-
   const content = document.createElement('div');
   content.classList.add('video-hero-content');
-  content.append(title);
-  content.append(description);
-  content.append(button);
+
+  if (config.title) {
+    const title = document.createElement('h1');
+    title.classList.add('video-hero-title');
+    title.textContent = config.title;
+    content.append(title);
+  }
+
+  if (config.description) {
+    const description = document.createElement('p');
+    description.classList.add('video-hero-description');
+    description.textContent = config.description;
+    content.append(description);
+  }
+
+  if (config.button) {
+    const button = document.createElement('button');
+    button.classList.add('video-hero-button');
+    button.textContent = config.button;
+    content.append(button);
+  }
 
   container.append(content);
 
@@ -180,6 +224,7 @@ function decorateHeroBlock(block, config) {
 
   setupPlayer(container, {
     url: config.videoUrl,
+    autoplay: config.isAutoPlay,
   });
 }
 
@@ -200,13 +245,17 @@ function decorateVideoCards(block, config) {
 }
 
 export default async function decorate(block) {
-  await loadVideoJs();
-
   const config = parseConfig(block);
-  if (config.isHeroBlock) {
+  if (config.type !== 'modal') {
+    await loadVideoJs();
+  }
+
+  if (config.type === 'hero') {
     decorateHeroBlock(block, config);
     return;
   }
 
-  decorateVideoCards(block, config);
+  if (config.type === 'cards') {
+    decorateVideoCards(block, config);
+  }
 }

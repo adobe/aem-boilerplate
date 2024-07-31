@@ -10,7 +10,7 @@
     list-style: none;
 }
 
-.video-card-grid__item:nth-child(odd):last-child {
+.video-card-grid-item:nth-child(odd):last-child {
     grid-column: 1 / -1;;
 }
 
@@ -23,24 +23,20 @@
     position: relative;
 }
 
-.video-card-grid__item:nth-child(odd):last-child .video-card {
+.video-card-grid-item:nth-child(odd):last-child .video-card {
     display: flex;
     flex-direction: row-reverse;
-}
-
-.video-card-grid__item:nth-child(odd):last-child .video-card .video-container {
-    flex: 1 0 50%;
-}
-
-.video-card-grid__item:nth-child(odd):last-child .video-card .video-card__content {
-    justify-content: center;
 }
 
 .video-card .video-container {
     position: relative;
 }
 
-.video-card .video-card__content {
+.video-card-grid-item:nth-child(odd):last-child .video-card .video-container {
+    flex: 1 0 50%;
+}
+
+.video-card .video-card-content {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -48,14 +44,18 @@
     overflow: hidden;
 }
 
-.video-card .video-card__title {
+.video-card-grid-item:nth-child(odd):last-child .video-card .video-card-content {
+    justify-content: center;
+}
+
+.video-card .video-card-title {
     font-size: 1.25rem;
     font-weight: 700;
     line-height: 1.2;
     margin: 0;
 }
 
-.video-card .video-card__description {
+.video-card .video-card-description {
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -71,7 +71,7 @@
     height: 100%;
 }
 
-.video-hero .video-hero__content {
+.video-hero .video-hero-content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -85,25 +85,24 @@
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 500px;
-    color: #fff;
     z-index: 1;
 }
 
-.video-hero .video-hero__title {
+.video-hero .video-hero-title {
     font-size: 70px;
     line-height: 100%;
     text-transform: uppercase;
     margin: 0;
 }
 
-.video-hero .video-hero__description {
+.video-hero .video-hero-description {
     font-size: 1.25rem;
     font-weight: 400;
     line-height: 1.5;
     margin: 0;
 }
 
-.video-hero .video-hero__button {
+.video-hero .video-hero-button {
     background-color: #fff;
     color: #141411;
     padding: 12px 24px;

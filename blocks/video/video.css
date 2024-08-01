@@ -32,6 +32,11 @@
     position: relative;
 }
 
+.video-modal .video-container {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
 .video-card-grid-item:nth-child(odd):last-child .video-card .video-container {
     flex: 1 0 50%;
 }
@@ -138,4 +143,80 @@
 .custom-play-button:hover,
 .custom-play-button:focus {
     background-color: transparent;
+}
+
+.video-component {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.video-component picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.video-component .video-play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.video-component .video-play-button:hover,
+.video-component .video-play-button:focus {
+    background-color: #fff;
+}
+
+.video-component .video-play-button .icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    z-index: 999;
+}
+
+.video-modal .video-modal-header,
+.video-modal .video-modal-content {
+    position: relative;
+    width: 80%;
+    max-width: 1200px;
+    padding: 10px;
+}
+
+.video-modal .video-modal-header {
+    height: 40px;
+}
+
+.video-modal .video-modal-header .icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
 }

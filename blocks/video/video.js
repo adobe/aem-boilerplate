@@ -140,7 +140,7 @@ function setupPlayer(videoContainer, config) {
   // eslint-disable-next-line no-undef
   const player = videojs(videoElement, {
     controls: config.controls,
-    bigPlayButton: false,
+    bigPlayButton: config.bigPlayButton,
     autoplay: config.autoplay,
     muted: config.autoplay,
     fluid: true,
@@ -149,7 +149,9 @@ function setupPlayer(videoContainer, config) {
 
   player.src(config.url);
 
-  createPlayButton(videoContainer, player);
+  if (config.hasCustomPlayButton) {
+    createPlayButton(videoContainer, player);
+  }
 }
 
 function decorateVideoCard(container, config) {
@@ -184,6 +186,7 @@ function decorateVideoCard(container, config) {
   setupPlayer(videoContainer, {
     url: config.videoUrl,
     autoplay: config.isAutoPlay,
+    hasCustomPlayButton: true,
   });
 
   container.append(article);
@@ -225,6 +228,7 @@ function decorateHeroBlock(block, config) {
   setupPlayer(container, {
     url: config.videoUrl,
     autoplay: config.isAutoPlay,
+    hasCustomPlayButton: true,
   });
 }
 
@@ -244,6 +248,112 @@ function decorateVideoCards(block, config) {
   });
 }
 
+function closeModal() {
+  const modal = document.querySelector('.video-modal');
+  modal.querySelector('.video-container').innerHTML = '';
+
+  // eslint-disable-next-line no-use-before-define
+  window.removeEventListener('click', handleOutsideClick);
+  // eslint-disable-next-line no-use-before-define
+  window.removeEventListener('keydown', handleEscapeKey);
+
+  modal.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function handleOutsideClick(event) {
+  const modal = document.querySelector('.video-modal');
+  if (event.target === modal) {
+    closeModal();
+  }
+}
+
+function handleEscapeKey(event) {
+  if (event.key === 'Escape') {
+    closeModal();
+  }
+}
+
+async function openModal(config) {
+  await loadVideoJs();
+
+  const modal = document.querySelector('.video-modal');
+  const container = modal.querySelector('.video-container');
+  setupPlayer(container, {
+    url: config.videoUrl,
+    autoplay: false,
+    controls: true,
+    bigPlayButton: true,
+  });
+
+  window.addEventListener('click', handleOutsideClick);
+  window.addEventListener('keydown', handleEscapeKey);
+
+  modal.style.display = '';
+  document.body.style.overflow = 'hidden';
+}
+
+function createModal() {
+  const modal = document.createElement('div');
+  modal.classList.add('video-modal');
+  modal.style.display = 'none';
+
+  const modalHeader = document.createElement('div');
+  modalHeader.classList.add('video-modal-header');
+
+  const closeIcon = document.createElement('span');
+  closeIcon.classList.add('icon');
+  closeIcon.classList.add('icon-close');
+  closeIcon.addEventListener('click', () => {
+    closeModal();
+  });
+
+  modalHeader.append(closeIcon);
+  decorateIcons(modalHeader);
+
+  modal.append(modalHeader);
+
+  const modalContent = document.createElement('div');
+  modalContent.classList.add('video-modal-content');
+
+  const videoContainer = document.createElement('div');
+  videoContainer.classList.add('video-container');
+  modalContent.append(videoContainer);
+
+  modal.append(modalContent);
+  document.body.append(modal);
+}
+
+function decorateVideoModal(block, config) {
+  const container = document.createElement('div');
+  container.classList.add('video-component');
+
+  const posterImage = config.posterImage.cloneNode(true);
+  const playButton = document.createElement('button');
+  playButton.classList.add('video-play-button');
+
+  const playIcon = document.createElement('span');
+  playIcon.classList.add('icon');
+  playIcon.classList.add('icon-play');
+  playButton.append(playIcon);
+  decorateIcons(playButton);
+
+  playButton.addEventListener('click', async () => {
+    await openModal(config);
+  });
+
+  container.append(posterImage);
+  container.append(playButton);
+
+  block.innerHTML = '';
+  block.append(container);
+
+  const hasVideoModal = document.querySelector('.video-modal');
+  if (!hasVideoModal) {
+    createModal();
+  }
+}
+
 export default async function decorate(block) {
   const config = parseConfig(block);
   if (config.type !== 'modal') {
@@ -257,5 +367,8 @@ export default async function decorate(block) {
 
   if (config.type === 'cards') {
     decorateVideoCards(block, config);
+    return;
   }
+
+  decorateVideoModal(block, config);
 }

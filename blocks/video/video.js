@@ -249,15 +249,15 @@ function decorateVideoCards(block, config) {
 }
 
 function closeModal() {
-  const modal = document.querySelector('.video-modal');
-  modal.querySelector('.video-container').innerHTML = '';
+  const dialog = document.querySelector('.video-modal');
+  dialog.querySelector('.video-container').innerHTML = '';
 
   // eslint-disable-next-line no-use-before-define
   window.removeEventListener('click', handleOutsideClick);
   // eslint-disable-next-line no-use-before-define
   window.removeEventListener('keydown', handleEscapeKey);
 
-  modal.style.display = 'none';
+  dialog.close();
   document.body.style.overflow = '';
 }
 
@@ -277,8 +277,8 @@ function handleEscapeKey(event) {
 async function openModal(config) {
   await loadVideoJs();
 
-  const modal = document.querySelector('.video-modal');
-  const container = modal.querySelector('.video-container');
+  const dialog = document.querySelector('.video-modal');
+  const container = dialog.querySelector('.video-container');
   setupPlayer(container, {
     url: config.videoUrl,
     autoplay: false,
@@ -289,14 +289,13 @@ async function openModal(config) {
   window.addEventListener('click', handleOutsideClick);
   window.addEventListener('keydown', handleEscapeKey);
 
-  modal.style.display = '';
+  dialog.showModal();
   document.body.style.overflow = 'hidden';
 }
 
 function createModal() {
-  const modal = document.createElement('div');
+  const modal = document.createElement('dialog');
   modal.classList.add('video-modal');
-  modal.style.display = 'none';
 
   const modalHeader = document.createElement('div');
   modalHeader.classList.add('video-modal-header');
@@ -304,11 +303,14 @@ function createModal() {
   const closeIcon = document.createElement('span');
   closeIcon.classList.add('icon');
   closeIcon.classList.add('icon-close');
-  closeIcon.addEventListener('click', () => {
+  const closeBtn = document.createElement('button');
+  closeBtn.classList.add('video-modal-close');
+  closeBtn.append(closeIcon);
+  closeBtn.addEventListener('click', () => {
     closeModal();
   });
 
-  modalHeader.append(closeIcon);
+  modalHeader.append(closeBtn);
   decorateIcons(modalHeader);
 
   modal.append(modalHeader);

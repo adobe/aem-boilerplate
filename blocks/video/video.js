@@ -130,24 +130,25 @@ function createPlayButton(container, player) {
   container.append(button);
 }
 
-function setupPlayer(videoContainer, config) {
+function setupPlayer(url, videoContainer, config) {
   const videoElement = document.createElement('video');
   videoElement.classList.add('video-js');
   videoElement.id = `video-${Math.random().toString(36).substr(2, 9)}`;
 
   videoContainer.append(videoElement);
 
-  // eslint-disable-next-line no-undef
-  const player = videojs(videoElement, {
-    controls: config.controls,
-    bigPlayButton: config.bigPlayButton,
-    autoplay: config.autoplay,
-    muted: config.autoplay,
-    fluid: true,
-    loop: config.autoplay,
-  });
+  const videojsConfig = {
+    ...config,
+  };
 
-  player.src(config.url);
+  if (config.autoplay) {
+    videojsConfig.muted = true;
+    videojsConfig.loop = true;
+  }
+
+  // eslint-disable-next-line no-undef
+  const player = videojs(videoElement, videojsConfig);
+  player.src(url);
 
   if (config.hasCustomPlayButton) {
     createPlayButton(videoContainer, player);
@@ -183,10 +184,10 @@ function decorateVideoCard(container, config) {
     article.append(content);
   }
 
-  setupPlayer(videoContainer, {
-    url: config.videoUrl,
+  setupPlayer(config.videoUrl, videoContainer, {
     autoplay: config.isAutoPlay,
     hasCustomPlayButton: true,
+    fill: true,
   });
 
   container.append(article);
@@ -225,10 +226,10 @@ function decorateHeroBlock(block, config) {
   block.innerHTML = '';
   block.append(container);
 
-  setupPlayer(container, {
-    url: config.videoUrl,
+  setupPlayer(config.videoUrl, container, {
     autoplay: config.isAutoPlay,
     hasCustomPlayButton: true,
+    fill: true,
   });
 }
 
@@ -279,11 +280,10 @@ async function openModal(config) {
 
   const dialog = document.querySelector('.video-modal');
   const container = dialog.querySelector('.video-container');
-  setupPlayer(container, {
-    url: config.videoUrl,
-    autoplay: false,
-    controls: true,
+  setupPlayer(config.videoUrl, container, {
     bigPlayButton: true,
+    fluid: true,
+    controls: true,
   });
 
   window.addEventListener('click', handleOutsideClick);

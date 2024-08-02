@@ -15,7 +15,7 @@ function parseConfig(block) {
     const videoUrl = block.querySelector(':scope > div > div:first-child').textContent;
     const title = block.querySelector(':scope > div > div:nth-child(2) > h1')?.textContent;
     const description = block.querySelector(':scope > div > div:nth-child(2) > p')?.textContent;
-    const button = block.querySelector(':scope > div > div:nth-child(2) > p:last-child')?.textContent;
+    const button = block.querySelector(':scope > div > div:nth-child(2) > p:last-child > a');
 
     return {
       type: 'hero',
@@ -94,16 +94,6 @@ function createPlayButton(container, player) {
   playIcon.classList.add('icon');
   playIcon.classList.add('icon-play');
 
-  function updateIcons(isPaused) {
-    if (isPaused) {
-      playIcon.style.display = '';
-      pauseIcon.style.display = 'none';
-    } else {
-      playIcon.style.display = 'none';
-      pauseIcon.style.display = '';
-    }
-  }
-
   const button = document.createElement('button');
   button.classList.add('custom-play-button');
   button.addEventListener('click', () => {
@@ -116,6 +106,18 @@ function createPlayButton(container, player) {
 
   button.append(pauseIcon);
   button.append(playIcon);
+
+  function updateIcons(isPaused) {
+    if (isPaused) {
+      playIcon.style.display = '';
+      pauseIcon.style.display = 'none';
+      button.setAttribute('aria-label', 'Play video');
+    } else {
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = '';
+      button.setAttribute('aria-label', 'Pause video');
+    }
+  }
 
   player.on('play', () => {
     updateIcons(false);
@@ -215,10 +217,8 @@ function decorateHeroBlock(block, config) {
   }
 
   if (config.button) {
-    const button = document.createElement('button');
-    button.classList.add('video-hero-button');
-    button.textContent = config.button;
-    content.append(button);
+    config.button.classList.add('video-hero-button');
+    content.append(config.button);
   }
 
   container.append(content);
@@ -307,6 +307,7 @@ function createModal() {
   closeIcon.classList.add('icon');
   closeIcon.classList.add('icon-close');
   const closeBtn = document.createElement('button');
+  closeBtn.setAttribute('aria-label', 'Close dialog');
   closeBtn.classList.add('video-modal-close');
   closeBtn.append(closeIcon);
   closeBtn.addEventListener('click', () => {
@@ -336,6 +337,7 @@ function decorateVideoModal(block, config) {
 
   const posterImage = config.posterImage.cloneNode(true);
   const playButton = document.createElement('button');
+  playButton.setAttribute('aria-label', 'Play video');
   playButton.classList.add('video-play-button');
 
   const playIcon = document.createElement('span');

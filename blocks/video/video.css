@@ -55,7 +55,8 @@ main > .section.video-container {
     margin: 0;
 }
 
-.video-hero .video-hero-button {
+.video-hero .video-hero-button:any-link {
+    display: block;
     background-color: #fff;
     color: #141411;
     padding: 12px 24px;

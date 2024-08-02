@@ -250,7 +250,7 @@ function decorateVideoCards(block, config) {
 }
 
 function closeModal() {
-  const dialog = document.querySelector('.video-modal');
+  const dialog = document.querySelector('.video-modal-dialog');
   dialog.querySelector('.video-container').innerHTML = '';
 
   // eslint-disable-next-line no-use-before-define
@@ -263,7 +263,7 @@ function closeModal() {
 }
 
 function handleOutsideClick(event) {
-  const modal = document.querySelector('.video-modal');
+  const modal = document.querySelector('.video-modal-dialog');
   if (event.target === modal) {
     closeModal();
   }
@@ -278,7 +278,7 @@ function handleEscapeKey(event) {
 async function openModal(config) {
   await loadVideoJs();
 
-  const dialog = document.querySelector('.video-modal');
+  const dialog = document.querySelector('.video-modal-dialog');
   const container = dialog.querySelector('.video-container');
   setupPlayer(config.videoUrl, container, {
     bigPlayButton: true,
@@ -295,10 +295,13 @@ async function openModal(config) {
 
 function createModal() {
   const modal = document.createElement('dialog');
-  modal.classList.add('video-modal');
+  modal.classList.add('video-modal-dialog');
 
-  const modalHeader = document.createElement('div');
-  modalHeader.classList.add('video-modal-header');
+  const container = document.createElement('div');
+  container.classList.add('video-modal');
+
+  const header = document.createElement('div');
+  header.classList.add('video-modal-header');
 
   const closeIcon = document.createElement('span');
   closeIcon.classList.add('icon');
@@ -310,19 +313,20 @@ function createModal() {
     closeModal();
   });
 
-  modalHeader.append(closeBtn);
-  decorateIcons(modalHeader);
+  header.append(closeBtn);
+  decorateIcons(header);
 
-  modal.append(modalHeader);
+  container.append(header);
 
-  const modalContent = document.createElement('div');
-  modalContent.classList.add('video-modal-content');
+  const content = document.createElement('div');
+  content.classList.add('video-modal-content');
 
   const videoContainer = document.createElement('div');
   videoContainer.classList.add('video-container');
-  modalContent.append(videoContainer);
+  content.append(videoContainer);
 
-  modal.append(modalContent);
+  container.append(content);
+  modal.append(container);
   document.body.append(modal);
 }
 
@@ -350,7 +354,7 @@ function decorateVideoModal(block, config) {
   block.innerHTML = '';
   block.append(container);
 
-  const hasVideoModal = document.querySelector('.video-modal');
+  const hasVideoModal = document.querySelector('.video-modal-dialog');
   if (!hasVideoModal) {
     createModal();
   }

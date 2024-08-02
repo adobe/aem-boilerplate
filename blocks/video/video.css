@@ -1,4 +1,3 @@
-
 main > .section.video-container {
     padding: 0;
 }
@@ -214,20 +213,24 @@ main > .section.video-container {
     height: 100%;
 }
 
-.video-modal[open] {
+.video-modal-dialog[open] {
     border: none;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0;
+    overflow: auto;
+}
+
+.video-modal-dialog::backdrop {
+    background-color: #fff;
+}
+
+.video-modal {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    width: 100%;
-    max-width: 1200px;
-    padding: 0;
-}
-
-.video-modal::backdrop {
-    background-color: #fff;
 }
 
 .video-modal .video-modal-header,

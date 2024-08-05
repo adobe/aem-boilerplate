@@ -68,7 +68,8 @@ main > .section.video-container {
     text-decoration: none;
 }
 
-.video-hero video {
+.video-hero video,
+.video-hero .vjs-poster img {
     object-fit: cover;
 }
 
@@ -121,7 +122,8 @@ main > .section.video-container {
     aspect-ratio: 3 / 2;
 }
 
-.video-card video {
+.video-card video,
+.video-card .vjs-poster img {
     object-fit: cover;
 }
 

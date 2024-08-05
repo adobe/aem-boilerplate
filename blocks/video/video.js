@@ -1,5 +1,7 @@
 import { decorateIcons } from '../../scripts/aem.js';
 
+const VIDEO_JS_SCRIPT = 'https://vjs.zencdn.net/8.3.0/video.min.js';
+const VIDEO_JS_CSS = 'https://vjs.zencdn.net/8.3.0/video-js.min.css';
 let videoJsScriptPromise;
 
 function scriptExists(src) {
@@ -12,7 +14,8 @@ function parseConfig(block) {
   const isAutoPlay = block.classList.contains('autoplay');
 
   if (block.classList.contains('hero')) {
-    const videoUrl = block.querySelector(':scope > div > div:first-child').textContent;
+    const posterImage = block.querySelector(':scope > div > div:first-child picture');
+    const videoUrl = block.querySelector(':scope > div > div:first-child a').href;
     const title = block.querySelector(':scope > div > div:nth-child(2) > h1')?.textContent;
     const description = block.querySelector(':scope > div > div:nth-child(2) > p')?.textContent;
     const button = block.querySelector(':scope > div > div:nth-child(2) > p:last-child > a');
@@ -24,12 +27,14 @@ function parseConfig(block) {
       title,
       description,
       button,
+      posterImage,
     };
   }
 
   if (block.classList.contains('inline')) {
     const cards = [...block.children].map((child) => {
-      const videoUrl = child.querySelector(':scope > div:first-child').textContent;
+      const posterImage = block.querySelector(':scope > div:first-child picture');
+      const videoUrl = child.querySelector(':scope > div:first-child a').href;
       const title = child.querySelector(':scope > div:nth-child(2) > h1')?.textContent;
       const description = child.querySelector(':scope > div:nth-child(2) > p')?.textContent;
 
@@ -38,6 +43,7 @@ function parseConfig(block) {
         isAutoPlay,
         title,
         description,
+        posterImage,
       };
     });
 
@@ -47,7 +53,7 @@ function parseConfig(block) {
     };
   }
 
-  const videoUrl = block.querySelector(':scope div p:first-child').textContent;
+  const videoUrl = block.querySelector(':scope div p:first-child a').href;
   const posterImage = block.querySelector(':scope div p:nth-child(2)')?.firstElementChild;
 
   return {
@@ -58,9 +64,7 @@ function parseConfig(block) {
 }
 
 async function loadVideoJs() {
-  const videoJsScrriptUrl = 'https://vjs.zencdn.net/8.3.0/video.min.js';
-  const videoJsCssUrl = 'https://vjs.zencdn.net/8.3.0/video-js.min.css';
-  if (scriptExists(videoJsScrriptUrl)) {
+  if (scriptExists(VIDEO_JS_SCRIPT)) {
     return videoJsScriptPromise;
   }
 
@@ -70,11 +74,11 @@ async function loadVideoJs() {
   });
 
   const css = document.createElement('link');
-  css.setAttribute('href', videoJsCssUrl);
+  css.setAttribute('href', VIDEO_JS_CSS);
   css.setAttribute('rel', 'stylesheet');
 
   const mainScript = document.createElement('script');
-  mainScript.setAttribute('src', videoJsScrriptUrl);
+  mainScript.setAttribute('src', VIDEO_JS_SCRIPT);
   mainScript.setAttribute('async', 'true');
   mainScript.onload = () => resolvePromise();
 
@@ -132,6 +136,39 @@ function createPlayButton(container, player) {
   container.append(button);
 }
 
+function isImageFormatSupported(format) {
+  if (['image/jpeg', 'image/png'].includes(format)) {
+    return true;
+  }
+
+  const elem = document.createElement('canvas');
+  if (elem.getContext && elem.getContext('2d')) {
+    return elem.toDataURL(format).indexOf(`data:${format}`) === 0;
+  }
+
+  return false;
+}
+
+function getPosterImage(posterElement) {
+  const img = posterElement.querySelector('img');
+  const sources = posterElement.querySelectorAll('source');
+  if (!sources || !img) {
+    return null;
+  }
+
+  const supportedSources = [...sources].filter((source) => {
+    const format = source.getAttribute('type');
+    const media = source.getAttribute('media');
+    return isImageFormatSupported(format) && (window.matchMedia(media).matches || !media);
+  });
+
+  if (supportedSources.length === 0) {
+    return img.src;
+  }
+
+  return supportedSources[0].srcset;
+}
+
 function setupPlayer(url, videoContainer, config) {
   const videoElement = document.createElement('video');
   videoElement.classList.add('video-js');
@@ -139,13 +176,17 @@ function setupPlayer(url, videoContainer, config) {
 
   videoContainer.append(videoElement);
 
+  const poster = config.poster ? getPosterImage(config.poster) : null;
   const videojsConfig = {
     ...config,
+    preload: poster ? 'none' : 'auto',
+    poster,
   };
 
   if (config.autoplay) {
     videojsConfig.muted = true;
     videojsConfig.loop = true;
+    videojsConfig.preload = 'auto';
   }
 
   // eslint-disable-next-line no-undef
@@ -190,6 +231,7 @@ function decorateVideoCard(container, config) {
     autoplay: config.isAutoPlay,
     hasCustomPlayButton: true,
     fill: true,
+    poster: config.posterImage,
   });
 
   container.append(article);
@@ -230,6 +272,7 @@ function decorateHeroBlock(block, config) {
     autoplay: config.isAutoPlay,
     hasCustomPlayButton: true,
     fill: true,
+    poster: config.posterImage,
   });
 }
 

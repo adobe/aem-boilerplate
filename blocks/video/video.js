@@ -14,11 +14,11 @@ function parseConfig(block) {
   const isAutoPlay = block.classList.contains('autoplay');
 
   if (block.classList.contains('hero')) {
-    const posterImage = block.querySelector(':scope > div > div:first-child picture');
-    const videoUrl = block.querySelector(':scope > div > div:first-child a').href;
-    const title = block.querySelector(':scope > div > div:nth-child(2) > h1')?.textContent;
-    const description = block.querySelector(':scope > div > div:nth-child(2) > p')?.textContent;
-    const button = block.querySelector(':scope > div > div:nth-child(2) > p:last-child > a');
+    const posterImage = block.querySelector('picture');
+    const videoUrl = block.querySelector('div > div:first-child a').href;
+    const title = block.querySelector('h1, h2, h3')?.textContent;
+    const description = block.querySelector('div > div:nth-child(2) > p')?.textContent;
+    const button = block.querySelector('div > div:nth-child(2) > p:last-child > a');
 
     return {
       type: 'hero',
@@ -33,10 +33,10 @@ function parseConfig(block) {
 
   if (block.classList.contains('inline')) {
     const cards = [...block.children].map((child) => {
-      const posterImage = block.querySelector(':scope > div:first-child picture');
-      const videoUrl = child.querySelector(':scope > div:first-child a').href;
-      const title = child.querySelector(':scope > div:nth-child(2) > h1')?.textContent;
-      const description = child.querySelector(':scope > div:nth-child(2) > p')?.textContent;
+      const posterImage = block.querySelector(' picture');
+      const videoUrl = child.querySelector('div:first-child a').href;
+      const title = child.querySelector('h1, h2, h3')?.textContent;
+      const description = child.querySelector('div:nth-child(2) > p')?.textContent;
 
       return {
         videoUrl,
@@ -53,8 +53,8 @@ function parseConfig(block) {
     };
   }
 
-  const videoUrl = block.querySelector(':scope div p:first-child a').href;
-  const posterImage = block.querySelector(':scope div p:nth-child(2)')?.firstElementChild;
+  const videoUrl = block.querySelector('div p:first-child a').href;
+  const posterImage = block.querySelector('picture');
 
   return {
     type: 'modal',

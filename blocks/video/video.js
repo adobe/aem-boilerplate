@@ -136,6 +136,22 @@ function createPlayButton(container, player) {
   container.append(button);
 }
 
+function setupAutopause(videoElement, player) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        player.play();
+      } else {
+        player.pause();
+      }
+    });
+  }, {
+    threshold: [0.5],
+  });
+
+  observer.observe(videoElement);
+}
+
 function isImageFormatSupported(format) {
   if (['image/jpeg', 'image/png'].includes(format)) {
     return true;
@@ -179,14 +195,16 @@ function setupPlayer(url, videoContainer, config) {
   const poster = config.poster ? getPosterImage(config.poster) : null;
   const videojsConfig = {
     ...config,
-    preload: poster ? 'none' : 'auto',
+    preload: poster && !config.autoplay ? 'none' : 'auto',
     poster,
   };
 
   if (config.autoplay) {
     videojsConfig.muted = true;
     videojsConfig.loop = true;
-    videojsConfig.preload = 'auto';
+    // Video will autoplay when the user scrolls it in the viewport
+    // Refer setupAutopause function
+    videojsConfig.autoplay = false;
   }
 
   // eslint-disable-next-line no-undef
@@ -195,6 +213,10 @@ function setupPlayer(url, videoContainer, config) {
 
   if (config.hasCustomPlayButton) {
     createPlayButton(videoContainer, player);
+  }
+
+  if (config.autoplay) {
+    setupAutopause(videoElement, player);
   }
 }
 

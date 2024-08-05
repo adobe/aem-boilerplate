@@ -68,6 +68,12 @@ main > .section.video-container {
     text-decoration: none;
 }
 
+.video-hero > picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .video-hero video,
 .video-hero .vjs-poster img {
     object-fit: cover;

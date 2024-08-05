@@ -240,7 +240,7 @@ function decorateVideoCard(container, config) {
   container.append(article);
 }
 
-function decorateHeroBlock(block, config) {
+async function decorateHeroBlock(block, config) {
   const container = document.createElement('div');
   container.classList.add('video-hero');
 
@@ -271,15 +271,38 @@ function decorateHeroBlock(block, config) {
   block.innerHTML = '';
   block.append(container);
 
-  setupPlayer(config.videoUrl, container, {
-    autoplay: config.isAutoPlay,
-    hasCustomPlayButton: true,
-    fill: true,
-    poster: config.posterImage,
-  });
+  async function loadPlayer() {
+    await loadVideoJs();
+
+    // Hide preloaded poster image
+    const posterImage = block.querySelector('picture');
+    if (posterImage) {
+      posterImage.style.display = 'none';
+    }
+
+    setupPlayer(config.videoUrl, container, {
+      autoplay: config.isAutoPlay,
+      hasCustomPlayButton: true,
+      fill: true,
+      poster: config.posterImage,
+    });
+  }
+
+  if (config.posterImage) {
+    container.append(config.posterImage);
+
+    // Defer loading video.js to avoid blocking the main thread
+    setTimeout(async () => {
+      await loadPlayer();
+    }, 3000);
+  } else {
+    await loadPlayer();
+  }
 }
 
-function decorateVideoCards(block, config) {
+async function decorateVideoCards(block, config) {
+  await loadVideoJs();
+
   const gridContainer = document.createElement('ul');
   gridContainer.classList.add('video-card-grid');
 
@@ -378,7 +401,7 @@ function createModal() {
   document.body.append(modal);
 }
 
-function decorateVideoModal(block, config) {
+async function decorateVideoModal(block, config) {
   const container = document.createElement('div');
   container.classList.add('video-component');
 
@@ -411,19 +434,16 @@ function decorateVideoModal(block, config) {
 
 export default async function decorate(block) {
   const config = parseConfig(block);
-  if (config.type !== 'modal') {
-    await loadVideoJs();
-  }
 
   if (config.type === 'hero') {
-    decorateHeroBlock(block, config);
+    await decorateHeroBlock(block, config);
     return;
   }
 
   if (config.type === 'cards') {
-    decorateVideoCards(block, config);
+    await decorateVideoCards(block, config);
     return;
   }
 
-  decorateVideoModal(block, config);
+  await decorateVideoModal(block, config);
 }

@@ -244,7 +244,7 @@ main > .section.video-container {
 }
 
 .video-modal .video-modal-header {
-    height: 40px;
+    height: 44px;
 }
 
 .video-modal .video-modal-header .video-modal-close {
@@ -260,4 +260,6 @@ main > .section.video-container {
     border: 0;
     padding: 10px;
     margin: 0;
+    height: 40px;
+    width: 40px;
 }

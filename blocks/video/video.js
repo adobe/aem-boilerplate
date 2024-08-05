@@ -173,6 +173,9 @@ function setupPlayer(url, videoContainer, config) {
   const videoElement = document.createElement('video');
   videoElement.classList.add('video-js');
   videoElement.id = `video-${Math.random().toString(36).substr(2, 9)}`;
+  if (config.playsinline || config.autoplay) {
+    videoElement.setAttribute('playsinline', '');
+  }
 
   videoContainer.append(videoElement);
 
@@ -327,6 +330,7 @@ async function openModal(config) {
     bigPlayButton: true,
     fluid: true,
     controls: true,
+    playsinline: true,
   });
 
   window.addEventListener('click', handleOutsideClick);

@@ -11,6 +11,15 @@ function scriptExists(src) {
   return [...scripts].some((script) => script.src === src);
 }
 
+function getDeviceSpecificVideoUrl(videoUrl) {
+  const { userAgent } = navigator;
+  const isIOS = /iPad|iPhone|iPod/.test(userAgent);
+  const isSafari = /Safari/.test(userAgent);
+
+  const manifest = isIOS || isSafari ? 'manifest.m3u8' : 'manifest.mpd';
+  return videoUrl.replace(/manifest\.mpd|manifest\.m3u8|play/, manifest);
+}
+
 function parseConfig(block) {
   const isAutoPlay = block.classList.contains('autoplay');
 
@@ -23,7 +32,7 @@ function parseConfig(block) {
 
     return {
       type: 'hero',
-      videoUrl,
+      videoUrl: getDeviceSpecificVideoUrl(videoUrl),
       isAutoPlay,
       title,
       description,
@@ -40,7 +49,7 @@ function parseConfig(block) {
       const description = child.querySelector('div:nth-child(2) > p')?.textContent;
 
       return {
-        videoUrl,
+        videoUrl: getDeviceSpecificVideoUrl(videoUrl),
         isAutoPlay,
         title,
         description,
@@ -59,7 +68,7 @@ function parseConfig(block) {
 
   return {
     type: 'modal',
-    videoUrl,
+    videoUrl: getDeviceSpecificVideoUrl(videoUrl),
     posterImage,
   };
 }

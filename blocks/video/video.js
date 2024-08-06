@@ -14,9 +14,9 @@ function scriptExists(src) {
 function getDeviceSpecificVideoUrl(videoUrl) {
   const { userAgent } = navigator;
   const isIOS = /iPad|iPhone|iPod/.test(userAgent);
-  const isSafari = /Safari/.test(userAgent);
+  const isSafari = (/Safari/i).test(userAgent) && !(/Chrome/i).test(userAgent) && !(/CriOs/i).test(userAgent) && !(/Android/i).test(userAgent) && !(/Edg/i).test(userAgent);
 
-  const manifest = isIOS || isSafari ? 'manifest.m3u8' : 'manifest.mpd';
+  const manifest = (isIOS || isSafari) ? 'manifest.m3u8' : 'manifest.mpd';
   return videoUrl.replace(/manifest\.mpd|manifest\.m3u8|play/, manifest);
 }
 

@@ -179,6 +179,22 @@ function getPosterImage(posterElement) {
   return supportedSources[0].srcset;
 }
 
+function setupAutopause(videoElement, player) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        player.play();
+      } else {
+        player.pause();
+      }
+    });
+  }, {
+    threshold: [0.5],
+  });
+
+  observer.observe(videoElement);
+}
+
 function setupPlayer(url, videoContainer, config) {
   const videoElement = document.createElement('video');
   videoElement.classList.add('video-js');
@@ -208,6 +224,10 @@ function setupPlayer(url, videoContainer, config) {
 
   if (config.hasCustomPlayButton) {
     createPlayButton(videoContainer, player);
+  }
+
+  if (config.autoplay) {
+    setupAutopause(videoElement, player);
   }
 }
 

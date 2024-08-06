@@ -128,6 +128,14 @@ main > .section.video-container {
     aspect-ratio: 3 / 2;
 }
 
+.video-card picture,
+.video-card .video-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: inherit;
+}
+
 .video-card video,
 .video-card .vjs-poster img {
     object-fit: cover;

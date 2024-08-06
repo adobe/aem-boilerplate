@@ -2,6 +2,7 @@ import { decorateIcons } from '../../scripts/aem.js';
 
 const VIDEO_JS_SCRIPT = 'https://vjs.zencdn.net/8.3.0/video.min.js';
 const VIDEO_JS_CSS = 'https://vjs.zencdn.net/8.3.0/video-js.min.css';
+const SCRIPT_LOAD_DELAY = 3000;
 let videoJsScriptPromise;
 
 function scriptExists(src) {
@@ -33,7 +34,7 @@ function parseConfig(block) {
 
   if (block.classList.contains('inline')) {
     const cards = [...block.children].map((child) => {
-      const posterImage = block.querySelector(' picture');
+      const posterImage = child.querySelector(' picture');
       const videoUrl = child.querySelector('div:first-child a').href;
       const title = child.querySelector('h1, h2, h3')?.textContent;
       const description = child.querySelector('div:nth-child(2) > p')?.textContent;
@@ -201,7 +202,7 @@ function setupPlayer(url, videoContainer, config) {
   }
 }
 
-function decorateVideoCard(container, config) {
+async function decorateVideoCard(container, config) {
   const videoContainer = document.createElement('div');
   videoContainer.classList.add('video-container');
 
@@ -230,12 +231,33 @@ function decorateVideoCard(container, config) {
     article.append(content);
   }
 
-  setupPlayer(config.videoUrl, videoContainer, {
-    autoplay: config.isAutoPlay,
-    hasCustomPlayButton: true,
-    fill: true,
-    poster: config.posterImage,
-  });
+  async function loadPlayer() {
+    await loadVideoJs();
+
+    // Hide preloaded poster image
+    const posterImage = videoContainer.querySelector('picture');
+    if (posterImage) {
+      posterImage.style.display = 'none';
+    }
+
+    setupPlayer(config.videoUrl, videoContainer, {
+      autoplay: config.isAutoPlay,
+      hasCustomPlayButton: true,
+      fill: true,
+      poster: config.posterImage,
+    });
+  }
+
+  if (config.posterImage) {
+    videoContainer.append(config.posterImage);
+
+    // Defer loading video.js to avoid blocking the main thread
+    setTimeout(async () => {
+      await loadPlayer();
+    }, SCRIPT_LOAD_DELAY);
+  } else {
+    await loadPlayer();
+  }
 
   container.append(article);
 }
@@ -275,7 +297,7 @@ async function decorateHeroBlock(block, config) {
     await loadVideoJs();
 
     // Hide preloaded poster image
-    const posterImage = block.querySelector('picture');
+    const posterImage = container.querySelector('picture');
     if (posterImage) {
       posterImage.style.display = 'none';
     }
@@ -294,28 +316,26 @@ async function decorateHeroBlock(block, config) {
     // Defer loading video.js to avoid blocking the main thread
     setTimeout(async () => {
       await loadPlayer();
-    }, 3000);
+    }, SCRIPT_LOAD_DELAY);
   } else {
     await loadPlayer();
   }
 }
 
 async function decorateVideoCards(block, config) {
-  await loadVideoJs();
-
   const gridContainer = document.createElement('ul');
   gridContainer.classList.add('video-card-grid');
 
   block.innerHTML = '';
   block.append(gridContainer);
 
-  config.cards.forEach((videoConfig) => {
+  await Promise.all(config.cards.map((videoConfig) => {
     const gridItem = document.createElement('li');
     gridItem.classList.add('video-card-grid-item');
     gridContainer.append(gridItem);
 
-    decorateVideoCard(gridItem, videoConfig);
-  });
+    return decorateVideoCard(gridItem, videoConfig);
+  }));
 }
 
 function closeModal() {

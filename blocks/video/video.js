@@ -1,9 +1,9 @@
-import { decorateIcons } from '../../scripts/aem.js';
+import { decorateIcons, loadScript, loadCSS } from '../../scripts/aem.js';
 
 const VIDEO_JS_SCRIPT = 'https://vjs.zencdn.net/8.3.0/video.min.js';
 const VIDEO_JS_CSS = 'https://vjs.zencdn.net/8.3.0/video-js.min.css';
 const SCRIPT_LOAD_DELAY = 3000;
-let videoJsScriptPromise = Promise.resolve();
+let videoJsScriptPromise;
 
 function getDeviceSpecificVideoUrl(videoUrl) {
   const { userAgent } = navigator;
@@ -68,37 +68,17 @@ function parseConfig(block) {
 }
 
 async function loadVideoJs() {
-  const isScriptLoaded = document.querySelector(`head > script[src="${VIDEO_JS_SCRIPT}"]`);
-  const isCSSLoaded = document.querySelector(`head > link[href="${VIDEO_JS_CSS}"]`);
-  if (isScriptLoaded && isCSSLoaded) {
-    return videoJsScriptPromise;
+  if (videoJsScriptPromise) {
+    await videoJsScriptPromise;
+    return;
   }
 
-  let resolveCSSPromise;
-  let resolveScriptPromise;
-  const cssLoadPromise = new Promise((resolve) => {
-    resolveCSSPromise = resolve;
-  });
-  const scriptLoadPromise = new Promise((resolve) => {
-    resolveScriptPromise = resolve;
-  });
+  videoJsScriptPromise = Promise.all([
+    loadCSS(VIDEO_JS_CSS),
+    loadScript(VIDEO_JS_SCRIPT),
+  ]);
 
-  const css = document.createElement('link');
-  css.setAttribute('href', VIDEO_JS_CSS);
-  css.setAttribute('rel', 'stylesheet');
-  css.onload = resolveCSSPromise;
-
-  const mainScript = document.createElement('script');
-  mainScript.setAttribute('src', VIDEO_JS_SCRIPT);
-  mainScript.setAttribute('async', 'true');
-  mainScript.onload = resolveScriptPromise;
-
-  const header = document.querySelector('head');
-  header.append(css);
-  header.append(mainScript);
-
-  videoJsScriptPromise = Promise.all([cssLoadPromise, scriptLoadPromise]);
-  return videoJsScriptPromise;
+  await videoJsScriptPromise;
 }
 
 function createPlayButton(container, player) {
@@ -347,12 +327,12 @@ async function decorateVideoCards(block, config) {
   block.innerHTML = '';
   block.append(gridContainer);
 
-  await Promise.all(config.cards.map((videoConfig) => {
+  await Promise.all(config.cards.map(async (videoConfig) => {
     const gridItem = document.createElement('li');
     gridItem.classList.add('video-card-grid-item');
     gridContainer.append(gridItem);
 
-    return decorateVideoCard(gridItem, videoConfig);
+    await decorateVideoCard(gridItem, videoConfig);
   }));
 }
 

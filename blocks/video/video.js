@@ -3,13 +3,7 @@ import { decorateIcons } from '../../scripts/aem.js';
 const VIDEO_JS_SCRIPT = 'https://vjs.zencdn.net/8.3.0/video.min.js';
 const VIDEO_JS_CSS = 'https://vjs.zencdn.net/8.3.0/video-js.min.css';
 const SCRIPT_LOAD_DELAY = 3000;
-let videoJsScriptPromise;
-
-function scriptExists(src) {
-  const scripts = document.head.getElementsByTagName('script');
-
-  return [...scripts].some((script) => script.src === src);
-}
+let videoJsScriptPromise = Promise.resolve();
 
 function getDeviceSpecificVideoUrl(videoUrl) {
   const { userAgent } = navigator;
@@ -74,28 +68,36 @@ function parseConfig(block) {
 }
 
 async function loadVideoJs() {
-  if (scriptExists(VIDEO_JS_SCRIPT)) {
+  const isScriptLoaded = document.querySelector(`head > script[src="${VIDEO_JS_SCRIPT}"]`);
+  const isCSSLoaded = document.querySelector(`head > link[href="${VIDEO_JS_CSS}"]`);
+  if (isScriptLoaded && isCSSLoaded) {
     return videoJsScriptPromise;
   }
 
-  let resolvePromise;
-  videoJsScriptPromise = new Promise((resolve) => {
-    resolvePromise = resolve;
+  let resolveCSSPromise;
+  let resolveScriptPromise;
+  const cssLoadPromise = new Promise((resolve) => {
+    resolveCSSPromise = resolve;
+  });
+  const scriptLoadPromise = new Promise((resolve) => {
+    resolveScriptPromise = resolve;
   });
 
   const css = document.createElement('link');
   css.setAttribute('href', VIDEO_JS_CSS);
   css.setAttribute('rel', 'stylesheet');
+  css.onload = resolveCSSPromise;
 
   const mainScript = document.createElement('script');
   mainScript.setAttribute('src', VIDEO_JS_SCRIPT);
   mainScript.setAttribute('async', 'true');
-  mainScript.onload = () => resolvePromise();
+  mainScript.onload = resolveScriptPromise;
 
   const header = document.querySelector('head');
   header.append(css);
   header.append(mainScript);
 
+  videoJsScriptPromise = Promise.all([cssLoadPromise, scriptLoadPromise]);
   return videoJsScriptPromise;
 }
 
@@ -226,8 +228,37 @@ function setupPlayer(url, videoContainer, config) {
     createPlayButton(videoContainer, player);
   }
 
-  if (config.autoplay) {
-    setupAutopause(videoElement, player);
+  player.ready(() => {
+    if (config.autoplay) {
+      setupAutopause(videoElement, player);
+    }
+  });
+
+  return player;
+}
+
+async function decorateVideoPlayer(url, videoContainer, config) {
+  async function loadPlayer() {
+    await loadVideoJs();
+
+    const posterImage = videoContainer.querySelector('picture');
+    const player = setupPlayer(url, videoContainer, config);
+    player.on('loadeddata', () => {
+      if (posterImage) {
+        posterImage.style.display = 'none';
+      }
+    });
+  }
+
+  if (config.posterImage) {
+    videoContainer.append(config.posterImage);
+
+    // Defer loading video.js to avoid blocking the main thread
+    setTimeout(async () => {
+      await loadPlayer();
+    }, SCRIPT_LOAD_DELAY);
+  } else {
+    await loadPlayer();
   }
 }
 
@@ -260,35 +291,14 @@ async function decorateVideoCard(container, config) {
     article.append(content);
   }
 
-  async function loadPlayer() {
-    await loadVideoJs();
-
-    // Hide preloaded poster image
-    const posterImage = videoContainer.querySelector('picture');
-    if (posterImage) {
-      posterImage.style.display = 'none';
-    }
-
-    setupPlayer(config.videoUrl, videoContainer, {
-      autoplay: config.isAutoPlay,
-      hasCustomPlayButton: true,
-      fill: true,
-      poster: config.posterImage,
-    });
-  }
-
-  if (config.posterImage) {
-    videoContainer.append(config.posterImage);
-
-    // Defer loading video.js to avoid blocking the main thread
-    setTimeout(async () => {
-      await loadPlayer();
-    }, SCRIPT_LOAD_DELAY);
-  } else {
-    await loadPlayer();
-  }
-
   container.append(article);
+
+  await decorateVideoPlayer(config.videoUrl, videoContainer, {
+    autoplay: config.isAutoPlay,
+    hasCustomPlayButton: true,
+    fill: true,
+    posterImage: config.posterImage,
+  });
 }
 
 async function decorateHeroBlock(block, config) {
@@ -322,33 +332,12 @@ async function decorateHeroBlock(block, config) {
   block.innerHTML = '';
   block.append(container);
 
-  async function loadPlayer() {
-    await loadVideoJs();
-
-    // Hide preloaded poster image
-    const posterImage = container.querySelector('picture');
-    if (posterImage) {
-      posterImage.style.display = 'none';
-    }
-
-    setupPlayer(config.videoUrl, container, {
-      autoplay: config.isAutoPlay,
-      hasCustomPlayButton: true,
-      fill: true,
-      poster: config.posterImage,
-    });
-  }
-
-  if (config.posterImage) {
-    container.append(config.posterImage);
-
-    // Defer loading video.js to avoid blocking the main thread
-    setTimeout(async () => {
-      await loadPlayer();
-    }, SCRIPT_LOAD_DELAY);
-  } else {
-    await loadPlayer();
-  }
+  await decorateVideoPlayer(config.videoUrl, container, {
+    autoplay: config.isAutoPlay,
+    hasCustomPlayButton: true,
+    fill: true,
+    posterImage: config.posterImage,
+  });
 }
 
 async function decorateVideoCards(block, config) {
@@ -403,6 +392,7 @@ async function openModal(config) {
     fluid: true,
     controls: true,
     playsinline: true,
+    autoplay: true,
   });
 
   window.addEventListener('click', handleOutsideClick);

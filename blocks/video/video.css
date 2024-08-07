@@ -38,7 +38,7 @@ main > .section.video-container {
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 500px;
-    z-index: 1;
+    z-index: 2;
 }
 
 .video-hero .video-hero-title {
@@ -66,6 +66,16 @@ main > .section.video-container {
     letter-spacing: 3px;
     text-transform: uppercase;
     text-decoration: none;
+}
+
+.video-hero > picture {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
 }
 
 .video-hero > picture img {
@@ -128,17 +138,25 @@ main > .section.video-container {
     aspect-ratio: 3 / 2;
 }
 
-.video-card picture,
-.video-card .video-container img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    aspect-ratio: inherit;
-}
-
 .video-card video,
 .video-card .vjs-poster img {
     object-fit: cover;
+}
+
+.video-card picture {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.video-card picture,
+.video-card .video-container picture img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 3 / 2;
 }
 
 .video-modal .video-container {

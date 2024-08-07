@@ -57,7 +57,7 @@ function parseConfig(block) {
     };
   }
 
-  const videoUrl = block.querySelector('div p:first-child a').href;
+  const videoUrl = block.querySelector('div:first-child a').href;
   const posterImage = block.querySelector('picture');
 
   return {

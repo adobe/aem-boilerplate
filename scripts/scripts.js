@@ -210,6 +210,30 @@ function decorateExternalImages(ele, deliveryMarker) {
 }
 
 /**
+ * Decorates all images in a container element and replace media urls with delivery urls.
+ * @param {Element} main The container element
+ */
+function decorateDeliveryImages(main) {
+  const pictureElements = main.querySelectorAll('picture');
+  [...pictureElements].forEach((pictureElement) => {
+    const imgElement = pictureElement.querySelector('img');
+    const alt = imgElement.getAttribute('alt');
+    try {
+      const deliveryObject = JSON.parse(decodeURIComponent(alt));
+      const { deliveryUrl, altText } = deliveryObject;
+      if (!deliveryUrl) {
+        return;
+      }
+
+      const newPictureElement = createOptimizedPicture(deliveryUrl, altText);
+      pictureElement.parentElement.replaceChild(newPictureElement, pictureElement);
+    } catch (error) {
+      // Do nothing
+    }
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -220,6 +244,9 @@ export function decorateMain(main) {
 
   // decorate external images with implicit external image marker
   decorateExternalImages(main);
+
+  // decorate images with delivery url and correct alt text
+  decorateDeliveryImages(main);
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);

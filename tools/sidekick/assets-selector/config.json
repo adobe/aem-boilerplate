@@ -1,0 +1,14 @@
+{ 
+	"copyMode": [ 
+    	{ 
+        	"mimeType": "image/*", 
+        	"value": "use-alt-text" 
+    	} 
+	],
+    "blockName": [ 
+    	{ 
+        	"mimeType": "video/*", 
+        	"value": "Video" 
+    	} 
+	] 
+}

@@ -5,7 +5,7 @@
       "id": "asset-library",
       "title": "AEM Assets Library",
       "environments": ["edit"],
-      "url": "https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html",
+      "url": "https://experience.adobe.com/solutions/CQ-assets-selectors/static-assets/resources/franklin/asset-selector.html?extConfigUrl=https://274796-hlxassetaddonconfig-stage.adobeio-static.net/api/v1/web/hlx-asset-addon-config/hlx-assets-addon-config",
       "isPalette": true,
       "includePaths": ["**.docx**"],
       "passConfig": true,

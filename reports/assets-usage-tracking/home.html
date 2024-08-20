@@ -1,0 +1,372 @@
+<html lang="en">
+<head>
+    <script src="assetDetails.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assets Usage Report</title>
+    <link rel="stylesheet" href="assetsUsageReport.css">
+    <link rel="stylesheet" href="https://use.typekit.net/dil4fkj.css">
+</head>
+<body data-new-gr-c-s-check-loaded="14.1190.0" data-gr-ext-installed="">
+<div class="assets-usage-report" style="display: block;">
+    <h1 class="assets-title">Assets Usage Report</h1>
+    <div class="view-toggle">
+        <button class="card-view" id="toggleViewBtn">Card View
+        </button>
+    </div>
+    <div id="all-asset-usage-report"></div>
+    <div class="page-filter all">For all pages</div>
+    <div class="assets-container">
+
+        <div class="assets-flex-container">
+            <div class="asset-row header">
+                <div class="asset-header">Thumbnail</div>
+                <div id="sortTitle" class="asset-header">Title
+                    <i class="sort-icon"></i>
+                </div>
+                <div class="asset-header">Mime Type</div>
+                <div id="sortUsage" class="asset-header">Usage
+                    <i class="sort-icon"></i>
+                </div>
+                <div class="asset-header">Actions</div>
+                <div class="asset-header">Details</div>
+            </div>
+            <!-- Asset rows will be added here by assetsData.js -->
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb1.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb2.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb3.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb4.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb5.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb6.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb7.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb8.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb9.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb10.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb11.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb1.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb2.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb3.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb4.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb6.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb7.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb8.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb9.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb10.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+            <div class="asset-row">
+                <div class="asset-data"><img class="thumbnail"
+                                             src="resources/thumb11.jpeg"
+                                             alt="Thumbnail"></div>
+                <div class="asset-data">NA</div>
+                <div class="asset-data">others</div>
+                <div class="asset-data">1</div>
+                <div class="asset-data actions">
+                    <ul>
+                        <li class="warning">Compliance issue (1): Tags mismatched</li>
+                    </ul>
+                </div>
+                <div class="asset-detail-link asset-data">
+                    <a href="details.html">View Details</a></div>
+            </div>
+        </div>
+        <div class="card-view-container" style="display: none">
+            <!-- Cards will be added here by JavaScript -->
+        </div>
+        <div class="insights-panel">
+            <div class="title">Assets insights</div>
+            <div id="assets-insights" class="insights-container">
+                <!-- Recommendations will be added here by JavaScript -->
+                <div class="total-assets">Total Assets: 19</div>
+                <div class="top-used-button insight-item">Top Used Asset</div>
+                <div class="insight-item">Expired : 0</div>
+                <div class="insight-item">About to Expire : 0</div>
+                <div class="insight-item">Non compliant : 19</div>
+            </div>
+        </div>
+    </div>
+    <script src="assetsUsageReport.js" defer=""></script>
+</div>
+
+
+</body>
+<grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration>
+</html>

@@ -4,9 +4,14 @@
   "version": "1.3.0",
   "description": "Starter project for Adobe Helix",
   "scripts": {
-    "lint:js": "eslint . --ext .json,.js",
+    "lint:js": "eslint . --ext .json,.js,.mjs",
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
-    "lint": "npm run lint:js && npm run lint:css"
+    "lint": "npm run lint:js && npm run lint:css",
+    "build:json": "npm-run-all -p build:json:models build:json:definitions build:json:filters",
+    "build:json:models": "merge-json-cli -i 'models/_component-models.json' -o 'component-models.json'",
+    "build:json:definitions": "merge-json-cli -i 'models/_component-definition.json' -o 'component-definition.json'",
+    "build:json:filters": "merge-json-cli -i 'models/_component-filters.json' -o 'component-filters.json'",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -25,6 +30,9 @@
     "eslint-plugin-import": "2.29.1",
     "eslint-plugin-json": "3.1.0",
     "eslint-plugin-xwalk": "github:adobe-rnd/eslint-plugin-xwalk#v0.1.0",
+    "husky": "9.1.1",
+    "merge-json-cli": "1.0.3",
+    "npm-run-all": "4.1.5",
     "stylelint": "16.6.1",
     "stylelint-config-standard": "36.0.0"
   }

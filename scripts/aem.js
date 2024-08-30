@@ -18,7 +18,10 @@ function sampleRUM(checkpoint, data) {
     window.hlx = window.hlx || {};
     sampleRUM.enhance = () => {};
     if (!window.hlx.rum) {
-      const weight = new URLSearchParams(window.location.search).get('rum') === 'on' ? 1 : 100;
+      const weight = (window.SAMPLE_PAGEVIEWS_AT_RATE === 'high' && 10)
+        || (window.SAMPLE_PAGEVIEWS_AT_RATE === 'low' && 1000)
+        || (new URLSearchParams(window.location.search).get('rum') === 'on' && 1)
+        || 100;
       const id = Math.random().toString(36).slice(-4);
       const isSelected = Math.random() * weight < 1;
       // eslint-disable-next-line object-curly-newline, max-len
@@ -32,23 +35,39 @@ function sampleRUM(checkpoint, data) {
         collector: (...args) => window.hlx.rum.queue.push(args),
       };
       if (isSelected) {
-        ['error', 'unhandledrejection'].forEach((event) => {
-          window.addEventListener(event, ({ reason, error }) => {
-            const errData = { source: 'undefined error' };
-            try {
-              errData.target = (reason || error).toString();
-              errData.source = (reason || error).stack
-                .split('\n')
-                .filter((line) => line.match(/https?:\/\//))
-                .shift()
-                .replace(/at ([^ ]+) \((.+)\)/, '$1@$2')
-                .trim();
-            } catch (err) {
-              /* error structure was not as expected */
-            }
-            sampleRUM('error', errData);
-          });
+        const dataFromErrorObj = (error) => {
+          const errData = { source: 'undefined error' };
+          try {
+            errData.target = error.toString();
+            errData.source = error.stack
+              .split('\n')
+              .filter((line) => line.match(/https?:\/\//))
+              .shift()
+              .replace(/at ([^ ]+) \((.+)\)/, '$1@$2')
+              .replace(/ at /, '@')
+              .trim();
+          } catch (err) {
+            /* error structure was not as expected */
+          }
+          return errData;
+        };
+
+        window.addEventListener('error', ({ error }) => {
+          const errData = dataFromErrorObj(error);
+          sampleRUM('error', errData);
         });
+
+        window.addEventListener('unhandledrejection', ({ reason }) => {
+          let errData = {
+            source: 'Unhandled Rejection',
+            target: reason || 'Unknown',
+          };
+          if (reason instanceof Error) {
+            errData = dataFromErrorObj(reason);
+          }
+          sampleRUM('error', errData);
+        });
+
         sampleRUM.baseURL = sampleRUM.baseURL || new URL(window.RUM_BASE || '/', new URL('https://rum.hlx.page'));
         sampleRUM.collectBaseURL = sampleRUM.collectBaseURL || sampleRUM.baseURL;
         sampleRUM.sendPing = (ck, time, pingData = {}) => {

@@ -15,11 +15,11 @@ header nav {
     'hamburger brand tools' var(--nav-height)
     'sections sections sections' 1fr / auto 1fr auto;
   align-items: center;
-  gap: 0 32px;
+  gap: 0 24px;
   margin: auto;
-  max-width: 1264px;
+  max-width: 1248px;
   height: var(--nav-height);
-  padding: 0 16px;
+  padding: 0 24px;
   font-family: var(--type-base-font-family);
 }
 
@@ -29,19 +29,16 @@ header nav[aria-expanded='true'] {
     'sections sections' 1fr
     'tools tools' var(--nav-height) / auto 1fr;
   overflow-y: auto;
-  min-height: 100vh;
-}
-
-@media (width >= 600px) {
-  header nav {
-    padding: 0 32px;
-  }
+  min-height: 100dvh;
 }
 
 @media (width >= 900px) {
   header nav {
     display: flex;
     justify-content: space-between;
+    gap: 0 32px;
+    max-width: 1264px;
+    padding: 0 32px;
   }
 
   header nav[aria-expanded='true'] {
@@ -175,7 +172,7 @@ header nav .nav-sections ul {
 }
 
 header nav .nav-sections ul > li {
-  font-weight: 700;
+  font-weight: 500;
 }
 
 header nav .nav-sections ul > li > ul {
@@ -183,7 +180,7 @@ header nav .nav-sections ul > li > ul {
 }
 
 header nav .nav-sections ul > li > ul > li {
-  font-weight: 500;
+  font-weight: 400;
 }
 
 @media (width >= 900px) {
@@ -225,14 +222,13 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections ul {
     display: flex;
-    gap: 2em;
+    gap: 24px;
     margin: 0;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li {
     flex: 0 1 auto;
     position: relative;
-    font-weight: 500;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul {
@@ -243,10 +239,10 @@ header nav .nav-sections ul > li > ul > li {
   header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul {
     display: block;
     position: absolute;
-    left: -1em;
+    left: -24px;
     width: 200px;
-    margin-top: 12px;
-    padding: 1em;
+    top: 150%;
+    padding: 16px;
     background-color: var(--color-neutral-500);
     white-space: initial;
   }
@@ -255,7 +251,7 @@ header nav .nav-sections ul > li > ul > li {
     content: '';
     position: absolute;
     top: -8px;
-    left: 8px;
+    left: 16px;
     width: 0;
     height: 0;
     border-left: 8px solid transparent;

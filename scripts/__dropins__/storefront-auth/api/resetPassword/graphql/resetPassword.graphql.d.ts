@@ -1,0 +1,2 @@
+export declare const RESET_PASSWORD = "\n  mutation RESET_PASSWORD($email: String!, $resetPasswordToken: String!, $newPassword: String!){\n    resetPassword(email: $email,resetPasswordToken: $resetPasswordToken,newPassword: $newPassword)\n  }\n";
+//# sourceMappingURL=resetPassword.graphql.d.ts.map

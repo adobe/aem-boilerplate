@@ -1,0 +1,25 @@
+name: Cypress E2E Tests
+on: push
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install root dependencies
+        run: npm ci
+      - name: Start server in the background
+        run: npm start &
+
+      - name: Install Cypress and run tests    
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: cypress
+          browser: chrome
+          wait-on: 'http://localhost:3000'
+          config: baseUrl=http://localhost:3000
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore 

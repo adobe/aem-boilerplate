@@ -1,1 +1,44 @@
 /* stylelint-disable no-empty-source */
+/* stylelint-disable selector-class-pattern */
+
+header .nav-hamburger,
+header .nav-sections,
+header .nav-tools {
+  display: none !important;
+}
+
+/* CartSummaryList */
+.cart-summary-list {
+  padding: var(--spacing-medium);
+  background-color: var(--color-neutral-200);
+}
+
+.cart-summary-list__heading {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cart-summary-list__heading-text {
+  font: var(--type-headline-2-strong-font);
+  letter-spacing: var(--type-headline-2-strong-letter-spacing);
+  color: var(--color-neutral-800);
+}
+
+.cart-summary-list__edit {
+  font: var(--type-body-2-strong-font);
+  letter-spacing: var(--type-body-2-strong-letter-spacing);
+}
+
+.cart-cart-summary-list__content {
+  margin-top: var(--spacing-small);
+}
+
+.cart-cart-summary-list__heading {
+  row-gap: var(--spacing-small);
+  padding-top: 0;
+}
+
+/* temporary fix to hide the default cart heading */
+[data-testid='default-cart-heading'] {
+  display: none;
+}

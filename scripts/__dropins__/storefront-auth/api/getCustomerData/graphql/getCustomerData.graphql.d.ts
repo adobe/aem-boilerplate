@@ -1,0 +1,2 @@
+export declare const GET_CUSTOMER_DATA = "\n  query GET_CUSTOMER_DATA {\n    customer {\n      firstname\n      lastname\n      email\n    }\n  }\n";
+//# sourceMappingURL=getCustomerData.graphql.d.ts.map

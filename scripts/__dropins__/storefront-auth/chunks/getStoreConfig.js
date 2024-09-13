@@ -1,0 +1,15 @@
+import"@dropins/tools/event-bus.js";import"@dropins/tools/recaptcha.js";import{f as l,h}from"./network-error.js";const E=e=>({personalEmail:{address:(e==null?void 0:e.email)||""},userAccount:{login:!0},commerce:{commerceScope:{storeCode:(e==null?void 0:e.store_code)||""}}}),S=e=>({userAccount:{logout:!0},commerce:{commerceScope:{storeCode:(e==null?void 0:e.store_code)||""}}}),T=e=>({personalEmail:{address:(e==null?void 0:e.email)||""},userAccount:{updateProfile:e==null?void 0:e.updateProfile},commerce:{commerceScope:{storeCode:(e==null?void 0:e.store_code)||""}}}),D={auth_dropin_user_token:"auth_dropin_user_token",auth_dropin_firstname:"auth_dropin_firstname"},n=3600,N=e=>{var t,o,r,a,m,_,f,g,C,d;return{autocompleteOnStorefront:((o=(t=e==null?void 0:e.data)==null?void 0:t.storeConfig)==null?void 0:o.autocomplete_on_storefront)||!1,minLength:((a=(r=e==null?void 0:e.data)==null?void 0:r.storeConfig)==null?void 0:a.minimum_password_length)||3,requiredCharacterClasses:+((_=(m=e==null?void 0:e.data)==null?void 0:m.storeConfig)==null?void 0:_.required_character_classes_number)||0,createAccountConfirmation:((g=(f=e==null?void 0:e.data)==null?void 0:f.storeConfig)==null?void 0:g.create_account_confirmation)||!1,customerAccessTokenLifetime:((d=(C=e==null?void 0:e.data)==null?void 0:C.storeConfig)==null?void 0:d.customer_access_token_lifetime)*n||n}},A=e=>{const t=e.map(o=>o.message).join(" ");throw Error(t)},p=e=>{document.cookie=`${e}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`},U=async()=>{try{const e=sessionStorage.getItem("storeConfig");let o=(e?JSON.parse(e):{}).customerAccessTokenLifetime;if(!o){const r=await b();sessionStorage.setItem("storeConfig",JSON.stringify(r)),o=(r==null?void 0:r.customerAccessTokenLifetime)||n}return`Max-Age=${o}`}catch(e){return console.error("getCookiesLifetime() Error:",e),`Max-Age=${n}`}};var I=(e=>(e.CREATE_ACCOUNT_EVENT="create-account",e.SIGN_IN="sign-in",e.SIGN_OUT="sign-out",e))(I||{});const c="authContext",s={CREATE_ACCOUNT:"create-account",SIGN_IN:"sign-in",SIGN_OUT:"sign-out"};function i(e,t){const o=window.adobeDataLayer||[];o.push({[e]:null}),o.push({[e]:t})}function u(e){(window.adobeDataLayer||[]).push(o=>{const r=o.getState?o.getState():{};o.push({event:e,eventInfo:{...r}})})}function O(e){const t=T(e);i(c,t),u(s.CREATE_ACCOUNT)}function k(e){const t=E(e);i(c,t),u(s.SIGN_IN)}function w(e){const t=S(e);i(c,t),u(s.SIGN_OUT)}const R=(e,t)=>{const o=sessionStorage.getItem("storeConfig"),a={...o?JSON.parse(o):{},...t};switch(e){case"create-account":O(a);break;case"sign-in":k(a);break;case"sign-out":w(a);break;default:return null}},G=`
+  query GET_STORE_CONFIG {
+    storeConfig {
+      autocomplete_on_storefront
+      minimum_password_length
+      required_character_classes_number
+      store_code
+      store_name
+      store_group_code
+      locale
+      create_account_confirmation
+      customer_access_token_lifetime
+    }
+  }
+`,b=async()=>await l(G,{method:"GET",cache:"force-cache"}).then(e=>{var t;return(t=e.errors)!=null&&t.length?A(e.errors):N(e)}).catch(h);export{D as C,I as E,U as a,p as d,b as g,A as h,R as p};

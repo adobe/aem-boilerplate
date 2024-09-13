@@ -1,14 +1,15 @@
 /* eslint-disable import/no-cycle */
 import { events } from '@dropins/tools/event-bus.js';
+import { getCartDataFromCache } from '@dropins/storefront-cart/api.js';
 import {
   buildBlock,
-  loadHeader,
-  loadFooter,
+  decorateBlocks,
   decorateButtons,
   decorateIcons,
   decorateSections,
-  decorateBlocks,
   decorateTemplateAndTheme,
+  loadFooter,
+  loadHeader,
   getMetadata,
   loadScript,
   toCamelCase,
@@ -22,6 +23,7 @@ import {
 } from './aem.js';
 import { getProduct, getSkuFromUrl, trackHistory } from './commerce.js';
 import initializeDropins from './dropins.js';
+import { loadFragment } from '../blocks/fragment/fragment.js';
 
 const AUDIENCES = {
   mobile: () => window.innerWidth < 600,
@@ -83,6 +85,18 @@ async function loadFonts() {
   }
 }
 
+function autolinkModals(element) {
+  element.addEventListener('click', async (e) => {
+    const origin = e.target.closest('a');
+
+    if (origin && origin.href && origin.href.includes('/modals/')) {
+      e.preventDefault();
+      const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
+      openModal(origin.href);
+    }
+  });
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -93,6 +107,79 @@ function buildAutoBlocks(main) {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
+  }
+}
+
+/**
+ * Decorate Columns Template to the main element.
+ * @param {Element} main The container element
+ */
+function buildTemplateColumns(doc) {
+  const columns = doc.querySelectorAll('main > div.section[data-column-width]');
+
+  columns.forEach((column) => {
+    const columnWidth = column.getAttribute('data-column-width');
+    const gap = column.getAttribute('data-gap');
+
+    if (columnWidth) {
+      column.style.setProperty('--column-width', columnWidth);
+      column.removeAttribute('data-column-width');
+    }
+
+    if (gap) {
+      column.style.setProperty('--gap', `var(--spacing-${gap.toLocaleLowerCase()})`);
+      column.removeAttribute('data-gap');
+    }
+  });
+}
+
+async function buildTemplateCart(doc) {
+  const main = doc.querySelector('main');
+
+  // load fragment for empty cart
+  const emptyCartMeta = getMetadata('empty-cart');
+  const emptyCartPath = emptyCartMeta ? new URL(emptyCartMeta, window.location).pathname : '/empty-cart';
+  const emptyCartFragment = await loadFragment(emptyCartPath);
+
+  // append emptyCartFragment next to main
+  main.after(emptyCartFragment);
+
+  const hasProducts = getCartDataFromCache()?.totalQuantity > 0 || false;
+
+  // toggle view based on cart data
+  function toggleView(next) {
+    if (next) {
+      emptyCartFragment.setAttribute('hidden', 'hidden');
+      main.removeAttribute('hidden');
+    } else {
+      main.setAttribute('hidden', 'hidden');
+      emptyCartFragment.removeAttribute('hidden');
+    }
+  }
+
+  // initial state (cached)
+  toggleView(hasProducts);
+
+  // update state on cart data event
+  let prev = hasProducts;
+
+  events.on('cart/data', (payload) => {
+    const next = payload?.totalQuantity > 0 || false;
+
+    if (next !== prev) {
+      prev = next;
+      toggleView(next);
+    }
+  }, { eager: true });
+}
+
+async function applyTemplates(doc) {
+  if (doc.body.classList.contains('columns')) {
+    buildTemplateColumns(doc);
+  }
+
+  if (doc.body.classList.contains('cart')) {
+    await buildTemplateCart(doc);
   }
 }
 
@@ -204,7 +291,13 @@ async function loadEager(doc) {
 
   const main = doc.querySelector('main');
   if (main) {
+    // Main Decorations
     decorateMain(main);
+
+    // Template Decorations
+    await applyTemplates(doc);
+
+    // Load LCP blocks
     document.body.classList.add('appear');
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
@@ -228,6 +321,8 @@ async function loadEager(doc) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  autolinkModals(doc);
+
   const main = doc.querySelector('main');
   await loadSections(main);
 

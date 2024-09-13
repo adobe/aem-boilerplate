@@ -1,0 +1,2 @@
+export declare const CONFIRM_EMAIL = "\n  mutation CONFIRM_EMAIL($email: String!, $confirmation_key: String!) {\n    confirmEmail(input: {\n      email: $email,\n      confirmation_key: $confirmation_key\n    }) {\n      customer {\n        email\n      }\n    }\n  }\n";
+//# sourceMappingURL=confirmEmail.graphql.d.ts.map

@@ -1,0 +1,2 @@
+export declare const RESEND_CONFIRMATION_EMAIL = "\nmutation RESEND_CONFIRMATION_EMAIL($email: String!) {\n  resendConfirmationEmail(email: $email)\n}";
+//# sourceMappingURL=resendConfirmationEmail.graphql.d.ts.map

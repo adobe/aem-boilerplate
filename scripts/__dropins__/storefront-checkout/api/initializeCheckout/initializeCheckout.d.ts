@@ -1,0 +1,2 @@
+export declare const initializeCheckout: () => Promise<[import('../../data/models/store-config').StoreConfig | undefined, import('../../data/models/country').Country[] | undefined, import('../../data/models/address-form-fields').AddressFormField[] | undefined]>;
+//# sourceMappingURL=initializeCheckout.d.ts.map

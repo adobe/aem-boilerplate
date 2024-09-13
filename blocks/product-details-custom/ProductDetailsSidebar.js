@@ -67,6 +67,7 @@ function Options({ product, updateSelection, selection }) {
       return html`<li key=${value.id} class="swatch">
           <button
             ...${attr}
+            class="button"
             aria-selected=${value.id === selectedValue}
             disabled=${!value.inStock}
             onClick=${() => updateSelection({ [option.id]: value })}>${value.title}</button>

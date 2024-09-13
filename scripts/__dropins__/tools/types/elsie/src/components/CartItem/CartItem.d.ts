@@ -3,14 +3,14 @@ import { HTMLAttributes } from 'preact/compat';
 
 export interface CartItemProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title' | 'loading'> {
     ariaLabel?: string;
-    image: VNode;
-    title: VNode;
-    price: VNode;
+    image?: VNode;
+    title?: VNode;
+    price?: VNode;
     taxIncluded?: boolean;
     taxExcluded?: boolean;
-    total: VNode;
+    total?: VNode;
     totalExcludingTax?: VNode;
-    sku: VNode;
+    sku?: VNode;
     quantity?: number;
     description?: VNode;
     configurations?: {

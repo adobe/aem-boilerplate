@@ -62,3 +62,17 @@ export const getConfigValue = async (configParam, environment) => {
   const configElements = JSON.parse(configJSON).data;
   return configElements.find((c) => c.key === configParam)?.value;
 };
+
+export const getCookie = (cookieName) => {
+  const cookies = document.cookie.split(';');
+  let foundValue;
+
+  cookies.forEach((cookie) => {
+    const [name, value] = cookie.trim().split('=');
+    if (name === cookieName) {
+      foundValue = decodeURIComponent(value);
+    }
+  });
+
+  return foundValue;
+};

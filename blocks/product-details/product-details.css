@@ -1,7 +1,14 @@
-.pdp-product__buttons { /* stylelint-disable-line selector-class-pattern */
+/* stylelint-disable no-empty-source */
+/* stylelint-disable selector-class-pattern */
+
+.product-details__alert {
+  margin-bottom: var(--spacing-small);
+}
+
+.pdp-product__buttons {
   display: flex;
 }
 
-.pdp-product__buttons > .dropin-button--primary { /* stylelint-disable-line selector-class-pattern */
+.pdp-product__buttons > .dropin-button--primary {
   flex-grow: 1;
 }

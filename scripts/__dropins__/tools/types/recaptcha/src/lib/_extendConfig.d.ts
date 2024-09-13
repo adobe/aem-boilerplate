@@ -1,4 +1,4 @@
-import { ReCaptchaV3Props, ReCaptchaV3ModifyProps } from '../types/recaptcha.types';
+import { ReCaptchaV3Model } from '../types/recaptcha.types';
 
-export declare const extendConfig: (config: ReCaptchaV3Props | ReCaptchaV3ModifyProps, modifyParams: any[]) => ReCaptchaV3ModifyProps;
+export declare const extendConfig: (config: ReCaptchaV3Model, modifyParams: any[]) => ReCaptchaV3Model | undefined;
 //# sourceMappingURL=_extendConfig.d.ts.map

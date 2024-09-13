@@ -1,0 +1,2 @@
+export declare const getStoreConfigQuery = "\n  query getStoreConfig {\n    storeConfig {\n      countries_with_required_region\n      default_country\n      display_state_if_optional\n      is_guest_checkout_enabled\n      is_one_page_checkout_enabled\n      locale\n      optional_zip_countries\n      shopping_cart_display_shipping\n      store_code\n    }\n  }\n";
+//# sourceMappingURL=getStoreConfig.graphql.d.ts.map

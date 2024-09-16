@@ -8,9 +8,9 @@ const ALLOWED_CONFIGS = ['prod', 'stage', 'dev'];
  * @returns {string} - environment identifier (dev, stage or prod'.
  */
 export const calcEnvironment = () => {
-  const { href } = window.location;
+  const { host, href } = window.location;
   let environment = 'prod';
-  if (href.includes('.aem.page')) {
+  if (href.includes('.aem.page') || host.includes('staging')) {
     environment = 'stage';
   }
   if (href.includes('localhost')) {

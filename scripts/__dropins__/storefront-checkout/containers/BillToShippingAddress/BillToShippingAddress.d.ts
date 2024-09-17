@@ -6,7 +6,7 @@ export declare function compareAddresses(addressFormFields: AddressFormField[], 
 export interface BillToShippingAddressProps extends Omit<CheckboxProps, 'name' | 'label'> {
 }
 export declare const BillToShippingAddress: {
-    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: import('../../hocs/withConditionalRendering').ConditionalProps & BillToShippingAddressProps): import("preact/compat").JSX.Element | null;
+    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: import('../../hocs/withConditionalRendering').ConditionalProps & BillToShippingAddressProps): import("preact/compat").JSX.Element;
     displayName: string;
 };
 //# sourceMappingURL=BillToShippingAddress.d.ts.map

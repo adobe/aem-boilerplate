@@ -1,11 +1,4 @@
-import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
-import { PaymentMethodContentSlotContext } from '.';
+import { PaymentMethodHandlerSlots } from '.';
 
-export interface PaymentMethodHandler {
-    render: SlotProps<PaymentMethodContentSlotContext>;
-}
-export interface PaymentMethodHandlers {
-    [code: string]: PaymentMethodHandler;
-}
-export declare const defaultHandlers: PaymentMethodHandlers;
+export declare const defaultHandlers: PaymentMethodHandlerSlots;
 //# sourceMappingURL=defaultHandlers.d.ts.map

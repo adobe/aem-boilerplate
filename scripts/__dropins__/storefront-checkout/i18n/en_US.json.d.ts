@@ -89,14 +89,6 @@ declare const _default: {
       "taxToBeDetermined": "TBD",
       "withTaxes": "Including taxes",
       "withoutTaxes": "Excluding taxes"
-    },
-    "Slots": {
-      "CartSummaryList": {
-        "Heading": {
-          "title": "Your Cart ({count})",
-          "editLink": "Edit"
-        }
-      }
     }
   }
 }

@@ -1,3 +1,19 @@
+/********************************************************************
+* ADOBE CONFIDENTIAL
+* __________________
+*
+*  Copyright 2024 Adobe
+*  All Rights Reserved.
+*
+* NOTICE:  All information contained herein is, and remains
+* the property of Adobe and its suppliers, if any. The intellectual
+* and technical concepts contained herein are proprietary to Adobe
+* and its suppliers and are protected by all applicable intellectual
+* property laws, including trade secret and copyright laws.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Adobe.
+*******************************************************************/
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends {
@@ -13772,6 +13788,11 @@ export type PlaceOrderMutation = {
     __typename?: 'Mutation';
     placeOrder?: {
         __typename?: 'PlaceOrderOutput';
+        errors: Array<{
+            __typename?: 'PlaceOrderError';
+            code: PlaceOrderErrorCodes;
+            message: string;
+        } | null>;
         orderV2?: {
             __typename?: 'CustomerOrder';
             number: string;
@@ -13860,12 +13881,7 @@ export type PlaceOrderMutation = {
             items?: Array<{
                 __typename: 'BundleOrderItem';
                 id: string;
-                quantity_canceled?: number | null;
-                quantity_invoiced?: number | null;
                 quantity_ordered?: number | null;
-                quantity_refunded?: number | null;
-                quantity_returned?: number | null;
-                quantity_shipped?: number | null;
                 discounts?: Array<{
                     __typename?: 'Discount';
                     amount: {
@@ -14069,12 +14085,7 @@ export type PlaceOrderMutation = {
             } | {
                 __typename: 'DownloadableOrderItem';
                 id: string;
-                quantity_canceled?: number | null;
-                quantity_invoiced?: number | null;
                 quantity_ordered?: number | null;
-                quantity_refunded?: number | null;
-                quantity_returned?: number | null;
-                quantity_shipped?: number | null;
                 discounts?: Array<{
                     __typename?: 'Discount';
                     amount: {
@@ -14278,12 +14289,7 @@ export type PlaceOrderMutation = {
             } | {
                 __typename: 'GiftCardOrderItem';
                 id: string;
-                quantity_canceled?: number | null;
-                quantity_invoiced?: number | null;
                 quantity_ordered?: number | null;
-                quantity_refunded?: number | null;
-                quantity_returned?: number | null;
-                quantity_shipped?: number | null;
                 gift_card?: {
                     __typename?: 'GiftCardItem';
                     recipient_name?: string | null;
@@ -14495,12 +14501,7 @@ export type PlaceOrderMutation = {
             } | {
                 __typename: 'OrderItem';
                 id: string;
-                quantity_canceled?: number | null;
-                quantity_invoiced?: number | null;
                 quantity_ordered?: number | null;
-                quantity_refunded?: number | null;
-                quantity_returned?: number | null;
-                quantity_shipped?: number | null;
                 discounts?: Array<{
                     __typename?: 'Discount';
                     amount: {
@@ -15101,6 +15102,7 @@ export type SetPaymentMethodMutation = {
 export type SetShippingAddressMutationVariables = Exact<{
     cartId: Scalars['String']['input'];
     address: CartAddressInput;
+    pickup_location_code?: InputMaybe<Scalars['String']['input']>;
 }>;
 export type SetShippingAddressMutation = {
     __typename?: 'Mutation';

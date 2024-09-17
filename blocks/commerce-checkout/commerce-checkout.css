@@ -1,44 +1,192 @@
 /* stylelint-disable no-empty-source */
 /* stylelint-disable selector-class-pattern */
 
-header .nav-hamburger,
-header .nav-sections,
-header .nav-tools {
-  display: none !important;
+/********************************************************************
+* ADOBE CONFIDENTIAL
+* __________________
+*
+*  Copyright 2024 Adobe
+*  All Rights Reserved.
+*
+* NOTICE:  All information contained herein is, and remains
+* the property of Adobe and its suppliers, if any. The intellectual
+* and technical concepts contained herein are proprietary to Adobe
+* and its suppliers and are protected by all applicable intellectual
+* property laws, including trade secret and copyright laws.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Adobe.
+*******************************************************************/
+
+/* https://cssguidelin.es/#bem-like-naming */
+
+.checkout__content {
+    display: grid;
+    align-items: start;
+    grid-template-columns: repeat(var(--grid-4-columns), 1fr);
+    gap: var(--spacing-big) var(--grid-4-gutters);
+}
+
+.checkout__heading-title {
+    font: var(--type-headline-1-font);
+    letter-spacing: var(--type-headline-1-letter-spacing);
+    color: var(--color-neutral-800);
+}
+
+.checkout__overlay-spinner {
+    align-items: center;
+    background: var(--color-neutral-50);
+    display: none;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    opacity: 0.5;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+.checkout__overlay-spinner--shown {
+    display: flex;
+}
+
+.checkout__error-banner {
+    display: grid;
+    grid-column: 1 / span 12;
+}
+
+.checkout__error-banner:has(> div:empty) {
+    display: none;
+}
+
+.checkout__merged-cart-banner {
+    display: grid;
+    grid-column: 1 / span 12;
+}
+
+.checkout__merged-cart-banner:has(> div:empty) {
+    display: none;
+}
+
+.checkout__main {
+    display: grid;
+    grid-column: 1 / span 7;
+    row-gap: var(--spacing-xbig);
+}
+
+.checkout__aside {
+    display: grid;
+    grid-column: 9 / span 4;
+    gap: var(--spacing-xbig);
+}
+
+.checkout-empty-cart {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+/* Out of stock */
+.checkout__out-of-stock:has(> div:empty) {
+    display: none;
+}
+
+.checkout__billing-form:has(> div > div[style*='display: none;']) {
+    display: none;
+}
+
+.checkout__place-order {
+    display: grid;
+    grid-column: 1 / span 12;
+    justify-items: center;
+}
+
+.checkout__banner {
+    margin-bottom: var(--spacing-xsmall);
+}
+
+/* hide all the consecutive dividers because of missing blocks  */
+.dropin-divider + .dropin-divider {
+    display: none;
+}
+
+.checkout__content .dropin-divider {
+    margin: 0;
+}
+
+/* To add into the cart dropin **/
+.cart-order-summary__taxes.dropin-accordion .dropin-divider {
+    margin: var(--spacing-medium) auto;
+}
+
+@media only screen and (width >= 320px) and (width <= 768px) {
+    .checkout__content {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-big) 0;
+    }
+
+    .checkout__heading,
+    .checkout__error-banner,
+    .checkout__merged-cart-banner {
+        grid-column: 1;
+    }
+
+    /* Integrate place order button into Order Summary - mobile */
+    .checkout__place-order {
+        grid-column: unset;
+        justify-items: unset;
+        margin-top: calc(var(--spacing-big) * -1);
+    }
 }
 
 /* CartSummaryList */
+
 .cart-summary-list {
-  padding: var(--spacing-medium);
-  background-color: var(--color-neutral-200);
+    padding: var(--spacing-medium);
+    background-color: var(--color-neutral-200);
 }
 
 .cart-summary-list__heading {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 
-.cart-summary-list__heading-text {
-  font: var(--type-headline-2-strong-font);
-  letter-spacing: var(--type-headline-2-strong-letter-spacing);
-  color: var(--color-neutral-800);
+.cart-cart-summary-list__heading-text {
+    font: var(--type-headline-2-strong-font);
+    letter-spacing: var(--type-headline-2-strong-letter-spacing);
+    color: var(--color-neutral-800);
 }
 
 .cart-summary-list__edit {
-  font: var(--type-body-2-strong-font);
-  letter-spacing: var(--type-body-2-strong-letter-spacing);
+    font: var(--type-body-2-strong-font);
+    letter-spacing: var(--type-body-2-strong-letter-spacing);
 }
 
 .cart-cart-summary-list__content {
-  margin-top: var(--spacing-small);
+    margin-top: var(--spacing-small);
 }
 
 .cart-cart-summary-list__heading {
-  row-gap: var(--spacing-small);
-  padding-top: 0;
+    row-gap: var(--spacing-small);
+    padding-top: 0;
 }
 
-/* temporary fix to hide the default cart heading */
-[data-testid='default-cart-heading'] {
-  display: none;
-}
+/* Extra small devices (phones, 600px and down) */
+
+/* @media only screen and (max-width: 600px) { } */
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+
+/* @media only screen and (min-width: 600px) { } */
+
+/* Medium devices (landscape tablets, 768px and up) */
+
+/* @media only screen and (min-width: 768px) { } */
+
+/* Large devices (laptops/desktops, 992px and up) */
+
+/* @media only screen and (min-width: 992px) { } */
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+
+/* @media only screen and (min-width: 1200px) { } */

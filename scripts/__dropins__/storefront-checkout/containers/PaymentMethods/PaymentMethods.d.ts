@@ -1,25 +1,24 @@
 import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { HTMLAttributes } from 'preact/compat';
 
-export interface PaymentMethodSlotContext {
-    addPaymentMethodHandler: (code: string, handler: {
-        render: SlotProps<PaymentMethodContentSlotContext>;
-    }) => void;
+export interface PaymentMethodsMainSlotContext {
     replaceHTML: (domElement: HTMLElement) => void;
 }
-export interface PaymentMethodContentSlotContext {
+export interface PaymentMethodHandlerSlots {
+    [code: string]: SlotProps<PaymentMethodHandlerSlotContext>;
+}
+export interface PaymentMethodHandlerSlotContext {
     cartId: string;
-    onPlaceOrder: (fn: () => Promise<void>) => void;
-    handleServerError: (error: any) => void;
     replaceHTML: (domElement: HTMLElement) => void;
 }
 export interface PaymentMethodsProps extends HTMLAttributes<HTMLDivElement> {
-    paymentMethodsSlot?: SlotProps<PaymentMethodSlotContext>;
-    onPlaceOrder: (fn?: () => Promise<void>) => void;
-    handleServerError: (error: any) => void;
+    slots?: {
+        Main?: SlotProps<PaymentMethodsMainSlotContext>;
+        Handlers?: PaymentMethodHandlerSlots;
+    };
 }
 export declare const PaymentMethods: {
-    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: import('../../hocs/withConditionalRendering').ConditionalProps & PaymentMethodsProps): import("preact/compat").JSX.Element | null;
+    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: import('../../hocs/withConditionalRendering').ConditionalProps & PaymentMethodsProps): import("preact/compat").JSX.Element;
     displayName: string;
 };
 //# sourceMappingURL=PaymentMethods.d.ts.map

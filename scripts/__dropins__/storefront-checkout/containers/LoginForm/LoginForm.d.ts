@@ -6,7 +6,7 @@ export interface LoginFormProps extends HTMLAttributes<HTMLDivElement> {
     onSignOutClick?: () => void;
 }
 export declare const LoginForm: {
-    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: import('../../hocs/withConditionalRendering').ConditionalProps & LoginFormProps): import("preact/compat").JSX.Element | null;
+    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: import('../../hocs/withConditionalRendering').ConditionalProps & LoginFormProps): import("preact/compat").JSX.Element;
     displayName: string;
 };
 //# sourceMappingURL=LoginForm.d.ts.map

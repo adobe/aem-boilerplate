@@ -6,7 +6,7 @@ export interface ShippingFormProps extends HTMLAttributes<HTMLDivElement> {
     preselectedFields?: PreselectedAddressFields;
 }
 export declare const ShippingForm: {
-    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: import('../../hocs/withConditionalRendering').ConditionalProps & ShippingFormProps): import("preact/compat").JSX.Element | null;
+    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: import('../../hocs/withConditionalRendering').ConditionalProps & ShippingFormProps): import("preact/compat").JSX.Element;
     displayName: string;
 };
 //# sourceMappingURL=ShippingForm.d.ts.map

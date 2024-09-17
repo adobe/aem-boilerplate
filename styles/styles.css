@@ -12,7 +12,8 @@
  * governing permissions and limitations under the License.
  */
 
-:root {
+/* stylelint-disable no-empty-source */
+:root, .dropin-design {
   /* Adobe Commerce Dropin design tokens */
   --color-brand-300: #6d6d6d;
   --color-brand-500: #454545;
@@ -261,7 +262,7 @@ hr {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
   border: 0;
-  border-bottom: 1px solid var(--color-neutral-300);
+  border-bottom: var(--shape-border-width-1) solid var(--color-neutral-300);
 }
 
 code,
@@ -284,7 +285,7 @@ main pre {
 }
 
 main > div {
-  margin: 40px 16px;
+  margin: var(--spacing-xbig) var(--spacing-small);
 }
 
 input,
@@ -314,7 +315,7 @@ button.button {
   box-sizing: border-box;
   display: inline-block;
   max-width: 100%;
-  margin: 12px 0;
+  margin: var(--spacing-small) 0;
   border: var(--shape-border-width-3) solid transparent;
   border-radius: var(--shape-border-radius-3);
   padding: 0.5em 1.2em;
@@ -361,7 +362,7 @@ button.button.secondary:hover {
 }
 
 main input:hover {
-  border: 1px solid var(--color-neutral-700);
+  border: var(--shape-border-width-1) solid var(--color-neutral-700);
 }
 
 main blockquote {
@@ -400,13 +401,13 @@ main img {
 
 /* sections */
 main > .section {
-  margin: 40px 0;
+  margin: var(--spacing-xbig) 0;
 }
 
 main > .section > div {
   max-width: 1200px;
   margin: auto;
-  padding: 0 24px;
+  padding: 0 var(--spacing-medium);
 }
 
 main > .section:first-of-type {
@@ -415,7 +416,7 @@ main > .section:first-of-type {
 
 @media (width >= 900px) {
   main > .section > div {
-    padding: 0 32px;
+    padding: 0 var(--spacing-big);
   }
 }
 
@@ -424,7 +425,7 @@ main .section.light,
 main .section.highlight {
   background-color: var(--color-neutral-500);
   margin: 0;
-  padding: 40px 0;
+  padding: var(--spacing-xbig) 0;
 }
 
 /* Base Design System Tokens */

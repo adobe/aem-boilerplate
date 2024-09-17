@@ -7,7 +7,7 @@ export interface ConditionalProps {
 export declare const withConditionalRendering: <P extends object>(WrappedContainer: Container<P, {
     [key: string]: any;
 }>) => {
-    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: ConditionalProps & P): import("preact").JSX.Element | null;
+    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: ConditionalProps & P): import("preact").JSX.Element;
     displayName: string;
 };
 //# sourceMappingURL=withConditionalRendering.d.ts.map

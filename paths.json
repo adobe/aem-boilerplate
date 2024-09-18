@@ -2,5 +2,9 @@
   "mappings": [
     "/content/aem-boilerplate/:/",
     "/content/aem-boilerplate/configuration:/.helix/config.json"
+  ],
+  "includes": [
+    "/content/aem-boilerplate/",
+    "/content/dam/aem-boilerplate/"
   ]
 }

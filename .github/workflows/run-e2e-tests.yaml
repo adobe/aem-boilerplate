@@ -10,7 +10,7 @@ jobs:
       - name: Start server in the background
         run: npm start &
 
-      - name: Install Cypress and run tests    
+      - name: Install Cypress and run tests
         uses: cypress-io/github-action@v6
         with:
           working-directory: cypress
@@ -22,4 +22,4 @@ jobs:
         with:
           name: cypress-screenshots
           path: cypress/screenshots
-          if-no-files-found: ignore 
+          if-no-files-found: ignore

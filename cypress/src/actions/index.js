@@ -20,18 +20,18 @@ export const setGuestShippingAddress = (customerAddress, isSelectableState) => {
 };
 
 export const setGuestBillingAddress = (customerAddress, isSelectableState) => {
-  cy.get(fields.billingFormFirstName).clear().type(customerAddress.firstName);
-  cy.get(fields.billingFormLastName).clear().type(customerAddress.lastName);
-  cy.get(fields.billingFormStreet).clear().type(customerAddress.street);
-  cy.get(fields.billingFormStreet1).clear().type(customerAddress.street1);
+  cy.get(fields.billingFormFirstName).should("not.be.disabled").clear().type(customerAddress.firstName, { force: true });
+  cy.get(fields.billingFormLastName).should("not.be.disabled").clear().type(customerAddress.lastName, { force: true });
+  cy.get(fields.billingFormStreet).should("not.be.disabled").clear().type(customerAddress.street, { force: true });
+  cy.get(fields.billingFormStreet1).should("not.be.disabled").clear().type(customerAddress.street1, { force: true });
   if (isSelectableState) {
-    cy.get(fields.billingFormState).select(customerAddress.region);
+    cy.get(fields.billingFormState).should("not.be.disabled").select(customerAddress.region, { force: true });
   } else {
-    cy.get(fields.billingFormInputState).type(customerAddress.region);
+    cy.get(fields.billingFormInputState).should("not.be.disabled").type(customerAddress.region, { force: true });
   }
-  cy.get(fields.billingFormCity).clear().type(customerAddress.city);
-  cy.get(fields.billingFormPostCode).clear().type(customerAddress.postCode);
-  cy.get(fields.billingFormTelephone).clear().type(customerAddress.telephone);
+  cy.get(fields.billingFormCity).should("not.be.disabled").clear().type(customerAddress.city, { force: true });
+  cy.get(fields.billingFormPostCode).should("not.be.disabled").clear().type(customerAddress.postCode, { force: true });
+  cy.get(fields.billingFormTelephone).should("not.be.disabled").clear().type(customerAddress.telephone, { force: true });
 };
 
 export const uncheckBillToShippingAddress = () => {

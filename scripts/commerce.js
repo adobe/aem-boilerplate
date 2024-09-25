@@ -100,6 +100,28 @@ export const productDetailQuery = `query ProductQuery($sku: String!) {
 }
 ${priceFieldsFragment}`;
 
+export const variantsQuery = `
+query($sku: String!) {
+  variants(sku: $sku) {
+    variants {
+      product {
+        sku
+        name
+        inStock
+        images(roles: ["image"]) {
+          url
+        }
+        ...on SimpleProductView {
+          price {
+            final { amount { currency value } }
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
 /* Common functionality */
 
 export async function performCatalogServiceQuery(query, variables) {

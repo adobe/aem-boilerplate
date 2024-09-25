@@ -11,7 +11,7 @@ import {
   getProduct,
   getSkuFromUrl,
   setJsonLd,
-  loadErrorPage,
+  loadErrorPage, performCatalogServiceQuery, variantsQuery,
 } from '../../scripts/commerce.js';
 import { getConfigValue } from '../../scripts/configs.js';
 import { fetchPlaceholders } from '../../scripts/aem.js';
@@ -31,18 +31,17 @@ async function setJsonLdProduct(product) {
   const amount = priceRange?.minimum?.final?.amount || price?.final?.amount;
   const brand = attributes.find((attr) => attr.name === 'brand');
 
-  setJsonLd({
+  // get variants
+  const { variants } = (await performCatalogServiceQuery(variantsQuery, { sku }))?.variants
+    || { variants: [] };
+
+  const ldJson = {
     '@context': 'http://schema.org',
     '@type': 'Product',
     name,
     description,
     image: images[0]?.url,
-    offers: [{
-      '@type': 'http://schema.org/Offer',
-      price: amount?.value,
-      priceCurrency: amount?.currency,
-      availability: inStock ? 'http://schema.org/InStock' : 'http://schema.org/OutOfStock',
-    }],
+    offers: [],
     productID: sku,
     brand: {
       '@type': 'Brand',
@@ -51,7 +50,28 @@ async function setJsonLdProduct(product) {
     url: new URL(`/products/${urlKey}/${sku}`, window.location),
     sku,
     '@id': new URL(`/products/${urlKey}/${sku}`, window.location),
-  }, 'product');
+  };
+
+  if (variants.length > 1) {
+    ldJson.offers.push(...variants.map((variant) => ({
+      '@type': 'Offer',
+      name: variant.product.name,
+      image: variant.product.images[0]?.url,
+      price: variant.product.price.final.amount.value,
+      priceCurrency: variant.product.price.final.amount.currency,
+      availability: variant.product.inStock ? 'http://schema.org/InStock' : 'http://schema.org/OutOfStock',
+      sku: variant.product.sku,
+    })));
+  } else {
+    ldJson.offers.push({
+      '@type': 'Offer',
+      price: amount?.value,
+      priceCurrency: amount?.currency,
+      availability: inStock ? 'http://schema.org/InStock' : 'http://schema.org/OutOfStock',
+    });
+  }
+
+  setJsonLd(ldJson, 'product');
 }
 
 function createMetaTag(property, content, type) {
@@ -85,13 +105,13 @@ function setMetaTags(product) {
   const price = product.priceRange
     ? product.priceRange.minimum.final.amount : product.price.final.amount;
 
-  createMetaTag('title', product.metaTitle, 'name');
+  createMetaTag('title', product.metaTitle || product.name, 'name');
   createMetaTag('description', product.metaDescription, 'name');
   createMetaTag('keywords', product.metaKeyword, 'name');
 
   createMetaTag('og:type', 'og:product', 'property');
   createMetaTag('og:description', product.shortDescription, 'property');
-  createMetaTag('og:title', product.metaTitle, 'property');
+  createMetaTag('og:title', product.metaTitle || product.name, 'property');
   createMetaTag('og:url', window.location.href, 'property');
   const mainImage = product?.images?.filter((image) => image.roles.includes('thumbnail'))[0];
   const metaImage = mainImage?.url || product?.images[0]?.url;

@@ -537,7 +537,7 @@ function buildBlock(blockName, content) {
       vals.forEach((val) => {
         if (val) {
           if (typeof val === 'string') {
-            colEl.innerHTML += val;
+            colEl.textContent += val;
           } else {
             colEl.appendChild(val);
           }
@@ -564,6 +564,7 @@ async function loadBlock(block) {
       const decorationComplete = new Promise((resolve) => {
         (async () => {
           try {
+            // eslint-disable-next-line no-unsanitized/method
             const mod = await import(
               `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`
             );

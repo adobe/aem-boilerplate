@@ -7,7 +7,7 @@ export const customerShippingAddress = {
   postCode: '78758',
   telephone: '1234567890',
   email: 'test@example.com',
-  region: '57',
+  region: '169',
   regionFull: 'Texas',
   countryFull: 'United States',
   countryCode: 'US',
@@ -35,6 +35,6 @@ export const customerBillingAddress = {
 export const products = {
   configurable: {
     urlPath: "/products/frankie-sweatshirt/MH04",
-    urlPathWithOptions: "/products/frankie-sweatshirt/MH04?optionsUIDs=Y29uZmlndXJhYmxlLzE4Ni8xNzk%3D%2CY29uZmlndXJhYmxlLzkzLzY5"
+    urlPathWithOptions: "/products/frankie-sweatshirt/MH04?optionsUIDs=Y29uZmlndXJhYmxlLzU1Ni81Mjk%3D%2CY29uZmlndXJhYmxlLzI3Ny8yMDI%3D"
   },
 }

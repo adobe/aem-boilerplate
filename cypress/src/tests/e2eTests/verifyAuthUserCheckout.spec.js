@@ -16,7 +16,7 @@ import {
     assertOrderConfirmationShippingDetails,
     assertOrderConfirmationBillingDetails,
     assertOrderConfirmationShippingMethod,
-    assertAuthUser,
+    assertAuthUser
 } from '../../assertions';
 import {
 
@@ -29,11 +29,12 @@ import {
 
 describe('Verify auth user can place order', () => {
     it('Verify auth user can place order', () => {
+        // TODO: replace with single "test" product shared between all tests (not this vs products.configurable.urlPathWithOptions).
         cy.visit('/products/hollister-backyard-sweatshirt/MH05');
-        cy.get('[id="Y29uZmlndXJhYmxlLzE4Ni8xNzY="]').click({
+        cy.get('[id="Y29uZmlndXJhYmxlLzI3Ny8yMDI="]').click({
             force: true,
           });
-          cy.get('[id="Y29uZmlndXJhYmxlLzkzLzYy"]').click({
+          cy.get('[id="Y29uZmlndXJhYmxlLzU1Ni81MjM="]').click({
             force: true,
           });
         cy.wait(5000);
@@ -70,6 +71,7 @@ describe('Verify auth user can place order', () => {
         cy.fixture('userInfo').then(({ sign_up }) => {
             signUpUser(sign_up);
             assertAuthUser(sign_up);
+            cy.wait(5000);
         });
         cy.get('.minicart-wrapper').click();
         assertCartSummaryProduct(

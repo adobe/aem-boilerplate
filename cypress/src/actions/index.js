@@ -51,6 +51,9 @@ export const signUpUser = (sign_up, isValid = true) => {
   const random = Cypress._.random(0, 10000000);
   const username = `${random}${sign_up.email}`;
   cy.contains("Create account").should('be.visible');
+  if (sign_up.company) {
+    cy.get(fields.authFormUserCompany).clear().type(sign_up.company);
+  }
   if (sign_up.email) {
     cy.get(fields.authFormUserEmail).eq(1).clear({force: true}).type(username);
   }

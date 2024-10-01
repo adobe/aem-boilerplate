@@ -1,6 +1,5 @@
 /*
-  Recommendation: If you've reached this point, before bringing a sanitiser/encoding library into
-    your project, try to refactor your code to simply avoid using unsafe browser APIs.
+  Recommendation: Always try to refactor your code to simply avoid using unsafe browser APIs.
     Use:
       * Element.textContent
       * Element.appendChild
@@ -13,17 +12,9 @@
       * Range.createContextualFragment
       * etc.
   https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html#guideline-3-use-documentcreateelement-elementsetattributevalue-elementappendchild-and-similar-to-build-dynamic-interfaces
-
-  There is a difference between encoding and sanitizing.
-  Depending on the context, a different one might be needed.
-
-  Sanitizers will not fully protect you when reflecting user input into the DOM.
-  They will mitigate XSS, but will not protect against Content Spoofing, DOM Clobbering, etc.
 */
 const ENCODE_SANITIZE_METHODS = [
-  // define project specific encoding/sanitization methods when using unsafe APIs to mitigate XSS
-  // example below for https://github.com/cure53/DOMPurify
-  // 'DOMPurify.sanitize',
+  'DOMPurify.sanitize',
 ];
 
 module.exports = {
@@ -38,6 +29,9 @@ module.exports = {
     sourceType: 'module',
     requireConfigFile: false,
   },
+  globals: {
+    DOMPurify: 'readonly',
+  },
   plugins: ['no-unsanitized'],
   rules: {
     'import/extensions': ['error', { js: 'always' }], // require js file extensions in imports
@@ -46,11 +40,11 @@ module.exports = {
     // Flag usage of unsafe DOM APIs to mitigate XSS
     'no-unsanitized/method': [
       'error',
-      { escape: { methods: [...ENCODE_SANITIZE_METHODS] } },
+      { escape: { defaultDisable: true, methods: [...ENCODE_SANITIZE_METHODS] } },
     ],
     'no-unsanitized/property': [
       'error',
-      { escape: { methods: [...ENCODE_SANITIZE_METHODS] } },
+      { escape: { defaultDisable: true, methods: [...ENCODE_SANITIZE_METHODS] } },
     ],
   },
 };

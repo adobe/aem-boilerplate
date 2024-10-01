@@ -23,8 +23,7 @@ export async function loadFragment(path) {
     if (resp.ok) {
       const main = document.createElement('main');
 
-      // eslint-disable-next-line no-unsanitized/property
-      main.innerHTML = await resp.text();
+      main.innerHTML = DOMPurify.sanitize(await resp.text());
 
       // reset base path for media to fragment base
       const resetAttributeBase = (tag, attr) => {

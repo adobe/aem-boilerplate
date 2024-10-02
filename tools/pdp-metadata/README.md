@@ -2,9 +2,10 @@
 
 ## Overview
 It is recommended to import product metadata into Edge Delivery so that it can be rendered server-side on product detail pages.
-This is important so social media sites which do not parse JavaScript can pick it up.
+This is important so Google Merchant Center can reliably verify entries from your product sheet.
+Also social media sites which usually do not parse JavaScript can leverage this metadata to display rich previews of your product page links.
 
-This project is designed to fetch product data from a catalog service, process it, and generate a metadata spreadsheet in XLSX format which can be used for the https://www.aem.live/docs/bulk-metadata feature in Edge Delivery. 
+This project is designed to fetch product data from catalog service, process it, and generate a metadata spreadsheet in XLSX format which can be used for the https://www.aem.live/docs/bulk-metadata feature in Edge Delivery. 
 
 ## Prerequisites
 - Node.js installed on your machine.

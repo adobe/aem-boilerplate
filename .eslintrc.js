@@ -14,6 +14,7 @@
   https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html#guideline-3-use-documentcreateelement-elementsetattributevalue-elementappendchild-and-similar-to-build-dynamic-interfaces
 */
 const ENCODE_SANITIZE_METHODS = [
+  'escapeHtml',
   'DOMPurify.sanitize',
 ];
 

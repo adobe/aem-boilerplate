@@ -1,0 +1,2 @@
+export declare const CREATE_CUSTOMER_ADDRESS = "\n  mutation CREATE_CUSTOMER_ADDRESS($input: CustomerAddressInput!) {\n    createCustomerAddress(input:$input) {\n      firstname\n    }\n  }\n";
+//# sourceMappingURL=createCustomerAddress.graphql.d.ts.map

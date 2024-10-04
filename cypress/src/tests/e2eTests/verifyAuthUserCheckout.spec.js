@@ -178,6 +178,21 @@ describe('Verify auth user can place order', () => {
         assertOrderConfirmationShippingDetails(customerShippingAddress);
         assertOrderConfirmationBillingDetails(customerBillingAddress);
         assertOrderConfirmationShippingMethod(customerShippingAddress);
+        /**
+         * TODO - when /customer/order-details page will be ready
+         * Redirect to /order-details?orderRef={ORDER_TOKEN}
+         * Confirm that elements similar to orderConfirmation page present (not exactly the same, separate assert needed)
+         */
+        /**
+         * TODO - when /customer/account page will be ready
+         * Redirect to /customer/account
+         * Confirm that new order is visible in Recent Orders section of account dashboard
+         */
+        /**
+         * TODO - when /customer/orders page will be ready
+         * Redirect to /customer/orders
+         * Confirm that new order is visible on Orders page
+         */
         cy.deleteCustomer();
     });
 });

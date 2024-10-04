@@ -18,7 +18,11 @@ export const calcEnvironment = () => {
   }
 
   const environmentFromConfig = window.sessionStorage.getItem('environment');
-  if (environmentFromConfig && ALLOWED_CONFIGS.includes(environmentFromConfig) && environment !== 'prod') {
+  if (
+    environmentFromConfig
+    && ALLOWED_CONFIGS.includes(environmentFromConfig)
+    && environment !== 'prod'
+  ) {
     return environmentFromConfig;
   }
 
@@ -76,3 +80,5 @@ export const getCookie = (cookieName) => {
 
   return foundValue;
 };
+
+export const checkIsAuthenticated = () => !!getCookie('auth_dropin_user_token') ?? false;

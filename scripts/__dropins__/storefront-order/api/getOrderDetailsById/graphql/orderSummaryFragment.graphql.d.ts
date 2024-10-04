@@ -1,0 +1,2 @@
+export declare const ORDER_SUMMARY = "\nfragment OrderSummary on OrderTotal {\n  grand_total {\n    value\n    currency\n  }\n  subtotal {\n    currency\n    value\n  }\n  taxes {\n    amount {\n      currency\n      value\n    }\n    rate\n    title\n  }\n  total_tax {\n    currency\n    value\n  }\n  total_shipping {\n    currency\n    value\n  }\n  discounts {\n    amount {\n      currency\n      value\n    }\n    label\n  }\n}";
+//# sourceMappingURL=orderSummaryFragment.graphql.d.ts.map

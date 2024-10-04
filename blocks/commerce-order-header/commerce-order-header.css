@@ -1,0 +1,8 @@
+body.columns main > .section > div.commerce-order-header-wrapper {
+    margin-bottom: 0;
+}
+
+.orders-list-link {
+    display: inline-block;
+    margin-bottom: var(--spacing-medium);
+}

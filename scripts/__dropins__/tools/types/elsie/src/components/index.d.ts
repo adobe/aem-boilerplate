@@ -36,4 +36,6 @@ export * from './IllustratedMessage';
 export * from './ToggleButton';
 export * from './Header';
 export * from './Tag';
+export * from './ContentGrid';
+export * from './Pagination';
 //# sourceMappingURL=index.d.ts.map

@@ -28,8 +28,8 @@ export interface AddressFormProps {
     company: string;
     country_code: string;
     country_id: string;
-    custom_attributes: CustomAttributes[];
-    custom_attributesV2: CustomAttributesV2[];
+    custom_attributes?: CustomAttributes[];
+    custom_attributesV2?: CustomAttributesV2[];
     default_billing?: boolean;
     default_shipping?: boolean;
     fax: string;

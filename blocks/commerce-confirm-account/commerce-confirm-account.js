@@ -5,17 +5,16 @@ import { SuccessNotification } from '@dropins/storefront-auth/containers/Success
 import * as authApi from '@dropins/storefront-auth/api.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { Button } from '@dropins/tools/components.js';
-import { getCookie } from '../../scripts/configs.js';
+import { checkIsAuthenticated } from '../../scripts/configs.js';
+import { CUSTOMER_ACCOUNT_PATH, CUSTOMER_FORGOTPASSWORD_PATH } from '../../scripts/constants.js';
 
 export default async function decorate(block) {
-  const isAuthenticated = !!getCookie('auth_dropin_user_token');
-
-  if (isAuthenticated) {
-    window.location.href = '/customer/account';
+  if (checkIsAuthenticated()) {
+    window.location.href = CUSTOMER_ACCOUNT_PATH;
   } else {
     await authRenderer.render(SignIn, {
       enableEmailConfirmation: true,
-      routeForgotPassword: () => '/customer/forgotpassword',
+      routeForgotPassword: () => CUSTOMER_FORGOTPASSWORD_PATH,
       slots: {
         SuccessNotification: (ctx) => {
           const userName = ctx?.isSuccessful?.userName || '';
@@ -35,7 +34,7 @@ export default async function decorate(block) {
                   children: 'My Account',
 
                   onClick: () => {
-                    window.location.href = '/customer/account';
+                    window.location.href = CUSTOMER_ACCOUNT_PATH;
                   },
                 })(primaryBtn);
 

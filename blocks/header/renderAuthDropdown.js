@@ -4,6 +4,7 @@ import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { SignIn } from '@dropins/storefront-auth/containers/SignIn.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { getCookie } from '../../scripts/configs.js';
+import { CUSTOMER_FORGOTPASSWORD_PATH } from '../../scripts/constants.js';
 
 function checkAndRedirect(checkUrl, redirectUrl) {
   // If the user is on the dashboard page and initiates logout,
@@ -19,7 +20,7 @@ function renderSignIn(element) {
   authRenderer.render(SignIn, {
     onSuccessCallback: () => {},
     formSize: 'small',
-    routeForgotPassword: () => '/customer/forgotpassword',
+    routeForgotPassword: () => CUSTOMER_FORGOTPASSWORD_PATH,
   })(element);
 }
 

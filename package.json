@@ -36,9 +36,11 @@
     "@adobe/magento-storefront-events-sdk": "^1.8.0",
     "@dropins/storefront-cart": "0.6.0",
     "@dropins/storefront-checkout": "0.1.0-alpha49",
-    "@dropins/storefront-auth": "0.0.1-alpha20",
+    "@dropins/storefront-auth": "0.0.1-alpha21",
+    "@dropins/storefront-account": "0.1.0-alpha11",
+    "@dropins/storefront-order": "0.1.0-alpha9",
     "@dropins/storefront-order-confirmation": "0.1.0-alpha33",
     "@dropins/storefront-pdp": "0.4.0-alpha3",
-    "@dropins/tools": "0.30.0"
+    "@dropins/tools": "0.32.0"
   }
 }

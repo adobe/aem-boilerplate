@@ -41,6 +41,7 @@ import SignUp from '@dropins/storefront-auth/containers/SignUp.js';
 import { render as authProvider } from '@dropins/storefront-auth/render.js';
 import { getUserTokenCookie } from '../../scripts/dropins.js';
 import { createModal } from '../modal/modal.js';
+import { CUSTOMER_ACCOUNT_PATH, CUSTOMER_LOGIN_PATH } from '../../scripts/constants.js';
 
 function createElementWithClass(tag, className) {
   const element = document.createElement(tag);
@@ -217,8 +218,8 @@ function handleCheckoutOrder(orderData, block) {
     const signUpForm = document.createElement('div');
 
     authProvider.render(SignUp, {
-      routeSignIn: () => '/customer/login',
-      routeRedirectOnEmailConfirmationClose: () => '/customer/account',
+      routeSignIn: () => CUSTOMER_LOGIN_PATH,
+      routeRedirectOnEmailConfirmationClose: () => CUSTOMER_ACCOUNT_PATH,
       inputsDefaultValueSet,
       addressesData,
     })(signUpForm);

@@ -15,6 +15,7 @@ import { render as authProvider } from '@dropins/storefront-auth/render.js';
 import SignUp from '@dropins/storefront-auth/containers/SignUp.js';
 
 import { createModal } from '../modal/modal.js';
+import { CUSTOMER_ACCOUNT_PATH, CUSTOMER_LOGIN_PATH, SUPPORT_PATH } from '../../scripts/constants.js';
 
 export default async function decorate(block) {
   let modal = null;
@@ -33,8 +34,8 @@ export default async function decorate(block) {
     const signUpForm = document.createElement('div');
 
     authProvider.render(SignUp, {
-      routeSignIn: () => '/customer/login',
-      routeRedirectOnEmailConfirmationClose: () => '/customer/account',
+      routeSignIn: () => CUSTOMER_LOGIN_PATH,
+      routeRedirectOnEmailConfirmationClose: () => CUSTOMER_ACCOUNT_PATH,
       inputsDefaultValueSet,
       addressesData,
     })(signUpForm);
@@ -50,6 +51,6 @@ export default async function decorate(block) {
     orderRef,
     onSignUpClick,
     routeHome: () => '/',
-    routeSupport: () => '/support',
+    routeSupport: () => SUPPORT_PATH,
   })(block);
 }

@@ -7,5 +7,4 @@ export * from './SkeletonLoader';
 export * from './UI/Button';
 export * from './UI/Form';
 export * from './UI/FormInputs';
-export * from './UI/Title';
 //# sourceMappingURL=index.d.ts.map

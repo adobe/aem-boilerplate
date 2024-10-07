@@ -4,6 +4,8 @@ indices:
   pages:
     include:
       - '/**'
+    exclude:
+      - '/**.json'
     target: /query-index.json
     properties:
       lastModified:

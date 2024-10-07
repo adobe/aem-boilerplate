@@ -29,6 +29,7 @@ describe('Verify guest user can place order', () => {
         cy.get('.nav-drop')
             .contains('Catalog')
             .click();
+        cy.wait(1000);    
         cy.contains('Crown Summit Backpack').click();
         cy.get('.dropin-incrementer__increase-button').click();
         cy.get('.dropin-incrementer__input').should('have.value', '2');

@@ -80,7 +80,13 @@ function sampleRUM(checkpoint, data) {
             t: time,
             ...pingData,
           });
-          const { href: url, origin } = new URL(`.rum/${weight}`, sampleRUM.collectBaseURL);
+          const urlParams = window.RUM_PARAMS
+            ? `?${new URLSearchParams(window.RUM_PARAMS).toString()}`
+            : '';
+          const { href: url, origin } = new URL(
+            `.rum/${weight}${urlParams}`,
+            sampleRUM.collectBaseURL,
+          );
           const body = origin === window.location.origin
             ? new Blob([rumData], { type: 'application/json' })
             : rumData;
@@ -108,7 +114,7 @@ function sampleRUM(checkpoint, data) {
     }
     document.dispatchEvent(new CustomEvent('rum', { detail: { checkpoint, data } }));
   } catch (error) {
-    // something went wrong
+    // something went awry
   }
 }
 
@@ -139,7 +145,12 @@ function setup() {
 
 function init() {
   setup();
-  sampleRUM();
+  // Prerender-aware initialization
+  if (document.prerendering) {
+    document.addEventListener('prerenderingchange', sampleRUM, { once: true });
+  } else {
+    sampleRUM();
+  }
 }
 
 /**

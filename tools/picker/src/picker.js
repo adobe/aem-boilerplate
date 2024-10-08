@@ -9,7 +9,7 @@ import Settings from '@spectrum-icons/workflow/Settings';
 
 
 const Picker = props => {
-    const { blocks, getItems, getCategories, configFile, defaultConfig } = props;
+    const { blocks, getItems, getCategories, configFiles, defaultConfig } = props;
 
     const [state, setState] = useState({
         items: {},
@@ -190,37 +190,35 @@ const Picker = props => {
         }));
     }
 
+    const fetchConfig = async (env) => {
+        const configData = await fetch(configFiles[env]).then(r => r.json());
+        let config = {};
+        configData.data.forEach(e => {
+            config[e.key] = e.value;
+        });
+        return config;
+    }
+
     useEffect(() => {
         (async () => {
+            const selectedConfig = defaultConfig || Object.keys(configFiles)[0];
+
             // Get configs and select default config
             let configs = {};
             try {
-                configs = await fetch(configFile).then(r => r.json());
+                const promises = await Promise.all(Object.keys(configFiles).map(async key => {
+                    return [key, await fetchConfig(key)];
+                }));
+                configs = Object.fromEntries(promises);
             } catch (err) {
                 console.error(err);
                 setState(state => ({
                     ...state,
-                    error: 'Could not load config file',
+                    error: `Could not load ${selectedConfig} config file`,
                 }));
                 return;
             }
-            // Ignore metadata
-            Object.keys(configs).forEach(key => {
-                if (key.startsWith(':')) {
-                    delete configs[key];
-                }
-            });
 
-            // Flatten values
-            Object.keys(configs).forEach(key => {
-                const values = {};
-                configs[key].data.forEach(e => {
-                    values[e.key] = e.value;
-                });
-                configs[key] = values;
-            });
-
-            const selectedConfig = defaultConfig || Object.keys(configs)[0];
             const rootCategoryKey = configs[selectedConfig]['commerce-root-category-id'];
 
             setState(state => ({

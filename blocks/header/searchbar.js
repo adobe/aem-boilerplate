@@ -2,13 +2,14 @@ import { loadScript } from '../../scripts/aem.js';
 import { getConfigValue } from '../../scripts/configs.js';
 
 (async () => {
-  const widgetProd = '/scripts/widgets/LiveSearchAutocomplete.js';
+  const widgetProd = '/scripts/widgets/SearchAsYouType.js';
   await loadScript(widgetProd);
 
   const storeDetails = {
     environmentId: await getConfigValue('commerce-environment-id'),
     environmentType: (await getConfigValue('commerce-endpoint')).includes('sandbox') ? 'testing' : '',
     apiKey: await getConfigValue('commerce-x-api-key'),
+    apiUrl: await getConfigValue('commerce-endpoint'),
     websiteCode: await getConfigValue('commerce-website-code'),
     storeCode: await getConfigValue('commerce-store-code'),
     storeViewCode: await getConfigValue('commerce-store-view-code'),

@@ -4,7 +4,7 @@ import he from 'he';
 import productSearchQuery from './queries/products.graphql.js';
 import { variantsFragment } from './queries/variants.graphql.js';
 
-const basePath = 'https://main--aem-boilerplate-commerce--hlxsites.hlx.live';
+const basePath = 'https://www.aemshop.net';
 const configFile = `${basePath}/configs.json?sheet=prod`;
 
 

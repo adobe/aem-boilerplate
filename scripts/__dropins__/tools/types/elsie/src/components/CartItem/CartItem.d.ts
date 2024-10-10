@@ -13,6 +13,7 @@ export interface CartItemProps extends Omit<HTMLAttributes<HTMLDivElement>, 'tit
     sku?: VNode;
     quantity?: number;
     description?: VNode;
+    attributes?: VNode;
     footer?: VNode;
     configurations?: {
         [key: string]: any;

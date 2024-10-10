@@ -40,7 +40,7 @@
     "@dropins/storefront-account": "0.1.0-alpha11",
     "@dropins/storefront-order": "0.1.0-alpha9",
     "@dropins/storefront-order-confirmation": "0.1.0-alpha33",
-    "@dropins/storefront-pdp": "0.4.0-alpha3",
-    "@dropins/tools": "0.32.0"
+    "@dropins/storefront-pdp": "0.4.0",
+    "@dropins/tools": "^0.33.0"
   }
 }

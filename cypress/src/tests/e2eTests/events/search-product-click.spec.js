@@ -20,7 +20,7 @@ it("is sent on search bar product click", () => {
       cy.get(".nav-search-button").should("be.visible").click();
       cy.wait(2000);
       cy.get("#search").type("shirt");
-      cy.get(".livesearch.product-link", { timeout: 10000 })
+      cy.get(".livesearch .products-container a", { timeout: 10000 })
         .first()
         .click()
         .then(() => {

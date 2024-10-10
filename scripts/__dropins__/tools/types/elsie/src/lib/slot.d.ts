@@ -1,4 +1,4 @@
-import { RefObject, VNode } from 'preact';
+import { ComponentChildren, RefObject, VNode } from 'preact';
 import { StateUpdater } from 'preact/hooks';
 import { Lang } from '../i18n';
 import { HTMLAttributes } from 'preact/compat';
@@ -27,18 +27,19 @@ interface DefaultSlotContext<T> extends PrivateContext<T> {
     prependChild: MutateElement;
     appendSibling: MutateElement;
     prependSibling: MutateElement;
+    onRender: (cb: (next: T & DefaultSlotContext<T>) => void) => void;
     onChange: (cb: (next: T & DefaultSlotContext<T>) => void) => void;
 }
 type Context<T> = T & ThisType<DefaultSlotContext<T>>;
-export type SlotProps<T = any> = (ctx: T & DefaultSlotContext<T>, element: HTMLDivElement | null) => void;
+export type SlotProps<T = any> = (ctx: T & DefaultSlotContext<T>, element: HTMLDivElement | null) => Promise<void> | void;
 export type SlotMethod<P = any> = (callback: (next: unknown, state: State) => P) => void;
-export declare function useSlot<K, V extends HTMLDivElement>(context?: Context<K>, callback?: SlotProps<K>, render?: Function): [RefObject<V>, Record<string, any>];
+export declare function useSlot<K, V extends HTMLDivElement>(name: string, context?: Context<K>, callback?: SlotProps<K>, children?: ComponentChildren, render?: Function): [RefObject<V>, Record<string, any>];
 interface SlotPropsComponent<T> extends Omit<HTMLAttributes<HTMLDivElement>, 'slot'> {
     name: string;
     slot?: SlotProps<T>;
     context?: Context<T>;
     render?: (props: Record<string, any>) => VNode | VNode[];
 }
-export declare function Slot<T>({ name, slot, context, children, render, ...props }: Readonly<SlotPropsComponent<T>>): import("preact").JSX.Element;
+export declare function Slot<T>({ name, context, slot, children, render, ...props }: Readonly<SlotPropsComponent<T>>): import("preact").JSX.Element;
 export {};
 //# sourceMappingURL=slot.d.ts.map

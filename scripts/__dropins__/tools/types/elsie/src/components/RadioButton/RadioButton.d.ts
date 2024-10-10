@@ -10,6 +10,7 @@ export interface RadioButtonProps extends Omit<HTMLAttributes<HTMLInputElement>,
     disabled?: boolean;
     error?: boolean;
     description?: string;
+    busy?: boolean;
 }
 export declare const RadioButton: FunctionComponent<RadioButtonProps>;
 //# sourceMappingURL=RadioButton.d.ts.map

@@ -4,7 +4,7 @@ import { ButtonProps } from '@dropins/tools/types/elsie/src/components';
 import { ProductModel } from '../../data/models';
 
 type IconType = keyof typeof import('@dropins/tools/types/elsie/src/icons');
-type Values = {
+export type Values = {
     sku: string;
     quantity: number;
     optionsUIDs?: string[];
@@ -74,6 +74,8 @@ export interface ProductDetailsProps extends HTMLAttributes<HTMLDivElement> {
     optionsConfig?: OptionsConfig;
     useACDL?: boolean;
     onAddToCart?: (values: Values) => void;
+    zoomType?: 'zoom' | 'overlay';
+    closeButton?: boolean;
 }
 export declare const ProductDetails: Container<ProductDetailsProps, ProductModel | null>;
 export {};

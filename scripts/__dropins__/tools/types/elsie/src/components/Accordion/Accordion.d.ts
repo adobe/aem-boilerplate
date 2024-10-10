@@ -3,6 +3,7 @@ import { HTMLAttributes } from 'preact/compat';
 import { IconNode } from '..';
 
 export interface AccordionSectionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'icon'> {
+    defaultOpen?: boolean;
     actionIconPosition?: 'left' | 'right';
     iconOpen?: IconNode;
     iconClose?: IconNode;

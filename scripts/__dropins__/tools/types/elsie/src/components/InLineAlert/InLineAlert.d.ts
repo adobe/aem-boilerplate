@@ -12,6 +12,8 @@ export interface InLineAlertProps extends Omit<HTMLAttributes<HTMLDivElement>, '
         onClick: (event: Event) => void;
     }>;
     onDismiss?: (event: Event) => void;
+    itemList?: VNode;
+    actionButtonPosition?: 'top' | 'bottom';
 }
 export declare const InLineAlert: FunctionComponent<InLineAlertProps>;
 //# sourceMappingURL=InLineAlert.d.ts.map

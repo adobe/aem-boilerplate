@@ -81,9 +81,38 @@ export const productDetailQuery = `query ProductQuery($sku: String!) {
           id
           title
           inStock
+          __typename
           ...on ProductViewOptionValueSwatch {
             type
             value
+          }
+          ... on ProductViewOptionValueProduct {
+            title
+            quantity
+            isDefault
+            product {
+              sku
+              shortDescription
+              metaDescription
+              metaKeyword
+              metaTitle
+              name
+              price {
+                final {
+                  amount {
+                    value
+                    currency
+                  }
+                }
+                regular {
+                  amount {
+                    value
+                    currency
+                  }
+                }
+                roles
+              }
+            }
           }
         }
       }

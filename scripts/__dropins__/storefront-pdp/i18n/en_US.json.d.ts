@@ -58,10 +58,15 @@ declare const _default: {
       "Close": {
         "label": "Close"
       }
+    },
+    "Zoom": {
+      "Close": {
+        "label": "Close"
+      }
     }
   },
   "Custom": {
-    "quantityLabel": "Passengers"
+    "quantityLabel": "Quantity"
   }
 }
 ;

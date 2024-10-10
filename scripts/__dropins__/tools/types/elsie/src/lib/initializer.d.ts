@@ -9,6 +9,11 @@ type Options<T> = {
     init: Init<T>;
     listeners: Listeners<T>;
 };
+export type Model<T = any, D = any> = {
+    transformer?: (data: D) => T & {
+        [key: string]: any;
+    };
+};
 /**
  * The `Initializer` class is responsible for setting up event listeners and initializing a module with the given configuration.
  *

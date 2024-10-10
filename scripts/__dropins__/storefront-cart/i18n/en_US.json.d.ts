@@ -1,7 +1,10 @@
 declare const _default: {
   "Cart": {
     "Cart": {
-      "heading": "Shopping Cart ({count})"
+      "heading": "Shopping Cart ({count})",
+      "editCart": "Edit",
+      "viewAll": "View all in cart",
+      "viewMore": "View more"
     },
     "MiniCart": {
       "heading": "Shopping Cart ({count})",
@@ -78,7 +81,9 @@ declare const _default: {
       "lowInventory": "Only {count} left!",
       "insufficientQuantity": "Only {inventory} of {count} in stock",
       "insufficientQuantityGeneral": "Not enough items for sale",
-      "notAvailableMessage": "Requested qty. not available"
+      "notAvailableMessage": "Requested qty. not available",
+      "discountPercentage": "{discount}% off",
+      "savingsAmount": "Savings"
     },
     "EstimateShipping": {
       "label": "Shipping",

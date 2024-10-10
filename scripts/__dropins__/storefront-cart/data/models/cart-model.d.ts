@@ -88,6 +88,9 @@ export interface Item {
     outOfStock?: boolean;
     notAvailableMessage?: string;
     stockLevel?: String;
+    discountPercentage?: number;
+    savingsAmount?: Price;
+    productAttributes?: Attribute[];
 }
 interface ItemError {
     id: string;
@@ -108,6 +111,15 @@ interface ItemURL {
 interface ItemLinks {
     count: number;
     result: string;
+}
+interface AttributeOption {
+    value: string;
+    label: string;
+}
+interface Attribute {
+    code: string;
+    value?: string;
+    selected_options?: AttributeOption[];
 }
 export {};
 //# sourceMappingURL=cart-model.d.ts.map

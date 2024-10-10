@@ -29,7 +29,6 @@ export declare const definition: {
                 };
             };
             InputPassword: {
-                requiredFieldError: string;
                 placeholder: string;
                 floatingLabel: string;
                 buttonTitle: string;
@@ -175,7 +174,6 @@ export declare const definition: {
                 };
             };
             InputPassword: {
-                requiredFieldError: string;
                 placeholder: string;
                 floatingLabel: string;
                 buttonTitle: string;
@@ -323,7 +321,6 @@ export declare const getDefinitionByLanguage: (lang: Lang) => {
             };
         };
         InputPassword: {
-            requiredFieldError: string;
             placeholder: string;
             floatingLabel: string;
             buttonTitle: string;

@@ -8,7 +8,7 @@
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
     "lint": "npm run lint:js && npm run lint:css",
     "start": "aem up --print-index",
-    "install:dropins": "node postinstall.js",
+    "install:dropins": "node build.mjs && node postinstall.js",
     "postinstall": "npm run install:dropins",
     "postupdate": "npm run install:dropins"
   },
@@ -25,6 +25,7 @@
   "devDependencies": {
     "@adobe/aem-cli": "^16.5.8",
     "@babel/eslint-parser": "7.25.1",
+    "@dropins/build-tools": "0.1.0",
     "eslint": "8.57.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.29.1",

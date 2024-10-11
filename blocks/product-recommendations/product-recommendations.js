@@ -117,7 +117,7 @@ function renderItems(block, results) {
         inViewObserver.disconnect();
       }
     });
-  });
+  }, { threshold: 0.5 });
   inViewObserver.observe(block);
 }
 
@@ -152,8 +152,13 @@ async function loadRecommendation(block, context, visibility, filters) {
     return;
   }
 
-  if (!unitsPromise) {
-    const storeViewCode = await getConfigValue('commerce-store-view-code');
+  const storeViewCode = await getConfigValue('commerce-store-view-code');
+
+  if (unitsPromise) {
+    return;
+  }
+
+  unitsPromise = new Promise((resolve, reject) => {
     // Get product view history
     try {
       const viewHistory = window.localStorage.getItem(`${storeViewCode}:productViewHistory`) || '[]';
@@ -176,16 +181,19 @@ async function loadRecommendation(block, context, visibility, filters) {
       dl.push({ event: 'recs-api-request-sent', eventInfo: { ...dl.getState() } });
     });
 
-    unitsPromise = performCatalogServiceQuery(recommendationsQuery, context);
-    const { recommendations } = await unitsPromise;
-
-    window.adobeDataLayer.push((dl) => {
-      dl.push({ recommendationsContext: { units: recommendations.results.map(mapUnit) } });
-      dl.push({ event: 'recs-api-response-received', eventInfo: { ...dl.getState() } });
+    performCatalogServiceQuery(recommendationsQuery, context).then(({ recommendations }) => {
+      window.adobeDataLayer.push((dl) => {
+        dl.push({ recommendationsContext: { units: recommendations.results.map(mapUnit) } });
+        dl.push({ event: 'recs-api-response-received', eventInfo: { ...dl.getState() } });
+      });
+      resolve(recommendations);
+    }).catch((error) => {
+      console.error('Error fetching recommendations', error);
+      reject(error);
     });
-  }
+  });
 
-  let { results } = (await unitsPromise).recommendations;
+  let { results } = await unitsPromise;
   results = results.filter((unit) => (filters.typeId ? unit.typeId === filters.typeId : true));
 
   renderItems(block, results);

@@ -283,11 +283,9 @@ async function loadEager(doc) {
       totalQuantity: 0,
     },
   });
-  if (pageType !== 'Product') {
-    window.adobeDataLayer.push((dl) => {
-      dl.push({ event: 'page-view', eventInfo: { ...dl.getState() } });
-    });
-  }
+  window.adobeDataLayer.push((dl) => {
+    dl.push({ event: 'page-view', eventInfo: { ...dl.getState() } });
+  });
 
   const main = doc.querySelector('main');
   if (main) {

@@ -1,0 +1,2 @@
+export declare const STORE_CONFIG_QUERY = "\nquery STORE_CONFIG_QUERY {\n  storeConfig {\n    order_cancellation_enabled\n    order_cancellation_reasons {\n        description\n    }\n  }\n}\n";
+//# sourceMappingURL=StoreConfigQuery.d.ts.map

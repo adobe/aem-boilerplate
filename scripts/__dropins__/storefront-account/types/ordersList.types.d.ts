@@ -1,6 +1,6 @@
 import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { HTMLAttributes } from 'preact/compat';
-import { OrderDetails, ShipmentsTracingModel } from '../data/models';
+import { OrderDetails, OrderItem, ShipmentsTracingModel } from '../data/models';
 
 export interface OrdersListActionContext {
     orderHistoryListItem: OrderDetails;
@@ -22,6 +22,7 @@ export interface OrdersListProps extends HTMLAttributes<HTMLDivElement> {
     ordersInMinifiedView?: 1 | 2 | 3;
     pageSize: number;
     routeTracking?: (shipping: ShipmentsTracingModel) => string;
+    routeOrderProduct?: (product: OrderItem) => string;
 }
 export interface OrdersListWrapperProps extends OrdersListProps {
 }
@@ -33,6 +34,7 @@ export interface OrdersListCardProps extends HTMLAttributes<HTMLDivElement> {
         OrdersListCard?: SlotProps<OrdersListCardContext>;
     };
     routeTracking?: (shipping: ShipmentsTracingModel) => string;
+    routeOrderProduct?: (product: OrderItem) => string;
 }
 export interface OrdersListActionProps {
     minifiedView: boolean;

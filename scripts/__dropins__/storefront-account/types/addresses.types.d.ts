@@ -14,6 +14,8 @@ export interface AddressCardContext {
     }[];
 }
 export interface AddressesProps {
+    hideActionFormButtons?: boolean;
+    formName?: string;
     slots?: {
         AddressCard: SlotProps<AddressCardContext>;
     };
@@ -46,10 +48,10 @@ export interface AddressesProps {
 }
 export interface AddressesWrapperProps extends AddressesProps {
 }
-export interface useAddressesProps extends Omit<AddressesProps, 'className' | 'inputsDefaultValueSet' | 'addressesFormTitle' | 'shippingCheckBoxValue' | 'billingCheckBoxValue' | 'showFormLoader' | 'title' | 'slots'> {
+export interface useAddressesProps extends Omit<AddressesProps, 'className' | 'inputsDefaultValueSet' | 'addressesFormTitle' | 'shippingCheckBoxValue' | 'billingCheckBoxValue' | 'showFormLoader' | 'title' | 'slots' | 'formName' | 'hideActionFormButtons'> {
 }
 export interface KeysSortOrderProps {
-    name?: string;
+    name: string;
     orderNumber?: number;
     label?: string | null;
 }

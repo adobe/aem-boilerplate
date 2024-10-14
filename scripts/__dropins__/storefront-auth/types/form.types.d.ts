@@ -5,10 +5,10 @@ export interface FormProps {
     name?: string;
     className?: string;
     children?: any;
-    isLoading: boolean;
-    submitCallback?: (event: SubmitEvent, isValid: boolean) => Promise<void | null | undefined>;
+    loading: boolean;
+    onSubmit?: (event: SubmitEvent, isValid: boolean) => Promise<void | null | undefined>;
 }
-export interface useFormProps extends Omit<FormProps, 'children' | 'className' | 'name' | 'isLoading'> {
+export interface useFormProps extends Omit<FormProps, 'children' | 'className' | 'name' | 'loading'> {
 }
 export interface FormInputsProps {
     className?: string;
@@ -18,6 +18,7 @@ export interface FormInputsProps {
     loading?: boolean;
     onChange?: (event: Event) => void;
     onBlur?: (event: Event) => void;
+    onFocus?: (event: Event) => void;
 }
 export interface FieldsProps extends Omit<AttributesFormItemsProps, 'options'> {
     className: string;

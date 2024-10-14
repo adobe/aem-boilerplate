@@ -82,6 +82,8 @@ export type ShipmentsModel = {
     items: ShipmentItemsModel[];
 };
 export type OrderDataModel = {
+    id: string;
+    orderStatusChangeDate?: string;
     number: string;
     email?: string;
     token?: string;

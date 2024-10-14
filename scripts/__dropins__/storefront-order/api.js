@@ -1,4 +1,4 @@
-import{Initializer as u}from"@dropins/tools/lib.js";import{events as s}from"@dropins/tools/event-bus.js";import{f as n,h as m,a as o}from"./chunks/fetch-graphql.js";import{g as $,r as w,s as A,b as C,c as N}from"./chunks/fetch-graphql.js";import{O as c,a as _,A as p,t as h,b as O}from"./chunks/getCustomer.js";import{c as F,g as M}from"./chunks/getCustomer.js";import{g as x}from"./chunks/getAttributesForm.js";import"@dropins/tools/fetch-graphql.js";const y=`
+import{Initializer as u}from"@dropins/tools/lib.js";import{events as s}from"@dropins/tools/event-bus.js";import{f as n,h as m}from"./chunks/fetch-graphql.js";import{g as S,r as w,s as A,a as N,b as x}from"./chunks/fetch-graphql.js";import{h as o}from"./chunks/network-error.js";import{O as _,a as c,A as p,b as h}from"./chunks/transform-order-details.js";import{t as O}from"./chunks/getCustomer.js";import{g as M,a as Y}from"./chunks/getCustomer.js";import{g as Q}from"./chunks/getAttributesForm.js";import{g as z}from"./chunks/getStoreConfig.js";import"@dropins/tools/fetch-graphql.js";const g=`
 query ORDER_BY_NUMBER($orderNumber: String!) {
   customer {
     orders(
@@ -11,6 +11,7 @@ query ORDER_BY_NUMBER($orderNumber: String!) {
         number
         id
         order_date
+        order_status_change_date
         carrier
         shipping_method
         is_virtual
@@ -77,16 +78,17 @@ query ORDER_BY_NUMBER($orderNumber: String!) {
     }
   }
 }
-${c}
 ${_}
+${c}
 ${p}
-`,g=async(e,r)=>await n(y,{method:"GET",cache:"force-cache",variables:{orderNumber:e}}).then(t=>{var a;return(a=t.errors)!=null&&a.length?m(t.errors):h(r??"orderData",t)}).catch(o),R=`
+`,f=async(e,r)=>await n(g,{method:"GET",cache:"force-cache",variables:{orderNumber:e}}).then(t=>{var a;return(a=t.errors)!=null&&a.length?m(t.errors):h(r??"orderData",t)}).catch(o),y=`
 query ORDER_BY_TOKEN($token: String!) {
   guestOrderByToken(input: { token: $token }) {
     email
     id
     number
     order_date
+    order_status_change_date
     status
     token
     carrier
@@ -159,7 +161,7 @@ query ORDER_BY_TOKEN($token: String!) {
     }
   }
 }
-${c}
 ${_}
+${c}
 ${p}
-`,b=async e=>await n(R,{method:"GET",cache:"no-cache",variables:{token:e}}).then(r=>{var t;return(t=r.errors)!=null&&t.length?m(r.errors):O(r)}).catch(o),f=async e=>{var d;const r=(e==null?void 0:e.orderRef)??"",t=r&&typeof(e==null?void 0:e.orderRef)=="string"&&((d=e==null?void 0:e.orderRef)==null?void 0:d.length)>20,a=(e==null?void 0:e.orderData)??null;if(a){s.emit("order/data",a);return}if(!r){console.error("Order Token or number not received.");return}const i=t?await b(r):await g(r);i?s.emit("order/data",i):s.emit("order/error",{source:"order",type:"network",error:"The data was not received."})},l=new u({init:async e=>{const r={};l.config.setConfig({...r,...e}),f(e).catch(console.error)},listeners:()=>[]}),T=l.config;export{T as config,n as fetchGraphQl,x as getAttributesForm,$ as getConfig,F as getCustomer,M as getGuestOrder,g as getOrderDetailsById,b as guestOrderByToken,l as initialize,w as removeFetchGraphQlHeader,A as setEndpoint,C as setFetchGraphQlHeader,N as setFetchGraphQlHeaders};
+`,R=async e=>await n(y,{method:"GET",cache:"no-cache",variables:{token:e}}).then(r=>{var t;return(t=r.errors)!=null&&t.length?m(r.errors):O(r)}).catch(o),b=async e=>{var d;const r=(e==null?void 0:e.orderRef)??"",t=r&&typeof(e==null?void 0:e.orderRef)=="string"&&((d=e==null?void 0:e.orderRef)==null?void 0:d.length)>20,a=(e==null?void 0:e.orderData)??null;if(a){s.emit("order/data",a);return}if(!r){console.error("Order Token or number not received.");return}const i=t?await R(r):await f(r);i?s.emit("order/data",i):s.emit("order/error",{source:"order",type:"network",error:"The data was not received."})},l=new u({init:async e=>{const r={};l.config.setConfig({...r,...e}),b(e).catch(console.error)},listeners:()=>[]}),B=l.config;export{B as config,n as fetchGraphQl,Q as getAttributesForm,S as getConfig,M as getCustomer,Y as getGuestOrder,f as getOrderDetailsById,z as getStoreConfig,R as guestOrderByToken,l as initialize,w as removeFetchGraphQlHeader,A as setEndpoint,N as setFetchGraphQlHeader,x as setFetchGraphQlHeaders};

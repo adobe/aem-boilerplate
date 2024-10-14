@@ -31,19 +31,23 @@ declare const _default: {
       },
       "orderPending": {
         "title": "Pending",
-        "message": "The order was successfully placed on {DATE} and your order is processing. Check back for more details when your order ships."
+        "message": "The order was successfully placed on {DATE} and your order is processing. Check back for more details when your order ships.",
+        "messageWithoutDate": "Your order is processing. Check back for more details when your order ships."
       },
       "orderProcessing": {
         "title": "Processing",
-        "message": "The order was successfully placed on {DATE} and your order is processing. Check back for more details when your order ships."
+        "message": "The order was successfully placed on {DATE} and your order is processing. Check back for more details when your order ships.",
+        "messageWithoutDate": "Your order is processing. Check back for more details when your order ships."
       },
       "orderOnHold": {
         "title": "On hold",
-        "message": "We’ve run into an issue while processing your order on {DATE}. Please check back later or contact us at support@adobe.com for more information."
+        "message": "We’ve run into an issue while processing your order on {DATE}. Please check back later or contact us at support@adobe.com for more information.",
+        "messageWithoutDate": "We’ve run into an issue while processing your order. Please check back later or contact us at support@adobe.com for more information."
       },
       "orderReceived": {
         "title": "Order received",
-        "message": "The order was successfully placed on {DATE} and your order is processing. Check back for more details when your order ships."
+        "message": "The order was successfully placed on {DATE} and your order is processing. Check back for more details when your order ships.",
+        "messageWithoutDate": "Your order is processing. Check back for more details when your order ships."
       },
       "orderComplete": {
         "title": "Complete",
@@ -55,11 +59,17 @@ declare const _default: {
       },
       "orderSuspectedFraud": {
         "title": "Suspected fraud",
-        "message": "We’ve run into an issue while processing your order on {DATE}. Please check back later or contact us at support@adobe.com for more information."
+        "message": "We’ve run into an issue while processing your order on {DATE}. Please check back later or contact us at support@adobe.com for more information.",
+        "messageWithoutDate": "We’ve run into an issue while processing your order. Please check back later or contact us at support@adobe.com for more information."
       },
       "orderPaymentReview": {
         "title": "Payment Review",
-        "message": "The order was successfully placed on {DATE} and your order is processing. Check back for more details when your order ships."
+        "message": "The order was successfully placed on {DATE} and your order is processing. Check back for more details when your order ships.",
+        "messageWithoutDate": "Your order is processing. Check back for more details when your order ships."
+      },
+      "guestOrderCancellationRequested": {
+        "title": "cancellation requested",
+        "message": "The cancellation has been requested. Check your email for further instructions."
       }
     },
     "CustomerDetails": {
@@ -84,8 +94,20 @@ declare const _default: {
     "Errors": {
       "invalidOrder": "Invalid order. Please try again.",
       "invalidSearch": "No order found with these order details."
+    },
+    "OrderCancel": {
+      "buttonText": "Cancel Order"
+    },
+    "OrderCancellationReasonsModal": {
+      "title": "Cancel order",
+      "description": "Select a reason for canceling the order",
+      "label": "Reason for cancel",
+      "button": "Submit Cancellation",
+      "errorHeading": "Error",
+      "errorDescription": "There was an error processing your order cancellation."
     }
   }
-};
+}
+;
 
 export default _default;

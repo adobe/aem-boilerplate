@@ -4,7 +4,6 @@ export * from './SignUpForm';
 export * from './SignInForm';
 export * from './ResetPasswordForm';
 export * from './SkeletonLoader';
-export * from './UI/Button';
-export * from './UI/Form';
-export * from './UI/FormInputs';
+export * from './Form';
+export * from './Button';
 //# sourceMappingURL=index.d.ts.map

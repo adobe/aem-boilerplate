@@ -32,7 +32,7 @@ import{events as C}from"@dropins/tools/event-bus.js";import{FetchGraphQL as T}fr
   }
 `,p=`
   query GET_ATTRIBUTES_FORM_SHORT {
-      attributesForm(formCode: customer_register_address) {
+      attributesForm(formCode: "customer_register_address") {
       items {
         frontend_input
         label
@@ -50,7 +50,7 @@ import{events as C}from"@dropins/tools/event-bus.js";import{FetchGraphQL as T}fr
       firstname
     }
   }
-`,L=async t=>await s(I,{method:"POST",variables:{input:a(t,"snakeCase",{customAttributesV2:"custom_attributesV2",firstName:"firstname",lastName:"lastname"})}}).then(e=>{var r,n,o;return(r=e.errors)!=null&&r.length?h(e.errors):((o=(n=e==null?void 0:e.data)==null?void 0:n.createCustomerAddress)==null?void 0:o.firstname)||""}).catch(f),M=`
+`,L=async t=>await s(I,{method:"POST",variables:{input:a(t,"snakeCase",{custom_attributesV2:"custom_attributesV2",firstName:"firstname",lastName:"lastname"})}}).then(e=>{var r,n,o;return(r=e.errors)!=null&&r.length?h(e.errors):((o=(n=e==null?void 0:e.data)==null?void 0:n.createCustomerAddress)==null?void 0:o.firstname)||""}).catch(f),M=`
   query GET_CUSTOMER_ADDRESS {
     customer {
       addresses {
@@ -80,7 +80,7 @@ import{events as C}from"@dropins/tools/event-bus.js";import{FetchGraphQL as T}fr
       }
     }
   }
-`,P=async()=>await s(M,{method:"GET",cache:"force-cache"}).then(t=>{var e;return(e=t.errors)!=null&&e.length?h(t.errors):$(t)}).catch(f),N=`
+`,P=async()=>await s(M,{method:"GET",cache:"no-cache"}).then(t=>{var e;return(e=t.errors)!=null&&e.length?h(t.errors):$(t)}).catch(f),N=`
   query GET_COUNTRIES_QUERY {
     countries {
       two_letter_abbreviation
@@ -109,8 +109,8 @@ import{events as C}from"@dropins/tools/event-bus.js";import{FetchGraphQL as T}fr
       firstname
    }
   }
-`,K=async t=>{const{addressId:e,...r}=t;return e?await s(w,{method:"POST",variables:{id:e,input:a(r,"snakeCase",{customAttributesV2:"custom_attributesV2",firstName:"firstname",lastName:"lastname"})}}).then(n=>{var o,i,c;return(o=n.errors)!=null&&o.length?h(n.errors):((c=(i=n==null?void 0:n.data)==null?void 0:i.updateCustomerAddress)==null?void 0:c.firstname)||""}).catch(f):""},q=`
+`,K=async t=>{const{addressId:e,...r}=t;return e?await s(w,{method:"POST",variables:{id:e,input:a(r,"snakeCase",{custom_attributesV2:"custom_attributesV2",firstName:"firstname",lastName:"lastname"})}}).then(n=>{var o,i,c;return(o=n.errors)!=null&&o.length?h(n.errors):((c=(i=n==null?void 0:n.data)==null?void 0:i.updateCustomerAddress)==null?void 0:c.firstname)||""}).catch(f):""},q=`
   mutation REMOVE_CUSTOMER_ADDRESS($id: Int!) {
     deleteCustomerAddress(id:$id)
   }
-`,W=async t=>await s(q,{method:"POST",variables:{id:t}}).then(e=>{var r;return(r=e.errors)!=null&&r.length?h(e.errors):e.data.deleteCustomerAddress}).catch(f);export{f as a,B as b,j as c,H as d,L as e,s as f,k as g,h,P as i,z as j,Z as k,W as l,a as m,b as n,Q as r,x as s,O as t,K as u};
+`,W=async t=>await s(q,{method:"POST",variables:{id:t}}).then(e=>{var r;return(r=e.errors)!=null&&r.length?h(e.errors):e.data.deleteCustomerAddress}).catch(f);export{f as a,B as b,j as c,H as d,L as e,s as f,k as g,h,P as i,z as j,Z as k,W as l,a as m,R as n,b as o,Q as r,x as s,O as t,K as u};

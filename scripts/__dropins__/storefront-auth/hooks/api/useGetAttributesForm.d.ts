@@ -1,9 +1,8 @@
 import { inputsDefaultValueSetProps } from '../../types';
-import { SignUpFieldsProps } from '../../configs/defaultCreateUserConfigs';
 import { AttributesFormItemsProps } from '../../data/models';
 
 interface UseGetAttributesFormProps {
-    fieldsConfigForApiVersion1: SignUpFieldsProps[];
+    fieldsConfigForApiVersion1: {}[];
     apiVersion2: boolean;
     inputsDefaultValueSet?: inputsDefaultValueSetProps[];
 }

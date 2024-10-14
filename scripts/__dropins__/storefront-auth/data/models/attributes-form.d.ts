@@ -38,6 +38,7 @@ export interface AttributesFormItemsProps {
         value: string;
     }[];
     hidden?: boolean;
+    customUpperCode: string;
 }
 export interface AttributesFormModel extends AttributesFormItemsProps {
 }

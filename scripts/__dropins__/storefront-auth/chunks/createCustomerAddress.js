@@ -1,4 +1,4 @@
-import{f as a,h as s}from"./network-error.js";import{s as n}from"./setReCaptchaToken.js";import{t as i}from"./transform-attributes-form.js";import{h as o}from"./getStoreConfig.js";const u=`
+import{f as a,h as s}from"./network-error.js";import{s as n}from"./setReCaptchaToken.js";import{t as u}from"./transform-attributes-form.js";import{h as o}from"./getStoreConfig.js";const i=`
   mutation CREATE_CUSTOMER($input: CustomerInput!) {
     createCustomer(input: $input) {
       customer {
@@ -20,7 +20,7 @@ import{f as a,h as s}from"./network-error.js";import{s as n}from"./setReCaptchaT
       }
     }
   }
-`,p=async(r,t)=>(await n(),await a(t?m:u,{method:"POST",variables:{input:{...r}}}).catch(s)),c=`
+`,T=async(r,t)=>(await n(),await a(t?m:i,{method:"POST",variables:{input:{...r}}}).catch(s)),c=`
   query GET_ATTRIBUTES_FORM($formCode: String!) {
     attributesForm(formCode: $formCode) {
       items {
@@ -52,10 +52,10 @@ import{f as a,h as s}from"./network-error.js";import{s as n}from"./setReCaptchaT
       }
     }
   }
-`,T=async r=>await a(c.replace(/\s+/g," ").trim(),{method:"GET",cache:"force-cache",variables:{formCode:r}}).then(t=>{var e;return(e=t.errors)!=null&&e.length?o(t.errors):i(t)}).catch(s),d=`
+`,p=async r=>await a(c,{method:"GET",cache:"force-cache",variables:{formCode:r}}).then(t=>{var e;return(e=t.errors)!=null&&e.length?o(t.errors):u(t)}).catch(s),d=`
   mutation CREATE_CUSTOMER_ADDRESS($input: CustomerAddressInput!) {
     createCustomerAddress(input:$input) {
       firstname
    }
   }
-`,f=async r=>await a(d,{method:"POST",variables:{input:r}}).then(t=>{var e;return(e=t.errors)!=null&&e.length?o(t.errors):t.data.createCustomerAddress.firstname||""}).catch(s);export{f as a,p as c,T as g};
+`,f=async r=>await a(d,{method:"POST",variables:{input:r}}).then(t=>{var e;return(e=t.errors)!=null&&e.length?o(t.errors):t.data.createCustomerAddress.firstname||""}).catch(s);export{f as a,T as c,p as g};

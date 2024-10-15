@@ -19,7 +19,7 @@ if (getConsent('commerce-collection')) {
     storeViewName: await getConfigValue('commerce-store-view-name'),
     baseCurrencyCode: await getConfigValue('commerce-base-currency-code'),
     storeViewCurrencyCode: await getConfigValue('commerce-base-currency-code'),
-    storefrontTemplate: 'Franklin',
+    storefrontTemplate: 'EDS',
   };
 
   window.adobeDataLayer.push(

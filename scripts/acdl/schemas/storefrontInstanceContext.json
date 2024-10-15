@@ -55,7 +55,7 @@
                 },
                 "storefrontTemplate": {
                     "type": "string",
-                    "enum": ["Franklin"]
+                    "enum": ["EDS"]
                 }
             },
             "required": [

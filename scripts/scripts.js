@@ -296,8 +296,8 @@ async function loadEager(doc) {
     await applyTemplates(doc);
 
     // Load LCP blocks
-    document.body.classList.add('appear');
     await loadSection(main.querySelector('.section'), waitForFirstImage);
+    document.body.classList.add('appear');
   }
 
   events.emit('eds/lcp', true);

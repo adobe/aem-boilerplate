@@ -15,6 +15,27 @@ import {
 } from './aem.js';
 
 /**
+ * Minimal escaping of HTML special characters
+ *
+ * NOTICE: Mitigates a big class of XSS attacks, but not all of them.
+ * Always try to refactor your code to simply avoid using unsafe browser APIs.
+ *
+ * example where it would not help, because the attribute has a Javascript context:
+ *  const userInput = 'alert(document.cookie)';
+ *  container.innerHTML = `<img src="x" onerror="${escapeHtml(userInput)}"/>`;
+ * @param {string} unsafe
+ * @returns {string}
+ */
+export function escapeHtml(unsafe) {
+  return unsafe
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('\'', '&#x27;');
+}
+
+/**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */

@@ -4,6 +4,10 @@ module.exports = {
   env: {
     browser: true,
   },
+  globals: {
+    DOMPurify: 'readonly',
+    trustedTypes: 'readonly',
+  },
   parser: '@babel/eslint-parser',
   parserOptions: {
     allowImportExportEverywhere: true,

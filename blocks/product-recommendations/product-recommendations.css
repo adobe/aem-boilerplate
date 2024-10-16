@@ -31,12 +31,7 @@ main .section>div.product-recommendations-wrapper {
     text-decoration: none;
 }
 
-.product-recommendations .product-grid .product-grid-item a:hover,
-.product-recommendations .product-grid .product-grid-item a:focus {
-    text-decoration: underline;
-}
-
-.product-recommendations .product-grid .product-grid-item span {
+.product-recommendations .product-grid .product-grid-item a span {
     overflow: hidden;
     box-sizing: border-box;
     margin: 0;

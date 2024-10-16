@@ -1,6 +1,5 @@
 /* eslint-disable import/no-cycle */
 import { events } from '@dropins/tools/event-bus.js';
-import { getCartDataFromCache } from '@dropins/storefront-cart/api.js';
 import {
   buildBlock,
   decorateBlocks,
@@ -23,7 +22,6 @@ import {
 } from './aem.js';
 import { getProduct, getSkuFromUrl, trackHistory } from './commerce.js';
 import initializeDropins from './dropins.js';
-import { loadFragment } from '../blocks/fragment/fragment.js';
 
 const AUDIENCES = {
   mobile: () => window.innerWidth < 600,
@@ -133,53 +131,9 @@ function buildTemplateColumns(doc) {
   });
 }
 
-async function buildTemplateCart(doc) {
-  const main = doc.querySelector('main');
-
-  // load fragment for empty cart
-  const emptyCartMeta = getMetadata('empty-cart');
-  const emptyCartPath = emptyCartMeta ? new URL(emptyCartMeta, window.location).pathname : '/empty-cart';
-  const emptyCartFragment = await loadFragment(emptyCartPath);
-
-  // append emptyCartFragment next to main
-  main.after(emptyCartFragment);
-
-  const hasProducts = getCartDataFromCache()?.totalQuantity > 0 || false;
-
-  // toggle view based on cart data
-  function toggleView(next) {
-    if (next) {
-      emptyCartFragment.setAttribute('hidden', 'hidden');
-      main.removeAttribute('hidden');
-    } else {
-      main.setAttribute('hidden', 'hidden');
-      emptyCartFragment.removeAttribute('hidden');
-    }
-  }
-
-  // initial state (cached)
-  toggleView(hasProducts);
-
-  // update state on cart data event
-  let prev = hasProducts;
-
-  events.on('cart/data', (payload) => {
-    const next = payload?.totalQuantity > 0 || false;
-
-    if (next !== prev) {
-      prev = next;
-      toggleView(next);
-    }
-  }, { eager: true });
-}
-
 async function applyTemplates(doc) {
   if (doc.body.classList.contains('columns')) {
     buildTemplateColumns(doc);
-  }
-
-  if (doc.body.classList.contains('cart')) {
-    await buildTemplateCart(doc);
   }
 }
 

@@ -1,1 +1,32 @@
-/* stylelint-disable no-empty-source */
+/* stylelint-disable selector-class-pattern */
+
+.commerce-cart {
+  padding: var(--spacing-large) 0;
+}
+
+.cart__wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-4-gutters);
+}
+
+.cart__wrapper[hidden],
+.cart__empty-cart[hidden] {
+  display: none;
+}
+
+@media (width >= 900px) {
+  .cart__wrapper {
+    flex-direction: row;
+  }
+
+  .cart__left-column {
+    flex: 1;
+    flex-basis: 70%;
+  }
+
+  .cart__right-column {
+    flex: 1;
+    flex-basis: 30%;
+  }
+}

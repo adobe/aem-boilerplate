@@ -80,9 +80,7 @@ it("is sent on cart page Checkout button click", () => {
     cy.window().then((win) => {
       cy.spy(win.adobeDataLayer, "push").as("adl");
       // click the checkout button
-      cy.get(
-        "body > main:nth-child(2) > div.section.commerce-cart-order-summary-container > div > div > div > div.cart-order-summary__content > div.cart-order-summary__entry.cart-order-summary__primaryAction > a"
-      )
+      cy.get(".cart-order-summary__primaryAction > a")
         .should("be.visible")
         .click()
         .then(() => {

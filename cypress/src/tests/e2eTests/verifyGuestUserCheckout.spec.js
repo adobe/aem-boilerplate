@@ -58,12 +58,12 @@ describe('Verify guest user can place order', () => {
             '$38.00',
             '$76.00',
             '0'
-        )('.commerce-cart-summary-wrapper');
+        )('.commerce-cart-wrapper');
         assertTitleHasLink(
             'Crown Summit Backpack',
             '/products/crown-summit-backpack/24-MB03'
-        )('.commerce-cart-summary-wrapper');
-        assertProductImage('/mb03-black-0.jpg')('.commerce-cart-summary-wrapper');
+        )('.commerce-cart-wrapper');
+        assertProductImage('/mb03-black-0.jpg')('.commerce-cart-wrapper');
         cy.contains('Estimated Shipping').should('be.visible');
         cy.get('.dropin-button--primary')
             .contains('Checkout')

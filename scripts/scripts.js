@@ -209,8 +209,6 @@ async function loadEager(doc) {
 
   events.emit('eds/lcp', true);
 
-  sampleRUM.enhance();
-
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
     if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {

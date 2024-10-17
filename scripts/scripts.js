@@ -18,7 +18,6 @@ import {
   loadSection,
   loadSections,
   loadCSS,
-  sampleRUM,
 } from './aem.js';
 import { getProduct, getSkuFromUrl, trackHistory } from './commerce.js';
 import initializeDropins from './dropins.js';
@@ -255,8 +254,6 @@ async function loadEager(doc) {
   }
 
   events.emit('eds/lcp', true);
-
-  sampleRUM.enhance();
 
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */

@@ -117,7 +117,9 @@ async function loadLazy(doc) {
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
-  // load anything that can be postponed to the latest here
+
+  // add other event-listeners that should trigger loading of delayed before timeout
+  document.addEventListener('scroll', () => import('./delayed.js'), { once: true });
 }
 
 async function loadPage() {

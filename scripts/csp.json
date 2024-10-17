@@ -1,0 +1,13 @@
+{
+    "default-src": [
+        "'self'"
+    ],
+    "script-src": [
+        "'self'",
+        "https://rum.hlx.page/"
+    ],
+    "connect-src": [
+        "'self'",
+        "https://rum.hlx.page/"
+    ]
+}

@@ -80,7 +80,13 @@ function sampleRUM(checkpoint, data) {
             t: time,
             ...pingData,
           });
-          const { href: url, origin } = new URL(`.rum/${weight}`, sampleRUM.collectBaseURL);
+          const urlParams = window.RUM_PARAMS
+            ? `?${new URLSearchParams(window.RUM_PARAMS).toString()}`
+            : '';
+          const { href: url, origin } = new URL(
+            `.rum/${weight}${urlParams}`,
+            sampleRUM.collectBaseURL,
+          );
           const body = origin === window.location.origin
             ? new Blob([rumData], { type: 'application/json' })
             : rumData;
@@ -108,7 +114,7 @@ function sampleRUM(checkpoint, data) {
     }
     document.dispatchEvent(new CustomEvent('rum', { detail: { checkpoint, data } }));
   } catch (error) {
-    // something went wrong
+    // something went awry
   }
 }
 
@@ -684,6 +690,9 @@ async function loadSections(element) {
   for (let i = 0; i < sections.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
     await loadSection(sections[i]);
+    if (i === 0 && sampleRUM.enhance) {
+      sampleRUM.enhance();
+    }
   }
 }
 

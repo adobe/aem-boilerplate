@@ -156,7 +156,6 @@ let defaultPolicy = {
   },
   createScript: (s, type, sink) => {
     // disallow inline scripts.
-    // equivalent to setting a CSP that doesn't allow unsafe-inline
     // eslint-disable-next-line no-console
     console.warn('Blocked inline script by default policy');
     return undefined;
@@ -172,29 +171,9 @@ export let aemPolicy = {
 
 if (browserSupportsTrustedTypes()) {
   defaultPolicy = trustedTypes.createPolicy('default', defaultPolicy);
-  aemPolicy = trustedTypes.createPolicy('aemPolicy', aemPolicy);
+  aemPolicy = trustedTypes.createPolicy('aempolicy', aemPolicy);
 }
 /* eslint-enable no-unused-vars, import/no-mutable-exports */
-
-function setCSP() {
-  // define your CSP directives here
-  const CSP = {
-  };
-
-  if (browserSupportsTrustedTypes()) {
-    CSP['require-trusted-types-for'] = ['\'script\''];
-    CSP['trusted-types'] = ['default', 'aemPolicy', 'dompurify'];
-  }
-
-  const directives = Object.keys(CSP);
-  if (directives.length === 0) return;
-  const policy = directives.map((directive) => `${directive} ${CSP[directive].join(' ')}`).join('; ');
-  const meta = document.createElement('meta');
-  meta.setAttribute('http-equiv', 'Content-Security-Policy');
-  meta.setAttribute('content', policy);
-  document.addEventListener('securitypolicyviolation', (e) => sampleRUM('csperror', { source: `${e.documentURI}:${e.lineNumber}:${e.columnNumber}`, target: e.blockedURI }));
-  document.head.appendChild(meta);
-}
 
 /**
  * Loads everything that happens a lot later,
@@ -207,7 +186,6 @@ function loadDelayed() {
 }
 
 async function loadPage() {
-  setCSP();
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();

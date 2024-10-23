@@ -1,3 +1,8 @@
+<!-- Content Security Policies should ideally be moved as a header for better security -->
+<meta
+  http-equiv="Content-Security-Policy"
+  content="require-trusted-types-for 'script'; trusted-types default aempolicy dompurify"
+>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <script type="text/javascript" src="scripts/purify.min.js"></script>
 <script src="/scripts/aem.js" type="module"></script>

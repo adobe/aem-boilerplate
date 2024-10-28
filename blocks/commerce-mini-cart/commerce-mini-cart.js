@@ -1,5 +1,9 @@
 import { render as provider } from '@dropins/storefront-cart/render.js';
 import MiniCart from '@dropins/storefront-cart/containers/MiniCart.js';
+
+// Initializers
+import '../../scripts/initializers/cart.js';
+
 import { readBlockConfig } from '../../scripts/aem.js';
 
 export default async function decorate(block) {

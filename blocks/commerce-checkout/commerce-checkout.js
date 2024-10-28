@@ -5,7 +5,6 @@ import {
   provider as uiProvider,
 } from '@dropins/tools/components.js';
 import { events } from '@dropins/tools/event-bus.js';
-import { initializers } from '@dropins/tools/initializer.js';
 
 // Cart Dropin Modules
 import * as cartApi from '@dropins/storefront-cart/api.js';
@@ -30,7 +29,6 @@ import ShippingMethods from '@dropins/storefront-checkout/containers/ShippingMet
 import { render as checkoutProvider } from '@dropins/storefront-checkout/render.js';
 
 // Order Confirmation Dropin Modules
-import * as orderConfirmationApi from '@dropins/storefront-order-confirmation/api.js';
 import OrderConfirmation from '@dropins/storefront-order-confirmation/containers/OrderConfirmation.js';
 import { render as orderConfirmationProvider } from '@dropins/storefront-order-confirmation/render.js';
 
@@ -39,9 +37,15 @@ import * as authApi from '@dropins/storefront-auth/api.js';
 import AuthCombine from '@dropins/storefront-auth/containers/AuthCombine.js';
 import SignUp from '@dropins/storefront-auth/containers/SignUp.js';
 import { render as authProvider } from '@dropins/storefront-auth/render.js';
-import { getUserTokenCookie } from '../../scripts/dropins.js';
+import { getUserTokenCookie } from '../../scripts/initializers/index.js';
 import { createModal } from '../modal/modal.js';
 import { CUSTOMER_ACCOUNT_PATH, CUSTOMER_LOGIN_PATH } from '../../scripts/constants.js';
+
+// Initializers
+import '../../scripts/initializers/auth.js';
+import '../../scripts/initializers/cart.js';
+import '../../scripts/initializers/checkout.js';
+import '../../scripts/initializers/order-confirmation.js';
 
 function createElementWithClass(tag, className) {
   const element = document.createElement(tag);
@@ -212,8 +216,6 @@ function handleCheckoutOrder(orderData, block) {
 
   window.history.pushState({}, '', `/order-status?orderRef=${encodedOrderRef}`);
 
-  initializers.register(orderConfirmationApi.initialize, {});
-
   const onSignUpClick = async ({ inputsDefaultValueSet, addressesData }) => {
     const signUpForm = document.createElement('div');
 
@@ -238,12 +240,6 @@ function handleCheckoutOrder(orderData, block) {
 }
 
 export default async function decorate(block) {
-  /*
-   * Initialize Dropin
-   */
-
-  initializers.register(checkoutApi.initialize, {});
-
   /*
    * Render Containers
    */

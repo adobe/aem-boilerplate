@@ -1,26 +1,23 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-extraneous-dependencies */
 import { events } from '@dropins/tools/event-bus.js';
-import { initializers } from '@dropins/tools/initializer.js';
 import {
   InLineAlert,
   Icon,
   provider as UI,
 } from '@dropins/tools/components.js';
-import * as productApi from '@dropins/storefront-pdp/api.js';
 import { render as productRenderer } from '@dropins/storefront-pdp/render.js';
 import { addProductsToCart } from '@dropins/storefront-cart/api.js';
 import ProductDetails from '@dropins/storefront-pdp/containers/ProductDetails.js';
 
 // Libs
 import {
-  getProduct,
   getSkuFromUrl,
   setJsonLd,
   loadErrorPage, performCatalogServiceQuery, variantsQuery,
 } from '../../scripts/commerce.js';
-import { getConfigValue } from '../../scripts/configs.js';
-import { fetchPlaceholders } from '../../scripts/aem.js';
+
+// Initializers
+import '../../scripts/initializers/cart.js';
+import '../../scripts/initializers/pdp.js';
 
 async function setJsonLdProduct(product) {
   const {
@@ -129,84 +126,12 @@ function setMetaTags(product) {
 }
 
 export default async function decorate(block) {
-  if (!window.getProductPromise) {
-    window.getProductPromise = getProduct(this.props.sku);
-  }
-
-  const [product, placeholders] = await Promise.all([
-    window.getProductPromise,
-    fetchPlaceholders(),
-  ]);
+  const product = await window.getProductPromise;
 
   if (!product) {
     await loadErrorPage();
     return Promise.reject();
   }
-
-  const langDefinitions = {
-    default: {
-      PDP: {
-        Product: {
-          Incrementer: { label: placeholders.pdpProductIncrementer },
-          OutOfStock: { label: placeholders.pdpProductOutofstock },
-          AddToCart: { label: placeholders.pdpProductAddtocart },
-          Details: { label: placeholders.pdpProductDetails },
-          RegularPrice: { label: placeholders.pdpProductRegularprice },
-          SpecialPrice: { label: placeholders.pdpProductSpecialprice },
-          PriceRange: {
-            From: { label: placeholders.pdpProductPricerangeFrom },
-            To: { label: placeholders.pdpProductPricerangeTo },
-          },
-          Image: { label: placeholders.pdpProductImage },
-        },
-        Swatches: {
-          Required: { label: placeholders.pdpSwatchesRequired },
-        },
-        Carousel: {
-          label: placeholders.pdpCarousel,
-          Next: { label: placeholders.pdpCarouselNext },
-          Previous: { label: placeholders.pdpCarouselPrevious },
-          Slide: { label: placeholders.pdpCarouselSlide },
-          Controls: {
-            label: placeholders.pdpCarouselControls,
-            Button: { label: placeholders.pdpCarouselControlsButton },
-          },
-        },
-        Overlay: {
-          Close: { label: placeholders.pdpOverlayClose },
-        },
-      },
-      Custom: {
-        AddingToCart: { label: placeholders.pdpCustomAddingtocart },
-      },
-    },
-  };
-
-  const models = {
-    ProductDetails: {
-      initialData: { ...product },
-    },
-  };
-
-  // Initialize Dropins
-  initializers.register(productApi.initialize, {
-    langDefinitions,
-    models,
-  });
-
-  // Set Fetch Endpoint (Service)
-  productApi.setEndpoint(await getConfigValue('commerce-endpoint'));
-
-  // Set Fetch Headers (Service)
-  productApi.setFetchGraphQlHeaders({
-    'Content-Type': 'application/json',
-    'Magento-Environment-Id': await getConfigValue('commerce-environment-id'),
-    'Magento-Website-Code': await getConfigValue('commerce-website-code'),
-    'Magento-Store-View-Code': await getConfigValue('commerce-store-view-code'),
-    'Magento-Store-Code': await getConfigValue('commerce-store-code'),
-    'Magento-Customer-Group': await getConfigValue('commerce-customer-group'),
-    'x-api-key': await getConfigValue('commerce-x-api-key'),
-  });
 
   events.on(
     'eds/lcp',

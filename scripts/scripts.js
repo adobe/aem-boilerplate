@@ -21,7 +21,7 @@ import {
   sampleRUM,
 } from './aem.js';
 import { getProduct, getSkuFromUrl, trackHistory } from './commerce.js';
-import initializeDropins from './dropins.js';
+import initializeDropins from './initializers/index.js';
 
 const AUDIENCES = {
   mobile: () => window.innerWidth < 600,
@@ -166,7 +166,6 @@ function preloadFile(href, as) {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
-  await initializeDropins();
   decorateTemplateAndTheme();
 
   // Instrument experimentation plugin
@@ -183,9 +182,7 @@ async function loadEager(doc) {
   let pageType = 'CMS';
   if (document.body.querySelector('main .product-details')) {
     pageType = 'Product';
-    const sku = getSkuFromUrl();
-    window.getProductPromise = getProduct(sku);
-
+    preloadFile('/scripts/initializers/pdp.js', 'script');
     preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductDetails.js', 'script');
     preloadFile('/scripts/__dropins__/storefront-pdp/api.js', 'script');
     preloadFile('/scripts/__dropins__/storefront-pdp/render.js', 'script');
@@ -367,6 +364,7 @@ export function getConsent(topic) {
 }
 
 async function loadPage() {
+  await initializeDropins();
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();

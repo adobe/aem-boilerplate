@@ -4,9 +4,12 @@ import { SignIn } from '@dropins/storefront-auth/containers/SignIn.js';
 import { SuccessNotification } from '@dropins/storefront-auth/containers/SuccessNotification.js';
 import * as authApi from '@dropins/storefront-auth/api.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
-import { Button } from '@dropins/tools/components.js';
+import { Button, provider as UI } from '@dropins/tools/components.js';
 import { checkIsAuthenticated } from '../../scripts/configs.js';
 import { CUSTOMER_ACCOUNT_PATH, CUSTOMER_FORGOTPASSWORD_PATH } from '../../scripts/constants.js';
+
+// Initialize
+import '../../scripts/initializers/auth.js';
 
 export default async function decorate(block) {
   if (checkIsAuthenticated()) {
@@ -30,7 +33,7 @@ export default async function decorate(block) {
               SuccessNotificationActions: (innerCtx) => {
                 const primaryBtn = document.createElement('div');
 
-                authRenderer.render(Button, {
+                UI.render(Button, {
                   children: 'My Account',
 
                   onClick: () => {
@@ -45,7 +48,7 @@ export default async function decorate(block) {
                 secondaryButton.style.justifyContent = 'center';
                 secondaryButton.style.marginTop = 'var(--spacing-xsmall)';
 
-                authRenderer.render(Button, {
+                UI.render(Button, {
                   children: 'Logout',
                   variant: 'tertiary',
                   onClick: async () => {

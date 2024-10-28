@@ -1,6 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-extraneous-dependencies */
-
 import { events } from '@dropins/tools/event-bus.js';
 import { render as provider } from '@dropins/storefront-cart/render.js';
 import * as Cart from '@dropins/storefront-cart/api.js';
@@ -11,11 +8,12 @@ import OrderSummary from '@dropins/storefront-cart/containers/OrderSummary.js';
 import EstimateShipping from '@dropins/storefront-cart/containers/EstimateShipping.js';
 import EmptyCart from '@dropins/storefront-cart/containers/EmptyCart.js';
 
+// Initializers
+import '../../scripts/initializers/cart.js';
+
 import { readBlockConfig } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
-  // Initialize Dropins – already initialized in scripts/dropins.js
-
   // Configuration
   const {
     'hide-heading': hideHeading = 'false',

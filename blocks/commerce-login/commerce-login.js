@@ -5,6 +5,9 @@ import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { checkIsAuthenticated } from '../../scripts/configs.js';
 import { CUSTOMER_FORGOTPASSWORD_PATH, CUSTOMER_ACCOUNT_PATH } from '../../scripts/constants.js';
 
+// Initialize
+import '../../scripts/initializers/auth.js';
+
 export default async function decorate(block) {
   if (checkIsAuthenticated()) {
     window.location.href = CUSTOMER_ACCOUNT_PATH;

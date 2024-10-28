@@ -6,6 +6,9 @@ import { events } from '@dropins/tools/event-bus.js';
 import { checkIsAuthenticated } from '../../scripts/configs.js';
 import { CUSTOMER_LOGIN_PATH, CUSTOMER_ACCOUNT_PATH } from '../../scripts/constants.js';
 
+// Initialize
+import '../../scripts/initializers/auth.js';
+
 export default async function decorate(block) {
   if (checkIsAuthenticated()) {
     window.location.href = CUSTOMER_ACCOUNT_PATH;

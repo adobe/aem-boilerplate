@@ -6,6 +6,9 @@ import { readBlockConfig } from '../../scripts/aem.js';
 import { checkIsAuthenticated } from '../../scripts/configs.js';
 import { CUSTOMER_ADDRESS_PATH, CUSTOMER_LOGIN_PATH } from '../../scripts/constants.js';
 
+// Initialize
+import '../../scripts/initializers/account.js';
+
 export default async function decorate(block) {
   const {
     'minified-view': minifiedViewConfig = 'false',

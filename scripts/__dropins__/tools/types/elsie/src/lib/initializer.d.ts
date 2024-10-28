@@ -60,6 +60,12 @@ export declare class initializers {
         [key: string]: any;
     }): void;
     /**
+     * Mounts the provided initializer immediately. This involves binding the event listeners and initializing the API for the initializer.
+     */
+    static mountImmediately(initializer: Initializer<any>, options?: {
+        [key: string]: any;
+    }): Promise<void>;
+    /**
      * Mounts all registered initializers. This involves binding the event listeners and initializing the APIs for each initializer, in that order.
      */
     static mount(): void;

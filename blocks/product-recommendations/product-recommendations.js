@@ -5,6 +5,9 @@ import { readBlockConfig } from '../../scripts/aem.js';
 import { performCatalogServiceQuery } from '../../scripts/commerce.js';
 import { getConfigValue } from '../../scripts/configs.js';
 
+// initialize dropins
+import '../../scripts/initializers/cart.js';
+
 const isMobile = window.matchMedia('only screen and (max-width: 900px)').matches;
 
 const recommendationsQuery = `query GetRecommendations(

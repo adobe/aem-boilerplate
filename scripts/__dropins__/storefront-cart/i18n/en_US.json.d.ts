@@ -67,7 +67,12 @@ declare const _default: {
           "label": "Apply"
         }
       },
-      "freeShipping": "Free"
+      "freeShipping": "Free",
+      "coupon": {
+        "applyAction": "Apply",
+        "placeholder": "Enter code",
+        "title": "Discount code"
+      }
     },
     "CartItem": {
       "discountedPrice": "Discounted Price",

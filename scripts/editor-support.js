@@ -95,6 +95,7 @@ function attachEventListners(main) {
     'aue:content-add',
     'aue:content-move',
     'aue:content-remove',
+    'aue:content-copy',
   ].forEach((eventType) => main?.addEventListener(eventType, async (event) => {
     event.stopPropagation();
     const applied = await applyChanges(event);

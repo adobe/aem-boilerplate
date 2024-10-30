@@ -193,6 +193,5 @@ describe('Verify auth user can place order', () => {
          * Redirect to /customer/orders
          * Confirm that new order is visible on Orders page
          */
-        cy.deleteCustomer();
     });
 });

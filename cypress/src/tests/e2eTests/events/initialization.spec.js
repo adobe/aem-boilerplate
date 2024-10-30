@@ -1,7 +1,7 @@
 import { expectsEventWithContext } from "../../../assertions";
 
 const baselineContexts = (adobeDataLayer) => {
-  expectsEventWithContext(null, ['pageContext', 'storefrontInstanceContext', 'eventForwardingContext'], adobeDataLayer)
+  expectsEventWithContext(null, ['pageContext', 'storefrontInstanceContext', 'eventForwardingContext', 'shopperContext'], adobeDataLayer)
 };
 
 it('has baseline contexts on homepage', () => {

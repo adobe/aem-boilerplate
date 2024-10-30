@@ -3,7 +3,7 @@ declare enum EventsList {
     SIGN_IN = "sign-in",
     SIGN_OUT = "sign-out"
 }
-export declare function pushEvent(event: string): void;
+declare function pushEvent(event: string): void;
 declare const publishEvents: (eventType: string, eventParams: any) => null | undefined;
-export { EventsList, publishEvents };
+export { EventsList, publishEvents, pushEvent };
 //# sourceMappingURL=acdl.d.ts.map

@@ -1,5 +1,6 @@
 /* eslint-disable import/no-cycle */
 import { getConfigValue } from './configs.js';
+import { getUserTokenCookie } from './initializers/index.js';
 import { getConsent } from './scripts.js';
 
 // Load Commerce events SDK and collector
@@ -25,6 +26,11 @@ if (getConsent('commerce-collection')) {
   window.adobeDataLayer.push(
     { storefrontInstanceContext: config },
     { eventForwardingContext: { commerce: true, aep: false } },
+    {
+      shopperContext: {
+        shopperId: getUserTokenCookie() ? 'logged-in' : 'guest',
+      },
+    },
   );
 
   // Load events SDK and collector

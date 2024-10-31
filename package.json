@@ -24,7 +24,7 @@
   "homepage": "https://github.com/adobe/aem-boilerplate#readme",
   "devDependencies": {
     "@adobe/aem-cli": "^16.5.8",
-    "@babel/eslint-parser": "7.25.8",
+    "@babel/eslint-parser": "7.25.9",
     "@dropins/build-tools": "0.1.0",
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",

@@ -91,7 +91,7 @@ function renderItem(unitId, product) {
       }
     } else {
       // Navigate to page for non-simple products
-      window.location.href = `/products/${urlKey}/${product.sku}`;
+      window.location.href = `/products/${product.urlKey}/${product.sku}`;
     }
   };
 

@@ -1,11 +1,12 @@
 import { readBlockConfig } from '../../scripts/aem.js';
-import { performCatalogServiceQuery, renderPrice } from '../../scripts/commerce.js';
+import { performCatalogServiceQuery, renderPrice, mapProductAcdl } from '../../scripts/commerce.js';
 
 const productTeaserQuery = `query productTeaser($sku: String!) {
   products(skus: [$sku]) {
     sku
     urlKey
     name
+    externalId
     addToCartAllowed
     __typename
     images(roles: ["small_image"]) {
@@ -123,7 +124,7 @@ function renderProduct(product, config, block) {
     addToCartButton.addEventListener('click', async () => {
       const { cartApi } = await import('../../scripts/minicart/api.js');
       // TODO: productId not exposed by catalog service as number
-      window.adobeDataLayer.push({ productContext: { productId: 0, ...product } });
+      window.adobeDataLayer.push({ productContext: mapProductAcdl(product) });
       cartApi.addToCart(product.sku, [], 1, 'product-teaser');
     });
   }

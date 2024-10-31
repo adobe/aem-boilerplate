@@ -380,3 +380,33 @@ export async function loadErrorPage(code = 404) {
       document.head.appendChild(newScript);
     });
 }
+
+export function mapProductAcdl(product) {
+  const regularPrice = product?.priceRange?.minimum?.regular?.amount.value
+    || product?.price?.regular?.amount.value || 0;
+  const specialPrice = product?.priceRange?.minimum?.final?.amount.value
+    || product?.price?.final?.amount.value;
+  // storefront-events-collector will use storefrontInstanceContext.storeViewCurrencyCode
+  // if undefined, no default value is necessary.
+  const currencyCode = product?.priceRange?.minimum?.final?.amount.currency
+    || product?.price?.final?.amount.currency || undefined;
+  const minimalPrice = product?.priceRange ? regularPrice : undefined;
+  const maximalPrice = product?.priceRange
+    ? product?.priceRange?.maximum?.regular?.amount.value : undefined;
+
+  return {
+    productId: parseInt(product.externalId, 10) || 0,
+    name: product?.name,
+    sku: product?.variantSku || product?.sku,
+    topLevelSku: product?.sku,
+    pricing: {
+      regularPrice,
+      minimalPrice,
+      maximalPrice,
+      specialPrice,
+      currencyCode,
+    },
+    canonicalUrl: new URL(`/products/${product.urlKey}/${product.sku}`, window.location.origin).toString(),
+    mainImageUrl: product?.images?.[0]?.url,
+  };
+}

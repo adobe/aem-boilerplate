@@ -4,10 +4,10 @@ main .commerce-search-order-container {
     width: 100%;
 }
 
-.commerce-search-order .dropin-card__content > h2 {
+.commerce-search-order .dropin-card h2 {
     margin-bottom: var(--spacing-small);
 }
 
-.commerce-search-order .dropin-card__content > p {
+.commerce-search-order .dropin-card p {
     margin-bottom: var(--spacing-small);
 }

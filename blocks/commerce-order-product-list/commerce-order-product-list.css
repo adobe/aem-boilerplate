@@ -5,6 +5,6 @@
     margin-bottom: var(--spacing-small);
 }
 
-.commerce-order-product-list .cart-summary-item__title:hover {
+.commerce-order-product-list .dropin-cart-item a:hover {
     text-decoration: none;
 }

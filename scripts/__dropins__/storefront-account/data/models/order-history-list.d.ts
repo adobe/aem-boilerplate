@@ -1,4 +1,5 @@
 import { CustomerAddressesModel } from './customer-address';
+import { ReturnProps } from '../../types';
 
 export type ProductImage = {
     url: string;
@@ -58,6 +59,7 @@ export type OrderDetails = {
     number: string;
     orderDate: string;
     items: OrderItem[];
+    returns: ReturnProps[];
     shipments: ShipmentsModel[];
     paymentMethods: PaymentMethod[];
     shippingAddress: CustomerAddressesModel;

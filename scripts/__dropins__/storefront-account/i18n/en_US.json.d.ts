@@ -1,6 +1,53 @@
 declare const _default: {
   "Account": {
     "minifiedView": {
+      "CustomerInformation": {
+        "containerTitle": "Account settings",
+        "genderMale":"Male",
+        "genderFemale":"Female",
+        "changePassword": {
+          "passwordValidationMessage": {
+            "chartTwoSymbols": "Use characters and numbers or symbols",
+            "chartThreeSymbols": "Use characters, numbers and symbols",
+            "chartFourSymbols": "Use uppercase characters, lowercase characters, numbers and symbols",
+            "messageLengthPassword": "At least {minLength} characters long",
+            "passwordMismatch": "Passwords do not match. Please make sure both password fields are identical",
+            "incorrectCurrentPassword": "The current password you entered is incorrect. Please check and try again.",
+            "passwordUpdateMessage": "Your password has been updated"
+          },
+          "containerTitle": "Change password",
+          "currentPassword": {
+            "placeholder": "Password",
+            "floatingLabel": "Password"
+          },
+          "newPassword": {
+            "placeholder": "New Password",
+            "floatingLabel": "New Password"
+          },
+          "confirmPassword": {
+            "placeholder": "Confirm new password",
+            "floatingLabel": "Confirm new password"
+          },
+          "buttonSecondary": "Cancel",
+          "buttonPrimary": "Save"
+        },
+        "customerInformationCard": {
+          "buttonSecondary": "Change password",
+          "buttonPrimary": "Edit",
+          "accountCreation": "Account creation date"
+        },
+        "editCustomerInformation": {
+          "containerTitle": "Edit details",
+          "buttonSecondary": "Cancel",
+          "buttonPrimary": "Save",
+          "accountSuccess": "Your account information has been updated.",
+          "accountError": "Your account information has not been updated.",
+          "passwordField": {
+            "placeholder": "Password",
+            "floatingLabel": "Password"
+          }
+        }
+      },
       "Addresses": {
         "containerTitle": "Addresses",
         "editAddressFormTitle": "Edit address",
@@ -25,10 +72,12 @@ declare const _default: {
         "containerTitle": "Recent orders",
         "viewAllOrdersButton": "View all orders",
         "ariaLabelLink": "Redirect to full order information",
+        "dateOrderPlaced": "Date order placed",
         "OrdersListCard": {
           "orderNumber": "Order number:",
           "itemsAmount": "items",
           "carrier": "Carrier:",
+          "returns": "Return(s):",
           "orderDate": "Placed on"
         },
         "OrdersListSelectDate": {
@@ -71,10 +120,12 @@ declare const _default: {
       "OrdersList": {
         "containerTitle": "Your orders",
         "ariaLabelLink": "Redirect to full order information",
+        "dateOrderPlaced": "Date order placed",
         "OrdersListCard": {
           "orderNumber": "Order number:",
           "itemsAmount": "items",
           "carrier": "Carrier:",
+          "returns": "Return(s):",
           "orderDate": "Placed on"
         },
         "OrdersListSelectDate": {

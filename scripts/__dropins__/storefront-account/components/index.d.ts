@@ -10,4 +10,7 @@ export * from './OrdersListCard';
 export * from './AccountLoaders';
 export * from './AddressesWrapper';
 export * from './AddressFormWrapper';
+export * from './ChangePassword';
+export * from './EditCustomerInformation';
+export * from './CustomerInformationCard';
 //# sourceMappingURL=index.d.ts.map

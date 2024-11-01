@@ -9,8 +9,8 @@
     align-items: center;
     padding: var(--spacing-medium);
     margin-bottom: var(--spacing-small);
-    border: var(--shape-border-width-1) solid var(--color-neutral-400);
-    border-radius: var(--shape-border-radius-1);
+    border: var(--shape-border-width-2) solid var(--color-neutral-400);
+    border-radius: var(--shape-border-radius-2);
     text-decoration: none;
 }
 

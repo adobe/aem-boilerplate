@@ -1,0 +1,8 @@
+body.columns main > .section > div.commerce-return-header {
+    margin-bottom: 0;
+}
+
+.returns-list-header {
+    display: inline-block;
+    margin-bottom: var(--spacing-medium);
+}

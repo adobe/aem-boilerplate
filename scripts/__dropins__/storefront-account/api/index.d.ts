@@ -9,4 +9,8 @@ export * from './updateCustomerAddress';
 export * from './getCustomer';
 export * from './removeCustomerAddress';
 export * from './getOrderHistoryList';
+export * from './updateCustomerPassword';
+export * from './getStoreConfig';
+export * from './updateCustomerEmail';
+export * from './updateCustomer';
 //# sourceMappingURL=index.d.ts.map

@@ -18,6 +18,11 @@ export interface OrdersListProps extends HTMLAttributes<HTMLDivElement> {
     };
     routeOrdersList?: () => string;
     routeOrderDetails?: () => string;
+    routeReturnDetails?: (params: {
+        orderNumber: string;
+        orderToken: string;
+        returnNumber: string;
+    }) => string;
     withFilter?: boolean;
     ordersInMinifiedView?: 1 | 2 | 3;
     pageSize: number;
@@ -35,6 +40,11 @@ export interface OrdersListCardProps extends HTMLAttributes<HTMLDivElement> {
     };
     routeTracking?: (shipping: ShipmentsTracingModel) => string;
     routeOrderProduct?: (product: OrderItem) => string;
+    routeReturnDetails?: (params: {
+        orderNumber: string;
+        orderToken: string;
+        returnNumber: string;
+    }) => string;
 }
 export interface OrdersListActionProps {
     minifiedView: boolean;

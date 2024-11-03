@@ -1,3 +1,5 @@
+/*! Copyright 2024 Adobe
+All Rights Reserved. */
 import{h as l}from"./network-error.js";import{f as m,h as _}from"./fetch-graphql.js";import{c as f,a as T}from"./convertCase.js";const b=o=>{let e=[];for(const t of o)if(!(t.frontend_input!=="MULTILINE"||t.multiline_count<2))for(let i=2;i<=t.multiline_count;i++){const a={...t,name:`${t.code}_${i}`,code:`${t.code}_${i}`,id:`${t.code}_${i}`};e.push(a)}return e},h=o=>{var u,c,d;const e=((c=(u=o==null?void 0:o.data)==null?void 0:u.attributesForm)==null?void 0:c.items)||[];if(!e.length)return[];const t=(d=e.filter(r=>{var n;return!((n=r.frontend_input)!=null&&n.includes("HIDDEN"))}))==null?void 0:d.map(({code:r,...n})=>{const s=r!=="country_id"?r:"country_code";return{...n,name:s,id:s,code:s}}),i=b(t);return t.concat(i).map(r=>{const n=f(r.code);return T({...r,customUpperCode:n},"camelCase",{frontend_input:"fieldType",frontend_class:"className",is_required:"required",sort_order:"orderNumber"})}).sort((r,n)=>r.orderNumber-n.orderNumber)},E=`
   query GET_ATTRIBUTES_FORM($formCode: String!) {
     attributesForm(formCode: $formCode) {

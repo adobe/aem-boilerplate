@@ -10,7 +10,6 @@ export interface OrderProductListProps {
     className?: string;
     withHeader?: boolean;
     showConfigurableOptions?: (options: options | {}) => options;
-    routeProductDetails?: (product: any) => string;
 }
 export interface OrderProductListContentProps extends Omit<OrderProductListProps, 'className'> {
     order?: OrderDataModel;
@@ -24,7 +23,6 @@ export interface CartSummaryItemProps {
     showConfigurableOptions?: (options: options | {}) => options;
     itemType: string;
     product: OrderItemModel;
-    routeProductDetails?: (product: any) => string;
 }
 export interface UseOrderProductListProps extends Omit<OrderProductListProps, 'className' | 'withHeader' | 'showConfigurableOptions'> {
 }

@@ -1,5 +1,5 @@
 import { HTMLAttributes } from 'preact/compat';
-import { OrderDataModel } from '../data/models';
+import { OrderDataModel, OrdersReturnPropsModel } from '../data/models';
 import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
 
 export declare enum StatusEnumProps {
@@ -22,17 +22,20 @@ export interface OrderStatusProps extends HTMLAttributes<HTMLDivElement> {
     slots?: {
         OrderActions: SlotProps<DefaultSlotContext>;
     };
+    routeCreateReturn?: (orderReturn: OrdersReturnPropsModel) => string;
 }
 export interface OrderStatusContentProps extends Omit<OrderStatusProps, 'statusTitle' | 'orderData' | 'status'> {
     title?: string;
     status?: StatusEnumProps;
     orderData?: OrderDataModel;
 }
-export interface OrderActionsProps extends HTMLAttributes<HTMLDivElement> {
+export interface OrderActionsProps {
+    className?: string;
     orderData?: OrderDataModel;
     slots?: {
         OrderActions: SlotProps<DefaultSlotContext>;
     };
+    routeCreateReturn?: (orderReturn: OrdersReturnPropsModel) => string;
 }
 export interface UseOrderStatusProps {
     orderData?: OrderDataModel;

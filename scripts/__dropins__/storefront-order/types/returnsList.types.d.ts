@@ -43,7 +43,6 @@ export interface ReturnsListContentProps extends Omit<ReturnsListProps, 'classNa
     handleSetSelectPage?: (value: number) => void;
     withOrderNumber?: boolean;
     withReturnNumber?: boolean;
-    loading: boolean;
 }
 export interface UseReturnsListProps {
 }
@@ -64,7 +63,6 @@ export interface OrderReturnsProps {
         token: string;
         orderNumber: string;
     }) => string;
-    routeProductDetails?: (product: any) => string;
     routeTracking?: (track: OrdersReturnTrackingProps) => string;
 }
 export interface UseOrderReturnsProps {

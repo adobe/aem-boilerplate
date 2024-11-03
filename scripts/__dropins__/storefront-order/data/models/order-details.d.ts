@@ -21,7 +21,6 @@ export type OrderAddressModel = {
 export type OrderItemProductModel = {
     stockStatus?: string;
     canonicalUrl?: string;
-    urlKey?: string;
     id: string;
     image?: string;
     imageAlt?: string;
@@ -38,7 +37,6 @@ export type OrderItemModel = {
     discounted?: boolean;
     id: string;
     productName?: string;
-    productUrlKey?: string;
     regularPrice?: MoneyProps;
     price?: MoneyProps;
     product?: OrderItemProductModel;
@@ -120,6 +118,7 @@ export type OrderDataModel = {
     totalQuantity: number;
     shippingMethod?: string;
     carrier?: string;
+    orderDate: string;
     returns: OrdersReturnPropsModel[];
     discounts: {
         amount: MoneyProps;

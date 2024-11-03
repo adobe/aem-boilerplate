@@ -9,7 +9,6 @@ export interface ShippingStatusProps extends HTMLAttributes<HTMLDivElement> {
         DeliveryTimeLine?: SlotProps;
         DeliveryTrackActions?: SlotProps;
     };
-    routeProductDetails?: (productData: any) => string;
 }
 export interface UseShippingStatusProps {
     orderData?: OrderDataModel;

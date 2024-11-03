@@ -1,0 +1,25 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FieldEnumList = void 0;
+var FieldEnumList;
+(function (FieldEnumList) {
+    FieldEnumList["BOOLEAN"] = "BOOLEAN";
+    FieldEnumList["DATE"] = "DATE";
+    FieldEnumList["DATETIME"] = "DATETIME";
+    FieldEnumList["DROPDOWN"] = "DROPDOWN";
+    FieldEnumList["FILE"] = "FILE";
+    FieldEnumList["GALLERY"] = "GALLERY";
+    FieldEnumList["HIDDEN"] = "HIDDEN";
+    FieldEnumList["IMAGE"] = "IMAGE";
+    FieldEnumList["MEDIA_IMAGE"] = "MEDIA_IMAGE";
+    FieldEnumList["MULTILINE"] = "MULTILINE";
+    FieldEnumList["MULTISELECT"] = "MULTISELECT";
+    FieldEnumList["PRICE"] = "PRICE";
+    FieldEnumList["SELECT"] = "SELECT";
+    FieldEnumList["TEXT"] = "TEXT";
+    FieldEnumList["TEXTAREA"] = "TEXTAREA";
+    FieldEnumList["UNDEFINED"] = "UNDEFINED";
+    FieldEnumList["VISUAL"] = "VISUAL";
+    FieldEnumList["WEIGHT"] = "WEIGHT";
+    FieldEnumList["EMPTY"] = "";
+})(FieldEnumList = exports.FieldEnumList || (exports.FieldEnumList = {}));

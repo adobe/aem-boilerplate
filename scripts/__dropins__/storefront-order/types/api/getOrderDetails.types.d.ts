@@ -24,7 +24,6 @@ export interface ProductProps {
     thumbnail?: ThumbnailImageProps;
     image: ThumbnailImageProps;
     canonical_url: string;
-    url_key: string;
     id: string;
     uid: string;
     name: string;
@@ -185,6 +184,7 @@ export declare enum AvailableActionsProps {
 export interface ReturnsItemsProps {
     number: string;
     status: string;
+    created_at: string;
     order: {
         number: string;
         token: string;

@@ -6,4 +6,7 @@ export * from './guestOrderByToken';
 export * from './getAttributesForm';
 export * from './getCustomer';
 export * from './getStoreConfig';
+export * from './getCustomerOrdersReturn';
+export * from './cancelOrder';
+export * from './requestGuestOrderCancel';
 //# sourceMappingURL=index.d.ts.map

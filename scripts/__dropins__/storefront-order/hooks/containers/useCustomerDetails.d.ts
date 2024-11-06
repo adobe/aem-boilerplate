@@ -4,8 +4,8 @@ import { NormalizeAddressProps, UseCustomerDetails } from '../../types';
 export declare const useCustomerDetails: ({ orderData }: UseCustomerDetails) => {
     order: OrderDataModel | undefined;
     normalizeAddress: {
-        billingAddress: NormalizeAddressProps[][];
-        shippingAddress: NormalizeAddressProps[][];
+        billingAddress: [] | NormalizeAddressProps[];
+        shippingAddress: [] | NormalizeAddressProps[];
     };
     loading: boolean;
 };

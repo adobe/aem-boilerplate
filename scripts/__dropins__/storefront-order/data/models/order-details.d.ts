@@ -1,4 +1,5 @@
 import { AvailableActionsProps, MoneyProps, QueryType } from '../../types';
+import { OrdersReturnPropsModel } from './customer-orders-return';
 
 export type OrderAddressModel = {
     city: string;
@@ -18,7 +19,9 @@ export type OrderAddressModel = {
     }[];
 } | null;
 export type OrderItemProductModel = {
+    stockStatus?: string;
     canonicalUrl?: string;
+    urlKey?: string;
     id: string;
     image?: string;
     imageAlt?: string;
@@ -31,27 +34,52 @@ export type OrderItemProductModel = {
     };
 };
 export type OrderItemModel = {
-    type: string;
-    discounted: boolean;
+    type?: string;
+    discounted?: boolean;
     id: string;
-    productName: string;
-    regularPrice: MoneyProps;
-    price: MoneyProps;
-    product: OrderItemProductModel;
+    productName?: string;
+    productUrlKey?: string;
+    regularPrice?: MoneyProps;
+    price?: MoneyProps;
+    product?: OrderItemProductModel;
     selectedOptions?: Array<{
         label: string;
         value: any;
     }>;
-    totalQuantity: number;
-    thumbnail: {
+    totalQuantity?: number;
+    thumbnail?: {
         label: string;
         url: string;
     };
+    downloadableLinks: {
+        count: number;
+        result: string;
+    };
+    itemPrices: {
+        priceIncludingTax: MoneyProps;
+        originalPrice: MoneyProps;
+        originalPriceIncludingTax: MoneyProps;
+        price: MoneyProps;
+        discounts: [
+            {
+                label: string;
+                amount: {
+                    value: number;
+                };
+            }
+        ];
+    };
+    bundleOptions: Record<string, string> | null;
+    totalInclTax: MoneyProps;
+    priceInclTax: MoneyProps;
+    total: MoneyProps;
+    configurableOptions: Record<string, string | number | boolean> | undefined;
     giftCard?: {
         senderName: string;
         senderEmail: string;
         recipientEmail: string;
         recipientName: string;
+        message: string;
     };
     quantityCanceled: number;
     quantityInvoiced: number;
@@ -92,6 +120,11 @@ export type OrderDataModel = {
     totalQuantity: number;
     shippingMethod?: string;
     carrier?: string;
+    returns: OrdersReturnPropsModel[];
+    discounts: {
+        amount: MoneyProps;
+        label: string;
+    }[];
     coupons: {
         code: string;
     }[];
@@ -106,12 +139,19 @@ export type OrderDataModel = {
     };
     shipments: ShipmentsModel[];
     items: OrderItemModel[];
+    totalGiftcard: MoneyProps;
     grandTotal: MoneyProps;
+    totalShipping?: MoneyProps;
     subtotal: MoneyProps;
     totalTax: MoneyProps;
     shippingAddress: OrderAddressModel;
     billingAddress: OrderAddressModel;
     availableActions: AvailableActionsProps[];
+    taxes: {
+        amount: MoneyProps;
+        rate: number;
+        title: string;
+    }[];
 };
 export type TransformedData<T extends QueryType> = T extends 'orderData' ? OrderDataModel : null;
 //# sourceMappingURL=order-details.d.ts.map

@@ -499,34 +499,35 @@ function decorateSections(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 async function fetchPlaceholders(prefix = 'default') {
+  if (window.placeholders?.[prefix]) return window.placeholders[prefix];
+
   window.placeholders = window.placeholders || {};
-  if (!window.placeholders[prefix]) {
-    window.placeholders[prefix] = new Promise((resolve) => {
-      fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json`)
-        .then((resp) => {
-          if (resp.ok) {
-            return resp.json();
-          }
-          return {};
-        })
-        .then((json) => {
-          const placeholders = {};
-          json.data
-            .filter((placeholder) => placeholder.Key)
-            .forEach((placeholder) => {
-              placeholders[toCamelCase(placeholder.Key)] = placeholder.Text;
-            });
-          window.placeholders[prefix] = placeholders;
-          resolve(window.placeholders[prefix]);
-        })
-        .catch(() => {
-          // error loading placeholders
-          window.placeholders[prefix] = {};
-          resolve(window.placeholders[prefix]);
-        });
+
+  try {
+    const response = await fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json`);
+    const json = response.ok ? await response.json() : { data: [] };
+
+    // Transform data into nested structure
+    const placeholders = {};
+    json.data.forEach(({ Key, Value }) => {
+      if (Key) {
+        const keys = Key.split('.');
+        const lastKey = keys.pop();
+        const target = keys.reduce((obj, key) => {
+          obj[key] = obj[key] || {};
+          return obj[key];
+        }, placeholders);
+        target[lastKey] = Value;
+      }
     });
+
+    // Cache and return result
+    window.placeholders[prefix] = placeholders;
+  } catch (error) {
+    window.placeholders[prefix] = {}; // Set empty object on error
   }
-  return window.placeholders[`${prefix}`];
+
+  return window.placeholders[prefix];
 }
 
 /**

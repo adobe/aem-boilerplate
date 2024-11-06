@@ -23,46 +23,16 @@ await initializeDropin(async () => {
   const sku = getSkuFromUrl();
   window.getProductPromise = getProduct(sku);
 
-  const [product, placeholders] = await Promise.all([
+  const [product, labels] = await Promise.all([
     window.getProductPromise,
     fetchPlaceholders(),
   ]);
 
   const langDefinitions = {
     default: {
-      PDP: {
-        Product: {
-          Incrementer: { label: placeholders.pdpProductIncrementer },
-          OutOfStock: { label: placeholders.pdpProductOutofstock },
-          AddToCart: { label: placeholders.pdpProductAddtocart },
-          Details: { label: placeholders.pdpProductDetails },
-          RegularPrice: { label: placeholders.pdpProductRegularprice },
-          SpecialPrice: { label: placeholders.pdpProductSpecialprice },
-          PriceRange: {
-            From: { label: placeholders.pdpProductPricerangeFrom },
-            To: { label: placeholders.pdpProductPricerangeTo },
-          },
-          Image: { label: placeholders.pdpProductImage },
-        },
-        Swatches: {
-          Required: { label: placeholders.pdpSwatchesRequired },
-        },
-        Carousel: {
-          label: placeholders.pdpCarousel,
-          Next: { label: placeholders.pdpCarouselNext },
-          Previous: { label: placeholders.pdpCarouselPrevious },
-          Slide: { label: placeholders.pdpCarouselSlide },
-          Controls: {
-            label: placeholders.pdpCarouselControls,
-            Button: { label: placeholders.pdpCarouselControlsButton },
-          },
-        },
-        Overlay: {
-          Close: { label: placeholders.pdpOverlayClose },
-        },
-      },
+      ...labels,
       Custom: {
-        AddingToCart: { label: placeholders.pdpCustomAddingtocart },
+        AddingToCart: { label: labels.pdpCustomAddingtocart },
       },
     },
   };

@@ -1,5 +1,4 @@
 import {
-  sampleRUM,
   loadHeader,
   loadFooter,
   decorateButtons,

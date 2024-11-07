@@ -177,7 +177,7 @@ export default async function decorate(block) {
         Actions: (ctx) => {
           // Add to Cart Button
           ctx.appendButton((next, state) => {
-            const adding = state.get('adding');
+            const adding = state.get('addingCart');
             return {
               text: adding
                 ? next.dictionary.Custom.AddingToCart?.label
@@ -187,7 +187,7 @@ export default async function decorate(block) {
               disabled: adding || !next.data?.inStock || !next.valid,
               onClick: async () => {
                 try {
-                  state.set('adding', true);
+                  state.set('addingCart', true);
                   await addProductsToCart([{ ...next.values }]);
                   // reset any previous alerts if successful
                   inlineAlert?.remove();
@@ -209,25 +209,25 @@ export default async function decorate(block) {
                     block: 'center',
                   });
                 } finally {
-                  state.set('adding', false);
+                  state.set('addingCart', false);
                 }
               },
             };
           });
 
           ctx.appendButton((next, state) => {
-            const adding = state.get('adding');
+            const adding = state.get('addingWishlist');
             return ({
               disabled: adding,
               icon: 'Heart',
               variant: 'secondary',
               onClick: async () => {
                 try {
-                  state.set('adding', true);
+                  state.set('addingWishlist', true);
                   const { addToWishlist } = await import('../../scripts/wishlist/api.js');
                   await addToWishlist(next.values.sku);
                 } finally {
-                  state.set('adding', false);
+                  state.set('addingWishlist', false);
                 }
               },
             });

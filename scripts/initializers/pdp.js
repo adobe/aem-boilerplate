@@ -41,7 +41,7 @@ await initializeDropin(async () => {
   };
 
   // Initialize Dropins
-  await initializers.mountImmediately(initialize, {
+  return initializers.mountImmediately(initialize, {
     langDefinitions,
     models,
   });

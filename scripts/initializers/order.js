@@ -15,7 +15,7 @@ import {
   CUSTOMER_PATH,
 } from '../constants.js';
 
-initializeDropin(async () => {
+await initializeDropin(async () => {
   const { pathname, searchParams } = new URL(window.location.href);
   const isAccountPage = pathname.includes(CUSTOMER_PATH);
   const orderRef = searchParams.get('orderRef');

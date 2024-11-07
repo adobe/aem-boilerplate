@@ -1,3 +1,5 @@
+/*! Copyright 2024 Adobe
+All Rights Reserved. */
 import{h as R}from"./network-error.js";import{f as e,h as E}from"./fetch-graphql.js";import{R as _,P as T,a as o,G as s,O as c,t as u}from"./transform-order-details.js";const h=`
 query GET_CUSTOMER_ORDERS_RETURN {
  customer {

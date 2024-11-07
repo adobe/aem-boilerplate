@@ -1,3 +1,7 @@
+body:not(.columns) main div.commerce-order-header-wrapper {
+    margin-top: var(--spacing-large);
+}
+
 body.columns main > .section > div.commerce-order-header-wrapper {
     margin-bottom: 0;
 }

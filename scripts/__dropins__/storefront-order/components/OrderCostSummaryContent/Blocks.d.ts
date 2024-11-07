@@ -13,7 +13,7 @@ export declare const Shipping: ({ translations, shoppingOrdersDisplayShipping, o
     shoppingOrdersDisplayShipping: TaxTypes;
     order: OrderDataModel;
     translations: translationsTypes;
-}) => import("preact").JSX.Element;
+}) => import("preact").JSX.Element | null;
 export declare const Discounts: ({ translations, order, totalGiftcardValue, totalGiftcardCurrency, }: {
     totalGiftcardValue: number;
     totalGiftcardCurrency: string;

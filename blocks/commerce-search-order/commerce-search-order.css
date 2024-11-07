@@ -3,3 +3,15 @@ main .commerce-search-order-container {
     margin: 40px auto;
     width: 100%;
 }
+
+.commerce-search-order .dropin-in-line-alert {
+    margin-bottom: var(--spacing-small);
+}
+
+.commerce-search-order .dropin-card h2 {
+    margin-bottom: var(--spacing-small);
+}
+
+.commerce-search-order .dropin-card p {
+    margin-bottom: var(--spacing-small);
+}

@@ -19,6 +19,7 @@ export type OrderAddressModel = {
     }[];
 } | null;
 export type OrderItemProductModel = {
+    __typename: string;
     stockStatus?: string;
     canonicalUrl?: string;
     urlKey?: string;
@@ -87,6 +88,7 @@ export type OrderItemModel = {
     quantityRefunded: number;
     quantityReturned: number;
     quantityShipped: number;
+    requestQuantity: number;
 };
 export type ShipmentItemsModel = {
     id: string;
@@ -110,6 +112,7 @@ export type ShipmentsModel = {
     items: ShipmentItemsModel[];
 };
 export type OrderDataModel = {
+    returnNumber: string;
     id: string;
     orderStatusChangeDate?: string;
     number: string;
@@ -120,6 +123,7 @@ export type OrderDataModel = {
     totalQuantity: number;
     shippingMethod?: string;
     carrier?: string;
+    orderDate: string;
     returns: OrdersReturnPropsModel[];
     discounts: {
         amount: MoneyProps;

@@ -2,6 +2,7 @@ declare const _default: {
   "Order": {
     "OrderCostSummary": {
       "headerText": "Order summary",
+      "headerReturnText": "Return summary",
       "subtotal": {
         "title": "Subtotal"
       },
@@ -90,6 +91,8 @@ declare const _default: {
     "OrderProductListContent": {
       "cancelledTitle": "Cancelled",
       "allOrdersTitle": "Your order",
+      "returnedTitle": "Your return",
+      "refundedTitle": "Your refunded",
       "downloadableCount": "Files",
       "stockStatus": {
         "inStock": "In stock",
@@ -115,23 +118,46 @@ declare const _default: {
       }
     },
     "ShippingStatusCard": {
+      "orderNumber": "Order number:",
+      "returnNumber": "Return number:",
+      "itemText": {
+        "none": "",
+        "one": "Package contents ({{count}} item)",
+        "many": "Package contents ({{count}} items)"
+      },
       "trackButton": "Track package",
       "carrier": "Carrier:",
       "prepositionOf": "of",
+      "returnOrderCardTitle": "Package details",
       "shippingCardTitle": "Package details",
-      "shippingInfoTitle": "Shipping info",
+      "shippingInfoTitle": "Shipping information",
       "notYetShippedTitle": "Not yet shipped",
-      "notYetShippedImagesTitle": "Package contents",
-      "notYetShippedItem": {
-        "singular": "item",
-        "plural": "items"
+      "notYetShippedImagesTitle": {
+        "singular": "Package contents ({{count}} item)",
+        "plural": "Package contents ({{count}} items)"
       }
     },
     "OrderStatusContent": {
       "noInfoTitle": "Check back later for more details.",
+      "returnMessage": "The order was placed on {ORDER_CREATE_DATE} and your return process started on {RETURN_CREATE_DATE}",
+      "resturnStatus": {
+        "pending": "Pending",
+        "authorized": "Authorized",
+        "partiallyAuthorized": "Partially authorized",
+        "received": "Received",
+        "partiallyReceived": "Partially received",
+        "approved": "Approved",
+        "partiallyApproved": "Partially approved",
+        "rejected": "Rejected",
+        "partiallyRejected": "Partially rejected",
+        "denied": "Denied",
+        "processedAndClosed": "Processed and closed",
+        "closed": "Closed"
+      },
       "actions": {
         "cancel": "Cancel order",
-        "return": "Return or replace",
+        "createReturn": "Return or replace",
+        "createAnotherReturn": "Start another return",
         "reorder": "Reorder"
       },
       "orderPending": {
@@ -182,6 +208,25 @@ declare const _default: {
     "CustomerDetails": {
       "headerText": "Customer information",
       "freeShipping": "Free shipping",
+      "orderReturnLabels": {
+        "createdReturnAt": "Return requested on: ",
+        "returnStatusLabel": "Return status: ",
+        "orderNumberLabel": "Order number: "
+      },
+      "returnStatus": {
+        "pending": "Pending",
+        "authorized": "Authorized",
+        "partiallyAuthorized": "Partially authorized",
+        "received": "Received",
+        "partiallyReceived": "Partially received",
+        "approved": "Approved",
+        "partiallyApproved": "Partially approved",
+        "rejected": "Rejected",
+        "partiallyRejected": "Partially rejected",
+        "denied": "Denied",
+        "processedAndClosed": "Processed and closed",
+        "closed": "Closed"
+      },
       "email": {
         "title": "Contact details"
       },
@@ -194,8 +239,11 @@ declare const _default: {
       "billingAddress": {
         "title": "Billing address"
       },
-      "billingMethods": {
+      "paymentMethods": {
         "title": "Payment method"
+      },
+      "returnInformation": {
+        "title": "Return details"
       }
     },
     "Errors": {

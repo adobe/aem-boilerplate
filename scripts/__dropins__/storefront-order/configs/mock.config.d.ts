@@ -175,6 +175,11 @@ export declare const transformMockOrderInput: {
                         test: null;
                         prop: undefined;
                     }[];
+                    returns: {
+                        status: string;
+                        number: string;
+                        items: never[];
+                    }[];
                     shipments: {
                         id: string;
                         tracking: {

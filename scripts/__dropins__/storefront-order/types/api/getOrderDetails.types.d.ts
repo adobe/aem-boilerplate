@@ -185,6 +185,7 @@ export declare enum AvailableActionsProps {
 export interface ReturnsItemsProps {
     number: string;
     status: string;
+    created_at: string;
     order: {
         number: string;
         token: string;

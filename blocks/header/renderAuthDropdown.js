@@ -68,7 +68,7 @@ export function renderAuthDropdown(navTools) {
 
   logoutButtonElement.addEventListener('click', async () => {
     await authApi.revokeCustomerToken();
-    checkAndRedirect('/customer/account', '/customer/login');
+    checkAndRedirect('/customer', '/customer/login');
   });
 
   renderSignIn(authDropinContainer);

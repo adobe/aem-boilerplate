@@ -10,4 +10,5 @@ export * from './ReturnsListContent';
 export * from './OrderProductListContent';
 export * from './OrderCostSummaryContent';
 export * from './OrderCancel';
+export * from './Reorder';
 //# sourceMappingURL=index.d.ts.map

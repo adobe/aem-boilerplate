@@ -1,3 +1,5 @@
+/*! Copyright 2024 Adobe
+All Rights Reserved. */
 import{P as c,a as u,G as l,O as E,B as m,b as d}from"./transform-order-details.js";import{O,A as D,G as R}from"./getGuestOrder.graphql.js";import{f as i,h as _}from"./fetch-graphql.js";const T=`
 mutation CANCEL_ORDER_MUTATION($orderId: ID!, $reason: String!) {
   cancelOrder(input: { order_id: $orderId, reason: $reason }) {

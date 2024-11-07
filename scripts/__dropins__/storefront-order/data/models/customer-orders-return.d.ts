@@ -1,7 +1,6 @@
 import { OrderItemModel } from './order-details';
 
-export interface OrdersReturnItemsPropsModel {
-    orderItem: OrderItemModel;
+export interface OrdersReturnItemsPropsModel extends OrderItemModel {
     quantity: number;
     requestQuantity: number;
     status: string;
@@ -23,6 +22,7 @@ export interface OrdersReturnPropsModel {
     orderNumber: string;
     returnStatus: string;
     returnNumber: string;
+    createdReturnAt: string;
     tracking: OrdersReturnTrackingProps[];
     items: OrdersReturnItemsPropsModel[];
 }

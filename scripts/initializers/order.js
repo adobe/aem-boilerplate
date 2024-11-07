@@ -7,8 +7,10 @@ import { fetchPlaceholders } from '../aem.js';
 
 import {
   CUSTOMER_ORDER_DETAILS_PATH,
-  CUSTOMER_ORDERS_PATH,
   ORDER_DETAILS_PATH,
+  CUSTOMER_RETURN_DETAILS_PATH,
+  RETURN_DETAILS_PATH,
+  CUSTOMER_ORDERS_PATH,
   ORDER_STATUS_PATH,
   CUSTOMER_PATH,
 } from '../constants.js';
@@ -17,15 +19,25 @@ initializeDropin(async () => {
   const { pathname, searchParams } = new URL(window.location.href);
   const isAccountPage = pathname.includes(CUSTOMER_PATH);
   const orderRef = searchParams.get('orderRef');
+  const returnRef = searchParams.get('returnRef');
   const isTokenProvided = orderRef && orderRef.length > 20;
 
   // Handle redirects for user details pages
-  if (pathname === ORDER_DETAILS_PATH || pathname === CUSTOMER_ORDER_DETAILS_PATH) {
-    await handleUserOrdersRedirects(pathname, isAccountPage, orderRef, isTokenProvided);
+  if (pathname === ORDER_DETAILS_PATH
+    || pathname === CUSTOMER_ORDER_DETAILS_PATH
+    || pathname === RETURN_DETAILS_PATH
+    || pathname === CUSTOMER_RETURN_DETAILS_PATH) {
+    await handleUserOrdersRedirects(pathname, isAccountPage, orderRef, returnRef, isTokenProvided);
   }
 })();
 
-async function handleUserOrdersRedirects(pathname, isAccountPage, orderRef, isTokenProvided) {
+async function handleUserOrdersRedirects(
+  pathname,
+  isAccountPage,
+  orderRef,
+  returnRef,
+  isTokenProvided,
+) {
   const labels = await fetchPlaceholders();
 
   const langDefinitions = {
@@ -71,6 +83,7 @@ async function handleUserOrdersRedirects(pathname, isAccountPage, orderRef, isTo
     await initializers.mountImmediately(initialize, {
       langDefinitions,
       orderRef,
+      returnRef,
     });
   }
 }

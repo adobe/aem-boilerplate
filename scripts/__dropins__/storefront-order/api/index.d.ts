@@ -9,4 +9,5 @@ export * from './getStoreConfig';
 export * from './getCustomerOrdersReturn';
 export * from './cancelOrder';
 export * from './requestGuestOrderCancel';
+export * from './reorderItems';
 //# sourceMappingURL=index.d.ts.map

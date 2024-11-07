@@ -12,6 +12,8 @@ export interface OrderItemProps {
     quantity_ordered?: number;
     quantity_shipped?: number;
     quantity_invoiced?: number;
+    url_key: string;
+    sku: string;
     status: string;
     product_name: string;
     id: string;
@@ -49,6 +51,7 @@ export interface OrderProps {
     order_date: string;
     carrier: string;
     items: OrderItemProps[];
+    returns?: ReturnProps[];
     total: TotalProps;
     status: string;
     id: string;
@@ -64,10 +67,21 @@ export interface OrdersProps {
     items: OrderProps[];
     date_of_first_order: string;
 }
+export interface ReturnsProps {
+    items: ReturnProps[];
+}
+export interface ReturnProps {
+    uid: string;
+    number: string;
+    order: {
+        id: string;
+    };
+}
 export interface OrderHistoryListResponse {
     data: {
         customer?: {
             orders: OrdersProps;
+            returns: ReturnsProps;
         };
     };
     errors?: {

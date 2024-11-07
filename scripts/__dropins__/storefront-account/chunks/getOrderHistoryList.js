@@ -1,4 +1,4 @@
-import{t as l,m as i,f as m,h as _,a as p}from"./removeCustomerAddress.js";const f=(t,r="en-US",s={})=>{const e={...{day:"2-digit",month:"2-digit",year:"numeric"},...s},a=new Date(t);return isNaN(a.getTime())?"Invalid Date":new Intl.DateTimeFormat(r,e).format(a)},g=t=>{var d,c;if(!((c=(d=t.data)==null?void 0:d.customer)!=null&&c.orders))return null;const{items:r,page_info:s,total_count:n,date_of_first_order:e}=t.data.customer.orders;return{items:r.map(o=>{const u={...o,order_date:f(o.order_date),shipping_address:l(o.shipping_address),billing_address:l(o.billing_address)};return i(u,"camelCase",{})}),pageInfo:i(s,"camelCase",{}),totalCount:i(n,"camelCase",{}),dateOfFirstOrder:i(e,"camelCase",{})}},y=`
+import{t as u,k as i,f as _,l as f,m as p}from"./removeCustomerAddress.js";const g=(r,a="en-US",s={})=>{const t={...{day:"2-digit",month:"2-digit",year:"numeric"},...s},e=new Date(r);return isNaN(e.getTime())?"Invalid Date":new Intl.DateTimeFormat(a,t).format(e)},y=r=>{var d,c;if(!((c=(d=r.data)==null?void 0:d.customer)!=null&&c.orders))return null;const{items:a,page_info:s,total_count:o,date_of_first_order:t}=r.data.customer.orders,{returns:e}=r.data.customer;return{items:a.map(n=>{const l={...n,returns:e==null?void 0:e.items.filter(m=>m.order.id===n.id),order_date:g(n.order_date),shipping_address:u(n.shipping_address),billing_address:u(n.billing_address)};return i(l,"camelCase",{})}),pageInfo:i(s,"camelCase",{}),totalCount:i(o,"camelCase",{}),dateOfFirstOrder:i(t,"camelCase",{})}},h=`
 fragment AddressesList on OrderAddress {
   city
   company
@@ -15,7 +15,7 @@ fragment AddressesList on OrderAddress {
   suffix
   telephone
   vat_id
-}`,h=`
+}`,O=`
 fragment OrderSummary on OrderTotal {
   __typename
   grand_total {
@@ -49,9 +49,18 @@ fragment OrderSummary on OrderTotal {
     }
     label
   }
-}`,O=`
+}`,S=`
   query GET_CUSTOMER_ORDERS_LIST($currentPage: Int, $pageSize: Int, $filter: CustomerOrdersFilterInput, $sort: CustomerOrderSortInput) {
   customer {
+    returns {
+      items {
+        uid
+        number
+        order {
+          id
+        }
+      }
+    }
     orders(currentPage: $currentPage, pageSize: $pageSize, filter: $filter, sort: $sort) {
       page_info {
         page_size
@@ -96,7 +105,9 @@ fragment OrderSummary on OrderTotal {
           quantity_shipped
           quantity_invoiced
           product {
-          small_image {
+            sku
+            url_key
+            small_image {
               url
             }
           }
@@ -108,6 +119,6 @@ fragment OrderSummary on OrderTotal {
     }
   }
 }
-${y}
 ${h}
-`,S={sort_direction:"DESC",sort_field:"CREATED_AT"},T=async(t,r,s)=>{const n=r.includes("viewAll")?{}:{order_date:JSON.parse(r)};return await m(O,{method:"GET",cache:"no-cache",variables:{pageSize:t,currentPage:s,filter:n,sort:S}}).then(e=>{var a;return(a=e.errors)!=null&&a.length?_(e.errors):g(e)}).catch(p)};export{T as g};
+${O}
+`,E={sort_direction:"DESC",sort_field:"CREATED_AT"},C=async(r,a,s)=>{const o=a.includes("viewAll")?{}:{order_date:JSON.parse(a)};return await _(S,{method:"GET",cache:"no-cache",variables:{pageSize:r,currentPage:s,filter:o,sort:E}}).then(t=>{var e;return(e=t.errors)!=null&&e.length?f(t.errors):y(t)}).catch(p)};export{C as g};

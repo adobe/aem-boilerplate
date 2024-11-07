@@ -17,7 +17,7 @@ export interface AddressesProps {
     hideActionFormButtons?: boolean;
     formName?: string;
     slots?: {
-        AddressCard: SlotProps<AddressCardContext>;
+        [key: string]: SlotProps;
     };
     title?: string;
     addressFormTitle?: string;
@@ -57,7 +57,7 @@ export interface KeysSortOrderProps {
 }
 export interface AddressCardProps {
     slots?: {
-        AddressCard: SlotProps<AddressCardContext>;
+        [key: string]: SlotProps;
     };
     selectShipping?: boolean;
     selectBilling?: boolean;

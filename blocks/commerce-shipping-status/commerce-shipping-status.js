@@ -7,5 +7,15 @@ import { ShippingStatus } from '@dropins/storefront-order/containers/ShippingSta
 import '../../scripts/initializers/order.js';
 
 export default async function decorate(block) {
-  await orderRenderer.render(ShippingStatus, {})(block);
+  await orderRenderer.render(ShippingStatus, {
+    routeProductDetails: (data) => {
+      if (data?.orderItem) {
+        return `/products/${data?.orderItem?.productUrlKey}/${data?.orderItem?.product?.sku}`;
+      }
+      if (data?.product) {
+        return `/products/${data?.product?.urlKey}/${data?.product?.sku}`;
+      }
+      return '#';
+    },
+  })(block);
 }

@@ -1,6 +1,6 @@
-import { HTMLAttributes } from 'preact/compat';
-import { OrderDataModel } from '../data/models';
+import { OrderDataModel, OrdersReturnPropsModel } from '../data/models';
 import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
+import { UserInputErrorProps } from '.';
 
 export declare enum StatusEnumProps {
     PENDING = "pending",
@@ -15,24 +15,32 @@ export declare enum StatusEnumProps {
 type DefaultSlotContext = {
     orderData?: OrderDataModel;
 };
-export interface OrderStatusProps extends HTMLAttributes<HTMLDivElement> {
+export interface OrderStatusProps {
+    className?: string;
     orderData?: OrderDataModel;
     statusTitle?: string;
     status?: StatusEnumProps;
     slots?: {
         OrderActions: SlotProps<DefaultSlotContext>;
     };
+    routeCreateReturn?: (orderReturn: OrdersReturnPropsModel) => string;
+    routeOnSuccess?: () => string;
+    onError?: (errorInformation: UserInputErrorProps[] | string) => void;
 }
 export interface OrderStatusContentProps extends Omit<OrderStatusProps, 'statusTitle' | 'orderData' | 'status'> {
     title?: string;
     status?: StatusEnumProps;
     orderData?: OrderDataModel;
 }
-export interface OrderActionsProps extends HTMLAttributes<HTMLDivElement> {
+export interface OrderActionsProps {
+    className?: string;
     orderData?: OrderDataModel;
     slots?: {
         OrderActions: SlotProps<DefaultSlotContext>;
     };
+    routeCreateReturn?: (orderReturn: OrdersReturnPropsModel) => string;
+    routeOnSuccess?: () => string;
+    onError?: (errorInformation: UserInputErrorProps[] | string) => void;
 }
 export interface UseOrderStatusProps {
     orderData?: OrderDataModel;

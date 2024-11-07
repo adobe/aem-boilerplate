@@ -1,0 +1,2 @@
+export declare const CHANGE_CUSTOMER_PASSWORD = "\n  mutation CHANGE_CUSTOMER_PASSWORD($currentPassword: String!, $newPassword: String!) {\n    changeCustomerPassword(currentPassword: $currentPassword, newPassword: $newPassword) {\n      email\n    }\n  }\n";
+//# sourceMappingURL=updateCustomerPassword.graphql.d.ts.map

@@ -136,40 +136,7 @@ export default async function decorate(block) {
 
   const langDefinitions = {
     default: {
-      PDP: {
-        Product: {
-          Incrementer: { label: placeholders.pdpProductIncrementer },
-          OutOfStock: { label: placeholders.pdpProductOutofstock },
-          AddToCart: { label: placeholders.pdpProductAddtocart },
-          Details: { label: placeholders.pdpProductDetails },
-          RegularPrice: { label: placeholders.pdpProductRegularprice },
-          SpecialPrice: { label: placeholders.pdpProductSpecialprice },
-          PriceRange: {
-            From: { label: placeholders.pdpProductPricerangeFrom },
-            To: { label: placeholders.pdpProductPricerangeTo },
-          },
-          Image: { label: placeholders.pdpProductImage },
-        },
-        Swatches: {
-          Required: { label: placeholders.pdpSwatchesRequired },
-        },
-        Carousel: {
-          label: placeholders.pdpCarousel,
-          Next: { label: placeholders.pdpCarouselNext },
-          Previous: { label: placeholders.pdpCarouselPrevious },
-          Slide: { label: placeholders.pdpCarouselSlide },
-          Controls: {
-            label: placeholders.pdpCarouselControls,
-            Button: { label: placeholders.pdpCarouselControlsButton },
-          },
-        },
-        Overlay: {
-          Close: { label: placeholders.pdpOverlayClose },
-        },
-      },
-      Custom: {
-        AddingToCart: { label: placeholders.pdpCustomAddingtocart },
-      },
+      ...placeholders,
     },
   };
 

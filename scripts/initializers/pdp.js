@@ -31,9 +31,6 @@ await initializeDropin(async () => {
   const langDefinitions = {
     default: {
       ...labels,
-      Custom: {
-        AddingToCart: { label: labels.pdpCustomAddingtocart },
-      },
     },
   };
 

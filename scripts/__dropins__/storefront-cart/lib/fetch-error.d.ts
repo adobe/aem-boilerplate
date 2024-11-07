@@ -17,6 +17,7 @@
 /** Actions */
 export declare const handleFetchError: (errors: Array<{
     message: string;
+    path: Array<string>;
     extensions: {
         category: string;
     };

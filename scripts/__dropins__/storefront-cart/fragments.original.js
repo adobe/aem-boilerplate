@@ -1,3 +1,5 @@
+/*! Copyright 2024 Adobe
+All Rights Reserved. */
 const e=`
   fragment PRICE_RANGE_FRAGMENT on PriceRange {
     minimum_price {

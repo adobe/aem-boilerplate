@@ -50,6 +50,7 @@ declare const _default: {
       },
       "total": {
         "estimated": "Estimated Total",
+        "free": "Free",
         "label": "Total",
         "withoutTax": "Total excluding taxes"
       },

@@ -268,7 +268,9 @@ export default async function decorate(block) {
   }
 
   function handleCartChanges({ shoppingCartContext }) {
-    context.cartSkus = shoppingCartContext?.items?.map(({ product }) => product.sku);
+    context.cartSkus = shoppingCartContext?.totalQuantity === 0
+      ? []
+      : shoppingCartContext?.items?.map(({ product }) => product.sku);
     loadRecommendation(block, context, visibility, filters);
   }
 

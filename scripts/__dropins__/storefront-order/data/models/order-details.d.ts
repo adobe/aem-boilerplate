@@ -19,6 +19,7 @@ export type OrderAddressModel = {
     }[];
 } | null;
 export type OrderItemProductModel = {
+    uid: string;
     __typename: string;
     stockStatus?: string;
     canonicalUrl?: string;
@@ -35,6 +36,9 @@ export type OrderItemProductModel = {
     };
 };
 export type OrderItemModel = {
+    currentReturnOrderQuantity?: number;
+    eligibleForReturn: boolean;
+    productSku?: string;
     type?: string;
     discounted?: boolean;
     id: string;
@@ -55,7 +59,7 @@ export type OrderItemModel = {
     downloadableLinks: {
         count: number;
         result: string;
-    };
+    } | null;
     itemPrices: {
         priceIncludingTax: MoneyProps;
         originalPrice: MoneyProps;
@@ -124,6 +128,7 @@ export type OrderDataModel = {
     shippingMethod?: string;
     carrier?: string;
     orderDate: string;
+    itemsEligibleForReturn?: OrderItemModel[];
     returns: OrdersReturnPropsModel[];
     discounts: {
         amount: MoneyProps;

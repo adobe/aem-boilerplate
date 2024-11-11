@@ -1,5 +1,3 @@
-/*! Copyright 2024 Adobe
-All Rights Reserved. */
 import{h as i}from"./network-error.js";import{f as s,h as o}from"./fetch-graphql.js";import{t as c}from"./transform-attributes-form.js";import{a as m}from"./convertCase.js";const d=`
   query GET_ATTRIBUTES_LIST($entityType: AttributeEntityTypeEnum!) {
     attributesList(entityType: $entityType) {

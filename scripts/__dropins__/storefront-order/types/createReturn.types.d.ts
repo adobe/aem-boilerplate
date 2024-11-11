@@ -56,8 +56,7 @@ export interface ReturnReasonFormProps {
 }
 export interface ReturnOrderMessageProps {
     translations: Record<string, string>;
-    routeReturnSuccess?: (orderData?: OrderDataModel) => string;
-    orderData?: OrderDataModel;
+    routeReturnSuccess?: () => string;
 }
 export interface UseCreateReturn {
     orderData?: OrderDataModel;

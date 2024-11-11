@@ -1,5 +1,3 @@
-/*! Copyright 2024 Adobe
-All Rights Reserved. */
 import{a as M}from"./convertCase.js";const J=`
   fragment ProductDetails on ProductInterface {
     __typename

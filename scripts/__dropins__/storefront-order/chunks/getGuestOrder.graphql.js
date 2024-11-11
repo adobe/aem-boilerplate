@@ -1,5 +1,3 @@
-/*! Copyright 2024 Adobe
-All Rights Reserved. */
 import{P as e,a as t,G as r,O as a,B as s,R as d}from"./transform-order-details.js";const n=`
 fragment OrderSummary on OrderTotal {
   grand_total {

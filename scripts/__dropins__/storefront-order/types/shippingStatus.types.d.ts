@@ -1,11 +1,16 @@
 import { HTMLAttributes } from 'preact/compat';
 import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
-import { OrderDataModel, OrdersReturnPropsModel, OrdersReturnTrackingProps } from '../data/models';
+import { OrderDataModel, OrdersReturnPropsModel } from '../data/models';
 
-type routeTypes = {
+type routeOrderDetailsTypes = {
     returnNumber?: string;
     token?: string;
     orderNumber?: string;
+};
+type routeTrackingProps = {
+    carrier: string;
+    title: string;
+    number: string;
 };
 export interface ShippingStatusProps extends HTMLAttributes<HTMLDivElement> {
     orderData?: OrderDataModel;
@@ -15,8 +20,8 @@ export interface ShippingStatusProps extends HTMLAttributes<HTMLDivElement> {
         DeliveryTrackActions?: SlotProps;
         ReturnItemsDetails?: SlotProps;
     };
-    routeOrderDetails?: ({ returnNumber, token, orderNumber, }: routeTypes) => string;
-    routeTracking?: (track: OrdersReturnTrackingProps) => string;
+    routeOrderDetails?: ({ returnNumber, token, orderNumber, }: routeOrderDetailsTypes) => string;
+    routeTracking?: (track: routeTrackingProps) => string;
     routeProductDetails?: (product: any) => string;
 }
 export interface UseShippingStatusProps {

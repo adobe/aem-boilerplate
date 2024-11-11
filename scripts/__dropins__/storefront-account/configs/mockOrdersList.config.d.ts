@@ -157,6 +157,7 @@ export declare const mockOrdersListResponse: {
                 status: string;
                 items: ({
                     status: string;
+                    quantityOrdered: number;
                     product_name: string;
                     id: string;
                     product: {
@@ -167,6 +168,7 @@ export declare const mockOrdersListResponse: {
                     quantityInvoiced?: undefined;
                 } | {
                     status: string;
+                    quantityOrdered: number;
                     quantityInvoiced: number;
                     product_name: string;
                     id: string;

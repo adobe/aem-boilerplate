@@ -1,6 +1,7 @@
 import { useFormProps } from '../../types';
 
 export declare const useForm: ({ fieldsConfig, onSubmit, onChange, setInputChange, formName, isWaitingForResponse, }: useFormProps) => {
+    isDataValid: boolean;
     formData: Record<string, string | number>;
     errors: Record<string, string>;
     formRef: import('preact').RefObject<HTMLFormElement>;

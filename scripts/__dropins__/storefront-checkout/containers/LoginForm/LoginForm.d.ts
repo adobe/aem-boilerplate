@@ -1,8 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
 
-export interface LoginFormProps extends HTMLAttributes<HTMLDivElement> {
-    email?: string;
-    onSignInClick?: (email: string | null) => void;
+export interface LoginFormProps extends HTMLAttributes<HTMLFormElement> {
+    onSignInClick?: (email: string) => void;
     onSignOutClick?: () => void;
 }
 export declare const LoginForm: {

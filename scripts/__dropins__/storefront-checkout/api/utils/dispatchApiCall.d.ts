@@ -13,24 +13,8 @@ declare const signalTypes: {
         pending: boolean;
         data?: import('../../data/models/shipping-method').ShippingMethod[] | undefined;
     }>;
-    regions: import('@preact/signals-core').Signal<{
-        addressType?: import('../../data/models/address-form-fields').AddressFormType | undefined;
-        country?: string | undefined;
-        selectedRegion?: string | undefined;
-        selectedRegionId?: string | undefined;
-        pending: boolean;
-        data?: import('../../data/models/region').Region[] | undefined;
-    }>;
     storeConfig: import('@preact/signals-core').Signal<{
         data?: import('../../data/models/store-config').StoreConfig | undefined;
-        pending: boolean;
-    }>;
-    countryList: import('@preact/signals-core').Signal<{
-        data?: import('../../data/models/country').Country[] | undefined;
-        pending: boolean;
-    }>;
-    addressFormFields: import('@preact/signals-core').Signal<{
-        data?: import('../../data/models/address-form-fields').AddressFormField[] | undefined;
         pending: boolean;
     }>;
 };

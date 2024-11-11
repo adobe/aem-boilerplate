@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'preact';
 
-type SignOutProps = {
-    onSignOutClick?: () => void;
-};
+interface SignOutProps {
+    onClick?: (event: Event) => void;
+}
 export declare const SignOut: FunctionComponent<SignOutProps>;
 export {};
 //# sourceMappingURL=SignOut.d.ts.map

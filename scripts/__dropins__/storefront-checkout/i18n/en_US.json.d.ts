@@ -22,24 +22,6 @@ declare const _default: {
       "title": "Shipping options",
       "emptyState": "This order can't be shipped to the address provided. Please review the address details you entered and make sure they're correct."
     },
-    "ShippingAddress": {
-      "title": "Delivery"
-    },
-    "BillingAddress": {
-      "title": "Billing Address"
-    },
-    "AddressForm": {
-      "Validity": {
-        "badInput": "Provide a valid {field}.",
-        "patternMismatch": "Ensure you have entered a correct {field} format.",
-        "rangeOverflow": "Choose a valid {field} within the allowed range.",
-        "rangeUnderflow": "Choose a valid {field} within the allowed range.",
-        "tooLong": "This entry is too long. Keep it under {field} characters.",
-        "tooShort": "Use at least {field} characters.",
-        "typeMismatch": "Enter a valid {field}.",
-        "valueMissing": "Enter a {field}, this field is required."
-      }
-    },
     "BillToShippingAddress": {
       "title": "Bill to shipping address"
     },
@@ -89,6 +71,15 @@ declare const _default: {
       "taxToBeDetermined": "TBD",
       "withTaxes": "Including taxes",
       "withoutTaxes": "Excluding taxes"
+    },
+    "OrderConfirmationHeader": {
+      "title": "{{name}}, thank you for your order!",
+      "defaultTitle": "Thank you for your order!",
+      "order": "ORDER #{{order}}",
+      "CreateAccount": {
+        "message": "Save your information for faster checkout next time.",
+        "button": "Create an account"
+      }
     }
   }
 }

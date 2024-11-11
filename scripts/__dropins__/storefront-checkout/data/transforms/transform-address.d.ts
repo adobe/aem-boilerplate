@@ -1,6 +1,5 @@
-import { GetCartQuery } from '../../__generated__/types';
-import { ShippingAddress as ShippingAddressModel, BillingAddress as BillingAddressModel } from '../models/address';
-import { CustomAttribute as CustomAttributeModel } from '../models';
+import { CartAddressInput, GetCartQuery } from '../../__generated__/types';
+import { Address as AddressModel, CustomAttribute as CustomAttributeModel, ShippingAddress as ShippingAddressModel, CartAddress as CartAddressModel } from '../models';
 
 type ShippingAddresses = NonNullable<GetCartQuery['cart']>['shipping_addresses'];
 type ShippingAddress = ShippingAddresses[0];
@@ -9,9 +8,10 @@ type BillingAddress = NonNullable<GetCartQuery['cart']>['billing_address'];
 type NonNullableBillingAddress = NonNullable<BillingAddress>;
 type CustomAttributes = NonNullableShippingAddress['custom_attributes'] | NonNullableBillingAddress['custom_attributes'];
 export declare const transformCustomAttributes: (data: CustomAttributes) => CustomAttributeModel[];
-declare const transformBillingAddress: (data: BillingAddress) => BillingAddressModel | undefined;
+declare const transformBillingAddress: (data: BillingAddress) => AddressModel | undefined;
 declare const transformShippingAddresses: (data: ({
     __typename?: "ShippingCartAddress" | undefined;
+    id?: number | null | undefined;
     firstname: string;
     lastname: string;
     company?: string | null | undefined;
@@ -20,6 +20,7 @@ declare const transformShippingAddresses: (data: ({
     postcode?: string | null | undefined;
     vat_id?: string | null | undefined;
     telephone?: string | null | undefined;
+    same_as_billing: boolean;
     region?: {
         __typename?: "CartAddressRegion" | undefined;
         region_id?: number | null | undefined;
@@ -85,5 +86,6 @@ declare const transformShippingAddresses: (data: ({
         };
     } | null | undefined;
 } | null)[]) => ShippingAddressModel[] | undefined;
-export { ShippingAddress, BillingAddress, transformBillingAddress, transformShippingAddresses, };
+declare const transformCartAddressModelToInput: (address: CartAddressModel) => CartAddressInput;
+export { BillingAddress, ShippingAddress, transformCartAddressModelToInput, transformBillingAddress, transformShippingAddresses, };
 //# sourceMappingURL=transform-address.d.ts.map

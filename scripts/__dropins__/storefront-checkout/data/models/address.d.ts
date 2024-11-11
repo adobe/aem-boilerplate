@@ -1,21 +1,17 @@
-import { Region, Country, ShippingMethod, CustomAttribute } from '.';
+import { Region, Country, CustomAttribute } from '.';
 
-export type Address = {
-    firstName: string;
-    lastName: string;
-    company?: string;
-    street: string[];
+export interface Address {
+    id?: number;
     city: string;
-    postCode?: string;
-    vatId?: string;
-    telephone?: string;
-    region?: Region;
+    company?: string;
     country: Country;
     customAttributes: CustomAttribute[];
-};
-export type ShippingAddress = Address & {
-    availableShippingMethods?: ShippingMethod[];
-    selectedShippingMethod?: ShippingMethod;
-};
-export type BillingAddress = Address;
+    firstName: string;
+    lastName: string;
+    postCode?: string;
+    region?: Region;
+    street: string[];
+    telephone?: string;
+    vatId?: string;
+}
 //# sourceMappingURL=address.d.ts.map

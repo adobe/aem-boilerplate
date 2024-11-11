@@ -162,7 +162,7 @@ export default async function decorate(block) {
   const navTools = nav.querySelector('.nav-tools');
 
   /** Mini Cart */
-  const excludeMiniCartFromPaths = ['/checkout', '/order-confirmation'];
+  const excludeMiniCartFromPaths = ['/checkout'];
 
   const minicart = document.createRange().createContextualFragment(`
      <div class="minicart-wrapper nav-tools-wrapper">

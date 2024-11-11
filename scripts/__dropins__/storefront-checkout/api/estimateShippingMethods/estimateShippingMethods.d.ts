@@ -9,5 +9,5 @@ export interface ShippingEstimationCriteria {
 export type EstimateShippingInput = {
     criteria: ShippingEstimationCriteria;
 };
-export declare const estimateShippingMethods: (input: EstimateShippingInput) => Promise<ShippingMethod[] | undefined>;
+export declare const estimateShippingMethods: (input?: EstimateShippingInput) => Promise<ShippingMethod[] | undefined>;
 //# sourceMappingURL=estimateShippingMethods.d.ts.map

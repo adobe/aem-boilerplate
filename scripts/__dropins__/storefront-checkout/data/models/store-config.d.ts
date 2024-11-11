@@ -21,9 +21,6 @@ export declare enum TaxDisplay {
 }
 export interface StoreConfig {
     defaultCountry: string;
-    countriesWithRequiredRegion: string[];
-    displayStateIfOptional: boolean;
-    countriesWithOptionalZipCode: string[];
     isGuestCheckoutEnabled: boolean;
     isOnePageCheckoutEnabled: boolean;
     shoppingCartDisplaySetting: {

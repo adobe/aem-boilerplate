@@ -1,2 +1,0 @@
-export declare const isEmailAvailableQuery = "\n  query isEmailAvailable($email: String!) {\n    isEmailAvailable(email: $email) {\n      is_email_available\n    }\n  }\n";
-//# sourceMappingURL=isEmailAvailable.graphql.d.ts.map

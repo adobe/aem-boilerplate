@@ -51,7 +51,6 @@ export type OrderItemModel = {
         label: string;
         value: any;
     }>;
-    totalQuantity?: number;
     thumbnail?: {
         label: string;
         url: string;
@@ -93,6 +92,7 @@ export type OrderItemModel = {
     quantityReturned: number;
     quantityShipped: number;
     requestQuantity: number;
+    totalQuantity: number;
 };
 export type ShipmentItemsModel = {
     id: string;

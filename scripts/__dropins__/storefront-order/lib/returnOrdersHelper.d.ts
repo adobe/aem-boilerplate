@@ -51,7 +51,6 @@ export declare const orderAdjustAndSortArray: (order: OrderDataModel) => {
         label: string;
         value: any;
     }[] | undefined;
-    totalQuantity?: number | undefined;
     thumbnail?: {
         label: string;
         url: string;
@@ -91,6 +90,7 @@ export declare const orderAdjustAndSortArray: (order: OrderDataModel) => {
     quantityReturned: number;
     quantityShipped: number;
     requestQuantity: number;
+    totalQuantity: number;
 }[];
 export declare const extractFilteredItems: (order: OrderDataModel) => {
     returnedList: any;

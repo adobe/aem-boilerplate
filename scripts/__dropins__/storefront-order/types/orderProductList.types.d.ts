@@ -18,15 +18,12 @@ export interface OrderProductListContentProps extends Omit<OrderProductListProps
     loading: boolean;
 }
 export interface CartSummaryItemProps {
-    disabledIncrementer?: boolean;
-    loading: boolean;
-    itemType: string;
-    translations: Record<string, string>;
-    product: OrderItemModel;
     taxConfig: TaxTypes;
-    isReturnProductList?: boolean;
-    onQuantity?: (value: number) => void;
+    loading: boolean;
+    translations: Record<string, string>;
     showConfigurableOptions?: (options: options | {}) => options;
+    itemType: string;
+    product: OrderItemModel;
     routeProductDetails?: (product: any) => string;
 }
 export interface UseOrderProductListProps extends Omit<OrderProductListProps, 'className' | 'withHeader' | 'showConfigurableOptions'> {

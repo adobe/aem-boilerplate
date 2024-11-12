@@ -1,3 +1,5 @@
+/*! Copyright 2024 Adobe
+All Rights Reserved. */
 import{h as i}from"./network-error.js";import{f as E,h as I}from"./fetch-graphql.js";const s=`
 mutation REORDER_ITEMS_MUTATION($orderNumber: String!) {
   reorderItems(orderNumber: $orderNumber) {

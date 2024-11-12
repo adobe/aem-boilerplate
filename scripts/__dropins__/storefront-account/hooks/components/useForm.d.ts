@@ -5,9 +5,9 @@ export declare const useForm: ({ fieldsConfig, onSubmit, onChange, setInputChang
     formData: Record<string, string | number>;
     errors: Record<string, string>;
     formRef: import('preact').RefObject<HTMLFormElement>;
-    handleInputChange: (event: Event) => void;
+    handleInputChange: (event: Event, errorsProp: Record<string, string>) => void;
     onFocus: (event: Event) => void;
-    handleBlur: (event: Event) => void;
+    handleBlur: (event: Event, errorsProp: Record<string, string>) => void;
     handleSubmit: (event: SubmitEvent) => void;
     handleValidationSubmit: (disableShowError?: boolean) => boolean;
 };

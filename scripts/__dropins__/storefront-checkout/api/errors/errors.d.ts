@@ -18,6 +18,9 @@ export declare class MissingEmail extends InvalidArgument {
 export declare class MissingPaymentMethod extends InvalidArgument {
     constructor();
 }
+export declare class MissingShippinghAddress extends InvalidArgument {
+    constructor();
+}
 export declare class MissingBillingAddress extends InvalidArgument {
     constructor();
 }

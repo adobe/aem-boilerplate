@@ -52,7 +52,8 @@ declare const _default: {
         "estimated": "Estimated Total",
         "free": "Free",
         "label": "Total",
-        "withoutTax": "Total excluding taxes"
+        "withoutTax": "Total excluding taxes",
+        "saved": "Total saved"
       },
       "estimatedShippingForm": {
         "country": {

@@ -1,9 +1,8 @@
 import { FunctionComponent } from 'preact';
 
-type SignInProps = {
-    onSignInClick?: (email: string | null) => void;
-    email: string | null;
-};
+interface SignInProps {
+    onClick: (event: Event) => void;
+}
 export declare const SignIn: FunctionComponent<SignInProps>;
 export {};
 //# sourceMappingURL=SignIn.d.ts.map

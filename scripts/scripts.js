@@ -177,6 +177,8 @@ async function loadEager(doc) {
     await runEager(document, { audiences: AUDIENCES }, pluginContext);
   }
 
+  await initializeDropins();
+
   window.adobeDataLayer = window.adobeDataLayer || [];
 
   let pageType = 'CMS';
@@ -368,7 +370,6 @@ export function getConsent(topic) {
 }
 
 async function loadPage() {
-  await initializeDropins();
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();

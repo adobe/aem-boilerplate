@@ -1,390 +1,805 @@
-// Dropin Tools
-import {
-  Divider,
-  ProgressSpinner,
-  provider as uiProvider,
-} from '@dropins/tools/components.js';
-import { events } from '@dropins/tools/event-bus.js';
+/* eslint-disable import/no-unresolved */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
+/* eslint-disable no-use-before-define */
+/* eslint-disable prefer-const */
 
-// Cart Dropin Modules
+// Dropin Tools
+import { events } from '@dropins/tools/event-bus.js';
+import { initializers } from '@dropins/tools/initializer.js';
+import { debounce } from '@dropins/tools/lib.js';
+
+// Dropin Components
+import {
+  Button,
+  Header,
+  ProgressSpinner,
+  provider as UI,
+} from '@dropins/tools/components.js';
+
+// Auth Dropin
+import * as authApi from '@dropins/storefront-auth/api.js';
+import AuthCombine from '@dropins/storefront-auth/containers/AuthCombine.js';
+import SignUp from '@dropins/storefront-auth/containers/SignUp.js';
+import { render as AuthProvider } from '@dropins/storefront-auth/render.js';
+
+// Account Dropin
+import Addresses from '@dropins/storefront-account/containers/Addresses.js';
+import AddressForm from '@dropins/storefront-account/containers/AddressForm.js';
+import { render as AccountProvider } from '@dropins/storefront-account/render.js';
+
+// Cart Dropin
 import * as cartApi from '@dropins/storefront-cart/api.js';
 import CartSummaryList from '@dropins/storefront-cart/containers/CartSummaryList.js';
 import EmptyCart from '@dropins/storefront-cart/containers/EmptyCart.js';
 import { OrderSummary } from '@dropins/storefront-cart/containers/OrderSummary.js';
-import { render as cartProvider } from '@dropins/storefront-cart/render.js';
+import { render as CartProvider } from '@dropins/storefront-cart/render.js';
 
-// Checkout Dropin Modules
+// Checkout Dropin
 import * as checkoutApi from '@dropins/storefront-checkout/api.js';
 import BillToShippingAddress from '@dropins/storefront-checkout/containers/BillToShippingAddress.js';
-import BillingForm from '@dropins/storefront-checkout/containers/BillingForm.js';
-import ErrorBanner from '@dropins/storefront-checkout/containers/ErrorBanner.js';
 import EstimateShipping from '@dropins/storefront-checkout/containers/EstimateShipping.js';
 import LoginForm from '@dropins/storefront-checkout/containers/LoginForm.js';
-import MergedCartBanner from '@dropins/storefront-checkout/containers/MergedCartBanner.js';
+import OrderConfirmationHeader from '@dropins/storefront-checkout/containers/OrderConfirmationHeader.js';
 import OutOfStock from '@dropins/storefront-checkout/containers/OutOfStock.js';
 import PaymentMethods from '@dropins/storefront-checkout/containers/PaymentMethods.js';
 import PlaceOrder from '@dropins/storefront-checkout/containers/PlaceOrder.js';
-import ShippingForm from '@dropins/storefront-checkout/containers/ShippingForm.js';
+import ServerError from '@dropins/storefront-checkout/containers/ServerError.js';
 import ShippingMethods from '@dropins/storefront-checkout/containers/ShippingMethods.js';
-import { render as checkoutProvider } from '@dropins/storefront-checkout/render.js';
 
-// Order Confirmation Dropin Modules
-import OrderConfirmation from '@dropins/storefront-order-confirmation/containers/OrderConfirmation.js';
-import { render as orderConfirmationProvider } from '@dropins/storefront-order-confirmation/render.js';
+import { render as CheckoutProvider } from '@dropins/storefront-checkout/render.js';
 
-// Auth Dropin Modules
-import * as authApi from '@dropins/storefront-auth/api.js';
-import AuthCombine from '@dropins/storefront-auth/containers/AuthCombine.js';
-import SignUp from '@dropins/storefront-auth/containers/SignUp.js';
-import { render as authProvider } from '@dropins/storefront-auth/render.js';
+// Order Dropin Modules
+import * as orderApi from '@dropins/storefront-order/api.js';
+import CustomerDetails from '@dropins/storefront-order/containers/CustomerDetails.js';
+import OrderCostSummary from '@dropins/storefront-order/containers/OrderCostSummary.js';
+import OrderProductList from '@dropins/storefront-order/containers/OrderProductList.js';
+import OrderStatus from '@dropins/storefront-order/containers/OrderStatus.js';
+import ShippingStatus from '@dropins/storefront-order/containers/ShippingStatus.js';
+import { render as OrderProvider } from '@dropins/storefront-order/render.js';
 import { getUserTokenCookie } from '../../scripts/initializers/index.js';
-import { createModal } from '../modal/modal.js';
-import { CUSTOMER_ACCOUNT_PATH, CUSTOMER_LOGIN_PATH } from '../../scripts/constants.js';
+
+// Block-level
+import createModal from '../modal/modal.js';
+
+import {
+  getCartAddress,
+  scrollToElement,
+  setAddressOnCart,
+} from '../../scripts/checkout.js';
 
 // Initializers
+import '../../scripts/initializers/account.js';
 import '../../scripts/initializers/auth.js';
 import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/checkout.js';
-import '../../scripts/initializers/order-confirmation.js';
 
-function createElementWithClass(tag, className) {
-  const element = document.createElement(tag);
-  element.classList.add(className);
-  return element;
-}
+export default async function decorate(block) {
+  const DEBOUNCE_TIME = 1000;
+  const LOGIN_FORM_NAME = 'login-form';
+  const SHIPPING_FORM_NAME = 'selectedShippingAddress';
+  const BILLING_FORM_NAME = 'selectedBillingAddress';
+  const SHIPPING_ADDRESS_DATA_KEY = `${SHIPPING_FORM_NAME}_addressData`;
+  const BILLING_ADDRESS_DATA_KEY = `${BILLING_FORM_NAME}_addressData`;
 
-/*
- * Layout DOM elements
- */
+  // Pre-fetch checkout store configuration
+  const storeConfig = await checkoutApi.getStoreConfig();
 
-const root = createElementWithClass('div', 'checkout__content');
-const heading = createElementWithClass('div', 'checkout__heading');
-const headingTitle = createElementWithClass('h1', 'checkout__heading-title');
-const headingDivider = createElementWithClass(
-  'div',
-  'checkout__heading-divider',
-);
-const main = createElementWithClass('div', 'checkout__main');
-const aside = createElementWithClass('div', 'checkout__aside');
-const placeOrder = createElementWithClass('div', 'checkout__place-order');
-const emptyCart = createElementWithClass('div', 'checkout__empty-cart');
-const errorBanner = createElementWithClass('div', 'checkout__error-banner');
-const mergedCartBanner = createElementWithClass(
-  'div',
-  'checkout__merged-cart-banner',
-);
-const overlaySpinner = createElementWithClass(
-  'div',
-  'checkout__overlay-spinner',
-);
-const outOfStock = createElementWithClass('div', 'checkout__out-of-stock');
-const login = createElementWithClass('div', 'checkout__login');
-const shippingForm = createElementWithClass('div', 'checkout__shipping-form');
-const billToShippingAddress = createElementWithClass(
-  'div',
-  'checkout__bill-to-shipping-address',
-);
-const billingForm = createElementWithClass('div', 'checkout__billing-form');
-const shippingMethods = createElementWithClass(
-  'div',
-  'checkout__shipping-methods',
-);
-const paymentMethods = createElementWithClass(
-  'div',
-  'checkout__payment-methods',
-);
-const orderSummary = createElementWithClass('div', 'checkout__order-summary');
-const cartSummaryList = createElementWithClass('div', 'cart-summary-list');
+  // Define the Layout for the Checkout
+  const checkoutFragment = document.createRange().createContextualFragment(`
+    <div class="checkout__wrapper">
+      <div class="checkout__loader"></div>
+      <div class="checkout__content">
+        <div class="checkout__main">
+          <div class="checkout__block checkout__heading"></div>
+          <div class="checkout__block checkout__empty-cart"></div>
+          <div class="checkout__block checkout__server-error"></div>
+          <div class="checkout__block checkout__out-of-stock"></div>
+          <div class="checkout__block checkout__login"></div>
+          <div class="checkout__block checkout__shipping-form"></div>
+          <div class="checkout__block checkout__bill-to-shipping"></div>
+          <div class="checkout__block checkout__delivery"></div>
+          <div class="checkout__block checkout__payment-methods"></div>
+          <div class="checkout__block checkout__billing-form"></div>
+        </div>
+        <div class="checkout__aside">
+          <div class="checkout__block checkout__block--aside checkout__order-summary"></div>
+          <div class="checkout__block checkout__block--aside checkout__cart-summary"></div>
+        </div>
+        <div class="checkout__place-order"></div>
+      </div>
+    </div>
+  `);
 
-headingTitle.textContent = 'Checkout';
-heading.replaceChildren(headingTitle, headingDivider);
-
-/*
- * Layout responsive handling
- */
-
-const mediaQuery = matchMedia('(max-width: 768px)');
-
-function renderMobileLayout(block) {
-  root.replaceChildren(
-    errorBanner,
-    mergedCartBanner,
-    heading,
-    cartSummaryList,
-    outOfStock,
-    login,
-    shippingForm,
-    billToShippingAddress,
-    billingForm,
-    shippingMethods,
-    paymentMethods,
-    orderSummary,
-    placeOrder,
-    overlaySpinner,
+  const $content = checkoutFragment.querySelector('.checkout__content');
+  const $loader = checkoutFragment.querySelector('.checkout__loader');
+  const $heading = checkoutFragment.querySelector('.checkout__heading');
+  const $emptyCart = checkoutFragment.querySelector('.checkout__empty-cart');
+  const $serverError = checkoutFragment.querySelector(
+    '.checkout__server-error',
   );
-
-  block.replaceChildren(root);
-}
-
-function renderDesktopLayout(block) {
-  main.replaceChildren(
-    heading,
-    outOfStock,
-    login,
-    shippingForm,
-    billToShippingAddress,
-    billingForm,
-    shippingMethods,
-    paymentMethods,
+  const $outOfStock = checkoutFragment.querySelector('.checkout__out-of-stock');
+  const $login = checkoutFragment.querySelector('.checkout__login');
+  const $shippingForm = checkoutFragment.querySelector(
+    '.checkout__shipping-form',
   );
-
-  aside.replaceChildren(orderSummary, cartSummaryList);
-
-  root.replaceChildren(
-    errorBanner,
-    mergedCartBanner,
-    main,
-    aside,
-    placeOrder,
-    overlaySpinner,
+  const $billToShipping = checkoutFragment.querySelector(
+    '.checkout__bill-to-shipping',
   );
+  const $delivery = checkoutFragment.querySelector('.checkout__delivery');
+  const $paymentMethods = checkoutFragment.querySelector(
+    '.checkout__payment-methods',
+  );
+  const $billingForm = checkoutFragment.querySelector(
+    '.checkout__billing-form',
+  );
+  const $orderSummary = checkoutFragment.querySelector(
+    '.checkout__order-summary',
+  );
+  const $cartSummary = checkoutFragment.querySelector(
+    '.checkout__cart-summary',
+  );
+  const $placeOrder = checkoutFragment.querySelector('.checkout__place-order');
 
-  block.replaceChildren(root);
-}
+  block.appendChild(checkoutFragment);
 
-/*
- * Event handlers
- */
+  // Render main containers
+  let shippingFormRef = { current: null };
+  let billingFormRef = { current: null };
 
-let modal = null;
-function handleAuthenticated(isAuthenticated) {
-  if (isAuthenticated && modal) {
-    modal.removeModal();
-    modal = null;
-  }
+  let loader;
+  const displayOverlaySpinner = async () => {
+    if (loader) return;
 
-  if (isAuthenticated) {
-    overlaySpinner.classList.add('checkout__overlay-spinner--shown');
-  }
-}
+    loader = await UI.render(ProgressSpinner, {
+      className: '.checkout__overlay-spinner',
+    })($loader);
+  };
 
-let currentCheckoutData;
-function handleCheckoutData(nextCheckoutData, block) {
-  if (currentCheckoutData !== undefined) {
-    // on sign out
-    if (!nextCheckoutData) {
-      root.classList.add('checkout-empty-cart');
-      root.replaceChildren(heading, emptyCart);
-      // mediaQuery.removeEventListener('change', handleScreenResize);
-      return;
-    }
+  const removeOverlaySpinner = () => {
+    if (!loader) return;
 
-    // on empty state
-    if (nextCheckoutData.isEmpty) {
-      root.classList.add('checkout-empty-cart');
-      root.replaceChildren(heading, emptyCart);
-      // mediaQuery.removeEventListener('change', handleScreenResize);
-      return;
-    }
+    loader.remove();
+    loader = null;
+    $loader.innerHTML = '';
+  };
 
-    root.classList.remove('checkout-empty-cart');
-    // mediaQuery.addEventListener('change', (e) => handleScreenResize(e, block));
-    handleScreenResize(mediaQuery, block);
-  }
-
-  currentCheckoutData = nextCheckoutData;
-}
-
-function handleCheckoutCustomer(nextCheckoutCustomer) {
-  if (nextCheckoutCustomer) {
-    overlaySpinner.classList.remove('checkout__overlay-spinner--shown');
-  }
-}
-
-function handleScreenResize(e, block) {
-  if (e.matches) {
-    renderMobileLayout(block);
-  } else {
-    renderDesktopLayout(block);
-  }
-}
-
-function handleCheckoutOrder(orderData, block) {
-  const token = getUserTokenCookie();
-  const orderRef = token ? orderData.number : orderData.token;
-  const encodedOrderRef = encodeURIComponent(orderRef);
-
-  window.history.pushState({}, '', `/order-status?orderRef=${encodedOrderRef}`);
-
-  const onSignUpClick = async ({ inputsDefaultValueSet, addressesData }) => {
-    const signUpForm = document.createElement('div');
-
-    authProvider.render(SignUp, {
-      routeSignIn: () => CUSTOMER_LOGIN_PATH,
-      routeRedirectOnEmailConfirmationClose: () => CUSTOMER_ACCOUNT_PATH,
-      inputsDefaultValueSet,
-      addressesData,
-    })(signUpForm);
-
-    modal = await createModal([signUpForm]);
+  let modal;
+  const showModal = async (content) => {
+    modal = await createModal([content]);
     modal.showModal();
   };
 
-  orderConfirmationProvider.render(OrderConfirmation, {
-    orderRef,
-    orderData,
-    onSignUpClick,
-    routeHome: () => '/',
-    routeSupport: () => '/support',
-  })(block);
-}
+  const removeModal = () => {
+    if (!modal) return;
+    modal.removeModal();
+    modal = null;
+  };
 
-export default async function decorate(block) {
-  /*
-   * Render Containers
-   */
+  const [
+    _heading,
+    _serverError,
+    _outOfStock,
+    _login,
+    shippingFormSkeleton,
+    _billToShipping,
+    _delivery,
+    _paymentMethods,
+    billingFormSkeleton,
+    _orderSummary,
+    _cartSummary,
+    _placeOrder,
+  ] = await Promise.all([
+    UI.render(Header, {
+      title: 'Checkout',
+      size: 'large',
+      divider: true,
+    })($heading),
 
-  uiProvider.render(Divider, { variant: 'primary' })(headingDivider);
-  uiProvider.render(ProgressSpinner)(overlaySpinner);
-  cartProvider.render(EmptyCart, { routeCTA: () => '/' })(emptyCart);
-  checkoutProvider.render(ErrorBanner)(errorBanner);
-  checkoutProvider.render(MergedCartBanner)(mergedCartBanner);
-
-  checkoutProvider.render(OutOfStock, {
-    routeCart: () => '/cart',
-    onCartProductsUpdate: (items) => {
-      cartApi.updateProductsFromCart(items).catch(console.error);
-    },
-  })(outOfStock);
-
-  checkoutProvider.render(LoginForm, {
-    onSignInClick: async (initialEmailValue) => {
-      const signInForm = document.createElement('div');
-
-      authProvider.render(AuthCombine, {
-        signInFormConfig: {
-          renderSignUpLink: true,
-          initialEmailValue,
-          onSuccessCallback: () => {
-            overlaySpinner.classList.add('checkout__overlay-spinner--shown');
-          },
-        },
-        signUpFormConfig: {},
-        resetPasswordFormConfig: {},
-      })(signInForm);
-
-      modal = await createModal([signInForm]);
-      modal.showModal();
-    },
-    onSignOutClick: () => {
-      authApi.revokeCustomerToken();
-    },
-  })(login);
-
-  checkoutProvider.render(ShippingForm, { hideOnVirtualCart: true })(
-    shippingForm,
-  );
-  checkoutProvider.render(BillToShippingAddress, { hideOnVirtualCart: true })(
-    billToShippingAddress,
-  );
-  checkoutProvider.render(BillingForm)(billingForm);
-
-  checkoutProvider.render(ShippingMethods, {
-    hideOnVirtualCart: true,
-    // onShippingMethodSelect: (shippingMethod) => {},
-    onCheckoutDataUpdate: () => {
-      cartApi.refreshCart().catch(console.error);
-    },
-  })(shippingMethods);
-
-  checkoutProvider.render(PaymentMethods, {
-    // slots: {
-    //   Handlers: {
-    //     checkmo: (_ctx) => {
-    //       const $content = document.createElement('div');
-    //       $content.innerText = 'checkmo';
-    //       _ctx.replaceHTML($content);
-    //     },
-    //   },
-    // },
-  })(paymentMethods);
-
-  cartProvider.render(OrderSummary, {
-    slots: {
-      EstimateShipping: (esCtx) => {
-        const estimateShippingForm = document.createElement('div');
-
-        checkoutProvider.render(EstimateShipping)(estimateShippingForm);
-
-        esCtx.appendChild(estimateShippingForm);
+    CheckoutProvider.render(ServerError, {
+      onRetry: () => {
+        $content.classList.remove('checkout__content--error');
       },
-    },
-  })(orderSummary);
+      onServerError: () => {
+        $content.classList.add('checkout__content--error');
+      },
+    })($serverError),
 
-  cartProvider.render(CartSummaryList, {
-    slots: {
-      Heading: (headingCtx) => {
-        // TODO: Update this to use the dictionary
-        const title = 'Your Cart ({count})';
+    CheckoutProvider.render(OutOfStock, {
+      routeCart: () => '/cart',
+      onCartProductsUpdate: (items) => {
+        cartApi.updateProductsFromCart(items).catch(console.error);
+      },
+    })($outOfStock),
 
-        const cartSummaryListHeading = document.createElement('div');
-        cartSummaryListHeading.classList.add('cart-summary-list__heading');
+    CheckoutProvider.render(LoginForm, {
+      name: LOGIN_FORM_NAME,
+      onSignInClick: async (initialEmailValue) => {
+        const signInForm = document.createElement('div');
 
-        const cartSummaryListHeadingText = document.createElement('div');
-        cartSummaryListHeadingText.classList.add(
-          'cart-summary-list__heading-text',
-        );
+        AuthProvider.render(AuthCombine, {
+          signInFormConfig: {
+            renderSignUpLink: true,
+            initialEmailValue,
+            onSuccessCallback: () => {
+              displayOverlaySpinner();
+            },
+          },
+          signUpFormConfig: {},
+          resetPasswordFormConfig: {},
+        })(signInForm);
 
-        cartSummaryListHeadingText.innerText = title.replace(
-          '({count})',
-          headingCtx.count ? `(${headingCtx.count})` : '',
-        );
-        const editCartLink = document.createElement('a');
-        editCartLink.classList.add('cart-summary-list__edit');
-        editCartLink.href = '/cart';
-        editCartLink.rel = 'noreferrer';
-        editCartLink.innerText = 'Edit';
+        showModal(signInForm);
+      },
+      onSignOutClick: () => {
+        authApi.revokeCustomerToken();
+      },
+    })($login),
 
-        cartSummaryListHeading.appendChild(cartSummaryListHeadingText);
-        cartSummaryListHeading.appendChild(editCartLink);
-        headingCtx.appendChild(cartSummaryListHeading);
+    AccountProvider.render(AddressForm, {
+      isOpen: true,
+      showFormLoader: true,
+    })($shippingForm),
 
-        headingCtx.onChange((nextHeadingCtx) => {
+    CheckoutProvider.render(BillToShippingAddress, {
+      hideOnVirtualCart: true,
+      onChange: (checked) => {
+        $billingForm.style.display = checked ? 'none' : 'block';
+
+        if (!checked && billingFormRef.current) {
+          const isDataValid = billingFormRef.current.handleValidationSubmit();
+
+          setAddressOnCart(
+            { data: billingFormRef.current.formData, isDataValid },
+            checkoutApi.setBillingAddress,
+          );
+        }
+      },
+    })($billToShipping),
+
+    CheckoutProvider.render(ShippingMethods, {
+      hideOnVirtualCart: true,
+      onCheckoutDataUpdate: () => {
+        cartApi.refreshCart().catch(console.error);
+      },
+    })($delivery),
+
+    CheckoutProvider.render(PaymentMethods)($paymentMethods),
+
+    AccountProvider.render(AddressForm, {
+      isOpen: true,
+      showFormLoader: true,
+    })($billingForm),
+
+    CartProvider.render(OrderSummary, {
+      slots: {
+        EstimateShipping: (esCtx) => {
+          const estimateShippingForm = document.createElement('div');
+          CheckoutProvider.render(EstimateShipping)(estimateShippingForm);
+          esCtx.appendChild(estimateShippingForm);
+        },
+      },
+    })($orderSummary),
+
+    CartProvider.render(CartSummaryList, {
+      variant: 'secondary',
+      slots: {
+        Heading: (headingCtx) => {
+          const title = 'Your Cart ({count})';
+
+          const cartSummaryListHeading = document.createElement('div');
+          cartSummaryListHeading.classList.add('cart-summary-list__heading');
+
+          const cartSummaryListHeadingText = document.createElement('div');
+          cartSummaryListHeadingText.classList.add(
+            'cart-summary-list__heading-text',
+          );
+
           cartSummaryListHeadingText.innerText = title.replace(
             '({count})',
-            nextHeadingCtx.count ? `(${nextHeadingCtx.count})` : '',
+            headingCtx.count ? `(${headingCtx.count})` : '',
           );
-        });
+          const editCartLink = document.createElement('a');
+          editCartLink.classList.add('cart-summary-list__edit');
+          editCartLink.href = '/cart';
+          editCartLink.rel = 'noreferrer';
+          editCartLink.innerText = 'Edit';
+
+          cartSummaryListHeading.appendChild(cartSummaryListHeadingText);
+          cartSummaryListHeading.appendChild(editCartLink);
+          headingCtx.appendChild(cartSummaryListHeading);
+
+          headingCtx.onChange((nextHeadingCtx) => {
+            cartSummaryListHeadingText.innerText = title.replace(
+              '({count})',
+              nextHeadingCtx.count ? `(${nextHeadingCtx.count})` : '',
+            );
+          });
+        },
       },
-    },
-  })(cartSummaryList);
+    })($cartSummary),
 
-  checkoutProvider.render(PlaceOrder, {
-    onPlaceOrder: async () => {
-      overlaySpinner.classList.add('checkout__overlay-spinner--shown');
+    CheckoutProvider.render(PlaceOrder, {
+      handleValidation: () => {
+        let success = true;
+        const { forms } = document;
 
-      try {
-        await checkoutApi.placeOrder();
-      } catch (error) {
-        console.error(error);
-        throw error;
-      } finally {
-        overlaySpinner.classList.remove('checkout__overlay-spinner--shown');
+        const loginForm = forms[LOGIN_FORM_NAME];
+
+        if (loginForm) {
+          success = loginForm.checkValidity();
+          if (!success) scrollToElement($login);
+        }
+
+        const shippingForm = forms[SHIPPING_FORM_NAME];
+
+        if (
+          success
+          && shippingFormRef.current
+          && shippingForm
+          && shippingForm.checkVisibility()
+        ) {
+          success = shippingFormRef.current.handleValidationSubmit(false);
+        }
+
+        const billingForm = forms[BILLING_FORM_NAME];
+
+        if (
+          success
+          && billingFormRef.current
+          && billingForm
+          && billingForm.checkVisibility()
+        ) {
+          success = billingFormRef.current.handleValidationSubmit(false);
+        }
+
+        return success;
+      },
+      onPlaceOrder: async () => {
+        displayOverlaySpinner();
+
+        try {
+          await checkoutApi.placeOrder();
+        } catch (error) {
+          console.error(error);
+          throw error;
+        } finally {
+          removeOverlaySpinner();
+        }
+      },
+    })($placeOrder),
+  ]);
+
+  let emptyCart;
+  const displayEmptyCart = async () => {
+    if (emptyCart) return;
+
+    emptyCart = await CartProvider.render(EmptyCart, {
+      routeCTA: () => '/',
+    })($emptyCart);
+
+    $content.classList.add('checkout__content--empty');
+  };
+
+  const removeEmptyCart = () => {
+    if (!emptyCart) return;
+
+    emptyCart.remove();
+    emptyCart = null;
+    $emptyCart.innerHTML = '';
+
+    $content.classList.remove('checkout__content--empty');
+  };
+
+  let shippingForm;
+  let billingForm;
+  const displayGuestAddressForms = async (data) => {
+    if (data.isVirtual) {
+      shippingForm?.remove();
+      shippingForm = null;
+      $shippingForm.innerHTML = '';
+    } else if (!shippingForm) {
+      const cartShippingAddress = getCartAddress(data, 'shipping');
+
+      const shippingAddressCache = sessionStorage.getItem(
+        SHIPPING_ADDRESS_DATA_KEY,
+      );
+
+      if (cartShippingAddress && shippingAddressCache) {
+        sessionStorage.removeItem(SHIPPING_ADDRESS_DATA_KEY);
       }
-    },
-  })(placeOrder);
 
-  /*
-   * Render initial layout and setup event handlers
-   */
+      // when shipping address form is empty
+      if (!cartShippingAddress) {
+        checkoutApi.estimateShippingMethods();
 
-  mediaQuery.addEventListener('change', (e) => handleScreenResize(e, block));
-  handleScreenResize(mediaQuery, block);
+        events.emit('checkout/estimate-shipping-address', {
+          address: {},
+          isValid: false,
+        });
+      }
 
-  events.on('authenticated', handleAuthenticated, { eager: true });
-  events.on('checkout/data', (e) => handleCheckoutData(e, block), {
-    eager: true,
-  });
-  events.on('checkout/customer', handleCheckoutCustomer, { eager: true });
-  events.on('checkout/order', (e) => handleCheckoutOrder(e, block));
+      shippingFormSkeleton.remove();
+
+      let prevEstimateShippingData = {};
+      let isFirstRenderShipping = true;
+      const hasCartShippingAddress = Boolean(data.shippingAddresses?.[0]);
+      shippingForm = await AccountProvider.render(AddressForm, {
+        addressesFormTitle: 'Shipping address',
+        className: 'checkout-shipping-form__address-form',
+        formName: SHIPPING_FORM_NAME,
+        forwardFormRef: shippingFormRef,
+        hideActionFormButtons: true,
+        inputsDefaultValueSet: cartShippingAddress ?? {
+          countryCode: storeConfig.defaultCountry,
+        },
+        isOpen: true,
+        onChange: debounce((values) => {
+          if (!isFirstRenderShipping || !hasCartShippingAddress) {
+            setAddressOnCart(values, checkoutApi.setShippingAddress);
+          }
+
+          const { data, isDataValid } = values;
+
+          if (isFirstRenderShipping) isFirstRenderShipping = false;
+
+          if (hasCartShippingAddress || isDataValid) return;
+
+          if (
+            prevEstimateShippingData.countryCode === data.countryCode
+            && prevEstimateShippingData.regionCode === data.region.regionCode
+            && prevEstimateShippingData.regionId === data.region.regionId
+            && prevEstimateShippingData.postcode === data.postcode
+          ) {
+            return;
+          }
+
+          const criteria = {
+            country_code: data.countryCode,
+            region_name: String(data.region.regionCode || ''),
+            region_id: String(data.region.regionId || ''),
+          };
+          checkoutApi.estimateShippingMethods({ criteria });
+
+          events.emit('checkout/estimate-shipping-address', {
+            address: {
+              country_id: data.countryCode,
+              region: String(data.region.regionCode || ''),
+              region_id: String(data.region.regionId || ''),
+              postcode: data.postcode,
+            },
+            isValid: isDataValid,
+          });
+
+          prevEstimateShippingData = {
+            countryCode: data.countryCode,
+            regionCode: data.region.regionCode,
+            regionId: data.region.regionId,
+            postcode: data.postcode,
+          };
+        }, DEBOUNCE_TIME),
+        showBillingCheckBox: false,
+        showFormLoader: false,
+        showShippingCheckBox: false,
+      })($shippingForm);
+    }
+
+    if (!billingForm) {
+      const cartBillingAddress = getCartAddress(data, 'billing');
+
+      const billingAddressCache = sessionStorage.getItem(
+        BILLING_ADDRESS_DATA_KEY,
+      );
+
+      if (cartBillingAddress && billingAddressCache) {
+        sessionStorage.removeItem(BILLING_ADDRESS_DATA_KEY);
+      }
+
+      billingFormSkeleton.remove();
+
+      let isFirstRenderBilling = true;
+      const hasCartBillingAddress = Boolean(data.billingAddress);
+
+      billingForm = await AccountProvider.render(AddressForm, {
+        addressesFormTitle: 'Billing address',
+        className: 'checkout-billing-form__address-form',
+        formName: BILLING_FORM_NAME,
+        forwardFormRef: billingFormRef,
+        hideActionFormButtons: true,
+        inputsDefaultValueSet: cartBillingAddress ?? {
+          countryCode: storeConfig.defaultCountry,
+        },
+        isOpen: true,
+        onChange: debounce((values) => {
+          if (!isFirstRenderBilling || !hasCartBillingAddress) {
+            setAddressOnCart(values, checkoutApi.setBillingAddress);
+          }
+
+          if (isFirstRenderBilling) isFirstRenderBilling = false;
+        }, DEBOUNCE_TIME),
+        showBillingCheckBox: false,
+        showFormLoader: false,
+        showShippingCheckBox: false,
+      })($billingForm);
+    }
+  };
+
+  let shippingAddresses;
+  let billingAddresses;
+  const displayCustomerAddressForms = async (data) => {
+    if (data.isVirtual) {
+      shippingAddresses?.remove();
+      shippingAddresses = null;
+      $shippingForm.innerHTML = '';
+    } else if (!shippingAddresses) {
+      shippingForm?.remove();
+      shippingForm = null;
+      shippingFormRef = { current: null };
+
+      const cartShippingAddress = getCartAddress(data, 'shipping');
+
+      const shippingAddressId = cartShippingAddress
+        ? (cartShippingAddress?.id ?? 0)
+        : undefined;
+
+      const shippingAddressCache = sessionStorage.getItem(
+        SHIPPING_ADDRESS_DATA_KEY,
+      );
+
+      // clear persisted shipping address if cart has a shipping address
+      if (cartShippingAddress && shippingAddressCache) {
+        sessionStorage.removeItem(SHIPPING_ADDRESS_DATA_KEY);
+      }
+
+      // when shipping address form is empty
+      if (!cartShippingAddress) {
+        checkoutApi.estimateShippingMethods();
+        events.emit('checkout/estimate-shipping-address', {
+          address: {},
+          isValid: false,
+        });
+      }
+
+      const inputsDefaultValueSet = cartShippingAddress && cartShippingAddress.id === undefined
+        ? cartShippingAddress
+        : { countryCode: storeConfig.defaultCountry };
+
+      const hasCartShippingAddress = Boolean(data.shippingAddresses?.[0]);
+      let isFirstRenderShipping = true;
+
+      shippingAddresses = await AccountProvider.render(Addresses, {
+        addressFormTitle: 'Deliver to new address',
+        defaultSelectAddressId: shippingAddressId,
+        formName: SHIPPING_FORM_NAME,
+        forwardFormRef: shippingFormRef,
+        inputsDefaultValueSet,
+        minifiedView: false,
+        onAddressData: debounce((values) => {
+          if (!isFirstRenderShipping || !hasCartShippingAddress) {
+            setAddressOnCart(values, checkoutApi.setShippingAddress);
+          }
+
+          if (isFirstRenderShipping) isFirstRenderShipping = false;
+        }, DEBOUNCE_TIME),
+        selectable: true,
+        selectShipping: true,
+        showBillingCheckBox: false,
+        showSaveCheckBox: true,
+        showShippingCheckBox: false,
+        title: 'Shipping address',
+      })($shippingForm);
+    }
+
+    if (!billingAddresses) {
+      billingForm?.remove();
+      billingForm = null;
+      billingFormRef = { current: null };
+
+      const cartBillingAddress = getCartAddress(data, 'billing');
+
+      const billingAddressId = cartBillingAddress
+        ? (cartBillingAddress?.id ?? 0)
+        : undefined;
+
+      const billingAddressCache = sessionStorage.getItem(
+        BILLING_ADDRESS_DATA_KEY,
+      );
+
+      // clear persisted billing address if cart has a billing address
+      if (cartBillingAddress && billingAddressCache) {
+        sessionStorage.removeItem(BILLING_ADDRESS_DATA_KEY);
+      }
+
+      const inputsDefaultValueSet = cartBillingAddress && cartBillingAddress.id === undefined
+        ? cartBillingAddress
+        : { countryCode: storeConfig.defaultCountry };
+
+      const hasCartBillingAddress = Boolean(data.billingAddress);
+      let isFirstRenderBilling = true;
+
+      billingAddresses = await AccountProvider.render(Addresses, {
+        addressFormTitle: 'Bill to new address',
+        defaultSelectAddressId: billingAddressId,
+        formName: BILLING_FORM_NAME,
+        forwardFormRef: billingFormRef,
+        inputsDefaultValueSet,
+        minifiedView: false,
+        onAddressData: debounce((values) => {
+          if (!isFirstRenderBilling || !hasCartBillingAddress) {
+            setAddressOnCart(values, checkoutApi.setBillingAddress);
+          }
+
+          if (isFirstRenderBilling) isFirstRenderBilling = false;
+        }, DEBOUNCE_TIME),
+        selectable: true,
+        selectBilling: true,
+        showBillingCheckBox: false,
+        showSaveCheckBox: true,
+        showShippingCheckBox: false,
+        title: 'Billing address',
+      })($billingForm);
+    }
+  };
+
+  // Define the Layout for the Order Confirmation
+  const displayOrderConfirmation = async (orderData) => {
+    const orderConfirmationFragment = document.createRange()
+      .createContextualFragment(`
+      <div class="order-confirmation">
+        <div class="order-confirmation__main">
+          <div class="order-confirmation__block order-confirmation__header"></div>
+          <div class="order-confirmation__block order-confirmation__order-status"></div>
+          <div class="order-confirmation__block order-confirmation__shipping-status"></div>
+          <div class="order-confirmation__block order-confirmation__customer-details"></div>
+        </div>
+        <div class="order-confirmation__aside">
+          <div class="order-confirmation__block order-confirmation__order-cost-summary"></div>
+          <div class="order-confirmation__block order-confirmation__order-product-list"></div>
+          <div class="order-confirmation__block order-confirmation__footer"></div>
+        </div>
+      </div>
+  `);
+
+    // Order confirmation elements
+    const $orderConfirmationHeader = orderConfirmationFragment.querySelector(
+      '.order-confirmation__header',
+    );
+    const $orderStatus = orderConfirmationFragment.querySelector(
+      '.order-confirmation__order-status',
+    );
+    const $shippingStatus = orderConfirmationFragment.querySelector(
+      '.order-confirmation__shipping-status',
+    );
+    const $customerDetails = orderConfirmationFragment.querySelector(
+      '.order-confirmation__customer-details',
+    );
+    const $orderCostSummary = orderConfirmationFragment.querySelector(
+      '.order-confirmation__order-cost-summary',
+    );
+    const $orderProductList = orderConfirmationFragment.querySelector(
+      '.order-confirmation__order-product-list',
+    );
+    const $orderConfirmationFooter = orderConfirmationFragment.querySelector(
+      '.order-confirmation__footer',
+    );
+
+    await initializers.mountImmediately(orderApi.initialize, { orderData });
+
+    block.replaceChildren(orderConfirmationFragment);
+
+    const onSignUpClick = async ({ inputsDefaultValueSet, addressesData }) => {
+      const signUpForm = document.createElement('div');
+      AuthProvider.render(SignUp, {
+        routeSignIn: () => '/customer/login',
+        routeRedirectOnEmailConfirmationClose: () => '/customer/account',
+        inputsDefaultValueSet,
+        addressesData,
+      })(signUpForm);
+
+      await showModal(signUpForm);
+    };
+
+    CheckoutProvider.render(OrderConfirmationHeader, {
+      orderData,
+      onSignUpClick,
+    })($orderConfirmationHeader);
+
+    OrderProvider.render(OrderStatus, { slots: { OrderActions: () => null } })(
+      $orderStatus,
+    );
+    OrderProvider.render(ShippingStatus)($shippingStatus);
+    OrderProvider.render(CustomerDetails)($customerDetails);
+    OrderProvider.render(OrderCostSummary)($orderCostSummary);
+    OrderProvider.render(OrderProductList)($orderProductList);
+
+    $orderConfirmationFooter.innerHTML = `
+      <div class="order-confirmation-footer__continue-button"></div>
+      <div class="order-confirmation-footer__contact-support">
+        <p>
+          Need help?
+          <a
+            href="/support"
+            rel="noreferrer"
+            class="order-confirmation-footer__contact-support-link"
+            data-testid="order-confirmation-footer__contact-support-link"
+          >
+            Contact us
+          </a>
+        </p>
+      </div>
+    `;
+
+    const $orderConfirmationFooterContinueBtn = $orderConfirmationFooter.querySelector(
+      '.order-confirmation-footer__continue-button',
+    );
+
+    UI.render(Button, {
+      children: 'Continue shopping',
+      'data-testid': 'order-confirmation-footer__continue-button',
+      className: 'order-confirmation-footer__continue-button',
+      size: 'medium',
+      variant: 'primary',
+      type: 'submit',
+      href: '/',
+    })($orderConfirmationFooterContinueBtn);
+  };
+
+  // Event handlers
+  const handleCheckoutInitialized = async (data) => {
+    if (data === null || data.isEmpty) {
+      await displayEmptyCart();
+      return;
+    }
+
+    if (data.isGuest) {
+      await displayGuestAddressForms(data);
+    } else {
+      await displayCustomerAddressForms(data);
+    }
+  };
+
+  const handleCheckoutUpdated = async (data) => {
+    if (data === null || data.isEmpty) {
+      await displayEmptyCart();
+      return;
+    }
+
+    removeEmptyCart();
+
+    if (data.isGuest) {
+      await displayGuestAddressForms(data);
+    } else {
+      removeOverlaySpinner();
+      await displayCustomerAddressForms(data);
+    }
+  };
+
+  const handleAuthenticated = (authenticated) => {
+    if (!authenticated) return;
+    removeModal();
+  };
+
+  const handleCheckoutOrder = async (orderData) => {
+    // clear address form data
+    sessionStorage.removeItem(SHIPPING_ADDRESS_DATA_KEY);
+    sessionStorage.removeItem(BILLING_ADDRESS_DATA_KEY);
+
+    const token = getUserTokenCookie();
+    const orderRef = token ? orderData.number : orderData.token;
+    const encodedOrderRef = encodeURIComponent(orderRef);
+
+    window.history.pushState(
+      {},
+      '',
+      `/order-details?orderRef=${encodedOrderRef}`,
+    );
+
+    // TODO cleanup checkout containers
+    await displayOrderConfirmation(orderData);
+  };
+
+  events.on('authenticated', handleAuthenticated);
+  events.on('checkout/initialized', handleCheckoutInitialized, { eager: true });
+  events.on('checkout/order', handleCheckoutOrder);
+  events.on('checkout/updated', handleCheckoutUpdated);
 }

@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const placeOrder: () => Promise<import('../../data/models/order').Order>;
+export declare const placeOrder: () => Promise<any>;
 //# sourceMappingURL=placeOrder.d.ts.map

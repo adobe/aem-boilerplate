@@ -4,6 +4,7 @@ import { CartModel } from '../../data/models';
 
 type DefaultSlotContext = {
     hasErrors: boolean;
+    data: CartModel | null;
 };
 export interface CartProps extends HTMLAttributes<HTMLDivElement> {
     routeEmptyCartCTA?: () => string;

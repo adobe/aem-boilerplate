@@ -14,7 +14,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './BillingForm';
 export * from './BillToShippingAddress';
 export * from './ErrorBanner';
 export * from './EstimateShipping';
@@ -24,6 +23,6 @@ export * from './OutOfStock';
 export * from './PaymentMethods';
 export * from './PlaceOrder';
 export * from './ServerError';
-export * from './ShippingForm';
 export * from './ShippingMethods';
+export * from './OrderConfirmationHeader';
 //# sourceMappingURL=index.d.ts.map

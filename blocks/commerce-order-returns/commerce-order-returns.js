@@ -6,6 +6,7 @@ import { checkIsAuthenticated } from '../../scripts/configs.js';
 import {
   CUSTOMER_RETURN_DETAILS_PATH,
   RETURN_DETAILS_PATH,
+  UPS_TRACKING_URL,
 } from '../../scripts/constants.js';
 
 // Initialize
@@ -18,6 +19,12 @@ export default async function decorate(block) {
     : RETURN_DETAILS_PATH;
 
   await orderRenderer.render(OrderReturns, {
+    routeTracking: ({ carrier, number }) => {
+      if (carrier?.toLowerCase() === 'ups') {
+        return `${UPS_TRACKING_URL}?tracknum=${number}`;
+      }
+      return '';
+    },
     routeReturnDetails: ({ orderNumber, returnNumber, token }) => {
       const { searchParams } = new URL(window.location.href);
       const orderRefFromUrl = searchParams.get('orderRef');

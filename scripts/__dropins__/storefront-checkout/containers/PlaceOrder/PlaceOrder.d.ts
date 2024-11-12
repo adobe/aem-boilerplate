@@ -1,11 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
 
-export declare enum CheckoutForms {
-    BILLING = "billing_address",
-    LOGIN = "login-form",
-    SHIPPING = "shipping_address"
-}
 export interface PlaceOrderProps extends HTMLAttributes<HTMLDivElement> {
+    handleValidation?: () => boolean;
     onPlaceOrder?: (ctx: PlaceOrderContext) => Promise<void>;
 }
 export interface PlaceOrderContext {

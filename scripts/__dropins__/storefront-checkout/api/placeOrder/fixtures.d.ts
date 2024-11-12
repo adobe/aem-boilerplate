@@ -1,6 +1,20 @@
-import { Order } from '../../data/models/order';
-
-export declare const customerOrder: (overrides?: Partial<Order>) => Order;
-export declare const customerOrderItem: (overrides?: Partial<Order['items'][number]>) => Order['items'][number];
-export declare const customerOrderItemProduct: (overrides?: Partial<Order['items'][number]['product']>) => Order['items'][number]['product'];
+/********************************************************************
+* ADOBE CONFIDENTIAL
+* __________________
+*
+*  Copyright 2024 Adobe
+*  All Rights Reserved.
+*
+* NOTICE:  All information contained herein is, and remains
+* the property of Adobe and its suppliers, if any. The intellectual
+* and technical concepts contained herein are proprietary to Adobe
+* and its suppliers and are protected by all applicable intellectual
+* property laws, including trade secret and copyright laws.
+* Dissemination of this information or reproduction of this material
+* is strictly forbidden unless prior written permission is obtained
+* from Adobe.
+*******************************************************************/
+export declare const customerOrder: (overrides?: Order) => Order;
+export declare const customerOrderItem: (overrides?: Order) => Order;
+export declare const customerOrderItemProduct: (overrides?: Order) => Order;
 //# sourceMappingURL=fixtures.d.ts.map

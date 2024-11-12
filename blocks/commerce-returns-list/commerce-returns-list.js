@@ -9,6 +9,7 @@ import {
   CUSTOMER_RETURN_DETAILS_PATH,
   CUSTOMER_ORDER_DETAILS_PATH,
   CUSTOMER_RETURNS_PATH,
+  UPS_TRACKING_URL,
 } from '../../scripts/constants.js';
 
 // Initialize
@@ -24,6 +25,12 @@ export default async function decorate(block) {
   } else {
     await orderRenderer.render(ReturnsList, {
       minifiedView: minifiedViewConfig === 'true',
+      routeTracking: ({ carrier, number }) => {
+        if (carrier?.toLowerCase() === 'ups') {
+          return `${UPS_TRACKING_URL}?tracknum=${number}`;
+        }
+        return '';
+      },
       routeReturnDetails: ({ orderNumber, returnNumber }) => `${CUSTOMER_RETURN_DETAILS_PATH}?orderRef=${orderNumber}&returnRef=${returnNumber}`,
       routeOrderDetails: ({ orderNumber }) => `${CUSTOMER_ORDER_DETAILS_PATH}?orderRef=${orderNumber}`,
       routeReturnsList: () => CUSTOMER_RETURNS_PATH,

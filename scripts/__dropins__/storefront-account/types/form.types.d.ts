@@ -14,6 +14,7 @@ interface AddressFormInputsContext {
 }
 export type FormRef = {
     handleValidationSubmit: () => boolean;
+    isDataValid: boolean;
 };
 export interface FormProps {
     isWaitingForResponse?: boolean;

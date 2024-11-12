@@ -52,6 +52,10 @@ interface TotalPriceModifier {
     label: string;
     coupon?: Coupon;
 }
+interface FixedProductTax {
+    amount: Price;
+    label: string;
+}
 export interface Item {
     taxedPrice: Price;
     rowTotal: Price;
@@ -93,6 +97,7 @@ export interface Item {
     discountPercentage?: number;
     savingsAmount?: Price;
     productAttributes?: Attribute[];
+    fixedProductTaxes?: FixedProductTax[];
 }
 interface ItemError {
     id: string;

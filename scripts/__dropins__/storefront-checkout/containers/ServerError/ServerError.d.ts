@@ -1,8 +1,8 @@
 import { Container } from '@dropins/tools/types/elsie/src/lib';
 
-interface ServerErrorProps {
-    onServerError?: () => void;
+export interface ServerErrorProps {
+    onRetry?: () => void;
+    onServerError?: (error: string) => void;
 }
 export declare const ServerError: Container<ServerErrorProps>;
-export {};
 //# sourceMappingURL=ServerError.d.ts.map

@@ -115,20 +115,20 @@ export const assertOrderConfirmationCommonDetails = (customerDetails) => {
       'contain',
       `${customerDetails.firstName}, thank you for your order!`
     )
-    .and('contain', 'Order details')
+    .and('contain', 'Customer information')
     .and('contain', 'Contact details')
     .and('contain', customerDetails.email)
     .and('contain', 'Payment method')
     .and('contain', customerDetails.paymentMethod)
     .and('contain', 'Order summary');
   cy.contains('p', /ORDER #\d+/).should('be.visible');
-  cy.get('.order-confirmation-order-summary').should('exist');
+  cy.get('.order-confirmation__order-cost-summary').should('exist');
   cy.get('a[role="link"]').should('contain', 'Continue shopping');
 };
 
 
 export const assertOrderConfirmationShippingDetails = (customerAddress) => {
-  cy.get('.order-confirmation-details__shipping_address')
+  cy.get('.order-customer-details-content__container-shipping_address')
     .should('contain', 'Shipping address')
     .and('contain', customerAddress.firstName)
     .and('contain', customerAddress.lastName)
@@ -141,7 +141,7 @@ export const assertOrderConfirmationShippingDetails = (customerAddress) => {
 };
 
 export const assertOrderConfirmationBillingDetails = (customerAddress) => {
-  cy.get('.order-confirmation-details__billing_address')
+  cy.get('.order-customer-details-content__container-billing_address')
     .should('contain', 'Billing address')
     .and('contain', customerAddress.firstName)
     .and('contain', customerAddress.lastName)
@@ -157,7 +157,7 @@ export const assertOrderConfirmationBillingDetails = (customerAddress) => {
 export const assertOrderConfirmationShippingMethod = (
   customerDelievryMethod
 ) => {
-  cy.get('.order-confirmation-details__shipping-method')
+  cy.get('.order-customer-details-content__container-shipping_methods')
     .should('contain', 'Shipping method')
     .and('contain', customerDelievryMethod.shippingMethod);
 }

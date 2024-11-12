@@ -1,6 +1,14 @@
 import { FunctionComponent, VNode } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
+import { JSXInternal } from 'preact/src/jsx';
 
+export interface OrderSummaryLineItem {
+    key: string;
+    title?: string;
+    className?: string;
+    sortOrder: number;
+    content: string | JSXInternal.Element | VNode<HTMLAttributes<HTMLDivElement>> | OrderSummaryLineItem[] | undefined;
+}
 export interface OrderSummaryProps extends Omit<HTMLAttributes<HTMLDivElement>, 'loading'> {
     variant?: 'primary' | 'secondary';
     heading?: VNode<HTMLAttributes<HTMLDivElement>>;
@@ -34,6 +42,8 @@ export interface OrderSummaryProps extends Omit<HTMLAttributes<HTMLDivElement>, 
     };
     primaryAction?: VNode<HTMLAttributes<HTMLButtonElement>>;
     coupons?: VNode<HTMLAttributes<HTMLDivElement>>;
+    totalSaved?: VNode<HTMLAttributes<HTMLSpanElement>>;
+    updateLineItems?: (lineItems: Array<OrderSummaryLineItem>) => Array<OrderSummaryLineItem>;
 }
 export declare const OrderSummary: FunctionComponent<OrderSummaryProps>;
 //# sourceMappingURL=OrderSummary.d.ts.map

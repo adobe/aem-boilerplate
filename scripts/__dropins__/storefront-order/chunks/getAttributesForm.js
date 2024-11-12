@@ -44,4 +44,4 @@ import{h as i}from"./network-error.js";import{f as u,h as s}from"./fetch-graphql
       }
     }
   }
-`,T=async r=>await u(r!=="shortRequest"?n:_,{method:"GET",cache:"force-cache",variables:{formCode:r}}).then(t=>{var e,o,a;return(e=t.errors)!=null&&e.length?s(t.errors):m(((a=(o=t==null?void 0:t.data)==null?void 0:o.attributesForm)==null?void 0:a.items)??[])}).catch(i);export{T as g};
+`,T=async r=>await u(r!=="shortRequest"?n:_,{method:"GET",cache:"force-cache",variables:{formCode:r}}).then(t=>{var e,o,a;return(e=t.errors)!=null&&e.length?s(t.errors):m((a=(o=t==null?void 0:t.data)==null?void 0:o.attributesForm)==null?void 0:a.items)}).catch(i);export{T as g};

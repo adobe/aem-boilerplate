@@ -1,2 +1,2 @@
-export declare const REQUEST_RETURN_ORDER = "\nmutation REQUEST_RETURN_ORDER($input: RequestReturnInput!) {\n  requestReturn(input: $input) {\n    return {\n      uid\n      status\n      number\n      created_at\n    }\n  }\n}\n";
+export declare const REQUEST_RETURN_ORDER: string;
 //# sourceMappingURL=requestReturn.graphql.d.ts.map

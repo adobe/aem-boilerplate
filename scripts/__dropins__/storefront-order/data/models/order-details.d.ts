@@ -93,6 +93,7 @@ export type OrderItemModel = {
     quantityShipped: number;
     requestQuantity: number;
     totalQuantity: number;
+    returnableQuantity?: number;
 };
 export type ShipmentItemsModel = {
     id: string;

@@ -1,0 +1,2 @@
+export declare const REQUEST_RETURN_ORDER_FRAGMENT = "\n  fragment OrderReturn on Return {\n    __typename\n    uid\n    status\n    number\n    created_at\n  }\n";
+//# sourceMappingURL=fragments.d.ts.map

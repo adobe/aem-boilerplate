@@ -1,10 +1,15 @@
 import { SlotProps } from '@dropins/tools/types/elsie/src/src/lib';
-import { OrderDataModel, OrderItemModel, OrdersReturnItemsPropsModel, OrdersReturnPropsModel, OrdersReturnTrackingProps, PageInfoProps } from '../data/models';
+import { OrderDataModel, OrderItemModel, OrdersReturnItemsPropsModel, OrdersReturnPropsModel, PageInfoProps } from '../data/models';
 
 export interface IconConfig {
     size: '12' | '16' | '24' | '32' | '64' | '80' | undefined;
     stroke: '4' | '1' | '2' | '3' | undefined;
 }
+type routeTrackingProps = {
+    carrier: string;
+    title: string;
+    number: string;
+};
 export interface ReturnsListProps {
     slots?: {
         ReturnItemsDetails?: SlotProps<{
@@ -28,7 +33,7 @@ export interface ReturnsListProps {
         token: string;
         orderNumber: string;
     }) => string;
-    routeTracking?: (track: OrdersReturnTrackingProps) => string;
+    routeTracking?: (track: routeTrackingProps) => string;
     routeReturnsList?: () => string;
     routeProductDetails?: (orderItem?: OrderItemModel) => string;
     withThumbnails?: boolean;
@@ -65,9 +70,10 @@ export interface OrderReturnsProps {
         orderNumber: string;
     }) => string;
     routeProductDetails?: (product: any) => string;
-    routeTracking?: (track: OrdersReturnTrackingProps) => string;
+    routeTracking?: (track: routeTrackingProps) => string;
 }
 export interface UseOrderReturnsProps {
     orderData?: OrderDataModel;
 }
+export {};
 //# sourceMappingURL=returnsList.types.d.ts.map

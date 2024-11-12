@@ -1724,4 +1724,1173 @@ export declare const translationsOrderCostSummaryMock: {
     discountSubtitle: string;
     total: string;
 };
+export declare const createReturnOrderMock: {
+    grandTotal: {
+        value: number;
+        currency: string;
+    };
+    totalGiftcard: {
+        currency: string;
+        value: number;
+    };
+    subtotal: {
+        currency: string;
+        value: number;
+    };
+    taxes: {
+        amount: {
+            currency: string;
+            value: number;
+        };
+        rate: number;
+        title: string;
+    }[];
+    totalTax: {
+        currency: string;
+        value: number;
+    };
+    totalShipping: {
+        currency: string;
+        value: number;
+    };
+    discounts: {
+        amount: {
+            currency: string;
+            value: number;
+        };
+        label: string;
+    }[];
+    email: string;
+    availableActions: string[];
+    status: string;
+    number: string;
+    id: string;
+    orderDate: string;
+    orderStatusChangeDate: string;
+    carrier: string;
+    shippingMethod: string;
+    isVirtual: boolean;
+    returns: {
+        createdReturnAt: string;
+        returnStatus: string;
+        token: string;
+        orderNumber: string;
+        returnNumber: string;
+        items: ({
+            uid: string;
+            quantity: number;
+            status: string;
+            requestQuantity: number;
+            type: string;
+            eligibleForReturn: boolean;
+            productSku: string;
+            productName: string;
+            productUrlKey: string;
+            quantityCanceled: number;
+            quantityInvoiced: number;
+            quantityOrdered: number;
+            quantityRefunded: number;
+            quantityReturned: number;
+            quantityShipped: number;
+            id: string;
+            discounted: boolean;
+            total: {
+                value: number;
+                currency: string;
+            };
+            totalInclTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+            priceInclTax: {
+                value: number;
+                currency: string;
+            };
+            totalQuantity: number;
+            regularPrice: {
+                value: number;
+                currency: string;
+            };
+            product: {
+                __typename: string;
+                canonicalUrl: string;
+                urlKey: string;
+                uid: string;
+                name: string;
+                sku: string;
+                onlyXLeftInStock: null;
+                stockStatus: string;
+                thumbnail: {
+                    label: string;
+                    url: string;
+                };
+                priceRange: {
+                    maximumPrice: {
+                        regularPrice: {
+                            currency: string;
+                            value: number;
+                        };
+                    };
+                };
+                id: string;
+                image: string;
+                productType: string;
+            };
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            configurableOptions: {
+                Size?: undefined;
+                Color?: undefined;
+            };
+            bundleOptions: null;
+            itemPrices: {
+                priceIncludingTax: {
+                    value: number;
+                    currency: string;
+                };
+                originalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                originalPriceIncludingTax: {
+                    value: number;
+                    currency: string;
+                };
+                price: {
+                    value: number;
+                    currency: string;
+                };
+            };
+            downloadableLinks: null;
+        } | {
+            uid: string;
+            quantity: number;
+            status: string;
+            requestQuantity: number;
+            type: string;
+            eligibleForReturn: boolean;
+            productSku: string;
+            productName: string;
+            productUrlKey: string;
+            quantityCanceled: number;
+            quantityInvoiced: number;
+            quantityOrdered: number;
+            quantityRefunded: number;
+            quantityReturned: number;
+            quantityShipped: number;
+            id: string;
+            discounted: boolean;
+            total: {
+                value: number;
+                currency: string;
+            };
+            totalInclTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+            priceInclTax: {
+                value: number;
+                currency: string;
+            };
+            totalQuantity: number;
+            regularPrice: {
+                value: number;
+                currency: string;
+            };
+            product: {
+                __typename: string;
+                canonicalUrl: string;
+                urlKey: string;
+                uid: string;
+                name: string;
+                sku: string;
+                onlyXLeftInStock: null;
+                stockStatus: string;
+                thumbnail: {
+                    label: string;
+                    url: string;
+                };
+                priceRange: {
+                    maximumPrice: {
+                        regularPrice: {
+                            currency: string;
+                            value: number;
+                        };
+                    };
+                };
+                id: string;
+                image: string;
+                productType: string;
+            };
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            configurableOptions: {
+                Size: string;
+                Color: string;
+            };
+            bundleOptions: null;
+            itemPrices: {
+                priceIncludingTax: {
+                    value: number;
+                    currency: string;
+                };
+                originalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                originalPriceIncludingTax: {
+                    value: number;
+                    currency: string;
+                };
+                price: {
+                    value: number;
+                    currency: string;
+                };
+            };
+            downloadableLinks: null;
+        })[];
+        tracking: never[];
+    }[];
+    itemsEligibleForReturn: ({
+        type: string;
+        eligibleForReturn: boolean;
+        productSku: string;
+        productName: string;
+        productUrlKey: string;
+        quantityCanceled: number;
+        quantityInvoiced: number;
+        quantityOrdered: number;
+        quantityRefunded: number;
+        quantityReturned: number;
+        quantityShipped: number;
+        id: string;
+        discounted: boolean;
+        total: {
+            value: number;
+            currency: string;
+        };
+        totalInclTax: {
+            value: number;
+            currency: string;
+        };
+        price: {
+            value: number;
+            currency: string;
+        };
+        priceInclTax: {
+            value: number;
+            currency: string;
+        };
+        totalQuantity: number;
+        regularPrice: {
+            value: number;
+            currency: string;
+        };
+        product: {
+            __typename: string;
+            canonicalUrl: string;
+            urlKey: string;
+            uid: string;
+            name: string;
+            sku: string;
+            onlyXLeftInStock: null;
+            stockStatus: string;
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            priceRange: {
+                maximumPrice: {
+                    regularPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+            };
+            id: string;
+            image: string;
+            productType: string;
+        };
+        thumbnail: {
+            label: string;
+            url: string;
+        };
+        configurableOptions: {
+            Color?: undefined;
+            Size?: undefined;
+        };
+        bundleOptions: null;
+        itemPrices: {
+            priceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            originalPrice: {
+                value: number;
+                currency: string;
+            };
+            originalPriceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+        };
+        downloadableLinks: null;
+    } | {
+        type: string;
+        eligibleForReturn: boolean;
+        productSku: string;
+        productName: string;
+        productUrlKey: string;
+        quantityCanceled: number;
+        quantityInvoiced: number;
+        quantityOrdered: number;
+        quantityRefunded: number;
+        quantityReturned: number;
+        quantityShipped: number;
+        id: string;
+        discounted: boolean;
+        total: {
+            value: number;
+            currency: string;
+        };
+        totalInclTax: {
+            value: number;
+            currency: string;
+        };
+        price: {
+            value: number;
+            currency: string;
+        };
+        priceInclTax: {
+            value: number;
+            currency: string;
+        };
+        totalQuantity: number;
+        regularPrice: {
+            value: number;
+            currency: string;
+        };
+        product: {
+            __typename: string;
+            canonicalUrl: string;
+            urlKey: string;
+            uid: string;
+            name: string;
+            sku: string;
+            onlyXLeftInStock: null;
+            stockStatus: string;
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            priceRange: {
+                maximumPrice: {
+                    regularPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+            };
+            id: string;
+            image: string;
+            productType: string;
+        };
+        thumbnail: {
+            label: string;
+            url: string;
+        };
+        configurableOptions: {
+            Color: string;
+            Size: string;
+        };
+        bundleOptions: null;
+        itemPrices: {
+            priceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            originalPrice: {
+                value: number;
+                currency: string;
+            };
+            originalPriceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+        };
+        downloadableLinks: null;
+    } | {
+        type: string;
+        eligibleForReturn: boolean;
+        productSku: string;
+        productName: string;
+        productUrlKey: string;
+        quantityCanceled: number;
+        quantityInvoiced: number;
+        quantityOrdered: number;
+        quantityRefunded: number;
+        quantityReturned: number;
+        quantityShipped: number;
+        id: string;
+        discounted: boolean;
+        total: {
+            value: number;
+            currency: string;
+        };
+        totalInclTax: {
+            value: number;
+            currency: string;
+        };
+        price: {
+            value: number;
+            currency: string;
+        };
+        priceInclTax: {
+            value: number;
+            currency: string;
+        };
+        totalQuantity: number;
+        regularPrice: {
+            value: number;
+            currency: string;
+        };
+        product: {
+            __typename: string;
+            canonicalUrl: string;
+            urlKey: string;
+            uid: string;
+            name: string;
+            sku: string;
+            onlyXLeftInStock: null;
+            stockStatus: string;
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            priceRange: {
+                maximumPrice: {
+                    regularPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+            };
+            id: string;
+            image: string;
+            productType: string;
+        };
+        thumbnail: {
+            label: string;
+            url: string;
+        };
+        configurableOptions: {
+            Color?: undefined;
+            Size?: undefined;
+        };
+        bundleOptions: {
+            'Sprite Stasis Ball': string;
+            'Sprite Foam Yoga Brick': string;
+            'Sprite Yoga Strap': string;
+            'Sprite Foam Roller': string;
+        };
+        itemPrices: {
+            priceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            originalPrice: {
+                value: number;
+                currency: string;
+            };
+            originalPriceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+        };
+        downloadableLinks: null;
+    })[];
+    coupons: never[];
+    shipments: {
+        id: string;
+        number: string;
+        tracking: never[];
+        comments: never[];
+        items: {
+            id: string;
+            productSku: string;
+            productName: string;
+            orderItem: {
+                __typename: string;
+                status: string;
+                productSku: string;
+                eligibleForReturn: boolean;
+                productName: string;
+                productUrlKey: string;
+                id: string;
+                quantityOrdered: number;
+                quantityShipped: number;
+                quantityCanceled: number;
+                quantityInvoiced: number;
+                quantityRefunded: number;
+                productSalePrice: {
+                    value: number;
+                    currency: string;
+                };
+                selectedOptions: {
+                    label: string;
+                    value: string;
+                }[];
+                product: {
+                    __typename: string;
+                    canonicalUrl: null;
+                    urlKey: string;
+                    uid: string;
+                    name: string;
+                    sku: string;
+                    onlyXLeftInStock: null;
+                    stockStatus: string;
+                    thumbnail: {
+                        label: string;
+                        url: string;
+                    };
+                    priceRange: {
+                        maximumPrice: {
+                            regularPrice: {
+                                currency: string;
+                                value: number;
+                            };
+                        };
+                    };
+                };
+                prices: {
+                    priceIncludingTax: {
+                        value: number;
+                        currency: string;
+                    };
+                    originalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    originalPriceIncludingTax: {
+                        value: number;
+                        currency: string;
+                    };
+                    price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
+        }[];
+    }[];
+    payments: {
+        code: string;
+        name: string;
+    }[];
+    shippingAddress: {
+        city: string;
+        company: null;
+        countryCode: string;
+        fax: null;
+        firstName: string;
+        lastName: string;
+        middleName: null;
+        postCode: string;
+        prefix: null;
+        region: string;
+        regionId: string;
+        street: string[];
+        suffix: null;
+        telephone: string;
+        vatId: string;
+    };
+    billingAddress: {
+        city: string;
+        company: null;
+        countryCode: string;
+        fax: null;
+        firstName: string;
+        lastName: string;
+        middleName: null;
+        postCode: string;
+        prefix: null;
+        region: string;
+        regionId: string;
+        street: string[];
+        suffix: null;
+        telephone: string;
+        vatId: string;
+    };
+    items: ({
+        type: string;
+        eligibleForReturn: boolean;
+        productSku: string;
+        productName: string;
+        productUrlKey: string;
+        quantityCanceled: number;
+        quantityInvoiced: number;
+        quantityOrdered: number;
+        quantityRefunded: number;
+        quantityReturned: number;
+        quantityShipped: number;
+        id: string;
+        discounted: boolean;
+        total: {
+            value: number;
+            currency: string;
+        };
+        totalInclTax: {
+            value: number;
+            currency: string;
+        };
+        price: {
+            value: number;
+            currency: string;
+        };
+        priceInclTax: {
+            value: number;
+            currency: string;
+        };
+        totalQuantity: number;
+        regularPrice: {
+            value: number;
+            currency: string;
+        };
+        product: {
+            __typename: string;
+            canonicalUrl: string;
+            urlKey: string;
+            uid: string;
+            name: string;
+            sku: string;
+            onlyXLeftInStock: null;
+            stockStatus: string;
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            priceRange: {
+                maximumPrice: {
+                    regularPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+            };
+            id: string;
+            image: string;
+            productType: string;
+        };
+        thumbnail: {
+            label: string;
+            url: string;
+        };
+        configurableOptions: {
+            Color?: undefined;
+            Size?: undefined;
+        };
+        bundleOptions: null;
+        itemPrices: {
+            priceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            originalPrice: {
+                value: number;
+                currency: string;
+            };
+            originalPriceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+        };
+        downloadableLinks: null;
+    } | {
+        type: string;
+        eligibleForReturn: boolean;
+        productSku: string;
+        productName: string;
+        productUrlKey: string;
+        quantityCanceled: number;
+        quantityInvoiced: number;
+        quantityOrdered: number;
+        quantityRefunded: number;
+        quantityReturned: number;
+        quantityShipped: number;
+        id: string;
+        discounted: boolean;
+        total: {
+            value: number;
+            currency: string;
+        };
+        totalInclTax: {
+            value: number;
+            currency: string;
+        };
+        price: {
+            value: number;
+            currency: string;
+        };
+        priceInclTax: {
+            value: number;
+            currency: string;
+        };
+        totalQuantity: number;
+        regularPrice: {
+            value: number;
+            currency: string;
+        };
+        product: {
+            __typename: string;
+            canonicalUrl: string;
+            urlKey: string;
+            uid: string;
+            name: string;
+            sku: string;
+            onlyXLeftInStock: null;
+            stockStatus: string;
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            priceRange: {
+                maximumPrice: {
+                    regularPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+            };
+            id: string;
+            image: string;
+            productType: string;
+        };
+        thumbnail: {
+            label: string;
+            url: string;
+        };
+        configurableOptions: {
+            Color: string;
+            Size: string;
+        };
+        bundleOptions: null;
+        itemPrices: {
+            priceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            originalPrice: {
+                value: number;
+                currency: string;
+            };
+            originalPriceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+        };
+        downloadableLinks: null;
+    } | {
+        type: string;
+        eligibleForReturn: boolean;
+        productSku: string;
+        productName: string;
+        productUrlKey: string;
+        quantityCanceled: number;
+        quantityInvoiced: number;
+        quantityOrdered: number;
+        quantityRefunded: number;
+        quantityReturned: number;
+        quantityShipped: number;
+        id: string;
+        discounted: boolean;
+        total: {
+            value: number;
+            currency: string;
+        };
+        totalInclTax: {
+            value: number;
+            currency: string;
+        };
+        price: {
+            value: number;
+            currency: string;
+        };
+        priceInclTax: {
+            value: number;
+            currency: string;
+        };
+        totalQuantity: number;
+        regularPrice: {
+            value: number;
+            currency: string;
+        };
+        product: {
+            __typename: string;
+            canonicalUrl: string;
+            urlKey: string;
+            uid: string;
+            name: string;
+            sku: string;
+            onlyXLeftInStock: null;
+            stockStatus: string;
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            priceRange: {
+                maximumPrice: {
+                    regularPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+            };
+            id: string;
+            image: string;
+            productType: string;
+        };
+        thumbnail: {
+            label: string;
+            url: string;
+        };
+        configurableOptions: {
+            Color?: undefined;
+            Size?: undefined;
+        };
+        bundleOptions: {
+            'Sprite Stasis Ball': string;
+            'Sprite Foam Yoga Brick': string;
+            'Sprite Yoga Strap': string;
+            'Sprite Foam Roller': string;
+        };
+        itemPrices: {
+            priceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            originalPrice: {
+                value: number;
+                currency: string;
+            };
+            originalPriceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+        };
+        downloadableLinks: null;
+    })[];
+    itemsEligibleForReturn2: ({
+        type: string;
+        eligibleForReturn: boolean;
+        productSku: string;
+        productName: string;
+        productUrlKey: string;
+        quantityCanceled: number;
+        quantityInvoiced: number;
+        quantityOrdered: number;
+        quantityRefunded: number;
+        quantityReturned: number;
+        quantityShipped: number;
+        id: string;
+        discounted: boolean;
+        total: {
+            value: number;
+            currency: string;
+        };
+        totalInclTax: {
+            value: number;
+            currency: string;
+        };
+        price: {
+            value: number;
+            currency: string;
+        };
+        priceInclTax: {
+            value: number;
+            currency: string;
+        };
+        totalQuantity: number;
+        regularPrice: {
+            value: number;
+            currency: string;
+        };
+        product: {
+            __typename: string;
+            canonicalUrl: string;
+            urlKey: string;
+            uid: string;
+            name: string;
+            sku: string;
+            onlyXLeftInStock: null;
+            stockStatus: string;
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            priceRange: {
+                maximumPrice: {
+                    regularPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+            };
+            id: string;
+            image: string;
+            productType: string;
+        };
+        thumbnail: {
+            label: string;
+            url: string;
+        };
+        configurableOptions: {
+            Color?: undefined;
+            Size?: undefined;
+        };
+        bundleOptions: null;
+        itemPrices: {
+            priceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            originalPrice: {
+                value: number;
+                currency: string;
+            };
+            originalPriceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+        };
+        downloadableLinks: null;
+    } | {
+        type: string;
+        eligibleForReturn: boolean;
+        productSku: string;
+        productName: string;
+        productUrlKey: string;
+        quantityCanceled: number;
+        quantityInvoiced: number;
+        quantityOrdered: number;
+        quantityRefunded: number;
+        quantityReturned: number;
+        quantityShipped: number;
+        id: string;
+        discounted: boolean;
+        total: {
+            value: number;
+            currency: string;
+        };
+        totalInclTax: {
+            value: number;
+            currency: string;
+        };
+        price: {
+            value: number;
+            currency: string;
+        };
+        priceInclTax: {
+            value: number;
+            currency: string;
+        };
+        totalQuantity: number;
+        regularPrice: {
+            value: number;
+            currency: string;
+        };
+        product: {
+            __typename: string;
+            canonicalUrl: string;
+            urlKey: string;
+            uid: string;
+            name: string;
+            sku: string;
+            onlyXLeftInStock: null;
+            stockStatus: string;
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            priceRange: {
+                maximumPrice: {
+                    regularPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+            };
+            id: string;
+            image: string;
+            productType: string;
+        };
+        thumbnail: {
+            label: string;
+            url: string;
+        };
+        configurableOptions: {
+            Color: string;
+            Size: string;
+        };
+        bundleOptions: null;
+        itemPrices: {
+            priceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            originalPrice: {
+                value: number;
+                currency: string;
+            };
+            originalPriceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+        };
+        downloadableLinks: null;
+    } | {
+        type: string;
+        eligibleForReturn: boolean;
+        productSku: string;
+        productName: string;
+        productUrlKey: string;
+        quantityCanceled: number;
+        quantityInvoiced: number;
+        quantityOrdered: number;
+        quantityRefunded: number;
+        quantityReturned: number;
+        quantityShipped: number;
+        id: string;
+        discounted: boolean;
+        total: {
+            value: number;
+            currency: string;
+        };
+        totalInclTax: {
+            value: number;
+            currency: string;
+        };
+        price: {
+            value: number;
+            currency: string;
+        };
+        priceInclTax: {
+            value: number;
+            currency: string;
+        };
+        totalQuantity: number;
+        regularPrice: {
+            value: number;
+            currency: string;
+        };
+        product: {
+            __typename: string;
+            canonicalUrl: string;
+            urlKey: string;
+            uid: string;
+            name: string;
+            sku: string;
+            onlyXLeftInStock: null;
+            stockStatus: string;
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            priceRange: {
+                maximumPrice: {
+                    regularPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+            };
+            id: string;
+            image: string;
+            productType: string;
+        };
+        thumbnail: {
+            label: string;
+            url: string;
+        };
+        configurableOptions: {
+            Color?: undefined;
+            Size?: undefined;
+        };
+        bundleOptions: {
+            'Sprite Stasis Ball': string;
+            'Sprite Foam Yoga Brick': string;
+            'Sprite Yoga Strap': string;
+            'Sprite Foam Roller': string;
+        };
+        itemPrices: {
+            priceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            originalPrice: {
+                value: number;
+                currency: string;
+            };
+            originalPriceIncludingTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+        };
+        downloadableLinks: null;
+    })[];
+    totalQuantity: number;
+    shipping: {
+        amount: number;
+        currency: string;
+        code: string;
+    };
+    returnNumber: string;
+};
 //# sourceMappingURL=mock.config.d.ts.map

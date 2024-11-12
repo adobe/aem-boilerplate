@@ -8,4 +8,4 @@ import{h}from"./network-error.js";import{f,h as i}from"./fetch-graphql.js";impor
      email
     }
   }
-`,C=async()=>await f(E,{method:"GET",cache:"force-cache"}).then(t=>{var a;return(a=t.errors)!=null&&a.length?i(t.errors):g(t)}).catch(h);export{C as a,B as g,k as t};
+`,C=async()=>await f(E,{method:"GET",cache:"force-cache"}).then(t=>{var a;return(a=t.errors)!=null&&a.length?i(t.errors):g(t)}).catch(h);export{B as a,C as g,k as t};

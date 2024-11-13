@@ -28,7 +28,7 @@ export interface FieldsProps {
     defaultValue: string | boolean | number;
     entityType: string;
     required: boolean;
-    is_unique: boolean;
+    isUnique: boolean;
     label: string;
     orderNumber: number;
     options?: {

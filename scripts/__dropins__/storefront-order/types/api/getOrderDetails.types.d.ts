@@ -246,6 +246,14 @@ export interface ErrorProps {
         message?: string;
     }[];
 }
+type GetOrderDetailsByParams<T extends QueryType> = {
+    orderId?: string;
+    returnRef?: string;
+    queryType: T;
+    returnsPageSize: number;
+};
+export interface GetOrderDetailsByIdProps extends GetOrderDetailsByParams<QueryType> {
+}
 export interface OrdersResponse extends ErrorProps {
     data?: {
         customer?: {

@@ -10,6 +10,8 @@ import {
   ORDER_DETAILS_PATH,
   CUSTOMER_RETURN_DETAILS_PATH,
   RETURN_DETAILS_PATH,
+  CUSTOMER_CREATE_RETURN_PATH,
+  CREATE_RETURN_PATH,
   CUSTOMER_ORDERS_PATH,
   ORDER_STATUS_PATH,
   CUSTOMER_PATH,
@@ -26,7 +28,9 @@ await initializeDropin(async () => {
   if (pathname === ORDER_DETAILS_PATH
     || pathname === CUSTOMER_ORDER_DETAILS_PATH
     || pathname === RETURN_DETAILS_PATH
-    || pathname === CUSTOMER_RETURN_DETAILS_PATH) {
+    || pathname === CUSTOMER_RETURN_DETAILS_PATH
+    || pathname === CREATE_RETURN_PATH
+    || pathname === CUSTOMER_CREATE_RETURN_PATH) {
     await handleUserOrdersRedirects(pathname, isAccountPage, orderRef, returnRef, isTokenProvided);
   }
 })();

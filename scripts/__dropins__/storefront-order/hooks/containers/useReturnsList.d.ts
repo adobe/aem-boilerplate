@@ -1,6 +1,7 @@
 import { OrdersReturnPropsModel } from '../../data/models';
+import { UseReturnsListProps } from '../../types';
 
-export declare const useReturnsList: () => {
+export declare const useReturnsList: ({ returnPageSize }: UseReturnsListProps) => {
     pageInfo: {
         totalPages: number;
         currentPage: number;

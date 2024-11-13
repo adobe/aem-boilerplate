@@ -1,7 +1,7 @@
 /*! Copyright 2024 Adobe
 All Rights Reserved. */
-import{Initializer as I}from"@dropins/tools/lib.js";import{events as d}from"@dropins/tools/event-bus.js";import{f as n,h as m}from"./chunks/fetch-graphql.js";import{g as P,r as U,s as Y,a as q,b as Q}from"./chunks/fetch-graphql.js";import{h as l}from"./chunks/network-error.js";import{P as u,a as _,G as c,O as p,B as O,R as h,c as T}from"./chunks/transform-order-details.js";import{O as D,A as R}from"./chunks/getGuestOrder.graphql.js";import{t as G}from"./chunks/getCustomer.js";import{a as H,g as K}from"./chunks/getCustomer.js";import{g as J}from"./chunks/getAttributesForm.js";import{g as W}from"./chunks/getStoreConfig.js";import{g as Z}from"./chunks/getCustomerOrdersReturn.js";import{c as re,r as te}from"./chunks/requestGuestOrderCancel.js";import{r as se}from"./chunks/reorderItems.js";import"@dropins/tools/fetch-graphql.js";import"./chunks/convertCase.js";const b=`
-query ORDER_BY_NUMBER($orderNumber: String!) {
+import{Initializer as I}from"@dropins/tools/lib.js";import{events as o}from"@dropins/tools/event-bus.js";import{f as n,h as m}from"./chunks/fetch-graphql.js";import{g as U,r as Y,s as q,a as Q,b as H}from"./chunks/fetch-graphql.js";import{h as l}from"./chunks/network-error.js";import{P as u,a as _,G as p,O as c,B as O,R as D,c as b}from"./chunks/transform-order-details.js";import{O as R,A as h}from"./chunks/getGuestOrder.graphql.js";import{t as T}from"./chunks/getCustomer.js";import{g as j,a as J}from"./chunks/getCustomer.js";import{g as W}from"./chunks/getAttributesForm.js";import{g as Z}from"./chunks/getStoreConfig.js";import{g as re}from"./chunks/getCustomerOrdersReturn.js";import{g as ae,r as se}from"./chunks/requestReturn.js";import{c as oe,r as ie}from"./chunks/requestGuestOrderCancel.js";import{r as me}from"./chunks/reorderItems.js";import"@dropins/tools/fetch-graphql.js";import"./chunks/convertCase.js";import"./chunks/transform-attributes-form.js";const G=`
+query ORDER_BY_NUMBER($orderNumber: String!, $pageSize: Int) {
  customer {
     orders(
       filter: { number: { eq: $orderNumber } }
@@ -17,8 +17,27 @@ query ORDER_BY_NUMBER($orderNumber: String!) {
         carrier
         shipping_method
         is_virtual
-        returns {
+        returns(pageSize: $pageSize) {
           ...OrderReturns
+        }
+        items_eligible_for_return {
+          ...OrderItemDetails
+          ... on BundleOrderItem {
+            ...BundleOrderItemDetails
+          }
+          ... on GiftCardOrderItem {
+            ...GiftCardDetails
+            product {
+              ...ProductDetails
+            }
+          }
+          ... on DownloadableOrderItem {
+            product_name
+            downloadable_links {
+              sort_order
+              title
+            }
+          }
         }
         applied_coupons {
           code
@@ -88,13 +107,13 @@ query ORDER_BY_NUMBER($orderNumber: String!) {
 }
 ${u}
 ${_}
-${c}
 ${p}
+${c}
 ${O}
-${D}
 ${R}
 ${h}
-`,f=async(e,r,t)=>await n(b,{method:"GET",cache:"force-cache",variables:{orderNumber:e}}).then(a=>{var s;return(s=a.errors)!=null&&s.length?m(a.errors):T(t??"orderData",a,r)}).catch(l),y=`
+${D}
+`,y=async({orderId:e,returnRef:r,queryType:t,returnsPageSize:a=50})=>await n(G,{method:"GET",cache:"force-cache",variables:{orderNumber:e,pageSize:a}}).then(s=>{var d;return(d=s.errors)!=null&&d.length?m(s.errors):b(t??"orderData",s,r)}).catch(l),f=`
 query ORDER_BY_TOKEN($token: String!) {
   guestOrderByToken(input: { token: $token }) {
     email
@@ -110,7 +129,10 @@ query ORDER_BY_TOKEN($token: String!) {
     gift_receipt_included
     available_actions
     is_virtual
-    returns {
+    items_eligible_for_return {
+      ...OrderItemDetails
+    }
+    returns(pageSize: 50) {
       ...OrderReturns
     }
     payment_methods {
@@ -182,10 +204,10 @@ query ORDER_BY_TOKEN($token: String!) {
 }
 ${u}
 ${_}
-${c}
 ${p}
+${c}
 ${O}
-${D}
 ${R}
 ${h}
-`,A=async(e,r)=>await n(y,{method:"GET",cache:"no-cache",variables:{token:e}}).then(t=>{var a;return(a=t.errors)!=null&&a.length?m(t.errors):G(t,r)}).catch(l),$=async e=>{var i;const r=(e==null?void 0:e.orderRef)??"",t=(e==null?void 0:e.returnRef)??"",a=r&&typeof(e==null?void 0:e.orderRef)=="string"&&((i=e==null?void 0:e.orderRef)==null?void 0:i.length)>20,s=(e==null?void 0:e.orderData)??null;if(s){d.emit("order/data",{...s,returnNumber:t});return}if(!r){console.error("Order Token or number not received.");return}const o=a?await A(r,t):await f(r,t,"orderData");o?d.emit("order/data",{...o,returnNumber:t}):d.emit("order/error",{source:"order",type:"network",error:"The data was not received."})},E=new I({init:async e=>{const r={};E.config.setConfig({...r,...e}),$(e).catch(console.error)},listeners:()=>[]}),v=E.config;export{re as cancelOrder,v as config,n as fetchGraphQl,J as getAttributesForm,P as getConfig,H as getCustomer,Z as getCustomerOrdersReturn,K as getGuestOrder,f as getOrderDetailsById,W as getStoreConfig,A as guestOrderByToken,E as initialize,U as removeFetchGraphQlHeader,se as reorderItems,te as requestGuestOrderCancel,Y as setEndpoint,q as setFetchGraphQlHeader,Q as setFetchGraphQlHeaders};
+${D}
+`,$=async(e,r)=>await n(f,{method:"GET",cache:"no-cache",variables:{token:e}}).then(t=>{var a;return(a=t.errors)!=null&&a.length?m(t.errors):T(t,r)}).catch(l),A="orderData",C=async e=>{var i;const r=typeof(e==null?void 0:e.orderRef)=="string"?e==null?void 0:e.orderRef:"",t=typeof(e==null?void 0:e.returnRef)=="string"?e==null?void 0:e.returnRef:"",a=r&&typeof(e==null?void 0:e.orderRef)=="string"&&((i=e==null?void 0:e.orderRef)==null?void 0:i.length)>20,s=(e==null?void 0:e.orderData)??null;if(s){o.emit("order/data",{...s,returnNumber:t});return}if(!r){console.error("Order Token or number not received.");return}const d=a?await $(r,t):await y({orderId:r,returnRef:t,queryType:A});d?o.emit("order/data",{...d,returnNumber:t}):o.emit("order/error",{source:"order",type:"network",error:"The data was not received."})},E=new I({init:async e=>{const r={};E.config.setConfig({...r,...e}),C(e).catch(console.error)},listeners:()=>[]}),x=E.config;export{oe as cancelOrder,x as config,n as fetchGraphQl,W as getAttributesForm,ae as getAttributesList,U as getConfig,j as getCustomer,re as getCustomerOrdersReturn,J as getGuestOrder,y as getOrderDetailsById,Z as getStoreConfig,$ as guestOrderByToken,E as initialize,Y as removeFetchGraphQlHeader,me as reorderItems,ie as requestGuestOrderCancel,se as requestReturn,q as setEndpoint,Q as setFetchGraphQlHeader,H as setFetchGraphQlHeaders};

@@ -34,6 +34,7 @@ import CartSummaryList from '@dropins/storefront-cart/containers/CartSummaryList
 import EmptyCart from '@dropins/storefront-cart/containers/EmptyCart.js';
 import { OrderSummary } from '@dropins/storefront-cart/containers/OrderSummary.js';
 import { render as CartProvider } from '@dropins/storefront-cart/render.js';
+import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
 
 // Checkout Dropin
 import * as checkoutApi from '@dropins/storefront-checkout/api.js';
@@ -277,6 +278,13 @@ export default async function decorate(block) {
           const estimateShippingForm = document.createElement('div');
           CheckoutProvider.render(EstimateShipping)(estimateShippingForm);
           esCtx.appendChild(estimateShippingForm);
+        },
+        Coupons: (ctx) => {
+          const coupons = document.createElement('div');
+
+          CartProvider.render(Coupons)(coupons);
+
+          ctx.appendChild(coupons);
         },
       },
     })($orderSummary),

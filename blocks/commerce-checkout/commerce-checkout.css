@@ -116,6 +116,15 @@
   padding: var(--spacing-medium);
 }
 
+/* Order Summary Coupon */
+.dropin-accordion-section__heading {
+  margin: var(--spacing-medium) auto;
+}
+
+.cart-coupons__accordion {
+  margin-top: var(--spacing-xsmall);
+}
+
 /* temporary fix to hide the default cart heading */
 [data-testid='default-cart-heading'] {
   display: none;

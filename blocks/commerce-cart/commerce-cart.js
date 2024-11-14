@@ -7,6 +7,7 @@ import CartSummaryList from '@dropins/storefront-cart/containers/CartSummaryList
 import OrderSummary from '@dropins/storefront-cart/containers/OrderSummary.js';
 import EstimateShipping from '@dropins/storefront-cart/containers/EstimateShipping.js';
 import EmptyCart from '@dropins/storefront-cart/containers/EmptyCart.js';
+import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
 
 // Initializers
 import '../../scripts/initializers/cart.js';
@@ -89,6 +90,13 @@ export default async function decorate(block) {
             await provider.render(EstimateShipping, {})(wrapper);
             ctx.replaceWith(wrapper);
           }
+        },
+        Coupons: (ctx) => {
+          const coupons = document.createElement('div');
+
+          provider.render(Coupons)(coupons);
+
+          ctx.appendChild(coupons);
         },
       },
     })($summary),

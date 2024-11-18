@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /drafts/
+Disallow: /enrichment/
+Disallow: /tools/
+Disallow: /plugins/experimentation/
+
+Sitemap: https://www.aemshop.net/sitemap.xml

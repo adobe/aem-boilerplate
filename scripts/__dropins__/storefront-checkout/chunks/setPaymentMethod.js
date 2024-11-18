@@ -1,6 +1,6 @@
 /*! Copyright 2024 Adobe
 All Rights Reserved. */
-import{M as r,a as o,d as e}from"./fetch-graphql.js";import{CHECKOUT_DATA_FRAGMENT as n}from"../fragments.js";import{s}from"./store-config.js";import{t as i}from"./synchronizeCheckout.js";import"./ServerErrorSignal.js";import"@dropins/tools/event-bus.js";import"@dropins/tools/lib.js";const m=`
+import{s as r,M as o,e as n,d as s}from"./fetch-graphql.js";import{CHECKOUT_DATA_FRAGMENT as i}from"../fragments.js";import{b as m}from"./synchronizeCheckout.js";import"./store-config.js";import"./ServerErrorSignal.js";import{events as d}from"@dropins/tools/event-bus.js";import"@dropins/tools/lib.js";const p=`
   mutation setPaymentMethod($cartId: String!, $paymentMethod: String!) {
     setPaymentMethodOnCart(
       input: { cart_id: $cartId, payment_method: { code: $paymentMethod } }
@@ -11,5 +11,5 @@ import{M as r,a as o,d as e}from"./fetch-graphql.js";import{CHECKOUT_DATA_FRAGME
     }
   }
 
-  ${n}
-`,f=async t=>{const a=s.cartId;if(!a)throw new r;if(!t)throw new o;return await e({type:"mutation",query:m,options:{variables:{cartId:a,paymentMethod:t}},path:"setPaymentMethodOnCart.cart",signalType:"cart",transformer:i})};export{f as s};
+  ${i}
+`,A=async t=>{const a=r.cartId;if(!a)throw new o;if(!t)throw new n;const e=await s({type:"mutation",query:p,options:{variables:{cartId:a,paymentMethod:t}},path:"setPaymentMethodOnCart.cart",signalType:"cart",transformer:m});return d.emit("checkout/updated",e||null),e};export{A as s};

@@ -1,5 +1,4 @@
 /* stylelint-disable selector-class-pattern */
-
 .checkout__content {
   display: grid;
   grid-template-columns: 1fr;
@@ -72,9 +71,9 @@
 
 /* Integrate place order button into Order Summary - mobile */
 .checkout__place-order {
-    grid-column: unset;
-    justify-items: unset;
-    margin-top: calc(var(--spacing-big) * -1);
+  grid-column: unset;
+  justify-items: unset;
+  margin-top: calc(var(--spacing-big) * -1);
 }
 
 /* Hide the place order button when the cart is empty or there is a server error */
@@ -114,15 +113,6 @@
 /* Cart Summary */
 .checkout__block .cart-cart-summary-list {
   padding: var(--spacing-medium);
-}
-
-/* Order Summary Coupon */
-.dropin-accordion-section__heading {
-  margin: var(--spacing-medium) auto;
-}
-
-.cart-coupons__accordion {
-  margin-top: var(--spacing-xsmall);
 }
 
 /* temporary fix to hide the default cart heading */
@@ -306,8 +296,7 @@
 
   .checkout__place-order {
     display: grid;
-    grid-column: 1 / span 12;
-    justify-items: center;
+    grid-column: 1 / span 7;
     margin-top: 0;
   }
 }

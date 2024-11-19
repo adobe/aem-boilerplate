@@ -1,6 +1,6 @@
 /*! Copyright 2024 Adobe
 All Rights Reserved. */
-import"./store-config.js";import"./ServerErrorSignal.js";import{f as e,i as r,l as o}from"./fetch-graphql.js";import"@dropins/tools/lib.js";import"@dropins/tools/event-bus.js";const s=i=>!!(i!=null&&i.is_email_available),t=`
+import{c as e,j as r,m as o}from"./fetch-graphql.js";import"./store-config.js";import"./ServerErrorSignal.js";import"@dropins/tools/lib.js";import"@dropins/tools/event-bus.js";const s=i=>!!(i!=null&&i.is_email_available),t=`
   query isEmailAvailable($email: String!) {
     isEmailAvailable(email: $email) {
       is_email_available

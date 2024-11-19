@@ -6,4 +6,8 @@ overrideGQLOperations([
     npm: '@dropins/storefront-cart',
     operations: [],
   },
+  {
+    npm: '@dropins/storefront-checkout',
+    operations: [],
+  },
 ]);

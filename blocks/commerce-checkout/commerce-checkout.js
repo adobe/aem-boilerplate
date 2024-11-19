@@ -32,15 +32,16 @@ import { render as AccountProvider } from '@dropins/storefront-account/render.js
 import * as cartApi from '@dropins/storefront-cart/api.js';
 import CartSummaryList from '@dropins/storefront-cart/containers/CartSummaryList.js';
 import EmptyCart from '@dropins/storefront-cart/containers/EmptyCart.js';
-import { OrderSummary } from '@dropins/storefront-cart/containers/OrderSummary.js';
-import { render as CartProvider } from '@dropins/storefront-cart/render.js';
+import OrderSummary from '@dropins/storefront-cart/containers/OrderSummary.js';
 import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
+import { render as CartProvider } from '@dropins/storefront-cart/render.js';
 
 // Checkout Dropin
 import * as checkoutApi from '@dropins/storefront-checkout/api.js';
 import BillToShippingAddress from '@dropins/storefront-checkout/containers/BillToShippingAddress.js';
 import EstimateShipping from '@dropins/storefront-checkout/containers/EstimateShipping.js';
 import LoginForm from '@dropins/storefront-checkout/containers/LoginForm.js';
+import MergedCartBanner from '@dropins/storefront-checkout/containers/MergedCartBanner.js';
 import OrderConfirmationHeader from '@dropins/storefront-checkout/containers/OrderConfirmationHeader.js';
 import OutOfStock from '@dropins/storefront-checkout/containers/OutOfStock.js';
 import PaymentMethods from '@dropins/storefront-checkout/containers/PaymentMethods.js';
@@ -69,13 +70,11 @@ import {
   setAddressOnCart,
 } from '../../scripts/checkout.js';
 
-// Initializers
-import '../../scripts/initializers/account.js';
-import '../../scripts/initializers/auth.js';
-import '../../scripts/initializers/cart.js';
-import '../../scripts/initializers/checkout.js';
-
 export default async function decorate(block) {
+  // Initializers
+  import('../../scripts/initializers/account.js');
+  import('../../scripts/initializers/checkout.js');
+
   const DEBOUNCE_TIME = 1000;
   const LOGIN_FORM_NAME = 'login-form';
   const SHIPPING_FORM_NAME = 'selectedShippingAddress';
@@ -90,6 +89,7 @@ export default async function decorate(block) {
   const checkoutFragment = document.createRange().createContextualFragment(`
     <div class="checkout__wrapper">
       <div class="checkout__loader"></div>
+      <div class="checkout__merged-cart-banner"></div>
       <div class="checkout__content">
         <div class="checkout__main">
           <div class="checkout__block checkout__heading"></div>
@@ -104,16 +104,20 @@ export default async function decorate(block) {
           <div class="checkout__block checkout__billing-form"></div>
         </div>
         <div class="checkout__aside">
-          <div class="checkout__block checkout__block--aside checkout__order-summary"></div>
-          <div class="checkout__block checkout__block--aside checkout__cart-summary"></div>
+          <div class="checkout__block checkout__order-summary"></div>
+          <div class="checkout__block checkout__cart-summary"></div>
         </div>
-        <div class="checkout__place-order"></div>
+        <div class="checkout__block checkout__place-order"></div>
       </div>
     </div>
   `);
 
   const $content = checkoutFragment.querySelector('.checkout__content');
   const $loader = checkoutFragment.querySelector('.checkout__loader');
+  const $mergedCartBanner = checkoutFragment.querySelector(
+    '.checkout__merged-cart-banner',
+  );
+
   const $heading = checkoutFragment.querySelector('.checkout__heading');
   const $emptyCart = checkoutFragment.querySelector('.checkout__empty-cart');
   const $serverError = checkoutFragment.querySelector(
@@ -178,6 +182,7 @@ export default async function decorate(block) {
   };
 
   const [
+    _mergedCartBanner,
     _heading,
     _serverError,
     _outOfStock,
@@ -191,6 +196,8 @@ export default async function decorate(block) {
     _cartSummary,
     _placeOrder,
   ] = await Promise.all([
+    CheckoutProvider.render(MergedCartBanner)($mergedCartBanner),
+
     UI.render(Header, {
       title: 'Checkout',
       size: 'large',
@@ -246,12 +253,11 @@ export default async function decorate(block) {
       hideOnVirtualCart: true,
       onChange: (checked) => {
         $billingForm.style.display = checked ? 'none' : 'block';
-
-        if (!checked && billingFormRef.current) {
-          const isDataValid = billingFormRef.current.handleValidationSubmit();
+        if (!checked && billingFormRef?.current) {
+          const { formData, isDataValid } = billingFormRef.current;
 
           setAddressOnCart(
-            { data: billingFormRef.current.formData, isDataValid },
+            { data: formData, isDataValid },
             checkoutApi.setBillingAddress,
           );
         }
@@ -364,7 +370,7 @@ export default async function decorate(block) {
         return success;
       },
       onPlaceOrder: async () => {
-        displayOverlaySpinner();
+        await displayOverlaySpinner();
 
         try {
           await checkoutApi.placeOrder();
@@ -372,7 +378,7 @@ export default async function decorate(block) {
           console.error(error);
           throw error;
         } finally {
-          removeOverlaySpinner();
+          await removeOverlaySpinner();
         }
       },
     })($placeOrder),
@@ -777,7 +783,7 @@ export default async function decorate(block) {
     if (data.isGuest) {
       await displayGuestAddressForms(data);
     } else {
-      removeOverlaySpinner();
+      await removeOverlaySpinner();
       await displayCustomerAddressForms(data);
     }
   };

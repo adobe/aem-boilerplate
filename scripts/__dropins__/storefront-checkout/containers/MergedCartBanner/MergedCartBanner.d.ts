@@ -1,5 +1,7 @@
 import { AlertBannerProps } from '@dropins/tools/types/elsie/src/components';
-import { Container } from '@dropins/tools/types/elsie/src/lib/types';
 
-export declare const MergedCartBanner: Container<AlertBannerProps>;
+export declare const MergedCartBanner: {
+    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: import('../../hocs').ConditionalProps & AlertBannerProps): import("preact/compat").JSX.Element;
+    displayName: string;
+};
 //# sourceMappingURL=MergedCartBanner.d.ts.map

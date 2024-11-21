@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import {
   Component, Fragment, h, render,
-} from '../../scripts/preact.js';
+} from '@dropins/tools/preact.js';
 
 import htm from '../../scripts/htm.js';
 import Carousel from './ProductDetailsCarousel.js';

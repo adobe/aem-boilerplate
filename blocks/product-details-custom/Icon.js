@@ -1,7 +1,7 @@
 import {
   h, Component, Fragment,
   // eslint-disable-next-line import/no-unresolved,import/extensions
-} from '../../scripts/preact.js';
+} from '@dropins/tools/preact.js';
 // eslint-disable-next-line import/no-unresolved,import/extensions
 import htm from '../../scripts/htm.js';
 

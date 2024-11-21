@@ -1,7 +1,7 @@
 /* eslint-disable object-curly-spacing, class-methods-use-this */
 import {
   h, Component, Fragment,
-} from '../../scripts/preact.js';
+} from '@dropins/tools/preact.js';
 import htm from '../../scripts/htm.js';
 import {
   renderPrice,

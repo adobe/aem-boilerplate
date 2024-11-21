@@ -152,7 +152,7 @@ async function loadEager(doc) {
     preloadFile('/scripts/__dropins__/storefront-pdp/chunks/getRefinedProduct.js', 'script');
   } else if (document.body.querySelector('main .product-details-custom')) {
     pageType = 'Product';
-    preloadFile('/scripts/preact.js', 'script');
+    preloadFile('/scripts/__dropins__/tools/preact.js', 'script');
     preloadFile('/scripts/htm.js', 'script');
     preloadFile('/blocks/product-details-custom/ProductDetailsCarousel.js', 'script');
     preloadFile('/blocks/product-details-custom/ProductDetailsSidebar.js', 'script');

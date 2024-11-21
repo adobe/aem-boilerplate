@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle, camelcase, max-classes-per-file */
 import {
   h, Component, Fragment, render,
-} from '../preact.js';
+} from '@dropins/tools/preact.js';
 import htm from '../htm.js';
 
 import { store } from './api.js';

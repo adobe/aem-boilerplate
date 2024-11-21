@@ -1,4 +1,4 @@
-import { Component, Fragment, h } from '../../scripts/preact.js';
+import { Component, Fragment, h } from '@dropins/tools/preact.js';
 import htm from '../../scripts/htm.js';
 import Icon from './Icon.js';
 import { renderPrice } from '../../scripts/commerce.js';

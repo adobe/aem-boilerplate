@@ -45,7 +45,7 @@ export type OrderItemModel = {
     productName?: string;
     productUrlKey?: string;
     regularPrice?: MoneyProps;
-    price?: MoneyProps;
+    price: MoneyProps;
     product?: OrderItemProductModel;
     selectedOptions?: Array<{
         label: string;
@@ -94,11 +94,13 @@ export type OrderItemModel = {
     requestQuantity: number;
     totalQuantity: number;
     returnableQuantity?: number;
+    quantityReturnRequested: number;
 };
 export type ShipmentItemsModel = {
     id: string;
     productSku: string;
     productName: string;
+    quantityShipped: number;
     orderItem: OrderItemModel;
 };
 export type ShipmentsTracingModel = {
@@ -121,7 +123,7 @@ export type OrderDataModel = {
     id: string;
     orderStatusChangeDate?: string;
     number: string;
-    email?: string;
+    email: string;
     token?: string;
     status: string;
     isVirtual: boolean;
@@ -129,7 +131,6 @@ export type OrderDataModel = {
     shippingMethod?: string;
     carrier?: string;
     orderDate: string;
-    itemsEligibleForReturn?: OrderItemModel[];
     returns: OrdersReturnPropsModel[];
     discounts: {
         amount: MoneyProps;

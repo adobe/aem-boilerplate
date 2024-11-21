@@ -22,6 +22,7 @@ await initializeDropin(async () => {
   const isAccountPage = pathname.includes(CUSTOMER_PATH);
   const orderRef = searchParams.get('orderRef');
   const returnRef = searchParams.get('returnRef');
+  const orderNumber = searchParams.get('orderNumber');
   const isTokenProvided = orderRef && orderRef.length > 20;
   const labels = await fetchPlaceholders();
   const langDefinitions = {
@@ -34,15 +35,18 @@ await initializeDropin(async () => {
     return;
   }
 
-  // Handle redirects for user details pages
-  if (pathname === ORDER_DETAILS_PATH
-    || pathname === CUSTOMER_ORDER_DETAILS_PATH
-    || pathname === RETURN_DETAILS_PATH
-    || pathname === CUSTOMER_RETURN_DETAILS_PATH
-    || pathname === CREATE_RETURN_PATH
-    || pathname === CUSTOMER_CREATE_RETURN_PATH
-    || pathname === SALES_GUEST_VIEW_PATH
-    || pathname === SALES_ORDER_VIEW_PATH) {
+  const pathsRequiringRedirects = [
+    ORDER_DETAILS_PATH,
+    CUSTOMER_ORDER_DETAILS_PATH,
+    RETURN_DETAILS_PATH,
+    CUSTOMER_RETURN_DETAILS_PATH,
+    CREATE_RETURN_PATH,
+    CUSTOMER_CREATE_RETURN_PATH,
+    SALES_GUEST_VIEW_PATH,
+    SALES_ORDER_VIEW_PATH,
+  ];
+
+  if (pathsRequiringRedirects.includes(pathname)) {
     await handleUserOrdersRedirects(
       pathname,
       isAccountPage,
@@ -50,6 +54,7 @@ await initializeDropin(async () => {
       returnRef,
       isTokenProvided,
       langDefinitions,
+      orderNumber,
     );
     return;
   }
@@ -68,6 +73,7 @@ async function handleUserOrdersRedirects(
   returnRef,
   isTokenProvided,
   langDefinitions,
+  orderNumber,
 ) {
   let targetPath = null;
 
@@ -75,7 +81,7 @@ async function handleUserOrdersRedirects(
     if (checkIsAuthenticated()) {
       window.location.href = CUSTOMER_ORDERS_PATH;
     } else if (isTokenProvided) {
-      window.location.href = ORDER_STATUS_PATH;
+      window.location.href = orderNumber ? `${ORDER_STATUS_PATH}?orderRef=${orderNumber}` : ORDER_STATUS_PATH;
     } else {
       window.location.href = `${ORDER_STATUS_PATH}?orderRef=${orderRef}`;
     }

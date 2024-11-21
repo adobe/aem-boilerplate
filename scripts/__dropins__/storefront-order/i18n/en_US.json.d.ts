@@ -4,6 +4,9 @@ declare const _default: {
       "headerText": "Return items",
       "downloadableCount": "Files",
       "returnedItems": "Returned items:",
+      "configurationsList": {
+        "quantity": "Quantity"
+      },
       "stockStatus": {
         "inStock": "In stock",
         "outOfStock": "Out of stock"

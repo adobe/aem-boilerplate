@@ -27,8 +27,18 @@ export interface ShippingStatusProps extends HTMLAttributes<HTMLDivElement> {
 export interface UseShippingStatusProps {
     orderData?: OrderDataModel;
 }
-export interface ShippingStatusCardProps extends ShippingStatusProps {
+export interface ShippingStatusCardProps {
     translations: Record<string, string>;
+    slots?: {
+        DeliveryTimeLine?: SlotProps;
+        DeliveryTrackActions?: SlotProps;
+        ReturnItemsDetails?: SlotProps;
+    };
+    orderData?: OrderDataModel;
+    collapseThreshold?: number;
+    routeOrderDetails?: ({ returnNumber, token, orderNumber, }: routeOrderDetailsTypes) => string;
+    routeProductDetails?: (product: any) => string;
+    routeTracking?: (track: routeTrackingProps) => string;
 }
 export interface ShippingStatusReturnCardProps extends ShippingStatusCardProps {
     collapseThreshold: number;

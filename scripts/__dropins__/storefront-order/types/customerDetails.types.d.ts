@@ -1,5 +1,6 @@
 import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { OrderDataModel, OrdersReturnPropsModel } from '../data/models';
+import { IconNode, IconType } from '@dropins/tools/types/elsie/src/components';
 
 export interface KeysSortOrderProps {
     name: string;
@@ -14,12 +15,13 @@ export interface NormalizeAddressProps extends KeysSortOrderProps {
 }
 export interface CustomerDetailsProps {
     className?: string;
-    paymentIconsMap?: Record<string, string>;
+    paymentIconsMap?: Record<string, IconType | IconNode>;
     orderData?: OrderDataModel;
     withHeader?: boolean;
     title?: string;
-    slots: {
+    slots?: {
         OrderReturnInformation: SlotProps<OrdersReturnPropsModel | undefined>;
+        PaymentMethodIcon: SlotProps<Record<string, string>>;
     };
 }
 export interface UseCustomerDetails {
@@ -29,9 +31,9 @@ export interface CustomerDetailsContentProps extends Omit<CustomerDetailsProps, 
     translations: Record<string, string>;
     loading: boolean;
     order?: OrderDataModel;
-    normalizeAddress?: {
-        billingAddress: NormalizeAddressProps[];
-        shippingAddress: NormalizeAddressProps[];
+    normalizeAddress: {
+        billingAddress: NormalizeAddressProps[][];
+        shippingAddress: NormalizeAddressProps[][];
     };
 }
 export interface CustomerAddressesModel {

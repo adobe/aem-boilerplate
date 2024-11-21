@@ -6,6 +6,7 @@ import {
   setEndpoint,
   setFetchGraphQlHeader,
 } from '@dropins/tools/fetch-graphql.js';
+import * as authApi from '@dropins/storefront-auth/api.js';
 
 // Recaptcha
 import * as recaptcha from '@dropins/tools/recaptcha.js';
@@ -22,6 +23,7 @@ const setAuthHeaders = (state) => {
     setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
   } else {
     removeFetchGraphQlHeader('Authorization');
+    authApi.removeFetchGraphQlHeader('Authorization');
   }
 };
 

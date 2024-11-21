@@ -18,4 +18,4 @@ ${o}
 ${s}
 ${c}
 ${u}
-`,G=async(e=50)=>await E(n,{method:"GET",cache:"force-cache",variables:{pageSize:e}}).then(r=>{var t,a;return(t=r.errors)!=null&&t.length?_(r.errors):h((a=r==null?void 0:r.data)==null?void 0:a.customer.returns)}).catch(R);export{G as g};
+`,G=async(e=10)=>await E(n,{method:"GET",cache:"force-cache",variables:{pageSize:e}}).then(r=>{var t,a;return(t=r.errors)!=null&&t.length?_(r.errors):h((a=r==null?void 0:r.data)==null?void 0:a.customer.returns)}).catch(R);export{G as g};

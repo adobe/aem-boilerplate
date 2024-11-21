@@ -151,7 +151,7 @@ ${n}
 ${i}
 ${d}
 `,u=`
-  query GET_GUEST_ORDER($input: OrderInformationInput!) {
+  query GET_GUEST_ORDER($input: GuestOrderInformationInput!) {
   guestOrder(input:$input) {
     ...guestOrderData
     }

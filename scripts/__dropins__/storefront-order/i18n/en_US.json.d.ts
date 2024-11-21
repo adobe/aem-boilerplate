@@ -133,7 +133,7 @@ declare const _default: {
       "description": "You can find your order number in the receipt you received via email.",
       "button": "View Order",
       "email": "Email",
-      "postcode": "Zip Code",
+      "lastname": "Last Name",
       "orderNumber": "Order Number"
     },
     "Form": {

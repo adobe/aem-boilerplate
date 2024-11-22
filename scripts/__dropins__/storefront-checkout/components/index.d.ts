@@ -16,13 +16,11 @@
  *******************************************************************/
 export * from './BillToShippingAddress';
 export * from './EstimateShipping';
-export * from './Heading';
 export * from './LoginForm';
+export * from './OrderConfirmationHeader';
 export * from './OutOfStock';
-export * from './OverlayLoader';
 export * from './PaymentMethods';
 export * from './PlaceOrder';
 export * from './ServerError';
 export * from './ShippingMethods';
-export * from './OrderConfirmationHeader';
 //# sourceMappingURL=index.d.ts.map

@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
 
-export interface PlaceOrderProps extends HTMLAttributes<HTMLButtonElement> {
+export interface PlaceOrderProps extends HTMLAttributes<HTMLDivElement> {
     disabled?: boolean;
     onClick: (event: Event) => Promise<void>;
 }

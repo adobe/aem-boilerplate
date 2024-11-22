@@ -7,7 +7,6 @@
 // Dropin Tools
 import { events } from '@dropins/tools/event-bus.js';
 import { initializers } from '@dropins/tools/initializer.js';
-import { debounce } from '@dropins/tools/lib.js';
 
 // Dropin Components
 import {
@@ -65,15 +64,56 @@ import { getUserTokenCookie } from '../../scripts/initializers/index.js';
 import createModal from '../modal/modal.js';
 
 import {
-  getCartAddress,
+  estimateShippingCost, getCartAddress,
   scrollToElement,
   setAddressOnCart,
 } from '../../scripts/checkout.js';
+
+function createMetaTag(property, content, type) {
+  if (!property || !type) {
+    return;
+  }
+  let meta = document.head.querySelector(`meta[${type}="${property}"]`);
+  if (meta) {
+    if (!content) {
+      meta.remove();
+      return;
+    }
+    meta.setAttribute(type, property);
+    meta.setAttribute('content', content);
+    return;
+  }
+  if (!content) {
+    return;
+  }
+  meta = document.createElement('meta');
+  meta.setAttribute(type, property);
+  meta.setAttribute('content', content);
+  document.head.appendChild(meta);
+}
+
+function setMetaTags(dropin) {
+  createMetaTag('title', dropin);
+  createMetaTag('description', dropin);
+  createMetaTag('keywords', dropin);
+
+  createMetaTag('og:description', dropin);
+  createMetaTag('og:title', dropin);
+  createMetaTag('og:url', window.location.href, 'property');
+}
 
 export default async function decorate(block) {
   // Initializers
   import('../../scripts/initializers/account.js');
   import('../../scripts/initializers/checkout.js');
+
+  setMetaTags('Checkout');
+  document.title = 'Checkout';
+
+  events.on('checkout/order', () => {
+    setMetaTags('Order Confirmation');
+    document.title = 'Order Confirmation';
+  });
 
   const DEBOUNCE_TIME = 1000;
   const LOGIN_FORM_NAME = 'login-form';
@@ -194,7 +234,7 @@ export default async function decorate(block) {
     billingFormSkeleton,
     _orderSummary,
     _cartSummary,
-    _placeOrder,
+    placeOrder,
   ] = await Promise.all([
     CheckoutProvider.render(MergedCartBanner)($mergedCartBanner),
 
@@ -423,21 +463,22 @@ export default async function decorate(block) {
         sessionStorage.removeItem(SHIPPING_ADDRESS_DATA_KEY);
       }
 
-      // when shipping address form is empty
-      if (!cartShippingAddress) {
-        checkoutApi.estimateShippingMethods();
-
-        events.emit('checkout/estimate-shipping-address', {
-          address: {},
-          isValid: false,
-        });
-      }
-
       shippingFormSkeleton.remove();
 
-      let prevEstimateShippingData = {};
       let isFirstRenderShipping = true;
       const hasCartShippingAddress = Boolean(data.shippingAddresses?.[0]);
+
+      const setShippingAddressOnCart = setAddressOnCart({
+        api: checkoutApi.setShippingAddress,
+        debounceMs: DEBOUNCE_TIME,
+        placeOrderBtn: placeOrder,
+      });
+
+      const estimateShippingCostOnCart = estimateShippingCost({
+        api: checkoutApi.estimateShippingMethods,
+        debounceMs: DEBOUNCE_TIME,
+      });
+
       shippingForm = await AccountProvider.render(AddressForm, {
         addressesFormTitle: 'Shipping address',
         className: 'checkout-shipping-form__address-form',
@@ -448,50 +489,12 @@ export default async function decorate(block) {
           countryCode: storeConfig.defaultCountry,
         },
         isOpen: true,
-        onChange: debounce((values) => {
-          if (!isFirstRenderShipping || !hasCartShippingAddress) {
-            setAddressOnCart(values, checkoutApi.setShippingAddress);
-          }
-
-          const { data, isDataValid } = values;
-
+        onChange: (values) => {
+          const syncAddress = !isFirstRenderShipping || !hasCartShippingAddress;
+          if (syncAddress) setShippingAddressOnCart(values);
+          if (!hasCartShippingAddress) estimateShippingCostOnCart(values);
           if (isFirstRenderShipping) isFirstRenderShipping = false;
-
-          if (hasCartShippingAddress || isDataValid) return;
-
-          if (
-            prevEstimateShippingData.countryCode === data.countryCode
-            && prevEstimateShippingData.regionCode === data.region.regionCode
-            && prevEstimateShippingData.regionId === data.region.regionId
-            && prevEstimateShippingData.postcode === data.postcode
-          ) {
-            return;
-          }
-
-          const criteria = {
-            country_code: data.countryCode,
-            region_name: String(data.region.regionCode || ''),
-            region_id: String(data.region.regionId || ''),
-          };
-          checkoutApi.estimateShippingMethods({ criteria });
-
-          events.emit('checkout/estimate-shipping-address', {
-            address: {
-              country_id: data.countryCode,
-              region: String(data.region.regionCode || ''),
-              region_id: String(data.region.regionId || ''),
-              postcode: data.postcode,
-            },
-            isValid: isDataValid,
-          });
-
-          prevEstimateShippingData = {
-            countryCode: data.countryCode,
-            regionCode: data.region.regionCode,
-            regionId: data.region.regionId,
-            postcode: data.postcode,
-          };
-        }, DEBOUNCE_TIME),
+        },
         showBillingCheckBox: false,
         showFormLoader: false,
         showShippingCheckBox: false,
@@ -514,6 +517,12 @@ export default async function decorate(block) {
       let isFirstRenderBilling = true;
       const hasCartBillingAddress = Boolean(data.billingAddress);
 
+      const setBillingAddressOnCart = setAddressOnCart({
+        api: checkoutApi.setBillingAddress,
+        debounceMs: DEBOUNCE_TIME,
+        placeOrderBtn: placeOrder,
+      });
+
       billingForm = await AccountProvider.render(AddressForm, {
         addressesFormTitle: 'Billing address',
         className: 'checkout-billing-form__address-form',
@@ -524,13 +533,11 @@ export default async function decorate(block) {
           countryCode: storeConfig.defaultCountry,
         },
         isOpen: true,
-        onChange: debounce((values) => {
-          if (!isFirstRenderBilling || !hasCartBillingAddress) {
-            setAddressOnCart(values, checkoutApi.setBillingAddress);
-          }
-
+        onChange: (values) => {
+          const canSetBillingAddressOnCart = !isFirstRenderBilling || !hasCartBillingAddress;
+          if (canSetBillingAddressOnCart) setBillingAddressOnCart(values);
           if (isFirstRenderBilling) isFirstRenderBilling = false;
-        }, DEBOUNCE_TIME),
+        },
         showBillingCheckBox: false,
         showFormLoader: false,
         showShippingCheckBox: false,
@@ -581,6 +588,12 @@ export default async function decorate(block) {
       const hasCartShippingAddress = Boolean(data.shippingAddresses?.[0]);
       let isFirstRenderShipping = true;
 
+      const setShippingAddressOnCart = setAddressOnCart({
+        api: checkoutApi.setShippingAddress,
+        debounceMs: DEBOUNCE_TIME,
+        placeOrderBtn: placeOrder,
+      });
+
       shippingAddresses = await AccountProvider.render(Addresses, {
         addressFormTitle: 'Deliver to new address',
         defaultSelectAddressId: shippingAddressId,
@@ -588,13 +601,11 @@ export default async function decorate(block) {
         forwardFormRef: shippingFormRef,
         inputsDefaultValueSet,
         minifiedView: false,
-        onAddressData: debounce((values) => {
-          if (!isFirstRenderShipping || !hasCartShippingAddress) {
-            setAddressOnCart(values, checkoutApi.setShippingAddress);
-          }
-
+        onAddressData: (values) => {
+          const canSetShippingAddressOnCart = !isFirstRenderShipping || !hasCartShippingAddress;
+          if (canSetShippingAddressOnCart) setShippingAddressOnCart(values);
           if (isFirstRenderShipping) isFirstRenderShipping = false;
-        }, DEBOUNCE_TIME),
+        },
         selectable: true,
         selectShipping: true,
         showBillingCheckBox: false,
@@ -631,6 +642,12 @@ export default async function decorate(block) {
       const hasCartBillingAddress = Boolean(data.billingAddress);
       let isFirstRenderBilling = true;
 
+      const setBillingAddressOnCart = setAddressOnCart({
+        api: checkoutApi.setBillingAddress,
+        debounceMs: DEBOUNCE_TIME,
+        placeOrderBtn: placeOrder,
+      });
+
       billingAddresses = await AccountProvider.render(Addresses, {
         addressFormTitle: 'Bill to new address',
         defaultSelectAddressId: billingAddressId,
@@ -638,13 +655,11 @@ export default async function decorate(block) {
         forwardFormRef: billingFormRef,
         inputsDefaultValueSet,
         minifiedView: false,
-        onAddressData: debounce((values) => {
-          if (!isFirstRenderBilling || !hasCartBillingAddress) {
-            setAddressOnCart(values, checkoutApi.setBillingAddress);
-          }
-
+        onAddressData: (values) => {
+          const canSetBillingAddressOnCart = !isFirstRenderBilling || !hasCartBillingAddress;
+          if (canSetBillingAddressOnCart) setBillingAddressOnCart(values);
           if (isFirstRenderBilling) isFirstRenderBilling = false;
-        }, DEBOUNCE_TIME),
+        },
         selectable: true,
         selectBilling: true,
         showBillingCheckBox: false,
@@ -657,6 +672,9 @@ export default async function decorate(block) {
 
   // Define the Layout for the Order Confirmation
   const displayOrderConfirmation = async (orderData) => {
+    // Scroll to the top of the page
+    window.scrollTo(0, 0);
+
     const orderConfirmationFragment = document.createRange()
       .createContextualFragment(`
       <div class="order-confirmation">

@@ -1,6 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
 
 export interface PlaceOrderProps extends HTMLAttributes<HTMLDivElement> {
+    disabled?: boolean;
     handleValidation?: () => boolean;
     onPlaceOrder?: (ctx: PlaceOrderContext) => Promise<void>;
 }

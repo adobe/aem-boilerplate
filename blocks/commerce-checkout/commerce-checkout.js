@@ -812,19 +812,21 @@ export default async function decorate(block) {
   };
 
   const handleCheckoutOrder = async (orderData) => {
-    // clear address form data
+    // Clear address form data
     sessionStorage.removeItem(SHIPPING_ADDRESS_DATA_KEY);
     sessionStorage.removeItem(BILLING_ADDRESS_DATA_KEY);
 
     const token = getUserTokenCookie();
     const orderRef = token ? orderData.number : orderData.token;
+    const orderNumber = orderData.number;
     const encodedOrderRef = encodeURIComponent(orderRef);
+    const encodedOrderNumber = encodeURIComponent(orderNumber);
 
-    window.history.pushState(
-      {},
-      '',
-      `/order-details?orderRef=${encodedOrderRef}`,
-    );
+    const url = token
+      ? `/order-details?orderRef=${encodedOrderRef}`
+      : `/order-details?orderRef=${encodedOrderRef}&orderNumber=${encodedOrderNumber}`;
+
+    window.history.pushState({}, '', url);
 
     // TODO cleanup checkout containers
     await displayOrderConfirmation(orderData);

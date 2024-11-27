@@ -187,7 +187,7 @@ async function loadEager(doc) {
     pageType = 'Product';
 
     // initialize pdp
-    import('./initializers/pdp.js');
+    await import('./initializers/pdp.js');
 
     // Preload PDP Dropins assets
     preloadFile('/scripts/__dropins__/storefront-pdp/api.js', 'script');

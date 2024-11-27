@@ -34,6 +34,9 @@ declare const _default: {
     "Swatches": {
       "Required": {
         "label": "Required"
+      },
+      "ChooseOption": {
+        "label": "Choose an option"
       }
     },
     "Carousel": {

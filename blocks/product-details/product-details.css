@@ -1,14 +1,119 @@
 /* stylelint-disable no-empty-source */
 /* stylelint-disable selector-class-pattern */
 
+.product-details__wrapper {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-1-columns), 1fr);
+  grid-column-gap: var(--grid-1-gutters);
+  margin-top: var(--spacing-medium);
+}
+
+.product-details__left-column {
+  display: none;
+}
+
+.product-details__right-column {
+  grid-column: 1 / span 4;
+  color: var(--color-neutral-800);
+}
+
 .product-details__alert {
   margin-bottom: var(--spacing-small);
 }
 
-.pdp-product__buttons {
-  display: flex;
+.product-details__alert:empty {
+  display: none;
 }
 
-.pdp-product__buttons > .dropin-button--primary {
-  flex-grow: 1;
+.product-details__header {
+  margin-bottom: var(--spacing-medium);
+}
+
+.product-details__price {
+  margin-top: var(--spacing-medium);
+}
+
+.product-details__gallery .pdp-carousel {
+  max-height: 60vh;
+}
+
+.product-details__gallery .pdp-carousel--thumbnailsRow {
+  max-height: 80vh;
+}
+
+.product-details__gallery .pdp-overlay__content .pdp-carousel,
+.product-details__gallery .pdp-overlay__content .pdp-carousel--thumbnailsRow
+{
+  max-height: unset;;
+}
+
+
+.product-details__configuration {
+  grid-column: 1 / span 4;
+  display: grid;
+  grid-auto-flow: row;
+  gap: var(--grid-1-gutters);
+  grid-auto-rows: max-content;
+  margin-bottom: var(--spacing-xxbig);
+  margin-top: var(--spacing-big);
+}
+
+.product-details__buttons {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--grid-1-gutters);
+  grid-auto-rows: max-content;
+}
+
+.product-details__buttons > div {
+  display: contents;
+}
+
+.product-details__attributes {
+  margin-top: var(--spacing-xsmall);
+}
+
+@media (width >= 900px) {
+  .product-details__wrapper {
+    grid-template-columns: repeat(var(--grid-3-columns), 1fr);
+    grid-column-gap: var(--grid-3-gutters);
+    position: relative;
+  }
+
+  .product-details__alert {
+    grid-column: 1 / span 12;
+    margin-bottom: var(--spacing-medium);
+  }
+
+  .product-details__left-column {
+    display: block;
+    grid-column: 1 / span 6;
+  }
+  
+  .product-details__right-column {
+    grid-column: 7 / span 5;
+    padding-top: var(--spacing-medium);
+  }
+
+  .product-details__right-column .product-details__gallery {
+    display: none;
+  }
+
+  .product-details__configuration {
+    grid-template-columns: repeat(var(--grid-1-columns), 1fr);
+    grid-gap: var(--grid-1-gutters);
+    margin-top: var(--spacing-xxbig);
+  }
+
+  .product-details__options {
+    grid-column: 1 / span 4;
+  }
+
+  .product-details__buttons {
+    grid-column: 1 / span 4;
+  }
+
+  .product-details__quantity {
+    grid-column: 1 / span 2;
+  }
 }

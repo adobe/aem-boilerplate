@@ -29,16 +29,19 @@
     }
 </script>
 
+<link rel="stylesheet" href="/styles/styles.css" />
+
 <script src="/scripts/aem.js" type="module"></script>
 <script src="/scripts/scripts.js" type="module"></script>
 <script src="/scripts/configs.js" type="module"></script>
 <script src="/scripts/commerce.js" type="module"></script>
 
+<link rel="preload" href="/placeholders.json" as="fetch" crossorigin="anonymous" />
 <link rel="modulepreload" href="/scripts/initializers/index.js" />
-<link rel="modulepreload" href="/scripts/initializers/auth.js" />
-<link rel="modulepreload" href="/scripts/initializers/cart.js" />
 <link rel="modulepreload" href="/scripts/__dropins__/tools/event-bus.js" />
 <link rel="modulepreload" href="/scripts/__dropins__/tools/fetch-graphql.js" />
 <link rel="modulepreload" href="/scripts/__dropins__/tools/initializer.js" />
-
-<link rel="stylesheet" href="/styles/styles.css" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/preact.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/preact-compat.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/preact-hooks.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/components.js" />

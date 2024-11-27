@@ -21,5 +21,6 @@ module.exports = {
         allow: ['warn', 'error', 'info', 'debug'],
       },
     ],
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
   },
 };

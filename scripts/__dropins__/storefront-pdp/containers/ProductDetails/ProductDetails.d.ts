@@ -76,6 +76,7 @@ export interface ProductDetailsProps extends HTMLAttributes<HTMLDivElement> {
     onAddToCart?: (values: Values) => void;
     zoomType?: 'zoom' | 'overlay';
     closeButton?: boolean;
+    disableDropdownPreselection?: boolean;
 }
 export declare const ProductDetails: Container<ProductDetailsProps, ProductModel | null>;
 export {};

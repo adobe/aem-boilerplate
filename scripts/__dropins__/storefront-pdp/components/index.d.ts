@@ -20,4 +20,6 @@ export * from './PriceRange';
 export * from './Overlay';
 export * from './Swatches';
 export * from './Zoom';
+export * from './Header';
+export * from './Price';
 //# sourceMappingURL=index.d.ts.map

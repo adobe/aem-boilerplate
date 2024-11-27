@@ -1,23 +1,242 @@
-import { events } from '@dropins/tools/event-bus.js';
+/* eslint-disable import/no-unresolved */
+
 import {
   InLineAlert,
   Icon,
+  Button,
   provider as UI,
 } from '@dropins/tools/components.js';
-import { render as productRenderer } from '@dropins/storefront-pdp/render.js';
-import { addProductsToCart } from '@dropins/storefront-cart/api.js';
-import ProductDetails from '@dropins/storefront-pdp/containers/ProductDetails.js';
+import { events } from '@dropins/tools/event-bus.js';
+import * as pdpApi from '@dropins/storefront-pdp/api.js';
+import { render as pdpRendered } from '@dropins/storefront-pdp/render.js';
+
+// Containers
+import ProductHeader from '@dropins/storefront-pdp/containers/ProductHeader.js';
+import ProductPrice from '@dropins/storefront-pdp/containers/ProductPrice.js';
+import ProductShortDescription from '@dropins/storefront-pdp/containers/ProductShortDescription.js';
+import ProductOptions from '@dropins/storefront-pdp/containers/ProductOptions.js';
+import ProductQuantity from '@dropins/storefront-pdp/containers/ProductQuantity.js';
+import ProductDescription from '@dropins/storefront-pdp/containers/ProductDescription.js';
+import ProductAttributes from '@dropins/storefront-pdp/containers/ProductAttributes.js';
+import ProductGallery from '@dropins/storefront-pdp/containers/ProductGallery.js';
 
 // Libs
-import {
-  getSkuFromUrl,
-  setJsonLd,
-  loadErrorPage, performCatalogServiceQuery, variantsQuery,
-} from '../../scripts/commerce.js';
+import { setJsonLd, loadErrorPage } from '../../scripts/commerce.js';
+import { fetchPlaceholders } from '../../scripts/aem.js';
 
 // Initializers
+import { IMAGES_SIZES } from '../../scripts/initializers/pdp.js';
 import '../../scripts/initializers/cart.js';
-import '../../scripts/initializers/pdp.js';
+
+export default async function decorate(block) {
+  // eslint-disable-next-line no-underscore-dangle
+  const product = events._lastEvent?.['pdp/data']?.payload ?? null;
+  const labels = await fetchPlaceholders();
+
+  if (!product) {
+    await loadErrorPage();
+    return Promise.reject();
+  }
+
+  // Layout
+  const fragment = document.createRange().createContextualFragment(`
+    <div class="product-details__wrapper">
+      <div class="product-details__alert"></div>
+      <div class="product-details__left-column">
+        <div class="product-details__gallery"></div>
+      </div>
+      <div class="product-details__right-column">
+        <div class="product-details__header"></div>
+        <div class="product-details__price"></div>
+        <div class="product-details__gallery"></div>
+        <div class="product-details__short-description"></div>
+        <div class="product-details__configuration">
+          <div class="product-details__options"></div>
+          <div class="product-details__quantity"></div>
+          <div class="product-details__buttons">
+            <div class="product-details__buttons__add-to-cart"></div>
+            <div class="product-details__buttons__add-to-wishlist"></div>
+          </div>
+        </div>
+        <div class="product-details__description"></div>
+        <div class="product-details__attributes"></div>
+      </div>
+    </div>
+  `);
+
+  const $alert = fragment.querySelector('.product-details__alert');
+  const $gallery = fragment.querySelector('.product-details__gallery');
+  const $header = fragment.querySelector('.product-details__header');
+  const $price = fragment.querySelector('.product-details__price');
+  const $galleryMobile = fragment.querySelector('.product-details__right-column .product-details__gallery');
+  const $shortDescription = fragment.querySelector('.product-details__short-description');
+  const $options = fragment.querySelector('.product-details__options');
+  const $quantity = fragment.querySelector('.product-details__quantity');
+  const $addToCart = fragment.querySelector('.product-details__buttons__add-to-cart');
+  const $addToWishlist = fragment.querySelector('.product-details__buttons__add-to-wishlist');
+  const $description = fragment.querySelector('.product-details__description');
+  const $attributes = fragment.querySelector('.product-details__attributes');
+
+  block.appendChild(fragment);
+
+  // Alert
+  let inlineAlert = null;
+
+  // Render Containers
+  const [
+    _galleryMobile,
+    _gallery,
+    _header,
+    _price,
+    _shortDescription,
+    _options,
+    _quantity,
+    addToCart,
+    addToWishlist,
+    _description,
+    _attributes,
+  ] = await Promise.all([
+    // Gallery (Mobile)
+    pdpRendered.render(ProductGallery, {
+      controls: 'dots',
+      arrows: true,
+      peak: false,
+      gap: 'small',
+      loop: false,
+      imageParams: {
+        ...IMAGES_SIZES,
+      },
+    })($galleryMobile),
+
+    // Gallery (Desktop)
+    pdpRendered.render(ProductGallery, {
+      controls: 'thumbnailsColumn',
+      arrows: true,
+      peak: true,
+      gap: 'small',
+      loop: false,
+      imageParams: {
+        ...IMAGES_SIZES,
+      },
+    })($gallery),
+
+    // Header
+    pdpRendered.render(ProductHeader, {})($header),
+
+    // Price
+    pdpRendered.render(ProductPrice, {})($price),
+
+    // Short Description
+    pdpRendered.render(ProductShortDescription, {})($shortDescription),
+
+    // Configuration - Swatches
+    pdpRendered.render(ProductOptions, { hideSelectedValue: false })($options),
+
+    // Configuration  Quantity
+    pdpRendered.render(ProductQuantity, {})($quantity),
+
+    // Configuration – Button - Add to Cart
+    UI.render(Button, {
+      children: labels.PDP.Product.AddToCart.label,
+      icon: Icon({ source: 'Cart' }),
+      onClick: async () => {
+        try {
+          addToCart.setProps((prev) => ({
+            ...prev,
+            children: labels.Custom.AddingToCart.label,
+            disabled: true,
+          }));
+
+          // get the current selection values
+          const values = pdpApi.getProductConfigurationValues();
+          const valid = pdpApi.isProductConfigurationValid();
+
+          // add the product to the cart
+          if (valid) {
+            const { addProductsToCart } = await import('@dropins/storefront-cart/api.js');
+            await addProductsToCart([{ ...values }]);
+          }
+
+          // reset any previous alerts if successful
+          inlineAlert?.remove();
+        } catch (error) {
+          // add alert message
+          inlineAlert = await UI.render(InLineAlert, {
+            heading: 'Error',
+            description: error.message,
+            icon: Icon({ source: 'Warning' }),
+            'aria-live': 'assertive',
+            role: 'alert',
+            onDismiss: () => {
+              inlineAlert.remove();
+            },
+          })($alert);
+
+          // Scroll the alertWrapper into view
+          $alert.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        } finally {
+          addToCart.setProps((prev) => ({
+            ...prev,
+            children: labels.PDP.Product.AddToCart.label,
+            disabled: false,
+          }));
+        }
+      },
+    })($addToCart),
+
+    // Configuration - Add to Wishlist
+    UI.render(Button, {
+      icon: Icon({ source: 'Heart' }),
+      variant: 'secondary',
+      onClick: async () => {
+        try {
+          addToWishlist.setProps((prev) => ({ ...prev, disabled: true }));
+
+          const values = pdpApi.getProductConfigurationValues();
+
+          if (values?.sku) {
+            const wishlist = await import('../../scripts/wishlist/api.js');
+            await wishlist.addToWishlist(values.sku);
+          }
+        } catch (error) {
+          console.error(error);
+        } finally {
+          addToWishlist.setProps((prev) => ({ ...prev, disabled: false }));
+        }
+      },
+    })($addToWishlist),
+
+    // Description
+    pdpRendered.render(ProductDescription, {})($description),
+
+    // Attributes
+    pdpRendered.render(ProductAttributes, {})($attributes),
+  ]);
+
+  // Lifecycle Events
+  events.on('pdp/valid', (valid) => {
+    // update add to cart button disabled state based on product selection validity
+    addToCart.setProps((prev) => ({ ...prev, disabled: !valid }));
+  }, { eager: true });
+
+  // Set JSON-LD and Meta Tags
+  events.on(
+    'eds/lcp',
+    () => {
+      if (product) {
+        setJsonLdProduct(product);
+        setMetaTags(product);
+        document.title = product.name;
+      }
+    },
+    { eager: true },
+  );
+
+  return Promise.resolve();
+}
 
 async function setJsonLdProduct(product) {
   const {
@@ -35,8 +254,32 @@ async function setJsonLdProduct(product) {
   const brand = attributes.find((attr) => attr.name === 'brand');
 
   // get variants
-  const { variants } = (await performCatalogServiceQuery(variantsQuery, { sku }))?.variants
-    || { variants: [] };
+  const { data } = await pdpApi.fetchGraphQl(`
+    query GET_PRODUCT_VARIANTS($sku: String!) {
+      variants(sku: $sku) {
+        variants {
+          product {
+            sku
+            name
+            inStock
+            images(roles: ["image"]) {
+              url
+            }
+            ...on SimpleProductView {
+              price {
+                final { amount { currency value } }
+              }
+            }
+          }
+        }
+      }
+    }
+  `, {
+    method: 'GET',
+    variables: { sku },
+  });
+
+  const variants = data?.variants?.variants || [];
 
   const ldJson = {
     '@context': 'http://schema.org',
@@ -105,14 +348,11 @@ function setMetaTags(product) {
     return;
   }
 
-  const price = product.priceRange
-    ? product.priceRange.minimum.final.amount
-    : product.price.final.amount;
+  const price = product.prices.final.minimumAmount ?? product.prices.final.amount;
 
   createMetaTag('title', product.metaTitle || product.name, 'name');
   createMetaTag('description', product.metaDescription, 'name');
   createMetaTag('keywords', product.metaKeyword, 'name');
-
   createMetaTag('og:type', 'og:product', 'property');
   createMetaTag('og:description', product.shortDescription, 'property');
   createMetaTag('og:title', product.metaTitle || product.name, 'property');
@@ -123,122 +363,4 @@ function setMetaTags(product) {
   createMetaTag('og:image:secure_url', metaImage, 'property');
   createMetaTag('og:product:price:amount', price.value, 'property');
   createMetaTag('og:product:price:currency', price.currency, 'property');
-}
-
-export default async function decorate(block) {
-  const product = await window.getProductPromise;
-
-  if (!product) {
-    await loadErrorPage();
-    return Promise.reject();
-  }
-
-  events.on(
-    'eds/lcp',
-    () => {
-      if (!product) {
-        return;
-      }
-
-      setJsonLdProduct(product);
-      setMetaTags(product);
-      document.title = product.name;
-    },
-    { eager: true },
-  );
-
-  // Alert Message Wrapper
-  const alertWrapper = document.createElement('div');
-  alertWrapper.classList.add('product-details__alert');
-  block.appendChild(alertWrapper);
-  let inlineAlert;
-
-  // PDP Wrapper
-  const pdpWrapper = document.createElement('div');
-  block.appendChild(pdpWrapper);
-
-  // Render Containers
-  try {
-    return await productRenderer.render(ProductDetails, {
-      sku: getSkuFromUrl(),
-      carousel: {
-        controls: {
-          desktop: 'thumbnailsColumn',
-          mobile: 'thumbnailsRow',
-        },
-        arrowsOnMainImage: true,
-        peak: {
-          mobile: true,
-          desktop: false,
-        },
-        gap: 'small',
-      },
-      slots: {
-        Actions: (ctx) => {
-          // Add to Cart Button
-          ctx.appendButton((next, state) => {
-            const adding = state.get('addingCart');
-            return {
-              text: adding
-                ? next.dictionary.Custom.AddingToCart?.label
-                : next.dictionary.PDP.Product.AddToCart?.label,
-              icon: 'Cart',
-              variant: 'primary',
-              disabled: adding || !next.data?.inStock || !next.valid,
-              onClick: async () => {
-                try {
-                  state.set('addingCart', true);
-                  await addProductsToCart([{ ...next.values }]);
-                  // reset any previous alerts if successful
-                  inlineAlert?.remove();
-                } catch (error) {
-                  // add alert message
-                  inlineAlert = await UI.render(InLineAlert, {
-                    heading: 'Error',
-                    description: error.message,
-                    icon: Icon({ source: 'Warning' }),
-                    'aria-live': 'assertive',
-                    role: 'alert',
-                    onDismiss: () => {
-                      inlineAlert.remove();
-                    },
-                  })(alertWrapper);
-                  // Scroll the alertWrapper into view
-                  alertWrapper.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'center',
-                  });
-                } finally {
-                  state.set('addingCart', false);
-                }
-              },
-            };
-          });
-
-          ctx.appendButton((next, state) => {
-            const adding = state.get('addingWishlist');
-            return ({
-              disabled: adding,
-              icon: 'Heart',
-              variant: 'secondary',
-              onClick: async () => {
-                try {
-                  state.set('addingWishlist', true);
-                  const { addToWishlist } = await import('../../scripts/wishlist/api.js');
-                  await addToWishlist(next.values.sku);
-                } finally {
-                  state.set('addingWishlist', false);
-                }
-              },
-            });
-          });
-        },
-      },
-      useACDL: true,
-    })(pdpWrapper);
-  } catch (e) {
-    console.error(e);
-    await loadErrorPage();
-  }
-  return undefined;
 }

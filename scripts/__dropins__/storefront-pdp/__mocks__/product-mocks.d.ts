@@ -91,6 +91,7 @@ export declare const MOCK_DATA_BUNDLE: {
 export declare const MOCK_DATA_BUNDLE_TRANSFORMED: {
     name: string;
     sku: string;
+    isBundle: boolean;
     addToCartAllowed: boolean;
     inStock: boolean;
     shortDescription: string;

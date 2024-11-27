@@ -14,4 +14,12 @@
  * from Adobe.
  */
 export * from './ProductDetails';
+export * from './ProductPrice';
+export * from './ProductOptions';
+export * from './ProductQuantity';
+export * from './ProductShortDescription';
+export * from './ProductDescription';
+export * from './ProductAttributes';
+export * from './ProductGallery';
+export * from './ProductHeader';
 //# sourceMappingURL=index.d.ts.map

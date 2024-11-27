@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable import/no-cycle */
 import { events } from '@dropins/tools/event-bus.js';
 import {
@@ -20,7 +21,7 @@ import {
   loadCSS,
   sampleRUM,
 } from './aem.js';
-import { getProduct, getSkuFromUrl, trackHistory } from './commerce.js';
+import { trackHistory } from './commerce.js';
 import initializeDropins from './initializers/index.js';
 
 const AUDIENCES = {
@@ -184,24 +185,21 @@ async function loadEager(doc) {
   let pageType = 'CMS';
   if (document.body.querySelector('main .product-details')) {
     pageType = 'Product';
-    preloadFile('/scripts/initializers/pdp.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductDetails.js', 'script');
+
+    // initialize pdp
+    import('./initializers/pdp.js');
+
+    // Preload PDP Dropins assets
     preloadFile('/scripts/__dropins__/storefront-pdp/api.js', 'script');
     preloadFile('/scripts/__dropins__/storefront-pdp/render.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/chunks/initialize.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/chunks/getRefinedProduct.js', 'script');
-  } else if (document.body.querySelector('main .product-details-custom')) {
-    pageType = 'Product';
-    preloadFile('/scripts/preact.js', 'script');
-    preloadFile('/scripts/htm.js', 'script');
-    preloadFile('/blocks/product-details-custom/ProductDetailsCarousel.js', 'script');
-    preloadFile('/blocks/product-details-custom/ProductDetailsSidebar.js', 'script');
-    preloadFile('/blocks/product-details-custom/ProductDetailsShimmer.js', 'script');
-    preloadFile('/blocks/product-details-custom/Icon.js', 'script');
-
-    const blockConfig = readBlockConfig(document.body.querySelector('main .product-details-custom'));
-    const sku = getSkuFromUrl() || blockConfig.sku;
-    window.getProductPromise = getProduct(sku);
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductHeader.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductPrice.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductShortDescription.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductOptions.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductQuantity.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductDescription.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductAttributes.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductGallery.js', 'script');
   } else if (document.body.querySelector('main .product-list-page')) {
     pageType = 'Category';
     preloadFile('/scripts/widgets/search.js', 'script');

@@ -6,14 +6,14 @@ import { events } from '@dropins/tools/event-bus.js';
 import { getCookie } from '../../scripts/configs.js';
 import { CUSTOMER_FORGOTPASSWORD_PATH } from '../../scripts/constants.js';
 
-function checkAndRedirect(checkUrl, redirectUrl) {
-  // If the user is on the dashboard page and initiates logout,
-  // they will be redirected to the login page.
-  const currentUrl = window.location.pathname;
-
-  if (currentUrl.includes(checkUrl)) {
-    window.location.href = `${window.location.origin}${redirectUrl}`;
-  }
+function checkAndRedirect(redirections) {
+  Object.entries(redirections).some(([currentPath, redirectPath]) => {
+    if (window.location.pathname.includes(currentPath)) {
+      window.location.href = redirectPath;
+      return true;
+    }
+    return false;
+  });
 }
 
 function renderSignIn(element) {
@@ -68,7 +68,10 @@ export function renderAuthDropdown(navTools) {
 
   logoutButtonElement.addEventListener('click', async () => {
     await authApi.revokeCustomerToken();
-    checkAndRedirect('/customer', '/customer/login');
+    checkAndRedirect({
+      '/customer': '/customer/login',
+      '/order-details': '/',
+    });
   });
 
   renderSignIn(authDropinContainer);

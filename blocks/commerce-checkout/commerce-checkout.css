@@ -254,6 +254,27 @@
 }
 
 @media only screen and (width >= 320px) and (width <= 768px) {
+  .checkout__main,
+  .checkout__aside {
+    display: contents;
+  }
+
+  .checkout__block {
+    order: 3;
+  }
+
+  .checkout__heading {
+    order: 1;
+  }
+
+  .checkout__cart-summary {
+    order: 2;
+  }
+
+  .checkout__place-order {
+    order: 4;
+  }
+
   .order-confirmation {
     grid-template-columns: repeat(var(--grid-1-columns), 1fr);
     padding-top: 0;
@@ -304,8 +325,6 @@
   }
 
   .checkout__place-order {
-    display: grid;
-    grid-column: 1 / span 7;
     margin-top: 0;
   }
 }

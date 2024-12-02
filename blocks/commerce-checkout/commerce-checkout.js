@@ -142,12 +142,12 @@ export default async function decorate(block) {
           <div class="checkout__block checkout__delivery"></div>
           <div class="checkout__block checkout__payment-methods"></div>
           <div class="checkout__block checkout__billing-form"></div>
+          <div class="checkout__block checkout__place-order"></div>
         </div>
         <div class="checkout__aside">
           <div class="checkout__block checkout__order-summary"></div>
           <div class="checkout__block checkout__cart-summary"></div>
         </div>
-        <div class="checkout__block checkout__place-order"></div>
       </div>
     </div>
   `);

@@ -92,6 +92,7 @@ export function renderAuthDropdown(navTools) {
           width="25"
           height="25"
           viewBox="0 0 24 24"
+          aria-label="My Account"
           >
           <g fill="none" stroke="#000000" stroke-width="1.5">
           <circle cx="12" cy="6" r="4"></circle>

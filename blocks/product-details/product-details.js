@@ -137,13 +137,13 @@ export default async function decorate(block) {
 
     // Configuration – Button - Add to Cart
     UI.render(Button, {
-      children: labels.PDP.Product.AddToCart.label,
+      children: labels.PDP?.Product?.AddToCart?.label,
       icon: Icon({ source: 'Cart' }),
       onClick: async () => {
         try {
           addToCart.setProps((prev) => ({
             ...prev,
-            children: labels.Custom.AddingToCart.label,
+            children: labels.Custom?.AddingToCart?.label,
             disabled: true,
           }));
 
@@ -180,7 +180,7 @@ export default async function decorate(block) {
         } finally {
           addToCart.setProps((prev) => ({
             ...prev,
-            children: labels.PDP.Product.AddToCart.label,
+            children: labels.PDP?.Product?.AddToCart?.label,
             disabled: false,
           }));
         }
@@ -191,9 +191,14 @@ export default async function decorate(block) {
     UI.render(Button, {
       icon: Icon({ source: 'Heart' }),
       variant: 'secondary',
+      'aria-label': labels.Custom?.AddToWishlist?.label,
       onClick: async () => {
         try {
-          addToWishlist.setProps((prev) => ({ ...prev, disabled: true }));
+          addToWishlist.setProps((prev) => ({
+            ...prev,
+            disabled: true,
+            'aria-label': labels.Custom?.AddingToWishlist?.label,
+          }));
 
           const values = pdpApi.getProductConfigurationValues();
 
@@ -204,7 +209,11 @@ export default async function decorate(block) {
         } catch (error) {
           console.error(error);
         } finally {
-          addToWishlist.setProps((prev) => ({ ...prev, disabled: false }));
+          addToWishlist.setProps((prev) => ({
+            ...prev,
+            disabled: false,
+            'aria-label': labels.Custom?.AddToWishlist?.label,
+          }));
         }
       },
     })($addToWishlist),

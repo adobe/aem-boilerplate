@@ -353,7 +353,8 @@ function setMetaTags(product) {
   createMetaTag('title', product.metaTitle || product.name, 'name');
   createMetaTag('description', product.metaDescription, 'name');
   createMetaTag('keywords', product.metaKeyword, 'name');
-  createMetaTag('og:type', 'og:product', 'property');
+
+  createMetaTag('og:type', 'product', 'property');
   createMetaTag('og:description', product.shortDescription, 'property');
   createMetaTag('og:title', product.metaTitle || product.name, 'property');
   createMetaTag('og:url', window.location.href, 'property');
@@ -361,6 +362,6 @@ function setMetaTags(product) {
   const metaImage = mainImage?.url || product?.images[0]?.url;
   createMetaTag('og:image', metaImage, 'property');
   createMetaTag('og:image:secure_url', metaImage, 'property');
-  createMetaTag('og:product:price:amount', price.value, 'property');
-  createMetaTag('og:product:price:currency', price.currency, 'property');
+  createMetaTag('product:price:amount', price.value, 'property');
+  createMetaTag('product:price:currency', price.currency, 'property');
 }

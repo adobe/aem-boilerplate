@@ -12,6 +12,7 @@ export default `query productSearch($currentPage: Int = 1) {
         metaDescription
         metaKeyword
         metaTitle
+        lastModifiedAt
         inStock
         images(roles: ["image"]) {
           url

@@ -66,7 +66,9 @@ function renderPlaceholder(block) {
 
 function renderItem(unitId, product) {
   let image = product.images[0]?.url;
-  image = image.replace('http://', '//');
+  if (image) {
+    image = image.replace('http://', '//');
+  }
 
   const clickHandler = () => {
     window.adobeDataLayer.push((dl) => {

@@ -14,6 +14,10 @@ export interface CartAddress {
     street: string[];
     telephone?: string;
     vatId?: string;
+    prefix?: string;
+    suffix?: string;
+    middleName?: string;
+    fax?: string;
 }
 export interface ShippingAddressInput {
     address?: CartAddress;

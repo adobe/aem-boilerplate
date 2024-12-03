@@ -26,6 +26,10 @@ const e=`
         value
       }
     }
+    prefix
+    suffix
+    middlename
+    fax
   }
 `,t=`
   fragment SHIPPING_CART_ADDRESS_FRAGMENT on ShippingCartAddress {
@@ -92,6 +96,10 @@ const e=`
       }
     }
     same_as_billing
+    prefix
+    suffix
+    middlename
+    fax
   }
 `,d=`
   fragment CHECKOUT_DATA_FRAGMENT on Cart {
@@ -259,6 +267,7 @@ const e=`
       value
     }
     taxes {
+      title
       amount {
         currency
         value

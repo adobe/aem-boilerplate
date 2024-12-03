@@ -16,6 +16,9 @@ export type OrderAddressModel = {
         code: string;
         value: string;
     }[];
+    prefix: string;
+    suffix: string;
+    fax: string;
 } | null;
 export type OrderItemProductModel = {
     stockStatus?: string;

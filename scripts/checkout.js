@@ -22,14 +22,18 @@ export function getCartAddress(checkoutData, type) {
     company: address?.company,
     countryCode: address.country?.value,
     customAttributes: address.customAttributes,
+    fax: address.fax,
     firstName: address.firstName,
     lastName: address.lastName,
+    middleName: address.middleName,
     postcode: address.postCode,
+    prefix: address.prefix,
     region: {
       regionCode: address.region?.code,
       regionId: address.region?.id,
     },
     street: address.street,
+    suffix: address.suffix,
     telephone: address.telephone,
     vatId: address.vatId,
   };
@@ -59,16 +63,16 @@ const transformAddressFormValues = (data) => {
         company: data?.company,
         countryCode: data.countryCode,
         customAttributes,
-        // TODO fax
+        fax: data.fax,
         firstName: data.firstName,
         lastName: data.lastName,
-        // TODO middleName
+        middleName: data.middleName,
         postcode: data.postcode,
-        // TODO prefix
+        prefix: data.prefix,
         region: data?.region?.regionCode,
         regionId: data?.region?.regionId,
         street: data.street,
-        // TODO suffix
+        suffix: data.suffix,
         telephone: data.telephone,
         vatId: data.vatId,
         saveInAddressBook: data.saveAddressBook,
@@ -76,12 +80,17 @@ const transformAddressFormValues = (data) => {
     };
 };
 
+let ongoingSetAddressCalls = 0;
 export function setAddressOnCart({ api, debounceMs = 0, placeOrderBtn = null }) {
   const debouncedApi = debounce((address) => {
+    ongoingSetAddressCalls += 1;
     api(address)
       .catch(console.error)
       .finally(() => {
-        placeOrderBtn?.setProps((prev) => ({ ...prev, disabled: false }));
+        ongoingSetAddressCalls -= 1;
+        if (ongoingSetAddressCalls === 0) {
+          placeOrderBtn?.setProps((prev) => ({ ...prev, disabled: false }));
+        }
       });
   }, debounceMs);
 

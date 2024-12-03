@@ -21,6 +21,10 @@ declare const transformShippingAddresses: (data: ({
     vat_id?: string | null | undefined;
     telephone?: string | null | undefined;
     same_as_billing: boolean;
+    prefix?: string | null | undefined;
+    suffix?: string | null | undefined;
+    middlename?: string | null | undefined;
+    fax?: string | null | undefined;
     region?: {
         __typename?: "CartAddressRegion" | undefined;
         region_id?: number | null | undefined;

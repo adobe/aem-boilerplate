@@ -13,5 +13,9 @@ export interface Address {
     street: string[];
     telephone?: string;
     vatId?: string;
+    prefix?: string;
+    suffix?: string;
+    middleName?: string;
+    fax?: string;
 }
 //# sourceMappingURL=address.d.ts.map

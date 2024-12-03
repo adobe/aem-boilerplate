@@ -1,19 +1,18 @@
 /*! Copyright 2024 Adobe
 All Rights Reserved. */
-import{f as i,h as s}from"./fetch-graphql.js";function n(p){return p?{orderCancellationEnabled:p.order_cancellation_enabled,orderCancellationReasons:p.order_cancellation_reasons,shoppingCartDisplayPrice:p.shopping_cart_display_price,shoppingOrdersDisplaySubtotal:p.shopping_cart_display_subtotal,shoppingOrdersDisplayShipping:p.shopping_cart_display_shipping,shoppingOrdersDisplayGrandTotal:p.shopping_cart_display_grand_total,shoppingOrdersDisplayTaxGiftWrapping:p.shopping_cart_display_tax_gift_wrapping,shoppingOrdersDisplayFullSummary:p.shopping_cart_display_full_summary,shoppingOrdersDisplayZeroTax:p.shopping_cart_display_zero_tax}:null}const a=`
+import{f as o,h as s}from"./fetch-graphql.js";function i(e){return e?{orderCancellationEnabled:e.order_cancellation_enabled,orderCancellationReasons:e.order_cancellation_reasons,shoppingCartDisplayPrice:e.orders_invoices_credit_memos_display_price,shoppingOrdersDisplaySubtotal:e.orders_invoices_credit_memos_display_subtotal,shoppingOrdersDisplayShipping:e.orders_invoices_credit_memos_display_shipping_amount,shoppingOrdersDisplayGrandTotal:e.orders_invoices_credit_memos_display_grandtotal,shoppingOrdersDisplayFullSummary:e.orders_invoices_credit_memos_display_full_summary,shoppingOrdersDisplayZeroTax:e.orders_invoices_credit_memos_display_zero_tax}:null}const _=`
 query STORE_CONFIG_QUERY {
   storeConfig {
     order_cancellation_enabled
     order_cancellation_reasons {
         description
     }
-    shopping_cart_display_price
-    shopping_cart_display_shipping
-    shopping_cart_display_subtotal
-    shopping_cart_display_grand_total
-    shopping_cart_display_tax_gift_wrapping
-    shopping_cart_display_full_summary
-    shopping_cart_display_zero_tax
+    orders_invoices_credit_memos_display_price
+    orders_invoices_credit_memos_display_shipping_amount
+    orders_invoices_credit_memos_display_subtotal
+    orders_invoices_credit_memos_display_grandtotal
+    orders_invoices_credit_memos_display_full_summary
+    orders_invoices_credit_memos_display_zero_tax
   }
 }
-`,o=async()=>i(a,{method:"GET",cache:"force-cache"}).then(({errors:p,data:r})=>p?s(p):n(r.storeConfig));export{o as g};
+`,c=async()=>o(_,{method:"GET",cache:"force-cache"}).then(({errors:e,data:r})=>e?s(e):i(r.storeConfig));export{c as g};

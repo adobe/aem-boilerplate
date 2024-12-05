@@ -212,6 +212,10 @@ export async function loadErrorPage(code = 404) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlText, 'text/html');
   document.body.innerHTML = doc.body.innerHTML;
+  // get dropin styles
+  document.head.querySelectorAll('style[data-dropin]').forEach((style) => {
+    doc.head.appendChild(style);
+  });
   document.head.innerHTML = doc.head.innerHTML;
 
   // https://developers.google.com/search/docs/crawling-indexing/javascript/fix-search-javascript

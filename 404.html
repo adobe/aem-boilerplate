@@ -11,7 +11,7 @@
             "@dropins/storefront-auth/": "/scripts/__dropins__/storefront-auth/"
         }
     }
-</script>
+  </script>
   <script type="text/javascript">
     window.isErrorPage = true;
     window.errorCode = '404';
@@ -42,9 +42,13 @@
   <link rel="stylesheet" href="/styles/styles.css">
   <style>
     main.error {
-      min-height: calc(100vh - var(--nav-height));
-      display: flex;
       align-items: center;
+      display: flex;
+      margin: 0 auto;
+      max-width: 1264px;
+      min-height: calc(100vh - var(--nav-height));
+      padding: 0 32px;
+      width: 100%;
     }
 
     main.error .error-number {

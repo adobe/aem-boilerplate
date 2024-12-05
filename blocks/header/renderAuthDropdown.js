@@ -27,7 +27,7 @@ function renderSignIn(element) {
 export function renderAuthDropdown(navTools) {
   const dropdownElement = document.createRange().createContextualFragment(`
  <div class="dropdown-wrapper nav-tools-wrapper">
-    <button type="button" class="nav-dropdown-button"></button>
+    <button type="button" class="nav-dropdown-button" aria-haspopup="dialog" aria-expanded="false" aria-controls="login-modal"></button>
     <div class="nav-auth-menu-panel nav-tools-panel">
       <div id="auth-dropin-container"></div>
       <ul class="authenticated-user-menu">
@@ -43,10 +43,14 @@ export function renderAuthDropdown(navTools) {
   navTools.append(dropdownElement);
 
   const authDropDownPanel = navTools.querySelector('.nav-auth-menu-panel');
-  const authDropDownMenuList = navTools.querySelector('.authenticated-user-menu');
+  const authDropDownMenuList = navTools.querySelector(
+    '.authenticated-user-menu',
+  );
   const authDropinContainer = navTools.querySelector('#auth-dropin-container');
   const loginButton = navTools.querySelector('.nav-dropdown-button');
-  const logoutButtonElement = navTools.querySelector('.authenticated-user-menu > li > button');
+  const logoutButtonElement = navTools.querySelector(
+    '.authenticated-user-menu > li > button',
+  );
 
   authDropDownPanel.addEventListener('click', (e) => e.stopPropagation());
 
@@ -54,6 +58,11 @@ export function renderAuthDropdown(navTools) {
     const show = state ?? !authDropDownPanel.classList.contains('nav-tools-panel--show');
 
     authDropDownPanel.classList.toggle('nav-tools-panel--show', show);
+    authDropDownPanel.setAttribute('role', 'dialog');
+    authDropDownPanel.setAttribute('aria-hidden', 'false');
+    authDropDownPanel.setAttribute('aria-labelledby', 'modal-title');
+    authDropDownPanel.setAttribute('aria-describedby', 'modal-description');
+    authDropDownPanel.focus();
   }
 
   loginButton.addEventListener('click', () => toggleDropDownAuthMenu());

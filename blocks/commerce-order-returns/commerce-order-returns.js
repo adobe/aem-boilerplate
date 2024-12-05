@@ -34,6 +34,6 @@ export default async function decorate(block) {
 
       return `${returnDetailsPath}?orderRef=${encodedOrderRef}&returnRef=${returnNumber}`;
     },
-    routeProductDetails: (productData) => (productData ? `/products/${productData.product.urlKey}/${productData.product.sku}` : '#'),
+    routeProductDetails: (productData) => (productData?.product ? `/products/${productData.product.urlKey}/${productData.product.sku}` : '#'),
   })(block);
 }

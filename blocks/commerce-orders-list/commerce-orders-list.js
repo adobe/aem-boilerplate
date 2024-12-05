@@ -32,7 +32,7 @@ export default async function decorate(block) {
       routeOrdersList: () => CUSTOMER_ORDERS_PATH,
       routeOrderDetails: (orderNumber) => `${CUSTOMER_ORDER_DETAILS_PATH}?orderRef=${orderNumber}`,
       routeReturnDetails: ({ orderNumber, returnNumber }) => `${CUSTOMER_RETURN_DETAILS_PATH}?orderRef=${orderNumber}&returnRef=${returnNumber}`,
-      routeOrderProduct: (productData) => (productData ? `/products/${productData.product.urlKey}/${productData.product.sku}` : '#'),
+      routeOrderProduct: (productData) => (productData?.product ? `/products/${productData.product.urlKey}/${productData.product.sku}` : '#'),
     })(block);
   }
 }

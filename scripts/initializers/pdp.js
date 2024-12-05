@@ -10,7 +10,12 @@ import {
   fetchProductData,
 } from '@dropins/storefront-pdp/api.js';
 import { initializeDropin } from './index.js';
-import { commerceEndpointWithQueryParams, getOptionsUIDsFromUrl, getSkuFromUrl } from '../commerce.js';
+import {
+  commerceEndpointWithQueryParams,
+  getOptionsUIDsFromUrl,
+  getSkuFromUrl,
+  loadErrorPage,
+} from '../commerce.js';
 import { getConfigValue } from '../configs.js';
 import { fetchPlaceholders } from '../aem.js';
 
@@ -37,6 +42,10 @@ await initializeDropin(async () => {
     fetchPlaceholders(),
   ]);
 
+  if (!product?.sku) {
+    return loadErrorPage();
+  }
+
   const langDefinitions = {
     default: {
       ...labels,
@@ -50,7 +59,7 @@ await initializeDropin(async () => {
   };
 
   // Initialize Dropins
-  await initializers.mountImmediately(initialize, {
+  return initializers.mountImmediately(initialize, {
     sku,
     optionsUIDs,
     langDefinitions,

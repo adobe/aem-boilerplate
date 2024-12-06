@@ -4,6 +4,7 @@ indices:
     target: /sitemap.json
     exclude:
       - 'drafts/**'
+      - 'enrichment/**'
       - 'fragments/**'
       - 'products/**'
     properties:

@@ -1,5 +1,36 @@
 version: 1
 indices:
+  sitemap:
+    target: /sitemap.json
+    exclude:
+      - 'drafts/**'
+      - 'enrichment/**'
+      - 'fragments/**'
+      - 'products/**'
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: |
+          attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: |
+          attribute(el, 'content')
+      description:
+        select: head > meta[name="description"]
+        value: |
+          attribute(el, 'content')
+      template:
+        select: head > meta[name="template"]
+        value: |
+          attribute(el, 'content')
+      robots:
+        select: head > meta[name="robots"]
+        value: |
+          attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers["last-modified"], "ddd, DD MMM YYYY hh:mm:ss GMT")
   enrichment:
     target: /enrichment/enrichment.json
     include:

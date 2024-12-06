@@ -1,0 +1,5 @@
+sitemaps:
+  default:
+    source: /sitemap.json
+    destination: /sitemap-content.xml
+    lastmod: YYYY-MM-DD

@@ -29,7 +29,8 @@ declare const _default: {
     "InputPassword": {
       "placeholder": "Password",
       "floatingLabel": "Password",
-      "buttonTitle": "Click to show or hide password"
+      "buttonShowTitle": "Click to show password",
+      "buttonHideTitle": "Click to hide password"
     },
     "PasswordStatusIndicator": {
       "chartTwoSymbols": "Use characters and numbers or symbols",

@@ -19,6 +19,6 @@ export default async function decorate(block) {
     routeEmptyCartCTA: startShoppingURL ? () => startShoppingURL : undefined,
     routeCart: cartURL ? () => cartURL : undefined,
     routeCheckout: checkoutURL ? () => checkoutURL : undefined,
-    routeProduct: (product) => `/products/${product.url.urlKey}/${product.sku}`,
+    routeProduct: (product) => `/products/${product.url.urlKey}/${product.topLevelSku}`,
   })(block);
 }

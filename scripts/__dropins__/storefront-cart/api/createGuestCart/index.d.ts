@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const createEmptyCart: () => Promise<any>;
-//# sourceMappingURL=createEmptyCart.d.ts.map
+export * from './createGuestCart';
+//# sourceMappingURL=index.d.ts.map

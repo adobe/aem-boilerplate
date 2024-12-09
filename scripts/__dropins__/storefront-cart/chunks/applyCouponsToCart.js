@@ -1,6 +1,6 @@
 /*! Copyright 2024 Adobe
 All Rights Reserved. */
-import{s as c,f as T,h as A}from"./resetCart.js";import{C as _,t as i}from"./getStoreConfig.js";import{events as n}from"@dropins/tools/event-bus.js";import{CART_FRAGMENT as u}from"../fragments.js";const P=`
+import{s as c,f as T,h as A}from"./resetCart.js";import{C as _,t as i}from"./refreshCart.js";import{events as n}from"@dropins/tools/event-bus.js";import{CART_FRAGMENT as u}from"../fragments.js";const P=`
 mutation APPLY_COUPONS_TO_CART_MUTATION(
     $cartId: String!, 
     $couponCodes: [String!]!, 

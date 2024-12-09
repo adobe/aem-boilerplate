@@ -94,7 +94,11 @@ fragment CART_ITEM_FRAGMENT on CartItemInterface {
       }
       label
     }
-    original_row_total{
+    original_item_price {
+      value
+      currency
+    }
+    original_row_total {
       value
       currency
     }
@@ -109,9 +113,11 @@ fragment CART_ITEM_FRAGMENT on CartItemInterface {
     }
     url_key
     url_suffix
+    canonical_url
     categories {
       url_path
       url_key
+      name
     }
     custom_attributesV2(filters: {is_visible_on_front: true}){
       items{

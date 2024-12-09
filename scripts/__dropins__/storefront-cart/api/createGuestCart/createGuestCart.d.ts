@@ -14,6 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './Cart';
-export { Cart as default } from './Cart';
-//# sourceMappingURL=index.d.ts.map
+export declare const createGuestCart: () => Promise<any>;
+//# sourceMappingURL=createGuestCart.d.ts.map

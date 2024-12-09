@@ -14,6 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './Cart';
-export { Cart as default } from './Cart';
-//# sourceMappingURL=index.d.ts.map
+export declare const CREATE_GUEST_CART_MUTATION = "\n    mutation CREATE_GUEST_CART_MUTATION {\n        createGuestCart {\n          cart {\n            id\n          }\n        }\n    }\n";
+//# sourceMappingURL=CreateCartMutation.d.ts.map

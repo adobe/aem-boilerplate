@@ -11,6 +11,7 @@ export * from './events-catalog';
  * @property {Function} on - Subscribes to an event.
  * @property {Function} emit - Emits an event.
  * @property {Function} enableLogger - Enables or disables event logging.
+ * @property {Function} lastPayload - Returns the last payload of the event.
  */
 export declare class events {
     static _identifier: string;
@@ -20,6 +21,12 @@ export declare class events {
             payload: any;
         };
     };
+    /**
+     * Returns the last payload of the event.
+     * @param event – The event to get the last payload from.
+     * @returns – The last payload of the event.
+     */
+    static lastPayload(event: string): any;
     /**
      * Subscribes to an event.
      * @param event - The event to subscribe to.

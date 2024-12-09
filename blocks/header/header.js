@@ -3,6 +3,9 @@
 // Drop-in Tools
 import { events } from '@dropins/tools/event-bus.js';
 
+// Cart dropin
+import { publishShoppingCartViewEvent } from '@dropins/storefront-cart/api.js';
+
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
@@ -190,7 +193,12 @@ export default async function decorate(block) {
 
   async function toggleMiniCart(state) {
     const show = state ?? !minicartPanel.classList.contains('nav-tools-panel--show');
+    const stateChanged = show !== minicartPanel.classList.contains('nav-tools-panel--show');
     minicartPanel.classList.toggle('nav-tools-panel--show', show);
+
+    if (stateChanged && show) {
+      publishShoppingCartViewEvent();
+    }
   }
 
   cartButton.addEventListener('click', () => toggleMiniCart());

@@ -17,6 +17,7 @@
 export interface CartModel {
     id: string;
     totalQuantity: number;
+    totalUniqueItems: number;
     errors?: ItemError[];
     items: Item[];
     miniCartMaxItems: Item[];
@@ -63,8 +64,11 @@ export interface Item {
     itemType: string;
     uid: string;
     url: ItemURL;
+    canonicalUrl: string;
+    categories: string[];
     quantity: number;
     sku: string;
+    topLevelSku: string;
     name: string;
     image: ItemImage;
     links?: ItemLinks;

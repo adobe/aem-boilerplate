@@ -53,6 +53,10 @@ declare const bundleOptions: {
             value: number;
             currency: string;
         };
+        original_item_price: {
+            value: number;
+            currency: string;
+        };
     };
     product: {
         name: string;
@@ -112,6 +116,10 @@ declare const bundleOptionsEmpty: {
             value: number;
         };
         original_row_total: {
+            value: number;
+            currency: string;
+        };
+        original_item_price: {
             value: number;
             currency: string;
         };
@@ -176,6 +184,10 @@ declare const giftCardPhysical: {
             value: number;
         };
         original_row_total: {
+            value: number;
+            currency: string;
+        };
+        original_item_price: {
             value: number;
             currency: string;
         };
@@ -245,6 +257,10 @@ declare const giftCardVirtual: {
             value: number;
             currency: string;
         };
+        original_item_price: {
+            value: number;
+            currency: string;
+        };
     };
     product: {
         name: string;
@@ -302,6 +318,10 @@ declare const simple: {
             value: number;
         };
         original_row_total: {
+            value: number;
+            currency: string;
+        };
+        original_item_price: {
             value: number;
             currency: string;
         };
@@ -381,6 +401,10 @@ declare const simpleCustomizable: {
             value: number;
         };
         original_row_total: {
+            value: number;
+            currency: string;
+        };
+        original_item_price: {
             value: number;
             currency: string;
         };
@@ -470,6 +494,10 @@ declare const configurable: {
             value: number;
         };
         original_row_total: {
+            value: number;
+            currency: string;
+        };
+        original_item_price: {
             value: number;
             currency: string;
         };
@@ -580,6 +608,10 @@ declare const configurableCustomizable: {
             value: number;
             currency: string;
         };
+        original_item_price: {
+            value: number;
+            currency: string;
+        };
     };
     product: {
         name: string;
@@ -638,6 +670,10 @@ declare const giftCard: {
             value: number;
         };
         original_row_total: {
+            value: number;
+            currency: string;
+        };
+        original_item_price: {
             value: number;
             currency: string;
         };
@@ -703,6 +739,10 @@ declare const downloadbleWithMultipleLinks: {
             value: number;
         };
         original_row_total: {
+            value: number;
+            currency: string;
+        };
+        original_item_price: {
             value: number;
             currency: string;
         };
@@ -800,6 +840,10 @@ declare const simpleLowInventory: {
             value: number;
             currency: string;
         };
+        original_item_price: {
+            value: number;
+            currency: string;
+        };
     };
 };
 declare const complexInsufficientQuantity: {
@@ -869,6 +913,10 @@ declare const complexInsufficientQuantity: {
             value: number;
             currency: string;
         };
+        original_item_price: {
+            value: number;
+            currency: string;
+        };
     };
 };
 declare const complexInsufficientQuantityGeneralMessage: {
@@ -935,6 +983,10 @@ declare const complexInsufficientQuantityGeneralMessage: {
             value: number;
         };
         original_row_total: {
+            value: number;
+            currency: string;
+        };
+        original_item_price: {
             value: number;
             currency: string;
         };
@@ -1017,6 +1069,10 @@ declare const complexWithProductAttributes: {
             value: number;
             currency: string;
         };
+        original_item_price: {
+            value: number;
+            currency: string;
+        };
     };
 };
 declare const simpleWithNoDiscount: {
@@ -1043,6 +1099,10 @@ declare const simpleWithNoDiscount: {
         };
         row_total_including_tax: {
             value: number;
+        };
+        original_item_price: {
+            value: number;
+            currency: string;
         };
     };
     product: {

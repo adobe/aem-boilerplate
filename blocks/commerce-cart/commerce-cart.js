@@ -9,6 +9,9 @@ import EstimateShipping from '@dropins/storefront-cart/containers/EstimateShippi
 import EmptyCart from '@dropins/storefront-cart/containers/EmptyCart.js';
 import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
 
+// API
+import { publishShoppingCartViewEvent } from '@dropins/storefront-cart/api.js';
+
 // Initializers
 import '../../scripts/initializers/cart.js';
 
@@ -71,7 +74,7 @@ export default async function decorate(block) {
     // Cart List
     provider.render(CartSummaryList, {
       hideHeading: hideHeading === 'true',
-      routeProduct: (product) => `/products/${product.url.urlKey}/${product.sku}`,
+      routeProduct: (product) => `/products/${product.url.urlKey}/${product.topLevelSku}`,
       routeEmptyCartCTA: startShoppingURL ? () => startShoppingURL : undefined,
       maxItems: parseInt(maxItems, 10) || undefined,
       attributesToHide: hideAttributes.split(',').map((attr) => attr.trim().toLowerCase()),
@@ -81,7 +84,7 @@ export default async function decorate(block) {
 
     // Order Summary
     provider.render(OrderSummary, {
-      routeProduct: (product) => `/products/${product.url.urlKey}/${product.sku}`,
+      routeProduct: (product) => `/products/${product.url.urlKey}/${product.topLevelSku}`,
       routeCheckout: checkoutURL ? () => checkoutURL : undefined,
       slots: {
         EstimateShipping: async (ctx) => {
@@ -107,9 +110,15 @@ export default async function decorate(block) {
     })($emptyCart),
   ]);
 
+  let cartViewEventPublished = false;
   // Events
   events.on('cart/data', (payload) => {
     toggleEmptyCart(isCartEmpty(payload));
+
+    if (!cartViewEventPublished) {
+      cartViewEventPublished = true;
+      publishShoppingCartViewEvent();
+    }
   }, { eager: true });
 
   return Promise.resolve();

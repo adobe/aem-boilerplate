@@ -21,11 +21,12 @@ export * from './getCartData';
 export * from './initializeCart';
 export * from './updateProductsFromCart';
 export * from './resetCart';
-export * from './createEmptyCart';
+export * from './createGuestCart';
 export * from './getStoreConfig';
 export * from './getEstimateShipping';
 export * from './getEstimatedTotals';
 export * from './refreshCart';
 export { getPersistedCartData as getCartDataFromCache } from '../lib/persisted-data';
 export * from './applyCouponsToCart';
+export * from './publishShoppingCartViewEvent';
 //# sourceMappingURL=index.d.ts.map

@@ -1,24 +1,29 @@
+type customAttributesProps = {
+    custom_attributes: Record<string, string>[];
+};
+type errorProps = {
+    message: string;
+};
 export interface Customer {
     firstname: string;
     lastname: string;
     email: string;
     is_subscribed: boolean;
-    custom_attributes?: Record<string, string>[];
 }
 interface CreateCustomerResponse {
     customer: Customer;
 }
-interface DataCreateCustomerV2 {
-    createCustomer: CreateCustomerResponse;
+export interface DataCreateCustomerV2 {
+    data: {
+        createCustomerV2: CreateCustomerResponse & customAttributesProps;
+    };
+    errors?: errorProps[];
 }
-interface DataCreateCustomer {
-    createCustomer: CreateCustomerResponse;
-}
-export interface CreateCustomerDataResponse {
-    data: DataCreateCustomerV2 | DataCreateCustomer | null;
-    errors?: {
-        message: string;
-    }[];
+export interface DataCreateCustomer {
+    data: {
+        createCustomer: CreateCustomerResponse;
+    };
+    errors?: errorProps[];
 }
 export {};
 //# sourceMappingURL=createCustomer.types.d.ts.map

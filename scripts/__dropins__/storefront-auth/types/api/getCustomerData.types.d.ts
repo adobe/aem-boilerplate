@@ -4,6 +4,7 @@ export interface getCustomerDataResponse {
             firstname: string;
             lastname: string;
             email: string;
+            is_subscribed: boolean;
         };
     };
     errors?: {

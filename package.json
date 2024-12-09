@@ -35,11 +35,11 @@
   "dependencies": {
     "@adobe/magento-storefront-event-collector": "^1.8.0",
     "@adobe/magento-storefront-events-sdk": "^1.8.0",
-    "@dropins/storefront-account": "0.1.0-alpha20",
-    "@dropins/storefront-auth": "0.0.1-alpha25",
+    "@dropins/storefront-account": "1.0.0-beta3",
+    "@dropins/storefront-auth": "1.0.0-beta2",
     "@dropins/storefront-cart": "0.10.0",
     "@dropins/storefront-checkout": "0.1.0-alpha61",
-    "@dropins/storefront-order": "0.1.0-alpha26",
+    "@dropins/storefront-order": "1.0.0-beta2",
     "@dropins/storefront-pdp": "1.0.0-beta3",
     "@dropins/tools": "^0.36.0"
   }

@@ -1,9 +1,5 @@
 import { RequestReturnProps } from '../../types';
+import { RequestReturnModel } from '../../data/models';
 
-export declare const requestReturn: (form: RequestReturnProps) => Promise<{
-    uid: string;
-    number: string;
-    status: string;
-    createdAt: string;
-}>;
+export declare const requestReturn: (form: RequestReturnProps) => Promise<RequestReturnModel | {}>;
 //# sourceMappingURL=requestReturn.d.ts.map

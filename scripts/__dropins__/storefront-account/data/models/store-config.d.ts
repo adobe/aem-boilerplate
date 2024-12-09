@@ -1,4 +1,5 @@
 export interface StoreConfigModel {
+    baseMediaUrl: string;
     minLength: number;
     requiredCharacterClasses: number;
 }

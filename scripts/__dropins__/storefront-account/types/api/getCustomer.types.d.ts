@@ -9,7 +9,6 @@ export interface getCustomerShortResponse {
             lastname: string;
             email: string;
             date_of_birth: string;
-            dob: string;
             gender: 1 | 2;
             middlename: string;
             prefix: string;

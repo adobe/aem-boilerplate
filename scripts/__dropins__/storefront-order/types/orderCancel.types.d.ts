@@ -10,7 +10,7 @@ export interface OrderCancelFormProps {
     submitButtonProps?: ButtonProps;
     cancelReasons: PickerOption[];
 }
-export interface ConfirmCancelOrderProps {
+export interface UseOrderActionsProps {
     enableOrderCancellation: boolean | undefined;
 }
 //# sourceMappingURL=orderCancel.types.d.ts.map

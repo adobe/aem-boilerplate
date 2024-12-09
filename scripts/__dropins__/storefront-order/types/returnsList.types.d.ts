@@ -40,6 +40,7 @@ export interface ReturnsListProps {
     withThumbnails?: boolean;
 }
 export interface ReturnsListContentProps extends Omit<ReturnsListProps, 'className' | 'returnPageSize'> {
+    placeholderImage?: string;
     minifiedViewKey: 'minifiedView' | 'fullSizeView';
     orderReturns?: OrdersReturnPropsModel[] | [];
     translations: Record<string, string>;

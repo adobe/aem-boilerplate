@@ -183,9 +183,16 @@ declare const _default: {
       },
       "actions": {
         "cancel": "Cancel order",
+        "confirmGuestReturn": "Return request confirmed",
+        "confirmGuestReturnMessage": "Your return request has been successfully confirmed.",
         "createReturn": "Return or replace",
         "createAnotherReturn": "Start another return",
         "reorder": "Reorder"
+      },
+      "orderPlaceholder": {
+        "title": "",
+        "message": "Your order has been in its current status since {DATE}.",
+        "messageWithoutDate": "Your order has been in its current status for some time."
       },
       "orderPending": {
         "title": "Pending",
@@ -227,9 +234,44 @@ declare const _default: {
         "messageWithoutDate": "Your order is processing. Check back for more details when your order ships."
       },
       "guestOrderCancellationRequested": {
-        "title": "cancellation requested",
+        "title": "Cancellation requested",
         "message": "The cancellation has been requested on {DATE}. Check your email for further instructions.",
         "messageWithoutDate": "The cancellation has been requested. Check your email for further instructions."
+      },
+      "orderPendingPayment": {
+        "title": "Pending Payment",
+        "message": "The order was successfully placed on {DATE}, but it is awaiting payment. Please complete the payment so we can start processing your order.",
+        "messageWithoutDate": "Your order is awaiting payment. Please complete the payment so we can start processing your order."
+      },
+      "orderRejected": {
+        "title": "Rejected",
+        "message": "Your order was rejected on {DATE}. Please contact us for more information.",
+        "messageWithoutDate": "Your order was rejected. Please contact us for more information."
+      },
+      "orderAuthorized": {
+        "title": "Authorized",
+        "message": "Your order was successfully authorized on {DATE}. We will begin processing your order shortly.",
+        "messageWithoutDate": "Your order was successfully authorized. We will begin processing your order shortly."
+      },
+      "orderPaypalCanceledReversal": {
+        "title": "PayPal Canceled Reversal",
+        "message": "The PayPal transaction reversal was canceled on {DATE}. Please check your order details for more information.",
+        "messageWithoutDate": "The PayPal transaction reversal was canceled. Please check your order details for more information."
+      },
+      "orderPendingPaypal": {
+        "title": "Pending PayPal",
+        "message": "Your order is awaiting PayPal payment confirmation since {DATE}. Please check your PayPal account for the payment status.",
+        "messageWithoutDate": "Your order is awaiting PayPal payment confirmation. Please check your PayPal account for the payment status."
+      },
+      "orderPaypalReversed": {
+        "title": "PayPal Reversed",
+        "message": "The PayPal payment was reversed on {DATE}. Please contact us for further details.",
+        "messageWithoutDate": "The PayPal payment was reversed. Please contact us for further details."
+      },
+      "orderClosed": {
+        "title": "Closed",
+        "message": "The order placed on {DATE} has been closed. For any further assistance, please contact support.",
+        "messageWithoutDate": "Your order has been closed. For any further assistance, please contact support."
       }
     },
     "CustomerDetails": {
@@ -287,8 +329,18 @@ declare const _default: {
       "button": "Submit Cancellation",
       "errorHeading": "Error",
       "errorDescription": "There was an error processing your order cancellation."
+    },
+    "OrderHeader": {
+      "title": "{{name}}, thank you for your order!",
+      "defaultTitle": "Thank you for your order!",
+      "order": "ORDER #{{order}}",
+      "CreateAccount": {
+        "message": "Save your information for faster checkout next time.",
+        "button": "Create an account"
+      }
     }
   }
-};
+}
+;
 
 export default _default;

@@ -9,7 +9,8 @@ declare const _default: {
     "ResetPasswordForm": {
       "title": "Reset your password",
       "buttonPrimary": "Reset password",
-      "buttonSecondary": "Back to sign in"
+      "buttonSecondary": "Back to sign in",
+      "formAriaLabel": "Reset your password form"
     },
     "SignInForm": {
       "title": "Sign in",

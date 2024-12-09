@@ -32,6 +32,7 @@ export interface OrdersListProps extends HTMLAttributes<HTMLDivElement> {
 export interface OrdersListWrapperProps extends OrdersListProps {
 }
 export interface OrdersListCardProps extends HTMLAttributes<HTMLDivElement> {
+    placeholderImage: string;
     minifiedView: boolean;
     item: OrderDetails;
     withThumbnails: boolean;

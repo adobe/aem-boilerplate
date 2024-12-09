@@ -1,3 +1,4 @@
+export * from './EmailConfirmationForm';
 export * from './UpdatePasswordForm';
 export * from './SuccessNotificationForm';
 export * from './SignUpForm';

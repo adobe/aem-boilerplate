@@ -3,7 +3,6 @@ export interface CustomerDataModelShort {
     lastName: string;
     middleName: string;
     dateOfBirth: string;
-    dob: string;
     prefix: string;
     gender: 1 | 2 | string;
     suffix: string;

@@ -1,5 +1,5 @@
 export interface RequestReturnProps {
-    orderUid: string;
+    orderUid?: string;
     contactEmail: string;
     items: {
         orderItemUid: string;
@@ -14,11 +14,18 @@ export interface RequestReturnProps {
         }[];
     }[];
 }
+export interface RequestGuestReturnProps extends RequestReturnProps {
+    token: string;
+    commentText: string;
+}
 export interface ReturnProps {
     uid: string;
     number: string;
     status: string;
     created_at: string;
+}
+interface ErrorsProps {
+    message: string;
 }
 export interface RequestReturnResponse {
     data: {
@@ -26,8 +33,15 @@ export interface RequestReturnResponse {
             return: ReturnProps;
         };
     };
-    errors?: {
-        message: string;
-    }[];
+    errors?: ErrorsProps[];
 }
+export interface RequestGuestReturnResponse {
+    data: {
+        requestGuestReturn: {
+            return: ReturnProps;
+        };
+    };
+    errors?: ErrorsProps[];
+}
+export {};
 //# sourceMappingURL=requestReturn.types.d.ts.map

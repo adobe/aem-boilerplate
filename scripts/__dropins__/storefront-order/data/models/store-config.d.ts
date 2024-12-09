@@ -1,4 +1,5 @@
 export interface StoreConfigModel {
+    baseMediaUrl: string;
     orderCancellationEnabled: boolean;
     orderCancellationReasons: OrderCancellationReason[];
     shoppingCartDisplayPrice: 1 | 2 | 3;

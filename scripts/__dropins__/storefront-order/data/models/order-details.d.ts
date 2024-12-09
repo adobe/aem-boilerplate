@@ -119,6 +119,7 @@ export type ShipmentsModel = {
     items: ShipmentItemsModel[];
 };
 export type OrderDataModel = {
+    placeholderImage?: string;
     returnNumber: string;
     id: string;
     orderStatusChangeDate?: string;
@@ -153,7 +154,8 @@ export type OrderDataModel = {
     totalGiftcard: MoneyProps;
     grandTotal: MoneyProps;
     totalShipping?: MoneyProps;
-    subtotal: MoneyProps;
+    subtotalExclTax: MoneyProps;
+    subtotalInclTax: MoneyProps;
     totalTax: MoneyProps;
     shippingAddress: OrderAddressModel;
     billingAddress: OrderAddressModel;

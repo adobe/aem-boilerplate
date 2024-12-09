@@ -4,6 +4,10 @@ export type RegionProps = {
     region_id: string | number;
 };
 export interface UserAddressesProps {
+    middlename: string;
+    fax: string;
+    prefix: string;
+    suffix: string;
     firstname: string;
     lastname: string;
     city: string;

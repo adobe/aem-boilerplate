@@ -1,5 +1,5 @@
 import { getCustomerDataResponse } from '../../types';
-import { CustomerDataModel } from '../models';
+import { CustomerModel } from '../models';
 
-export declare const transformCustomerData: (response: getCustomerDataResponse) => CustomerDataModel;
+export declare const transformCustomerData: (response: getCustomerDataResponse) => CustomerModel;
 //# sourceMappingURL=transform-customer-data.d.ts.map

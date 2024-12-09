@@ -2,10 +2,11 @@ import { OrderDataModel } from '../../data/models';
 import { TaxTypes } from '../../types';
 
 type translationsTypes = Record<string, string>;
-export declare const Subtotal: ({ translations, order, subTotalValue, shoppingOrdersDisplaySubtotal, }: {
+export declare const Subtotal: ({ translations, order, subtotalInclTax, subtotalExclTax, shoppingOrdersDisplaySubtotal, }: {
     translations: translationsTypes;
     order?: OrderDataModel | undefined;
-    subTotalValue: number;
+    subtotalInclTax: number;
+    subtotalExclTax: number;
     shoppingOrdersDisplaySubtotal: TaxTypes;
 }) => import("preact").JSX.Element;
 export declare const Shipping: ({ translations, shoppingOrdersDisplayShipping, order, totalShipping, }: {

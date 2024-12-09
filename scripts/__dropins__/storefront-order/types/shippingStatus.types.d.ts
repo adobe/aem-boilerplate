@@ -28,6 +28,7 @@ export interface UseShippingStatusProps {
     orderData?: OrderDataModel;
 }
 export interface ShippingStatusCardProps {
+    placeholderImage: string;
     translations: Record<string, string>;
     slots?: {
         DeliveryTimeLine?: SlotProps;

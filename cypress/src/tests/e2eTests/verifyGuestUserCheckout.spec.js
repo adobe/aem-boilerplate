@@ -125,7 +125,7 @@ describe('Verify guest user can place order', () => {
     cy.get('.dropin-header-container__title', {timeout: 3000})
       .should('exist')
       .and('be.visible')
-      .and('contain.text', 'cancellation requested');
+      .and('contain.text', 'Cancellation requested');
 
     cy.get(fields.cancellationReasonsModal).should('not.exist');
 

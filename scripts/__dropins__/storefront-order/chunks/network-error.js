@@ -1,3 +1,3 @@
 /*! Copyright 2024 Adobe
 All Rights Reserved. */
-import{events as o}from"@dropins/tools/event-bus.js";const s=r=>{throw r instanceof DOMException&&r.name==="AbortError"||o.emit("order/error",{source:"auth",type:"network",error:r.message}),r};export{s as h};
+import{events as a}from"@dropins/tools/event-bus.js";const b=r=>r.replace(/_([a-z])/g,(o,s)=>s.toUpperCase()),i=r=>r.replace(/([A-Z])/g,o=>`_${o.toLowerCase()}`),u=(r,o,s)=>{const c=["string","boolean","number"],p=o==="camelCase"?b:i;return Array.isArray(r)?r.map(e=>c.includes(typeof e)||e===null?e:typeof e=="object"?u(e,o,s):e):r!==null&&typeof r=="object"?Object.entries(r).reduce((e,[n,t])=>{const f=s&&s[n]?s[n]:p(n);return e[f]=c.includes(typeof t)||t===null?t:u(t,o,s),e},{}):r},C=r=>{throw r instanceof DOMException&&r.name==="AbortError"||a.emit("order/error",{source:"auth",type:"network",error:r.message}),r};export{u as a,b as c,C as h};

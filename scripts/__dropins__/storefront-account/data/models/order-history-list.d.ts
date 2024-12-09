@@ -71,7 +71,7 @@ export type PaginationInfo = {
     pageSize: number;
     totalPages: number;
 };
-export interface OrderHistory {
+export interface OrderHistoryModel {
     items: OrderDetails[];
     pageInfo: PaginationInfo;
     totalCount: number;

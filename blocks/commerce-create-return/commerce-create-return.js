@@ -10,6 +10,12 @@ import '../../scripts/initializers/order.js';
 
 export default async function decorate(block) {
   await orderRenderer.render(CreateReturn, {
-    routeReturnSuccess: (orderData) => (checkIsAuthenticated() ? `${CUSTOMER_ORDER_DETAILS_PATH}?orderRef=${orderData.number}` : `${ORDER_DETAILS_PATH}?orderRef=${orderData.token}`),
+    routeReturnSuccess: (orderData) => {
+      const orderRef = checkIsAuthenticated() ? orderData.number : orderData.token;
+      const encodedOrderRef = encodeURIComponent(orderRef);
+      const path = checkIsAuthenticated() ? CUSTOMER_ORDER_DETAILS_PATH : ORDER_DETAILS_PATH;
+
+      return `${path}?orderRef=${encodedOrderRef}`;
+    },
   })(block);
 }

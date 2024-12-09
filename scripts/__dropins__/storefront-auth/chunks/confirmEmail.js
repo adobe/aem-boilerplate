@@ -1,9 +1,10 @@
+/*! Copyright 2024 Adobe
+All Rights Reserved. */
 import{f as o,h as r}from"./network-error.js";const t=`
   mutation CONFIRM_EMAIL($email: String!, $confirmation_key: String!) {
-    confirmEmail(input: {
-      email: $email,
-      confirmation_key: $confirmation_key
-    }) {
+    confirmEmail(
+      input: { email: $email, confirmation_key: $confirmation_key }
+    ) {
       customer {
         email
       }

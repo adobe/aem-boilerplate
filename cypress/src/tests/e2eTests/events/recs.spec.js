@@ -13,7 +13,7 @@ import { expectsEventWithContext } from "../../../assertions";
  */
 
 it('api-request-sent, api-response-received, unit-impression-render', () => {
-  cy.visit('/products/crown-summit-backpack/24-MB03');
+  cy.visit('/gear');
   cy.waitForResource('commerce-events-collector.js').then(() => {
     cy.window().its('adobeDataLayer').then((adobeDataLayer) => {
       expectsEventWithContext(
@@ -36,7 +36,7 @@ it('api-request-sent, api-response-received, unit-impression-render', () => {
 });
 
 it('recs-unit-view', () => {
-  cy.visit('/products/crown-summit-backpack/24-MB03');
+  cy.visit('/gear');
   cy.waitForResource('commerce-events-collector.js').then(() => {
     cy.get('.product-recommendations-wrapper').scrollIntoView({ duration: 1000 });
     cy.window().its('adobeDataLayer').then((adobeDataLayer) => {
@@ -49,7 +49,7 @@ it('recs-unit-view', () => {
       return adobeDataLayer;
     }).then(adobeDataLayer => {
       // triggers a second view when scrolled again
-      cy.get('.pdp-header__title').scrollIntoView({ duration: 50 }).then(() => {
+      cy.get('#gear').scrollIntoView({ duration: 50 }).then(() => {
         cy.get('.product-recommendations-wrapper').scrollIntoView({ duration: 50 }).then(() => {
           const eventCount = adobeDataLayer.filter(data => data?.event === 'recs-unit-view');
           expect(eventCount).to.have.lengthOf(2);
@@ -60,7 +60,7 @@ it('recs-unit-view', () => {
 });
 
 it('recs-item-click', () => {
-  cy.visit('/products/crown-summit-backpack/24-MB03');
+  cy.visit('/gear');
   cy.waitForResource("commerce-events-collector.js").then(() => {
     cy.window().then((win) => {
       cy.spy(win.adobeDataLayer, "push").as("adl");
@@ -92,7 +92,7 @@ it('recs-item-click', () => {
 });
 
 it('reqs-item-add-to-cart', () => {
-  cy.visit('/products/crown-summit-backpack/24-MB03');
+  cy.visit('/gear');
   cy.waitForResource("commerce-events-collector.js").then(() => {
     cy.window().then((win) => {
       cy.spy(win.adobeDataLayer, "push").as("adl");

@@ -71,15 +71,6 @@ declare const _default: {
       "taxToBeDetermined": "TBD",
       "withTaxes": "Including taxes",
       "withoutTaxes": "Excluding taxes"
-    },
-    "OrderConfirmationHeader": {
-      "title": "{{name}}, thank you for your order!",
-      "defaultTitle": "Thank you for your order!",
-      "order": "ORDER #{{order}}",
-      "CreateAccount": {
-        "message": "Save your information for faster checkout next time.",
-        "button": "Create an account"
-      }
     }
   }
 }

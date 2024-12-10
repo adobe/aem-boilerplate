@@ -24,5 +24,4 @@ export * from './PaymentMethods';
 export * from './PlaceOrder';
 export * from './ServerError';
 export * from './ShippingMethods';
-export * from './OrderConfirmationHeader';
 //# sourceMappingURL=index.d.ts.map

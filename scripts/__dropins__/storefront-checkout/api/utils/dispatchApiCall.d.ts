@@ -1,4 +1,5 @@
 import { FetchOptions } from '..';
+import { QueueNames } from './enqueueRequest';
 
 declare const signalTypes: {
     cart: import('@preact/signals-core').Signal<{
@@ -24,13 +25,14 @@ type SignalDataMap = {
     [K in SignalTypesKeys]: SignalTypesType[K]['value']['data'];
 };
 type DispatchApiCallParams<T extends SignalTypesKeys> = {
-    type: 'query' | 'mutation';
-    query: string;
+    defaultValueOnFail?: SignalDataMap[T];
     options?: FetchOptions;
     path: string;
+    query: string;
+    queueName?: QueueNames;
     signalType: T;
     transformer?: (data: any) => SignalDataMap[T];
-    defaultValueOnFail?: SignalDataMap[T];
+    type: 'query' | 'mutation';
 };
 export declare function getValueAtPath(obj: any, path: string): any;
 declare function dispatchApiCall<T extends SignalTypesKeys>(params: DispatchApiCallParams<T>): Promise<SignalDataMap[T]>;

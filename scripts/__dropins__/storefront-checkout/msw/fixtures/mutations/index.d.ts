@@ -14,11 +14,10 @@
 * is strictly forbidden unless prior written permission is obtained
 * from Adobe.
 *******************************************************************/
-export * from './set-shipping-address';
-export * from './set-billing-address';
-export * from './set-shipping-methods';
-export * from './set-payment-method';
-export * from './set-guest-email';
-export * from './place-order';
 export * from './estimate-shipping-methods';
+export * from './set-billing-address';
+export * from './set-guest-email';
+export * from './set-payment-method';
+export * from './set-shipping-address';
+export * from './set-shipping-methods';
 //# sourceMappingURL=index.d.ts.map

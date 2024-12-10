@@ -30,9 +30,9 @@ import { render as AccountProvider } from '@dropins/storefront-account/render.js
 // Cart Dropin
 import * as cartApi from '@dropins/storefront-cart/api.js';
 import CartSummaryList from '@dropins/storefront-cart/containers/CartSummaryList.js';
+import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
 import EmptyCart from '@dropins/storefront-cart/containers/EmptyCart.js';
 import OrderSummary from '@dropins/storefront-cart/containers/OrderSummary.js';
-import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
 import { render as CartProvider } from '@dropins/storefront-cart/render.js';
 
 // Checkout Dropin
@@ -41,7 +41,6 @@ import BillToShippingAddress from '@dropins/storefront-checkout/containers/BillT
 import EstimateShipping from '@dropins/storefront-checkout/containers/EstimateShipping.js';
 import LoginForm from '@dropins/storefront-checkout/containers/LoginForm.js';
 import MergedCartBanner from '@dropins/storefront-checkout/containers/MergedCartBanner.js';
-import OrderConfirmationHeader from '@dropins/storefront-checkout/containers/OrderConfirmationHeader.js';
 import OutOfStock from '@dropins/storefront-checkout/containers/OutOfStock.js';
 import PaymentMethods from '@dropins/storefront-checkout/containers/PaymentMethods.js';
 import PlaceOrder from '@dropins/storefront-checkout/containers/PlaceOrder.js';
@@ -54,6 +53,7 @@ import { render as CheckoutProvider } from '@dropins/storefront-checkout/render.
 import * as orderApi from '@dropins/storefront-order/api.js';
 import CustomerDetails from '@dropins/storefront-order/containers/CustomerDetails.js';
 import OrderCostSummary from '@dropins/storefront-order/containers/OrderCostSummary.js';
+import OrderHeader from '@dropins/storefront-order/containers/OrderHeader.js';
 import OrderProductList from '@dropins/storefront-order/containers/OrderProductList.js';
 import OrderStatus from '@dropins/storefront-order/containers/OrderStatus.js';
 import ShippingStatus from '@dropins/storefront-order/containers/ShippingStatus.js';
@@ -296,19 +296,17 @@ export default async function decorate(block) {
         if (!checked && billingFormRef?.current) {
           const { formData, isDataValid } = billingFormRef.current;
 
-          setAddressOnCart(
-            { data: formData, isDataValid },
-            checkoutApi.setBillingAddress,
-          );
+          setAddressOnCart({
+            api: checkoutApi.setBillingAddress,
+            debounceMs: DEBOUNCE_TIME,
+            placeOrderBtn: placeOrder,
+          })({ data: formData, isDataValid });
         }
       },
     })($billToShipping),
 
     CheckoutProvider.render(ShippingMethods, {
       hideOnVirtualCart: true,
-      onCheckoutDataUpdate: () => {
-        cartApi.refreshCart().catch(console.error);
-      },
     })($delivery),
 
     CheckoutProvider.render(PaymentMethods)($paymentMethods),
@@ -409,17 +407,14 @@ export default async function decorate(block) {
 
         return success;
       },
-      onPlaceOrder: async () => {
+      handlePlaceOrder: async ({ cartId }) => {
         await displayOverlaySpinner();
 
-        try {
-          await checkoutApi.placeOrder();
-        } catch (error) {
-          console.error(error);
-          throw error;
-        } finally {
-          await removeOverlaySpinner();
-        }
+        orderApi.placeOrder(cartId)
+          .catch(console.error)
+          .finally(() => {
+            removeOverlaySpinner();
+          });
       },
     })($placeOrder),
   ]);
@@ -719,7 +714,7 @@ export default async function decorate(block) {
 
     block.replaceChildren(orderConfirmationFragment);
 
-    const onSignUpClick = async ({ inputsDefaultValueSet, addressesData }) => {
+    const handleSignUpClick = async ({ inputsDefaultValueSet, addressesData }) => {
       const signUpForm = document.createElement('div');
       AuthProvider.render(SignUp, {
         routeSignIn: () => '/customer/login',
@@ -731,9 +726,10 @@ export default async function decorate(block) {
       await showModal(signUpForm);
     };
 
-    CheckoutProvider.render(OrderConfirmationHeader, {
+    OrderProvider.render(OrderHeader, {
+      handleEmailAvailability: checkoutApi.isEmailAvailable,
+      handleSignUpClick,
       orderData,
-      onSignUpClick,
     })($orderConfirmationHeader);
 
     OrderProvider.render(OrderStatus, { slots: { OrderActions: () => null } })(
@@ -811,7 +807,7 @@ export default async function decorate(block) {
     removeModal();
   };
 
-  const handleCheckoutOrder = async (orderData) => {
+  const handleOrderPlaced = async (orderData) => {
     // Clear address form data
     sessionStorage.removeItem(SHIPPING_ADDRESS_DATA_KEY);
     sessionStorage.removeItem(BILLING_ADDRESS_DATA_KEY);
@@ -834,6 +830,6 @@ export default async function decorate(block) {
 
   events.on('authenticated', handleAuthenticated);
   events.on('checkout/initialized', handleCheckoutInitialized, { eager: true });
-  events.on('checkout/order', handleCheckoutOrder);
   events.on('checkout/updated', handleCheckoutUpdated);
+  events.on('order/placed', handleOrderPlaced);
 }

@@ -24,7 +24,6 @@ export * from './getStoreConfig';
 export * from './initialize';
 export * from './initializeCheckout';
 export * from './isEmailAvailable';
-export * from './placeOrder';
 export * from './resetCheckout';
 export * from './setBillingAddress';
 export * from './setGuestEmailOnCart';

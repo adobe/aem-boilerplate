@@ -14,7 +14,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './acdl';
 export * from './fetch-error';
 export * from './network-error';
 export * from './state';

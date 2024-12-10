@@ -14,7 +14,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './acdl';
 export * from './address';
 export * from './api';
 export * from './cart';
@@ -22,7 +21,6 @@ export * from './country';
 export * from './custom-attribute';
 export * from './customer';
 export * from './email-availability';
-export * from './order';
 export * from './payment-method';
 export * from './price';
 export * from './region';

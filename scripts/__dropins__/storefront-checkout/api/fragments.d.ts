@@ -16,6 +16,4 @@
  *******************************************************************/
 export { CHECKOUT_DATA_FRAGMENT } from './graphql/CheckoutDataFragment.graphql';
 export { CUSTOMER_FRAGMENT } from './graphql/CustomerFragment.graphql';
-export { ORDER_FRAGMENT } from './graphql/OrderFragment.graphql';
-export { ORDER_ITEM_FRAGMENT } from './graphql/OrderItemFragment.graphql';
 //# sourceMappingURL=fragments.d.ts.map

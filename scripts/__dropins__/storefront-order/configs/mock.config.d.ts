@@ -166,6 +166,7 @@ export declare const transformMockOrderInput: {
                     available_actions: string[];
                     status: string;
                     number: string;
+                    token: string;
                     id: string;
                     order_date: string;
                     carrier: string;

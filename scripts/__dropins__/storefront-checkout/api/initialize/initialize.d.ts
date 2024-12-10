@@ -1,6 +1,6 @@
+import { Cart as CartModel, Customer as CustomerModel, OrderDataModel as OrderModel } from '../../data/models';
 import { Lang } from '@dropins/tools/types/elsie/src/i18n';
 import { Initializer, Model } from '@dropins/tools/types/elsie/src/lib';
-import { Cart as CartModel, Customer as CustomerModel, Order as OrderModel } from '../../data/models';
 
 export type ConfigProps = {
     langDefinitions?: Lang;

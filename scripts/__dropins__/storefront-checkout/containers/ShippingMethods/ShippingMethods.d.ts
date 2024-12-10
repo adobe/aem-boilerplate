@@ -3,7 +3,6 @@ import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { HTMLAttributes } from 'preact/compat';
 
 export interface ShippingMethodsProps extends HTMLAttributes<HTMLDivElement> {
-    onCheckoutDataUpdate?: () => Promise<void>;
     onShippingMethodSelect?: (method: ShippingMethod) => void;
     preSelectedMethod?: {
         carrierCode: string;

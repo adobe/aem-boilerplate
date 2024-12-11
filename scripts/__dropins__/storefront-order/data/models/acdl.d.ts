@@ -18,6 +18,7 @@ type ShoppingCartItem = {
     product: Product;
     configurableOptions?: Array<ConfigurableOption>;
     quantity: number;
+    discountAmount?: number;
 };
 type Price = {
     value: number;
@@ -28,6 +29,11 @@ type Product = {
     productId: number;
     name: string;
     sku: string;
+    /**
+     * For simple, downloadable, and virtual products with no configurable options topLevelSku is the same
+     * as the product SKU.
+     * For grouped, bundled, and configurable products topLevelSku is the parent product SKU of the associated item.
+     */
     topLevelSku?: string | null;
     specialToDate?: string | null;
     specialFromDate?: string | null;
@@ -55,15 +61,16 @@ type Product = {
     mainImageUrl?: string | null;
 };
 type ConfigurableOption = {
-    id?: number;
+    id: number;
     optionLabel: string;
-    valueId?: number;
+    valueId: number;
     valueLabel: string;
 };
 type Payment = {
     paymentMethodCode: string;
     paymentMethodName: string;
     total: number;
+    orderId?: string;
 };
 type Shipping = {
     shippingMethod?: string;
@@ -81,6 +88,7 @@ export type ShoppingCartContext = {
     giftMessageSelected?: boolean;
     giftWrappingSelected?: boolean;
     source?: string;
+    discountAmount?: number;
 };
 export type OrderContext = {
     appliedCouponCode: string;
@@ -94,6 +102,8 @@ export type OrderContext = {
     shipping?: Shipping;
     subtotalExcludingTax: number;
     subtotalIncludingTax: number;
+    discountAmount?: number;
+    taxAmount?: number;
 };
 export {};
 //# sourceMappingURL=acdl.d.ts.map

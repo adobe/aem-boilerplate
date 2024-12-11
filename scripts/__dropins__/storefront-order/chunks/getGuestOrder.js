@@ -1,6 +1,6 @@
 /*! Copyright 2024 Adobe
 All Rights Reserved. */
-import{h as E}from"./network-error.js";import{f as i,h}from"./fetch-graphql.js";import{GUEST_ORDER_FRAGMENT as n}from"../fragments.js";import{d as o}from"./initialize.js";const G=t=>{var a,r,m,c,u,e;return{email:((r=(a=t==null?void 0:t.data)==null?void 0:a.customer)==null?void 0:r.email)||"",firstname:((c=(m=t==null?void 0:t.data)==null?void 0:m.customer)==null?void 0:c.firstname)||"",lastname:((e=(u=t==null?void 0:t.data)==null?void 0:u.customer)==null?void 0:e.lastname)||""}},f=`
+import{h as i}from"./network-error.js";import{f as h,h as o}from"./fetch-graphql.js";import{GUEST_ORDER_FRAGMENT as E}from"../fragments.js";import{d as n}from"./initialize.js";const G=t=>{var r,a,m,c,e,u;return{email:((a=(r=t==null?void 0:t.data)==null?void 0:r.customer)==null?void 0:a.email)||"",firstname:((c=(m=t==null?void 0:t.data)==null?void 0:m.customer)==null?void 0:c.firstname)||"",lastname:((u=(e=t==null?void 0:t.data)==null?void 0:e.customer)==null?void 0:u.lastname)||""}},f=`
   query GET_CUSTOMER {
     customer {
       firstname
@@ -8,11 +8,11 @@ import{h as E}from"./network-error.js";import{f as i,h}from"./fetch-graphql.js";
       email
     }
   }
-`,_=async()=>await i(f,{method:"GET",cache:"force-cache"}).then(t=>{var a;return(a=t.errors)!=null&&a.length?h(t.errors):G(t)}).catch(E),T=`
+`,_=async()=>await h(f,{method:"GET",cache:"force-cache"}).then(t=>{var r;return(r=t.errors)!=null&&r.length?o(t.errors):G(t)}).catch(i),l=`
   query GET_GUEST_ORDER($input: GuestOrderInformationInput!) {
     guestOrder(input: $input) {
       ...GUEST_ORDER_FRAGMENT
     }
   }
-  ${n}
-`,S=async t=>await i(T,{method:"GET",cache:"no-cache",variables:{input:t}}).then(a=>o(a)).catch(E);export{S as a,_ as g};
+  ${E}
+`,g=async t=>await h(l,{method:"GET",cache:"no-cache",variables:{input:t}}).then(r=>{var a;return(a=r.errors)!=null&&a.length&&r.errors[0].message==="Please login to view the order."?o(r.errors):n(r)}).catch(i);export{g as a,_ as g};

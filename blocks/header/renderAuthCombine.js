@@ -165,7 +165,7 @@ const onHeaderLinkClick = () => {
   })(signInForm);
 };
 
-const renderAuthCombine = (navSections) => {
+const renderAuthCombine = (navSections, toggleMenu) => {
   if (getCookie('auth_dropin_firstname')) return;
 
   const navListEl = navSections.querySelector('.default-content-wrapper > ul');
@@ -176,7 +176,10 @@ const renderAuthCombine = (navSections) => {
   const authCombineLink = accountLiItems[accountLiItems.length - 1];
 
   authCombineLink.classList.add('authCombineNavElement');
-  authCombineLink.addEventListener('click', () => {
+  const text = authCombineLink.textContent || '';
+  authCombineLink.innerHTML = `<a href="#">${text}</a>`;
+  authCombineLink.addEventListener('click', (event) => {
+    event.preventDefault();
     onHeaderLinkClick();
 
     function getPopupElements() {
@@ -219,6 +222,8 @@ const renderAuthCombine = (navSections) => {
         );
       }
     });
+
+    toggleMenu?.();
   });
 };
 

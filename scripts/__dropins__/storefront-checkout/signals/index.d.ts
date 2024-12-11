@@ -21,5 +21,4 @@ export * from './IsBillToShippingSignal';
 export * from './SelectedPaymentMethodSignal';
 export * from './SelectedShippingMethodSignal';
 export * from './ServerErrorSignal';
-export * from './StoreConfigSignal';
 //# sourceMappingURL=index.d.ts.map

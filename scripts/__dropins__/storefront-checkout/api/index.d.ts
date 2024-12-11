@@ -31,4 +31,5 @@ export * from './setPaymentMethod';
 export * from './setShippingAddress';
 export * from './setShippingMethods';
 export * from './synchronizeCheckout';
+export { getStoreConfigCache } from '../lib/state';
 //# sourceMappingURL=index.d.ts.map

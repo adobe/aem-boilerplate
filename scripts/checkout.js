@@ -7,6 +7,14 @@ export function scrollToElement(element) {
   element.focus();
 }
 
+export function isCartEmpty(cart) {
+  return cart ? cart.totalQuantity < 1 : true;
+}
+
+export function isCheckoutEmpty(data) {
+  return data ? data.isEmpty : true;
+}
+
 export function getCartAddress(checkoutData, type) {
   if (!checkoutData) return null;
 

@@ -14,10 +14,6 @@ declare const signalTypes: {
         pending: boolean;
         data?: import('../../data/models/shipping-method').ShippingMethod[] | undefined;
     }>;
-    storeConfig: import('@preact/signals-core').Signal<{
-        data?: import('../../data/models/store-config').StoreConfig | undefined;
-        pending: boolean;
-    }>;
 };
 type SignalTypesType = typeof signalTypes;
 type SignalTypesKeys = keyof SignalTypesType;

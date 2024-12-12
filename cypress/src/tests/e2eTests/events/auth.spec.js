@@ -38,7 +38,7 @@ it('has shopperId as logged-in when authenticated, and guest when not', () => {
 
   // 4. Logs out / deletes customer and checks that shopperContext is set to guest
   cy.get('.nav-dropdown-button').contains('Hi, John').click();
-  cy.get('#nav > div.section.nav-tools > div.dropdown-wrapper.nav-tools-wrapper > div > ul > li:nth-child(3) > button').click();
+  cy.get('#nav > div.section.nav-tools > div.dropdown-wrapper.nav-tools-wrapper > div > ul > li:nth-child(2) > button').click();
   cy.get('.auth-sign-in-form__button--submit');
   cy.wait(1000); // TODO: find better way to wait for auth acdl push to have occurred after logout click.
   cy.waitForResource('commerce-events-collector.js')

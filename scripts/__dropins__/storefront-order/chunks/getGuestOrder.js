@@ -1,6 +1,6 @@
 /*! Copyright 2024 Adobe
 All Rights Reserved. */
-import{h as i}from"./network-error.js";import{f as h,h as o}from"./fetch-graphql.js";import{GUEST_ORDER_FRAGMENT as E}from"../fragments.js";import{d as n}from"./initialize.js";const G=t=>{var r,a,m,c,e,u;return{email:((a=(r=t==null?void 0:t.data)==null?void 0:r.customer)==null?void 0:a.email)||"",firstname:((c=(m=t==null?void 0:t.data)==null?void 0:m.customer)==null?void 0:c.firstname)||"",lastname:((u=(e=t==null?void 0:t.data)==null?void 0:e.customer)==null?void 0:u.lastname)||""}},f=`
+import{h as i}from"./network-error.js";import{f as h,h as o}from"./fetch-graphql.js";import{GUEST_ORDER_FRAGMENT as E}from"../fragments.js";import{b as n}from"./initialize.js";const G=t=>{var r,a,m,c,e,u;return{email:((a=(r=t==null?void 0:t.data)==null?void 0:r.customer)==null?void 0:a.email)||"",firstname:((c=(m=t==null?void 0:t.data)==null?void 0:m.customer)==null?void 0:c.firstname)||"",lastname:((u=(e=t==null?void 0:t.data)==null?void 0:e.customer)==null?void 0:u.lastname)||""}},f=`
   query GET_CUSTOMER {
     customer {
       firstname

@@ -124,9 +124,6 @@ export default async function decorate(block) {
   const SHIPPING_ADDRESS_DATA_KEY = `${SHIPPING_FORM_NAME}_addressData`;
   const BILLING_ADDRESS_DATA_KEY = `${BILLING_FORM_NAME}_addressData`;
 
-  // Check cart cache
-  const cart = cartApi.getCartDataFromCache();
-
   // Define the Layout for the Checkout
   const checkoutFragment = document.createRange().createContextualFragment(`
     <div class="checkout__wrapper">
@@ -191,19 +188,212 @@ export default async function decorate(block) {
   block.appendChild(checkoutFragment);
 
   // Global state
+  let initialized = false;
+
+  // Container and component references
   let loader;
   let modal;
   let emptyCart;
-  let shippingFormSkeleton;
-  let billingFormSkeleton;
   let shippingFormRef = { current: null };
   let billingFormRef = { current: null };
   let shippingForm;
   let billingForm;
   let shippingAddresses;
   let billingAddresses;
-  let placeOrder;
-  let initialzed = false;
+
+  // Render the initial containers
+  const [
+    _mergedCartBanner,
+    _header,
+    _serverError,
+    _outOfStock,
+    _loginForm,
+    shippingFormSkeleton,
+    _billToShipping,
+    _shippingMethods,
+    _paymentMethods,
+    billingFormSkeleton,
+    _orderSummary,
+    _cartSummary,
+    placeOrder,
+  ] = await Promise.all([
+    CheckoutProvider.render(MergedCartBanner)($mergedCartBanner),
+
+    UI.render(Header, { title: 'Checkout', size: 'large', divider: true })($heading),
+
+    CheckoutProvider.render(ServerError, {
+      onRetry: () => {
+        $content.classList.remove('checkout__content--error');
+      },
+      onServerError: () => {
+        $content.classList.add('checkout__content--error');
+      },
+    })($serverError),
+
+    CheckoutProvider.render(OutOfStock, {
+      routeCart: () => '/cart',
+      onCartProductsUpdate: (items) => {
+        cartApi.updateProductsFromCart(items).catch(console.error);
+      },
+    })($outOfStock),
+
+    CheckoutProvider.render(LoginForm, {
+      name: LOGIN_FORM_NAME,
+      onSignInClick: async (initialEmailValue) => {
+        const signInForm = document.createElement('div');
+
+        AuthProvider.render(AuthCombine, {
+          signInFormConfig: {
+            renderSignUpLink: true,
+            initialEmailValue,
+            onSuccessCallback: () => {
+              displayOverlaySpinner();
+            },
+          },
+          signUpFormConfig: {},
+          resetPasswordFormConfig: {},
+        })(signInForm);
+
+        showModal(signInForm);
+      },
+      onSignOutClick: () => {
+        authApi.revokeCustomerToken();
+      },
+    })($login),
+
+    AccountProvider.render(AddressForm, {
+      isOpen: true,
+      showFormLoader: true,
+    })($shippingForm),
+
+    CheckoutProvider.render(BillToShippingAddress, {
+      hideOnVirtualCart: true,
+      onChange: (checked) => {
+        $billingForm.style.display = checked ? 'none' : 'block';
+        if (!checked && billingFormRef?.current) {
+          const { formData, isDataValid } = billingFormRef.current;
+
+          setAddressOnCart({
+            api: checkoutApi.setBillingAddress,
+            debounceMs: DEBOUNCE_TIME,
+            placeOrderBtn: placeOrder,
+          })({ data: formData, isDataValid });
+        }
+      },
+    })($billToShipping),
+
+    CheckoutProvider.render(ShippingMethods, {
+      hideOnVirtualCart: true,
+      onCheckoutDataUpdate: () => {
+        cartApi.refreshCart().catch(console.error);
+      },
+    })($delivery),
+
+    CheckoutProvider.render(PaymentMethods)($paymentMethods),
+
+    AccountProvider.render(AddressForm, {
+      isOpen: true,
+      showFormLoader: true,
+    })($billingForm),
+
+    CartProvider.render(OrderSummary, {
+      slots: {
+        EstimateShipping: (esCtx) => {
+          const estimateShippingForm = document.createElement('div');
+          CheckoutProvider.render(EstimateShipping)(estimateShippingForm);
+          esCtx.appendChild(estimateShippingForm);
+        },
+        Coupons: (ctx) => {
+          const coupons = document.createElement('div');
+
+          CartProvider.render(Coupons)(coupons);
+
+          ctx.appendChild(coupons);
+        },
+      },
+    })($orderSummary),
+
+    CartProvider.render(CartSummaryList, {
+      variant: 'secondary',
+      slots: {
+        Heading: (headingCtx) => {
+          const title = 'Your Cart ({count})';
+
+          const cartSummaryListHeading = document.createElement('div');
+          cartSummaryListHeading.classList.add('cart-summary-list__heading');
+
+          const cartSummaryListHeadingText = document.createElement('div');
+          cartSummaryListHeadingText.classList.add(
+            'cart-summary-list__heading-text',
+          );
+
+          cartSummaryListHeadingText.innerText = title.replace(
+            '({count})',
+            headingCtx.count ? `(${headingCtx.count})` : '',
+          );
+          const editCartLink = document.createElement('a');
+          editCartLink.classList.add('cart-summary-list__edit');
+          editCartLink.href = '/cart';
+          editCartLink.rel = 'noreferrer';
+          editCartLink.innerText = 'Edit';
+
+          cartSummaryListHeading.appendChild(cartSummaryListHeadingText);
+          cartSummaryListHeading.appendChild(editCartLink);
+          headingCtx.appendChild(cartSummaryListHeading);
+
+          headingCtx.onChange((nextHeadingCtx) => {
+            cartSummaryListHeadingText.innerText = title.replace(
+              '({count})',
+              nextHeadingCtx.count ? `(${nextHeadingCtx.count})` : '',
+            );
+          });
+        },
+      },
+    })($cartSummary),
+
+    CheckoutProvider.render(PlaceOrder, {
+      handleValidation: () => {
+        let success = true;
+        const { forms } = document;
+
+        const loginForm = forms[LOGIN_FORM_NAME];
+
+        if (loginForm) {
+          success = loginForm.checkValidity();
+          if (!success) scrollToElement($login);
+        }
+
+        const shippingForm = forms[SHIPPING_FORM_NAME];
+
+        if (
+          success
+          && shippingFormRef.current
+          && shippingForm
+          && shippingForm.checkVisibility()
+        ) {
+          success = shippingFormRef.current.handleValidationSubmit(false);
+        }
+
+        const billingForm = forms[BILLING_FORM_NAME];
+
+        if (
+          success
+          && billingFormRef.current
+          && billingForm
+          && billingForm.checkVisibility()
+        ) {
+          success = billingFormRef.current.handleValidationSubmit(false);
+        }
+
+        return success;
+      },
+      handlePlaceOrder: async ({ cartId }) => {
+        await displayOverlaySpinner();
+
+        await orderApi.placeOrder(cartId).finally(removeOverlaySpinner);
+      },
+    })($placeOrder),
+  ]);
 
   // Dynamic containers and components
   const showModal = async (content) => {
@@ -253,195 +443,14 @@ export default async function decorate(block) {
     $loader.innerHTML = '';
   };
 
-  const initializeCheckout = async () => {
-    if (initialzed) return;
-
-    await CheckoutProvider.render(MergedCartBanner)($mergedCartBanner);
-
-    await UI.render(Header, {
-      title: 'Checkout',
-      size: 'large',
-      divider: true,
-    })($heading);
-
-    await CheckoutProvider.render(ServerError, {
-      onRetry: () => {
-        $content.classList.remove('checkout__content--error');
-      },
-      onServerError: () => {
-        $content.classList.add('checkout__content--error');
-      },
-    })($serverError);
-
-    await CheckoutProvider.render(OutOfStock, {
-      routeCart: () => '/cart',
-      onCartProductsUpdate: (items) => {
-        cartApi.updateProductsFromCart(items).catch(console.error);
-      },
-    })($outOfStock);
-
-    await CheckoutProvider.render(LoginForm, {
-      name: LOGIN_FORM_NAME,
-      onSignInClick: async (initialEmailValue) => {
-        const signInForm = document.createElement('div');
-
-        AuthProvider.render(AuthCombine, {
-          signInFormConfig: {
-            renderSignUpLink: true,
-            initialEmailValue,
-            onSuccessCallback: () => {
-              displayOverlaySpinner();
-            },
-          },
-          signUpFormConfig: {},
-          resetPasswordFormConfig: {},
-        })(signInForm);
-
-        showModal(signInForm);
-      },
-      onSignOutClick: () => {
-        authApi.revokeCustomerToken();
-      },
-    })($login);
-
-    shippingFormSkeleton = await AccountProvider.render(AddressForm, {
-      isOpen: true,
-      showFormLoader: true,
-    })($shippingForm);
-
-    await CheckoutProvider.render(BillToShippingAddress, {
-      hideOnVirtualCart: true,
-      onChange: (checked) => {
-        $billingForm.style.display = checked ? 'none' : 'block';
-        if (!checked && billingFormRef?.current) {
-          const { formData, isDataValid } = billingFormRef.current;
-
-          setAddressOnCart({
-            api: checkoutApi.setBillingAddress,
-            debounceMs: DEBOUNCE_TIME,
-            placeOrderBtn: placeOrder,
-          })({ data: formData, isDataValid });
-        }
-      },
-    })($billToShipping);
-
-    await CheckoutProvider.render(ShippingMethods, {
-      hideOnVirtualCart: true,
-      onCheckoutDataUpdate: () => {
-        cartApi.refreshCart().catch(console.error);
-      },
-    })($delivery);
-
-    await CheckoutProvider.render(PaymentMethods)($paymentMethods);
-
-    billingFormSkeleton = await AccountProvider.render(AddressForm, {
-      isOpen: true,
-      showFormLoader: true,
-    })($billingForm);
-
-    await CartProvider.render(OrderSummary, {
-      slots: {
-        EstimateShipping: (esCtx) => {
-          const estimateShippingForm = document.createElement('div');
-          CheckoutProvider.render(EstimateShipping)(estimateShippingForm);
-          esCtx.appendChild(estimateShippingForm);
-        },
-        Coupons: (ctx) => {
-          const coupons = document.createElement('div');
-
-          CartProvider.render(Coupons)(coupons);
-
-          ctx.appendChild(coupons);
-        },
-      },
-    })($orderSummary);
-
-    await CartProvider.render(CartSummaryList, {
-      variant: 'secondary',
-      slots: {
-        Heading: (headingCtx) => {
-          const title = 'Your Cart ({count})';
-
-          const cartSummaryListHeading = document.createElement('div');
-          cartSummaryListHeading.classList.add('cart-summary-list__heading');
-
-          const cartSummaryListHeadingText = document.createElement('div');
-          cartSummaryListHeadingText.classList.add(
-            'cart-summary-list__heading-text',
-          );
-
-          cartSummaryListHeadingText.innerText = title.replace(
-            '({count})',
-            headingCtx.count ? `(${headingCtx.count})` : '',
-          );
-          const editCartLink = document.createElement('a');
-          editCartLink.classList.add('cart-summary-list__edit');
-          editCartLink.href = '/cart';
-          editCartLink.rel = 'noreferrer';
-          editCartLink.innerText = 'Edit';
-
-          cartSummaryListHeading.appendChild(cartSummaryListHeadingText);
-          cartSummaryListHeading.appendChild(editCartLink);
-          headingCtx.appendChild(cartSummaryListHeading);
-
-          headingCtx.onChange((nextHeadingCtx) => {
-            cartSummaryListHeadingText.innerText = title.replace(
-              '({count})',
-              nextHeadingCtx.count ? `(${nextHeadingCtx.count})` : '',
-            );
-          });
-        },
-      },
-    })($cartSummary);
-
-    placeOrder = await CheckoutProvider.render(PlaceOrder, {
-      handleValidation: () => {
-        let success = true;
-        const { forms } = document;
-
-        const loginForm = forms[LOGIN_FORM_NAME];
-
-        if (loginForm) {
-          success = loginForm.checkValidity();
-          if (!success) scrollToElement($login);
-        }
-
-        const shippingForm = forms[SHIPPING_FORM_NAME];
-
-        if (
-          success
-          && shippingFormRef.current
-          && shippingForm
-          && shippingForm.checkVisibility()
-        ) {
-          success = shippingFormRef.current.handleValidationSubmit(false);
-        }
-
-        const billingForm = forms[BILLING_FORM_NAME];
-
-        if (
-          success
-          && billingFormRef.current
-          && billingForm
-          && billingForm.checkVisibility()
-        ) {
-          success = billingFormRef.current.handleValidationSubmit(false);
-        }
-
-        return success;
-      },
-      handlePlaceOrder: async ({ cartId }) => {
-        await displayOverlaySpinner();
-
-        orderApi.placeOrder(cartId)
-          .catch(console.error)
-          .finally(() => {
-            removeOverlaySpinner();
-          });
-      },
-    })($placeOrder);
-
-    initialzed = true;
+  const initializeCheckout = async (data) => {
+    if (initialized) return;
+    removeEmptyCart();
+    if (data.isGuest) await displayGuestAddressForms(data);
+    else {
+      removeOverlaySpinner();
+      await displayCustomerAddressForms(data);
+    }
   };
 
   const displayGuestAddressForms = async (data) => {
@@ -780,40 +789,21 @@ export default async function decorate(block) {
     })($orderConfirmationFooterContinueBtn);
   };
 
-  // Display the inital view based on the cart cache
-  if (isCartEmpty(cart)) await displayEmptyCart();
-  else await initializeCheckout();
+  // Define the event handlers
+  const handleCartInitialized = async (data) => {
+    if (isCartEmpty(data)) await displayEmptyCart();
+  };
 
-  // Event handlers
   const handleCheckoutInitialized = async (data) => {
-    if (isCheckoutEmpty(data)) {
-      await displayEmptyCart();
-      return;
-    }
-
-    await initializeCheckout();
-
-    if (data.isGuest) {
-      await displayGuestAddressForms(data);
-    } else {
-      await displayCustomerAddressForms(data);
-    }
+    if (!data || isCheckoutEmpty(data)) return;
+    initializeCheckout(data);
   };
 
   const handleCheckoutUpdated = async (data) => {
     if (isCheckoutEmpty(data)) {
       await displayEmptyCart();
-      return;
-    }
-
-    removeEmptyCart();
-    await initializeCheckout();
-
-    if (data.isGuest) {
-      await displayGuestAddressForms(data);
-    } else {
-      removeOverlaySpinner();
-      await displayCustomerAddressForms(data);
+    } else if (!initialized) {
+      await initializeCheckout(data);
     }
   };
 
@@ -844,6 +834,7 @@ export default async function decorate(block) {
   };
 
   events.on('authenticated', handleAuthenticated);
+  events.on('cart/initialized', handleCartInitialized, { eager: true });
   events.on('checkout/initialized', handleCheckoutInitialized, { eager: true });
   events.on('checkout/updated', handleCheckoutUpdated);
   events.on('order/placed', handleOrderPlaced);

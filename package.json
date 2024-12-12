@@ -38,8 +38,8 @@
     "@dropins/storefront-account": "1.0.0-beta5",
     "@dropins/storefront-auth": "1.0.0-beta4",
     "@dropins/storefront-cart": "1.0.0-beta2",
-    "@dropins/storefront-checkout": "1.0.0-beta3",
-    "@dropins/storefront-order": "1.0.0-beta7",
+    "@dropins/storefront-checkout": "1.0.0-beta4",
+    "@dropins/storefront-order": "1.0.0-beta8",
     "@dropins/storefront-pdp": "1.0.0-beta3",
     "@dropins/tools": "^0.37.0"
   }

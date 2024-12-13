@@ -9,6 +9,11 @@ type Options<T> = {
     init: Init<T>;
     listeners: Listeners<T>;
 };
+export type Model<T = any, D = any> = {
+    transformer?: (data: D) => T & {
+        [key: string]: any;
+    };
+};
 /**
  * The `Initializer` class is responsible for setting up event listeners and initializing a module with the given configuration.
  *
@@ -54,6 +59,12 @@ export declare class initializers {
     static register(initializer: Initializer<any>, options?: {
         [key: string]: any;
     }): void;
+    /**
+     * Mounts the provided initializer immediately. This involves binding the event listeners and initializing the API for the initializer.
+     */
+    static mountImmediately(initializer: Initializer<any>, options?: {
+        [key: string]: any;
+    }): Promise<void>;
     /**
      * Mounts all registered initializers. This involves binding the event listeners and initializing the APIs for each initializer, in that order.
      */

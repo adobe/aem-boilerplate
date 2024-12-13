@@ -1,0 +1,2 @@
+export declare const GET_STORE_CONFIG = "\n  query GET_STORE_CONFIG {\n    storeConfig {\n      autocomplete_on_storefront\n      minimum_password_length\n      required_character_classes_number\n      store_code\n      store_name\n      store_group_code\n      locale\n      create_account_confirmation\n      customer_access_token_lifetime\n    }\n  }\n";
+//# sourceMappingURL=getStoreConfig.graphql.d.ts.map

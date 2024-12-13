@@ -7,7 +7,8 @@
     {
         "imports": {
             "@dropins/tools/": "/scripts/__dropins__/tools/",
-            "@dropins/storefront-pdp/": "/scripts/__dropins__/storefront-pdp/"
+            "@dropins/storefront-cart/": "/scripts/__dropins__/storefront-cart/",
+            "@dropins/storefront-auth/": "/scripts/__dropins__/storefront-auth/"
         }
     }
   </script>
@@ -41,9 +42,13 @@
   <link rel="stylesheet" href="/styles/styles.css">
   <style>
     main.error {
-      min-height: calc(100vh - var(--nav-height));
-      display: flex;
       align-items: center;
+      display: flex;
+      margin: 0 auto;
+      max-width: 1264px;
+      min-height: calc(100vh - var(--nav-height));
+      padding: 0 32px;
+      width: 100%;
     }
 
     main.error .error-number {

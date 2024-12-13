@@ -1,0 +1,2 @@
+export declare const REORDER_ITEMS_MUTATION = "\n  mutation REORDER_ITEMS_MUTATION($orderNumber: String!) {\n    reorderItems(orderNumber: $orderNumber) {\n      cart {\n        itemsV2 {\n          items {\n            uid\n          }\n        }\n      }\n      userInputErrors {\n        code\n        message\n        path\n      }\n    }\n  }\n";
+//# sourceMappingURL=reorderItems.graphql.d.ts.map

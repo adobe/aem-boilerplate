@@ -1,0 +1,81 @@
+body.modal-open {
+  overflow: hidden;
+}
+
+.modal dialog {
+  --dialog-border-radius: var(--shape-border-radius-2);
+
+  overscroll-behavior: none;
+  border: var(--shape-border-width-1) solid var(--color-neutral-400);
+  border-radius: var(--dialog-border-radius);
+  width: 100vw;
+}
+
+.modal dialog .modal-content {
+  overflow-y: auto;
+  overscroll-behavior: none;
+  max-height: calc(100dvh - 60px);
+}
+
+.modal dialog::backdrop {
+  background-color: rgb(0 0 0 / 50%);
+}
+
+.modal .close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  background-color: transparent;
+  color: var(--color-brand-600);
+  line-height: 0;
+}
+
+.modal .close-button .icon.icon-close {
+  content: '';
+  width: 24px;
+  height: 24px;
+}
+
+.modal .close-button .icon.icon-close::before,
+.modal .close-button .icon.icon-close::after {
+  content: '';
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 24px;
+  height: 2px;
+  border-radius: var(--shape-border-radius-1);
+  background-color: currentcolor;
+}
+
+.modal .close-button .icon.icon-close::after {
+  transform: translate(-50%, -50%) rotate(-45deg)
+}
+
+.modal .close-button span {
+  cursor: pointer;
+}
+
+.modal dialog .section {
+  padding: 0;
+}
+
+@media (width >= 600px) {
+  .modal dialog {
+    width: 80vw;
+    max-width: 700px;
+  }
+
+  .modal dialog .modal-content {
+    max-height: calc(100vh - 90px);
+  }
+}

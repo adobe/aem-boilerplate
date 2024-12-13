@@ -1,14 +1,15 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable import/no-cycle */
 import { events } from '@dropins/tools/event-bus.js';
 import {
   buildBlock,
-  loadHeader,
-  loadFooter,
+  decorateBlocks,
   decorateButtons,
   decorateIcons,
   decorateSections,
-  decorateBlocks,
   decorateTemplateAndTheme,
+  loadFooter,
+  loadHeader,
   getMetadata,
   loadScript,
   toCamelCase,
@@ -20,8 +21,8 @@ import {
   loadCSS,
   sampleRUM,
 } from './aem.js';
-import { getProduct, getSkuFromUrl, trackHistory } from './commerce.js';
-import initializeDropins from './dropins.js';
+import { trackHistory } from './commerce.js';
+import initializeDropins from './initializers/index.js';
 
 const AUDIENCES = {
   mobile: () => window.innerWidth < 600,
@@ -83,6 +84,18 @@ async function loadFonts() {
   }
 }
 
+function autolinkModals(element) {
+  element.addEventListener('click', async (e) => {
+    const origin = e.target.closest('a');
+
+    if (origin && origin.href && origin.href.includes('/modals/')) {
+      e.preventDefault();
+      const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
+      openModal(origin.href);
+    }
+  });
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -93,6 +106,35 @@ function buildAutoBlocks(main) {
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
+  }
+}
+
+/**
+ * Decorate Columns Template to the main element.
+ * @param {Element} main The container element
+ */
+function buildTemplateColumns(doc) {
+  const columns = doc.querySelectorAll('main > div.section[data-column-width]');
+
+  columns.forEach((column) => {
+    const columnWidth = column.getAttribute('data-column-width');
+    const gap = column.getAttribute('data-gap');
+
+    if (columnWidth) {
+      column.style.setProperty('--column-width', columnWidth);
+      column.removeAttribute('data-column-width');
+    }
+
+    if (gap) {
+      column.style.setProperty('--gap', `var(--spacing-${gap.toLocaleLowerCase()})`);
+      column.removeAttribute('data-gap');
+    }
+  });
+}
+
+async function applyTemplates(doc) {
+  if (doc.body.classList.contains('columns')) {
+    buildTemplateColumns(doc);
   }
 }
 
@@ -125,7 +167,6 @@ function preloadFile(href, as) {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
-  await initializeDropins();
   decorateTemplateAndTheme();
 
   // Instrument experimentation plugin
@@ -137,31 +178,28 @@ async function loadEager(doc) {
     await runEager(document, { audiences: AUDIENCES }, pluginContext);
   }
 
+  await initializeDropins();
+
   window.adobeDataLayer = window.adobeDataLayer || [];
 
   let pageType = 'CMS';
   if (document.body.querySelector('main .product-details')) {
     pageType = 'Product';
-    const sku = getSkuFromUrl();
-    window.getProductPromise = getProduct(sku);
 
-    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductDetails.js', 'script');
+    // initialize pdp
+    await import('./initializers/pdp.js');
+
+    // Preload PDP Dropins assets
     preloadFile('/scripts/__dropins__/storefront-pdp/api.js', 'script');
     preloadFile('/scripts/__dropins__/storefront-pdp/render.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/chunks/initialize.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/chunks/getRefinedProduct.js', 'script');
-  } else if (document.body.querySelector('main .product-details-custom')) {
-    pageType = 'Product';
-    preloadFile('/scripts/__dropins__/tools/preact.js', 'script');
-    preloadFile('/scripts/htm.js', 'script');
-    preloadFile('/blocks/product-details-custom/ProductDetailsCarousel.js', 'script');
-    preloadFile('/blocks/product-details-custom/ProductDetailsSidebar.js', 'script');
-    preloadFile('/blocks/product-details-custom/ProductDetailsShimmer.js', 'script');
-    preloadFile('/blocks/product-details-custom/Icon.js', 'script');
-
-    const blockConfig = readBlockConfig(document.body.querySelector('main .product-details-custom'));
-    const sku = getSkuFromUrl() || blockConfig.sku;
-    window.getProductPromise = getProduct(sku);
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductHeader.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductPrice.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductShortDescription.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductOptions.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductQuantity.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductDescription.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductAttributes.js', 'script');
+    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductGallery.js', 'script');
   } else if (document.body.querySelector('main .product-list-page')) {
     pageType = 'Category';
     preloadFile('/scripts/widgets/search.js', 'script');
@@ -206,9 +244,15 @@ async function loadEager(doc) {
 
   const main = doc.querySelector('main');
   if (main) {
+    // Main Decorations
     decorateMain(main);
-    document.body.classList.add('appear');
+
+    // Template Decorations
+    await applyTemplates(doc);
+
+    // Load LCP blocks
     await loadSection(main.querySelector('.section'), waitForFirstImage);
+    document.body.classList.add('appear');
   }
 
   events.emit('eds/lcp', true);
@@ -228,6 +272,8 @@ async function loadEager(doc) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  autolinkModals(doc);
+
   const main = doc.querySelector('main');
   await loadSections(main);
 

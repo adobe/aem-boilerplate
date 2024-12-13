@@ -17,4 +17,10 @@ export * from './initialize';
 export * from './fetch-graphql';
 export * from './getProductData';
 export * from './getRefinedProduct';
+export * from './fetchProductData';
+export * from './setProductConfigurationValues';
+export * from './getProductConfigurationValues';
+export * from './setProductConfigurationValid';
+export * from './getFetchedProductData';
+export * from './isProductConfigurationValid';
 //# sourceMappingURL=index.d.ts.map

@@ -1,0 +1,18 @@
+{
+    "sign_in": {
+      "email": "test_cypresstest@example.com",
+      "password": "testTest123!",
+      "shortPassword": "world"
+    },
+    "recovery": {
+      "email": "test_cypresstest@example.com"
+    },
+    "sign_up": {
+      "company": "ACME Co.",
+      "email": "test_cypresstest@example.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "password": "testTest123!",
+      "shortPassword": "world"
+    }
+  }

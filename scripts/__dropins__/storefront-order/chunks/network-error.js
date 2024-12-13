@@ -1,0 +1,3 @@
+/*! Copyright 2024 Adobe
+All Rights Reserved. */
+import{events as f}from"@dropins/tools/event-bus.js";const l=r=>r.replace(/_([a-z])/g,(s,e)=>e.toUpperCase()),i=r=>r.replace(/([A-Z])/g,s=>`_${s.toLowerCase()}`),u=(r,s,e)=>{const c=["string","boolean","number"],a=s==="camelCase"?l:i;return Array.isArray(r)?r.map(o=>c.includes(typeof o)||o===null?o:typeof o=="object"?u(o,s,e):o):r!==null&&typeof r=="object"?Object.entries(r).reduce((o,[t,n])=>{const p=e&&e[t]?e[t]:a(t);return o[p]=c.includes(typeof n)||n===null?n:u(n,s,e),o},{}):r},C=r=>{const s=r instanceof DOMException&&r.name==="AbortError",e=r.name==="PlaceOrderError";throw!s&&!e&&f.emit("order/error",{source:"auth",type:"network",error:r.message}),r};export{u as a,l as c,C as h};

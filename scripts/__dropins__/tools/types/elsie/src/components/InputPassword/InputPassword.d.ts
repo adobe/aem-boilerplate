@@ -6,10 +6,10 @@ export interface InputPasswordProps extends PasswordStatusIndicatorProps, Omit<H
     placeholder?: string;
     floatingLabel?: string;
     defaultValue?: string;
-    error?: boolean;
     className?: string;
     name?: string;
     autoComplete?: string;
+    errorMessage?: string | undefined;
     required?: boolean;
     hideStatusIndicator?: boolean;
     onValue?: (value: any) => void;

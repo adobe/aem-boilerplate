@@ -1,3 +1,5 @@
+/* stylelint-disable selector-class-pattern, no-descending-specificity */
+
 /*
  * Copyright 2020 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -10,7 +12,8 @@
  * governing permissions and limitations under the License.
  */
 
-:root {
+/* stylelint-disable no-empty-source */
+:root, .dropin-design {
   /* Adobe Commerce Dropin design tokens */
   --color-brand-300: #6d6d6d;
   --color-brand-500: #454545;
@@ -91,9 +94,11 @@
   --type-condensed-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
   --type-display-1-font: normal normal 300 6.0rem/7.2rem var(--type-base-font-family);
   --type-display-1-letter-spacing: 0.04em;
-  --type-display-2-font: normal normal 300 4.8rem/5.6rem var(--type-base-font-family);
+  --type-display-2-font: normal normal 300 4.8rem/5.6rem
+    var(--type-base-font-family);
   --type-display-2-letter-spacing: 0.04em;
-  --type-display-3-font: normal normal 300 3.4rem/4.0rem var(--type-base-font-family);
+  --type-display-3-font: normal normal 300 3.4rem/4rem
+    var(--type-base-font-family);
   --type-display-3-letter-spacing: 0.04em;
   --type-headline-1-font: normal normal 400 2.4rem/3.2rem var(--type-condensed-font-family);
   --type-headline-1-letter-spacing: 0.04em;
@@ -101,31 +106,43 @@
   --type-headline-2-default-letter-spacing: 0.04em;
   --type-headline-2-strong-font: normal normal 400 2.0rem/2.4rem var(--type-condensed-font-family);
   --type-headline-2-strong-letter-spacing: 0.04em;
-  --type-body-1-default-font: normal normal 300 1.6rem/2.4rem var(--type-base-font-family);
+  --type-body-1-default-font: normal normal 300 1.6rem/2.4rem
+    var(--type-base-font-family);
   --type-body-1-default-letter-spacing: 0.04em;
-  --type-body-1-strong-font: normal normal 400 1.6rem/2.4rem var(--type-base-font-family);
+  --type-body-1-strong-font: normal normal 400 1.6rem/2.4rem
+    var(--type-base-font-family);
   --type-body-1-strong-letter-spacing: 0.04em;
-  --type-body-1-emphasized-font: normal normal 700 1.6rem/2.4rem var(--type-base-font-family);
+  --type-body-1-emphasized-font: normal normal 700 1.6rem/2.4rem
+    var(--type-base-font-family);
   --type-body-1-emphasized-letter-spacing: 0.04em;
-  --type-body-2-default-font: normal normal 300 1.4rem/2.0rem var(--type-base-font-family);
+  --type-body-2-default-font: normal normal 300 1.4rem/2rem
+    var(--type-base-font-family);
   --type-body-2-default-letter-spacing: 0.04em;
-  --type-body-2-strong-font: normal normal 400 1.4rem/2.0rem var(--type-base-font-family);
+  --type-body-2-strong-font: normal normal 400 1.4rem/2rem
+    var(--type-base-font-family);
   --type-body-2-strong-letter-spacing: 0.04em;
-  --type-body-2-emphasized-font: normal normal 700 1.4rem/2.0rem var(--type-base-font-family);
+  --type-body-2-emphasized-font: normal normal 700 1.4rem/2rem
+    var(--type-base-font-family);
   --type-body-2-emphasized-letter-spacing: 0.04em;
-  --type-button-1-font: normal normal 400 2.0rem/2.6rem var(--type-base-font-family);
+  --type-button-1-font: normal normal 400 2rem/2.6rem
+    var(--type-base-font-family);
   --type-button-1-letter-spacing: 0.08em;
-  --type-button-2-font: normal normal 400 1.6rem/2.4rem var(--type-base-font-family);
+  --type-button-2-font: normal normal 400 1.6rem/2.4rem
+    var(--type-base-font-family);
   --type-button-2-letter-spacing: 0.08em;
-  --type-details-caption-1-font: normal normal 400 1.2rem/1.6rem var(--type-base-font-family);
+  --type-details-caption-1-font: normal normal 400 1.2rem/1.6rem
+    var(--type-base-font-family);
   --type-details-caption-1-letter-spacing: 0.08em;
-  --type-details-caption-2-font: normal normal 300 1.2rem/1.6rem var(--type-base-font-family);
+  --type-details-caption-2-font: normal normal 300 1.2rem/1.6rem
+    var(--type-base-font-family);
   --type-details-caption-2-letter-spacing: 0.08em;
-  --type-details-overline-font: normal normal 400 1.2rem/2.0rem var(--type-base-font-family);
+  --type-details-overline-font: normal normal 400 1.2rem/2rem
+    var(--type-base-font-family);
   --type-details-overline-letter-spacing: 0.16em;
 
   /* Additional tokens */
-  --type-fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
+  --type-fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono',
+    monospace;
   --background-color: var(--color-neutral-50);
   --nav-height: 6.4rem;
 }
@@ -143,6 +160,10 @@
   src: local('Arial');
 }
 
+html, body {
+  height: 100%;
+}
+
 html {
   font-size: 62.5%;
 }
@@ -151,18 +172,28 @@ body {
   font: var(--type-body-1-default-font);
   letter-spacing: var(--type-body-1-default-letter-spacing);
   margin: 0;
-  line-height: 1.6;
   color: var(--color-brand-700);
   background-color: var(--background-color);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 100%;
+}
+
+body:not(.appear) {
   display: none;
 }
 
-body.appear {
-  display: block;
+header {
+  grid-row: 1;
+  height: var(--nav-height);
 }
 
-header {
-  height: var(--nav-height);
+main {
+  grid-row: 2;
+}
+
+footer {
+  grid-row: 3;
 }
 
 header .header,
@@ -231,7 +262,7 @@ hr {
   margin-top: 1.5em;
   margin-bottom: 1.5em;
   border: 0;
-  border-bottom: 1px solid var(--color-neutral-300);
+  border-bottom: var(--shape-border-width-1) solid var(--color-neutral-300);
 }
 
 code,
@@ -254,7 +285,7 @@ main pre {
 }
 
 main > div {
-  margin: 40px 16px;
+  margin: var(--spacing-xbig) var(--spacing-small);
 }
 
 input,
@@ -284,8 +315,8 @@ button.button {
   box-sizing: border-box;
   display: inline-block;
   max-width: 100%;
-  margin: 12px 0;
-  border: 2px solid transparent;
+  margin: var(--spacing-small) 0;
+  border: var(--shape-border-width-3) solid transparent;
   border-radius: var(--shape-border-radius-3);
   padding: 0.5em 1.2em;
   font: var(--type-button-2-font);
@@ -322,30 +353,16 @@ main a.button.secondary,
 button.button.secondary {
   background-color: unset;
   border: var(--shape-border-width-3) solid currentcolor;
-  color: var(--color-brand-500)
+  color: var(--color-brand-500);
 }
 
 main a.button.secondary:hover,
 button.button.secondary:hover {
-  color: var(--color-brand-600)
-}
-
-main input {
-  font: var(--type-body-2-strong-font);
-  letter-spacing: var(--type-body-2-strong-letter-spacing);
-  width: 100%;
-  max-width: 50rem;
-  display: block;
-  margin-bottom: 1rem;
-  padding: 4px 1.6rem;
-  border-radius: var(--shape-border-radius-1);
-  box-sizing: border-box;
-  border: 1px solid var(--color-neutral-600);
-  background-color: var(--background-color);
+  color: var(--color-brand-600);
 }
 
 main input:hover {
-  border: 1px solid var(--color-neutral-700);
+  border: var(--shape-border-width-1) solid var(--color-neutral-700);
 }
 
 main blockquote {
@@ -356,12 +373,12 @@ main blockquote {
 }
 
 main blockquote p::before {
-  content: "“";
+  content: '“';
   line-height: 0;
 }
 
 main blockquote p::after {
-  content: "”";
+  content: '”';
   line-height: 0;
 }
 
@@ -384,13 +401,13 @@ main img {
 
 /* sections */
 main > .section {
-  margin: 40px 0;
+  margin: var(--spacing-xbig) 0;
 }
 
 main > .section > div {
   max-width: 1200px;
   margin: auto;
-  padding: 0 24px;
+  padding: 0 var(--spacing-medium);
 }
 
 main > .section:first-of-type {
@@ -399,7 +416,7 @@ main > .section:first-of-type {
 
 @media (width >= 900px) {
   main > .section > div {
-    padding: 0 32px;
+    padding: 0 var(--spacing-big);
   }
 }
 
@@ -408,10 +425,72 @@ main .section.light,
 main .section.highlight {
   background-color: var(--color-neutral-500);
   margin: 0;
-  padding: 40px 0;
+  padding: var(--spacing-xbig) 0;
 }
 
 /* Base Design System Tokens */
 .dropin-design.dropin-design {
   --background-none: none 0 0% no-repeat padding-box;
+}
+
+.dropin-input-date__icon {
+  z-index: 2;
+}
+
+/* Layout: Columns */
+body.columns main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1264px;
+  margin: 0 auto;
+  padding: var(--spacing-large) var(--spacing-small);
+  box-sizing: border-box;
+  gap: var(--grid-4-gutters);
+}
+
+body.columns main > .section {
+  flex: 1;
+  flex-basis: 100%;
+  max-width: unset;
+  margin: unset;
+  padding: unset;
+}
+
+body.columns main > .section > div {
+  max-width: unset;
+  padding: unset;
+}
+
+body.columns main > .section > div:not(:last-child) {
+  margin-bottom: var(--gap, unset);
+}
+
+body.columns main > .section:empty {
+  display: none;
+}
+
+@media (width >= 600px) {
+  body.columns main {
+      padding: var(--spacing-large) var(--spacing-big);
+  }
+}
+
+@media (width >= 900px) {
+  body.columns main {
+    flex-direction: row;
+  }
+
+  body.columns main > .section {
+    flex: 1;
+    flex-basis: var(--column-width, auto);
+  }
+}
+
+/**
+* Reset main element visibility
+* https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden
+*/
+main[hidden] {
+  display: none !important;
 }

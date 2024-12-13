@@ -1,4 +1,9 @@
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<!--
+  Domain Verification for Adobe Commerce Security Scan
+  https://experienceleague.adobe.com/en/docs/commerce-admin/systems/security/security-scan
+-->
+<meta name="p:domain_verify" content="yJyUSQ8U4NKaWH9aH30nXtptalV0gHK1"/>
 <script type="speculationrules">
     {
         "prerender": [{
@@ -13,19 +18,33 @@
     {
         "imports": {
             "@dropins/tools/": "/scripts/__dropins__/tools/",
-            "@dropins/storefront-pdp/": "/scripts/__dropins__/storefront-pdp/"
+            "@dropins/storefront-cart/": "/scripts/__dropins__/storefront-cart/",
+            "@dropins/storefront-checkout/": "/scripts/__dropins__/storefront-checkout/",
+            "@dropins/storefront-pdp/": "/scripts/__dropins__/storefront-pdp/",
+            "@dropins/storefront-order-confirmation/": "/scripts/__dropins__/storefront-order-confirmation/",
+            "@dropins/storefront-account/": "/scripts/__dropins__/storefront-account/",
+            "@dropins/storefront-order/": "/scripts/__dropins__/storefront-order/",
+            "@dropins/storefront-auth/": "/scripts/__dropins__/storefront-auth/"
         }
     }
 </script>
+
+<link rel="stylesheet" href="/styles/styles.css" />
 
 <script src="/scripts/aem.js" type="module"></script>
 <script src="/scripts/scripts.js" type="module"></script>
 <script src="/scripts/configs.js" type="module"></script>
 <script src="/scripts/commerce.js" type="module"></script>
 
-<link rel="modulepreload" href="/scripts/dropins.js" />
+<link rel="preload" href="/placeholders.json" as="fetch" crossorigin="anonymous" />
+<link rel="modulepreload" href="/scripts/initializers/index.js" />
+<link rel="modulepreload" href="/scripts/initializers/auth.js" />
+<link rel="modulepreload" href="/scripts/initializers/cart.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/storefront-auth/api.js" />
 <link rel="modulepreload" href="/scripts/__dropins__/tools/event-bus.js" />
 <link rel="modulepreload" href="/scripts/__dropins__/tools/fetch-graphql.js" />
 <link rel="modulepreload" href="/scripts/__dropins__/tools/initializer.js" />
-
-<link rel="stylesheet" href="/styles/styles.css" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/preact.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/preact-compat.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/preact-hooks.js" />
+<link rel="modulepreload" href="/scripts/__dropins__/tools/components.js" />

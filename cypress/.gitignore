@@ -1,0 +1,10 @@
+node_modules
+.DS_Store
+.idea
+reports/*
+cypress-test-results.json
+cypress-test-results.html
+src/snapshots/*/**
+screenshots/*
+yarn-error.log
+downloads

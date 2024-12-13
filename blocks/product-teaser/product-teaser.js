@@ -122,10 +122,15 @@ function renderProduct(product, config, block) {
   const addToCartButton = fragment.querySelector('.add-to-cart');
   if (addToCartButton) {
     addToCartButton.addEventListener('click', async () => {
-      const { cartApi } = await import('../../scripts/minicart/api.js');
-      // TODO: productId not exposed by catalog service as number
+      const values = [{
+        optionsUIDs: [],
+        quantity: 1,
+        sku: product.sku,
+      }];
+      const { addProductsToCart } = await import('@dropins/storefront-cart/api.js');
       window.adobeDataLayer.push({ productContext: mapProductAcdl(product) });
-      cartApi.addToCart(product.sku, [], 1, 'product-teaser');
+      console.debug('onAddToCart', values);
+      addProductsToCart(values);
     });
   }
 

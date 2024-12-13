@@ -29,10 +29,10 @@ export declare const definition: {
                 };
             };
             InputPassword: {
-                requiredFieldError: string;
                 placeholder: string;
                 floatingLabel: string;
-                buttonTitle: string;
+                buttonShowTitle: string;
+                buttonHideTitle: string;
             };
             PasswordStatusIndicator: {
                 chartTwoSymbols: string;
@@ -175,10 +175,10 @@ export declare const definition: {
                 };
             };
             InputPassword: {
-                requiredFieldError: string;
                 placeholder: string;
                 floatingLabel: string;
-                buttonTitle: string;
+                buttonShowTitle: string;
+                buttonHideTitle: string;
             };
             PasswordStatusIndicator: {
                 chartTwoSymbols: string;
@@ -323,10 +323,10 @@ export declare const getDefinitionByLanguage: (lang: Lang) => {
             };
         };
         InputPassword: {
-            requiredFieldError: string;
             placeholder: string;
             floatingLabel: string;
-            buttonTitle: string;
+            buttonShowTitle: string;
+            buttonHideTitle: string;
         };
         PasswordStatusIndicator: {
             chartTwoSymbols: string;

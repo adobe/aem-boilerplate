@@ -116,16 +116,17 @@ const blocks = {
 
 async function performCatalogServiceQuery(query, config, variables) {
     const headers = {
-        'Magento-Environment-Id': config['commerce-environment-id'],
-        'Magento-Store-View-Code': config['commerce-store-view-code'],
-        'Magento-Website-Code': config['commerce-website-code'],
         'x-api-key': config['commerce-x-api-key'],
-        'Magento-Store-Code': config['commerce-store-code'],
-        'Magento-Customer-Group': config['commerce-customer-group'],
         'Content-Type': 'application/json',
     };
 
+    // Set Query Parameters so they can be appended to the endpoint
     const apiCall = new URL(config['commerce-endpoint']);
+    apiCall.searchParams.append("Magento-Environment-Id", config['commerce-environment-id']);
+    apiCall.searchParams.append("Magento-Website-Code", config['commerce-website-code']);
+    apiCall.searchParams.append("Magento-Store-View-Code", config['commerce-store-view-code']);
+    apiCall.searchParams.append("Magento-Store-Code", config['commerce-store-code']);
+    apiCall.searchParams.append("Magento-Customer-Group", config['commerce-customer-group']);
     apiCall.searchParams.append('query', query.replace(/(?:\r\n|\r|\n|\t|[\s]{4})/g, ' ')
         .replace(/\s\s+/g, ' '));
     apiCall.searchParams.append('variables', variables ? JSON.stringify(variables) : null);

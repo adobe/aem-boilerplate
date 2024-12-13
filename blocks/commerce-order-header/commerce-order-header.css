@@ -1,0 +1,12 @@
+body:not(.columns) main div.commerce-order-header-wrapper {
+    margin-top: var(--spacing-large);
+}
+
+body.columns main > .section > div.commerce-order-header-wrapper {
+    margin-bottom: 0;
+}
+
+.orders-list-link {
+    display: inline-block;
+    margin-bottom: var(--spacing-medium);
+}

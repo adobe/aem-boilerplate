@@ -66,7 +66,6 @@ declare const bundleOptions: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -132,7 +131,6 @@ declare const bundleOptionsEmpty: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -200,7 +198,6 @@ declare const giftCardPhysical: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -270,7 +267,6 @@ declare const giftCardVirtual: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -334,7 +330,6 @@ declare const simple: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -417,7 +412,6 @@ declare const simpleCustomizable: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -510,7 +504,6 @@ declare const configurable: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -621,7 +614,6 @@ declare const configurableCustomizable: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -686,7 +678,6 @@ declare const giftCard: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -755,7 +746,6 @@ declare const downloadbleWithMultipleLinks: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -791,7 +781,6 @@ declare const simpleLowInventory: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -859,7 +848,6 @@ declare const complexInsufficientQuantity: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -932,7 +920,6 @@ declare const complexInsufficientQuantityGeneralMessage: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -1015,7 +1002,6 @@ declare const complexWithProductAttributes: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;
@@ -1129,7 +1115,6 @@ declare const simpleWithNoDiscount: {
             label: string;
         };
         url_key: string;
-        url_suffix: string;
         categories: {
             url_path: string;
             url_key: string;

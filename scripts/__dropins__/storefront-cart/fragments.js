@@ -1,4 +1,4 @@
-/*! Copyright 2024 Adobe
+/*! Copyright 2025 Adobe
 All Rights Reserved. */
 const e=`
   fragment PRICE_RANGE_FRAGMENT on PriceRange {
@@ -112,7 +112,6 @@ fragment CART_ITEM_FRAGMENT on CartItemInterface {
       label
     }
     url_key
-    url_suffix
     canonical_url
     categories {
       url_path
@@ -130,13 +129,11 @@ fragment CART_ITEM_FRAGMENT on CartItemInterface {
             value
             label
           }
-          
         }
       }
     }
     only_x_left_in_stock
-    stock_status     
-    
+    stock_status
     price_range {
       ...PRICE_RANGE_FRAGMENT
     }

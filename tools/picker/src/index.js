@@ -22,7 +22,7 @@ const defaultConfig = 'prod';
 
 /**
  * List of blocks to be available in the picker.
- * 
+ *
  * Format: Object with key -> block mapping. Each block is defined by the following properties:
  *   key: Unique key, must be same as the key in the object
  *   name: Displayed name of the block
@@ -116,17 +116,16 @@ const blocks = {
 
 async function performCatalogServiceQuery(query, config, variables) {
     const headers = {
-        'x-api-key': config['commerce-x-api-key'],
         'Content-Type': 'application/json',
+        'x-api-key': config['commerce.headers.cs.x-api-key'],
+        'Magento-Customer-Group': config['commerce.headers.cs.Magento-Customer-Group'],
+        'Magento-Environment-Id': config['commerce.headers.cs.Magento-Environment-Id'],
+        'Magento-Store-Code': config['commerce.headers.cs.Magento-Store-Code'],
+        'Magento-Store-View-Code': config['commerce.headers.cs.Magento-Store-View-Code'],
+        'Magento-Website-Code': config['commerce.headers.cs.Magento-Website-Code'],
     };
 
-    // Set Query Parameters so they can be appended to the endpoint
     const apiCall = new URL(config['commerce-endpoint']);
-    apiCall.searchParams.append("Magento-Environment-Id", config['commerce-environment-id']);
-    apiCall.searchParams.append("Magento-Website-Code", config['commerce-website-code']);
-    apiCall.searchParams.append("Magento-Store-View-Code", config['commerce-store-view-code']);
-    apiCall.searchParams.append("Magento-Store-Code", config['commerce-store-code']);
-    apiCall.searchParams.append("Magento-Customer-Group", config['commerce-customer-group']);
     apiCall.searchParams.append('query', query.replace(/(?:\r\n|\r|\n|\t|[\s]{4})/g, ' ')
         .replace(/\s\s+/g, ' '));
     apiCall.searchParams.append('variables', variables ? JSON.stringify(variables) : null);

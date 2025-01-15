@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export, import/no-cycle */
-import { getConfigValue, getCookie } from './configs.js';
+import {
+  getConfigValue, getCookie, getHeaders,
+} from './configs.js';
 import { getConsent } from './scripts.js';
 
 /* Common query fragments */
@@ -20,13 +22,9 @@ export const priceFieldsFragment = `fragment priceFields on ProductViewPrice {
 }`;
 
 export async function commerceEndpointWithQueryParams() {
-  // Set Query Parameters so they can be appended to the endpoint
   const urlWithQueryParams = new URL(await getConfigValue('commerce-endpoint'));
-  urlWithQueryParams.searchParams.append('Magento-Environment-Id', await getConfigValue('commerce-environment-id'));
-  urlWithQueryParams.searchParams.append('Magento-Website-Code', await getConfigValue('commerce-website-code'));
-  urlWithQueryParams.searchParams.append('Magento-Store-View-Code', await getConfigValue('commerce-store-view-code'));
-  urlWithQueryParams.searchParams.append('Magento-Store-Code', await getConfigValue('commerce-store-code'));
-  urlWithQueryParams.searchParams.append('Magento-Customer-Group', await getConfigValue('commerce-customer-group'));
+  // Set some query parameters for use as a cache-buster. No other purpose.
+  urlWithQueryParams.searchParams.append('ac-storecode', await getConfigValue('commerce.headers.cs.Magento-Store-Code'));
   return urlWithQueryParams;
 }
 
@@ -34,8 +32,8 @@ export async function commerceEndpointWithQueryParams() {
 
 export async function performCatalogServiceQuery(query, variables) {
   const headers = {
+    ...(await getHeaders('cs')),
     'Content-Type': 'application/json',
-    'x-api-key': await getConfigValue('commerce-x-api-key'),
   };
 
   const apiCall = await commerceEndpointWithQueryParams();
@@ -66,7 +64,7 @@ export async function performMonolithGraphQLQuery(query, variables, GET = true, 
 
   const headers = {
     'Content-Type': 'application/json',
-    Store: await getConfigValue('commerce-store-view-code'),
+    Store: await getConfigValue('commerce.headers.cs.Magento-Store-View-Code'),
   };
 
   if (USE_TOKEN) {
@@ -161,7 +159,7 @@ export async function trackHistory() {
     return;
   }
   // Store product view history in session storage
-  const storeViewCode = await getConfigValue('commerce-store-view-code');
+  const storeViewCode = await getConfigValue('commerce.headers.cs.Magento-Store-View-Code');
   window.adobeDataLayer.push((dl) => {
     dl.addEventListener('adobeDataLayer:change', (event) => {
       if (!event.productContext) {

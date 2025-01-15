@@ -1,7 +1,7 @@
 import { events } from '@dropins/tools/event-bus.js';
 import { initializers } from '@dropins/tools/initializer.js';
-import { initialize } from '@dropins/storefront-order/api.js';
-import { checkIsAuthenticated } from '../configs.js';
+import { initialize, setFetchGraphQlHeaders } from '@dropins/storefront-order/api.js';
+import { checkIsAuthenticated, getHeaders } from '../configs.js';
 import { initializeDropin } from './index.js';
 import { fetchPlaceholders } from '../aem.js';
 
@@ -19,21 +19,23 @@ import {
 
 await initializeDropin(async () => {
   const { pathname, searchParams } = new URL(window.location.href);
+  if (pathname.includes(CUSTOMER_ORDERS_PATH)) {
+    return;
+  }
   const isAccountPage = pathname.includes(CUSTOMER_PATH);
   const orderRef = searchParams.get('orderRef');
   const returnRef = searchParams.get('returnRef');
   const orderNumber = searchParams.get('orderNumber');
   const isTokenProvided = orderRef && orderRef.length > 20;
+
+  setFetchGraphQlHeaders(await getHeaders('order'));
+
   const labels = await fetchPlaceholders();
   const langDefinitions = {
     default: {
       ...labels,
     },
   };
-
-  if (pathname.includes(CUSTOMER_ORDERS_PATH)) {
-    return;
-  }
 
   const pathsRequiringRedirects = [
     ORDER_DETAILS_PATH,

@@ -14,15 +14,15 @@ Out of the box, this project template uses a pre-configured Adobe Commerce envir
 
 Additionally, you need to have the following modules and customizations installed on your environment:
 
-1. magento/magento-extra-graphql: Commerce module required for Cart and Checkout Drop-Ins.
-1. magento/module-data-services-graphql: Commerce module with functionality necessary for adding context to events.
+1. adobe-commerce/storefront-compatibility: Contains changes to the Adobe Commerce GraphQL API that enable drop-ins functionality.
+1. magento/module-data-services-graphql: Commerce module with the functionality necessary for adding context to events.
 1. magento/module-page-builder-product-recommendations: Commerce module required for PRex Widget
 1. magento/module-visual-product-recommendations: Commerce module required for PRex Widget
 <!-- 1. TODO: Add further prereqs.  -->
 
 ## Documentation
 
-Before using the boilerplate, we recommand you to go through the documentation on https://www.aem.live/docs/ and more specifically:
+Before using the boilerplate, we recommend you to go through the documentation on https://www.aem.live/docs/ and more specifically:
 1. [Developer Tutorial](https://www.aem.live/developer/tutorial)
 2. [The Anatomy of a Project](https://www.aem.live/developer/anatomy-of-a-project)
 3. [Web Performance](https://www.aem.live/developer/keeping-it-100)
@@ -47,7 +47,7 @@ npm run lint
 1. Add your Adobe Commerce SaaS configuration in the `configs.xlsx` sheet in your content repository.
 1. Install all dependencies using `npm i`.
 1. Start AEM Proxy: `npm run up` (opens your browser at `http://localhost:3000`)
-1. Open the `{repo}` directory in your favorite IDE and start coding :)
+1. Open the `{repo}` directory in your favourite IDE and start coding :)
 
 ## Changelog
 

@@ -37,32 +37,6 @@ you can just delete the folder and re-add the plugin via the `git subtree add` c
 
 ## Project instrumentation
 
-:warning: The plugin requires that you have a recent RUM instrumentation from the AEM boilerplate that supports `sampleRUM.always`. If you are getting errors that `.on` cannot be called on an `undefined` object, please apply the changes from https://github.com/adobe/aem-boilerplate/pull/247/files to your `lib-franklin.js`.
-
-### On top of the plugin system
-
-The easiest way to add the plugin is if your project is set up with the plugin system extension in the boilerplate.
-You'll know you have it if `window.hlx.plugins` is defined on your page.
-
-If you don't have it, you can follow the proposal in https://github.com/adobe/aem-lib/pull/23 and https://github.com/adobe/aem-boilerplate/pull/275 and apply the changes to your `aem.js`/`lib-franklin.js` and `scripts.js`.
-
-Once you have confirmed this, you'll need to edit your `scripts.js` in your AEM project and add the following at the start of the file:
-```js
-const AUDIENCES = {
-  mobile: () => window.innerWidth < 600,
-  desktop: () => window.innerWidth >= 600,
-  // define your custom audiences here as needed
-};
-
-window.hlx.plugins.add('experimentation', {
-  condition: () => getMetadata('experiment')
-    || Object.keys(getAllMetadata('campaign')).length
-    || Object.keys(getAllMetadata('audience')).length,
-  options: { audiences: AUDIENCES },
-  url: '/plugins/experimentation/src/index.js',
-});
-```
-
 ### On top of a regular boilerplate project
 
 Typically, you'd know you don't have the plugin system if you don't see a reference to `window.hlx.plugins` in your `scripts.js`. In that case, you can still manually instrument this plugin in your project by falling back to a more manual instrumentation. To properly connect and configure the plugin for your project, you'll need to edit your `scripts.js` in your AEM project and add the following:
@@ -104,6 +78,16 @@ Typically, you'd know you don't have the plugin system if you don't see a refere
       toClassName,
     };
     ```
+    And make sure to import any missing/undefined methods from `aem.js`/`lib-franklin.js` at the very top of the file:
+    ```js
+    import {
+      ...
+      getMetadata,
+      loadScript,
+      toCamelCase,
+      toClassName,
+    } from './aem.js';
+    ```
 3. Early in the `loadEager` method you'll need to add:
     ```js
     async function loadEager(doc) {
@@ -136,6 +120,30 @@ Typically, you'd know you don't have the plugin system if you don't see a refere
     ```
     This is mostly used for the authoring overlay, and as such isn't essential to the page rendering, so having it at the end of the lazy phase is good enough.
 
+### On top of the plugin system
+
+The easiest way to add the plugin is if your project is set up with the plugin system extension in the boilerplate.
+You'll know you have it if `window.hlx.plugins` is defined on your page.
+
+If you don't have it, you can follow the proposal in https://github.com/adobe/aem-lib/pull/23 and https://github.com/adobe/aem-boilerplate/pull/275 and apply the changes to your `aem.js`/`lib-franklin.js` and `scripts.js`.
+
+Once you have confirmed this, you'll need to edit your `scripts.js` in your AEM project and add the following at the start of the file:
+```js
+const AUDIENCES = {
+  mobile: () => window.innerWidth < 600,
+  desktop: () => window.innerWidth >= 600,
+  // define your custom audiences here as needed
+};
+
+window.hlx.plugins.add('experimentation', {
+  condition: () => getMetadata('experiment')
+    || Object.keys(getAllMetadata('campaign')).length
+    || Object.keys(getAllMetadata('audience')).length,
+  options: { audiences: AUDIENCES },
+  url: '/plugins/experimentation/src/index.js',
+});
+```
+
 ### Custom options
 
 There are various aspects of the plugin that you can configure via options you are passing to the 2 main methods above (`runEager`/`runLazy`).
@@ -160,6 +168,9 @@ runEager.call(document, {
   // short durations of those campaigns/experiments
   rumSamplingRate: 10,
 
+  // these metadata fields will be updated when replacing content
+  overrideMetadataFields: [],
+
   // the storage type used to persist data between page views
   // (for instance to remember what variant in an experiment the user was served)
   storage: window.SessionStorage,
@@ -177,14 +188,12 @@ runEager.call(document, {
 
   /* Experimentation related properties */
   // See more details on the dedicated Experiments page linked below
-  experimentsRoot: '/experiments',
-  experimentsConfigFile: 'manifest.json',
   experimentsMetaTag: 'experiment',
   experimentsQueryParameter: 'experiment',
 }, pluginContext);
 ```
 
 For detailed implementation instructions on the different features, please read the dedicated pages we have on those topics:
-- [Audiences](https://github.com/adobe/aem-experimentation/wiki/Audiences)
-- [Campaigns](https://github.com/adobe/aem-experimentation/wiki/Campaigns)
-- [Experiments](https://github.com/adobe/aem-experimentation/wiki/Experiments)
+- [Audiences](/documentation/audiences.md)
+- [Campaigns](/documentation/campaigns.md)
+- [Experiments](/documentation/experiments.md)

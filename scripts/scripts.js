@@ -175,7 +175,7 @@ async function loadEager(doc) {
     || Object.keys(getAllMetadata('audience')).length) {
     // eslint-disable-next-line import/no-relative-packages
     const { loadEager: runEager } = await import('../plugins/experimentation/src/index.js');
-    await runEager(document, { audiences: AUDIENCES }, pluginContext);
+    await runEager(document, { audiences: AUDIENCES, overrideMetadataFields: ['placeholders'] }, pluginContext);
   }
 
   await initializeDropins();

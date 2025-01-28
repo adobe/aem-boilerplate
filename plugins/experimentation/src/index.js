@@ -14,6 +14,7 @@ const MAX_SAMPLING_RATE = 10; // At a maximum we sample 1 in 10 requests
 export const DEFAULT_OPTIONS = {
   // Generic properties
   rumSamplingRate: MAX_SAMPLING_RATE, // 1 in 10 requests
+  overrideMetadataFields: [],
 
   // Audiences related properties
   audiences: {},
@@ -88,12 +89,13 @@ export async function getResolvedAudiences(applicableAudiences, options, context
 }
 
 /**
- * Replaces element with content from path
+ * Replaces main content from path
  * @param {string} path
- * @param {HTMLElement} main
+ * @param {Document} doc
+ * @param {string[]} overrideMetadataFields
  * @return Returns the path that was loaded or null if the loading failed
  */
-async function replaceInner(path, main) {
+async function replaceContent(path, doc, overrideMetadataFields) {
   try {
     const resp = await fetch(path);
     if (!resp.ok) {
@@ -106,7 +108,17 @@ async function replaceInner(path, main) {
     const dom = new DOMParser().parseFromString(html, 'text/html');
     // do not use replaceWith API here since this would replace the main reference
     // in scripts.js as well and prevent proper decoration of the sections/blocks
-    main.innerHTML = dom.querySelector('main').innerHTML;
+    doc.querySelector('main').innerHTML = dom.querySelector('main').innerHTML;
+
+    // replace metadata fields
+    overrideMetadataFields.forEach((metadataPropName) => {
+      const attr = metadataPropName && metadataPropName.includes(':') ? 'property' : 'name';
+      const newMetas = dom.head.querySelectorAll(`meta[${attr}="${metadataPropName}"]`);
+      const oldMetas = doc.head.querySelectorAll(`meta[${attr}="${metadataPropName}"]`);
+      oldMetas.forEach((m) => m.remove());
+      newMetas.forEach((m) => doc.head.append(m));
+    });
+
     return path;
   } catch (e) {
     // eslint-disable-next-line no-console
@@ -481,7 +493,7 @@ export async function runExperiment(document, options, context) {
   document.body.classList.add(`experiment-${context.toClassName(experimentConfig.id)}`);
   let result;
   if (pages[index] !== currentPath) {
-    result = await replaceInner(pages[index], document.querySelector('main'));
+    result = await replaceContent(pages[index], document, pluginOptions.overrideMetadataFields);
   } else {
     result = currentPath;
   }
@@ -542,7 +554,11 @@ export async function runCampaign(document, options, context) {
 
   try {
     const url = new URL(urlString);
-    const result = await replaceInner(url.pathname, document.querySelector('main'));
+    const result = await replaceContent(
+      url.pathname,
+      document,
+      pluginOptions.overrideMetadataFields,
+    );
     window.hlx.campaign.servedExperience = result || window.location.pathname;
     if (!result) {
       // eslint-disable-next-line no-console
@@ -598,7 +614,11 @@ export async function serveAudience(document, options, context) {
 
   try {
     const url = new URL(urlString);
-    const result = await replaceInner(url.pathname, document.querySelector('main'));
+    const result = await replaceContent(
+      url.pathname,
+      document,
+      pluginOptions.overrideMetadataFields,
+    );
     window.hlx.audience.servedExperience = result || window.location.pathname;
     if (!result) {
       // eslint-disable-next-line no-console

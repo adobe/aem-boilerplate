@@ -1,3 +1,122 @@
+/********************************************************************
+ * ADOBE CONFIDENTIAL
+ *
+ *  Copyright 2024 Adobe
+ *  All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Adobe and its suppliers, if any. The intellectual
+ * and technical concepts contained herein are proprietary to Adobe
+ * and its suppliers and are protected by all applicable intellectual
+ * property laws, including trade secret and copyright laws.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Adobe.
+ *******************************************************************/
+export declare const taxCalculations: {
+    includeAndExcludeTax: {
+        originalPrice: {
+            value: number;
+            currency: string;
+        };
+        baseOriginalPrice: {
+            value: number;
+            currency: string;
+        };
+        baseDiscountedPrice: {
+            value: number;
+            currency: string;
+        };
+        baseExcludingTax: {
+            value: number;
+            currency: string;
+        };
+    };
+    excludeTax: {
+        originalPrice: {
+            value: number;
+            currency: string;
+        };
+        baseOriginalPrice: {
+            value: number;
+            currency: string;
+        };
+        baseDiscountedPrice: {
+            value: number;
+            currency: string;
+        };
+        baseExcludingTax: {
+            value: number;
+            currency: string;
+        };
+    };
+    includeTax: {
+        singleItemPrice: {
+            value: number;
+            currency: string;
+        };
+        baseOriginalPrice: {
+            value: number;
+            currency: string;
+        };
+        baseDiscountedPrice: {
+            value: number;
+            currency: string;
+        };
+    };
+};
+export declare const taxCalculationsEmpty: {
+    includeAndExcludeTax: {
+        originalPrice: {
+            value: number;
+            currency: string;
+        };
+        baseOriginalPrice: {
+            value: number;
+            currency: string;
+        };
+        baseDiscountedPrice: {
+            value: number;
+            currency: string;
+        };
+        baseExcludingTax: {
+            value: number;
+            currency: string;
+        };
+    };
+    excludeTax: {
+        originalPrice: {
+            value: number;
+            currency: string;
+        };
+        baseOriginalPrice: {
+            value: number;
+            currency: string;
+        };
+        baseDiscountedPrice: {
+            value: number;
+            currency: string;
+        };
+        baseExcludingTax: {
+            value: number;
+            currency: string;
+        };
+    };
+    includeTax: {
+        singleItemPrice: {
+            value: number;
+            currency: string;
+        };
+        baseOriginalPrice: {
+            value: number;
+            currency: string;
+        };
+        baseDiscountedPrice: {
+            value: number;
+            currency: string;
+        };
+    };
+};
 export declare const mockOrder: {
     data: {
         guestOrder: {
@@ -163,6 +282,7 @@ export declare const transformMockOrderInput: {
         customer: {
             orders: {
                 items: {
+                    uid: string;
                     available_actions: string[];
                     status: string;
                     number: string;
@@ -412,7 +532,107 @@ export declare const transformMockOrderOutput: {
     carrier: string;
     shippingMethod: null;
     coupons: never[];
-    shipments: {
+    shipments: ({
+        id: string;
+        tracking: {
+            title: string;
+            number: string;
+        }[];
+        comments: never[];
+        items: {
+            taxCalculations: {
+                includeAndExcludeTax: {
+                    originalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseOriginalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseDiscountedPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseExcludingTax: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+                excludeTax: {
+                    originalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseOriginalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseDiscountedPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseExcludingTax: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+                includeTax: {
+                    singleItemPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseOriginalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseDiscountedPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
+            id: string;
+            productSku: string;
+            productName: string;
+            orderItem: {
+                __typename: string;
+                status: string;
+                productName: string;
+                id: string;
+                quantityOrdered: number;
+                quantityShipped: number;
+                quantityCanceled: number;
+                quantityInvoiced: number;
+                quantityRefunded: number;
+                quantityReturned: number;
+                productSalePrice: {
+                    value: number;
+                    currency: string;
+                };
+                selectedOptions: never[];
+                product: {
+                    __typename: string;
+                    canonicalUrl: null;
+                    uid: string;
+                    name: string;
+                    sku: string;
+                    thumbnail: {
+                        label: string;
+                        url: string;
+                    };
+                    priceRange: {
+                        maximumPrice: {
+                            regularPrice: {
+                                currency: string;
+                                value: number;
+                            };
+                        };
+                    };
+                };
+            };
+        }[];
+    } | {
         id: string;
         tracking: {
             title: string;
@@ -463,7 +683,7 @@ export declare const transformMockOrderOutput: {
                 };
             };
         }[];
-    }[];
+    })[];
     shippingAddress: {
         city: string;
         company: null;
@@ -1807,13 +2027,65 @@ export declare const createReturnOrderMock: {
     carrier: string;
     shippingMethod: string;
     isVirtual: boolean;
-    returns: {
+    returns: ({
         createdReturnAt: string;
         returnStatus: string;
         token: string;
         orderNumber: string;
         returnNumber: string;
         items: ({
+            taxCalculations: {
+                includeAndExcludeTax: {
+                    originalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseOriginalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseDiscountedPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseExcludingTax: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+                excludeTax: {
+                    originalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseOriginalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseDiscountedPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseExcludingTax: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+                includeTax: {
+                    singleItemPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseOriginalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseDiscountedPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
             uid: string;
             quantity: number;
             status: string;
@@ -1882,8 +2154,8 @@ export declare const createReturnOrderMock: {
                 url: string;
             };
             configurableOptions: {
-                Size?: undefined;
-                Color?: undefined;
+                Size: string;
+                Color: string;
             };
             bundleOptions: null;
             itemPrices: {
@@ -1997,10 +2269,401 @@ export declare const createReturnOrderMock: {
                 };
             };
             downloadableLinks: null;
+            taxCalculations?: undefined;
         })[];
         tracking: never[];
-    }[];
+    } | {
+        createdReturnAt: string;
+        returnStatus: string;
+        token: string;
+        orderNumber: string;
+        returnNumber: string;
+        items: ({
+            taxCalculations: {
+                includeAndExcludeTax: {
+                    originalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseOriginalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseDiscountedPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseExcludingTax: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+                excludeTax: {
+                    originalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseOriginalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseDiscountedPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseExcludingTax: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+                includeTax: {
+                    singleItemPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseOriginalPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                    baseDiscountedPrice: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
+            uid: string;
+            quantity: number;
+            status: string;
+            requestQuantity: number;
+            type: string;
+            eligibleForReturn: boolean;
+            productSku: string;
+            productName: string;
+            productUrlKey: string;
+            quantityCanceled: number;
+            quantityInvoiced: number;
+            quantityOrdered: number;
+            quantityRefunded: number;
+            quantityReturned: number;
+            quantityShipped: number;
+            id: string;
+            discounted: boolean;
+            total: {
+                value: number;
+                currency: string;
+            };
+            totalInclTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+            priceInclTax: {
+                value: number;
+                currency: string;
+            };
+            totalQuantity: number;
+            regularPrice: {
+                value: number;
+                currency: string;
+            };
+            product: {
+                __typename: string;
+                canonicalUrl: string;
+                urlKey: string;
+                uid: string;
+                name: string;
+                sku: string;
+                onlyXLeftInStock: null;
+                stockStatus: string;
+                thumbnail: {
+                    label: string;
+                    url: string;
+                };
+                priceRange: {
+                    maximumPrice: {
+                        regularPrice: {
+                            currency: string;
+                            value: number;
+                        };
+                    };
+                };
+                id: string;
+                image: string;
+                productType: string;
+            };
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            configurableOptions: {
+                Color?: undefined;
+                Size?: undefined;
+            };
+            bundleOptions: null;
+            itemPrices: {
+                priceIncludingTax: {
+                    value: number;
+                    currency: string;
+                };
+                originalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                originalPriceIncludingTax: {
+                    value: number;
+                    currency: string;
+                };
+                price: {
+                    value: number;
+                    currency: string;
+                };
+            };
+            downloadableLinks: null;
+        } | {
+            uid: string;
+            quantity: number;
+            status: string;
+            requestQuantity: number;
+            type: string;
+            eligibleForReturn: boolean;
+            productSku: string;
+            productName: string;
+            productUrlKey: string;
+            quantityCanceled: number;
+            quantityInvoiced: number;
+            quantityOrdered: number;
+            quantityRefunded: number;
+            quantityReturned: number;
+            quantityShipped: number;
+            id: string;
+            discounted: boolean;
+            total: {
+                value: number;
+                currency: string;
+            };
+            totalInclTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+            priceInclTax: {
+                value: number;
+                currency: string;
+            };
+            totalQuantity: number;
+            regularPrice: {
+                value: number;
+                currency: string;
+            };
+            product: {
+                __typename: string;
+                canonicalUrl: string;
+                urlKey: string;
+                uid: string;
+                name: string;
+                sku: string;
+                onlyXLeftInStock: null;
+                stockStatus: string;
+                thumbnail: {
+                    label: string;
+                    url: string;
+                };
+                priceRange: {
+                    maximumPrice: {
+                        regularPrice: {
+                            currency: string;
+                            value: number;
+                        };
+                    };
+                };
+                id: string;
+                image: string;
+                productType: string;
+            };
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            configurableOptions: {
+                Color: string;
+                Size: string;
+            };
+            bundleOptions: null;
+            itemPrices: {
+                priceIncludingTax: {
+                    value: number;
+                    currency: string;
+                };
+                originalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                originalPriceIncludingTax: {
+                    value: number;
+                    currency: string;
+                };
+                price: {
+                    value: number;
+                    currency: string;
+                };
+            };
+            downloadableLinks: null;
+            taxCalculations?: undefined;
+        } | {
+            uid: string;
+            quantity: number;
+            status: string;
+            requestQuantity: number;
+            type: string;
+            eligibleForReturn: boolean;
+            productSku: string;
+            productName: string;
+            productUrlKey: string;
+            quantityCanceled: number;
+            quantityInvoiced: number;
+            quantityOrdered: number;
+            quantityRefunded: number;
+            quantityReturned: number;
+            quantityShipped: number;
+            id: string;
+            discounted: boolean;
+            total: {
+                value: number;
+                currency: string;
+            };
+            totalInclTax: {
+                value: number;
+                currency: string;
+            };
+            price: {
+                value: number;
+                currency: string;
+            };
+            priceInclTax: {
+                value: number;
+                currency: string;
+            };
+            totalQuantity: number;
+            regularPrice: {
+                value: number;
+                currency: string;
+            };
+            product: {
+                __typename: string;
+                canonicalUrl: string;
+                urlKey: string;
+                uid: string;
+                name: string;
+                sku: string;
+                onlyXLeftInStock: null;
+                stockStatus: string;
+                thumbnail: {
+                    label: string;
+                    url: string;
+                };
+                priceRange: {
+                    maximumPrice: {
+                        regularPrice: {
+                            currency: string;
+                            value: number;
+                        };
+                    };
+                };
+                id: string;
+                image: string;
+                productType: string;
+            };
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            configurableOptions: {
+                Color?: undefined;
+                Size?: undefined;
+            };
+            bundleOptions: null;
+            itemPrices: {
+                priceIncludingTax: {
+                    value: number;
+                    currency: string;
+                };
+                originalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                originalPriceIncludingTax: {
+                    value: number;
+                    currency: string;
+                };
+                price: {
+                    value: number;
+                    currency: string;
+                };
+            };
+            downloadableLinks: null;
+            taxCalculations?: undefined;
+        })[];
+        tracking: never[];
+    })[];
     itemsEligibleForReturn: ({
+        taxCalculations: {
+            includeAndExcludeTax: {
+                originalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseOriginalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseDiscountedPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseExcludingTax: {
+                    value: number;
+                    currency: string;
+                };
+            };
+            excludeTax: {
+                originalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseOriginalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseDiscountedPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseExcludingTax: {
+                    value: number;
+                    currency: string;
+                };
+            };
+            includeTax: {
+                singleItemPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseOriginalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseDiscountedPrice: {
+                    value: number;
+                    currency: string;
+                };
+            };
+        };
         type: string;
         eligibleForReturn: boolean;
         productSku: string;
@@ -2089,6 +2752,58 @@ export declare const createReturnOrderMock: {
         };
         downloadableLinks: null;
     } | {
+        taxCalculations: {
+            includeAndExcludeTax: {
+                originalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseOriginalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseDiscountedPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseExcludingTax: {
+                    value: number;
+                    currency: string;
+                };
+            };
+            excludeTax: {
+                originalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseOriginalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseDiscountedPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseExcludingTax: {
+                    value: number;
+                    currency: string;
+                };
+            };
+            includeTax: {
+                singleItemPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseOriginalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseDiscountedPrice: {
+                    value: number;
+                    currency: string;
+                };
+            };
+        };
         type: string;
         eligibleForReturn: boolean;
         productSku: string;
@@ -2177,6 +2892,58 @@ export declare const createReturnOrderMock: {
         };
         downloadableLinks: null;
     } | {
+        taxCalculations: {
+            includeAndExcludeTax: {
+                originalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseOriginalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseDiscountedPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseExcludingTax: {
+                    value: number;
+                    currency: string;
+                };
+            };
+            excludeTax: {
+                originalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseOriginalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseDiscountedPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseExcludingTax: {
+                    value: number;
+                    currency: string;
+                };
+            };
+            includeTax: {
+                singleItemPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseOriginalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseDiscountedPrice: {
+                    value: number;
+                    currency: string;
+                };
+            };
+        };
         type: string;
         eligibleForReturn: boolean;
         productSku: string;
@@ -2281,6 +3048,58 @@ export declare const createReturnOrderMock: {
             productSku: string;
             productName: string;
             orderItem: {
+                taxCalculations: {
+                    includeAndExcludeTax: {
+                        originalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseOriginalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseDiscountedPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseExcludingTax: {
+                            value: number;
+                            currency: string;
+                        };
+                    };
+                    excludeTax: {
+                        originalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseOriginalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseDiscountedPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseExcludingTax: {
+                            value: number;
+                            currency: string;
+                        };
+                    };
+                    includeTax: {
+                        singleItemPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseOriginalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseDiscountedPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                    };
+                };
                 __typename: string;
                 status: string;
                 productSku: string;
@@ -3719,11 +4538,641 @@ export declare const storeConfigMock: {
     orderCancellationReasons: {
         description: string;
     }[];
-    shoppingCartDisplayPrice: number;
+    shoppingOrderDisplayPrice: number;
     shoppingOrdersDisplaySubtotal: number;
     shoppingOrdersDisplayShipping: number;
     shoppingOrdersDisplayGrandTotal: boolean;
     shoppingOrdersDisplayFullSummary: boolean;
     shoppingOrdersDisplayZeroTax: boolean;
+};
+export declare const placeOrderMockData: {
+    availableActions: string[];
+    billingAddress: {
+        city: string;
+        company: string;
+        countryCode: string;
+        fax: string;
+        firstName: string;
+        lastName: string;
+        middleName: string;
+        postCode: string;
+        prefix: string;
+        region: string;
+        regionId: string;
+        street: string[];
+        suffix: string;
+        telephone: string;
+        vatId: string;
+        country: string;
+        customAttributes: never[];
+    };
+    carrier: string;
+    coupons: never[];
+    discounts: {
+        amount: {
+            currency: string;
+            value: number;
+        };
+        label: string;
+    }[];
+    email: string;
+    grandTotal: {
+        currency: string;
+        value: number;
+    };
+    id: string;
+    isVirtual: boolean;
+    items: {
+        taxCalculations: {
+            includeAndExcludeTax: {
+                originalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseOriginalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseDiscountedPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseExcludingTax: {
+                    value: number;
+                    currency: string;
+                };
+            };
+            excludeTax: {
+                originalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseOriginalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseDiscountedPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseExcludingTax: {
+                    value: number;
+                    currency: string;
+                };
+            };
+            includeTax: {
+                singleItemPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseOriginalPrice: {
+                    value: number;
+                    currency: string;
+                };
+                baseDiscountedPrice: {
+                    value: number;
+                    currency: string;
+                };
+            };
+        };
+        bundleOptions: null;
+        configurableOptions: undefined;
+        discounted: boolean;
+        downloadableLinks: null;
+        eligibleForReturn: boolean;
+        giftCard: {
+            message: string;
+            recipientEmail: string;
+            recipientName: string;
+            senderEmail: string;
+            senderName: string;
+        };
+        id: undefined;
+        price: {
+            currency: undefined;
+            value: number;
+        };
+        priceInclTax: {
+            currency: undefined;
+            value: number;
+        };
+        prices: {
+            discounts: never[];
+            originalPrice: {
+                currency: string;
+                value: number;
+            };
+            originalPriceIncludingTax: {
+                currency: string;
+                value: number;
+            };
+            price: {
+                currency: string;
+                value: number;
+            };
+            priceIncludingTax: {
+                currency: string;
+                value: number;
+            };
+        };
+        itemPrices: {
+            discounts: never[];
+            originalPrice: {
+                currency: string;
+                value: number;
+            };
+            originalPriceIncludingTax: {
+                currency: string;
+                value: number;
+            };
+            price: {
+                currency: string;
+                value: number;
+            };
+            priceIncludingTax: {
+                currency: string;
+                value: number;
+            };
+        };
+        product: {
+            __typename: string;
+            uid: string;
+            canonicalUrl: string;
+            id: string;
+            image: string;
+            name: string;
+            onlyXLeftInStock: number;
+            priceRange: {
+                maximumPrice: {
+                    regularPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+            };
+            productType: string;
+            sku: string;
+            stockStatus: string;
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            urlKey: string;
+        };
+        productName: string;
+        productSalePrice: undefined;
+        productSku: string;
+        productUrlKey: string;
+        quantityCanceled: number;
+        quantityInvoiced: number;
+        quantityOrdered: number;
+        quantityRefunded: number;
+        quantityReturnRequested: number;
+        quantityReturned: number;
+        quantityShipped: number;
+        regularPrice: {
+            currency: undefined;
+            value: undefined;
+        };
+        selectedOptions: never[];
+        status: string;
+        thumbnail: {
+            label: string;
+            url: string;
+        };
+        total: {
+            currency: string;
+            value: number;
+        };
+        totalInclTax: {
+            currency: undefined;
+            value: number;
+        };
+        totalQuantity: number;
+        type: string;
+    }[];
+    itemsEligibleForReturn: undefined;
+    number: string;
+    orderDate: string;
+    orderStatusChangeDate: string;
+    payments: {
+        code: string;
+        name: string;
+    }[];
+    returns: never[];
+    shipments: ({
+        comments: never[];
+        id: string;
+        items: {
+            id: string;
+            orderItem: {
+                taxCalculations: {
+                    includeAndExcludeTax: {
+                        originalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseOriginalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseDiscountedPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseExcludingTax: {
+                            value: number;
+                            currency: string;
+                        };
+                    };
+                    excludeTax: {
+                        originalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseOriginalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseDiscountedPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseExcludingTax: {
+                            value: number;
+                            currency: string;
+                        };
+                    };
+                    includeTax: {
+                        singleItemPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseOriginalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseDiscountedPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                    };
+                };
+                bundleOptions: null;
+                configurableOptions: {};
+                discounted: boolean;
+                downloadableLinks: null;
+                eligibleForReturn: boolean;
+                giftCard: undefined;
+                id: string;
+                price: {
+                    currency: string;
+                    value: number;
+                };
+                priceInclTax: {
+                    currency: string;
+                    value: number;
+                };
+                prices: {
+                    discounts: never[];
+                    originalPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                    originalPriceIncludingTax: {
+                        currency: string;
+                        value: number;
+                    };
+                    price: {
+                        currency: string;
+                        value: number;
+                    };
+                    priceIncludingTax: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+                itemPrices: {
+                    discounts: never[];
+                    originalPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                    originalPriceIncludingTax: {
+                        currency: string;
+                        value: number;
+                    };
+                    price: {
+                        currency: string;
+                        value: number;
+                    };
+                    priceIncludingTax: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+                product: {
+                    __typename: string;
+                    canonicalUrl: string;
+                    id: string;
+                    image: string;
+                    name: string;
+                    onlyXLeftInStock: number;
+                    priceRange: {
+                        maximumPrice: {
+                            regularPrice: {
+                                currency: string;
+                                value: number;
+                            };
+                        };
+                    };
+                    productType: string;
+                    sku: string;
+                    stockStatus: string;
+                    thumbnail: {
+                        label: string;
+                        url: string;
+                    };
+                    uid: string;
+                    urlKey: string;
+                };
+                productName: string;
+                productSalePrice: {
+                    currency: string;
+                    value: number;
+                };
+                productSku: string;
+                productUrlKey: string;
+                quantityCanceled: number;
+                quantityInvoiced: number;
+                quantityOrdered: number;
+                quantityRefunded: number;
+                quantityReturnRequested: number;
+                quantityReturned: number;
+                quantityShipped: number;
+                regularPrice: {
+                    currency: string;
+                    value: number;
+                };
+                selectedOptions: never[];
+                status: string;
+                thumbnail: {
+                    label: string;
+                    url: string;
+                };
+                total: {
+                    currency: string;
+                    value: number;
+                };
+                totalInclTax: {
+                    currency: string;
+                    value: number;
+                };
+                totalQuantity: number;
+                type: string;
+            };
+            productName: string;
+            productSku: string;
+            quantityShipped: undefined;
+        }[];
+        tracking: {
+            number: string;
+            title: string;
+        }[];
+    } | {
+        comments: never[];
+        id: string;
+        items: {
+            id: string;
+            orderItem: {
+                taxCalculations: {
+                    includeAndExcludeTax: {
+                        originalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseOriginalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseDiscountedPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseExcludingTax: {
+                            value: number;
+                            currency: string;
+                        };
+                    };
+                    excludeTax: {
+                        originalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseOriginalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseDiscountedPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseExcludingTax: {
+                            value: number;
+                            currency: string;
+                        };
+                    };
+                    includeTax: {
+                        singleItemPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseOriginalPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                        baseDiscountedPrice: {
+                            value: number;
+                            currency: string;
+                        };
+                    };
+                };
+                bundleOptions: null;
+                configurableOptions: {
+                    Color: string;
+                    Size: string;
+                };
+                discounted: boolean;
+                downloadableLinks: null;
+                eligibleForReturn: boolean;
+                giftCard: undefined;
+                id: string;
+                price: {
+                    currency: string;
+                    value: number;
+                };
+                priceInclTax: {
+                    currency: string;
+                    value: number;
+                };
+                prices: {
+                    discounts: never[];
+                    originalPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                    originalPriceIncludingTax: {
+                        currency: string;
+                        value: number;
+                    };
+                    price: {
+                        currency: string;
+                        value: number;
+                    };
+                    priceIncludingTax: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+                itemPrices: {
+                    discounts: never[];
+                    originalPrice: {
+                        currency: string;
+                        value: number;
+                    };
+                    originalPriceIncludingTax: {
+                        currency: string;
+                        value: number;
+                    };
+                    price: {
+                        currency: string;
+                        value: number;
+                    };
+                    priceIncludingTax: {
+                        currency: string;
+                        value: number;
+                    };
+                };
+                product: {
+                    __typename: string;
+                    canonicalUrl: string;
+                    id: string;
+                    image: string;
+                    name: string;
+                    onlyXLeftInStock: number;
+                    priceRange: {
+                        maximumPrice: {
+                            regularPrice: {
+                                currency: string;
+                                value: number;
+                            };
+                        };
+                    };
+                    productType: string;
+                    sku: string;
+                    stockStatus: string;
+                    thumbnail: {
+                        label: string;
+                        url: string;
+                    };
+                    uid: string;
+                    urlKey: string;
+                };
+                productName: string;
+                productSalePrice: {
+                    currency: string;
+                    value: number;
+                };
+                productSku: string;
+                productUrlKey: string;
+                quantityCanceled: number;
+                quantityInvoiced: number;
+                quantityOrdered: number;
+                quantityRefunded: number;
+                quantityReturnRequested: number;
+                quantityReturned: number;
+                quantityShipped: number;
+                regularPrice: {
+                    currency: string;
+                    value: number;
+                };
+                selectedOptions: {
+                    label: string;
+                    value: string;
+                }[];
+                status: string;
+                thumbnail: {
+                    label: string;
+                    url: string;
+                };
+                total: {
+                    currency: string;
+                    value: number;
+                };
+                totalInclTax: {
+                    currency: string;
+                    value: number;
+                };
+                totalQuantity: number;
+                type: string;
+            };
+            productName: string;
+            productSku: string;
+            quantityShipped: undefined;
+        }[];
+        tracking: {
+            number: string;
+            title: string;
+        }[];
+    })[];
+    shipping: {
+        amount: number;
+        code: string;
+        currency: string;
+    };
+    shippingAddress: {
+        city: string;
+        company: string;
+        countryCode: string;
+        fax: string;
+        firstName: string;
+        lastName: string;
+        middleName: string;
+        postCode: string;
+        prefix: string;
+        region: string;
+        regionId: string;
+        street: string[];
+        suffix: string;
+        telephone: string;
+        vatId: string;
+        country: string;
+        customAttributes: never[];
+    };
+    shippingMethod: null;
+    status: string;
+    subtotalExclTax: {
+        currency: string;
+        value: number;
+    };
+    subtotalInclTax: {
+        currency: string;
+        value: number;
+    };
+    taxes: never[];
+    token: string;
+    totalGiftcard: {
+        currency: string;
+        value: number;
+    };
+    totalQuantity: number;
+    totalShipping: {
+        currency: string;
+        value: number;
+    };
+    totalTax: {
+        currency: string;
+        value: number;
+    };
 };
 //# sourceMappingURL=mock.config.d.ts.map

@@ -14,25 +14,25 @@ export declare const useCustomerInformation: ({ handleSetInLineAlert, }: UseCust
     loading: boolean;
     normalizeFieldsConfig: {
         defaultValue: any;
-        code?: string | undefined;
-        name?: string | undefined;
-        id?: string | undefined;
-        required?: boolean | undefined;
-        label?: string | undefined;
-        options?: {
-            is_default: boolean;
-            label: string;
+        code: string;
+        name: string;
+        id: string;
+        required: boolean;
+        label: string;
+        options: {
+            isDefault: boolean;
+            text: string;
             value: string;
-        }[] | undefined;
-        entityType?: string | undefined;
-        className?: string | undefined;
-        fieldType?: import('../../data/models').FieldEnumList | undefined;
-        multilineCount?: number | undefined;
-        isUnique?: boolean | undefined;
+        }[];
+        entityType: string;
+        className: string;
+        fieldType: import('../../data/models').FieldEnumList;
+        multilineCount: number;
+        isUnique: boolean;
         orderNumber: number;
-        isHidden?: boolean | undefined;
+        isHidden: boolean;
         customUpperCode: string;
-        validateRules: Record<string, string>[];
+        validateRules: Record<string, string | number | boolean>[];
     }[];
     submitLoading: boolean;
     showEditForm: boolean;

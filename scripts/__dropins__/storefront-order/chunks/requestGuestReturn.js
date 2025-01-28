@@ -1,6 +1,6 @@
-/*! Copyright 2024 Adobe
+/*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{h as i,a as _}from"./network-error.js";import{f as o,h as s}from"./fetch-graphql.js";import{t as d}from"./transform-attributes-form.js";import{REQUEST_RETURN_ORDER_FRAGMENT as m}from"../fragments.js";import{merge as l}from"@dropins/tools/lib.js";import{d as f}from"./initialize.js";const h=r=>{var a,n,E,c,R,T;if(!((n=(a=r==null?void 0:r.data)==null?void 0:a.requestReturn)!=null&&n.return))return{};const{created_at:e,...t}=r.data.requestReturn.return,u={...t,createdAt:e};return l(u,(T=(R=(c=(E=f.getConfig())==null?void 0:E.models)==null?void 0:c.RequestReturnModel)==null?void 0:R.transformer)==null?void 0:T.call(R,r.data.requestReturn.return))},U=`
+import{h as i}from"./network-error.js";import{f as o,h as s}from"./fetch-graphql.js";import{t as d,a as _}from"./transform-attributes-form.js";import{REQUEST_RETURN_ORDER_FRAGMENT as m}from"../fragments.js";import{merge as l}from"@dropins/tools/lib.js";import{d as f}from"./initialize.js";const h=r=>{var a,n,E,c,R,T;if(!((n=(a=r==null?void 0:r.data)==null?void 0:a.requestReturn)!=null&&n.return))return{};const{created_at:e,...t}=r.data.requestReturn.return,u={...t,createdAt:e};return l(u,(T=(R=(c=(E=f.getConfig())==null?void 0:E.models)==null?void 0:c.RequestReturnModel)==null?void 0:R.transformer)==null?void 0:T.call(R,r.data.requestReturn.return))},U=`
   query GET_ATTRIBUTES_LIST($entityType: AttributeEntityTypeEnum!) {
     attributesList(entityType: $entityType) {
       items {

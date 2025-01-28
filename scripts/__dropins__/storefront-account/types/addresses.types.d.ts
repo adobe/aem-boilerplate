@@ -1,4 +1,3 @@
-import { HTMLAttributes } from 'preact/compat';
 import { CustomerAddressesModel } from '../data/models';
 import { FieldsProps } from './form.types';
 import { SlotProps } from '@dropins/tools/types/elsie/src/src/lib';
@@ -46,7 +45,9 @@ export interface AddressesProps {
     onSubmit?: () => Promise<void>;
     onAddressData?: (values: {} | CustomerAddressesModel | undefined) => void;
 }
-export interface AddressesWrapperProps extends AddressesProps {
+export interface AddressesWrapperProps extends Omit<AddressesProps, 'formName'> {
+    inputName: string;
+    minifiedViewKey: 'minifiedView' | 'fullSizeView';
 }
 export interface useAddressesProps extends Omit<AddressesProps, 'className' | 'inputsDefaultValueSet' | 'addressesFormTitle' | 'shippingCheckBoxValue' | 'billingCheckBoxValue' | 'showFormLoader' | 'title' | 'slots' | 'formName' | 'hideActionFormButtons'> {
 }
@@ -71,7 +72,8 @@ export interface AddressCardProps {
     handleRenderModal?: () => void | undefined;
     handleRenderForm?: () => void | undefined;
 }
-export interface AddressActionsProps extends HTMLAttributes<HTMLButtonElement> {
+export interface AddressActionsProps {
+    className?: string;
     selectable?: boolean;
     minifiedView?: boolean;
     addNewAddress?: boolean;

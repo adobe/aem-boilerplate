@@ -1,3 +1,19 @@
+/********************************************************************
+ * ADOBE CONFIDENTIAL
+ * __________________
+ *
+ *  Copyright 2024 Adobe
+ *  All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Adobe and its suppliers, if any. The intellectual
+ * and technical concepts contained herein are proprietary to Adobe
+ * and its suppliers and are protected by all applicable intellectual
+ * property laws, including trade secret and copyright laws.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Adobe.
+ *******************************************************************/
 export declare const DEFAULT__SIGN_IN_EMAIL_FIELD: {
     customUpperCode: string;
     code: string;
@@ -15,6 +31,7 @@ export declare const DEFAULT__SIGN_IN_EMAIL_FIELD: {
         name: string;
         value: string;
     }[];
+    autocomplete: string;
 }[];
 export declare const DEFAULT__RESET_PASSWORD_EMAIL_FIELD: Record<string, string | boolean | unknown>[];
 export declare const DEFAULT_SIGN_UP_FIELDS: ({
@@ -34,6 +51,7 @@ export declare const DEFAULT_SIGN_UP_FIELDS: ({
         name: string;
         value: string;
     }[];
+    autocomplete: string;
 } | {
     customUpperCode: string;
     code: string;
@@ -48,6 +66,7 @@ export declare const DEFAULT_SIGN_UP_FIELDS: ({
     sort_order: number;
     options: never[];
     validateRules?: undefined;
+    autocomplete?: undefined;
 })[];
 export declare const DEFAULT_INPUTS_PROPS: Record<string, string | ''>;
 //# sourceMappingURL=defaultCreateUserConfigs.d.ts.map

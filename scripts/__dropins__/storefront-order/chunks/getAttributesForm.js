@@ -1,4 +1,4 @@
-/*! Copyright 2024 Adobe
+/*! Copyright 2025 Adobe
 All Rights Reserved. */
 import{h as i}from"./network-error.js";import{f as u,h as s}from"./fetch-graphql.js";import{t as m}from"./transform-attributes-form.js";const n=`
   query GET_ATTRIBUTES_FORM($formCode: String!) {

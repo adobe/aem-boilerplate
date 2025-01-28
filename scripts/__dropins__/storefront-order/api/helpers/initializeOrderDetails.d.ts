@@ -1,4 +1,4 @@
-import { OrderDataModel } from '../../data/models';
+import { ConfigProps } from '../initialize';
 
-export declare const initializeOrderDetails: (config: Record<string, string | OrderDataModel | null> | undefined) => Promise<void>;
+export declare const initializeOrderDetails: (config: ConfigProps) => Promise<void>;
 //# sourceMappingURL=initializeOrderDetails.d.ts.map

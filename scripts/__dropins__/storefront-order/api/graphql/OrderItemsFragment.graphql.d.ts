@@ -1,3 +1,18 @@
+/********************************************************************
+ * ADOBE CONFIDENTIAL
+ *
+ *  Copyright 2024 Adobe
+ *  All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Adobe and its suppliers, if any. The intellectual
+ * and technical concepts contained herein are proprietary to Adobe
+ * and its suppliers and are protected by all applicable intellectual
+ * property laws, including trade secret and copyright laws.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Adobe.
+ *******************************************************************/
 export declare const PRODUCT_DETAILS_FRAGMENT = "\n  fragment PRODUCT_DETAILS_FRAGMENT on ProductInterface {\n    __typename\n    canonical_url\n    url_key\n    uid\n    name\n    sku\n    only_x_left_in_stock\n    stock_status\n    thumbnail {\n      label\n      url\n    }\n    price_range {\n      maximum_price {\n        regular_price {\n          currency\n          value\n        }\n      }\n    }\n  }\n";
 export declare const PRICE_DETAILS_FRAGMENT = "\n  fragment PRICE_DETAILS_FRAGMENT on OrderItemInterface {\n    prices {\n      price_including_tax {\n        value\n        currency\n      }\n      original_price {\n        value\n        currency\n      }\n      original_price_including_tax {\n        value\n        currency\n      }\n      price {\n        value\n        currency\n      }\n    }\n  }\n";
 export declare const GIFT_CARD_DETAILS_FRAGMENT = "\n  fragment GIFT_CARD_DETAILS_FRAGMENT on GiftCardOrderItem {\n    ...PRICE_DETAILS_FRAGMENT\n    gift_message {\n      message\n    }\n    gift_card {\n      recipient_name\n      recipient_email\n      sender_name\n      sender_email\n      message\n    }\n  }\n";

@@ -1,12 +1,13 @@
-/*! Copyright 2024 Adobe
+/*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{Initializer as f}from"@dropins/tools/lib.js";import{f as h,m as _,l as m}from"./removeCustomerAddress.js";const c=new f({init:async t=>{const r={authHeaderConfig:{header:"Authorization",tokenPrefix:"Bearer"}};c.config.setConfig({...r,...t})},listeners:()=>[]}),C=c.config,g=t=>{var r,a,i,e,o,n;return{baseMediaUrl:(a=(r=t==null?void 0:t.data)==null?void 0:r.storeConfig)==null?void 0:a.base_media_url,minLength:+((e=(i=t==null?void 0:t.data)==null?void 0:i.storeConfig)==null?void 0:e.minimum_password_length)||3,requiredCharacterClasses:+((n=(o=t==null?void 0:t.data)==null?void 0:o.storeConfig)==null?void 0:n.required_character_classes_number)||0}},l=`
+import{Initializer as d}from"@dropins/tools/lib.js";import{f as h,l as g,k as l}from"./removeCustomerAddress.js";const _=new d({init:async t=>{const a={authHeaderConfig:{header:"Authorization",tokenPrefix:"Bearer"}};_.config.setConfig({...a,...t})},listeners:()=>[]}),G=_.config,m=t=>{var a,r,i,o,e,c,n,f;return{baseMediaUrl:(r=(a=t==null?void 0:t.data)==null?void 0:a.storeConfig)==null?void 0:r.base_media_url,minLength:+((o=(i=t==null?void 0:t.data)==null?void 0:i.storeConfig)==null?void 0:o.minimum_password_length)||3,requiredCharacterClasses:+((c=(e=t==null?void 0:t.data)==null?void 0:e.storeConfig)==null?void 0:c.required_character_classes_number)||0,storeCode:((f=(n=t==null?void 0:t.data)==null?void 0:n.storeConfig)==null?void 0:f.store_code)??""}},u=`
   query GET_STORE_CONFIG {
     storeConfig {
       base_media_url
       autocomplete_on_storefront
       minimum_password_length
       required_character_classes_number
+      store_code
     }
   }
-`,s=async()=>await h(l,{method:"GET",cache:"force-cache"}).then(t=>{var r;return(r=t.errors)!=null&&r.length?_(t.errors):g(t)}).catch(m);export{C as c,s as g,c as i};
+`,b=async()=>await h(u,{method:"GET",cache:"force-cache"}).then(t=>{var a;return(a=t.errors)!=null&&a.length?g(t.errors):m(t)}).catch(l);export{G as c,b as g,_ as i};

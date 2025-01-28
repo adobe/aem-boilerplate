@@ -1,4 +1,4 @@
-/*! Copyright 2024 Adobe
+/*! Copyright 2025 Adobe
 All Rights Reserved. */
 import{h as f}from"./network-error.js";import{f as u,h as _}from"./fetch-graphql.js";import{REQUEST_RETURN_ORDER_FRAGMENT as I,GUEST_ORDER_FRAGMENT as O}from"../fragments.js";import{a}from"./initialize.js";import{events as T}from"@dropins/tools/event-bus.js";const N=`
   mutation REORDER_ITEMS_MUTATION($orderNumber: String!) {

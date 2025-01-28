@@ -19,6 +19,12 @@ export type OrderAddressModel = {
     }[];
 } | null;
 export type OrderItemProductModel = {
+    onlyXLeftInStock?: number;
+    priceRange?: {
+        maximumPrice?: {
+            regularPrice?: MoneyProps;
+        };
+    };
     uid: string;
     __typename: string;
     stockStatus?: string;
@@ -36,6 +42,27 @@ export type OrderItemProductModel = {
     };
 };
 export type OrderItemModel = {
+    taxCalculations: {
+        includeAndExcludeTax: {
+            originalPrice: MoneyProps;
+            baseOriginalPrice: MoneyProps;
+            baseDiscountedPrice: MoneyProps;
+            baseExcludingTax: MoneyProps;
+        };
+        excludeTax: {
+            originalPrice: MoneyProps;
+            baseOriginalPrice: MoneyProps;
+            baseDiscountedPrice: MoneyProps;
+            baseExcludingTax: MoneyProps;
+        };
+        includeTax: {
+            singleItemPrice: MoneyProps;
+            baseOriginalPrice: MoneyProps;
+            baseDiscountedPrice: MoneyProps;
+        };
+    };
+    productSalePrice: MoneyProps;
+    status?: string;
     currentReturnOrderQuantity?: number;
     eligibleForReturn: boolean;
     productSku?: string;
@@ -59,6 +86,20 @@ export type OrderItemModel = {
         count: number;
         result: string;
     } | null;
+    prices: {
+        priceIncludingTax: MoneyProps;
+        originalPrice: MoneyProps;
+        originalPriceIncludingTax: MoneyProps;
+        price: MoneyProps;
+        discounts: [
+            {
+                label: string;
+                amount: {
+                    value: number;
+                };
+            }
+        ];
+    };
     itemPrices: {
         priceIncludingTax: MoneyProps;
         originalPrice: MoneyProps;
@@ -91,7 +132,7 @@ export type OrderItemModel = {
     quantityRefunded: number;
     quantityReturned: number;
     quantityShipped: number;
-    requestQuantity: number;
+    requestQuantity?: number;
     totalQuantity: number;
     returnableQuantity?: number;
     quantityReturnRequested: number;
@@ -120,7 +161,7 @@ export type ShipmentsModel = {
 };
 export type OrderDataModel = {
     placeholderImage?: string;
-    returnNumber: string;
+    returnNumber?: string;
     id: string;
     orderStatusChangeDate?: string;
     number: string;

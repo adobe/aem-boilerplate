@@ -3,8 +3,8 @@ declare const _default: {
     "minifiedView": {
       "CustomerInformation": {
         "containerTitle": "Account settings",
-        "genderMale":"Male",
-        "genderFemale":"Female",
+        "genderMale": "Male",
+        "genderFemale": "Female",
         "changePassword": {
           "passwordValidationMessage": {
             "chartTwoSymbols": "Use characters and numbers or symbols",
@@ -54,6 +54,7 @@ declare const _default: {
         "differentAddressFormTitle": "Deliver to new address",
         "viewAllAddressesButton": "View address list",
         "differentAddressButton": "Use a different address",
+        "ariaLabelAddressPicker": "form",
         "addressCard": {
           "actionRemove": "Remove",
           "actionEdit": "Edit",
@@ -103,6 +104,7 @@ declare const _default: {
         "newAddressFormTitle": "Add address",
         "addNewAddressButton": "Create new",
         "differentAddressButton": "Use a different address",
+        "ariaLabelAddressPicker": "form",
         "addressCard": {
           "actionRemove": "Remove",
           "actionEdit": "Edit",
@@ -165,6 +167,7 @@ declare const _default: {
       "lengthTextError": "Text length must be between {min} and {max} characters."
     }
   }
-};
+}
+;
 
 export default _default;

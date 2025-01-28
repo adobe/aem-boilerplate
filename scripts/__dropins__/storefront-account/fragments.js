@@ -1,4 +1,4 @@
-/*! Copyright 2024 Adobe
+/*! Copyright 2025 Adobe
 All Rights Reserved. */
 const e=`
   fragment BASIC_CUSTOMER_INFO_FRAGMENT on Customer {
@@ -32,12 +32,19 @@ const e=`
   }
 `,a=`
   fragment ORDER_SUMMARY_FRAGMENT on OrderTotal {
-    __typename
     grand_total {
       value
       currency
     }
-    subtotal {
+    total_giftcard {
+      currency
+      value
+    }
+    subtotal_excl_tax {
+      currency
+      value
+    }
+    subtotal_incl_tax {
       currency
       value
     }

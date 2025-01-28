@@ -1,4 +1,4 @@
-/*! Copyright 2024 Adobe
+/*! Copyright 2025 Adobe
 All Rights Reserved. */
 import{h as R}from"./network-error.js";import{RETURNS_FRAGMENT as E,PRODUCT_DETAILS_FRAGMENT as T,PRICE_DETAILS_FRAGMENT as _,GIFT_CARD_DETAILS_FRAGMENT as o,ORDER_ITEM_DETAILS_FRAGMENT as c}from"../fragments.js";import{t as n}from"./initialize.js";import{f as u}from"./fetch-graphql.js";const m=`
   query GET_CUSTOMER_ORDERS_RETURN($currentPage: Int, $pageSize: Int) {

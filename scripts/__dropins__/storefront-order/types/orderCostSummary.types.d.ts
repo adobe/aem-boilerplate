@@ -5,8 +5,8 @@ type TaxTypes = {
     taxIncluded: boolean;
     taxExcluded: boolean;
 };
-export interface StoreConfigProps extends Omit<StoreConfigModel, 'orderCancellationEnabled' | 'orderCancellationReasons' | 'shoppingCartDisplayPrice' | 'shoppingOrdersDisplayShipping' | 'shoppingOrdersDisplaySubtotal'> {
-    shoppingCartDisplayPrice: TaxTypes;
+export interface StoreConfigProps extends Omit<StoreConfigModel, 'orderCancellationEnabled' | 'orderCancellationReasons' | 'shoppingOrderDisplayPrice' | 'shoppingOrdersDisplayShipping' | 'shoppingOrdersDisplaySubtotal'> {
+    shoppingOrderDisplayPrice: TaxTypes;
     shoppingOrdersDisplayShipping: TaxTypes;
     shoppingOrdersDisplaySubtotal: TaxTypes;
 }

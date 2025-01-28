@@ -37,6 +37,7 @@ it('has shopperId as logged-in when authenticated, and guest when not', () => {
     });
 
   // 4. Logs out / deletes customer and checks that shopperContext is set to guest
+  cy.reload();
   cy.get('.nav-dropdown-button').contains('Hi, John').click();
   cy.get('#nav > div.section.nav-tools > div.dropdown-wrapper.nav-tools-wrapper > div > ul > li:nth-child(2) > button').click();
   cy.get('.auth-sign-in-form__button--submit');

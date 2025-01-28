@@ -1,6 +1,6 @@
-/*! Copyright 2024 Adobe
+/*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{f as s,h as i}from"./fetch-graphql.js";function o(e){return e?{baseMediaUrl:e.base_media_url,orderCancellationEnabled:e.order_cancellation_enabled,orderCancellationReasons:e.order_cancellation_reasons,shoppingCartDisplayPrice:e.orders_invoices_credit_memos_display_price,shoppingOrdersDisplaySubtotal:e.orders_invoices_credit_memos_display_subtotal,shoppingOrdersDisplayShipping:e.orders_invoices_credit_memos_display_shipping_amount,shoppingOrdersDisplayGrandTotal:e.orders_invoices_credit_memos_display_grandtotal,shoppingOrdersDisplayFullSummary:e.orders_invoices_credit_memos_display_full_summary,shoppingOrdersDisplayZeroTax:e.orders_invoices_credit_memos_display_zero_tax}:null}const _=`
+import{f as s,h as i}from"./fetch-graphql.js";function o(e){return e?{baseMediaUrl:e.base_media_url,orderCancellationEnabled:e.order_cancellation_enabled,orderCancellationReasons:e.order_cancellation_reasons,shoppingOrderDisplayPrice:e.orders_invoices_credit_memos_display_price,shoppingOrdersDisplaySubtotal:e.orders_invoices_credit_memos_display_subtotal,shoppingOrdersDisplayShipping:e.orders_invoices_credit_memos_display_shipping_amount,shoppingOrdersDisplayGrandTotal:e.orders_invoices_credit_memos_display_grandtotal,shoppingOrdersDisplayFullSummary:e.orders_invoices_credit_memos_display_full_summary,shoppingOrdersDisplayZeroTax:e.orders_invoices_credit_memos_display_zero_tax}:null}const _=`
   query STORE_CONFIG_QUERY {
     storeConfig {
       order_cancellation_enabled

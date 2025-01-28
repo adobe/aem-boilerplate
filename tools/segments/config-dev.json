@@ -1,0 +1,80 @@
+{
+  "total": 18,
+  "offset": 0,
+  "limit": 18,
+  "data": [
+    {
+      "key": "commerce.headers.cs.Magento-Customer-Group",
+      "value": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c"
+    },
+    {
+      "key": "commerce.headers.cs.Magento-Environment-Id",
+      "value": "0a9ae65d-c1a5-49f6-af64-1ec1ff47ab52"
+    },
+    {
+      "key": "commerce.headers.cs.Magento-Store-Code",
+      "value": "main_website_store"
+    },
+    {
+      "key": "commerce.headers.cs.Magento-Store-View-Code",
+      "value": "default"
+    },
+    {
+      "key": "commerce.headers.cs.Magento-Website-Code",
+      "value": "base"
+    },
+    {
+      "key": "commerce.headers.cs.x-api-key",
+      "value": "9753cd30401a477e816ed850c4f77e18"
+    },
+    {
+      "key": "commerce-base-currency-code",
+      "value": "USD"
+    },
+    {
+      "key": "commerce-core-endpoint",
+      "value": "http://adobecommerce247.local/graphql"
+    },
+    {
+      "key": "commerce-endpoint",
+      "value": "http://adobecommerce247.local/graphql"
+    },
+    {
+      "key": "commerce-environment",
+      "value": "Testing"
+    },
+    {
+      "key": "commerce-store-id",
+      "value": "1"
+    },
+    {
+      "key": "commerce-store-name",
+      "value": "Main Website Store"
+    },
+    {
+      "key": "commerce-store-url",
+      "value": "http://adobecommerce247.local/"
+    },
+    {
+      "key": "commerce-store-view-id",
+      "value": "1"
+    },
+    {
+      "key": "commerce-store-view-name",
+      "value": "Default Store View"
+    },
+    {
+      "key": "commerce-website-id",
+      "value": "1"
+    },
+    {
+      "key": "commerce-website-name",
+      "value": "Main Website"
+    }
+  ],
+  "columns": [
+    "key",
+    "value"
+  ],
+  ":type": "sheet"
+}

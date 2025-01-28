@@ -36,14 +36,14 @@ npm i
 
 ## Updating Drop-in dependencies
 
-You may need to update one of the drop-in component, or `@adobe/magento-storefront-event-collector` or `@adobe/magento-storefront-events-sdk` to a new version. Besides checking the release notes for any breaking changes, ensure you also execute the `postinstall` script so that the dependenices in your `scripts/__dropins__` directory are updated to the latest build. That should be run immediately after you update the component, for example:
+You may need to update one of the drop-in components, or `@adobe/magento-storefront-event-collector` or `@adobe/magento-storefront-events-sdk` to a new version. Besides checking the release notes for any breaking changes, ensure you also execute the `postinstall` script so that the dependenices in your `scripts/__dropins__` directory are updated to the latest build. This should be run immediately after you update the component, for example:
 
 ```
-npm install @dropins/storefront-cart@2.0.0
-npm run postinstall
+npm install @dropins/storefront-cart@2.0. # Updates the storefront-cart dependency in node_modules/
+npm run postinstall # Copies scripts from node_modules into scripts/__dropins__
 ```
 
-This is a custom script which copies files out of `node_modules` and into a local directory which EDS can serve. And you must manually run `postinstall` due to a design choice in `npm` which does not execute `postinstall` after you install a _specific_ package.
+This is a custom script which copies files out of `node_modules` and into a local directory which EDS can serve. You must manually run `postinstall` due to a design choice in `npm` which does not execute `postinstall` after you install a _specific_ package.
 
 ## Linting
 

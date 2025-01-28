@@ -34,6 +34,17 @@ Before using the boilerplate, we recommend you to go through the documentation o
 npm i
 ```
 
+## Updating Drop-in dependencies
+
+You may need to update one of the drop-in component, or `@adobe/magento-storefront-event-collector` or `@adobe/magento-storefront-events-sdk` to a new version. Besides checking the release notes for any breaking changes, ensure you also execute the `postinstall` script so that the dependenices in your `scripts/__dropins__` directory are updated to the latest build. That should be run immediately after you update the component, for example:
+
+```
+npm install @dropins/storefront-cart@2.0.0
+npm run postinstall
+```
+
+This is a custom script which copies files out of `node_modules` and into a local directory which EDS can serve. And you must manually run `postinstall` due to a design choice in `npm` which does not execute `postinstall` after you install a _specific_ package.
+
 ## Linting
 
 ```sh

@@ -1,5 +1,5 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable import/prefer-default-export */
-/* eslint import/no-cycle: [2, { maxDepth: 1 }] */
 
 import { initializers } from '@dropins/tools/initializer.js';
 import { Image, provider as UI } from '@dropins/tools/components.js';
@@ -17,7 +17,7 @@ import {
   loadErrorPage,
 } from '../commerce.js';
 import { getHeaders } from '../configs.js';
-import { fetchPlaceholders } from '../aem.js';
+import { fetchPlaceholders } from '../scripts.js';
 
 export const IMAGES_SIZES = {
   width: 960,

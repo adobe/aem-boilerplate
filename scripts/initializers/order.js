@@ -3,7 +3,7 @@ import { initializers } from '@dropins/tools/initializer.js';
 import { initialize, setFetchGraphQlHeaders } from '@dropins/storefront-order/api.js';
 import { checkIsAuthenticated, getHeaders } from '../configs.js';
 import { initializeDropin } from './index.js';
-import { fetchPlaceholders } from '../aem.js';
+import { fetchPlaceholders } from '../scripts.js';
 
 import {
   CUSTOMER_ORDER_DETAILS_PATH,

@@ -1,3 +1,5 @@
+import { getRootPath } from './scripts.js';
+
 const ALLOWED_CONFIGS = ['prod', 'stage', 'dev'];
 
 /**
@@ -29,21 +31,23 @@ export const calcEnvironment = () => {
   return environment;
 };
 
-function buildConfigURL(environment) {
+function buildConfigURL(environment, root = '/') {
   const env = environment || calcEnvironment();
   let fileName = 'configs.json';
   if (env !== 'prod') {
     fileName = `configs-${env}.json`;
   }
-  const configURL = new URL(`${window.location.origin}/${fileName}`);
+
+  const configURL = new URL(`${window.location.origin}${root}${fileName}`);
   return configURL;
 }
 
 const getConfigForEnvironment = async (environment) => {
   const env = environment || calcEnvironment();
+  const root = getRootPath();
 
   try {
-    const configJSON = window.sessionStorage.getItem(`config:${env}`);
+    const configJSON = window.sessionStorage.getItem(`config:${env}:${root}:${root}`);
     if (!configJSON) {
       throw new Error('No config in session storage');
     }
@@ -55,13 +59,13 @@ const getConfigForEnvironment = async (environment) => {
 
     return parsedConfig;
   } catch (e) {
-    let configJSON = await fetch(buildConfigURL(env));
+    let configJSON = await fetch(buildConfigURL(env, root));
     if (!configJSON.ok) {
       throw new Error(`Failed to fetch config for ${env}`);
     }
     configJSON = await configJSON.json();
     configJSON[':expiry'] = Math.round(Date.now() / 1000) + 7200;
-    window.sessionStorage.setItem(`config:${env}`, JSON.stringify(configJSON));
+    window.sessionStorage.setItem(`config:${env}:${root}`, JSON.stringify(configJSON));
     return configJSON;
   }
 };

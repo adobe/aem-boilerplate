@@ -7,7 +7,6 @@ import Error from '@spectrum-icons/illustrations/Error';
 import Copy from '@spectrum-icons/workflow/Copy';
 import Settings from '@spectrum-icons/workflow/Settings';
 
-
 const Picker = props => {
     const { blocks, getItems, getCategories, configFiles, defaultConfig } = props;
 

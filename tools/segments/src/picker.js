@@ -90,7 +90,9 @@ const Picker = props => {
     setState(state => ({
       ...state,
       selectedConfig: config,
-      loadingState: 'loading',
+      selectedCategory: null,
+      items: state.personalisationCategories,
+      loadingState: 'idle',
     }));
   }
 
@@ -189,7 +191,7 @@ const Picker = props => {
       <Breadcrumbs>
         <Item ocClick={resetSelection}>Personalisation
           {state.selectedCategory &&
-            <span onClick={resetSelection}> &lt;&lt;&lt; {getCategory(state.selectedCategory)['title']}</span>
+            <span onClick={resetSelection}> &gt; {getCategory(state.selectedCategory)['title']}</span>
           }
         </Item>
       </Breadcrumbs>

@@ -12,7 +12,7 @@ import './styles.css';
 const configFiles = {
   'prod': 'https://main--aem-boilerplate-commerce--hlxsites.hlx.live/configs.json?sheet=prod',
   'stage': 'https://main--aem-boilerplate-commerce--hlxsites.hlx.live/configs-stage.json',
-  'dev': 'http://localhost:3000/tools/segments/config-dev.json',
+  'dev': 'https://main--aem-boilerplate-commerce--hlxsites.hlx.live/configs-dev.json',
 }
 /**
  * Default configuration to be loaded.
@@ -30,7 +30,7 @@ async function executeCustomerSegmentsQuery(query, config, variables = {}) {
     'Magento-Website-Code': config['commerce.headers.cs.Magento-Website-Code'],
   };
 
-  const apiCall = new URL(config['commerce-endpoint']);
+  const apiCall = new URL(config['commerce-core-endpoint']);
   apiCall.searchParams.append('query', query.replace(/(?:\r\n|\r|\n|\t|[\s]{4})/g, ' ')
     .replace(/\s\s+/g, ' '));
   apiCall.searchParams.append('variables', variables ? JSON.stringify(variables) : null);

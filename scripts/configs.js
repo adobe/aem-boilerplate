@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+
 import { getRootPath } from './scripts.js';
 
 const ALLOWED_CONFIGS = ['prod', 'stage', 'dev'];

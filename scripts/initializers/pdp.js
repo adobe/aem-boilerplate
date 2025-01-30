@@ -17,7 +17,7 @@ import {
   loadErrorPage,
 } from '../commerce.js';
 import { getHeaders } from '../configs.js';
-import { fetchPlaceholders } from '../scripts.js';
+import { fetchPlaceholders } from '../aem.js';
 
 export const IMAGES_SIZES = {
   width: 960,

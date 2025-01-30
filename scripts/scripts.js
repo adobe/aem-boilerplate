@@ -20,7 +20,6 @@ import {
   loadSections,
   loadCSS,
   sampleRUM,
-  fetchPlaceholders as _fetchPlaceholders,
 } from './aem.js';
 import { trackHistory } from './commerce.js';
 import initializeDropins from './initializers/index.js';
@@ -363,14 +362,6 @@ export async function fetchIndex(indexFile, pageSize = 500) {
 export function getRootPath() {
   window.ROOT_PATH = window.rootPath || getMetadata('root') || '/';
   return window.ROOT_PATH;
-}
-
-/**
- * Fetch Placeholders with multi-store support.
- */
-export async function fetchPlaceholders() {
-  const lang = getRootPath().replace(/\/$/, '') ?? undefined;
-  return _fetchPlaceholders(lang);
 }
 
 /**

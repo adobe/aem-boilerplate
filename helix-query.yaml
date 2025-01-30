@@ -52,18 +52,3 @@ indices:
         select: head > meta[name="enrichment-positions"]
         values: |
           match(attribute(el, 'content'), '([^,]+)')
-  tiers:
-    parget: /tiers.json
-    exclude:
-      - 'drafts/**'
-      - 'enrichment/**'
-      - 'fragments/**'
-    properties:
-      title:
-        select: head > meta[property="og:title"]
-        value: |
-          attribute(el, 'content')
-      path:
-        select: none
-        value: |
-          path

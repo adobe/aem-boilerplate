@@ -48,7 +48,7 @@ const getConfigForEnvironment = async (environment) => {
   const root = getRootPath() || '/';
 
   try {
-    const configJSON = window.sessionStorage.getItem(`config:${env}:${root}:${root}`);
+    const configJSON = window.sessionStorage.getItem(`config:${env}:${root}`);
     if (!configJSON) {
       throw new Error('No config in session storage');
     }

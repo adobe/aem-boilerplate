@@ -361,14 +361,8 @@ export async function fetchIndex(indexFile, pageSize = 500) {
  * Get root path
  */
 export function getRootPath() {
-  return window.localStorage.getItem('root_path') ?? '/';
-}
-
-/**
- * Set root path
- */
-export function setRootPath(root) {
-  window.localStorage.setItem('root_path', root);
+  window.ROOT_PATH = window.rootPath || getMetadata('root') || '/';
+  return window.ROOT_PATH;
 }
 
 /**

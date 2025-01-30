@@ -369,12 +369,8 @@ export function getRootPath() {
  * Fetch Placeholders with multi-store support.
  */
 export async function fetchPlaceholders() {
-  const market = getRootPath().replace(/\/$/, '') ?? undefined;
-  const lang = market ? `/${market.split('/')[1]}` : undefined;
-  const requests = [_fetchPlaceholders(lang)];
-  if (market) requests.push(_fetchPlaceholders(market));
-  const [langPlaceholders, marketPlaceholders = {}] = await Promise.all(requests);
-  return { ...langPlaceholders, ...marketPlaceholders };
+  const lang = getRootPath().replace(/\/$/, '') ?? undefined;
+  return _fetchPlaceholders(lang);
 }
 
 /**

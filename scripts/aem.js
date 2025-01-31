@@ -503,20 +503,35 @@ function decorateSections(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 async function fetchPlaceholders(prefix = 'default') {
+  const overrides = getMetadata('placeholders') || [];
+  const [fallback, override] = overrides.split('\n');
   window.placeholders = window.placeholders || {};
   if (!window.placeholders[prefix]) {
     window.placeholders[prefix] = new Promise((resolve) => {
-      const url = getMetadata('placeholders') || `${prefix === 'default' ? '' : prefix}/placeholders.json`;
-      fetch(url)
-        .then((resp) => {
+      const url = fallback || `${prefix === 'default' ? '' : prefix}/placeholders.json`;
+      Promise.all([fetch(url), override ? fetch(override) : Promise.resolve()])
+        .then(async ([resp, oResp]) => {
           if (resp.ok) {
-            return resp.json();
+            if (oResp?.ok) {
+              return Promise.all([resp.json(), await oResp.json()]);
+            }
+            return Promise.all([resp.json(), {}]);
           }
           return {};
         })
-        .then((json) => {
+
+        .then(([json, oJson]) => {
           const placeholders = {};
+          // build placeholders object
           json.data.forEach(({ Key, Value }) => {
+            // check for overrides
+            if (oJson?.data) {
+              const overrideItem = oJson.data.find((item) => item.Key === Key);
+              if (overrideItem) {
+                // eslint-disable-next-line no-param-reassign
+                Value = overrideItem.Value;
+              }
+            }
             if (Key) {
               const keys = Key.split('.');
               const lastKey = keys.pop();
@@ -527,10 +542,13 @@ async function fetchPlaceholders(prefix = 'default') {
               target[lastKey] = Value;
             }
           });
+          // cache placeholders
           window.placeholders[prefix] = placeholders;
+          // return placeholders
           resolve(window.placeholders[prefix]);
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error('error loading placeholders', error);
           // error loading placeholders
           window.placeholders[prefix] = {};
           resolve(window.placeholders[prefix]);

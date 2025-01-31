@@ -7,6 +7,7 @@
 
 import {
   decorateMain,
+  getRootPath,
 } from '../../scripts/scripts.js';
 
 import {
@@ -20,7 +21,9 @@ import {
  */
 export async function loadFragment(path) {
   if (path && path.startsWith('/')) {
-    const resp = await fetch(`${path}.plain.html`);
+    const root = getRootPath().replace(/\/$/, '');
+    const url = `${root}${path}.plain.html`;
+    const resp = await fetch(url);
     if (resp.ok) {
       const main = document.createElement('main');
       main.innerHTML = await resp.text();

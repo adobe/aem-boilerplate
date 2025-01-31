@@ -5,6 +5,7 @@ import MiniCart from '@dropins/storefront-cart/containers/MiniCart.js';
 import '../../scripts/initializers/cart.js';
 
 import { readBlockConfig } from '../../scripts/aem.js';
+import { localizeLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const {
@@ -18,7 +19,7 @@ export default async function decorate(block) {
   return provider.render(MiniCart, {
     routeEmptyCartCTA: startShoppingURL ? () => startShoppingURL : undefined,
     routeCart: cartURL ? () => cartURL : undefined,
-    routeCheckout: checkoutURL ? () => checkoutURL : undefined,
+    routeCheckout: checkoutURL ? () => localizeLink(checkoutURL) : undefined,
     routeProduct: (product) => `/products/${product.url.urlKey}/${product.topLevelSku}`,
   })(block);
 }

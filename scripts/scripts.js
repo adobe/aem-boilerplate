@@ -150,6 +150,7 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  decorateLinks(main);
 }
 
 function preloadFile(href, as) {
@@ -362,6 +363,37 @@ export async function fetchIndex(indexFile, pageSize = 500) {
 export function getRootPath() {
   window.ROOT_PATH = window.rootPath || getMetadata('root') || '/';
   return window.ROOT_PATH;
+}
+
+/**
+ * Decorates links.
+ * @param {Element} main The main element
+ */
+export function decorateLinks(main) {
+  const root = getRootPath();
+  if (root === '/') return;
+  const links = main.querySelectorAll('a');
+
+  links.forEach((link) => {
+    if (link.href.startsWith('//' || link.href.startsWith(root))) return;
+
+    if (
+      link.href.startsWith('/')
+      || link.href.startsWith(window.location.origin)
+    ) {
+      const url = new URL(link.href, window.location.origin);
+      link.href = `${root}${url.pathname.substring(1)}${url.search}${url.hash}`;
+    }
+  });
+}
+
+/**
+ * Decorates links.
+ * @param {string} [url] url to be localized
+ */
+export function localizeLink(link) {
+  const root = getRootPath().replace(/\/$/, '');
+  return `${root}${link}`;
 }
 
 /**

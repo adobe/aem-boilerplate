@@ -375,7 +375,7 @@ export function decorateLinks(main) {
   const links = main.querySelectorAll('a');
 
   links.forEach((link) => {
-    if (link.href.startsWith('//' || link.href.startsWith(root))) return;
+    if (link.href.startsWith('//') || link.href.startsWith(root)) return;
 
     if (
       link.href.startsWith('/')

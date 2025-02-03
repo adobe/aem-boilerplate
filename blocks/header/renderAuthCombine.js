@@ -217,7 +217,7 @@ const renderAuthCombine = (navSections, toggleMenu) => {
           'afterend',
           `<ul class="popupMenuUrlList">
               <li><a href={CUSTOMER_ACCOUNT_PATH}>My Account</a></li>
-              <li><a href="/products/hollister-backyard-sweatshirt/MH05">Product page</a></li>
+              <li><a href="${localizeLink('/products/hollister-backyard-sweatshirt/MH05')}">Product page</a></li>
               <li><button class="logoutButton">Logout</button></li>
             </ul>`,
         );

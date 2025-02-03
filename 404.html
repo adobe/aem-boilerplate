@@ -18,6 +18,42 @@
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:title" content="Page not found">
+  <script type="module">
+    await fetch('/metadata.json')
+      .then((res) => res.json())
+      .then(({ data = [] }) => {
+        const currentUrl = window.location.pathname;
+        const match = data.find(entry => {
+          const { URL, root, placeholders } = entry;
+          const pattern = URL.replace("**", "(.*)");
+          const regex = new RegExp(`^${pattern}$`);
+          if (regex.test(currentUrl)) {
+            return { root, placeholders };
+          }
+        });
+
+        if (!match) return;
+
+        const { root, placeholders } = match;
+        
+        if (root) {
+          const rootMeta = document.createElement('meta');
+          rootMeta.name = 'root';
+          rootMeta.content = root;
+          document.head.appendChild(rootMeta);
+        }
+
+        if (placeholders) {
+          const placeholdersMeta = document.createElement('meta');
+          placeholdersMeta.name = 'placeholders';
+          placeholdersMeta.content = placeholders;
+          document.head.appendChild(placeholdersMeta);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  </script>
   <script src="/scripts/scripts.js" type="module"></script>
   <script type="module">
     window.addEventListener('load', () => {

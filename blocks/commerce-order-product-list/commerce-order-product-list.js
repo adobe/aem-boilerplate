@@ -5,9 +5,10 @@ import { OrderProductList } from '@dropins/storefront-order/containers/OrderProd
 
 // Initialize
 import '../../scripts/initializers/order.js';
+import { localizeLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   await orderRenderer.render(OrderProductList, {
-    routeProductDetails: (product) => `/products/${product.productUrlKey}/${product.product.sku}`,
+    routeProductDetails: (product) => localizeLink(`/products/${product.productUrlKey}/${product.product.sku}`),
   })(block);
 }

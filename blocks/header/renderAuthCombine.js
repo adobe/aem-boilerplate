@@ -10,6 +10,7 @@ import { events } from '@dropins/tools/event-bus.js';
 import { Button } from '@dropins/tools/components.js';
 import { getCookie } from '../../scripts/configs.js';
 import { CUSTOMER_ACCOUNT_PATH, CUSTOMER_FORGOTPASSWORD_PATH, CUSTOMER_LOGIN_PATH } from '../../scripts/constants.js';
+import { localizeLink } from '../../scripts/scripts.js';
 
 const signInFormConfig = {
   renderSignUpLink: true,
@@ -49,7 +50,7 @@ const signInFormConfig = {
               variant: 'tertiary',
               onClick: async () => {
                 await authApi.revokeCustomerToken();
-                window.location.href = '/';
+                window.location.href = localizeLink('/');
               },
             })(secondaryButton);
 

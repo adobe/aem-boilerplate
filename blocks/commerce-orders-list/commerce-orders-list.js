@@ -14,6 +14,7 @@ import {
 
 // Initialize
 import '../../scripts/initializers/account.js';
+import { localizeLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const { 'minified-view': minifiedViewConfig = 'false' } = readBlockConfig(block);
@@ -32,7 +33,7 @@ export default async function decorate(block) {
       routeOrdersList: () => CUSTOMER_ORDERS_PATH,
       routeOrderDetails: (orderNumber) => `${CUSTOMER_ORDER_DETAILS_PATH}?orderRef=${orderNumber}`,
       routeReturnDetails: ({ orderNumber, returnNumber }) => `${CUSTOMER_RETURN_DETAILS_PATH}?orderRef=${orderNumber}&returnRef=${returnNumber}`,
-      routeOrderProduct: (productData) => (productData?.product ? `/products/${productData.product.urlKey}/${productData.product.sku}` : '#'),
+      routeOrderProduct: (productData) => (productData?.product ? localizeLink(`/products/${productData.product.urlKey}/${productData.product.sku}`) : '#'),
     })(block);
   }
 }

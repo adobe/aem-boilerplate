@@ -70,6 +70,7 @@ import {
   scrollToElement,
   setAddressOnCart,
 } from '../../scripts/checkout.js';
+import { localizeLink } from '../../scripts/scripts.js';
 
 function createMetaTag(property, content, type) {
   if (!property || !type) {
@@ -231,7 +232,7 @@ export default async function decorate(block) {
     })($serverError),
 
     CheckoutProvider.render(OutOfStock, {
-      routeCart: () => '/cart',
+      routeCart: () => localizeLink('/cart'),
       onCartProductsUpdate: (items) => {
         cartApi.updateProductsFromCart(items).catch(console.error);
       },
@@ -333,7 +334,7 @@ export default async function decorate(block) {
           );
           const editCartLink = document.createElement('a');
           editCartLink.classList.add('cart-summary-list__edit');
-          editCartLink.href = '/cart';
+          editCartLink.href = localizeLink('/cart');
           editCartLink.rel = 'noreferrer';
           editCartLink.innerText = 'Edit';
 
@@ -411,7 +412,7 @@ export default async function decorate(block) {
     if (emptyCart) return;
 
     emptyCart = await CartProvider.render(EmptyCart, {
-      routeCTA: () => '/',
+      routeCTA: () => localizeLink('/'),
     })($emptyCart);
 
     $content.classList.add('checkout__content--empty');
@@ -734,8 +735,8 @@ export default async function decorate(block) {
     const handleSignUpClick = async ({ inputsDefaultValueSet, addressesData }) => {
       const signUpForm = document.createElement('div');
       AuthProvider.render(SignUp, {
-        routeSignIn: () => '/customer/login',
-        routeRedirectOnEmailConfirmationClose: () => '/customer/account',
+        routeSignIn: () => localizeLink('/customer/login'),
+        routeRedirectOnEmailConfirmationClose: () => localizeLink('/customer/account'),
         inputsDefaultValueSet,
         addressesData,
       })(signUpForm);

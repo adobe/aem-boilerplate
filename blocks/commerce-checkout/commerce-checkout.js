@@ -71,6 +71,7 @@ import {
   setAddressOnCart,
 } from '../../scripts/checkout.js';
 import { localizeLink } from '../../scripts/scripts.js';
+import { SUPPORT_PATH } from '../../scripts/constants.js';
 
 function createMetaTag(property, content, type) {
   if (!property || !type) {
@@ -764,7 +765,7 @@ export default async function decorate(block) {
         <p>
           Need help?
           <a
-            href="/support"
+            href="${SUPPORT_PATH}"
             rel="noreferrer"
             class="order-confirmation-footer__contact-support-link"
             data-testid="order-confirmation-footer__contact-support-link"
@@ -786,7 +787,7 @@ export default async function decorate(block) {
       size: 'medium',
       variant: 'primary',
       type: 'submit',
-      href: '/',
+      href: localizeLink('/'),
     })($orderConfirmationFooterContinueBtn);
   };
 
@@ -825,8 +826,8 @@ export default async function decorate(block) {
     const encodedOrderNumber = encodeURIComponent(orderNumber);
 
     const url = token
-      ? `/order-details?orderRef=${encodedOrderRef}`
-      : `/order-details?orderRef=${encodedOrderRef}&orderNumber=${encodedOrderNumber}`;
+      ? localizeLink(`/order-details?orderRef=${encodedOrderRef}`)
+      : localizeLink(`/order-details?orderRef=${encodedOrderRef}&orderNumber=${encodedOrderNumber}`);
 
     window.history.pushState({}, '', url);
 

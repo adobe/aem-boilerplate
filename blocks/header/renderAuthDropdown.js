@@ -5,6 +5,7 @@ import { SignIn } from '@dropins/storefront-auth/containers/SignIn.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { getCookie } from '../../scripts/configs.js';
 import { CUSTOMER_FORGOTPASSWORD_PATH } from '../../scripts/constants.js';
+import { localizeLink } from '../../scripts/scripts.js';
 
 function checkAndRedirect(redirections) {
   Object.entries(redirections).some(([currentPath, redirectPath]) => {
@@ -31,7 +32,7 @@ export function renderAuthDropdown(navTools) {
     <div class="nav-auth-menu-panel nav-tools-panel">
       <div id="auth-dropin-container"></div>
       <ul class="authenticated-user-menu">
-         <li><a href="/customer/account">My Account</a></li>
+         <li><a href="${localizeLink('/customer/account')}">My Account</a></li>
           <li><button>Logout</button></li>
       </ul>
     </div>
@@ -75,8 +76,8 @@ export function renderAuthDropdown(navTools) {
   logoutButtonElement.addEventListener('click', async () => {
     await authApi.revokeCustomerToken();
     checkAndRedirect({
-      '/customer': '/customer/login',
-      '/order-details': '/',
+      '/customer': localizeLink('/customer/login'),
+      '/order-details': localizeLink('/'),
     });
   });
 

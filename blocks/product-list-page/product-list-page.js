@@ -1,5 +1,6 @@
 import { readBlockConfig } from '../../scripts/aem.js';
 import { getConfigValue } from '../../scripts/configs.js';
+import { localizeLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   // eslint-disable-next-line import/no-absolute-path, import/no-unresolved
@@ -46,7 +47,7 @@ export default async function decorate(block) {
     },
     route: ({ sku, urlKey }) => {
       const a = new URL(window.location.origin);
-      a.pathname = `/products/${urlKey}/${sku}`;
+      a.pathname = localizeLink(`/products/${urlKey}/${sku}`);
       return a.toString();
     },
   };

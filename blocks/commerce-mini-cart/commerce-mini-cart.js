@@ -17,9 +17,9 @@ export default async function decorate(block) {
   block.innerHTML = '';
 
   return provider.render(MiniCart, {
-    routeEmptyCartCTA: startShoppingURL ? () => startShoppingURL : undefined,
-    routeCart: cartURL ? () => cartURL : undefined,
+    routeEmptyCartCTA: startShoppingURL ? () => localizeLink(startShoppingURL) : undefined,
+    routeCart: cartURL ? () => localizeLink(cartURL) : undefined,
     routeCheckout: checkoutURL ? () => localizeLink(checkoutURL) : undefined,
-    routeProduct: (product) => `/products/${product.url.urlKey}/${product.topLevelSku}`,
+    routeProduct: (product) => localizeLink(`/products/${product.url.urlKey}/${product.topLevelSku}`),
   })(block);
 }

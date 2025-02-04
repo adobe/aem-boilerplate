@@ -25,7 +25,7 @@
   "devDependencies": {
     "@adobe/aem-cli": "^16.5.8",
     "@babel/eslint-parser": "7.25.9",
-    "@dropins/build-tools": "0.1.1",
+    "@dropins/build-tools": "0.2.0",
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.31.0",
@@ -41,6 +41,6 @@
     "@dropins/storefront-checkout": "~1.0.0",
     "@dropins/storefront-order": "~1.0.2",
     "@dropins/storefront-pdp": "~1.0.0",
-    "@dropins/tools": "^0.39.0"
+    "@dropins/tools": "^0.40.0"
   }
 }

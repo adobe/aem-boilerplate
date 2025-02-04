@@ -361,7 +361,7 @@ export async function fetchIndex(indexFile, pageSize = 500) {
  * Get root path
  */
 export function getRootPath() {
-  window.ROOT_PATH = window.rootPath || getMetadata('root') || '/';
+  window.ROOT_PATH = window.ROOT_PATH || getMetadata('root') || '/';
   return window.ROOT_PATH;
 }
 

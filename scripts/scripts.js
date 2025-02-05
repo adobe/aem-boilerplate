@@ -150,7 +150,7 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
-  decorateLinks(main);
+  // decorateLinks(main); // author can decide when to localize links
 }
 
 function preloadFile(href, as) {
@@ -375,13 +375,16 @@ export function decorateLinks(main) {
   const links = main.querySelectorAll('a');
 
   links.forEach((link) => {
-    if (link.href.startsWith('//') || link.href.startsWith(root)) return;
+    const url = new URL(link.href, window.location.origin);
+    const { pathname } = url;
+
+    // If the link is already localized, do nothing
+    if (pathname.startsWith('//') || pathname.startsWith(root)) return;
 
     if (
       link.href.startsWith('/')
       || link.href.startsWith(window.location.origin)
     ) {
-      const url = new URL(link.href, window.location.origin);
       link.href = `${root}${url.pathname.substring(1)}${url.search}${url.hash}`;
     }
   });
@@ -393,6 +396,9 @@ export function decorateLinks(main) {
  */
 export function localizeLink(link) {
   const root = getRootPath().replace(/\/$/, '');
+
+  // If the link is already localized, do nothing
+  if (link.startsWith(root)) return link;
   return `${root}${link}`;
 }
 

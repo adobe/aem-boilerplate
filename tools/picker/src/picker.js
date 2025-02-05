@@ -282,7 +282,9 @@ const Picker = props => {
             let items = {};
             let pageInfo = {};
             try {
-                ([items, pageInfo]) = await getItems(state.folder, 1, activeConfig);
+                const result = await getItems(state.folder, 1, activeConfig);
+                items = result[0];
+                pageInfo = result[1];
             } catch(err) {
                 console.error(err);
                 setState(state => ({

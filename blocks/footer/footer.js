@@ -4,18 +4,24 @@ import {
   provider as UI,
 } from '@dropins/tools/components.js';
 
-import { getMetadata } from '../../scripts/aem.js';
-import { loadFragment } from '../fragment/fragment.js';
-
 // Block-level
 import createModal from '../modal/modal.js';
+import { getMetadata } from '../../scripts/aem.js';
+import { loadFragment } from '../fragment/fragment.js';
+import { getConfigValue } from '../../scripts/configs.js';
+
+// Pull Config Values for Store Details 
+const storeDetails = {
+  storeViewCode: await getConfigValue('commerce.headers.cs.Magento-Store-View-Code'),
+  currencyCode: await getConfigValue('commerce-base-currency-code'),
+};
 
 /**
  * loads and decorates the footer
  * @param {Element} block The footer block element
  */
 export default async function decorate(block) {
-  // load footer as fragment
+  // Load Footer as Fragment
   const footerMeta = getMetadata('footer');
   const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
   const fragment = await loadFragment(footerPath);
@@ -38,15 +44,36 @@ export default async function decorate(block) {
     modal.showModal();
   };
 
-  // Store Switcher Modal Content
-  const storeSwitcher = document.createElement('div');
-
   // Rendering the Store Switcher Modal Content
-  const $orderConfirmationFooterContinueBtn = footer.querySelector(
+  const $storeSwitcherBtn = footer.querySelector(
     '.storeview-switcher-footer__modal-button',
   );
+
+  // Store Switcher Modal Content - Chore: move to different file
+  const storeSwitcherPath = '/store-switcher';
+  const fragmentStoreView = await loadFragment(storeSwitcherPath);
+  const storeSwitcher = document.createElement('div');
+
+  storeSwitcher.id = 'storeview-modal';
+  while (fragmentStoreView.firstElementChild) {
+    storeSwitcher.append(fragmentStoreView.firstElementChild);
+  }
+
+  const classes = ['storeview-title', 'storeview-list'];
+  classes.forEach((c, i) => {
+    const section = storeSwitcher.children[i];
+    if (section) section.classList.add(`storeview-modal-${c}`);
+  });
+
+  const storeViewTitle = storeSwitcher.querySelector('.storeview-modal-storeview-title');
+  const title = storeViewTitle.querySelector('h3');
+  if (title) {
+    title.className = '';
+    title.closest('h3').classList.add('storeview-modal-storeview-title');
+  }
+
   UI.render(Button, {
-    children: 'Continue shopping',
+    children: `${storeDetails.storeViewCode} (${storeDetails.currencyCode})`, // needs to be current storeview name
     'data-testid': 'storeview-switcher-footer__modal-button',
     className: 'storeview-switcher-footer__modal-button',
     size: 'medium',
@@ -54,10 +81,9 @@ export default async function decorate(block) {
     onClick: () => {
       showModal(storeSwitcher);
     },
-  })($orderConfirmationFooterContinueBtn);
+  })($storeSwitcherBtn);
 
   while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
 
   block.append(footer);
-
 }

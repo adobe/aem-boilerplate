@@ -7,7 +7,7 @@ import { loadFragment } from '../fragment/fragment.js';
 const blocks = [];
 const displayedBlockTypes = [];
 
-const getActiveRules = async () => {
+const getActiveRules = async (cartId) => {
   try {
     const response = await fetchGraphQl(
       `query CUSTOMER_SEGMENTS($cartId: String!){
@@ -26,9 +26,7 @@ const getActiveRules = async () => {
       `,
       {
         method: 'GET',
-        variables: {
-          cartId: Cart.getCartDataFromCache().id,
-        },
+        variables: { cartId },
       },
     );
     return response.data;
@@ -62,7 +60,6 @@ const conditionsMatched = (activeRules, blockConfig) => {
   const activeCartRules = activeRules.cart?.rules?.map(
     (rule) => rule.name,
   );
-
   if (customerSegments !== undefined && !segmentsMatched(activeSegments, customerSegments.split(','))) {
     return false;
   }
@@ -79,19 +76,21 @@ const conditionsMatched = (activeRules, blockConfig) => {
 };
 
 const updateTargetedBlocksVisibility = async () => {
-  const activeRules = await getActiveRules();
+  const activeRules = (Cart.getCartDataFromCache() === null) ? {
+    customerSegments: [],
+    CustomerGroup: [],
+    cart: {
+      rules: [],
+    },
+  } : await getActiveRules(Cart.getCartDataFromCache().id);
 
   displayedBlockTypes.length = 0;
   blocks.forEach(async (blockConfig) => {
     const index = blocks.indexOf(blockConfig);
     const { fragment, type } = blockConfig;
-    if (displayedBlockTypes.includes(type)) {
-      return;
-    }
-
     const block = document.querySelector(`[data-targeted-block-key="${index}"]`);
     block.style.display = 'none';
-    if (conditionsMatched(activeRules, blockConfig)) {
+    if (!displayedBlockTypes.includes(type) && conditionsMatched(activeRules, blockConfig)) {
       displayedBlockTypes.push(type);
       if (fragment !== undefined) {
         const content = await loadFragment(fragment);

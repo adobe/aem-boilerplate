@@ -1,5 +1,4 @@
 /* eslint-disable implicit-arrow-linebreak */
-// TODO - This module supposed to add link to authCombine container for demo purposes
 /* eslint-disable import/no-unresolved */
 /* eslint-disable import/no-extraneous-dependencies */
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
@@ -9,7 +8,11 @@ import * as authApi from '@dropins/storefront-auth/api.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { Button } from '@dropins/tools/components.js';
 import { getCookie } from '../../scripts/configs.js';
-import { CUSTOMER_ACCOUNT_PATH, CUSTOMER_FORGOTPASSWORD_PATH, CUSTOMER_LOGIN_PATH } from '../../scripts/constants.js';
+import {
+  CUSTOMER_ACCOUNT_PATH,
+  CUSTOMER_FORGOTPASSWORD_PATH,
+  CUSTOMER_LOGIN_PATH,
+} from '../../scripts/constants.js';
 
 const signInFormConfig = {
   renderSignUpLink: true,
@@ -117,7 +120,7 @@ const resetPasswordFormConfig = {
   routeSignIn: () => CUSTOMER_LOGIN_PATH,
 };
 
-const onHeaderLinkClick = () => {
+const onHeaderLinkClick = (element) => {
   const viewportMeta = document.querySelector('meta[name="viewport"]');
   const originalViewportContent = viewportMeta.getAttribute('content');
 
@@ -135,18 +138,56 @@ const onHeaderLinkClick = () => {
   signInModal.setAttribute('id', 'auth-combine-modal');
   signInModal.classList.add('auth-combine-modal-overlay');
 
-  const closeModalWindow = (event) => {
-    if ((event.key === 'Escape' || event.key === 'Esc') && event.target.nodeName === 'BODY') {
-      signInModal.remove();
+  const trapFocus = (event) => {
+    if (!signInModal) return;
+
+    const key = event.key.toLowerCase();
+
+    if (key === 'escape') {
+      event.preventDefault();
+      signInModal.click();
+      element?.focus();
+      window.removeEventListener('keydown', trapFocus);
+      return;
+    }
+
+    const focusableElements = signInModal.querySelectorAll(
+      'input[name="email"], input, button, textarea, select, a[href], [tabindex]:not([tabindex="-1"])',
+    );
+
+    if (focusableElements.length === 0) return;
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (!signInModal.dataset.focusInitialized) {
+      signInModal.dataset.focusInitialized = 'true';
+      requestAnimationFrame(() => firstElement.focus(), 10);
+    }
+
+    if (key === 'tab' && event.shiftKey) {
+      if (document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      }
+    } else if (key === 'tab') {
+      if (document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      } else if (document.activeElement === signInModal) {
+        event.preventDefault();
+        firstElement.focus();
+      }
     }
   };
 
-  window.addEventListener('keydown', closeModalWindow);
+  window.addEventListener('keydown', trapFocus);
 
   signInModal.onclick = () => {
     signInModal.remove();
     document.body.style.overflow = 'auto';
     viewportMeta.setAttribute('content', originalViewportContent);
+    window.removeEventListener('keydown', trapFocus);
   };
 
   const signInForm = document.createElement('div');
@@ -170,8 +211,11 @@ const renderAuthCombine = (navSections, toggleMenu) => {
 
   const navListEl = navSections.querySelector('.default-content-wrapper > ul');
 
-  const listItems = navListEl.querySelectorAll('.default-content-wrapper > ul > li');
-  const accountLi = Array.from(listItems).find((li) => li.textContent.includes('Account'));
+  const listItems = navListEl.querySelectorAll(
+    '.default-content-wrapper > ul > li',
+  );
+  const accountLi = Array.from(listItems).find((li) =>
+    li.textContent.includes('Account'));
   const accountLiItems = accountLi.querySelectorAll('ul > li');
   const authCombineLink = accountLiItems[accountLiItems.length - 1];
 
@@ -180,7 +224,7 @@ const renderAuthCombine = (navSections, toggleMenu) => {
   authCombineLink.innerHTML = `<a href="#">${text}</a>`;
   authCombineLink.addEventListener('click', (event) => {
     event.preventDefault();
-    onHeaderLinkClick();
+    onHeaderLinkClick(accountLi);
 
     function getPopupElements() {
       const headerBlock = document.querySelector('.header.block');
@@ -197,11 +241,18 @@ const renderAuthCombine = (navSections, toggleMenu) => {
     }
 
     events.on('authenticated', (isAuthenticated) => {
-      const authCombineNavElement = document.querySelector('.authCombineNavElement');
+      const authCombineNavElement = document.querySelector(
+        '.authCombineNavElement',
+      );
       if (isAuthenticated) {
         const { headerLoginButton, popupElement, popupMenuContainer } = getPopupElements();
 
-        if (!authCombineNavElement || !headerLoginButton || !popupElement || !popupMenuContainer) {
+        if (
+          !authCombineNavElement
+          || !headerLoginButton
+          || !popupElement
+          || !popupMenuContainer
+        ) {
           return;
         }
 
@@ -210,7 +261,9 @@ const renderAuthCombine = (navSections, toggleMenu) => {
         popupElement.style.minWidth = '250px';
         if (headerLoginButton) {
           const spanElementText = headerLoginButton.querySelector('span');
-          spanElementText.textContent = `Hi, ${getCookie('auth_dropin_firstname')}`;
+          spanElementText.textContent = `Hi, ${getCookie(
+            'auth_dropin_firstname',
+          )}`;
         }
         popupMenuContainer.insertAdjacentHTML(
           'afterend',
@@ -222,7 +275,6 @@ const renderAuthCombine = (navSections, toggleMenu) => {
         );
       }
     });
-
     toggleMenu?.();
   });
 };

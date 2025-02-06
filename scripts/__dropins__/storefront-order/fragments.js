@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-const R=`
+const T=`
   fragment REQUEST_RETURN_ORDER_FRAGMENT on Return {
     __typename
     uid
@@ -26,7 +26,7 @@ const R=`
     telephone
     vat_id
   }
-`,t=`
+`,_=`
   fragment PRODUCT_DETAILS_FRAGMENT on ProductInterface {
     __typename
     canonical_url
@@ -49,7 +49,7 @@ const R=`
       }
     }
   }
-`,_=`
+`,t=`
   fragment PRICE_DETAILS_FRAGMENT on OrderItemInterface {
     prices {
       price_including_tax {
@@ -124,6 +124,30 @@ const R=`
       }
     }
   }
+`,E=`
+  fragment DOWNLOADABLE_ORDER_ITEMS_FRAGMENT on DownloadableOrderItem {
+    product_name
+    downloadable_links {
+      sort_order
+      title
+    }
+  }
+`,R=`
+  fragment ORDER_ITEM_FRAGMENT on OrderItemInterface {
+    ...ORDER_ITEM_DETAILS_FRAGMENT
+    ... on BundleOrderItem {
+      ...BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT
+    }
+    ... on GiftCardOrderItem {
+      ...GIFT_CARD_DETAILS_FRAGMENT
+      product {
+        ...PRODUCT_DETAILS_FRAGMENT
+      }
+    }
+    ...DOWNLOADABLE_ORDER_ITEMS_FRAGMENT
+  }
+
+  ${E}
 `,i=`
   fragment ORDER_SUMMARY_FRAGMENT on OrderTotal {
     grand_total {
@@ -166,7 +190,7 @@ const R=`
       label
     }
   }
-`,E=`
+`,u=`
   fragment RETURNS_FRAGMENT on Returns {
     __typename
     items {
@@ -207,7 +231,7 @@ const R=`
       }
     }
   }
-`,u=`
+`,c=`
   fragment GUEST_ORDER_FRAGMENT on CustomerOrder {
     email
     id
@@ -273,34 +297,19 @@ const R=`
       ...ADDRESS_FRAGMENT
     }
     items {
-      ...ORDER_ITEM_DETAILS_FRAGMENT
-      ... on BundleOrderItem {
-        ...BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT
-      }
-      ... on GiftCardOrderItem {
-        ...GIFT_CARD_DETAILS_FRAGMENT
-        product {
-          ...PRODUCT_DETAILS_FRAGMENT
-        }
-      }
-      ... on DownloadableOrderItem {
-        product_name
-        downloadable_links {
-          sort_order
-          title
-        }
-      }
+      ...ORDER_ITEM_FRAGMENT
     }
     total {
       ...ORDER_SUMMARY_FRAGMENT
     }
   }
-  ${t}
   ${_}
+  ${t}
   ${r}
   ${n}
   ${a}
   ${i}
   ${e}
-  ${E}
-`;export{e as ADDRESS_FRAGMENT,a as BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT,r as GIFT_CARD_DETAILS_FRAGMENT,u as GUEST_ORDER_FRAGMENT,n as ORDER_ITEM_DETAILS_FRAGMENT,i as ORDER_SUMMARY_FRAGMENT,_ as PRICE_DETAILS_FRAGMENT,t as PRODUCT_DETAILS_FRAGMENT,R as REQUEST_RETURN_ORDER_FRAGMENT,E as RETURNS_FRAGMENT};
+  ${u}
+  ${R}
+`;export{e as ADDRESS_FRAGMENT,a as BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT,E as DOWNLOADABLE_ORDER_ITEMS_FRAGMENT,r as GIFT_CARD_DETAILS_FRAGMENT,c as GUEST_ORDER_FRAGMENT,n as ORDER_ITEM_DETAILS_FRAGMENT,R as ORDER_ITEM_FRAGMENT,i as ORDER_SUMMARY_FRAGMENT,t as PRICE_DETAILS_FRAGMENT,_ as PRODUCT_DETAILS_FRAGMENT,T as REQUEST_RETURN_ORDER_FRAGMENT,u as RETURNS_FRAGMENT};

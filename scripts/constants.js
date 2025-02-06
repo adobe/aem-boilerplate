@@ -1,4 +1,5 @@
 export const SUPPORT_PATH = '/support';
+export const PRIVACY_POLICY_PATH = '/privacy-policy';
 
 // GUEST
 export const ORDER_STATUS_PATH = '/order-status';
@@ -22,3 +23,29 @@ export const SALES_ORDER_VIEW_PATH = '/sales/order/view/';
 
 // TRACKING
 export const UPS_TRACKING_URL = 'https://www.ups.com/track';
+
+// REUSABLE SLOTS
+export const authPrivacyPolicyConsentSlot = {
+  PrivacyPolicyConsent: async (ctx) => {
+    const wrapper = document.createElement('span');
+    Object.assign(wrapper.style, {
+      color: 'var(--color-neutral-700)',
+      font: 'var(--type-details-caption-2-font)',
+      display: 'block',
+      marginBottom: 'var(--spacing-medium)',
+    });
+
+    const link = document.createElement('a');
+    link.href = PRIVACY_POLICY_PATH;
+    link.target = '_blank';
+    link.textContent = 'Privacy Policy';
+
+    wrapper.append(
+      'By creating an account, you acknowledge that you have read and agree to our ',
+      link,
+      ', which outlines how we collect, use, and protect your personal data.',
+    );
+
+    ctx.appendChild(wrapper);
+  },
+};

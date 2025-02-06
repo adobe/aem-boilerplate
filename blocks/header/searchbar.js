@@ -1,5 +1,5 @@
 import { loadScript } from '../../scripts/aem.js';
-import { localizeLink } from '../../scripts/scripts.js';
+import { rootLink } from '../../scripts/scripts.js';
 import { getConfigValue } from '../../scripts/configs.js';
 
 (async () => {
@@ -29,9 +29,9 @@ import { getConfigValue } from '../../scripts/configs.js';
     context: {
       customerGroup: await getConfigValue('commerce.headers.cs.Magento-Customer-Group'),
     },
-    route: ({ sku, urlKey }) => localizeLink(`/products/${urlKey}/${sku}`),
+    route: ({ sku, urlKey }) => rootLink(`/products/${urlKey}/${sku}`),
     searchRoute: {
-      route: localizeLink('/search'),
+      route: rootLink('/search'),
       query: 'q',
     },
   };

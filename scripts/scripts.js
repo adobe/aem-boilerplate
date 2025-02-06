@@ -394,7 +394,7 @@ export function decorateLinks(main) {
  * Decorates links.
  * @param {string} [url] url to be localized
  */
-export function localizeLink(link) {
+export function rootLink(link) {
   const root = getRootPath().replace(/\/$/, '');
 
   // If the link is already localized, do nothing

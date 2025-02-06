@@ -16,6 +16,7 @@ import {
   ORDER_STATUS_PATH,
   CUSTOMER_PATH, SALES_GUEST_VIEW_PATH, SALES_ORDER_VIEW_PATH,
 } from '../constants.js';
+import { rootLink } from '../scripts.js';
 
 await initializeDropin(async () => {
   const { pathname, searchParams } = new URL(window.location.href);
@@ -81,11 +82,11 @@ async function handleUserOrdersRedirects(
 
   events.on('order/error', () => {
     if (checkIsAuthenticated()) {
-      window.location.href = CUSTOMER_ORDERS_PATH;
+      window.location.href = rootLink(CUSTOMER_ORDERS_PATH);
     } else if (isTokenProvided) {
-      window.location.href = orderNumber ? `${ORDER_STATUS_PATH}?orderRef=${orderNumber}` : ORDER_STATUS_PATH;
+      window.location.href = orderNumber ? rootLink(`${ORDER_STATUS_PATH}?orderRef=${orderNumber}`) : rootLink(ORDER_STATUS_PATH);
     } else {
-      window.location.href = `${ORDER_STATUS_PATH}?orderRef=${orderRef}`;
+      window.location.href = rootLink(`${ORDER_STATUS_PATH}?orderRef=${orderRef}`);
     }
   });
 
@@ -106,7 +107,7 @@ async function handleUserOrdersRedirects(
   }
 
   if (targetPath) {
-    window.location.href = targetPath;
+    window.location.href = rootLink(targetPath);
   } else {
     await initializers.mountImmediately(initialize, {
       langDefinitions,

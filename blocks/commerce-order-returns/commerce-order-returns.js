@@ -11,7 +11,7 @@ import {
 
 // Initialize
 import '../../scripts/initializers/order.js';
-import { localizeLink } from '../../scripts/scripts.js';
+import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const isAuthenticated = checkIsAuthenticated();
@@ -33,8 +33,8 @@ export default async function decorate(block) {
 
       const encodedOrderRef = encodeURIComponent(orderRefFromUrl || newOrderRef);
 
-      return `${returnDetailsPath}?orderRef=${encodedOrderRef}&returnRef=${returnNumber}`;
+      return rootLink(`${returnDetailsPath}?orderRef=${encodedOrderRef}&returnRef=${returnNumber}`);
     },
-    routeProductDetails: (productData) => (productData?.product ? localizeLink(`/products/${productData.product.urlKey}/${productData.product.sku}`) : '#'),
+    routeProductDetails: (productData) => (productData?.product ? rootLink(`/products/${productData.product.urlKey}/${productData.product.sku}`) : rootLink('#')),
   })(block);
 }

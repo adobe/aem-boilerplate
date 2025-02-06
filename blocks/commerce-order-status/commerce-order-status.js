@@ -7,6 +7,7 @@ import { CREATE_RETURN_PATH, CUSTOMER_CREATE_RETURN_PATH } from '../../scripts/c
 
 // Initialize
 import '../../scripts/initializers/order.js';
+import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   await orderRenderer.render(OrderStatus, {
@@ -19,8 +20,8 @@ export default async function decorate(block) {
 
       const encodedOrderRef = encodeURIComponent(orderRefFromUrl || newOrderRef);
 
-      return checkIsAuthenticated() ? `${CUSTOMER_CREATE_RETURN_PATH}?orderRef=${encodedOrderRef}` : `${CREATE_RETURN_PATH}?orderRef=${encodedOrderRef}`;
+      return checkIsAuthenticated() ? rootLink(`${CUSTOMER_CREATE_RETURN_PATH}?orderRef=${encodedOrderRef}`) : rootLink(`${CREATE_RETURN_PATH}?orderRef=${encodedOrderRef}`);
     },
-    routeOnSuccess: () => '/cart',
+    routeOnSuccess: () => rootLink('/cart'),
   })(block);
 }

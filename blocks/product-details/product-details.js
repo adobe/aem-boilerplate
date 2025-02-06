@@ -27,7 +27,7 @@ import { fetchPlaceholders } from '../../scripts/aem.js';
 // Initializers
 import { IMAGES_SIZES } from '../../scripts/initializers/pdp.js';
 import '../../scripts/initializers/cart.js';
-import { localizeLink } from '../../scripts/scripts.js';
+import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   // eslint-disable-next-line no-underscore-dangle
@@ -298,9 +298,9 @@ async function setJsonLdProduct(product) {
       '@type': 'Brand',
       name: brand?.value,
     },
-    url: new URL(localizeLink(`/products/${urlKey}/${sku}`), window.location),
+    url: new URL(rootLink(`/products/${urlKey}/${sku}`), window.location),
     sku,
-    '@id': new URL(localizeLink(`/products/${urlKey}/${sku}`), window.location),
+    '@id': new URL(rootLink(`/products/${urlKey}/${sku}`), window.location),
   };
 
   if (variants.length > 1) {

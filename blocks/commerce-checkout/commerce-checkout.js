@@ -70,7 +70,7 @@ import {
   scrollToElement,
   setAddressOnCart,
 } from '../../scripts/checkout.js';
-import { localizeLink } from '../../scripts/scripts.js';
+import { rootLink } from '../../scripts/scripts.js';
 import { SUPPORT_PATH } from '../../scripts/constants.js';
 
 function createMetaTag(property, content, type) {
@@ -233,7 +233,7 @@ export default async function decorate(block) {
     })($serverError),
 
     CheckoutProvider.render(OutOfStock, {
-      routeCart: () => localizeLink('/cart'),
+      routeCart: () => rootLink('/cart'),
       onCartProductsUpdate: (items) => {
         cartApi.updateProductsFromCart(items).catch(console.error);
       },
@@ -335,7 +335,7 @@ export default async function decorate(block) {
           );
           const editCartLink = document.createElement('a');
           editCartLink.classList.add('cart-summary-list__edit');
-          editCartLink.href = localizeLink('/cart');
+          editCartLink.href = rootLink('/cart');
           editCartLink.rel = 'noreferrer';
           editCartLink.innerText = 'Edit';
 
@@ -413,7 +413,7 @@ export default async function decorate(block) {
     if (emptyCart) return;
 
     emptyCart = await CartProvider.render(EmptyCart, {
-      routeCTA: () => localizeLink('/'),
+      routeCTA: () => rootLink('/'),
     })($emptyCart);
 
     $content.classList.add('checkout__content--empty');
@@ -736,8 +736,8 @@ export default async function decorate(block) {
     const handleSignUpClick = async ({ inputsDefaultValueSet, addressesData }) => {
       const signUpForm = document.createElement('div');
       AuthProvider.render(SignUp, {
-        routeSignIn: () => localizeLink('/customer/login'),
-        routeRedirectOnEmailConfirmationClose: () => localizeLink('/customer/account'),
+        routeSignIn: () => rootLink('/customer/login'),
+        routeRedirectOnEmailConfirmationClose: () => rootLink('/customer/account'),
         inputsDefaultValueSet,
         addressesData,
       })(signUpForm);
@@ -765,7 +765,7 @@ export default async function decorate(block) {
         <p>
           Need help?
           <a
-            href="${SUPPORT_PATH}"
+            href="${rootLink(SUPPORT_PATH)}"
             rel="noreferrer"
             class="order-confirmation-footer__contact-support-link"
             data-testid="order-confirmation-footer__contact-support-link"
@@ -787,7 +787,7 @@ export default async function decorate(block) {
       size: 'medium',
       variant: 'primary',
       type: 'submit',
-      href: localizeLink('/'),
+      href: rootLink('/'),
     })($orderConfirmationFooterContinueBtn);
   };
 
@@ -826,8 +826,8 @@ export default async function decorate(block) {
     const encodedOrderNumber = encodeURIComponent(orderNumber);
 
     const url = token
-      ? localizeLink(`/order-details?orderRef=${encodedOrderRef}`)
-      : localizeLink(`/order-details?orderRef=${encodedOrderRef}&orderNumber=${encodedOrderNumber}`);
+      ? rootLink(`/order-details?orderRef=${encodedOrderRef}`)
+      : rootLink(`/order-details?orderRef=${encodedOrderRef}&orderNumber=${encodedOrderNumber}`);
 
     window.history.pushState({}, '', url);
 

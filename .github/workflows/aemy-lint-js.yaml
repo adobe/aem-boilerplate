@@ -1,0 +1,32 @@
+name: AEMY Lint JS
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  lint_js_job:
+    name: Lint JS
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'aemy-lint-js'
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+    - name: Use Node.js 22
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+    - run: npm install
+    - run: npm run lint:js -- --fix
+    - name: Auto Commit
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: "Auto-commit: Apply js lint fixes"
+    - uses: actions-ecosystem/action-remove-labels@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        labels: aemy-lint-js

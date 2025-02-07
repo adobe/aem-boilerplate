@@ -27,7 +27,7 @@
               "color": "rgba(0, 255, 0, 1)",
               "width": 1280,
               "height": 35,
-              "xpath": "//*[@id='globalheader'] | /html/body/div[contains(@class, 'sws-mega-menu')] | /html/body/header | /html/body/div[contains(@class, 'mobile-nav-wrapper')]",
+              "xpath": "/html[1]/body[1]/div[1]",
               "childrenXpaths": null,
               "layout": {
                 "numCols": 0,

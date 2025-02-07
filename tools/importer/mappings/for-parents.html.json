@@ -1,0 +1,210 @@
+{
+  "url": "https://fortstreet-p.schools.nsw.gov.au/for-parents.html",
+  "browserOptions": {
+    "width": 1280,
+    "disableJS": false,
+    "adBlocker": true,
+    "gdprBlocker": true,
+    "delay": 0,
+    "screenshot": false
+  },
+  "autoDetect": true,
+  "template": {
+    "raw": "/html[1]/body[1]/div[1]\n  /html[1]/body[1]/div[3]\n  /html[1]/body[1]/header[2]\n  - /html[1]/body[1]/header[2]/div[1]/div[1]/a[1]/img[1]\n  - /html[1]/body[1]/header[2]/div[1]/div[1]/div[1]\n  /html[1]/body[1]/div[4]\n  - /html[1]/body[1]/div[4]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[1]\n  - /html[1]/body[1]/div[4]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[2]\n  - /html[1]/body[1]/div[4]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[3]\n  - /html[1]/body[1]/div[4]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[4]\n  - /html[1]/body[1]/div[4]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[5]\n  /html[1]/body[1]/main[1]\n  - /html[1]/body[1]/main[1]/div[1]\n  - /html[1]/body[1]/main[1]/div[2]\n  /html[1]/body[1]/div[5]\n  - /html[1]/body[1]/div[5]/div[1]/h2[1]\n  - /html[1]/body[1]/div[5]/div[1]/div[1]\n  /html[1]/body[1]/div[6]\n  /html[1]/body[1]/aside[1]\n  - /html[1]/body[1]/aside[1]/div[1]/div[1]/div[1]\n  - /html[1]/body[1]/aside[1]/div[1]",
+    "hash": -725872073
+  },
+  "pageHeight": 2221,
+  "mapping": [
+    {
+      "id": 2,
+      "path": "/for-parents",
+      "sections": [
+        {
+          "id": "2-1",
+          "blocks": [
+            {
+              "id": "box-id--1102402240",
+              "color": "rgba(0, 255, 0, 1)",
+              "width": 1280,
+              "height": 35,
+              "xpath": "/html[1]/body[1]/div[3]",
+              "childrenXpaths": null,
+              "layout": {
+                "numCols": 0,
+                "numRows": 0
+              },
+              "x": 0,
+              "y": 35,
+              "mapping": "defaultContent",
+              "customBlockName": "aidefaultContent"
+            },
+            {
+              "id": "box-id--519531635",
+              "color": "rgba(0, 255, 0, 1)",
+              "width": 1280,
+              "height": 151,
+              "xpath": "/html[1]/body[1]/header[2]",
+              "childrenXpaths": [
+                {
+                  "xpath": "/html[1]/body[1]/header[2]/div[1]/div[1]/a[1]/img[1]",
+                  "xpathWithDetails": "/body[@class=\"theme1\"]/header[@class=\"local-header uk-hidden-small\"]/div[@class=\"uk-width-xlarge-1-1\"]/div[@class=\"uk-container uk-container-center\"]/a[@class=\"local-header-logo-link local-header-school-logo\"]/img[@class=\"local-header-logo\"]"
+                },
+                {
+                  "xpath": "/html[1]/body[1]/header[2]/div[1]/div[1]/div[1]",
+                  "xpathWithDetails": "/body[@class=\"theme1\"]/header[@class=\"local-header uk-hidden-small\"]/div[@class=\"uk-width-xlarge-1-1\"]/div[@class=\"uk-container uk-container-center\"]/div[@class=\"local-header-name uk-width-8-10\"]"
+                }
+              ],
+              "layout": {
+                "numCols": 2,
+                "numRows": 1
+              },
+              "x": 0,
+              "y": 70,
+              "mapping": "columns",
+              "customBlockName": "aicolumns"
+            },
+            {
+              "id": "box-id--1102402209",
+              "color": "rgba(0, 255, 0, 1)",
+              "width": 1280,
+              "height": 62,
+              "xpath": "/html[1]/body[1]/div[4]",
+              "childrenXpaths": [
+                {
+                  "xpath": "/html[1]/body[1]/div[4]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[1]",
+                  "xpathWithDetails": "/body[@class=\"theme1\"]/div[@class=\"sws-mega-menu uk-visible-large\"]/div[@class=\"uk-container uk-container-center sws-meganav-container sws-remove-external-link\"]/nav[@class=\"uk-navbar-container\"]/div[@class=\"uk-container\"]/div[@class=\"uk-navbar\"]/ul[@class=\"uk-navbar-nav sws-mega-menu-title-bar\"]/li[@class=\"uk-parent sws-meganav-megalinks__li sws-parent-menu\"]"
+                },
+                {
+                  "xpath": "/html[1]/body[1]/div[4]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[2]",
+                  "xpathWithDetails": "/body[@class=\"theme1\"]/div[@class=\"sws-mega-menu uk-visible-large\"]/div[@class=\"uk-container uk-container-center sws-meganav-container sws-remove-external-link\"]/nav[@class=\"uk-navbar-container\"]/div[@class=\"uk-container\"]/div[@class=\"uk-navbar\"]/ul[@class=\"uk-navbar-nav sws-mega-menu-title-bar\"]/li[@class=\"uk-parent sws-meganav-megalinks__li sws-parent-menu\"]"
+                },
+                {
+                  "xpath": "/html[1]/body[1]/div[4]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[3]",
+                  "xpathWithDetails": "/body[@class=\"theme1\"]/div[@class=\"sws-mega-menu uk-visible-large\"]/div[@class=\"uk-container uk-container-center sws-meganav-container sws-remove-external-link\"]/nav[@class=\"uk-navbar-container\"]/div[@class=\"uk-container\"]/div[@class=\"uk-navbar\"]/ul[@class=\"uk-navbar-nav sws-mega-menu-title-bar\"]/li[@class=\"uk-parent sws-meganav-megalinks__li sws-parent-menu\"]"
+                },
+                {
+                  "xpath": "/html[1]/body[1]/div[4]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[4]",
+                  "xpathWithDetails": "/body[@class=\"theme1\"]/div[@class=\"sws-mega-menu uk-visible-large\"]/div[@class=\"uk-container uk-container-center sws-meganav-container sws-remove-external-link\"]/nav[@class=\"uk-navbar-container\"]/div[@class=\"uk-container\"]/div[@class=\"uk-navbar\"]/ul[@class=\"uk-navbar-nav sws-mega-menu-title-bar\"]/li[@class=\"uk-parent sws-meganav-megalinks__li sws-parent-menu\"]"
+                },
+                {
+                  "xpath": "/html[1]/body[1]/div[4]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[5]",
+                  "xpathWithDetails": "/body[@class=\"theme1\"]/div[@class=\"sws-mega-menu uk-visible-large\"]/div[@class=\"uk-container uk-container-center sws-meganav-container sws-remove-external-link\"]/nav[@class=\"uk-navbar-container\"]/div[@class=\"uk-container\"]/div[@class=\"uk-navbar\"]/ul[@class=\"uk-navbar-nav sws-mega-menu-title-bar\"]/li[@class=\"uk-parent sws-meganav-megalinks__li sws-parent-menu\"]"
+                }
+              ],
+              "layout": {
+                "numCols": 5,
+                "numRows": 1
+              },
+              "x": 0,
+              "y": 252,
+              "mapping": "columns",
+              "customBlockName": "aicolumns"
+            },
+            {
+              "id": "box-id-494745251",
+              "color": "rgba(0, 255, 0, 1)",
+              "width": 1280,
+              "height": 155,
+              "xpath": "/html[1]/body[1]/main[1]/div[1]",
+              "childrenXpaths": null,
+              "layout": {
+                "numCols": 0,
+                "numRows": 0
+              },
+              "x": 0,
+              "y": 314,
+              "mapping": "defaultContent",
+              "customBlockName": "aidefaultContent"
+            },
+            {
+              "id": "box-id-494745282",
+              "color": "rgba(0, 255, 0, 1)",
+              "width": 1200,
+              "height": 1101,
+              "xpath": "/html[1]/body[1]/main[1]/div[2]",
+              "childrenXpaths": [
+                {
+                  "xpath": "/html[1]/body[1]/main[1]/div[2]/div[1]/div[3]",
+                  "xpathWithDetails": "/body[@class=\"theme1\"]/main[@class=\"gef-main\"]/div[@class=\"uk-container uk-container-center\"]/div[@class=\"uk-grid uk-grid-collapse\"]/div[@class=\"uk-width-large-1-3 sws-content__side-nav\"]"
+                },
+                {
+                  "xpath": "/html[1]/body[1]/main[1]/div[2]/div[1]/div[1]",
+                  "xpathWithDetails": "/body[@class=\"theme1\"]/main[@class=\"gef-main\"]/div[@class=\"uk-container uk-container-center\"]/div[@class=\"uk-grid uk-grid-collapse\"]/div[@class=\"uk-width-large-2-3 gef-main-content sws-content__content-page\"]"
+                }
+              ],
+              "layout": {
+                "numCols": 2,
+                "numRows": 1
+              },
+              "x": 40,
+              "y": 509,
+              "mapping": "columns",
+              "customBlockName": "aicolumns"
+            },
+            {
+              "id": "box-id--242226635",
+              "color": "rgba(0, 255, 0, 1)",
+              "width": 1200,
+              "height": 29,
+              "xpath": "/html[1]/body[1]/div[5]/div[1]/h2[1]",
+              "childrenXpaths": null,
+              "layout": {
+                "numCols": 0,
+                "numRows": 0
+              },
+              "x": 40,
+              "y": 1698,
+              "mapping": "defaultContent",
+              "customBlockName": "aidefaultContent"
+            },
+            {
+              "id": "box-id-1018029406",
+              "color": "rgba(0, 255, 0, 1)",
+              "width": 1200,
+              "height": 243,
+              "xpath": "/html[1]/body[1]/div[5]/div[1]/div[1]",
+              "childrenXpaths": [
+                {
+                  "xpath": "/html[1]/body[1]/div[5]/div[1]/div[1]/div[1]",
+                  "xpathWithDetails": "/body[@class=\"theme1\"]/div[@class=\"local-footer\"]/div[@class=\"uk-container uk-container-center\"]/div[@class=\"uk-grid uk-grid-collapse\"]/div[@class=\"uk-width-3-10 local-footer-main-content\"]"
+                },
+                {
+                  "xpath": "/html[1]/body[1]/div[5]/div[1]/div[1]/div[2]",
+                  "xpathWithDetails": "/body[@class=\"theme1\"]/div[@class=\"local-footer\"]/div[@class=\"uk-container uk-container-center\"]/div[@class=\"uk-grid uk-grid-collapse\"]/div[@class=\"uk-width-4-10 local-footer-social-media\"]"
+                },
+                {
+                  "xpath": "/html[1]/body[1]/div[5]/div[1]/div[1]/div[3]",
+                  "xpathWithDetails": "/body[@class=\"theme1\"]/div[@class=\"local-footer\"]/div[@class=\"uk-container uk-container-center\"]/div[@class=\"uk-grid uk-grid-collapse\"]/div[@class=\"uk-width-4-10 local-footer-logo uk-hidden-small\"]"
+                }
+              ],
+              "layout": {
+                "numCols": 3,
+                "numRows": 1
+              },
+              "x": 40,
+              "y": 1727,
+              "mapping": "columns",
+              "customBlockName": "aicolumns"
+            },
+            {
+              "id": "box-id--1102402147",
+              "color": "rgba(0, 255, 0, 1)",
+              "width": 1280,
+              "height": 61,
+              "xpath": "/html[1]/body[1]/div[6]",
+              "childrenXpaths": null,
+              "layout": {
+                "numCols": 0,
+                "numRows": 0
+              },
+              "x": 0,
+              "y": 1995,
+              "mapping": "defaultContent",
+              "customBlockName": "aidefaultContent"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

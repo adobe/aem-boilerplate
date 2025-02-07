@@ -1,0 +1,46 @@
+{
+  "url": "https://fortstreet-p.schools.nsw.gov.au/",
+  "browserOptions": {
+    "width": 1280,
+    "disableJS": false,
+    "adBlocker": true,
+    "gdprBlocker": true,
+    "delay": 0,
+    "screenshot": false
+  },
+  "autoDetect": true,
+  "template": {
+    "raw": "/html[1]/body[1]/div[1]\n  /html[1]/body[1]/div[7]\n  /html[1]/body[1]/header[1]\n  - /html[1]/body[1]/header[1]/div[1]/div[1]/a[1]/img[1]\n  - /html[1]/body[1]/header[1]/div[1]/div[1]/div[1]\n  /html[1]/body[1]/div[8]\n  - /html[1]/body[1]/div[8]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[1]\n  - /html[1]/body[1]/div[8]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[2]\n  - /html[1]/body[1]/div[8]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[3]\n  - /html[1]/body[1]/div[8]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[4]\n  - /html[1]/body[1]/div[8]/div[1]/nav[1]/div[1]/div[1]/ul[1]/li[5]\n  /html[1]/body[1]/main[1]\n  - /html[1]/body[1]/main[1]/div[1]\n  - /html[1]/body[1]/main[1]/div[2]\n  - /html[1]/body[1]/main[1]/div[3]\n  /html[1]/body[1]/div[9]\n  - /html[1]/body[1]/div[9]/div[1]/h2[1]\n  - /html[1]/body[1]/div[9]/div[1]/div[1]\n  /html[1]/body[1]/div[10]\n  /html[1]/body[1]/aside[1]\n  - /html[1]/body[1]/aside[1]/div[1]/div[1]/div[1]\n  - /html[1]/body[1]/aside[1]/div[1]",
+    "hash": -428229619
+  },
+  "pageHeight": 3488,
+  "mapping": [
+    {
+      "id": "nav-1",
+      "path": "/nav",
+      "sections": [
+        {
+          "id": "nav-1-1",
+          "blocks": [
+            {
+              "id": "box-id--1102402302",
+              "color": "rgba(0, 255, 0, 1)",
+              "width": 1280,
+              "height": 35,
+              "xpath": "/html[1]/body[1]/div[1]",
+              "childrenXpaths": null,
+              "layout": {
+                "numCols": 0,
+                "numRows": 0
+              },
+              "x": 0,
+              "y": 0,
+              "mapping": "header",
+              "customBlockName": "aiheader"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

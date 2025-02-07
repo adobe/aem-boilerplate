@@ -114,7 +114,7 @@ export const setPaymentMethod = (paymentMethod) => {
   cy.get(fields.paymentMethods).contains(paymentMethod.name).click();
   if (paymentMethod.name === 'Credit Card') {
     const {cc_number, cc_exp, cc_cid} = paymentMethod.params;
-    cy.wait(2000);
+    cy.wait(5000);
     cy.getIFrameField(
       fields.creditCardNumberIFrame,
       fields.creditCardNumber

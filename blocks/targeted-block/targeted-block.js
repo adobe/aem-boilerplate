@@ -112,7 +112,7 @@ export default function decorate(block) {
 
 events.on('cart/initialized', () => {
   updateTargetedBlocksVisibility();
-});
+}, { eager: true });
 events.on('cart/updated', () => {
   updateTargetedBlocksVisibility();
-});
+}, { eager: true });

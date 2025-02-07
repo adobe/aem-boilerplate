@@ -60,7 +60,21 @@ declare const _default: {
           "actionEdit": "Edit",
           "cardLabelShipping": "Shipping",
           "cardLabelBilling": "Billing",
-          "defaultLabelText": "DEFAULT"
+          "defaultLabelText": "DEFAULT",
+          "ariaLabel": {
+            "editButton": {
+              "default": "Edit address",
+              "shipping": "Edit default shipping address",
+              "billing": "Edit default billing address",
+              "shippingAndBilling": "Edit address set as default for both shipping and billing"
+            },
+            "removeButton": {
+              "default": "Remove address",
+              "shipping": "Remove default shipping address",
+              "billing": "Remove default billing address",
+              "shippingAndBilling": "Remove address set as default for both shipping and billing"
+            }
+          }
         },
         "removeAddressModal": {
           "title": "Remove address",
@@ -110,7 +124,21 @@ declare const _default: {
           "actionEdit": "Edit",
           "cardLabelShipping": "Shipping",
           "cardLabelBilling": "Billing",
-          "defaultLabelText": "DEFAULT"
+          "defaultLabelText": "DEFAULT",
+          "ariaLabel": {
+            "editButton": {
+              "default": "Edit address",
+              "shipping": "Edit default shipping address",
+              "billing": "Edit default billing address",
+              "shippingAndBilling": "Edit address set as default for both shipping and billing"
+            },
+            "removeButton": {
+              "default": "Remove address",
+              "shipping": "Remove default shipping address",
+              "billing": "Remove default billing address",
+              "shippingAndBilling": "Remove address set as default for both shipping and billing"
+            }
+          }
         },
         "removeAddressModal": {
           "title": "Remove address",

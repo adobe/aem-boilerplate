@@ -377,7 +377,7 @@ header .nav-search-input .search_autocomplete .popover-container {
   }
 }
 
-/* TODO - CSS for authCombine demo (Auth Drop-In) */
+/* CSS for authCombine */
 #auth-combine-modal {
   position: fixed;
   top: 0;
@@ -410,7 +410,7 @@ header .nav-search-input .search_autocomplete .popover-container {
   }
 }
 
-/* TODO - CSS for auth dropdown demo (Auth Drop-In) */
+/* CSS for auth dropdown */
 
 .dropdown-wrapper.nav-tools-wrapper .nav-dropdown-button {
   font: var(--type-body-1-default-font) !important;

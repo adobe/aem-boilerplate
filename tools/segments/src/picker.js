@@ -1,3 +1,7 @@
+/**
+ * Copyright 2025 Adobe
+ * All Rights Reserved.
+ */
 import React, {useEffect, useState} from 'react';
 
 import {
@@ -20,37 +24,34 @@ import NotFound from '@spectrum-icons/illustrations/NotFound';
 import Error from '@spectrum-icons/illustrations/Error';
 import Copy from '@spectrum-icons/workflow/Copy';
 import Settings from '@spectrum-icons/workflow/Settings';
-
+import Refresh from "@spectrum-icons/workflow/Refresh";
+import queryCache from './api/query.cache';
 
 const Picker = props => {
-  const {configFiles, personalisationCategories, defaultConfig} = props;
+  const { environments, defaultEnvironment, personalisationCategories } = props;
 
   const [state, setState] = useState({
     configs: {},
-    selectedConfig: null,
+    selectedEnvironment: defaultEnvironment,
     personalisationCategories: personalisationCategories,
     items: personalisationCategories,
-    selectedSegment: null,
     selectedCategory: null,
-    loadingState: 'loading',
+    loadingState: 'idle',
     showSettings: false,
     error: null,
   });
 
-  const activeConfig = state.selectedConfig ? state.configs[state.selectedConfig] : state.configs[2];
-
   const clickListItem = (key) => {
-
     if (!key.startsWith('category')) {
       copyToClipboard(key);
       return;
     }
 
     let selected = key.split(':')[1];
-    const categoryInitializer = getCategory(selected)['initializer'];
-    if (categoryInitializer) {
+    const categoryInitializer = getCategory(selected).initializer;
+    if (categoryInitializer && categoryInitializer instanceof Function) {
       state.selectedCategory = selected;
-      categoryInitializer(activeConfig)
+      categoryInitializer(state.selectedEnvironment)
         .then(response => {
           setState(state => ({
             ...state,
@@ -86,60 +87,29 @@ const Picker = props => {
     }));
   }
 
-  const changeSelectedConfig = (config) => {
+  const changeSelectedEnvironment = (environment) => {
+    clearCache();
     setState(state => ({
       ...state,
-      selectedConfig: config,
+      selectedEnvironment: environment,
       selectedCategory: null,
-      items: state.personalisationCategories,
+      items: personalisationCategories,
       loadingState: 'idle',
     }));
   }
 
-  const fetchConfig = async (env) => {
-    const configData = await fetch(configFiles[env]).then(r => r.json());
-    let config = {};
-    configData.data.forEach(e => {
-      config[e.key] = e.value;
-    });
-    return config;
+  const clearCache = () => {
+    Object.keys(queryCache).map(key => queryCache[key] = []);
+    setState(state => ({
+      ...state,
+      selectedCategory: null,
+      items: state.personalisationCategories,
+    }));
   }
 
   const getCategory = (selected) => {
     return personalisationCategories.find(category => category.key === selected);
   }
-
-  /**
-   * Load configurations, set default config
-   */
-  useEffect(() => {
-    (async () => {
-      const selectedConfig = defaultConfig || Object.keys(configFiles)[0];
-
-      // Get configs and select default config
-      let configs = {};
-      try {
-        const promises = await Promise.all(Object.keys(configFiles).map(async key => {
-          return [key, await fetchConfig(key)];
-        }));
-        configs = Object.fromEntries(promises);
-      } catch (err) {
-        console.error(err);
-        setState(state => ({
-          ...state,
-          error: `Could not load ${selectedConfig} config file`,
-        }));
-        return;
-      }
-
-      setState(state => ({
-        ...state,
-        configs,
-        selectedConfig,
-        loadingState: 'idle',
-      }));
-    })();
-  }, []);
 
   const renderEmptyState = () => (
     <IllustratedMessage>
@@ -173,9 +143,9 @@ const Picker = props => {
           <RSPicker label="Configuration"
                     isRequired
                     width="100%"
-                    selectedKey={state.selectedConfig}
-                    onSelectionChange={key => changeSelectedConfig(key)}>
-            {Object.keys(state.configs).map(key => (<Item key={key} value={key}>{key}</Item>))}
+                    selectedKey={state.selectedEnvironment}
+                    onSelectionChange={environment => changeSelectedEnvironment(environment)}>
+            {environments.map(environment => (<Item key={environment} value={environment}>{environment}</Item>))}
           </RSPicker>
         </View>
       }
@@ -185,15 +155,17 @@ const Picker = props => {
           <ActionButton aria-label="Settings" isQuiet onPress={toggleSettings}>
             <Settings/>
           </ActionButton>
+          <ActionButton aria-label="Refresh" isQuiet onPress={clearCache} title="Clear cache">
+            <Refresh/>
+          </ActionButton>
         </Flex>
       </View>
 
-      <Breadcrumbs>
-        <Item ocClick={resetSelection}>Personalisation
-          {state.selectedCategory &&
-            <span onClick={resetSelection}> &gt; {getCategory(state.selectedCategory)['title']}</span>
-          }
-        </Item>
+      <Breadcrumbs onAction={resetSelection}>
+        <Item key='Personalisation'>Personalisation</Item>
+        {state.selectedCategory &&
+          <Item key={getCategory(state.selectedCategory).key}>{getCategory(state.selectedCategory).title}</Item>
+        }
       </Breadcrumbs>
 
       <ListView aria-label="Personalisation"
@@ -214,9 +186,9 @@ const Picker = props => {
           }
 
           return (
-            <Item>
+            <Item key={item.name}>
               <Text>{item.name}</Text>
-              <ActionButton aria-label="Copy" onPress={() => copyToClipboard(item.key)}><Copy/></ActionButton>
+              <ActionButton aria-label="Copy" onPress={() => copyToClipboard(item.name)}><Copy/></ActionButton>
             </Item>
           );
         }}

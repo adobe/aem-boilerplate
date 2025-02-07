@@ -2,6 +2,10 @@ name: Cypress E2E Tests
 on: push
 jobs:
   cypress-run:
+    # If you want this job to run on your fork, remove the below "if" line.
+    # You will need to "fix" the tests as they are specific to Adobe Commmerce's
+    # demo backend.
+    if: github.repository == 'hlxsites/aem-boilerplate-commerce'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -1,5 +1,4 @@
 /* eslint-disable import/no-unresolved */
-import { events } from '@dropins/tools/event-bus.js';
 import { debounce } from '@dropins/tools/lib.js';
 
 export function scrollToElement(element) {
@@ -114,22 +113,14 @@ export function estimateShippingCost({ api, debounceMs = 0 }) {
   let prevEstimateShippingData = {};
 
   const debouncedApi = debounce((data) => {
-    const criteria = {
+    const estimateShippingInputCriteria = {
       country_code: data.countryCode,
       region_name: String(data.region.regionCode || ''),
       region_id: String(data.region.regionId || ''),
+      zip: data.postcode,
     };
 
-    api({ criteria });
-
-    events.emit('checkout/estimate-shipping-address', {
-      address: {
-        country_id: data.countryCode,
-        region: String(data.region.regionCode || ''),
-        region_id: String(data.region.regionId || ''),
-        postcode: data.postcode,
-      },
-    });
+    api({ criteria: estimateShippingInputCriteria });
 
     prevEstimateShippingData = {
       countryCode: data.countryCode,

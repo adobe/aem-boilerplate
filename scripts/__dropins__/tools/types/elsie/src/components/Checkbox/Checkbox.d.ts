@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'preact';
+import { FunctionComponent, VNode } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
 
 export interface CheckboxProps extends Omit<HTMLAttributes<HTMLInputElement>, 'size'> {
@@ -6,8 +6,8 @@ export interface CheckboxProps extends Omit<HTMLAttributes<HTMLInputElement>, 's
     size?: 'medium' | 'large';
     disabled?: boolean;
     error?: boolean;
-    label?: string;
-    description?: string;
+    label?: string | VNode[];
+    description?: string | VNode[];
 }
 export declare const Checkbox: FunctionComponent<CheckboxProps>;
 //# sourceMappingURL=Checkbox.d.ts.map

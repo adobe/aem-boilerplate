@@ -18,4 +18,5 @@ export * from './convertCase';
 export * from './getDisplayName';
 export * from './isEmpty';
 export * from './isUnexpectedError';
+export * from './scrollToElement';
 //# sourceMappingURL=index.d.ts.map

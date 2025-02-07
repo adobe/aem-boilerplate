@@ -3,7 +3,11 @@
 import { SignUp } from '@dropins/storefront-auth/containers/SignUp.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { checkIsAuthenticated } from '../../scripts/configs.js';
-import { CUSTOMER_ACCOUNT_PATH, CUSTOMER_LOGIN_PATH } from '../../scripts/constants.js';
+import {
+  authPrivacyPolicyConsentSlot,
+  CUSTOMER_ACCOUNT_PATH,
+  CUSTOMER_LOGIN_PATH,
+} from '../../scripts/constants.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 // Initialize
@@ -17,6 +21,9 @@ export default async function decorate(block) {
       hideCloseBtnOnEmailConfirmation: true,
       routeSignIn: () => rootLink(CUSTOMER_LOGIN_PATH),
       routeRedirectOnSignIn: () => rootLink(CUSTOMER_ACCOUNT_PATH),
+      slots: {
+        ...authPrivacyPolicyConsentSlot,
+      },
     })(block);
   }
 }

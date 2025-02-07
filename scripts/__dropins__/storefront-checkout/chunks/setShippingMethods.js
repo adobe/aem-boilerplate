@@ -1,6 +1,6 @@
-/*! Copyright 2024 Adobe
+/*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{s as i}from"./store-config.js";import"./transform-store-config.js";import"./ServerErrorSignal.js";import{M as p}from"./errors.js";import{d as r,b as s}from"./synchronizeCheckout.js";import"@dropins/tools/lib.js";import"@dropins/tools/event-bus.js";import{CHECKOUT_DATA_FRAGMENT as o}from"../fragments.js";const e=`
+import{s as r}from"./store-config.js";import"./transform-store-config.js";import{M as i}from"./errors.js";import{d as n,b as e}from"./synchronizeCheckout.js";import"@dropins/tools/lib.js";import"@dropins/tools/event-bus.js";import{CHECKOUT_DATA_FRAGMENT as s}from"../fragments.js";const M=t=>({countryCode:t.country_id,postCode:t.postcode||"",...t.region_id?{regionId:Number(t.region_id)}:{...t.region?{region:t.region}:{}}}),T=t=>({carrierCode:t.carrier.code||"",methodCode:t.code||"",amount:t.amount,amountExclTax:t.amountExclTax,amountInclTax:t.amountInclTax}),a=`
   mutation setShippingMethods(
     $cartId: String!
     $shippingMethods: [ShippingMethodInput]!
@@ -14,5 +14,5 @@ import{s as i}from"./store-config.js";import"./transform-store-config.js";import
     }
   }
 
-  ${o}
-`,f=async a=>{const t=i.cartId;if(!t)throw new p;return await r({type:"mutation",query:e,queueName:"cartUpdate",options:{variables:{cartId:t,shippingMethods:a}},path:"setShippingMethodsOnCart.cart",signalType:"cart",transformer:s})};export{f as s};
+  ${s}
+`,S=async t=>{const o=r.cartId;if(!o)throw new i;return await n({type:"mutation",query:a,queueName:"cartUpdate",options:{variables:{cartId:o,shippingMethods:t}},path:"setShippingMethodsOnCart.cart",signalType:"cart",transformer:e})};export{M as a,S as s,T as t};

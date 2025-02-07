@@ -69,6 +69,19 @@ export const billToShippingAddress =
 // Shipping Methods
 export const shippingMethods = 'div[class*="checkout-shipping-methods"]';
 
+// Payment Methods
+export const paymentMethods = '.checkout-payment-methods__method';
+
+export const creditCardNumberIFrame =
+  '.payment-services-credit-card-form__card-number iframe';
+export const creditCardNumber = 'input[name="credit-card-number"]';
+export const creditCardExpIFrame =
+  '.payment-services-credit-card-form__expiration-date iframe';
+export const creditCardExp = 'input[name="expiration"]';
+export const creditCardCvvIFrame =
+  '.payment-services-credit-card-form__security-code iframe';
+export const creditCardCvv = 'input[name="cvv"]';
+
 // Place Order
 export const placeOrderButton = 'button[class*="checkout-place-order__button"]';
 

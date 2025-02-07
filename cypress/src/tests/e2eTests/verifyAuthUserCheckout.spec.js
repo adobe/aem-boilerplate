@@ -3,7 +3,8 @@ import {
   setGuestBillingAddress,
   placeOrder,
   signUpUser,
-  uncheckBillToShippingAddress
+  uncheckBillToShippingAddress,
+  setPaymentMethod,
 } from '../../actions';
 import {
   assertCartSummaryProduct,
@@ -19,12 +20,13 @@ import {
   assertAuthUser
 } from '../../assertions';
 import {
-
   assertSelectedPaymentMethod,
 } from '../../assertions';
 import {
   customerShippingAddress,
   customerBillingAddress,
+  paymentServicesCreditCard,
+  checkMoneyOrder,
 } from '../../fixtures/index';
 import * as fields from "../../fields";
 
@@ -172,10 +174,12 @@ describe('Verify auth user can place order', () => {
     cy.wait(2000);
     setGuestBillingAddress(customerBillingAddress, true);
     assertOrderSummaryMisc('$90.00', '$10.00', '$86.50');
-    assertSelectedPaymentMethod('checkmo', 0);
+    assertSelectedPaymentMethod(checkMoneyOrder.code, 0);
+    setPaymentMethod(paymentServicesCreditCard);
+    assertSelectedPaymentMethod(paymentServicesCreditCard.code, 1);
     cy.wait(5000);
     placeOrder();
-    assertOrderConfirmationCommonDetails(customerBillingAddress);
+    assertOrderConfirmationCommonDetails(customerBillingAddress, paymentServicesCreditCard);
     assertOrderConfirmationShippingDetails(customerShippingAddress);
     assertOrderConfirmationBillingDetails(customerBillingAddress);
     assertOrderConfirmationShippingMethod(customerShippingAddress);

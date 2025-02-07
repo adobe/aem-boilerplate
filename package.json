@@ -40,6 +40,8 @@
     "@dropins/storefront-cart": "~1.0.2",
     "@dropins/storefront-checkout": "~1.0.0",
     "@dropins/storefront-order": "~1.0.4",
+    "@dropins/storefront-checkout": "~1.1.0",
+    "@dropins/storefront-payment-services": "~1.0.1",
     "@dropins/storefront-pdp": "~1.0.0",
     "@dropins/tools": "^0.40.0"
   }

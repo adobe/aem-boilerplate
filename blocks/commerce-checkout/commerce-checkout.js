@@ -59,13 +59,20 @@ import OrderStatus from '@dropins/storefront-order/containers/OrderStatus.js';
 import ShippingStatus from '@dropins/storefront-order/containers/ShippingStatus.js';
 import { render as OrderProvider } from '@dropins/storefront-order/render.js';
 
+// Payment Services Dropin
+import { PaymentMethodCode } from '@dropins/storefront-payment-services/api.js';
+import CreditCard from '@dropins/storefront-payment-services/containers/CreditCard.js';
+import { render as PaymentServices } from '@dropins/storefront-payment-services/render.js';
+import { getConfigValue } from '../../scripts/configs.js';
+import { getUserTokenCookie } from '../../scripts/initializers/index.js';
+
 // Block-level
 import createModal from '../modal/modal.js';
 
 // Scripts
-import { getUserTokenCookie } from '../../scripts/initializers/index.js';
 import {
-  estimateShippingCost, getCartAddress,
+  estimateShippingCost,
+  getCartAddress,
   isCartEmpty,
   isCheckoutEmpty,
   scrollToElement,
@@ -114,7 +121,7 @@ export default async function decorate(block) {
   setMetaTags('Checkout');
   document.title = 'Checkout';
 
-  events.on('checkout/order', () => {
+  events.on('order/placed', () => {
     setMetaTags('Order Confirmation');
     document.title = 'Order Confirmation';
   });
@@ -196,12 +203,16 @@ export default async function decorate(block) {
   let loader;
   let modal;
   let emptyCart;
-  let shippingFormRef = { current: null };
-  let billingFormRef = { current: null };
+  const shippingFormRef = { current: null };
+  const billingFormRef = { current: null };
+  const creditCardFormRef = { current: null };
   let shippingForm;
   let billingForm;
   let shippingAddresses;
   let billingAddresses;
+
+  // Adobe Commerce GraphQL endpoint
+  const commerceCoreEndpoint = await getConfigValue('commerce-core-endpoint');
 
   // Render the initial containers
   const [
@@ -221,9 +232,14 @@ export default async function decorate(block) {
   ] = await Promise.all([
     CheckoutProvider.render(MergedCartBanner)($mergedCartBanner),
 
-    UI.render(Header, { title: 'Checkout', size: 'large', divider: true })($heading),
+    UI.render(Header, {
+      title: 'Checkout',
+      size: 'large',
+      divider: true,
+    })($heading),
 
     CheckoutProvider.render(ServerError, {
+      autoScroll: true,
       onRetry: () => {
         $content.classList.remove('checkout__content--error');
       },
@@ -290,12 +306,40 @@ export default async function decorate(block) {
 
     CheckoutProvider.render(ShippingMethods, {
       hideOnVirtualCart: true,
-      onCheckoutDataUpdate: () => {
-        cartApi.refreshCart().catch(console.error);
-      },
     })($delivery),
 
-    CheckoutProvider.render(PaymentMethods)($paymentMethods),
+    CheckoutProvider.render(PaymentMethods, {
+      slots: {
+        Methods: {
+          [PaymentMethodCode.CREDIT_CARD]: {
+            render: (ctx) => {
+              const $content = document.createElement('div');
+
+              PaymentServices.render(CreditCard, {
+                apiUrl: commerceCoreEndpoint,
+                getCustomerToken: getUserTokenCookie,
+                getCartId: () => ctx.cartId,
+                creditCardFormRef,
+              })($content);
+
+              ctx.replaceHTML($content);
+            },
+          },
+          [PaymentMethodCode.SMART_BUTTONS]: {
+            enabled: false,
+          },
+          [PaymentMethodCode.APPLE_PAY]: {
+            enabled: false,
+          },
+          [PaymentMethodCode.GOOGLE_PAY]: {
+            enabled: false,
+          },
+          [PaymentMethodCode.VAULT]: {
+            enabled: false,
+          },
+        },
+      },
+    })($paymentMethods),
 
     AccountProvider.render(AddressForm, {
       isOpen: true,
@@ -393,10 +437,30 @@ export default async function decorate(block) {
 
         return success;
       },
-      handlePlaceOrder: async ({ cartId }) => {
+      handlePlaceOrder: async ({ cartId, code }) => {
         await displayOverlaySpinner();
-
-        await orderApi.placeOrder(cartId).finally(removeOverlaySpinner);
+        try {
+          // Payment Services credit card
+          if (code === PaymentMethodCode.CREDIT_CARD) {
+            if (!creditCardFormRef.current) {
+              console.error('Credit card form not rendered.');
+              return;
+            }
+            if (!creditCardFormRef.current.validate()) {
+              // Credit card form invalid; abort order placement
+              return;
+            }
+            // Submit Payment Services credit card form
+            await creditCardFormRef.current.submit();
+          }
+          // Place order
+          await orderApi.placeOrder(cartId);
+        } catch (error) {
+          console.error(error);
+          throw error;
+        } finally {
+          await removeOverlaySpinner();
+        }
       },
     })($placeOrder),
   ]);
@@ -569,12 +633,12 @@ export default async function decorate(block) {
     } else if (!shippingAddresses) {
       shippingForm?.remove();
       shippingForm = null;
-      shippingFormRef = { current: null };
+      shippingFormRef.current = null;
 
       const cartShippingAddress = getCartAddress(data, 'shipping');
 
       const shippingAddressId = cartShippingAddress
-        ? (cartShippingAddress?.id ?? 0)
+        ? cartShippingAddress?.id ?? 0
         : undefined;
 
       const shippingAddressCache = sessionStorage.getItem(
@@ -584,15 +648,6 @@ export default async function decorate(block) {
       // clear persisted shipping address if cart has a shipping address
       if (cartShippingAddress && shippingAddressCache) {
         sessionStorage.removeItem(SHIPPING_ADDRESS_DATA_KEY);
-      }
-
-      // when shipping address form is empty
-      if (!cartShippingAddress) {
-        checkoutApi.estimateShippingMethods();
-        events.emit('checkout/estimate-shipping-address', {
-          address: {},
-          isValid: false,
-        });
       }
 
       const storeConfig = checkoutApi.getStoreConfigCache();
@@ -634,12 +689,12 @@ export default async function decorate(block) {
     if (!billingAddresses) {
       billingForm?.remove();
       billingForm = null;
-      billingFormRef = { current: null };
+      billingFormRef.current = null;
 
       const cartBillingAddress = getCartAddress(data, 'billing');
 
       const billingAddressId = cartBillingAddress
-        ? (cartBillingAddress?.id ?? 0)
+        ? cartBillingAddress?.id ?? 0
         : undefined;
 
       const billingAddressCache = sessionStorage.getItem(
@@ -737,7 +792,10 @@ export default async function decorate(block) {
 
     block.replaceChildren(orderConfirmationFragment);
 
-    const handleSignUpClick = async ({ inputsDefaultValueSet, addressesData }) => {
+    const handleSignUpClick = async ({
+      inputsDefaultValueSet,
+      addressesData,
+    }) => {
       const signUpForm = document.createElement('div');
       AuthProvider.render(SignUp, {
         routeSignIn: () => '/customer/login',

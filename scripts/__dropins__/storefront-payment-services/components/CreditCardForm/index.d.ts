@@ -14,6 +14,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-declare function useShippingEstimateEventEmitter(): void;
-export default useShippingEstimateEventEmitter;
-//# sourceMappingURL=useShippingEstimateEventEmitter.d.ts.map
+export * from './CreditCardForm';
+export { CreditCardForm as default } from './CreditCardForm';
+//# sourceMappingURL=index.d.ts.map

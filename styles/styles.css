@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2020 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -9,64 +10,149 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
 :root {
-  /* colors */
   --background-color: white;
   --light-color: #f8f8f8;
   --dark-color: #505050;
   --text-color: #131313;
   --link-color: #3b63fb;
   --link-hover-color: #1d3ecf;
-
-  /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
-  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
-
-  /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 19px;
-  --body-font-size-xs: 17px;
-
-  /* heading sizes */
-  --heading-font-size-xxl: 55px;
-  --heading-font-size-xl: 44px;
-  --heading-font-size-l: 34px;
-  --heading-font-size-m: 27px;
-  --heading-font-size-s: 24px;
-  --heading-font-size-xs: 22px;
-
-  /* nav height */
+  --body-font-family: "Open Sans", "Open Sans Fallback", "sans-serif";
+  --heading-font-family: "Zilla Slab", "Zilla Slab Fallback";
+  --body-font-size-m: 16px;
+  --body-font-size-s: 18px;
+  --body-font-size-xs: 16px;
+  --heading-font-size-xxl: 16px;
+  --heading-font-size-xl: 26px;
+  --heading-font-size-l: 20px;
+  --heading-font-size-m: 16px;
+  --heading-font-size-s: 18px;
+  --heading-font-size-xs: 16px;
   --nav-height: 64px;
 }
 
 /* fallback fonts */
 @font-face {
-  font-family: roboto-condensed-fallback;
-  size-adjust: 88.82%;
-  src: local('Arial');
+  font-family:"Zilla Slab Fallback";
+  font-style:normal;
+  font-weight:400;
+  src:local("Arial");
+  ascent-override:96.66%;
+  descent-override:26.21%;
+  line-gap-override:0.00%;
+  size-adjust:97.67%;
 }
 
 @font-face {
-  font-family: roboto-fallback;
-  size-adjust: 99.529%;
-  src: local('Arial');
+  font-family:"Open Sans Fallback";
+  font-style:normal;
+  font-weight:400;
+  src:local("Arial");
+  ascent-override:101.58%;
+  descent-override:27.84%;
+  line-gap-override:0.00%;
+  size-adjust:105.22%;
 }
 
-@media (width >= 900px) {
-  :root {
-    /* body sizes */
-    --body-font-size-m: 18px;
-    --body-font-size-s: 16px;
-    --body-font-size-xs: 14px;
+@font-face {
+  font-family:"Open Sans Fallback";
+  font-style:normal;
+  font-weight:300;
+  src:local("Arial");
+  ascent-override:101.58%;
+  descent-override:27.84%;
+  line-gap-override:0.00%;
+  size-adjust:105.22%;
+}
 
-    /* heading sizes */
-    --heading-font-size-xxl: 45px;
-    --heading-font-size-xl: 36px;
-    --heading-font-size-l: 28px;
-    --heading-font-size-m: 22px;
-    --heading-font-size-s: 20px;
-    --heading-font-size-xs: 18px;
+@font-face {
+  font-family:"Open Sans Fallback";
+  font-style:normal;
+  font-weight:700;
+  src:local("Arial Bold");
+  ascent-override:109.90%;
+  descent-override:30.12%;
+  line-gap-override:0.00%;
+  size-adjust:97.26%;
+}
+
+@font-face {
+  font-family:"Zilla Slab Fallback";
+  font-style:normal;
+  font-weight:700;
+  src:local("Arial Bold");
+  ascent-override:102.25%;
+  descent-override:27.73%;
+  line-gap-override:0.00%;
+  size-adjust:92.33%;
+}
+
+@font-face {
+  font-family:"Zilla Slab Fallback";
+  font-style:normal;
+  font-weight:500;
+  src:local("Arial");
+  ascent-override:96.00%;
+  descent-override:26.03%;
+  line-gap-override:0.00%;
+  size-adjust:98.34%;
+}
+
+@font-face {
+  font-family:"montserrat Fallback";
+  font-style:normal;
+  font-weight:600;
+  src:local("Arial Bold");
+  ascent-override:96.21%;
+  descent-override:18.55%;
+  line-gap-override:0.00%;
+  size-adjust:104.56%;
+}
+
+@font-face {
+  font-family:"montserrat Fallback";
+  font-style:normal;
+  font-weight:400;
+  src:local("Arial");
+  ascent-override:86.64%;
+  descent-override:21.62%;
+  line-gap-override:0.00%;
+  size-adjust:111.36%;
+}
+
+@font-face {
+  font-family:"montserrat Fallback";
+  font-style:normal;
+  font-weight:800;
+  src:local("Arial Bold");
+  ascent-override:90.74%;
+  descent-override:29.26%;
+  line-gap-override:0.00%;
+  size-adjust:107.46%;
+}
+
+@font-face {
+  font-family:"FontAwesome Fallback";
+  font-style:normal;
+  font-weight:normal;
+  src:local("Arial");
+  ascent-override:85.71%;
+  descent-override:14.29%;
+  line-gap-override:0.00%;
+  size-adjust:100.00%;
+}
+
+@media (width>=900px) {
+  :root {
+    --body-font-size-m: 16px;
+    --body-font-size-s: 18px;
+    --body-font-size-xs: 16px;
+    --heading-font-size-xxl: 16px;
+    --heading-font-size-xl: 26px;
+    --heading-font-size-l: 20px;
+    --heading-font-size-m: 16px;
+    --heading-font-size-s: 18px;
+    --heading-font-size-xs: 16px;
   }
 }
 
@@ -88,22 +174,15 @@ header {
   height: var(--nav-height);
 }
 
-header .header,
-footer .footer {
+header .header, footer .footer {
   visibility: hidden;
 }
 
-header .header[data-block-status="loaded"],
-footer .footer[data-block-status="loaded"] {
+header .header[data-block-status="loaded"], footer .footer[data-block-status="loaded"] {
   visibility: visible;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1, h2, h3, h4, h5, h6 {
   margin-top: 0.8em;
   margin-bottom: 0.25em;
   font-family: var(--heading-font-family);
@@ -112,25 +191,36 @@ h6 {
   scroll-margin: 40px;
 }
 
-h1 { font-size: var(--heading-font-size-xxl); }
-h2 { font-size: var(--heading-font-size-xl); }
-h3 { font-size: var(--heading-font-size-l); }
-h4 { font-size: var(--heading-font-size-m); }
-h5 { font-size: var(--heading-font-size-s); }
-h6 { font-size: var(--heading-font-size-xs); }
+h1 {
+  font-size: var(--heading-font-size-xxl);
+}
 
-p,
-dl,
-ol,
-ul,
-pre,
-blockquote {
+h2 {
+  font-size: var(--heading-font-size-xl);
+}
+
+h3 {
+  font-size: var(--heading-font-size-l);
+}
+
+h4 {
+  font-size: var(--heading-font-size-m);
+}
+
+h5 {
+  font-size: var(--heading-font-size-s);
+}
+
+h6 {
+  font-size: var(--heading-font-size-xs);
+}
+
+p, dl, ol, ul, pre, blockquote {
   margin-top: 0.8em;
   margin-bottom: 0.25em;
 }
 
-code,
-pre {
+code, pre {
   font-size: var(--body-font-size-s);
 }
 
@@ -142,14 +232,11 @@ pre {
   white-space: pre;
 }
 
-main > div {
+main>div {
   margin: 40px 16px;
 }
 
-input,
-textarea,
-select,
-button {
+input, textarea, select, button {
   font: inherit;
 }
 
@@ -166,8 +253,7 @@ a:hover {
 }
 
 /* buttons */
-a.button:any-link,
-button {
+a.button:any-link, button {
   box-sizing: border-box;
   display: inline-block;
   max-width: 100%;
@@ -189,22 +275,17 @@ button {
   white-space: nowrap;
 }
 
-a.button:hover,
-a.button:focus,
-button:hover,
-button:focus {
+a.button:hover, a.button:focus, button:hover, button:focus {
   background-color: var(--link-hover-color);
   cursor: pointer;
 }
 
-button:disabled,
-button:disabled:hover {
+button:disabled, button:disabled:hover {
   background-color: var(--light-color);
   cursor: unset;
 }
 
-a.button.secondary,
-button.secondary {
+a.button.secondary, button.secondary {
   background-color: unset;
   border: 2px solid currentcolor;
   color: var(--text-color);
@@ -228,29 +309,28 @@ main img {
 }
 
 /* sections */
-main > .section {
+main>.section {
   margin: 40px 0;
 }
 
-main > .section > div {
+main>.section>div {
   max-width: 1200px;
   margin: auto;
   padding: 0 24px;
 }
 
-main > .section:first-of-type {
+main>.section:first-of-type {
   margin-top: 0;
 }
 
-@media (width >= 900px) {
-  main > .section > div {
+@media (width>=900px) {
+  main>.section>div {
     padding: 0 32px;
   }
 }
 
 /* section metadata */
-main .section.light,
-main .section.highlight {
+main .section.light, main .section.highlight {
   background-color: var(--light-color);
   margin: 0;
   padding: 40px 0;

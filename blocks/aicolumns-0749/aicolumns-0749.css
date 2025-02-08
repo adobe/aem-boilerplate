@@ -49,7 +49,7 @@
   margin-bottom: 0; /* Removes bottom margin from the last paragraph */
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .aicolumns-0749-3-cols {
     justify-content: space-between; /* Ensure the cards take the full height of the row */
     gap: 20px; /* Adjust gap between cards */

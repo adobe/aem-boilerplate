@@ -2,13 +2,15 @@
 .aicolumns-1039-wrapper {
   display: flex;
   flex-direction: row;
-  align-items: center; /* Vertically center the content */
+  align-items: center;
   width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add light shadow to the block */
+  margin: 20px 0; /* Add margin to the top and bottom */
 }
 
 .aicolumns-1039 {
   display: flex;
-  flex-direction: row; /* Align children side by side */
+  flex-direction: row;
   align-items: center;
   width: 100%;
 }
@@ -21,36 +23,38 @@
 }
 
 .aicolumns-1039 > div > .aicolumns-1039-img-col {
-  flex: 1; /* Allow the image column to take up half the width */
+  flex: 1;
 }
 
 .aicolumns-1039 > div > .aicolumns-1039-img-col picture,
 .aicolumns-1039 > div > .aicolumns-1039-img-col img {
-  width: 100%; /* Ensure the image takes up the full width of its container */
-  height: auto; /* Maintain the image aspect ratio */
+  width: 100%;
+  height: auto;
 }
 
 .aicolumns-1039 > div > div:not(.aicolumns-1039-img-col) {
-  flex: 1; /* Allow the text column to take up half the width */
-  padding: 20px; /* Add some padding for better spacing */
+  flex: 1;
+  padding: 20px;
   display: flex;
-  flex-direction: column; /* Stack text elements vertically */
-  justify-content: center; /* Vertically center the text content */
+  flex-direction: column; /* Ensure children are stacked vertically */
+  justify-content: flex-start; /* Align items to the start */
 }
 
 .aicolumns-1039 h3 {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
+  text-align: left; /* Ensure text is aligned to the left */
 }
 
 .aicolumns-1039 p {
   font-size: 16px;
   margin-bottom: 20px;
+  text-align: left; /* Ensure text is aligned to the left */
 }
 
 .aicolumns-1039 button {
-  display: block;
+  display: inline-block; /* Make sure the button displays as inline-block */
   padding: 10px 20px;
   background-color: #000080; /* Dark blue color */
   color: #ffffff; /* White text */
@@ -58,7 +62,7 @@
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
-  margin-top: 10px; /* Add margin to position the button properly */
+  margin-top: 10px;
   align-self: flex-start; /* Ensure the button is aligned to the start */
 }
 

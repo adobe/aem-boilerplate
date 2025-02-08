@@ -1136,8 +1136,8 @@
             },
             "x": 40,
             "y": 1786,
-            "mapping": "cards",
-            "customBlockName": "aicards"
+            "mapping": "columns",
+            "customBlockName": "aicolumns-1039"
           }
         ]
       }

@@ -16,7 +16,7 @@
 
 .aicolumns-0749-3-cols > div > div {
   background-color: #fff; /* Background color for card */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Enhanced shadow for the card */
+  box-shadow: 0 4px 8px rgb(0 0 0 / 10%); /* Enhanced shadow for the card */
   width: 32%; /* Adjust width to make cards wider */
   margin-bottom: 16px; /* Space between rows of cards */
   box-sizing: border-box; /* Ensures padding is included in the width */
@@ -48,7 +48,7 @@
   margin-bottom: 0; /* Removes bottom margin from the last paragraph */
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .aicolumns-0749-3-cols {
     justify-content: space-between; /* Ensure the cards take the full height of the row */
     gap: 16px; /* Adjust gap between cards */

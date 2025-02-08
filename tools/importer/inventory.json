@@ -79,8 +79,8 @@
             },
             "x": 0,
             "y": 317,
-            "mapping": "defaultContent",
-            "customBlockName": "aidefaultContent"
+            "mapping": "hero",
+            "customBlockName": "aihero-1"
           },
           {
             "url": "https://fortstreet-p.schools.nsw.gov.au/",

@@ -5,22 +5,22 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 20px; /* Increase the gap between the cards */
+  gap: 5px; /* Decrease the gap between the cards */
   position: relative; /* Allow for overlap positioning */
-  top: -20px; /* Adjust the positioning to overlap with the image above */
+  top: -30px; /* Adjust the positioning to overlap with the image above */
 }
 
 .aicards-1-wrapper > .aicards-1 > ul > li {
   flex: 1;
-  background-color: #02084b; /* Update background color */
+  background-color: #02084b; /* Update background color to match the original image */
   color: #ffffff; /* Set the text color to white */
-  padding: 50px; /* Increase padding inside the cards */
+  padding: 20px; /* Reduce padding inside the cards */
   box-sizing: border-box; /* Include padding and border in element's total width and height */
   border: none; /* Remove the border */
   display: flex;
   flex-direction: column; /* Ensure elements inside the card are stacked vertically */
   justify-content: flex-start;
-  margin-top: 20px; /* Ensure there is some margin at the top */
+  margin-top: 0px; /* Remove top margin */
 }
 
 .aicards-1-wrapper .aicards-1-card-body {
@@ -31,18 +31,21 @@
 }
 
 .aicards-1-wrapper h2 {
-  font-size: 24px; /* Ensure consistent font size */
+  font-size: 1.5em; /* Ensure consistent font size */
   font-weight: bold; /* Ensure bold font weight */
   font-family: 'Arial', sans-serif; /* Adjust font family */
-  margin-bottom: 20px; /* Increase margin below the title */
+  margin: 0 0 5px 0; /* Reduce margin to align title closer to the top */
 }
 
 .aicards-1-wrapper p {
-  margin-bottom: 20px; /* Increase margin below paragraphs */
+  margin: 0 0 5px 0; /* Decrease margin below paragraphs */
 }
 
 .aicards-1-wrapper .button-container {
-  margin-top: auto; /* Push buttons to the bottom */
+  margin-top: 0; /* Remove margin to the top to ensure space between elements */
+  display: flex;
+  flex-direction: row; /* Ensure elements inside are side by side */
+  align-items: center; /* Align items in the center */
 }
 
 .aicards-1-wrapper .button-container a {
@@ -50,14 +53,14 @@
   color: #ffffff; /* Set link color to white */
   text-decoration: none; /* Remove underline */
   background: none; /* Remove background */
-  padding: 10px 0; /* Add padding to links */
-  margin-top: 20px; /* Increase margin to the top to ensure space between elements */
+  padding: 0; /* Remove padding around links */
+  margin-top: 0; /* Remove margin to the top */
   position: relative; /* Position relative for arrow icon */
   font-weight: bold; /* Ensure link is bold */
 }
 
 .aicards-1-wrapper .button-container a::after {
-  content: ' \2192'; /* Unicode for right arrow */
+  content: ' >'; /* Change arrow to greater than symbol */
   font-size: 16px; /* Adjust arrow size */
   margin-left: 5px; /* Space between text and arrow */
 }

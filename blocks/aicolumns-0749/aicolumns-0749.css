@@ -1,0 +1,52 @@
+
+.aicolumns-0749-3-cols > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.aicolumns-0749-3-cols > div > div {
+  background-color: #fff; /* Match the background color to the original */
+  border: 1px solid #ddd; /* Subtle border for the card */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adjusted shadow for the card */
+  width: 32%; /* Ensures three cards fit side by side with space between */
+  margin-bottom: 24px; /* Slightly increased space between rows of cards */
+  padding: 16px; /* Reduced padding inside the card */
+  box-sizing: border-box; /* Ensures padding is included in the width */
+}
+
+.aicolumns-0749-3-cols > div > div > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.aicolumns-0749-3-cols picture {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px; /* Slightly reduced space between the image and the text */
+}
+
+.aicolumns-0749-3-cols img {
+  width: 100%; /* Makes the image take the full width of its container */
+  height: auto; /* Maintains aspect ratio */
+  display: block; /* Ensures image is treated as a block element */
+}
+
+.aicolumns-0749-3-cols p, .aicolumns-0749-3-cols h3 {
+  margin: 0 0 8px 0; /* Space between text elements */
+}
+
+.aicolumns-0749-3-cols p:last-of-type {
+  margin-bottom: 0; /* Removes bottom margin from the last paragraph */
+}
+
+@media (min-width: 900px) {
+  .aicolumns-0749-3-cols {
+    justify-content: space-between; /* Ensure the cards take the full height of the row */
+    gap: 24px;
+  }
+
+  .aicolumns-0749-3-cols > div {
+    flex: 1 1 32%; /* Allow cards to grow and shrink with a base width */
+  }
+}

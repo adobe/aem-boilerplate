@@ -5,36 +5,40 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 10px; /* Adjust the gap between the cards as needed */
+  gap: 20px; /* Increase the gap between the cards */
+  position: relative; /* Allow for overlap positioning */
+  top: -20px; /* Adjust the positioning to overlap with the image above */
 }
 
 .aicards-1-wrapper > .aicards-1 > ul > li {
   flex: 1;
-  background-color: #000080; /* Set the background color to dark blue */
+  background-color: #02084b; /* Update background color */
   color: #ffffff; /* Set the text color to white */
-  padding: 20px; /* Add padding inside the cards */
+  padding: 50px; /* Increase padding inside the cards */
   box-sizing: border-box; /* Include padding and border in element's total width and height */
   border: none; /* Remove the border */
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Ensure elements inside the card are stacked vertically */
   justify-content: flex-start;
+  margin-top: 20px; /* Ensure there is some margin at the top */
 }
 
 .aicards-1-wrapper .aicards-1-card-body {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Ensure elements inside the card body are stacked vertically */
   flex: 1;
   justify-content: flex-start; /* Ensure space between internal elements */
 }
 
 .aicards-1-wrapper h2 {
-  font-size: 24px; /* Adjust font size */
+  font-size: 24px; /* Ensure consistent font size */
   font-weight: bold; /* Ensure bold font weight */
-  margin-bottom: 10px; /* Add margin below the title */
+  font-family: 'Arial', sans-serif; /* Adjust font family */
+  margin-bottom: 20px; /* Increase margin below the title */
 }
 
 .aicards-1-wrapper p {
-  margin-bottom: 10px; /* Add margin below paragraphs */
+  margin-bottom: 20px; /* Increase margin below paragraphs */
 }
 
 .aicards-1-wrapper .button-container {
@@ -46,9 +50,16 @@
   color: #ffffff; /* Set link color to white */
   text-decoration: none; /* Remove underline */
   background: none; /* Remove background */
-  border-radius: 0; /* Remove border-radius */
-  padding: 0; /* Remove padding */
-  margin-top: 10px; /* Add margin to the top to ensure space between elements */
+  padding: 10px 0; /* Add padding to links */
+  margin-top: 20px; /* Increase margin to the top to ensure space between elements */
+  position: relative; /* Position relative for arrow icon */
+  font-weight: bold; /* Ensure link is bold */
+}
+
+.aicards-1-wrapper .button-container a::after {
+  content: ' \2192'; /* Unicode for right arrow */
+  font-size: 16px; /* Adjust arrow size */
+  margin-left: 5px; /* Space between text and arrow */
 }
 
 .aicards-1-wrapper .aicards-1-card-body h2 + p {

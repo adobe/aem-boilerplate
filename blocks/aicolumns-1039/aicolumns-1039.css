@@ -1,0 +1,71 @@
+
+.aicolumns-1039-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add light shadow to the block */
+  margin: 20px 0; /* Add margin to the top and bottom */
+}
+
+.aicolumns-1039 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.aicolumns-1039 > div {
+  display: flex;
+  flex-direction: row; /* Ensure children are side by side */
+  align-items: center;
+  width: 100%;
+}
+
+.aicolumns-1039 > div > .aicolumns-1039-img-col {
+  flex: 1;
+}
+
+.aicolumns-1039 > div > .aicolumns-1039-img-col picture,
+.aicolumns-1039 > div > .aicolumns-1039-img-col img {
+  width: 100%;
+  height: auto;
+}
+
+.aicolumns-1039 > div > div:not(.aicolumns-1039-img-col) {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column; /* Ensure children are stacked vertically */
+  justify-content: flex-start; /* Align items to the start */
+}
+
+.aicolumns-1039 h3 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: left; /* Ensure text is aligned to the left */
+}
+
+.aicolumns-1039 p {
+  font-size: 16px;
+  margin-bottom: 20px;
+  text-align: left; /* Ensure text is aligned to the left */
+}
+
+.aicolumns-1039 button {
+  display: inline-block; /* Make sure the button displays as inline-block */
+  padding: 10px 20px;
+  background-color: #000080; /* Dark blue color */
+  color: #ffffff; /* White text */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 10px;
+  align-self: flex-start; /* Ensure the button is aligned to the start */
+}
+
+.aicolumns-1039 button:hover {
+  background-color: #0000cc; /* Slightly lighter blue on hover */
+}

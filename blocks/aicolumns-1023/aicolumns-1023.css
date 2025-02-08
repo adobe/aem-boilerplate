@@ -4,19 +4,26 @@
   justify-content: space-between;
 }
 
+.aicolumns-1023 {
+  display: flex;
+  width: 100%;
+}
+
 .aicolumns-1023 > div {
   display: flex;
   flex-direction: row;
+  width: 100%;
 }
 
 .aicolumns-1023 > div > div:first-child {
-  flex: 1;
-  background-color: #002147; /* Dark blue background */
+  width: 420px; /* Fixed width for the left column */
+  background-color: #02084b; /* Updated background color */
   color: white;
-  padding: 60px; /* Increased padding */
+  padding: 20px; /* Adjusted padding */
   display: flex;
   flex-direction: column;
   justify-content: center; /* Center content vertically */
+  margin-right: 0; /* Ensure no gap between columns */
 }
 
 .aicolumns-1023 > div > div:last-child {
@@ -26,27 +33,55 @@
   align-items: center;
   justify-content: center;
   height: auto; /* Ensure the video section adjusts to content height */
+  position: relative;
+}
+
+.aicolumns-1023 > div > div:last-child::before {
+  content: '';
+  display: block;
+  width: 100%;
+  padding-top: 56.25%; /* Maintain 16:9 aspect ratio */
+  background: url('path_to_video_thumbnail_or_placeholder.jpg') no-repeat center center;
+  background-size: cover; /* Ensure the background covers the entire section */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.aicolumns-1023 > div > div:last-child::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 60px;
+  background: url('path_to_play_button_image.png') no-repeat center center;
+  background-size: contain; /* Ensure the play button is correctly sized */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center the play button */
+}
+
+.aicolumns-1023 h2 {
+  font-size: 2.5rem; /* Updated font size for h2 */
 }
 
 .aicolumns-1023 .button-container .button {
   display: inline-block;
   padding: 10px 20px;
   background-color: white;
-  color: #002147;
+  color: #02084b;
   text-decoration: none;
   border-radius: 5px;
   margin-top: 20px; /* Adjusted margin above the button */
 }
 
-@media (min-width: 900px) {
+/* Optional: Responsive design adjustments */
+@media (max-width: 768px) {
   .aicolumns-1023 > div {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    gap: 24px;
+    flex-direction: column; /* Stack columns on smaller screens */
   }
 
   .aicolumns-1023 > div > div {
-    flex: 1;
+    width: 100%; /* Full width for each column */
   }
 }

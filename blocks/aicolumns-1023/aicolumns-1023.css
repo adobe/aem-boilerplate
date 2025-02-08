@@ -1,0 +1,52 @@
+
+.aicolumns-1023-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.aicolumns-1023 > div {
+  display: flex;
+  flex-direction: row;
+}
+
+.aicolumns-1023 > div > div:first-child {
+  flex: 1;
+  background-color: #002147; /* Dark blue background */
+  color: white;
+  padding: 60px; /* Increased padding */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+}
+
+.aicolumns-1023 > div > div:last-child {
+  flex: 1;
+  background-color: black; /* Black background for the video */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto; /* Ensure the video section adjusts to content height */
+}
+
+.aicolumns-1023 .button-container .button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: white;
+  color: #002147;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 20px; /* Adjusted margin above the button */
+}
+
+@media (min-width: 900px) {
+  .aicolumns-1023 > div {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  .aicolumns-1023 > div > div {
+    flex: 1;
+  }
+}

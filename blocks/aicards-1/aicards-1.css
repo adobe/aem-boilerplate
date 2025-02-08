@@ -1,25 +1,26 @@
 
 .aicards-1-wrapper > .aicards-1 > ul {
   display: flex;
-  flex-direction: row;
+  flex-direction: row; /* Ensure cards are side by side */
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 5px; /* Decrease the gap between the cards */
-  position: relative; /* Allow for overlap positioning */
-  top: -30px; /* Adjust the positioning to overlap with the image above */
+  gap: 24px; /* Maintain the gap between the cards */
+  position: relative;
+  top: 0; /* Reset positioning to avoid overlap */
 }
 
 .aicards-1-wrapper > .aicards-1 > ul > li {
   flex: 1;
-  background-color: #02084b; /* Update background color to match the original image */
+  background-color: #00124d; /* Update background color to match the original image */
   color: #ffffff; /* Set the text color to white */
-  padding: 20px; /* Reduce padding inside the cards */
+  padding: 30px; /* Maintain padding inside the cards */
   box-sizing: border-box; /* Include padding and border in element's total width and height */
   border: none; /* Remove the border */
   display: flex;
   flex-direction: column; /* Ensure elements inside the card are stacked vertically */
   justify-content: flex-start;
+  align-items: flex-start; /* Ensure content starts from the top left */
   margin-top: 0px; /* Remove top margin */
 }
 
@@ -34,15 +35,16 @@
   font-size: 1.5em; /* Ensure consistent font size */
   font-weight: bold; /* Ensure bold font weight */
   font-family: 'Arial', sans-serif; /* Adjust font family */
-  margin: 0 0 5px 0; /* Reduce margin to align title closer to the top */
+  margin: 0 0 15px 0; /* Increase margin to align title further from the top */
+  align-self: flex-start; /* Align the title to the top of the card */
 }
 
 .aicards-1-wrapper p {
-  margin: 0 0 5px 0; /* Decrease margin below paragraphs */
+  margin: 0 0 15px 0; /* Increase margin below paragraphs */
 }
 
 .aicards-1-wrapper .button-container {
-  margin-top: 0; /* Remove margin to the top to ensure space between elements */
+  margin-top: auto; /* Push buttons to the bottom of the card */
   display: flex;
   flex-direction: row; /* Ensure elements inside are side by side */
   align-items: center; /* Align items in the center */

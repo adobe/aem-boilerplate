@@ -1,0 +1,86 @@
+
+.aicards-1-wrapper > .aicards-1 > ul {
+  display: flex;
+  flex-direction: row; /* Ensure cards are side by side */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 24px; /* Maintain the gap between the cards */
+  position: relative;
+  top: 0; /* Reset positioning to avoid overlap */
+}
+
+.aicards-1-wrapper > .aicards-1 > ul > li {
+  flex: 1;
+  background-color: #00124d; /* Update background color to match the original image */
+  color: #ffffff; /* Set the text color to white */
+  padding: 30px; /* Maintain padding inside the cards */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
+  border: none; /* Remove the border */
+  display: flex;
+  flex-direction: column; /* Ensure elements inside the card are stacked vertically */
+  justify-content: flex-start;
+  align-items: flex-start; /* Ensure content starts from the top left */
+  margin-top: 0px; /* Remove top margin */
+}
+
+.aicards-1-wrapper .aicards-1-card-body {
+  display: flex;
+  flex-direction: column; /* Ensure elements inside the card body are stacked vertically */
+  flex: 1;
+  justify-content: flex-start; /* Ensure space between internal elements */
+}
+
+.aicards-1-wrapper h2 {
+  font-size: 1.5em; /* Ensure consistent font size */
+  font-weight: bold; /* Ensure bold font weight */
+  font-family: 'Arial', sans-serif; /* Adjust font family */
+  margin: 0 0 15px 0; /* Increase margin to align title further from the top */
+  align-self: flex-start; /* Align the title to the top of the card */
+}
+
+.aicards-1-wrapper p {
+  margin: 0 0 15px 0; /* Increase margin below paragraphs */
+}
+
+.aicards-1-wrapper .button-container {
+  margin-top: auto; /* Push buttons to the bottom of the card */
+  display: flex;
+  flex-direction: row; /* Ensure elements inside are side by side */
+  align-items: center; /* Align items in the center */
+}
+
+.aicards-1-wrapper .button-container a {
+  display: inline-block;
+  color: #ffffff; /* Set link color to white */
+  text-decoration: none; /* Remove underline */
+  background: none; /* Remove background */
+  padding: 0; /* Remove padding around links */
+  margin-top: 0; /* Remove margin to the top */
+  position: relative; /* Position relative for arrow icon */
+  font-weight: bold; /* Ensure link is bold */
+}
+
+.aicards-1-wrapper .button-container a::after {
+  content: ' >'; /* Change arrow to greater than symbol */
+  font-size: 16px; /* Adjust arrow size */
+  margin-left: 5px; /* Space between text and arrow */
+}
+
+.aicards-1-wrapper .aicards-1-card-body h2 + p {
+  margin-top: 0; /* Remove top margin for the first paragraph after the title */
+}
+
+.aicards-1-wrapper h2 a {
+  color: #ffffff; /* Ensure the link inside h2 is also white */
+}
+
+.aicards-1-wrapper p a {
+  color: #ffffff; /* Ensure the links inside p are also white */
+}
+
+/* Hide the duplicate titles and links */
+.aicards-1-wrapper .aicards-1-card-body h2:nth-of-type(2),
+.aicards-1-wrapper .aicards-1-card-body p:nth-of-type(2) {
+  display: none;
+}

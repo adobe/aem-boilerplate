@@ -8,7 +8,7 @@
 .aicolumns-0749-3-cols > div > div {
   background-color: #fff; /* Match the background color to the original */
   border: 1px solid #ddd; /* Subtle border for the card */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adjusted shadow for the card */
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%); /* Adjusted shadow for the card */
   width: 32%; /* Ensures three cards fit side by side with space between */
   margin-bottom: 24px; /* Slightly increased space between rows of cards */
   padding: 16px; /* Reduced padding inside the card */
@@ -33,14 +33,14 @@
 }
 
 .aicolumns-0749-3-cols p, .aicolumns-0749-3-cols h3 {
-  margin: 0 0 8px 0; /* Space between text elements */
+  margin: 0 0 8px; /* Space between text elements */
 }
 
 .aicolumns-0749-3-cols p:last-of-type {
   margin-bottom: 0; /* Removes bottom margin from the last paragraph */
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   .aicolumns-0749-3-cols {
     justify-content: space-between; /* Ensure the cards take the full height of the row */
     gap: 24px;

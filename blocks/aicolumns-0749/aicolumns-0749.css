@@ -1,0 +1,61 @@
+
+.aicolumns-0749-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background-color: #fff; /* Set background color of the block to white */
+  padding: 16px; /* Add padding to the container */
+}
+
+.aicolumns-0749-3-cols > div {
+  display: flex;
+  flex-direction: row; /* Ensure cards are side by side */
+  justify-content: space-between;
+  gap: 20px; /* Adjust gap between cards to match original image */
+  width: 100%;
+}
+
+.aicolumns-0749-3-cols > div > div {
+  background-color: #fff; /* Change background color of each column to white */
+  box-shadow: 0 2px 4px rgb(0 0 0 / 10%); /* Adjusted shadow for the card */
+  flex: 1 1 calc(33.333% - 20px); /* Allow cards to grow and shrink with a base width */
+  margin-bottom: 16px; /* Space between rows of cards */
+  box-sizing: border-box; /* Ensures padding is included in the width */
+  display: flex;
+  flex-direction: column; /* Ensure content is stacked vertically */
+  padding: 10px 15px; /* Add padding to the text sections */
+}
+
+.aicolumns-0749-3-cols picture {
+  display: block;
+  width: 100%;
+  height: 200px; /* Adjust height for image to make it smaller */
+  overflow: hidden; /* Ensure content fits within the height */
+  margin: 0; /* Remove margin to avoid padding */
+}
+
+.aicolumns-0749-3-cols img {
+  width: 100%; /* Makes the image take the full width of its container */
+  height: 100%; /* Ensure the image fills the height */
+  object-fit: cover; /* Cover the container without distorting */
+  display: block; /* Ensures image is treated as a block element */
+}
+
+.aicolumns-0749-3-cols p, .aicolumns-0749-3-cols h3 {
+  margin: 8px 0; /* Space between text elements */
+}
+
+.aicolumns-0749-3-cols p:last-of-type {
+  margin-bottom: 0; /* Removes bottom margin from the last paragraph */
+}
+
+@media (width >= 900px) {
+  .aicolumns-0749-3-cols {
+    justify-content: space-between; /* Ensure the cards take the full height of the row */
+    gap: 20px; /* Adjust gap between cards */
+  }
+
+  .aicolumns-0749-3-cols > div {
+    flex: 1 1 calc(33.333% - 20px); /* Allow cards to grow and shrink with a base width */
+  }
+}

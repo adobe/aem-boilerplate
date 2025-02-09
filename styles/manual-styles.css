@@ -1,0 +1,61 @@
+main > div.section > div {
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+main > .section > div.aihero-1-wrapper,
+main > .section > div.aicolumns-1023-wrapper {
+  max-width: unset;
+}
+
+main > .section > div.aicolumns-1023-wrapper {
+  background-color: #02084b;
+}
+
+main > .section > div.aicolumns-1023-wrapper > div.aicolumns-1023 {
+  max-width: 1200px;
+  margin: auto;
+}
+
+main > .section > div.aihero-1-wrapper img {
+  width: 100%;
+}
+
+main > .section > div.aicards-1-wrapper {
+  margin-top: -80px;
+}
+
+.aicolumns-0749-wrapper > div > div > div {
+  padding: 0;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #02084b;
+  background-color: #eaeaea;
+}
+
+.aicolumns-0749-wrapper > div > div > div > * {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.aicolumns-0749-wrapper > div > div > div > p:nth-child(1) {
+  padding: 0;
+  margin-top: 0;
+}
+
+main a.button:any-link, main button {
+  background-color: #02084b;
+}
+
+.aicards-0925.block {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+main .aicolumns-1023 > div > div:first-child {
+  padding: 40px;
+  max-width: 360px;
+}
+
+main .aicards-1.block > ul > li {
+  padding: 20px;
+}

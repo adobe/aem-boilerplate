@@ -14,7 +14,7 @@ const getActiveRules = async (cartId) => {
           customerSegments(cartId: $cartId) {
             name
           }
-          CustomerGroup {
+          customerGroup {
             name
           }
           cart(cart_id: $cartId) {
@@ -56,7 +56,7 @@ const conditionsMatched = (activeRules, blockConfig) => {
   const activeSegments = activeRules.customerSegments?.map(
     (segment) => segment.name,
   );
-  const activeGroup = activeRules.CustomerGroup?.name;
+  const activeGroup = activeRules.customerGroup?.name;
   const activeCartRules = activeRules.cart?.rules?.map(
     (rule) => rule.name,
   );
@@ -78,7 +78,7 @@ const conditionsMatched = (activeRules, blockConfig) => {
 const updateTargetedBlocksVisibility = async () => {
   const activeRules = (Cart.getCartDataFromCache() === null) ? {
     customerSegments: [],
-    CustomerGroup: [],
+    customerGroup: [],
     cart: {
       rules: [],
     },

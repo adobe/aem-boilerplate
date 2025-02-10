@@ -90,8 +90,8 @@
   --spacing-huge: 120px;
   --spacing-xhuge: 144px;
   --spacing-xxhuge: 192px;
-  --type-base-font-family: roboto, roboto-fallback;
-  --type-condensed-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
+  --type-base-font-family: adobe-clean, roboto, roboto-fallback;
+  --type-condensed-font-family: adobe-clean-condensed, roboto-condensed, roboto-condensed-fallback, sans-serif;
   --type-display-1-font: normal normal 300 6.0rem/7.2rem var(--type-base-font-family);
   --type-display-1-letter-spacing: 0.04em;
   --type-display-2-font: normal normal 300 4.8rem/5.6rem
@@ -141,7 +141,7 @@
   --type-details-overline-letter-spacing: 0.16em;
 
   /* Additional tokens */
-  --type-fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono',
+  --type-fixed-font-family: adobe-clean, 'Roboto Mono', menlo, consolas, 'Liberation Mono',
     monospace;
   --background-color: var(--color-neutral-50);
   --nav-height: 6.4rem;
@@ -149,15 +149,30 @@
 
 /* fallback fonts */
 @font-face {
-  font-family: roboto-condensed-fallback;
-  size-adjust: 88.82%;
-  src: local('Arial');
+    font-family: adobe-clean;
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/AdobeClean-Light.otf') format('opentype');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: roboto-fallback;
-  size-adjust: 99.529%;
-  src: local('Arial');
+    font-family: adobe-clean;
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('../fonts/AdobeClean-Regular.otf') format('opentype');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: adobe-clean-condensed;
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('../fonts/AdobeClean-BoldCond.otf') format('opentype');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 html, body {
@@ -172,7 +187,7 @@ body {
   font: var(--type-body-1-default-font);
   letter-spacing: var(--type-body-1-default-letter-spacing);
   margin: 0;
-  color: var(--color-brand-700);
+  color: var(--color-neutral-800);
   background-color: var(--background-color);
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -404,6 +419,10 @@ main > .section {
   margin: var(--spacing-xbig) 0;
 }
 
+.section:empty {
+  display: none;
+}
+
 main > .section > div {
   max-width: 1200px;
   margin: auto;
@@ -423,7 +442,7 @@ main > .section:first-of-type {
 /* section metadata */
 main .section.light,
 main .section.highlight {
-  background-color: var(--color-neutral-500);
+  background-color: var(--color-neutral-100);
   margin: 0;
   padding: var(--spacing-xbig) 0;
 }

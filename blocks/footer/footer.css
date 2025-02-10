@@ -14,23 +14,24 @@ footer .footer p {
     margin: 0;
 }
 
-.storeview-modal-storeview-list ul {
-    list-style: none;
+.storeview-drop li {
+    list-style-image: url("../../icons/chevron-right.svg");
+    padding-left: 1em;
+    text-indent: -1em;
     padding: 0;
 }
 
-.storeview-modal-storeview-list li {
-    padding-left: 1em;
-    list-style-image: url("../../icons/chevron-right.svg");
-    text-indent: -1em;
+.storeview-drop li > ul > li {
+    list-style: none;
+    /* hidden */
+    display: none;
 }
 
-storeview-modal-storeview-list li > ul > li {
-    padding-left: 20px;
+.storeview-drop > li[aria-expanded="true"] > ul > li {
+    display: block;
 }
-
-.storeview-modal-storeview-list li > ul > li::before {
-    padding-right: 10px;
+.storeview-drop > li[aria-expanded="true"] {
+    list-style-image: url("../../icons/chevron-down.svg");
 }
 
 @media (width >= 900px) {

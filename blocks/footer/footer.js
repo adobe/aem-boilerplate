@@ -1,13 +1,8 @@
 // Dropin Components
 import {
   Button,
-  Accordion,
-  AccordionSection,
   provider as UI,
 } from '@dropins/tools/components.js';
-
-
-
 
 // Block-level
 import createModal from '../modal/modal.js';
@@ -15,11 +10,27 @@ import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 import { getConfigValue } from '../../scripts/configs.js';
 
+// media query match that indicates mobile/tablet width
+const isDesktop = window.matchMedia('(min-width: 900px)');
+
 // Pull Config Values for Store Details 
 const storeDetails = {
   storeViewCode: await getConfigValue('commerce.headers.cs.Magento-Store-View-Code'),
   currencyCode: await getConfigValue('commerce-base-currency-code'),
 };
+
+/**
+ * Toggles all nav sections
+ * @param {Element} sections The container element
+ * @param {Boolean} expanded Whether the element should be expanded or collapsed
+ */
+function toggleStoreDropdown(sections, expanded = false) {
+  sections
+    .querySelectorAll('.nav-sections .default-content-wrapper > ul > li')
+    .forEach((section) => {
+      section.setAttribute('aria-expanded', expanded);
+    });
+}
 
 /**
  * loads and decorates the footer
@@ -61,15 +72,18 @@ export default async function decorate(block) {
 
   storeSwitcher.id = 'storeview-modal';
   while (fragmentStoreView.firstElementChild) {
+    // console.log(fragmentStoreView.firstElementChild)
     storeSwitcher.append(fragmentStoreView.firstElementChild);
   }
 
+  // create classes for storeview modal sections
   const classes = ['storeview-title', 'storeview-list', 'storeview-accordion'];
   classes.forEach((c, i) => {
     const section = storeSwitcher.children[i];
     if (section) section.classList.add(`storeview-modal-${c}`);
   });
 
+  // Store Switcher Modal Content - Store View Title
   const storeViewTitle = storeSwitcher.querySelector('.storeview-modal-storeview-title');
   const title = storeViewTitle.querySelector('h3');
   if (title) {
@@ -77,97 +91,26 @@ export default async function decorate(block) {
     title.closest('h3').classList.add('storeview-modal-storeview-title');
   }
 
+  // Storeview List
   const storeViewList = storeSwitcher.querySelector('.storeview-modal-storeview-list');
 
-  const storeViewAccordion = storeSwitcher.querySelector('.storeview-modal-storeview-accordion');
-
-
-  // 
-
-
-
   if (storeViewList) {
-    storeViewList.querySelectorAll(':scope .default-content-wrapper > ul ').forEach((storeSelection, i) => {
+    storeViewList
+      .querySelectorAll(':scope .default-content-wrapper > ul')
+      .forEach((storeView) => {
+        if (storeView.querySelector('ul')) storeView.classList.add('storeview-drop');
+      });
 
-      const storeTitle = storeSelection.querySelector('ul');
-      storeTitle.closest('li').classList.add(`storeSelection-${i}`);
-
-
-
-      // if (section) section.classList.add(`storeSelection-list-${i}`);
-      // convert each UL into an object that can be rendered
-
-      const storeSelectionObj = Array.from(storeSelection.children).map((li) => ({
-        language: li.querySelector('a').innerText,
-        currency: storeSelection.querySelector('li').firstChild.textContent.trim(),
-        rawHTML: li.querySelector('a').outerHTML,
-        link: li.querySelector('a').href,
-        key: li,
-      }));
-
-      // console.log(storeSelectionObj);
-      // // console.log(storeSelection);
-
-      // console.log(`storeSelection-${i}`);
-
-      // const storeViewAccordion2 = storeSwitcher.querySelector(`storeSelection-${i}`);
-
-      // console.log(storeViewAccordion2);
-      // //     // For each storeSelectionObj, render an accordion section
-      // storeSelectionObj.forEach((item) => {
-      //   UI.render(AccordionSection, {
-      //     iconOpen: 'ChevronRight',
-      //     iconClose: 'ChevronDown',
-      //     // iconLeft: 'Burger',
-      //     title: item.language,
-      //     showIconLeft: true,
-      //     children: item.rawHTML,
-      //   })(storeViewAccordion);
-      // });
-
-      // UI.render(AccordionSection, {
-      //   iconOpen: 'ChevronRight',
-      //   iconClose: 'ChevronDown',
-      //   iconLeft: 'Burger',
-      //   title: storeSelection.querySelector('li').firstChild.textContent,
-      //   showIconLeft: true,
-      //   children: storeSelectionObj.map((item) => `<div dangerouslySetInnerHTML={{ __html: "Hello" }}>${item.text}</div>`).join(''),
-      // })(storeViewAccordion);
-
-
-
+    storeViewList.querySelectorAll(':scope .default-content-wrapper > ul > li').forEach((storeView) => {
+      storeView.addEventListener('click', () => {
+        if (isDesktop.matches) {
+          const expanded = storeView.getAttribute('aria-expanded') === 'true';
+          toggleStoreDropdown(storeViewList);
+          storeView.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        }
+      });
     });
-  };
-
-
-
-
-  // rendering properly 
-  // UI.render(AccordionSection, {
-  //   iconOpen: 'ChevronRight',
-  //   iconClose: 'ChevronDown',
-  //   iconLeft: 'Burger',
-  //   title: 'test',
-  //   showIconLeft: true,
-  //   children: 'test',
-  // })(storeViewAccordion);
-
-  //Not rendering properly 
-  // UI.render(Accordion, {
-  //   title: 'test',
-  //   actionIconPosition: 'right',
-  //   children: 'test',
-
-  // })(storeViewList);
-
-
-
-
-
-
-  // storeViewList.innerHTML = `
-  //    test
-  //   `;
+  }
 
   UI.render(Button, {
     children: `${storeDetails.storeViewCode} (${storeDetails.currencyCode})`, // needs to be current storeview name

@@ -1,4 +1,4 @@
-import { Cart as CartModel, Customer as CustomerModel, OrderDataModel as OrderModel } from '../../data/models';
+import { Cart as CartModel, Customer as CustomerModel } from '../../data/models';
 import { Lang } from '@dropins/tools/types/elsie/src/i18n';
 import { Initializer, Model } from '@dropins/tools/types/elsie/src/lib';
 
@@ -7,7 +7,6 @@ export type ConfigProps = {
     models?: {
         CartModel?: Model<CartModel>;
         CustomerModel?: Model<CustomerModel>;
-        OrderModel?: Model<OrderModel>;
     };
 };
 export declare const initialize: Initializer<ConfigProps>;

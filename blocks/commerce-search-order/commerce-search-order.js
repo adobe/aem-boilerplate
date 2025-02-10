@@ -11,6 +11,7 @@ import { CUSTOMER_ORDER_DETAILS_PATH, ORDER_DETAILS_PATH } from '../../scripts/c
 // Initialize
 import '../../scripts/initializers/auth.js';
 import '../../scripts/initializers/order.js';
+import { rootLink } from '../../scripts/scripts.js';
 
 const renderSignIn = async (element, email, orderNumber) => authRenderer.render(SignIn, {
   initialEmailValue: email,
@@ -22,7 +23,7 @@ const renderSignIn = async (element, email, orderNumber) => authRenderer.render(
     primaryButtonText: 'View order',
   },
   routeForgotPassword: () => 'reset-password.html',
-  routeRedirectOnSignIn: () => `${CUSTOMER_ORDER_DETAILS_PATH}?orderRef=${orderNumber}`,
+  routeRedirectOnSignIn: () => rootLink(`${CUSTOMER_ORDER_DETAILS_PATH}?orderRef=${orderNumber}`),
 })(element);
 
 export default async function decorate(block) {
@@ -48,8 +49,8 @@ export default async function decorate(block) {
 
         return true;
       },
-      routeCustomerOrder: () => CUSTOMER_ORDER_DETAILS_PATH,
-      routeGuestOrder: () => ORDER_DETAILS_PATH,
+      routeCustomerOrder: () => rootLink(CUSTOMER_ORDER_DETAILS_PATH),
+      routeGuestOrder: () => rootLink(ORDER_DETAILS_PATH),
       onError: async (errorInformation) => {
         console.info('errorInformation', errorInformation);
       },
@@ -67,8 +68,8 @@ export default async function decorate(block) {
 
       return true;
     },
-    routeCustomerOrder: () => CUSTOMER_ORDER_DETAILS_PATH,
-    routeGuestOrder: () => ORDER_DETAILS_PATH,
+    routeCustomerOrder: () => rootLink(CUSTOMER_ORDER_DETAILS_PATH),
+    routeGuestOrder: () => rootLink(ORDER_DETAILS_PATH),
     onError: async (errorInformation) => {
       console.info('errorInformation', errorInformation);
     },

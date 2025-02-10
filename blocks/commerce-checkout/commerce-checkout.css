@@ -29,6 +29,8 @@
 .checkout__payment-methods {
   padding-top: var(--spacing-xbig);
   border-top: var(--shape-border-width-3) solid var(--color-neutral-400);
+  padding-bottom: var(--spacing-xbig);
+  border-bottom: var(--shape-border-width-3) solid var(--color-neutral-400);
 }
 
 /* Hide empty blocks */

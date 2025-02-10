@@ -26,6 +26,7 @@ export declare const shippingAddressFixture: {
         code: string;
         label: string;
     };
+    same_as_billing: boolean;
     region: {
         region_id: number;
         code: string;

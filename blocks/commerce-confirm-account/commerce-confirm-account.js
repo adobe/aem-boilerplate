@@ -7,17 +7,18 @@ import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { Button, provider as UI } from '@dropins/tools/components.js';
 import { checkIsAuthenticated } from '../../scripts/configs.js';
 import { CUSTOMER_ACCOUNT_PATH, CUSTOMER_FORGOTPASSWORD_PATH } from '../../scripts/constants.js';
+import { rootLink } from '../../scripts/scripts.js';
 
 // Initialize
 import '../../scripts/initializers/auth.js';
 
 export default async function decorate(block) {
   if (checkIsAuthenticated()) {
-    window.location.href = CUSTOMER_ACCOUNT_PATH;
+    window.location.href = rootLink(CUSTOMER_ACCOUNT_PATH);
   } else {
     await authRenderer.render(SignIn, {
       enableEmailConfirmation: true,
-      routeForgotPassword: () => CUSTOMER_FORGOTPASSWORD_PATH,
+      routeForgotPassword: () => rootLink(CUSTOMER_FORGOTPASSWORD_PATH),
       slots: {
         SuccessNotification: (ctx) => {
           const userName = ctx?.isSuccessful?.userName || '';
@@ -37,7 +38,7 @@ export default async function decorate(block) {
                   children: 'My Account',
 
                   onClick: () => {
-                    window.location.href = CUSTOMER_ACCOUNT_PATH;
+                    window.location.href = rootLink(CUSTOMER_ACCOUNT_PATH);
                   },
                 })(primaryBtn);
 
@@ -53,7 +54,7 @@ export default async function decorate(block) {
                   variant: 'tertiary',
                   onClick: async () => {
                     await authApi.revokeCustomerToken();
-                    window.location.href = '/';
+                    window.location.href = rootLink('/');
                   },
                 })(secondaryButton);
 

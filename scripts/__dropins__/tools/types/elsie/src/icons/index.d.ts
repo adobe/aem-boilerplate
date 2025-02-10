@@ -39,4 +39,5 @@ export { default as AddressBook } from './AddressBook.svg';
 export { default as EmptyBox } from './EmptyBox.svg';
 export { default as Coupon } from './Coupon.svg';
 export { default as Gift } from './Gift.svg';
+export { default as GiftCard } from './GiftCard.svg';
 //# sourceMappingURL=index.d.ts.map

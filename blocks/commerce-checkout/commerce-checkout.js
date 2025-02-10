@@ -58,18 +58,28 @@ import OrderProductList from '@dropins/storefront-order/containers/OrderProductL
 import OrderStatus from '@dropins/storefront-order/containers/OrderStatus.js';
 import ShippingStatus from '@dropins/storefront-order/containers/ShippingStatus.js';
 import { render as OrderProvider } from '@dropins/storefront-order/render.js';
+
+// Payment Services Dropin
+import { PaymentMethodCode } from '@dropins/storefront-payment-services/api.js';
+import CreditCard from '@dropins/storefront-payment-services/containers/CreditCard.js';
+import { render as PaymentServices } from '@dropins/storefront-payment-services/render.js';
+import { getConfigValue } from '../../scripts/configs.js';
 import { getUserTokenCookie } from '../../scripts/initializers/index.js';
 
 // Block-level
 import createModal from '../modal/modal.js';
 
+// Scripts
 import {
-  estimateShippingCost, getCartAddress,
+  estimateShippingCost,
+  getCartAddress,
   isCartEmpty,
   isCheckoutEmpty,
   scrollToElement,
   setAddressOnCart,
 } from '../../scripts/checkout.js';
+import { authPrivacyPolicyConsentSlot, SUPPORT_PATH } from '../../scripts/constants.js';
+import { rootLink } from '../../scripts/scripts.js';
 
 function createMetaTag(property, content, type) {
   if (!property || !type) {
@@ -112,7 +122,7 @@ export default async function decorate(block) {
   setMetaTags('Checkout');
   document.title = 'Checkout';
 
-  events.on('checkout/order', () => {
+  events.on('order/placed', () => {
     setMetaTags('Order Confirmation');
     document.title = 'Order Confirmation';
   });
@@ -194,12 +204,16 @@ export default async function decorate(block) {
   let loader;
   let modal;
   let emptyCart;
-  let shippingFormRef = { current: null };
-  let billingFormRef = { current: null };
+  const shippingFormRef = { current: null };
+  const billingFormRef = { current: null };
+  const creditCardFormRef = { current: null };
   let shippingForm;
   let billingForm;
   let shippingAddresses;
   let billingAddresses;
+
+  // Adobe Commerce GraphQL endpoint
+  const commerceCoreEndpoint = await getConfigValue('commerce-core-endpoint');
 
   // Render the initial containers
   const [
@@ -219,9 +233,14 @@ export default async function decorate(block) {
   ] = await Promise.all([
     CheckoutProvider.render(MergedCartBanner)($mergedCartBanner),
 
-    UI.render(Header, { title: 'Checkout', size: 'large', divider: true })($heading),
+    UI.render(Header, {
+      title: 'Checkout',
+      size: 'large',
+      divider: true,
+    })($heading),
 
     CheckoutProvider.render(ServerError, {
+      autoScroll: true,
       onRetry: () => {
         $content.classList.remove('checkout__content--error');
       },
@@ -231,7 +250,7 @@ export default async function decorate(block) {
     })($serverError),
 
     CheckoutProvider.render(OutOfStock, {
-      routeCart: () => '/cart',
+      routeCart: () => rootLink('/cart'),
       onCartProductsUpdate: (items) => {
         cartApi.updateProductsFromCart(items).catch(console.error);
       },
@@ -250,7 +269,11 @@ export default async function decorate(block) {
               displayOverlaySpinner();
             },
           },
-          signUpFormConfig: {},
+          signUpFormConfig: {
+            slots: {
+              ...authPrivacyPolicyConsentSlot,
+            },
+          },
           resetPasswordFormConfig: {},
         })(signInForm);
 
@@ -284,12 +307,40 @@ export default async function decorate(block) {
 
     CheckoutProvider.render(ShippingMethods, {
       hideOnVirtualCart: true,
-      onCheckoutDataUpdate: () => {
-        cartApi.refreshCart().catch(console.error);
-      },
     })($delivery),
 
-    CheckoutProvider.render(PaymentMethods)($paymentMethods),
+    CheckoutProvider.render(PaymentMethods, {
+      slots: {
+        Methods: {
+          [PaymentMethodCode.CREDIT_CARD]: {
+            render: (ctx) => {
+              const $content = document.createElement('div');
+
+              PaymentServices.render(CreditCard, {
+                apiUrl: commerceCoreEndpoint,
+                getCustomerToken: getUserTokenCookie,
+                getCartId: () => ctx.cartId,
+                creditCardFormRef,
+              })($content);
+
+              ctx.replaceHTML($content);
+            },
+          },
+          [PaymentMethodCode.SMART_BUTTONS]: {
+            enabled: false,
+          },
+          [PaymentMethodCode.APPLE_PAY]: {
+            enabled: false,
+          },
+          [PaymentMethodCode.GOOGLE_PAY]: {
+            enabled: false,
+          },
+          [PaymentMethodCode.VAULT]: {
+            enabled: false,
+          },
+        },
+      },
+    })($paymentMethods),
 
     AccountProvider.render(AddressForm, {
       isOpen: true,
@@ -333,7 +384,7 @@ export default async function decorate(block) {
           );
           const editCartLink = document.createElement('a');
           editCartLink.classList.add('cart-summary-list__edit');
-          editCartLink.href = '/cart';
+          editCartLink.href = rootLink('/cart');
           editCartLink.rel = 'noreferrer';
           editCartLink.innerText = 'Edit';
 
@@ -387,10 +438,30 @@ export default async function decorate(block) {
 
         return success;
       },
-      handlePlaceOrder: async ({ cartId }) => {
+      handlePlaceOrder: async ({ cartId, code }) => {
         await displayOverlaySpinner();
-
-        await orderApi.placeOrder(cartId).finally(removeOverlaySpinner);
+        try {
+          // Payment Services credit card
+          if (code === PaymentMethodCode.CREDIT_CARD) {
+            if (!creditCardFormRef.current) {
+              console.error('Credit card form not rendered.');
+              return;
+            }
+            if (!creditCardFormRef.current.validate()) {
+              // Credit card form invalid; abort order placement
+              return;
+            }
+            // Submit Payment Services credit card form
+            await creditCardFormRef.current.submit();
+          }
+          // Place order
+          await orderApi.placeOrder(cartId);
+        } catch (error) {
+          console.error(error);
+          throw error;
+        } finally {
+          await removeOverlaySpinner();
+        }
       },
     })($placeOrder),
   ]);
@@ -411,7 +482,7 @@ export default async function decorate(block) {
     if (emptyCart) return;
 
     emptyCart = await CartProvider.render(EmptyCart, {
-      routeCTA: () => '/',
+      routeCTA: () => rootLink('/'),
     })($emptyCart);
 
     $content.classList.add('checkout__content--empty');
@@ -563,12 +634,12 @@ export default async function decorate(block) {
     } else if (!shippingAddresses) {
       shippingForm?.remove();
       shippingForm = null;
-      shippingFormRef = { current: null };
+      shippingFormRef.current = null;
 
       const cartShippingAddress = getCartAddress(data, 'shipping');
 
       const shippingAddressId = cartShippingAddress
-        ? (cartShippingAddress?.id ?? 0)
+        ? cartShippingAddress?.id ?? 0
         : undefined;
 
       const shippingAddressCache = sessionStorage.getItem(
@@ -578,15 +649,6 @@ export default async function decorate(block) {
       // clear persisted shipping address if cart has a shipping address
       if (cartShippingAddress && shippingAddressCache) {
         sessionStorage.removeItem(SHIPPING_ADDRESS_DATA_KEY);
-      }
-
-      // when shipping address form is empty
-      if (!cartShippingAddress) {
-        checkoutApi.estimateShippingMethods();
-        events.emit('checkout/estimate-shipping-address', {
-          address: {},
-          isValid: false,
-        });
       }
 
       const storeConfig = checkoutApi.getStoreConfigCache();
@@ -628,12 +690,12 @@ export default async function decorate(block) {
     if (!billingAddresses) {
       billingForm?.remove();
       billingForm = null;
-      billingFormRef = { current: null };
+      billingFormRef.current = null;
 
       const cartBillingAddress = getCartAddress(data, 'billing');
 
       const billingAddressId = cartBillingAddress
-        ? (cartBillingAddress?.id ?? 0)
+        ? cartBillingAddress?.id ?? 0
         : undefined;
 
       const billingAddressCache = sessionStorage.getItem(
@@ -731,13 +793,19 @@ export default async function decorate(block) {
 
     block.replaceChildren(orderConfirmationFragment);
 
-    const handleSignUpClick = async ({ inputsDefaultValueSet, addressesData }) => {
+    const handleSignUpClick = async ({
+      inputsDefaultValueSet,
+      addressesData,
+    }) => {
       const signUpForm = document.createElement('div');
       AuthProvider.render(SignUp, {
-        routeSignIn: () => '/customer/login',
-        routeRedirectOnEmailConfirmationClose: () => '/customer/account',
+        routeSignIn: () => rootLink('/customer/login'),
+        routeRedirectOnEmailConfirmationClose: () => rootLink('/customer/account'),
         inputsDefaultValueSet,
         addressesData,
+        slots: {
+          ...authPrivacyPolicyConsentSlot,
+        },
       })(signUpForm);
 
       await showModal(signUpForm);
@@ -763,7 +831,7 @@ export default async function decorate(block) {
         <p>
           Need help?
           <a
-            href="/support"
+            href="${rootLink(SUPPORT_PATH)}"
             rel="noreferrer"
             class="order-confirmation-footer__contact-support-link"
             data-testid="order-confirmation-footer__contact-support-link"
@@ -785,7 +853,7 @@ export default async function decorate(block) {
       size: 'medium',
       variant: 'primary',
       type: 'submit',
-      href: '/',
+      href: rootLink('/'),
     })($orderConfirmationFooterContinueBtn);
   };
 
@@ -824,8 +892,8 @@ export default async function decorate(block) {
     const encodedOrderNumber = encodeURIComponent(orderNumber);
 
     const url = token
-      ? `/order-details?orderRef=${encodedOrderRef}`
-      : `/order-details?orderRef=${encodedOrderRef}&orderNumber=${encodedOrderNumber}`;
+      ? rootLink(`/order-details?orderRef=${encodedOrderRef}`)
+      : rootLink(`/order-details?orderRef=${encodedOrderRef}&orderNumber=${encodedOrderNumber}`);
 
     window.history.pushState({}, '', url);
 

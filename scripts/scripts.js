@@ -150,7 +150,7 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
-  decorateLinks(main);
+  // decorateLinks(main);
 }
 
 function preloadFile(href, as) {

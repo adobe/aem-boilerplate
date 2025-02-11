@@ -13,25 +13,47 @@ footer .footer > div {
 footer .footer p {
     margin: 0;
 }
-
-.storeview-drop li {
-    list-style-image: url("../../icons/chevron-right.svg");
-    padding-left: 1em;
-    text-indent: -1em;
-    padding: 0;
+.storeview-switcher-footer__modal-button {
+    background: transparent;
+    padding-left: 0;
 }
 
-.storeview-drop li > ul > li {
+.storeview-modal-storeview-title {
+    margin-bottom: var(--spacing-xxbig);
+    padding-inline-start: var(--spacing-xbig);
+}
+
+.storeview-single-store {
+    list-style-type: none;
+}
+
+.storeview-selection .storeview-multiple-stores {
+    list-style-image: url("../../icons/chevron-right.svg");
+    list-style-position: inside;
+}
+
+.storeview-multiple-stores > ul {
+    position: relative;
+    width: 100%;
+}
+
+.storeview-multiple-stores > ul > li {
     list-style: none;
-    /* hidden */
     display: none;
 }
 
-.storeview-drop > li[aria-expanded="true"] > ul > li {
-    display: block;
-}
-.storeview-drop > li[aria-expanded="true"] {
+.storeview-multiple-stores[aria-expanded="true"] {
     list-style-image: url("../../icons/chevron-down.svg");
+}
+
+.storeview-multiple-stores[aria-expanded="true"] > ul {
+    padding-left: 0;
+}
+
+.storeview-multiple-stores[aria-expanded="true"] > ul > li {
+    display: block;
+    list-style-type: none;
+    margin-bottom: var(--spacing-small);
 }
 
 @media (width >= 900px) {

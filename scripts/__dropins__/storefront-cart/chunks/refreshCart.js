@@ -5,18 +5,19 @@ import{s as i,d as A,f as g,h as y}from"./resetCart.js";import{events as l}from"
   $currentPage: Int! = 1,
   $itemsSortInput: QuoteItemsSortInput! = {field: CREATED_AT, order: DESC}
 `,H=`
-fragment CUSTOMER_FRAGMENT on Customer {
-  addresses {
-    default_shipping
-    country_code
-    postcode
-    region {
-      region
-      region_code
-      region_id
+  fragment CUSTOMER_FRAGMENT on Customer {
+    addresses {
+      default_shipping
+      country_code
+      postcode
+      region {
+        region
+        region_code
+        region_id
+      }
     }
   }
-}`,W=`
+`,W=`
   query GUEST_CART_QUERY(
       $cartId: String!,
       ${C}

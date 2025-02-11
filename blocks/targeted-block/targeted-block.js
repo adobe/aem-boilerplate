@@ -15,6 +15,7 @@ const updateTargetedBlocksVisibility = async () => {
     cart: {
       rules: [],
     },
+    catalogPriceRules: [],
   } : await getActiveRules(Cart.getCartDataFromCache().id);
 
   // eslint-disable-next-line no-underscore-dangle

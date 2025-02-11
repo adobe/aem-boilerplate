@@ -1,7 +1,9 @@
-import { fetchGraphQl } from '@dropins/tools/fetch-graphql.js';
+import { fetchGraphQl, setFetchGraphQlHeaders } from '@dropins/tools/fetch-graphql.js';
+import { getHeaders } from '../../scripts/configs.js';
 
 export const getActiveRules = async (cartId) => {
   try {
+    setFetchGraphQlHeaders(await getHeaders('cart'));
     const response = await fetchGraphQl(
       `query CUSTOMER_SEGMENTS($cartId: String!){
           customerSegments(cartId: $cartId) {
@@ -46,6 +48,7 @@ export const getCatalogPriceRules = async (sku) => {
           }
         }
       `;
+    setFetchGraphQlHeaders(await getHeaders('cart'));
     const response = await fetchGraphQl(
       query,
       {

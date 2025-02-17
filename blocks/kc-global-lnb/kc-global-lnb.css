@@ -54,6 +54,8 @@
         color: rgb(94, 94, 94);
         text-decoration: none;
         cursor: pointer;
+    }
+    a.lnb__link{
         &:hover,
         &:focus {
             outline: 0px;

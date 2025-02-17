@@ -38,6 +38,7 @@
 
   /* nav height */
   --nav-height: 64px;
+  font-size: 62.5%;
 }
 
 /* fallback fonts */
@@ -53,7 +54,7 @@
   src: local('Arial');
 }
 
-@media (width >= 900px) {
+@media (min-width: 1060px) {
   :root {
     /* body sizes */
     --body-font-size-m: 18px;
@@ -232,21 +233,11 @@ main > .section {
   margin: 40px 0;
 }
 
-main > .section > div {
-  max-width: 1200px;
-  margin: auto;
-  padding: 0 24px;
-}
 
 main > .section:first-of-type {
   margin-top: 0;
 }
 
-@media (width >= 900px) {
-  main > .section > div {
-    padding: 0 32px;
-  }
-}
 
 /* section metadata */
 main .section.light,
@@ -255,3 +246,17 @@ main .section.highlight {
   margin: 0;
   padding: 40px 0;
 }
+
+
+ /* container style */
+.block{
+  max-width: 100%;
+    margin: auto;
+    padding: 0 24px;
+    @media (min-width: 1060px) {
+       padding: 0 32px;
+        max-width: 148rem;
+    }
+}
+
+

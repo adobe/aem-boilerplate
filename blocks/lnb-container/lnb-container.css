@@ -1,0 +1,29 @@
+.lnb__container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .contents {
+        width: 100%;
+        padding: 0px 2rem;
+    }
+}
+
+@media (min-width: 1060px) {
+    .lnb__container {
+        display: grid;
+        align-items: flex-start;
+        gap: 3.2rem;
+        padding: 0px 2rem;
+        max-width: 148rem;
+        margin: 0px auto;
+        grid-template-columns: repeat(16, 1fr);
+        grid-template-areas: "lnb lnb lnb lnb main main main main main main main main main main main main";
+
+        .contents {
+            grid-area: main;
+            margin: 0px;
+            padding: 0px;
+        }
+    }
+}

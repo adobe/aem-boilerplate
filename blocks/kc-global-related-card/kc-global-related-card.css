@@ -1,0 +1,83 @@
+.kc-global-related-card-wrapper{
+    background-color: rgb(247, 247, 247);
+    padding: 6.4rem 0;
+}
+
+.kc-global-related-card {
+    ul[class],
+    ol[class] {
+        list-style: none;
+        padding-left: 0px;
+    }
+    .related-card__list {
+        display: flex;
+        justify-content: space-between;
+        flex-flow: column wrap;
+        margin: 2.4rem 0px 0px;
+        gap: 1.2rem;
+    }
+    .related-card__item {
+        position: relative;
+        width: 100%;
+    }
+    .related-card__link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: rgb(0, 0, 0);
+        border-radius: 1.6rem;
+        background: rgb(255, 255, 255);
+        border: 1px solid rgb(217, 217, 217);
+        height: 100%;
+        &::after {
+            content: "";
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: inline-block;
+            width: 2.8rem;
+            height: 2.8rem;
+            background: url(https://www.koreanair.com/header/header/images/icons/icon--arr-navyblue.svg)
+                center center / 100% no-repeat;
+        }
+    }
+    .related-card__box {
+        width: 100%;
+        padding: 3.2rem 5.6rem 3.2rem 2.4rem;
+    }
+    .related-card__title {
+        display: block;
+        color: rgb(0, 0, 0);
+        font-size: 1.8rem;
+        line-height: 1.5;
+        font-style: normal;
+    }
+    .related-card__p {
+        display: none;
+        color: rgb(85, 85, 85);
+        font-size: 1.6rem;
+        line-height: 1.5;
+        margin: 0.8rem 0px 0px;
+    }
+    @media (min-width: 1060px) {
+        .related-card__list {
+            display: grid;
+            gap: 3.2rem;
+            grid-template-columns: repeat(3, 4fr);
+        }
+        .related-card__box {
+            padding: 4rem 6.4rem 4rem 3.2rem;
+        }
+        .related-card__link::after {
+            width: 3.6rem;
+            height: 3.6rem;
+        }
+        .related-card__title {
+            font-size: 2.1rem;
+        }
+        .related-card__p {
+            display: block;
+        }
+    }
+}

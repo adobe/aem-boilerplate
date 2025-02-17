@@ -32,8 +32,13 @@
         &.-one-depth {
             padding: 2.4rem 0px;
             border-bottom: 1px solid rgb(217, 217, 217);
-            &[aria-expanded="true"] .lnb__list.-two-depth {
-                display: block;
+            &[aria-expanded="true"] {
+                .lnb__list.-two-depth {
+                    display: block;
+                }
+                .lnb__link.-two-depth-ctrl::before {
+                    background-image: url(https://www.koreanair.com/header/header/images/icons/icon--arrow-up.svg);
+                }
             }
         }
     }

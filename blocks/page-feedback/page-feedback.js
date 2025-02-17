@@ -43,14 +43,11 @@ function createTemplate(question, positiveTitle, negetiveTitle) {
 export default function decorate(block) {
   /* change to ul, li */
   const div = document.createElement("div");
-  debugger;
+  const [question, positive, negetive] = block.children;
 
-
-   const [question, positive, negetive] = block.children;
-
-const title = question.innerText;
-const positiveTitle = positive.innerText;
-const negetiveTitle = negetive.innerText;
+  const title = question.innerText;
+  const positiveTitle = positive.innerText;
+  const negetiveTitle = negetive.innerText;
   div.innerHTML = createTemplate(title, positiveTitle, negetiveTitle);
   block.textContent = "";
   block.append(div);

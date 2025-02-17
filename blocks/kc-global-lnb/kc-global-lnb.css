@@ -1,0 +1,84 @@
+.lnb__side {
+    width: 100%;
+    .lnb__list {
+        display: block;
+        background: rgb(255, 255, 255);
+        margin: 0px;
+        border: 0px;
+    }
+    .lnb__title {
+        margin: 0px;
+        padding: 0px 0px 1.6rem;
+        border-bottom: 1px solid rgb(5, 23, 102);
+        .lnb__link {
+            padding: 0.8rem 1.2rem;
+            color: rgb(5, 23, 102);
+            font-size: 2.1rem;
+        }
+    }
+    .lnb__list {
+        display: block;
+        background: rgb(255, 255, 255);
+        margin: 0px;
+        border: 0px;
+        &.-two-depth {
+            display: none;
+            margin: 1.2rem 0px 0px;
+            padding: 0px 1.2rem;
+            border: 0px;
+        }
+    }
+    .lnb__item {
+        &.-one-depth {
+            padding: 2.4rem 0px;
+            border-bottom: 1px solid rgb(217, 217, 217);
+        }
+
+        &.-two-depth-ctrl {
+            padding-right: 4.4rem;
+            &.-focus {
+                text-decoration: underline;
+            }
+        }
+    }
+    .lnb__item {
+        position: relative;
+        display: block;
+        margin: 0px;
+        padding: 0.8rem 1.2rem;
+        font-weight: 400;
+        font-size: 1.6rem;
+        line-height: 1.5;
+        border-radius: 0.8rem;
+        color: rgb(94, 94, 94);
+        text-decoration: none;
+        cursor: pointer;
+        &:hover,
+        &:focus {
+            outline: 0px;
+            text-decoration: underline;
+        }
+    }
+    .lnb__link {
+        position: relative;
+        display: block;
+        margin: 0px;
+        padding: 0.8rem 1.2rem;
+        font-weight: 400;
+        font-size: 1.6rem;
+        line-height: 1.5;
+        border-radius: 0.8rem;
+        color: rgb(94, 94, 94);
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .lnb__item.-one-depth > a.lnb__link,
+    .lnb__link.-two-depth-ctrl {
+        font-size: 1.8rem;
+        color: rgb(5, 23, 102);
+    }
+
+    @media (min-width: 1060px) {
+        padding: 5.6rem 0px;
+    }
+}

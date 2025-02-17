@@ -4,11 +4,6 @@
 }
 
 .kc-global-related-card {
-    ul[class],
-    ol[class] {
-        list-style: none;
-        padding-left: 0px;
-    }
     .related-card__list {
         display: flex;
         justify-content: space-between;

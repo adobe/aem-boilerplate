@@ -9,7 +9,15 @@
     }
 }
 
+:host(.page-box), .page-box {
+    display: block;
+    margin: 4.8rem 0 8rem;
+}
+
 @media (min-width: 1060px) {
+        :host(.page-box), .page-box {
+        margin: 6.4rem 0 12.8rem;
+    }
     .lnb__container {
         display: grid;
         align-items: flex-start;
@@ -17,11 +25,9 @@
         padding: 0px 2rem;
         max-width: 148rem;
         margin: 0px auto;
-        grid-template-columns: repeat(16, 1fr);
-        grid-template-areas: "lnb lnb lnb lnb main main main main main main main main main main main main";
+        grid-template-columns: 4fr 12fr;
 
         .contents {
-            grid-area: main;
             margin: 0px;
             padding: 0px;
         }

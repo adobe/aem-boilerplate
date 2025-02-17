@@ -1,17 +1,23 @@
+
+function createSection(selctor, name){
+    const childDiv = document.createElement('div');
+    const slot = document.querySelector(`.${selctor}`);
+    childDiv.append(slot);
+    childDiv.classList.add(name);
+    return childDiv;
+
+}
 export default function decorate(block) {
   /* change to ul, li */
   const div = document.createElement("div");
+  div.classList.add("lnb__container");
   const [child] = block.children;
-  [...child.children].forEach((row) => {
-    const slotName = row.innerText;
-    const childDiv = document.createElement('div');
-    childDiv.classList.add(slotName);
-    const slot = document.createElement("slot");
-    slot.name = slotName;
-    childDiv.append(slot);
-    div.append(childDiv)
-  });
+  const [left, right] = [...child.children];
+
+  const leftSection = createSection(left.innerText, 'lnb');
+  const rightSection = createSection(right.innerText, "page-box");
+  div.append(leftSection);
+  div.append(rightSection);
   block.textContent = "";
-  div.classList.add('lnb__container');
   block.append(div);
 }

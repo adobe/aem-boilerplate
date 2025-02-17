@@ -1,6 +1,6 @@
 function createSection(selctor, name) {
   const childDiv = document.createElement("div");
-  const slots = document.querySelectorAll(`.${selctor}`);
+  const slots = document.querySelectorAll(`${selctor}`);
   [...slots].forEach((slot) => {
     childDiv.append(slot);
   });

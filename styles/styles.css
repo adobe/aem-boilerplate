@@ -109,7 +109,7 @@ h6 {
     margin-top: 0.8em;
     margin-bottom: 0.25em;
     font-family: var(--heading-font-family);
-    font-weight: 600;
+    font-weight: 400;
     line-height: 1.25;
     scroll-margin: 40px;
 }
@@ -133,7 +133,6 @@ h6 {
     font-size: var(--heading-font-size-xs);
 }
 
-p,
 dl,
 ol,
 ul,
@@ -219,9 +218,25 @@ button:disabled:hover {
 
 a.button.secondary,
 button.secondary {
-    background-color: unset;
-    border: 2px solid currentcolor;
-    color: var(--text-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    border-color: #555;
+    border: 2px solid #051766;
+    color: #051766;
+    font-weight: 700;
+    background-color: transparent;
+    min-width: 13.6rem;
+    padding: 1rem 2.4rem;
+    font-size: 1.6rem;
+    border-radius: 2.4rem;
+    @media (min-width: 1060px) {
+        min-width: 16rem;
+        padding: 1rem 2.4rem;
+        font-size: 1.6rem;
+        border-radius: 2.4rem;
+    }
 }
 
 main img {
@@ -258,6 +273,25 @@ main .section.highlight {
     padding: 40px 0;
 }
 
+p {
+    display: block;
+    margin: 0;
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    color: #555;
+}
+
+h1 {
+    margin-bottom: 0 0 2.4rem 0;
+}
+h4 {
+    margin: 0;
+    color: #000;
+    font-weight: 400;
+    font-size: 2.1rem;
+    line-height: 1.5;
+}
 ul[class],
 ol[class] {
     list-style: none;
@@ -272,5 +306,14 @@ ol[class] {
     @media (min-width: 1060px) {
         padding: 0 32px;
         max-width: 148rem;
+    }
+}
+
+@media (min-width: 1060px) {
+    h1 {
+        margin: 0 0 3.2rem 0;
+    }
+    h4 {
+        font-size: 2.8rem;
     }
 }

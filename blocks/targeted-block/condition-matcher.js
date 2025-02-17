@@ -1,5 +1,5 @@
 function rulesMatched(activeRules, rules) {
-  return activeRules && rules.some((rule) => activeRules.includes(rule));
+  return activeRules && rules.some((rule) => activeRules.includes(rule.trim()));
 }
 
 const groupMatched = (activeGroup, groups) => groups.includes(activeGroup);
@@ -13,14 +13,14 @@ export default function conditionsMatched(activeRules, blockConfig) {
   } = blockConfig;
 
   const activeSegments = activeRules.customerSegments?.map(
-    (segment) => segment.name,
+    (segment) => segment.name.trim(),
   );
-  const activeGroup = activeRules.customerGroup?.name;
-  const activeCartRules = activeRules.cart?.rules?.map(
-    (rule) => rule.name,
+  const activeGroup = activeRules.customerGroup?.name.trim();
+  const activeCartRules = activeRules.cart?.map(
+    (rule) => rule.name.trim(),
   );
   const activePriceRules = activeRules.catalogPriceRules?.rules?.map(
-    (rule) => rule.name,
+    (rule) => rule.name.trim(),
   );
 
   if (customerSegments !== undefined && !rulesMatched(activeSegments, customerSegments.split(','))) {

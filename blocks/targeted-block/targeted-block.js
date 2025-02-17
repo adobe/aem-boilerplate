@@ -1,26 +1,42 @@
 import { events } from '@dropins/tools/event-bus.js';
 import * as Cart from '@dropins/storefront-cart/api.js';
-import { getActiveRules, getCatalogPriceRules } from './qraphql.js';
+import {
+  getCustomerGroups,
+  getCustomerSegments,
+  getCartRules,
+  getCatalogPriceRules,
+} from './graphql.js';
 import conditionsMatched from './condition-matcher.js';
 import { readBlockConfig } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { getUserTokenCookie } from '../../scripts/initializers/index.js';
 
 const blocks = [];
 const displayedBlockTypes = [];
 
 const updateTargetedBlocksVisibility = async () => {
-  const activeRules = (Cart.getCartDataFromCache() === null) ? {
+  const activeRules = {
     customerSegments: [],
-    customerGroup: [],
-    cart: {
-      rules: [],
-    },
+    customerGroup: await getCustomerGroups(),
+    cart: [],
     catalogPriceRules: [],
-  } : await getActiveRules(Cart.getCartDataFromCache().id);
+  };
+
+  if (Cart.getCartDataFromCache() !== null) {
+    const cartId = Cart.getCartDataFromCache().id || null;
+    if (cartId) {
+      const response = await getCartRules(cartId);
+      activeRules.cart = response.cart?.rules || [];
+      activeRules.customerSegments = response.customerSegments || [];
+    }
+  }
+
+  if (Cart.getCartDataFromCache() === null && getUserTokenCookie()) {
+    activeRules.customerSegments = await getCustomerSegments();
+  }
 
   // eslint-disable-next-line no-underscore-dangle
   const productData = events._lastEvent?.['pdp/data']?.payload ?? null;
-
   if (productData?.sku) {
     activeRules.catalogPriceRules = await getCatalogPriceRules(productData.sku);
   }
@@ -52,6 +68,10 @@ export default function decorate(block) {
   blocks.push(readBlockConfig(block));
   block.setAttribute('data-targeted-block-key', blocks.length - 1);
 }
+
+events.on('cart/reset', () => {
+  updateTargetedBlocksVisibility();
+}, { eager: true });
 
 events.on('cart/initialized', () => {
   updateTargetedBlocksVisibility();

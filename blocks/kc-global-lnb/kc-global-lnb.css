@@ -32,12 +32,8 @@
         &.-one-depth {
             padding: 2.4rem 0px;
             border-bottom: 1px solid rgb(217, 217, 217);
-        }
-
-        &.-two-depth-ctrl {
-            padding-right: 4.4rem;
-            &.-focus {
-                text-decoration: underline;
+            &[aria-expanded="true"] .lnb__list.-two-depth {
+                display: block;
             }
         }
     }
@@ -71,6 +67,23 @@
         color: rgb(94, 94, 94);
         text-decoration: none;
         cursor: pointer;
+        &.-two-depth-ctrl {
+            padding-right: 4.4rem;
+            &.-focus {
+                text-decoration: underline;
+            }
+            &::before {
+                position: absolute;
+                top: 50%;
+                right: 1.2rem;
+                transform: translateY(-50%);
+                width: 2.4rem;
+                height: 2.4rem;
+                content: "";
+                background: url(https://www.koreanair.com/header/header/images/icons/icon--arrow-down.svg)
+                    0% 0% / 100% no-repeat;
+            }
+        }
     }
     .lnb__item.-one-depth > a.lnb__link,
     .lnb__link.-two-depth-ctrl {

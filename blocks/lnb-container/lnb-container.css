@@ -22,8 +22,6 @@
         display: grid;
         align-items: flex-start;
         gap: 3.2rem;
-        padding: 0px 2rem;
-        max-width: 148rem;
         margin: 0px auto;
         grid-template-columns: 4fr 12fr;
 

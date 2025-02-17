@@ -171,6 +171,21 @@ function createTemplate() {
   `;
 }
 
+
+function attachEventLister(block){
+  const tabs = block.querySelectorAll(".-two-depth-ctrl");
+  [...tabs].forEach(tab=>{
+    tab.addEventListener('click', function(e){
+
+      const tabElem = e.target;
+      const parent = tabElem.parentNode;
+      const isExpanded = parent.getAttribute("aria-expanded")==='true';
+      parent.setAttribute("aria-expanded", isExpanded);
+      console.log(e);
+    })
+  })
+}
+
 export default function decorate(block) {
   /* change to ul, li */
   debugger;
@@ -183,4 +198,5 @@ export default function decorate(block) {
 
   block.textContent = "";
   block.innerHTML = createTemplate();
+  attachEventLister(block);
 }

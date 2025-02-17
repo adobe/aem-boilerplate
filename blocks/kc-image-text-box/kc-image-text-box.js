@@ -39,7 +39,6 @@ export default function decorate(block) {
     const title = right.querySelector('h2').innerText;
     const paragraph = right.querySelector("p:not(.button-container)").innerHTML;
     const button = right.querySelector("p.button-container").innerHTML;
-    debugger;
     return createBlock(title, paragraph, left.innerHTML, button);
   });
   ul.innerHTML = lis.join("");

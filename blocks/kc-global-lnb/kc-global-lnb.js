@@ -1,4 +1,50 @@
-function createTemplate() {
+function tabContentCreation(listItems) {
+  if (!listItems) {
+    return "";
+  }
+  return [...listItems].map((listItem) => {
+    listItem.classList.add("lnb__item");
+    listItem.classList.add("-two-depth");
+    listItem.querySelector("a")?.classList.add("lnb__link");
+    return listItem.outerHTML;
+  }).join('');
+}
+
+function buildChildRow(rows) {
+  return rows.map((row, index) => {
+    const [firstChild, secondChild] = [...row.children];
+    const titleObj = {
+      text: firstChild.innerText,
+      href: firstChild.querySelector("a")?.href || "#",
+    };
+    const tabContent = tabContentCreation(secondChild?.querySelectorAll("li"));
+    return `
+      <li
+        class="lnb__item -one-depth"
+        role="treeitem"
+        aria-expanded="${index === 0 ? true : false}"
+        tabindex="0"
+      >
+
+        ${
+          secondChild
+            ? `
+          <span class="lnb__link -two-depth-ctrl" id="lnb-active-${index}">
+            ${titleObj.text}
+          </span>
+        <ul class="lnb__list -two-depth" role="group">
+          ${tabContent}
+        </ul>`
+            : `
+            <a class="lnb__link" id="lnb-active-${index}" href="${titleObj.href}">
+              ${titleObj.text}
+            </a>`
+        }
+      </li>`;
+  });
+}
+
+function createTemplate(titleObj, rows) {
   return `
   <div
   id="lnb-title"
@@ -11,159 +57,16 @@ function createTemplate() {
       <div class="lnb__title">
         <a
           id="lnb-list-title"
-          href="/contents/plan-your-travel/service-by-class"
+          href="${titleObj.href}"
           class="lnb__link"
           role="treeitem"
           tabindex="-1"
-          data-path="/contents/plan-your-travel/service-by-class"
-          data-click-area="LNB_LNB"
-          data-click-name="LNB_service-by-class"
-          data-ga4-click-area="LNB_LNB"
-          data-ga4-click-name="LNB_service-by-class"
         >
-          Service by Class
+          ${titleObj.text}
         </a>
       </div>
       <ul id="lnb-list" class="lnb__list" role="group">
-        <li
-          class="lnb__item -one-depth"
-          role="treeitem"
-          aria-expanded="true"
-          tabindex="0"
-          data-id="51"
-          data-focus="true"
-        >
-          <span class="lnb__link -two-depth-ctrl -focus" id="lnb-active-0">
-            First
-          </span>
-          <ul class="lnb__list -two-depth" role="group">
-            <li class="lnb__item -two-depth" role="none">
-              <a
-                href="/contents/plan-your-travel/service-by-class/first/before-boarding"
-                target="_self"
-                aria-current="page"
-                class="lnb__link -active"
-                role="treeitem"
-                tabindex="-1"
-                data-path="/contents/plan-your-travel/service-by-class/first/before-boarding"
-                data-click-area="LNB_LNB"
-                data-click-name="LNB_before-service"
-                data-ga4-click-area="LNB_LNB"
-                data-ga4-click-name="LNB_before-service"
-              >
-                Before Boarding
-              </a>
-            </li>
-            <li class="lnb__item -two-depth" role="none">
-              <a
-                href="/contents/plan-your-travel/service-by-class/first/after-boarding"
-                target="_self"
-                class="lnb__link"
-                role="treeitem"
-                tabindex="-1"
-                data-path="/contents/plan-your-travel/service-by-class/first/after-boarding"
-                data-click-area="LNB_LNB"
-                data-click-name="LNB_after-service"
-                data-ga4-click-area="LNB_LNB"
-                data-ga4-click-name="LNB_after-service"
-              >
-                After Boarding
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li
-          class="lnb__item -one-depth"
-          role="treeitem"
-          aria-expanded="false"
-          tabindex="-1"
-          data-id="52"
-          data-focus="false"
-        >
-          <span class="lnb__link -two-depth-ctrl" id="lnb-active-1">
-            Prestige
-          </span>
-          <ul class="lnb__list -two-depth" role="group">
-            <li class="lnb__item -two-depth" role="none">
-              <a
-                href="/contents/plan-your-travel/service-by-class/prestige/before-boarding"
-                target="_self"
-                class="lnb__link"
-                role="treeitem"
-                tabindex="-1"
-                data-path="/contents/plan-your-travel/service-by-class/prestige/before-boarding"
-                data-click-area="LNB_LNB"
-                data-click-name="LNB_before-service"
-                data-ga4-click-area="LNB_LNB"
-                data-ga4-click-name="LNB_before-service"
-              >
-                Before Boarding
-              </a>
-            </li>
-            <li class="lnb__item -two-depth" role="none">
-              <a
-                href="/contents/plan-your-travel/service-by-class/prestige/after-boarding"
-                target="_self"
-                class="lnb__link"
-                role="treeitem"
-                tabindex="-1"
-                data-path="/contents/plan-your-travel/service-by-class/prestige/after-boarding"
-                data-click-area="LNB_LNB"
-                data-click-name="LNB_after-service"
-                data-ga4-click-area="LNB_LNB"
-                data-ga4-click-name="LNB_after-service"
-              >
-                After Boarding
-              </a>
-            </li>
-          </ul>
-        </li>
-        <li
-          class="lnb__item -one-depth"
-          role="treeitem"
-          aria-expanded="false"
-          tabindex="-1"
-          data-id="53"
-          data-focus="false"
-        >
-          <span class="lnb__link -two-depth-ctrl" id="lnb-active-2">
-            Economy
-          </span>
-          <ul class="lnb__list -two-depth" role="group">
-            <li class="lnb__item -two-depth" role="none">
-              <a
-                href="/contents/plan-your-travel/service-by-class/economy/before-boarding"
-                target="_self"
-                class="lnb__link"
-                role="treeitem"
-                tabindex="-1"
-                data-path="/contents/plan-your-travel/service-by-class/economy/before-boarding"
-                data-click-area="LNB_LNB"
-                data-click-name="LNB_before-service"
-                data-ga4-click-area="LNB_LNB"
-                data-ga4-click-name="LNB_before-service"
-              >
-                Before Boarding
-              </a>
-            </li>
-            <li class="lnb__item -two-depth" role="none">
-              <a
-                href="/contents/plan-your-travel/service-by-class/economy/after-boarding"
-                target="_self"
-                class="lnb__link"
-                role="treeitem"
-                tabindex="-1"
-                data-path="/contents/plan-your-travel/service-by-class/economy/after-boarding"
-                data-click-area="LNB_LNB"
-                data-click-name="LNB_after-service"
-                data-ga4-click-area="LNB_LNB"
-                data-ga4-click-name="LNB_after-service"
-              >
-                After Boarding
-              </a>
-            </li>
-          </ul>
-        </li>
+        ${buildChildRow(rows).join("")}
       </ul>
     </li>
   </ul>
@@ -171,23 +74,26 @@ function createTemplate() {
   `;
 }
 
-
-function attachEventLister(block){
+function attachEventLister(block) {
   const tabs = block.querySelectorAll(".-two-depth-ctrl");
-  [...tabs].forEach(tab=>{
-    tab.addEventListener('click', function(e){
-
+  [...tabs].forEach((tab) => {
+    tab.addEventListener("click", function (e) {
       const tabElem = e.target;
       const parent = tabElem.parentNode;
-      const isExpanded = parent.getAttribute("aria-expanded")==='true';
+      const isExpanded = parent.getAttribute("aria-expanded") === "true";
       parent.setAttribute("aria-expanded", !isExpanded);
       console.log(e);
-    })
-  })
+    });
+  });
 }
 
 export default function decorate(block) {
+  const [title, ...rows] = [...block.children];
+  const titleObj = {
+    text: title.innerText.trim(),
+    href: title.querySelector("a")?.href || "#",
+  };
   block.textContent = "";
-  block.innerHTML = createTemplate();
+  block.innerHTML = createTemplate(titleObj, rows);
   attachEventLister(block);
 }

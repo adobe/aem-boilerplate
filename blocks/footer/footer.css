@@ -1,20 +1,86 @@
 footer {
-  background-color: var(--light-color);
-  font-size: var(--body-font-size-xs);
-}
-
-footer .footer > div {
-  margin: auto;
-  max-width: 1200px;
-  padding: 40px 24px 24px;
-}
-
-footer .footer p {
-  margin: 0;
-}
-
-@media (width >= 900px) {
-  footer .footer > div {
-    padding: 40px 32px 24px;
-  }
+    border-top: 1px solid rgb(217, 217, 217);
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    .block {
+        max-width: 100%;
+        padding: 0;
+    }
+    .shortcuts {
+        padding: 2.4rem 0px 0px;
+        .shortcuts__aligner {
+            position: relative;
+            width: 100%;
+            max-width: 144rem;
+            margin: 0px auto;
+        }
+    }
+    ul {
+        list-style: none;
+        padding-left: 0px;
+    }
+    ul.snbs {
+        margin: 0px;
+    }
+    .snbs__title {
+        display: none;
+        margin-bottom: 0.8rem;
+        color: rgb(0, 0, 0);
+        font-weight: 700;
+        font-size: 1.6rem;
+        margin-top: 0px;
+    }
+    .snbs__list {
+        display: none;
+        padding-left: 1.2rem;
+        opacity: 0;
+    }
+    .snbs__link {
+        display: flex;
+        align-items: center;
+        padding: 1.2rem 3.2rem;
+        outline: 0px;
+        color: rgb(85, 85, 85);
+        font-size: 1.6rem;
+        line-height: 1.71;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        min-height: 4.8rem;
+    }
+    @media (min-width: 1060px) {
+        .shortcuts {
+            padding: 6.4rem 4rem 0px;
+            .shortcuts__box {
+                border-top: 0px;
+            }
+        }
+        ul.snbs {
+            display: flex;
+        }
+        .snbs {
+            padding-bottom: 4rem;
+            .snbs__group {
+                width: 25%;
+                padding-right: 4rem;
+                border-bottom: 0px;
+            }
+            .snbs__title {
+                display: block;
+                font-size: 1.8rem;
+            }
+        }
+        .snbs__list {
+            display: block;
+            opacity: 1;
+            padding-left: 0px;
+            border: 0px;
+        }
+        .snbs__link {
+            display: inline-block;
+            padding: 0px;
+            margin: 0.8rem 0px;
+            line-height: 1.58;
+            min-height: auto;
+        }
+    }
 }

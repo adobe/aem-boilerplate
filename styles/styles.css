@@ -292,6 +292,7 @@ h4 {
     font-size: 2.1rem;
     line-height: 1.5;
 }
+
 ul[class],
 ol[class] {
     list-style: none;
@@ -315,5 +316,14 @@ ol[class] {
     }
     h4 {
         font-size: 2.8rem;
+    }
+    [class]._pc-hidden {
+        display: none !important;
+    }
+}
+
+@media (max-width: 1059px) {
+    [class]._mo-hidden {
+        display: none !important;
     }
 }

@@ -1,5 +1,11 @@
 /* stylelint-disable selector-class-pattern */
 
+:root {
+  --megamenu-item-width: 300px;
+  --megamenu-panel-width: 900px;
+  --megamenu-panel-height: 500px;
+}
+
 /* header and nav layout */
 header .nav-wrapper {
   background-color: var(--background-color);
@@ -62,6 +68,7 @@ header nav .nav-hamburger {
 }
 
 header nav .nav-hamburger button {
+  cursor: pointer;
   height: 22px;
   margin: 0;
   border: 0;
@@ -142,6 +149,13 @@ header nav .nav-brand a {
   letter-spacing: var(--type-headline-1-letter-spacing);
 }
 
+li.nav-drop img {
+  max-width: var(--megamenu-item-width);
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
 header nav .nav-brand img {
   width: 128px;
   height: auto;
@@ -170,7 +184,7 @@ header nav .nav-sections ul {
 
 header nav .nav-sections ul > li,
 header nav .nav-sections ul > li > a {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 header nav .nav-sections ul > li > ul {
@@ -194,28 +208,13 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections .nav-drop {
     position: relative;
-    padding-right: 16px;
+    padding: 0 16px;
     cursor: pointer;
+    border-radius: 4px;
   }
 
-  header nav .nav-sections .nav-drop::after {
-    content: '';
-    display: inline-block;
-    position: absolute;
-    top: 0.4rem;
-    right: 0.2rem;
-    transform: rotate(135deg);
-    width: 0.6rem;
-    height: 0.6rem;
-    border: 2px solid currentcolor;
-    border-radius: 0 1px 0 0;
-    border-width: 2px 2px 0 0;
-  }
-
-  header nav .nav-sections .nav-drop[aria-expanded='true']::after {
-    top: unset;
-    bottom: 0.5em;
-    transform: rotate(315deg);
+  header nav .nav-sections .nav-drop[aria-expanded='true'] {
+    background-color: var(--color-neutral-200);
   }
 
   header nav .nav-sections ul {
@@ -224,25 +223,33 @@ header nav .nav-sections ul > li > ul > li {
     margin: 0;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li {
-    flex: 0 1 auto;
-    position: relative;
-  }
-
   header nav .nav-sections .default-content-wrapper > ul > li > ul {
     display: none;
     position: relative;
   }
 
+  header nav .nav-sections .nav-drop[aria-expanded='true'] > ul {
+    height: var(--megamenu-panel-height);
+    flex-flow: column wrap;
+  }
+
+
+  header nav .nav-sections .default-content-wrapper > ul > li {
+    flex: 0 1 auto;
+    position: relative;
+  }
+
+  /* This is the style for the dropdown */
   header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul {
-    display: block;
+    display: flex;
     position: absolute;
     left: -24px;
-    width: 200px;
+    width: var(--megamenu-panel-width);
     top: 150%;
     padding: 16px;
-    background-color: var(--color-neutral-500);
+    background-color: var(--color-neutral-50);
     white-space: initial;
+    overflow-x: scroll;
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul::before {
@@ -285,6 +292,8 @@ header nav .nav-tools {
   height: 100%;
   gap: var(--spacing-small);
   align-items: center;
+  background: var(--background-color);
+  z-index: 3;
 }
 
 header nav .nav-tools-wrapper > button {
@@ -461,10 +470,10 @@ header .nav-search-input .search_autocomplete .popover-container {
 
 .dropdown-wrapper.nav-tools-wrapper .nav-auth-menu-panel .authenticated-user-menu li > a:hover,
 .dropdown-wrapper.nav-tools-wrapper
-  .nav-auth-menu-panel
-  .authenticated-user-menu
-  li
-  > .logoutButton:hover {
+.nav-auth-menu-panel
+.authenticated-user-menu
+li
+> .logoutButton:hover {
   background-color: lightgray;
 }
 
@@ -493,4 +502,117 @@ header .nav-search-input .search_autocomplete .popover-container {
 .grecaptcha-badge {
   margin-top: 20px;
   z-index: 3;
+}
+
+ul li.nav-drop > ul > li > ul {
+  margin: 1em 0 0 .5em;
+}
+
+main.overlay {
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  background-color: rgb(0 0 0 / 50%);
+  z-index: 2;
+}
+
+header nav .nav-sections .active-submenu {
+  display: none;
+}
+
+@media (width < 900px) {
+  header {
+    position: relative;
+  }
+
+  header nav {
+    position: relative;
+  }
+
+  header nav[aria-expanded='true'] {
+    overflow-x: hidden;
+  }
+
+  header nav[aria-expanded='true'] .nav-tools {
+    background: var(--background-color);
+    bottom: 0;
+    height: auto;
+    left: 0;
+    overflow: hidden;
+    padding: 0.7em 1.5em;
+    position: fixed;
+    width: 100%;
+  }
+
+  header nav[aria-expanded='true'] .nav-tools-panel--show {
+    position: fixed;
+  }
+
+  header nav .nav-sections {
+    position: relative;
+  }
+
+  header nav .nav-sections ul li {
+    line-height: 3em;
+  }
+
+  header nav .nav-sections ul > li > ul,
+  header nav .nav-sections ul > li > ul > li {
+    width: 100%;
+  }
+
+  header nav .nav-sections ul > li.nav-drop {
+    cursor: pointer;
+  }
+
+  header nav .nav-sections ul > li.nav-drop::after {
+    content: '\276F';
+    position: absolute;
+    right: 3vw;
+  }
+
+  header nav .nav-sections ul > li.nav-drop ul {
+    display: none;
+  }
+
+  header nav .nav-sections .active-submenu {
+    background: var(--background-color);
+    display: none;
+    height: 100%;
+    position: absolute;
+    top: 30px;
+    width: 100%;
+  }
+
+  header nav .nav-sections .active-submenu button::before {
+    content: '\276E';
+    margin-right: .5em;
+  }
+
+  header nav .nav-sections .active-submenu button::after {
+    content: '\2715';
+    position: absolute;
+    right: 8vw;
+  }
+
+  header nav .nav-sections .active-submenu button {
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--color-neutral-500);
+    cursor: pointer;
+    left: -2em;
+    padding: 0 2em 1em;
+    position: relative;
+    text-align: left;
+    width: 102vw;
+  }
+
+  header nav .nav-sections .active-submenu ul > li.nav-drop::after {
+    content: none;
+  }
+
+  header nav .nav-sections .active-submenu.visible,
+  header nav .nav-sections .active-submenu.visible ul > li.nav-drop ul {
+    display: block;
+  }
 }

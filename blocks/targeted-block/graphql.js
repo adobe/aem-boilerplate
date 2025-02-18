@@ -3,8 +3,10 @@ import { getHeaders } from '../../scripts/configs.js';
 
 const addCartHeaders = async () => {
   const cartHeaders = await getHeaders('cart');
-  cartHeaders.keys().forEach((key) => {
-    setFetchGraphQlHeader(key, cartHeaders[key]);
+  Object.keys(cartHeaders).forEach((key) => {
+    if (cartHeaders[key] !== undefined) {
+      setFetchGraphQlHeader(key, cartHeaders[key]);
+    }
   });
 };
 

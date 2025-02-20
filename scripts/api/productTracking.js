@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { getSignInToken, performMonolithGraphQLQuery } from '../commerce.js';
 
 const trackViewedProductMutation = `

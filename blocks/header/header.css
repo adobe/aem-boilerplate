@@ -1,9 +1,10 @@
 /* stylelint-disable selector-class-pattern */
 
 :root {
-  --megamenu-item-width: 300px;
-  --megamenu-panel-width: 900px;
-  --megamenu-panel-height: 500px;
+  --desktop-item-panel-width: 300px;
+  --desktop-medium-panel-width: 700px;
+  --desktop-large-panel-width: 900px;
+  --desktop-panel-height: 500px;
 }
 
 /* header and nav layout */
@@ -150,7 +151,7 @@ header nav .nav-brand a {
 }
 
 li.nav-drop img {
-  max-width: var(--megamenu-item-width);
+  max-width: var(--desktop-item-panel-width);
   width: 100%;
   height: auto;
   object-fit: contain;
@@ -229,27 +230,36 @@ header nav .nav-sections ul > li > ul > li {
   }
 
   header nav .nav-sections .nav-drop[aria-expanded='true'] > ul {
-    height: var(--megamenu-panel-height);
+    max-height: var(--desktop-panel-height);
     flex-flow: column wrap;
   }
-
 
   header nav .nav-sections .default-content-wrapper > ul > li {
     flex: 0 1 auto;
     position: relative;
   }
 
-  /* This is the style for the dropdown */
   header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul {
-    display: flex;
-    position: absolute;
-    left: -24px;
-    width: var(--megamenu-panel-width);
-    top: 150%;
-    padding: 16px;
     background-color: var(--color-neutral-50);
-    white-space: initial;
+    display: flex;
+    left: -24px;
+    max-width: var(--desktop-large-panel-width);
+    min-width: var(--desktop-item-panel-width);
     overflow-x: scroll;
+    padding: 16px;
+    position: absolute;
+    top: 150%;
+    white-space: initial;
+    width: var(--desktop-item-panel-width);
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul:has(img),
+  header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul:has(> :nth-child(8)) {
+    width: var(--desktop-medium-panel-width);
+  }
+
+  header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul:has(> :nth-child(16)) {
+    width: var(--desktop-large-panel-width);
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul::before {
@@ -266,6 +276,7 @@ header nav .nav-sections ul > li > ul > li {
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
     padding: 8px 0;
+    width: var(--desktop-item-panel-width);
   }
 }
 
@@ -573,6 +584,7 @@ header nav .nav-sections .active-submenu {
 
   header nav .nav-sections ul > li.nav-drop ul {
     display: none;
+    outline: none;
   }
 
   header nav .nav-sections .active-submenu {
@@ -614,5 +626,6 @@ header nav .nav-sections .active-submenu {
   header nav .nav-sections .active-submenu.visible,
   header nav .nav-sections .active-submenu.visible ul > li.nav-drop ul {
     display: block;
+    padding-bottom: 7vh;
   }
 }

@@ -9,6 +9,8 @@ export interface MiniCartProps extends HTMLAttributes<HTMLDivElement> {
     routeEmptyCartCTA?: () => string;
     slots?: {
         ProductList?: SlotProps;
+        ProductListFooter?: SlotProps;
+        PreCheckoutSection?: SlotProps;
     };
     hideFooter?: boolean;
     displayAllItems?: boolean;

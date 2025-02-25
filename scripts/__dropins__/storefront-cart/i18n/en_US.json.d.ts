@@ -97,7 +97,7 @@ declare const _default: {
       "editZipAction": "Apply",
       "estimated": "Estimated Shipping",
       "estimatedDestination": "Estimated Shipping to",
-      "destinationLinkAriaLabel": "Change destination",
+      "destinationLinkAriaLabel": "{destination}, Change destination",
       "zipPlaceholder": "Zip Code",
       "withTaxes": "Including taxes",
       "withoutTaxes": "excluding taxes",

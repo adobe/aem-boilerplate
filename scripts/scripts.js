@@ -167,6 +167,13 @@ function preloadFile(href, as) {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
+
+  // start loading lcp image
+  const lcpImage = doc.querySelector('main > div:first-child img');
+  if (lcpImage) {
+    lcpImage.setAttribute('loading', 'eager');
+  }
+
   decorateTemplateAndTheme();
 
   // Instrument experimentation plugin

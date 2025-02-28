@@ -2,11 +2,6 @@
   margin-top: var(--spacing-xbig);
 }
 
-.cards-card-body strong {
-    font: var(--type-condensed-font-family);
-    font-weight: bolder;
-}
-
 .cards > ul {
   list-style: none;
   margin: 0;

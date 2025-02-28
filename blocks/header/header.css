@@ -193,6 +193,10 @@ header nav .nav-sections ul > li > a {
   letter-spacing: var(--type-body-2-strong-letter-spacing);
 }
 
+header nav .nav-brand a:hover {
+    text-decoration: none;
+}
+
 header nav .nav-sections ul > li ul {
   margin-top: 0;
 }

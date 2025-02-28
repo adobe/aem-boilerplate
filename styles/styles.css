@@ -90,9 +90,8 @@
   --spacing-huge: 120px;
   --spacing-xhuge: 144px;
   --spacing-xxhuge: 192px;
-  --type-base-font-family: adobe-clean, roboto, roboto-fallback;
-  --type-condensed-font-family: adobe-clean-condensed, roboto-condensed, roboto-condensed-fallback, sans-serif;
-  --type-display-1-font: normal normal 300 6.0rem/7.2rem var(--type-base-font-family);
+  --type-base-font-family: adobe-clean, roboto, roboto-fallback, system-ui, sans-serif;
+  --type-display-1-font: normal normal 300 6rem/7.2rem var(--type-base-font-family);
   --type-display-1-letter-spacing: 0.04em;
   --type-display-2-font: normal normal 300 4.8rem/5.6rem
     var(--type-base-font-family);
@@ -100,16 +99,16 @@
   --type-display-3-font: normal normal 300 3.4rem/4rem
     var(--type-base-font-family);
   --type-display-3-letter-spacing: 0.04em;
-  --type-headline-1-font: normal normal 400 2.4rem/3.2rem var(--type-condensed-font-family);
+  --type-headline-1-font: normal normal 400 2.4rem/3.2rem var(--type-base-font-family);
   --type-headline-1-letter-spacing: 0.04em;
-  --type-headline-2-default-font: normal normal 300 2.0rem/2.4rem var(--type-condensed-font-family);
+  --type-headline-2-default-font: normal normal 300 2rem/2.4rem var(--type-base-font-family);
   --type-headline-2-default-letter-spacing: 0.04em;
-  --type-headline-2-strong-font: normal normal 400 2.0rem/2.4rem var(--type-condensed-font-family);
+  --type-headline-2-strong-font: normal normal 500 2rem/2.4rem var(--type-base-font-family);
   --type-headline-2-strong-letter-spacing: 0.04em;
   --type-body-1-default-font: normal normal 300 1.6rem/2.4rem
     var(--type-base-font-family);
   --type-body-1-default-letter-spacing: 0.04em;
-  --type-body-1-strong-font: normal normal 400 1.6rem/2.4rem
+  --type-body-1-strong-font: normal normal 500 1.6rem/2.4rem
     var(--type-base-font-family);
   --type-body-1-strong-letter-spacing: 0.04em;
   --type-body-1-emphasized-font: normal normal 700 1.6rem/2.4rem
@@ -118,7 +117,7 @@
   --type-body-2-default-font: normal normal 300 1.4rem/2rem
     var(--type-base-font-family);
   --type-body-2-default-letter-spacing: 0.04em;
-  --type-body-2-strong-font: normal normal 400 1.4rem/2rem
+  --type-body-2-strong-font: normal normal 500 1.4rem/2rem
     var(--type-base-font-family);
   --type-body-2-strong-letter-spacing: 0.04em;
   --type-body-2-emphasized-font: normal normal 700 1.4rem/2rem
@@ -141,38 +140,16 @@
   --type-details-overline-letter-spacing: 0.16em;
 
   /* Additional tokens */
-  --type-fixed-font-family: adobe-clean, 'Roboto Mono', menlo, consolas, 'Liberation Mono',
-    monospace;
+  --type-fixed-font-family: adobe-clean, "Roboto Mono", menlo, consolas, "Liberation Mono", monospace, system-ui, sans-serif;
   --background-color: var(--color-neutral-50);
   --nav-height: 6.4rem;
 }
 
-/* fallback fonts */
+/* fallback font */
 @font-face {
-    font-family: adobe-clean;
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-    src: url('../fonts/AdobeClean-Light.otf') format('opentype');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-    font-family: adobe-clean;
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url('../fonts/AdobeClean-Regular.otf') format('opentype');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-    font-family: adobe-clean-condensed;
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-    src: url('../fonts/AdobeClean-BoldCond.otf') format('opentype');
-    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  font-family: adobe-clean;
+  size-adjust: 100%;
+  src: local("Helvetica");
 }
 
 html, body {
@@ -192,6 +169,7 @@ body {
   display: grid;
   grid-template-rows: auto 1fr auto;
   grid-template-columns: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
 body:not(.appear) {
@@ -491,7 +469,7 @@ body.columns main > .section:empty {
 
 @media (width >= 600px) {
   body.columns main {
-      padding: var(--spacing-large) var(--spacing-big);
+    padding: var(--spacing-large) var(--spacing-big);
   }
 }
 

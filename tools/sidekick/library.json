@@ -5,55 +5,55 @@
   "data": [
     {
       "name": "Table",
-      "path": "/tools/sidekick/blocks/table"
+      "path": "/block-collection/table"
     },
     {
       "name": "Columns",
-      "path": "/tools/sidekick/blocks/columns"
+      "path": "/block-collection/columns"
     },
     {
       "name": "Cards",
-      "path": "/tools/sidekick/blocks/cards"
+      "path": "/block-collection/cards"
     },
     {
       "name": "Video",
-      "path": "/tools/sidekick/blocks/video"
+      "path": "/block-collection/video"
     },
     {
       "name": "Accordion",
-      "path": "/tools/sidekick/blocks/accordion"
+      "path": "/block-collection/accordion"
     },
     {
       "name": "Hero",
-      "path": "/tools/sidekick/blocks/hero"
+      "path": "/block-collection/hero"
     },
     {
       "name": "Quote",
-      "path": "/tools/sidekick/blocks/quote"
+      "path": "/block-collection/quote"
     },
     {
       "name": "Modal",
-      "path": "/tools/sidekick/blocks/modal"
+      "path": "/block-collection/modal"
     },
     {
       "name": "Carousel",
-      "path": "/tools/sidekick/blocks/carousel"
+      "path": "/block-collection/carousel"
     },
     {
       "name": "Tabs",
-      "path": "/tools/sidekick/blocks/tabs"
+      "path": "/block-collection/tabs"
     },
     {
       "name": "Fragment",
-      "path": "/tools/sidekick/blocks/fragment"
+      "path": "/block-collection/fragment"
     },
     {
       "name": "Search",
-      "path": "/tools/sidekick/blocks/search"
+      "path": "/block-collection/search"
     },
     {
       "name": "Embed",
-      "path": "/tools/sidekick/blocks/embed"
+      "path": "/block-collection/embed"
     }
   ],
   "columns": [

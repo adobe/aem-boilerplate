@@ -5,55 +5,55 @@
   "data": [
     {
       "name": "Table",
-      "path": "/tools/sidekick/library/blocks/table"
+      "path": "/tools/sidekick/blocks/table"
     },
     {
       "name": "Columns",
-      "path": "/tools/sidekick/library/blocks/columns"
+      "path": "/tools/sidekick/blocks/columns"
     },
     {
       "name": "Cards",
-      "path": "/tools/sidekick/library/blocks/cards"
+      "path": "/tools/sidekick/blocks/cards"
     },
     {
       "name": "Video",
-      "path": "/tools/sidekick/library/blocks/video"
+      "path": "/tools/sidekick/blocks/video"
     },
     {
       "name": "Accordion",
-      "path": "/tools/sidekick/library/blocks/accordion"
+      "path": "/tools/sidekick/blocks/accordion"
     },
     {
       "name": "Hero",
-      "path": "/tools/sidekick/library/blocks/hero"
+      "path": "/tools/sidekick/blocks/hero"
     },
     {
       "name": "Quote",
-      "path": "/tools/sidekick/library/blocks/quote"
+      "path": "/tools/sidekick/blocks/quote"
     },
     {
       "name": "Modal",
-      "path": "/tools/sidekick/library/blocks/modal"
+      "path": "/tools/sidekick/blocks/modal"
     },
     {
       "name": "Carousel",
-      "path": "/tools/sidekick/library/blocks/carousel"
+      "path": "/tools/sidekick/blocks/carousel"
     },
     {
       "name": "Tabs",
-      "path": "/tools/sidekick/library/blocks/tabs"
+      "path": "/tools/sidekick/blocks/tabs"
     },
     {
       "name": "Fragment",
-      "path": "/tools/sidekick/library/blocks/fragment"
+      "path": "/tools/sidekick/blocks/fragment"
     },
     {
       "name": "Search",
-      "path": "/tools/sidekick/library/blocks/search"
+      "path": "/tools/sidekick/blocks/search"
     },
     {
       "name": "Embed",
-      "path": "/tools/sidekick/library/blocks/embed"
+      "path": "/tools/sidekick/blocks/embed"
     }
   ],
   "columns": [

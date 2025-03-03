@@ -11,6 +11,7 @@ import { loadFragment } from '../fragment/fragment.js';
 
 import renderAuthCombine from './renderAuthCombine.js';
 import { renderAuthDropdown } from './renderAuthDropdown.js';
+import applyHashTagsForDomElement from '../../scripts/api/hashtags/api.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -32,6 +33,7 @@ function closeOnEscape(e) {
     } else if (!isDesktop.matches) {
       // eslint-disable-next-line no-use-before-define
       toggleMenu(nav, navSections);
+      overlay.classList.remove('show');
       nav.querySelector('button').focus();
       const navWrapper = document.querySelector('.nav-wrapper');
       navWrapper.classList.remove('active');
@@ -214,11 +216,7 @@ export default async function decorate(block) {
         setupSubmenu(navSection);
         navSection.addEventListener('click', (event) => {
           if (event.target.tagName === 'A') return;
-          if (isDesktop.matches) {
-            const expanded = navSection.getAttribute('aria-expanded') === 'true';
-            toggleAllNavSections(navSections);
-            navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-          } else {
+          if (!isDesktop.matches) {
             navSection.classList.toggle('active');
           }
         });
@@ -384,3 +382,15 @@ export default async function decorate(block) {
   );
   renderAuthDropdown(navTools);
 }
+
+events.on('cart/initialized', () => {
+  applyHashTagsForDomElement('nav');
+}, { eager: true });
+
+events.on('cart/updated', () => {
+  applyHashTagsForDomElement('nav');
+}, { eager: true });
+
+events.on('cart/reset', () => {
+  applyHashTagsForDomElement('nav');
+}, { eager: true });

@@ -36,7 +36,7 @@ export default function conditionsMatched(activeRules, blockConfig) {
     return false;
   }
 
-  const activeGroup = activeRules.customerGroup?.name.trim();
+  const activeGroup = activeRules.customerGroup?.trim();
   if (customerGroups !== undefined && !groupMatched(activeGroup, customerGroups.split(','))) {
     return false;
   }

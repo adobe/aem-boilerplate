@@ -1,5 +1,8 @@
+import { events } from '@dropins/tools/event-bus.js';
+import * as Cart from '@dropins/storefront-cart/api.js';
 import { fetchGraphQl, setFetchGraphQlHeader } from '@dropins/tools/fetch-graphql.js';
-import { getHeaders } from '../../scripts/configs.js';
+import { getHeaders } from '../../configs.js';
+import { getUserTokenCookie } from '../../initializers/index.js';
 
 const addCartHeaders = async () => {
   const cartHeaders = await getHeaders('cart');
@@ -12,7 +15,7 @@ const addCartHeaders = async () => {
 
 const getCustomerGroups = async () => {
   try {
-    addCartHeaders();
+    await addCartHeaders();
     const response = await fetchGraphQl(
       `query {
           customerGroup {
@@ -24,7 +27,7 @@ const getCustomerGroups = async () => {
         method: 'GET',
       },
     );
-    return response.data?.customerGroup;
+    return response.data?.customerGroup?.name;
   } catch (error) {
     console.error('Could not retrieve customer groups', error);
   }
@@ -33,7 +36,7 @@ const getCustomerGroups = async () => {
 
 const getCustomerSegments = async () => {
   try {
-    addCartHeaders();
+    await addCartHeaders();
     const response = await fetchGraphQl(
       `query {
           customer {
@@ -41,13 +44,16 @@ const getCustomerSegments = async () => {
               name
             }
           }
+          customerGroup {
+            name
+          }
         }
       `,
       {
         method: 'GET',
       },
     );
-    return response.data?.customer?.segments || [];
+    return response.data || [];
   } catch (error) {
     console.error('Could not retrieve customer segments', error);
   }
@@ -56,7 +62,7 @@ const getCustomerSegments = async () => {
 
 const getCartRules = async (cartId) => {
   try {
-    addCartHeaders();
+    await addCartHeaders();
     const response = await fetchGraphQl(
       `query TB_GET_CUSTOMER_SEGMENTS_CART_RULES($cartId: String!){
           customerSegments(cartId: $cartId) {
@@ -66,6 +72,9 @@ const getCartRules = async (cartId) => {
             rules {
               name
             }
+          }
+          customerGroup {
+            name
           }
         }
       `,
@@ -98,7 +107,7 @@ const getCatalogPriceRules = async (sku) => {
           }
         }
       `;
-    addCartHeaders();
+    await addCartHeaders();
     const response = await fetchGraphQl(
       query,
       {
@@ -113,7 +122,48 @@ const getCatalogPriceRules = async (sku) => {
   return [];
 };
 
+const getActiveRules = async () => {
+  const activeRules = {
+    customerSegments: [],
+    customerGroup: null,
+    cart: [],
+    catalogPriceRules: [],
+  };
+
+  // Cart initialised
+  if (Cart.getCartDataFromCache() !== null) {
+    const cartId = Cart.getCartDataFromCache().id || null;
+    if (cartId) {
+      const response = await getCartRules(cartId);
+      activeRules.cart = response.cart?.rules || [];
+      activeRules.customerGroup = response.customerGroup?.name || '';
+      activeRules.customerSegments = response.customerSegments || [];
+    }
+  }
+
+  // Cart not initialised, but Authenticated user
+  if (Cart.getCartDataFromCache() === null && getUserTokenCookie()) {
+    const response = await getCustomerSegments();
+    activeRules.customerGroup = response.customerGroup?.name || '';
+    activeRules.customerSegments = response.customer?.segments || [];
+  }
+
+  // Cart not initialized AND user is not Authenticated
+  if (Cart.getCartDataFromCache() === null && !getUserTokenCookie()) {
+    activeRules.customerGroup = await getCustomerGroups();
+  }
+
+  // eslint-disable-next-line no-underscore-dangle
+  const productData = events._lastEvent?.['pdp/data']?.payload ?? null;
+  if (productData?.sku) {
+    activeRules.catalogPriceRules = await getCatalogPriceRules(productData.sku);
+  }
+
+  return activeRules;
+};
+
 export {
+  getActiveRules,
   getCustomerGroups,
   getCustomerSegments,
   getCartRules,

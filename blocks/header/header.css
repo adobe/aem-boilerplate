@@ -569,7 +569,6 @@ li
   header .nav-wrapper:has( nav[aria-expanded='true']) nav .nav-hamburger button {
     position: fixed;
     left: 275px;
-    top: 20px;
     z-index: 5;
   }
 
@@ -589,9 +588,9 @@ li
     height: auto;
     left: 0;
     overflow: hidden;
-    padding: var(--spacing-small);
+    padding: var(--spacing-small) var(--spacing-medium);
     position: fixed;
-    width: 288px;
+    width: 272px;
   }
 
   header nav[aria-expanded='true'] .nav-tools-panel--show {
@@ -609,7 +608,7 @@ li
   header nav .nav-sections ul li {
     font: var(--type-headline-2-default-font);
     letter-spacing: var(--type-headline-2-default-letter-spacing);
-    padding: var(--spacing-medium);
+    padding: var(--spacing-small) 0;
   }
 
   header nav .nav-sections ul li a {
@@ -638,7 +637,13 @@ li
   }
 
   header nav .nav-sections ul > li ul > li:has(img) {
+    margin: var(--spacing-small) 0;
     padding: 0;
+  }
+
+  header nav[aria-expanded='true'] .nav-brand a {
+    left: -16px;
+    position: relative;
   }
 
   header nav .nav-sections ul > li.nav-drop {

@@ -23,6 +23,7 @@ import {
 } from './aem.js';
 import { trackHistory } from './commerce.js';
 import initializeDropins from './initializers/index.js';
+import { removeHashTags } from './api/hashtags/parser.js';
 
 const AUDIENCES = {
   mobile: () => window.innerWidth < 600,
@@ -150,6 +151,22 @@ export function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+}
+
+/**
+ * Decorates all links in scope of element
+ *
+ * @param {HTMLElement} element
+ */
+function decorateLinks(element) {
+  element.querySelectorAll('a').forEach((a) => {
+    if (!a.hash) {
+      return;
+    }
+    a.addEventListener('click', (evt) => {
+      removeHashTags(evt.target);
+    });
+  });
 }
 
 function preloadFile(href, as) {
@@ -305,6 +322,8 @@ async function loadLazy(doc) {
   }
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
+
+  decorateLinks(doc);
 }
 
 /**

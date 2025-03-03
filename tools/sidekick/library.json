@@ -1,0 +1,64 @@
+{
+  "total": 13,
+  "offset": 0,
+  "limit": 13,
+  "data": [
+    {
+      "name": "Table",
+      "path": "/tools/sidekick/library/blocks/table"
+    },
+    {
+      "name": "Columns",
+      "path": "/tools/sidekick/library/blocks/columns"
+    },
+    {
+      "name": "Cards",
+      "path": "/tools/sidekick/library/blocks/cards"
+    },
+    {
+      "name": "Video",
+      "path": "/tools/sidekick/library/blocks/video"
+    },
+    {
+      "name": "Accordion",
+      "path": "/tools/sidekick/library/blocks/accordion"
+    },
+    {
+      "name": "Hero",
+      "path": "/tools/sidekick/library/blocks/hero"
+    },
+    {
+      "name": "Quote",
+      "path": "/tools/sidekick/library/blocks/quote"
+    },
+    {
+      "name": "Modal",
+      "path": "/tools/sidekick/library/blocks/modal"
+    },
+    {
+      "name": "Carousel",
+      "path": "/tools/sidekick/library/blocks/carousel"
+    },
+    {
+      "name": "Tabs",
+      "path": "/tools/sidekick/library/blocks/tabs"
+    },
+    {
+      "name": "Fragment",
+      "path": "/tools/sidekick/library/blocks/fragment"
+    },
+    {
+      "name": "Search",
+      "path": "/tools/sidekick/library/blocks/search"
+    },
+    {
+      "name": "Embed",
+      "path": "/tools/sidekick/library/blocks/embed"
+    }
+  ],
+  "columns": [
+    "name",
+    "path"
+  ],
+  ":type": "sheet"
+}

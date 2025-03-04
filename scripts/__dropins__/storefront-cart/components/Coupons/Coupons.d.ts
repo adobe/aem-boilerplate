@@ -2,6 +2,8 @@ import { FunctionComponent, VNode } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
 
 export interface CouponsProps extends HTMLAttributes<HTMLDivElement> {
+    accordionSectionTitle?: string;
+    accordionSectionIcon?: string;
     couponCodeField?: VNode<HTMLAttributes<HTMLInputElement>>;
     applyCouponsButton?: VNode<HTMLAttributes<HTMLButtonElement>>;
     appliedCoupons?: VNode<HTMLAttributes<HTMLDivElement>>;

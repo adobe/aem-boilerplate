@@ -11,8 +11,10 @@ export interface OrderSummaryProps extends HTMLAttributes<HTMLDivElement> {
     slots?: {
         EstimateShipping?: SlotProps;
         Coupons?: SlotProps;
+        GiftCards?: SlotProps;
     };
     enableCoupons?: boolean;
+    enableGiftCards?: boolean;
     errors: boolean;
     showTotalSaved?: boolean;
     updateLineItems?: (lineItems: Array<OrderSummaryLineItem>) => Array<OrderSummaryLineItem>;

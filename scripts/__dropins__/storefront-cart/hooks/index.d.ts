@@ -16,4 +16,5 @@
  *******************************************************************/
 export * from './useEstimatedTotals';
 export * from './useEstimatedShipping';
+export * from './useGiftOptions';
 //# sourceMappingURL=index.d.ts.map

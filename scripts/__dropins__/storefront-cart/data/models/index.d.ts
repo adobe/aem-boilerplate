@@ -17,4 +17,5 @@
 export * from './cart-model';
 export * from './shipping-models';
 export * from './store-models';
+export * from './gift-card-account';
 //# sourceMappingURL=index.d.ts.map

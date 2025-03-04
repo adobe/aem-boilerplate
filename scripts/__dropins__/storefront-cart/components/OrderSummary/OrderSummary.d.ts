@@ -40,9 +40,36 @@ export interface OrderSummaryProps extends Omit<HTMLAttributes<HTMLDivElement>, 
         estimated?: boolean;
         priceWithoutTax?: VNode<HTMLAttributes<HTMLSpanElement>>;
     };
+    printedCard?: {
+        renderContent: boolean;
+        taxIncluded: boolean;
+        taxInclAndExcl: boolean;
+        priceExclTax: VNode<HTMLAttributes<HTMLSpanElement>>;
+        priceInclTax: VNode<HTMLAttributes<HTMLSpanElement>>;
+    };
+    itemsGiftWrapping?: {
+        renderContent: boolean;
+        taxIncluded: boolean;
+        taxInclAndExcl: boolean;
+        priceExclTax: VNode<HTMLAttributes<HTMLSpanElement>>;
+        priceInclTax: VNode<HTMLAttributes<HTMLSpanElement>>;
+    };
+    orderGiftWrapping?: {
+        renderContent: boolean;
+        taxIncluded: boolean;
+        taxInclAndExcl: boolean;
+        priceExclTax: VNode<HTMLAttributes<HTMLSpanElement>>;
+        priceInclTax: VNode<HTMLAttributes<HTMLSpanElement>>;
+    };
     primaryAction?: VNode<HTMLAttributes<HTMLButtonElement>>;
     coupons?: VNode<HTMLAttributes<HTMLDivElement>>;
+    giftCards?: VNode<HTMLAttributes<HTMLDivElement>>;
     totalSaved?: VNode<HTMLAttributes<HTMLSpanElement>>;
+    appliedGiftCards?: {
+        label: VNode<HTMLAttributes<HTMLSpanElement>> | string;
+        price: VNode<HTMLAttributes<HTMLSpanElement>>;
+        content?: VNode[];
+    };
     updateLineItems?: (lineItems: Array<OrderSummaryLineItem>) => Array<OrderSummaryLineItem>;
 }
 export declare const OrderSummary: FunctionComponent<OrderSummaryProps>;

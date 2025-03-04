@@ -16,4 +16,5 @@
  *******************************************************************/
 export * from './transform-cart';
 export * from './transform-store-config';
+export * from './transform-gift-card-account';
 //# sourceMappingURL=index.d.ts.map

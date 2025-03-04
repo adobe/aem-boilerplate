@@ -28,6 +28,7 @@ declare const bundleOptions: {
     }[];
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -93,6 +94,7 @@ declare const bundleOptionsEmpty: {
     bundle_options: never[];
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -160,6 +162,7 @@ declare const giftCardPhysical: {
     sender_name: string;
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -229,6 +232,7 @@ declare const giftCardVirtual: {
     sender_name: string;
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -292,6 +296,7 @@ declare const giftCardVirtual: {
 declare const simple: {
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -374,6 +379,7 @@ declare const simpleCustomizable: {
     })[];
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -466,6 +472,7 @@ declare const configurable: {
     };
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -576,6 +583,7 @@ declare const configurableCustomizable: {
     };
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -640,6 +648,7 @@ declare const giftCard: {
     __typename: string;
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -708,6 +717,7 @@ declare const downloadbleWithMultipleLinks: {
     }[];
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -804,6 +814,7 @@ declare const simpleLowInventory: {
     };
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -876,6 +887,7 @@ declare const complexInsufficientQuantity: {
     }[];
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -948,6 +960,7 @@ declare const complexInsufficientQuantityGeneralMessage: {
     }[];
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -1030,6 +1043,7 @@ declare const complexWithProductAttributes: {
     }[];
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
     prices: {
         price: {
@@ -1122,6 +1136,7 @@ declare const simpleWithNoDiscount: {
     };
     uid: string;
     quantity: number;
+    gift_message_available: string;
     errors: null;
 };
 export { bundleOptions, bundleOptionsEmpty, giftCardPhysical, giftCardVirtual, simple, simpleCustomizable, configurable, configurableCustomizable, giftCard, downloadbleWithMultipleLinks, simpleLowInventory, complexInsufficientQuantity, complexInsufficientQuantityGeneralMessage, complexWithProductAttributes, simpleWithNoDiscount, };

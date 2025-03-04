@@ -1,7 +1,7 @@
 import { loadCSS, buildBlock } from '../../scripts/aem.js';
 
 export default async function createModal(contentNodes) {
-  await loadCSS('./blocks/modal/modal.css');
+  await loadCSS(`${window.hlx.codeBasePath}/blocks/modal/modal.css`);
   const dialog = document.createElement('dialog');
   dialog.setAttribute('tabindex', 1);
   dialog.setAttribute('role', 'dialog');

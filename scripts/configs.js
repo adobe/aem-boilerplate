@@ -1,3 +1,7 @@
+/* eslint-disable import/no-cycle */
+
+import { getRootPath } from './scripts.js';
+
 const ALLOWED_CONFIGS = ['prod', 'stage', 'dev'];
 
 /**
@@ -29,21 +33,22 @@ export const calcEnvironment = () => {
   return environment;
 };
 
-function buildConfigURL(environment) {
+function buildConfigURL(environment, root = '/') {
   const env = environment || calcEnvironment();
   let fileName = 'configs.json';
   if (env !== 'prod') {
     fileName = `configs-${env}.json`;
   }
-  const configURL = new URL(`${window.location.origin}/${fileName}`);
+  const configURL = new URL(`${window.location.origin}${root}${fileName}`);
   return configURL;
 }
 
 const getConfigForEnvironment = async (environment) => {
   const env = environment || calcEnvironment();
+  const root = getRootPath() || '/';
 
   try {
-    const configJSON = window.sessionStorage.getItem(`config:${env}`);
+    const configJSON = window.sessionStorage.getItem(`config:${env}:${root}`);
     if (!configJSON) {
       throw new Error('No config in session storage');
     }
@@ -55,13 +60,13 @@ const getConfigForEnvironment = async (environment) => {
 
     return parsedConfig;
   } catch (e) {
-    let configJSON = await fetch(buildConfigURL(env));
+    let configJSON = await fetch(buildConfigURL(env, root));
     if (!configJSON.ok) {
       throw new Error(`Failed to fetch config for ${env}`);
     }
     configJSON = await configJSON.json();
     configJSON[':expiry'] = Math.round(Date.now() / 1000) + 7200;
-    window.sessionStorage.setItem(`config:${env}`, JSON.stringify(configJSON));
+    window.sessionStorage.setItem(`config:${env}:${root}`, JSON.stringify(configJSON));
     return configJSON;
   }
 };
@@ -87,13 +92,21 @@ export const getConfigValue = async (configParam, environment) => {
 export const getHeaders = async (scope, environment) => {
   const env = environment || calcEnvironment();
   const config = await getConfigForEnvironment(env);
-  const configElements = config.data.filter((el) => el?.key.includes(`headers.${scope}`));
+  const configElements = config.data.filter((el) => el?.key.includes('headers.all') || el?.key.includes(`headers.${scope}`));
 
   return configElements.reduce((obj, item) => {
     let { key } = item;
+
+    // global values
+    if (key.includes('commerce.headers.all.')) {
+      key = key.replace('commerce.headers.all.', '');
+    }
+
+    // scoped values
     if (key.includes(`commerce.headers.${scope}.`)) {
       key = key.replace(`commerce.headers.${scope}.`, '');
     }
+
     return { ...obj, [key]: item.value };
   }, {});
 };

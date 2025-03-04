@@ -376,6 +376,26 @@ export async function fetchIndex(indexFile, pageSize = 500) {
 }
 
 /**
+ * Get root path
+ */
+export function getRootPath() {
+  window.ROOT_PATH = window.ROOT_PATH || getMetadata('root') || '/';
+  return window.ROOT_PATH;
+}
+
+/**
+ * Decorates links.
+ * @param {string} [link] url to be localized
+ */
+export function rootLink(link) {
+  const root = getRootPath().replace(/\/$/, '');
+
+  // If the link is already localized, do nothing
+  if (link.startsWith(root)) return link;
+  return `${root}${link}`;
+}
+
+/**
  * Check if consent was given for a specific topic.
  * @param {*} topic Topic identifier
  * @returns {boolean} True if consent was given

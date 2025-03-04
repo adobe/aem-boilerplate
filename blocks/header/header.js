@@ -11,6 +11,7 @@ import { loadFragment } from '../fragment/fragment.js';
 
 import renderAuthCombine from './renderAuthCombine.js';
 import { renderAuthDropdown } from './renderAuthDropdown.js';
+import { rootLink } from '../../scripts/scripts.js';
 import applyHashTagsForDomElement from '../../scripts/api/hashtags/api.js';
 
 // media query match that indicates mobile/tablet width
@@ -310,6 +311,10 @@ export default async function decorate(block) {
   const searchButton = navTools.querySelector('.nav-search-button');
 
   const searchInput = searchPanel.querySelector('input');
+
+  const searchForm = searchPanel.querySelector('form');
+
+  searchForm.action = rootLink('/search');
 
   async function toggleSearch(state) {
     const show = state ?? !searchPanel.classList.contains('nav-tools-panel--show');

@@ -13,10 +13,11 @@ import {
   CUSTOMER_FORGOTPASSWORD_PATH,
   CUSTOMER_LOGIN_PATH,
 } from '../../scripts/constants.js';
+import { rootLink } from '../../scripts/scripts.js';
 
 const signInFormConfig = {
   renderSignUpLink: true,
-  routeForgotPassword: () => CUSTOMER_FORGOTPASSWORD_PATH,
+  routeForgotPassword: () => rootLink(CUSTOMER_FORGOTPASSWORD_PATH),
   slots: {
     SuccessNotification: (ctx) => {
       const userName = ctx?.isSuccessful?.userName || '';
@@ -36,7 +37,7 @@ const signInFormConfig = {
               children: 'My Account',
 
               onClick: () => {
-                window.location.href = CUSTOMER_ACCOUNT_PATH;
+                window.location.href = rootLink(CUSTOMER_ACCOUNT_PATH);
               },
             })(primaryBtn);
 
@@ -52,7 +53,7 @@ const signInFormConfig = {
               variant: 'tertiary',
               onClick: async () => {
                 await authApi.revokeCustomerToken();
-                window.location.href = '/';
+                window.location.href = rootLink('/');
               },
             })(secondaryButton);
 
@@ -67,8 +68,8 @@ const signInFormConfig = {
 };
 
 const signUpFormConfig = {
-  routeSignIn: () => CUSTOMER_LOGIN_PATH,
-  routeRedirectOnSignIn: () => CUSTOMER_ACCOUNT_PATH,
+  routeSignIn: () => rootLink(CUSTOMER_LOGIN_PATH),
+  routeRedirectOnSignIn: () => rootLink(CUSTOMER_ACCOUNT_PATH),
   isAutoSignInEnabled: false,
   slots: {
     SuccessNotification: (ctx) => {
@@ -87,7 +88,7 @@ const signUpFormConfig = {
               children: 'Sign in',
 
               onClick: () => {
-                window.location.href = CUSTOMER_LOGIN_PATH;
+                window.location.href = rootLink(CUSTOMER_LOGIN_PATH);
               },
             })(primaryBtn);
 
@@ -102,7 +103,7 @@ const signUpFormConfig = {
               children: 'Home',
               variant: 'tertiary',
               onClick: () => {
-                window.location.href = '/';
+                window.location.href = rootLink('/');
               },
             })(secondaryButton);
 
@@ -117,7 +118,7 @@ const signUpFormConfig = {
 };
 
 const resetPasswordFormConfig = {
-  routeSignIn: () => CUSTOMER_LOGIN_PATH,
+  routeSignIn: () => rootLink(CUSTOMER_LOGIN_PATH),
 };
 
 const onHeaderLinkClick = (element) => {
@@ -125,7 +126,7 @@ const onHeaderLinkClick = (element) => {
   const originalViewportContent = viewportMeta.getAttribute('content');
 
   if (getCookie('auth_dropin_firstname')) {
-    window.location.href = CUSTOMER_ACCOUNT_PATH;
+    window.location.href = rootLink(CUSTOMER_ACCOUNT_PATH);
     return;
   }
   const signInModal = document.createElement('div');
@@ -268,8 +269,8 @@ const renderAuthCombine = (navSections, toggleMenu) => {
         popupMenuContainer.insertAdjacentHTML(
           'afterend',
           `<ul class="popupMenuUrlList">
-              <li><a href={CUSTOMER_ACCOUNT_PATH}>My Account</a></li>
-              <li><a href="/products/hollister-backyard-sweatshirt/MH05">Product page</a></li>
+              <li><a href="${rootLink(CUSTOMER_ACCOUNT_PATH)}">My Account</a></li>
+              <li><a href="${rootLink('/products/hollister-backyard-sweatshirt/MH05')}">Product page</a></li>
               <li><button class="logoutButton">Logout</button></li>
             </ul>`,
         );

@@ -127,3 +127,96 @@ export const setPaymentMethod = (paymentMethod) => {
     );
   }
 };
+
+export const fillGiftOptiosForm = (className, type = 'order') => {
+  if (type === 'product') {
+    cy.wait(3000);
+    cy.get(className).contains('Gift options').click();
+  }
+
+  if (type === 'order') {
+    cy.wait(3000);
+
+    cy.get(`${className} ${fields.giftOptionCardIncludedCheckBox}`)
+      .click({
+        force: true,
+      })
+      .should('be.checked');
+  }
+
+  cy.wait(3000);
+  cy.get(`${className} ${fields.giftOptionWrapCheckBox}`)
+    .click({
+      force: true,
+    })
+    .should('be.checked');
+
+  cy.get(`${className} ${fields.giftOptionRecipientName}`)
+    .type('giftOptionRecipientName')
+    .should('have.value', 'giftOptionRecipientName')
+    .blur();
+  cy.wait(2000);
+  cy.get(`${className} ${fields.giftOptionSenderName}`)
+    .type('giftOptionSenderName')
+    .should('have.value', 'giftOptionSenderName')
+    .blur();
+  cy.wait(2000);
+  cy.get(`${className} ${fields.giftOptionMessage}`)
+    .type('giftOptionMessage')
+    .should('have.value', 'giftOptionMessage')
+    .blur(); // Added .blur() here
+  cy.wait(4000);
+
+  cy.get(className).contains('Customize').click();
+  cy.get(`${className} .cart-gift-options-view__modal-grid-item img`)
+    .eq(1)
+    .click();
+  cy.contains('.dropin-button--primary', 'Apply').click();
+};
+
+export const fillGiftOptiosMessageForm = (className, type = 'order') => {
+  cy.wait(2000);
+  if (type === 'product') {
+    cy.get(className).contains('Gift options').click();
+  }
+
+  cy.wait(2000);
+
+  cy.get(`${className} ${fields.giftOptionRecipientName}`)
+    .type('giftOptionRecipientName')
+    .should('have.value', 'giftOptionRecipientName')
+    .blur();
+  cy.wait(2000);
+  cy.get(`${className} ${fields.giftOptionSenderName}`)
+    .type('giftOptionSenderName')
+    .should('have.value', 'giftOptionSenderName')
+    .blur();
+  cy.wait(2000);
+  cy.get(`${className} ${fields.giftOptionMessage}`)
+    .type('giftOptionMessage')
+    .should('have.value', 'giftOptionMessage')
+    .blur(); // Added .blur() here
+};
+
+export const fillGiftOptiosFormEmpty = (className) => {
+  cy.get(`${className} ${fields.giftOptionRecipientName}`, {
+    timeout: 2000,
+  })
+    .clear()
+    .should('have.value', '')
+    .blur();
+
+  cy.get(`${className} ${fields.giftOptionSenderName}`, {
+    timeout: 2000,
+  })
+    .clear()
+    .should('have.value', '')
+    .blur();
+
+  cy.get(`${className} ${fields.giftOptionMessage}`, {
+    timeout: 2000,
+  })
+    .clear()
+    .should('have.value', '')
+    .blur();
+};

@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{PRODUCT_DETAILS_FRAGMENT as T,PRICE_DETAILS_FRAGMENT as i,GIFT_CARD_DETAILS_FRAGMENT as d,ORDER_ITEM_DETAILS_FRAGMENT as A,BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT as c,ORDER_SUMMARY_FRAGMENT as D,ADDRESS_FRAGMENT as u,ORDER_ITEM_FRAGMENT as M,GUEST_ORDER_FRAGMENT as N}from"../fragments.js";import{f as a,h as R}from"./fetch-graphql.js";import{a as s}from"./initialize.js";const G=`
+import{PRODUCT_DETAILS_FRAGMENT as s,PRICE_DETAILS_FRAGMENT as i,GIFT_CARD_DETAILS_FRAGMENT as A,ORDER_ITEM_DETAILS_FRAGMENT as d,BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT as c,ORDER_SUMMARY_FRAGMENT as D,ADDRESS_FRAGMENT as G,ORDER_ITEM_FRAGMENT as u,GIFT_WRAPPING_FRAGMENT as M,GIFT_MESSAGE_FRAGMENT as N,GUEST_ORDER_FRAGMENT as O}from"../fragments.js";import{f as R,h as a}from"./fetch-graphql.js";import{a as T}from"./initialize.js";const m=`
   mutation CANCEL_ORDER_MUTATION($orderId: ID!, $reason: String!) {
     cancelOrder(input: { order_id: $orderId, reason: $reason }) {
       error
@@ -63,15 +63,17 @@ import{PRODUCT_DETAILS_FRAGMENT as T,PRICE_DETAILS_FRAGMENT as i,GIFT_CARD_DETAI
       }
     }
   }
-  ${T}
+  ${s}
   ${i}
-  ${d}
   ${A}
+  ${d}
   ${c}
   ${D}
+  ${G}
   ${u}
   ${M}
-`,I=async(r,e,E,t)=>{if(!r)throw new Error("No order ID found");if(!e)throw new Error("No reason found");return a(G,{variables:{orderId:r,reason:e}}).then(({errors:n,data:o})=>{if(n)return R(n);if(o.cancelOrder.error!=null){t();return}const _=s(o.cancelOrder.order);E(_)}).catch(()=>t())},O=`
+  ${N}
+`,p=async(r,e,n,t)=>{if(!r)throw new Error("No order ID found");if(!e)throw new Error("No reason found");return R(m,{variables:{orderId:r,reason:e}}).then(({errors:E,data:_})=>{if(E)return a(E);if(_.cancelOrder.error!=null){t();return}const o=T(_.cancelOrder.order);n(o)}).catch(()=>t())},I=`
   mutation REQUEST_GUEST_ORDER_CANCEL_MUTATION(
     $token: String!
     $reason: String!
@@ -83,5 +85,5 @@ import{PRODUCT_DETAILS_FRAGMENT as T,PRICE_DETAILS_FRAGMENT as i,GIFT_CARD_DETAI
       }
     }
   }
-  ${N}
-`,p=async(r,e,E,t)=>{if(!r)throw new Error("No order token found");if(!e)throw new Error("No reason found");return a(O,{variables:{token:r,reason:e}}).then(({errors:n,data:o})=>{if(n)return R(n);o.requestGuestOrderCancel.error!=null&&t();const _=s(o.requestGuestOrderCancel.order);E(_)}).catch(()=>t())};export{I as c,p as r};
+  ${O}
+`,f=async(r,e,n,t)=>{if(!r)throw new Error("No order token found");if(!e)throw new Error("No reason found");return R(I,{variables:{token:r,reason:e}}).then(({errors:E,data:_})=>{if(E)return a(E);_.requestGuestOrderCancel.error!=null&&t();const o=T(_.requestGuestOrderCancel.order);n(o)}).catch(()=>t())};export{p as c,f as r};

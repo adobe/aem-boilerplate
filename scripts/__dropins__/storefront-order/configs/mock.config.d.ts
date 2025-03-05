@@ -13,6 +13,58 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
+export declare const totalGiftOptions: {
+    giftWrappingForItems: {
+        value: number;
+        currency: string;
+    };
+    giftWrappingForItemsInclTax: {
+        value: number;
+        currency: string;
+    };
+    giftWrappingForOrder: {
+        value: number;
+        currency: string;
+    };
+    giftWrappingForOrderInclTax: {
+        value: number;
+        currency: string;
+    };
+    printedCard: {
+        value: number;
+        currency: string;
+    };
+    printedCardInclTax: {
+        value: number;
+        currency: string;
+    };
+};
+export declare const gift_options: {
+    gift_wrapping_for_items: {
+        currency: string;
+        value: number;
+    };
+    gift_wrapping_for_items_incl_tax: {
+        currency: string;
+        value: number;
+    };
+    gift_wrapping_for_order: {
+        currency: string;
+        value: number;
+    };
+    gift_wrapping_for_order_incl_tax: {
+        currency: string;
+        value: number;
+    };
+    printed_card: {
+        currency: string;
+        value: number;
+    };
+    printed_card_incl_tax: {
+        currency: string;
+        value: number;
+    };
+};
 export declare const taxCalculations: {
     includeAndExcludeTax: {
         originalPrice: {
@@ -468,6 +520,32 @@ export declare const transformMockOrderInput: {
                         gift_card?: undefined;
                     })[];
                     total: {
+                        gift_options: {
+                            gift_wrapping_for_items: {
+                                currency: string;
+                                value: number;
+                            };
+                            gift_wrapping_for_items_incl_tax: {
+                                currency: string;
+                                value: number;
+                            };
+                            gift_wrapping_for_order: {
+                                currency: string;
+                                value: number;
+                            };
+                            gift_wrapping_for_order_incl_tax: {
+                                currency: string;
+                                value: number;
+                            };
+                            printed_card: {
+                                currency: string;
+                                value: number;
+                            };
+                            printed_card_incl_tax: {
+                                currency: string;
+                                value: number;
+                            };
+                        };
                         grand_total: {
                             value: number;
                             currency: string;
@@ -1192,6 +1270,13 @@ export declare const orderCostSummaryMockup: {
     totalQuantity: number;
     shippingMethod: string;
     carrier: string;
+    appliedGiftCards: {
+        appliedBalance: {
+            currency: string;
+            value: number;
+        };
+        code: string;
+    }[];
     discounts: {
         amount: {
             value: number;
@@ -1313,7 +1398,33 @@ export declare const orderCostSummaryMockup: {
         quantityReturned: number;
         quantityShipped: number;
     }[];
-    totalGiftcard: {
+    totalGiftOptions: {
+        giftWrappingForItems: {
+            value: number;
+            currency: string;
+        };
+        giftWrappingForItemsInclTax: {
+            value: number;
+            currency: string;
+        };
+        giftWrappingForOrder: {
+            value: number;
+            currency: string;
+        };
+        giftWrappingForOrderInclTax: {
+            value: number;
+            currency: string;
+        };
+        printedCard: {
+            value: number;
+            currency: string;
+        };
+        printedCardInclTax: {
+            value: number;
+            currency: string;
+        };
+    };
+    totalGiftCard: {
         value: number;
         currency: string;
     };
@@ -1986,7 +2097,7 @@ export declare const createReturnOrderMock: {
         value: number;
         currency: string;
     };
-    totalGiftcard: {
+    totalGiftCard: {
         currency: string;
         value: number;
     };
@@ -3887,7 +3998,7 @@ export declare const customerReturnDetailsFullMock: {
             value: number;
             currency: string;
         };
-        totalGiftcard: {
+        totalGiftCard: {
             currency: string;
             value: number;
         };
@@ -4576,6 +4687,13 @@ export declare const placeOrderMockData: {
         label: string;
     }[];
     email: string;
+    giftWrappingOrder: {
+        price: {
+            currency: string;
+            value: number;
+        };
+        uid: string;
+    };
     grandTotal: {
         currency: string;
         value: number;
@@ -4646,6 +4764,13 @@ export declare const placeOrderMockData: {
             recipientName: string;
             senderEmail: string;
             senderName: string;
+        };
+        productGiftWrapping: {
+            price: {
+                currency: string;
+                value: number;
+            };
+            uid: string;
         };
         id: undefined;
         price: {
@@ -5173,6 +5298,32 @@ export declare const placeOrderMockData: {
     totalTax: {
         currency: string;
         value: number;
+    };
+    totalGiftOptions: {
+        giftWrappingForItems: {
+            value: number;
+            currency: string;
+        };
+        giftWrappingForItemsInclTax: {
+            value: number;
+            currency: string;
+        };
+        giftWrappingForOrder: {
+            value: number;
+            currency: string;
+        };
+        giftWrappingForOrderInclTax: {
+            value: number;
+            currency: string;
+        };
+        printedCard: {
+            value: number;
+            currency: string;
+        };
+        printedCardInclTax: {
+            value: number;
+            currency: string;
+        };
     };
 };
 //# sourceMappingURL=mock.config.d.ts.map

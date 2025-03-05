@@ -1,0 +1,23 @@
+{
+  "data": {
+    "storeConfig": {
+      "minicart_display": false,
+      "minicart_max_items": 10,
+      "cart_expires_in_days": 1,
+      "cart_summary_display_quantity": 0,
+      "default_country": "US",
+      "allow_gift_wrapping_on_order": "1",
+      "allow_gift_wrapping_on_order_items": "1",
+      "allow_order": "1",
+      "allow_items": "1",
+      "allow_gift_receipt": "1",
+      "allow_printed_card": "1",
+      "printed_card_priceV2": {
+        "currency": "EUR",
+        "value": 355
+      },
+      "cart_gift_wrapping": "0",
+      "cart_printed_card": "3"
+    }
+  }
+}

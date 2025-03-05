@@ -4,6 +4,12 @@ import { RefObject } from 'preact';
 
 export declare const useCreateReturn: ({ onSuccess, onError, handleSetInLineAlert, orderData, }: UseCreateReturn) => {
     order: {
+        giftReceiptIncluded?: boolean | undefined;
+        printedCardIncluded?: boolean | undefined;
+        giftWrappingOrder?: {
+            price: import('../../types').MoneyProps;
+            uid: string;
+        } | undefined;
         placeholderImage?: string | undefined;
         returnNumber?: string | undefined;
         id: string;
@@ -36,19 +42,31 @@ export declare const useCreateReturn: ({ onSuccess, onError, handleSetInLineAler
         } | undefined;
         shipments?: import('../../data/models').ShipmentsModel[] | undefined;
         items?: OrderItemModel[] | undefined;
-        totalGiftcard?: import('../../types').MoneyProps | undefined;
+        totalGiftCard?: import('../../types').MoneyProps | undefined;
         grandTotal?: import('../../types').MoneyProps | undefined;
         totalShipping?: import('../../types').MoneyProps | undefined;
         subtotalExclTax?: import('../../types').MoneyProps | undefined;
         subtotalInclTax?: import('../../types').MoneyProps | undefined;
         totalTax?: import('../../types').MoneyProps | undefined;
         shippingAddress?: import('../../data/models').OrderAddressModel | undefined;
+        totalGiftOptions?: {
+            giftWrappingForItems: import('../../types').MoneyProps;
+            giftWrappingForItemsInclTax: import('../../types').MoneyProps;
+            giftWrappingForOrder: import('../../types').MoneyProps;
+            giftWrappingForOrderInclTax: import('../../types').MoneyProps;
+            printedCard: import('../../types').MoneyProps;
+            printedCardInclTax: import('../../types').MoneyProps;
+        } | undefined;
         billingAddress?: import('../../data/models').OrderAddressModel | undefined;
         availableActions?: import('../../types').AvailableActionsProps[] | undefined;
         taxes?: {
             amount: import('../../types').MoneyProps;
             rate: number;
             title: string;
+        }[] | undefined;
+        appliedGiftCards?: {
+            code: string;
+            appliedBalance: import('../../types').MoneyProps;
         }[] | undefined;
     };
     steps: StepsTypes;

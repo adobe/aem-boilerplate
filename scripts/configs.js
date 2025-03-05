@@ -88,7 +88,7 @@ export const getConfigValue = async (configParam, environment) => {
 /**
  * Retrieves headers from config entries like commerce.headers.pdp.my-header, etc and
  * returns as object of all headers like { my-header: value, ... }
-*/
+ */
 export const getHeaders = async (scope, environment) => {
   const env = environment || calcEnvironment();
   const config = await getConfigForEnvironment(env);

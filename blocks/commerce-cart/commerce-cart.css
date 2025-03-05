@@ -15,6 +15,10 @@
   display: none;
 }
 
+.cart__gift-options{
+  margin-top: var(--spacing-medium);
+}
+
 @media (width >= 900px) {
   .cart__wrapper {
     flex-direction: row;

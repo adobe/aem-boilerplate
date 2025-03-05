@@ -3,6 +3,22 @@ import { OrderDataModel, OrderItemModel } from '../data/models';
 export declare const categorizeProducts: (order: OrderDataModel) => {
     returnedList: {
         totalQuantity: number;
+        giftMessage: {
+            senderName: string;
+            recipientName: string;
+            message: string;
+        };
+        giftWrappingPrice: import('../types/index').MoneyProps;
+        productGiftWrapping: {
+            uid: string;
+            design: string;
+            selected: boolean;
+            image: {
+                url: string;
+                label: string;
+            };
+            price: import('../types/index').MoneyProps;
+        }[];
         taxCalculations: {
             includeAndExcludeTax: {
                 originalPrice: import('../types/index').MoneyProps;

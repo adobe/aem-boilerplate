@@ -12,6 +12,13 @@ export declare const transformLinks: (links: {
     result: string;
 } | null;
 export declare const transformOrderItems: (items: OrderItemProps[]) => OrderItemModel[];
+export declare const transformAppliedGiftCards: (appliedGiftCards?: any[]) => {
+    code: any;
+    appliedBalance: {
+        value: any;
+        currency: any;
+    };
+}[];
 export declare const transformOrderData: (orderData: OrderProps, returnRef?: string) => OrderDataModel;
 export declare const transformOrderDetails: <T extends "orderData">(queryType: QueryType, response: ResponseData<T>, returnRef?: string) => TransformedData<T>;
 //# sourceMappingURL=transform-order-details.d.ts.map

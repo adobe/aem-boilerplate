@@ -124,3 +124,15 @@ export const submitCancelOrderButton =
   '[data-testid="order-cancel-submit-button"]';
 export const cancellationReasonsModal =
   '[data-testid="order-cancellation-reasons-modal"]';
+
+// Gift card and options
+export const orderSummary = '.cart__order-summary';
+export const giftCardField = 'input[name="giftCardCode"]';
+export const giftOptionCardIncludedCheckBox =
+  'input[name="printedCardIncluded"]';
+export const giftOptionWrapCheckBox = 'input[name*="isGiftWrappingSelected"]';
+export const giftOptionRecipientName = 'input[name="recipientName"]';
+export const giftOptionSenderName = 'input[name="senderName"]';
+export const giftOptionMessage = 'textarea[name="message"]';
+export const giftOptionGiftReceiptIncluded =
+  'input[name="giftReceiptIncluded"]';

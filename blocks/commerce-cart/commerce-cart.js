@@ -8,6 +8,8 @@ import OrderSummary from '@dropins/storefront-cart/containers/OrderSummary.js';
 import EstimateShipping from '@dropins/storefront-cart/containers/EstimateShipping.js';
 import EmptyCart from '@dropins/storefront-cart/containers/EmptyCart.js';
 import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
+import GiftCards from '@dropins/storefront-cart/containers/GiftCards.js';
+import GiftOptions from '@dropins/storefront-cart/containers/GiftOptions.js';
 
 // API
 import { publishShoppingCartViewEvent } from '@dropins/storefront-cart/api.js';
@@ -43,6 +45,7 @@ export default async function decorate(block) {
       </div>
       <div class="cart__right-column">
         <div class="cart__order-summary"></div>
+        <div class="cart__gift-options"></div>
       </div>
     </div>
 
@@ -53,6 +56,7 @@ export default async function decorate(block) {
   const $list = fragment.querySelector('.cart__list');
   const $summary = fragment.querySelector('.cart__order-summary');
   const $emptyCart = fragment.querySelector('.cart__empty-cart');
+  const $giftOptions = fragment.querySelector('.cart__gift-options');
 
   block.innerHTML = '';
   block.appendChild(fragment);
@@ -78,9 +82,27 @@ export default async function decorate(block) {
       routeProduct: (product) => rootLink(`/products/${product.url.urlKey}/${product.topLevelSku}`),
       routeEmptyCartCTA: startShoppingURL ? () => rootLink(startShoppingURL) : undefined,
       maxItems: parseInt(maxItems, 10) || undefined,
-      attributesToHide: hideAttributes.split(',').map((attr) => attr.trim().toLowerCase()),
+      attributesToHide: hideAttributes
+        .split(',')
+        .map((attr) => attr.trim().toLowerCase()),
       enableUpdateItemQuantity: enableUpdateItemQuantity === 'true',
       enableRemoveItem: enableRemoveItem === 'true',
+      slots: {
+        Footer: (ctx) => {
+          const giftOptions = document.createElement('div');
+
+          provider.render(GiftOptions, {
+            item: ctx.item,
+            view: 'product',
+            dataSource: 'cart',
+            handleItemsLoading: ctx.handleItemsLoading,
+            handleItemsError: ctx.handleItemsError,
+            onItemUpdate: ctx.onItemUpdate,
+          })(giftOptions);
+
+          ctx.appendChild(giftOptions);
+        },
+      },
     })($list),
 
     // Order Summary
@@ -102,6 +124,13 @@ export default async function decorate(block) {
 
           ctx.appendChild(coupons);
         },
+        GiftCards: (ctx) => {
+          const giftCards = document.createElement('div');
+
+          provider.render(GiftCards)(giftCards);
+
+          ctx.appendChild(giftCards);
+        },
       },
     })($summary),
 
@@ -109,18 +138,27 @@ export default async function decorate(block) {
     provider.render(EmptyCart, {
       routeCTA: startShoppingURL ? () => rootLink(startShoppingURL) : undefined,
     })($emptyCart),
+
+    provider.render(GiftOptions, {
+      view: 'order',
+      dataSource: 'cart',
+    })($giftOptions),
   ]);
 
   let cartViewEventPublished = false;
   // Events
-  events.on('cart/data', (payload) => {
-    toggleEmptyCart(isCartEmpty(payload));
+  events.on(
+    'cart/data',
+    (payload) => {
+      toggleEmptyCart(isCartEmpty(payload));
 
-    if (!cartViewEventPublished) {
-      cartViewEventPublished = true;
-      publishShoppingCartViewEvent();
-    }
-  }, { eager: true });
+      if (!cartViewEventPublished) {
+        cartViewEventPublished = true;
+        publishShoppingCartViewEvent();
+      }
+    },
+    { eager: true },
+  );
 
   return Promise.resolve();
 }

@@ -17,10 +17,8 @@ import {
   assertOrderConfirmationShippingDetails,
   assertOrderConfirmationBillingDetails,
   assertOrderConfirmationShippingMethod,
-  assertAuthUser
-} from '../../assertions';
-import {
   assertSelectedPaymentMethod,
+  assertAuthUser,
 } from '../../assertions';
 import {
   customerShippingAddress,
@@ -149,7 +147,7 @@ describe('Verify auth user can place order', () => {
     )('.commerce-cart-wrapper');
     assertProductImage('/mh05-white_main_1.jpg')('.commerce-cart-wrapper');
     cy.contains('Estimated Shipping').should('be.visible');
-    cy.get('.dropin-button--primary')
+    cy.get('.dropin-button.dropin-button--medium.dropin-button--primary')
       .contains('Checkout')
       .click();
     assertCartSummaryMisc(2);

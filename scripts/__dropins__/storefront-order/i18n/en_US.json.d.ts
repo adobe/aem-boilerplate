@@ -30,12 +30,33 @@ declare const _default: {
     "OrderCostSummary": {
       "headerText": "Order summary",
       "headerReturnText": "Return summary",
+      "totalFree": "Free",
       "subtotal": {
         "title": "Subtotal"
       },
       "shipping": {
         "title": "Shipping",
         "freeShipping": "Free shipping"
+      },
+      "appliedGiftCards": {
+        "label": { "singular": "Gift card", "plural": "Gift cards" }
+      },
+      "giftOptionsTax": {
+        "printedCard": {
+          "title": "Printer card",
+          "inclTax": "Including taxes",
+          "exclTax": "Excluding taxes"
+        },
+        "itemGiftWrapping": {
+          "title": "Item gift wrapping",
+          "inclTax": "Including taxes",
+          "exclTax": "Excluding taxes"
+        },
+        "orderGiftWrapping": {
+          "title": "Order gift wrapping",
+          "inclTax": "Including taxes",
+          "exclTax": "Excluding taxes"
+        }
       },
       "tax": {
         "accordionTitle": "Taxes",

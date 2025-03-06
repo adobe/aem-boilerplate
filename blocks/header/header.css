@@ -4,7 +4,8 @@
   --desktop-item-panel-max-width: 300px;
   --desktop-item-panel-min-width: 200px;
   --desktop-large-panel-width: 900px;
-  --desktop-panel-height: 400px;
+  --desktop-panel-min-height: 200px;
+  --desktop-panel-max-height: 600px;
 }
 
 /* header and nav layout */
@@ -194,7 +195,7 @@ header nav .nav-sections ul > li > a {
 }
 
 header nav .nav-brand a:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 header nav .nav-sections ul > li ul {
@@ -246,23 +247,22 @@ header nav .nav-sections ul > li:empty {
   }
 
   header nav .nav-sections .nav-drop[aria-expanded='true'] ul {
-    height: var(--desktop-panel-height);
     flex-flow: column wrap;
+    max-height: calc(var(--desktop-panel-max-height) - 2 * var(--spacing-xbig));
+    min-height: calc(var(--desktop-panel-min-height) - 2 * var(--spacing-xbig));
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li {
     flex: 0 1 auto;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li .break {
-    flex-basis: 3%;
-    height: 0;
-  }
-
   header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] .submenu-wrapper {
     background-color: var(--color-neutral-50);
+    box-sizing: border-box;
     left: 0;
-    padding-top: var(--spacing-large);
+    max-height: var(--desktop-panel-max-height);
+    min-height: var(--desktop-panel-min-height);
+    padding: var(--spacing-xbig);
     position: absolute;
     top: var(--spacing-large);
     width: 100%;
@@ -632,18 +632,13 @@ li
     letter-spacing: var(--type-headline-2-default-letter-spacing);
   }
 
-  header nav .nav-sections ul > li ul > li.break {
-    margin-top: var(--spacing-xsmall);
-  }
-
   header nav .nav-sections ul > li ul > li:has(img) {
     margin: var(--spacing-small) 0;
     padding: 0;
   }
 
-  header nav[aria-expanded='true'] .nav-brand a {
-    left: -16px;
-    position: relative;
+  header nav[aria-expanded='true'] .nav-brand {
+    display: none;
   }
 
   header nav .nav-sections ul > li.nav-drop {
@@ -717,7 +712,7 @@ li
     margin-bottom: var(--spacing-small);
   }
 
-  header nav .nav-sections ul li:not(.break):empty {
+  header nav .nav-sections ul li:empty {
     display: none;
   }
 }

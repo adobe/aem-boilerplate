@@ -14,14 +14,13 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './BillToShippingAddress';
-export * from './EstimateShipping';
-export * from './LoginForm';
-export * from './Markup';
-export * from './OutOfStock';
-export * from './PaymentMethods';
-export * from './PlaceOrder';
-export * from './ServerError';
-export * from './ShippingMethods';
-export * from './TermsAndConditions';
-//# sourceMappingURL=index.d.ts.map
+interface Email {
+    available: boolean;
+    error: string;
+    initialized: boolean;
+    pending: boolean;
+    value: string;
+}
+export declare const emailSignal: import('@preact/signals-core').Signal<Email>;
+export {};
+//# sourceMappingURL=EmailSignal.d.ts.map

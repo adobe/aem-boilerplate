@@ -125,6 +125,9 @@ export const submitCancelOrderButton =
 export const cancellationReasonsModal =
   '[data-testid="order-cancellation-reasons-modal"]';
 
+export const termsAndConditionsCheckbox =
+  'input[name="default"][type="checkbox"]';
+
 // Gift card and options
 export const orderSummary = '.cart__order-summary';
 export const giftCardField = 'input[name="giftCardCode"]';

@@ -3,6 +3,7 @@ import {
   setGuestShippingAddress,
   setPaymentMethod,
   placeOrder,
+  checkTermsAndConditions,
 } from '../../actions';
 import {
   assertCartSummaryProduct,
@@ -98,6 +99,7 @@ describe('Verify guest user can place order', () => {
     assertSelectedPaymentMethod(checkMoneyOrder.code, 0);
     setPaymentMethod(paymentServicesCreditCard);
     assertSelectedPaymentMethod(paymentServicesCreditCard.code, 1);
+    checkTermsAndConditions();
     cy.wait(5000);
     placeOrder();
     assertOrderConfirmationCommonDetails(customerShippingAddress, paymentServicesCreditCard);

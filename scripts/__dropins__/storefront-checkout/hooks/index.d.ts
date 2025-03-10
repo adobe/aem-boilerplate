@@ -15,6 +15,5 @@
  * from Adobe.
  *******************************************************************/
 export * from './useBreakpoint';
-export * from './useLockScroll';
 export * from './useStableList';
 //# sourceMappingURL=index.d.ts.map

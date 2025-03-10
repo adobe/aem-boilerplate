@@ -111,8 +111,11 @@ export function setAddressOnCart({ api, debounceMs = 0, placeOrderBtn = null }) 
 
 export function estimateShippingCost({ api, debounceMs = 0 }) {
   let prevEstimateShippingData = {};
+  let shouldCancelDebounce = false;
 
   const debouncedApi = debounce((data) => {
+    if (shouldCancelDebounce) return;
+
     const estimateShippingInputCriteria = {
       country_code: data.countryCode,
       region_name: String(data.region.regionCode || ''),
@@ -131,7 +134,10 @@ export function estimateShippingCost({ api, debounceMs = 0 }) {
   }, debounceMs);
 
   return ({ data, isDataValid }) => {
-    if (isDataValid) return;
+    if (isDataValid) {
+      shouldCancelDebounce = true;
+      return;
+    }
 
     if (
       prevEstimateShippingData.countryCode === data.countryCode

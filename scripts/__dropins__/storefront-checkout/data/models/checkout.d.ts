@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2025 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -14,14 +14,21 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './BillToShippingAddress';
-export * from './EstimateShipping';
-export * from './LoginForm';
-export * from './Markup';
-export * from './OutOfStock';
-export * from './PaymentMethods';
-export * from './PlaceOrder';
-export * from './ServerError';
-export * from './ShippingMethods';
-export * from './TermsAndConditions';
-//# sourceMappingURL=index.d.ts.map
+export declare enum AgreementMode {
+    MANUAL = "manual",
+    AUTO = "auto"
+}
+type AgreementContent = {
+    value: string;
+    html: boolean;
+    height: string | null;
+};
+export interface CheckoutAgreement {
+    content: AgreementContent;
+    id: number;
+    mode: AgreementMode;
+    name: string;
+    text: string;
+}
+export {};
+//# sourceMappingURL=checkout.d.ts.map

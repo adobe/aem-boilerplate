@@ -18,7 +18,7 @@ export interface BillToShippingAddressProps {
     onChange?: (checked: boolean) => void;
 }
 export declare const BillToShippingAddress: {
-    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: import('../../hocs/withConditionalRendering').ConditionalProps & BillToShippingAddressProps): import("preact/compat").JSX.Element;
+    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: import('../../hocs/withConditionalRendering').ConditionalProps & BillToShippingAddressProps): import("preact").JSX.Element;
     displayName: string;
 };
 //# sourceMappingURL=BillToShippingAddress.d.ts.map

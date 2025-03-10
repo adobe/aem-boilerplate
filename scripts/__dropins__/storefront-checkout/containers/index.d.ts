@@ -15,7 +15,6 @@
  * from Adobe.
  *******************************************************************/
 export * from './BillToShippingAddress';
-export * from './ErrorBanner';
 export * from './EstimateShipping';
 export * from './LoginForm';
 export * from './MergedCartBanner';
@@ -24,4 +23,5 @@ export * from './PaymentMethods';
 export * from './PlaceOrder';
 export * from './ServerError';
 export * from './ShippingMethods';
+export * from './TermsAndConditions';
 //# sourceMappingURL=index.d.ts.map

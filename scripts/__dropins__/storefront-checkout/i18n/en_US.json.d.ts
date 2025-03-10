@@ -55,9 +55,6 @@ declare const _default: {
       "title": "Your cart is empty",
       "button": "Start shopping"
     },
-    "ErrorBanner": {
-      "genericMessage": "Server error detected. Please check your connection and try again."
-    },
     "MergedCartBanner": {
       "items": {
         "one": "1 item from a previous session was added to your cart. Please review your new subtotal.",
@@ -71,6 +68,10 @@ declare const _default: {
       "taxToBeDetermined": "TBD",
       "withTaxes": "Including taxes",
       "withoutTaxes": "Excluding taxes"
+    },
+    "TermsAndConditions": {
+      "label": "I have read, understand, and accept our <a href='https://www.adobe.com/legal/terms.html' target='_blank'>Terms of Use, Terms of Sales, Privacy Policy, and Return Policy</a>.",
+      "error": "Please accept the Terms and Conditions to continue."
     }
   }
 }

@@ -14,14 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './BillToShippingAddress';
-export * from './EstimateShipping';
-export * from './LoginForm';
-export * from './Markup';
-export * from './OutOfStock';
-export * from './PaymentMethods';
-export * from './PlaceOrder';
-export * from './ServerError';
-export * from './ShippingMethods';
-export * from './TermsAndConditions';
-//# sourceMappingURL=index.d.ts.map
+export declare const GET_CHECKOUT_AGREEMENTS = "\n  query GET_CHECKOUT_AGREEMENTS {\n    checkoutAgreements {\n      agreement_id\n      checkbox_text\n      content\n      content_height\n      is_html \n      mode\n      name\n    }\n  }\n";
+//# sourceMappingURL=getCheckoutAgreements.graphql.d.ts.map

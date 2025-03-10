@@ -128,6 +128,11 @@ export const setPaymentMethod = (paymentMethod) => {
   }
 };
 
+export function checkTermsAndConditions() {
+  cy.get(fields.termsAndConditionsCheckbox).check({ force: true });
+  cy.get(fields.termsAndConditionsCheckbox).should('be.checked');
+}
+
 export const fillGiftOptiosForm = (className, type = 'order') => {
   if (type === 'product') {
     cy.wait(3000);

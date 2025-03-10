@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{M as e,e as o}from"./errors.js";import{CHECKOUT_DATA_FRAGMENT as d}from"../fragments.js";import{a as l,d as p,b as u}from"./synchronizeCheckout.js";import{s as c}from"./store-config.js";import"./transform-store-config.js";import"@dropins/tools/event-bus.js";import"@dropins/tools/lib.js";const m=`
+import{M as e,e as o}from"./errors.js";import{CHECKOUT_DATA_FRAGMENT as d}from"../fragments.js";import{a as l,d as p,b as u}from"./synchronizeCheckout.js";import{s as c}from"./state.js";import"./transform-store-config.js";import"@dropins/tools/event-bus.js";import"@dropins/tools/lib.js";const m=`
   mutation setBillingAddress($input: SetBillingAddressOnCartInput!) {
     setBillingAddressOnCart(input: $input) {
       cart {

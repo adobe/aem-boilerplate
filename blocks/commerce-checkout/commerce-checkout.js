@@ -48,6 +48,7 @@ import PaymentMethods from '@dropins/storefront-checkout/containers/PaymentMetho
 import PlaceOrder from '@dropins/storefront-checkout/containers/PlaceOrder.js';
 import ServerError from '@dropins/storefront-checkout/containers/ServerError.js';
 import ShippingMethods from '@dropins/storefront-checkout/containers/ShippingMethods.js';
+import TermsAndConditions from '@dropins/storefront-checkout/containers/TermsAndConditions.js';
 
 import { render as CheckoutProvider } from '@dropins/storefront-checkout/render.js';
 
@@ -71,7 +72,6 @@ import { getUserTokenCookie } from '../../scripts/initializers/index.js';
 // Block-level
 import createModal from '../modal/modal.js';
 
-// Scripts
 import {
   estimateShippingCost,
   getCartAddress,
@@ -80,8 +80,14 @@ import {
   scrollToElement,
   setAddressOnCart,
 } from '../../scripts/checkout.js';
+
 import { authPrivacyPolicyConsentSlot, SUPPORT_PATH } from '../../scripts/constants.js';
 import { rootLink } from '../../scripts/scripts.js';
+
+// Initializers
+import '../../scripts/initializers/account.js';
+import '../../scripts/initializers/checkout.js';
+import '../../scripts/initializers/order.js';
 
 function createMetaTag(property, content, type) {
   if (!property || !type) {
@@ -117,10 +123,6 @@ function setMetaTags(dropin) {
 }
 
 export default async function decorate(block) {
-  // Initializers
-  import('../../scripts/initializers/account.js');
-  import('../../scripts/initializers/checkout.js');
-
   setMetaTags('Checkout');
   document.title = 'Checkout';
 
@@ -135,6 +137,7 @@ export default async function decorate(block) {
   const BILLING_FORM_NAME = 'selectedBillingAddress';
   const SHIPPING_ADDRESS_DATA_KEY = `${SHIPPING_FORM_NAME}_addressData`;
   const BILLING_ADDRESS_DATA_KEY = `${BILLING_FORM_NAME}_addressData`;
+  const TERMS_AND_CONDITIONS_FORM_NAME = 'checkout-terms-and-conditions__form';
 
   // Define the Layout for the Checkout
   const checkoutFragment = document.createRange().createContextualFragment(`
@@ -153,6 +156,7 @@ export default async function decorate(block) {
           <div class="checkout__block checkout__delivery"></div>
           <div class="checkout__block checkout__payment-methods"></div>
           <div class="checkout__block checkout__billing-form"></div>
+          <div class="checkout__block checkout__terms-and-conditions"></div>
           <div class="checkout__block checkout__place-order"></div>
         </div>
         <div class="checkout__aside">
@@ -200,6 +204,7 @@ export default async function decorate(block) {
   const $giftOptions = checkoutFragment.querySelector(
     '.checkout__gift-options',
   );
+  const $termsAndConditions = checkoutFragment.querySelector('.checkout__terms-and-conditions');
 
   block.appendChild(checkoutFragment);
 
@@ -210,13 +215,14 @@ export default async function decorate(block) {
   let loader;
   let modal;
   let emptyCart;
-  const shippingFormRef = { current: null };
-  const billingFormRef = { current: null };
-  const creditCardFormRef = { current: null };
   let shippingForm;
   let billingForm;
   let shippingAddresses;
   let billingAddresses;
+
+  const shippingFormRef = { current: null };
+  const billingFormRef = { current: null };
+  const creditCardFormRef = { current: null };
 
   // Adobe Commerce GraphQL endpoint
   const commerceCoreEndpoint = await getConfigValue('commerce-core-endpoint');
@@ -235,6 +241,7 @@ export default async function decorate(block) {
     billingFormSkeleton,
     _orderSummary,
     _cartSummary,
+    _termsAndConditions,
     placeOrder,
   ] = await Promise.all([
     CheckoutProvider.render(MergedCartBanner)($mergedCartBanner),
@@ -430,6 +437,18 @@ export default async function decorate(block) {
       },
     })($cartSummary),
 
+    CheckoutProvider.render(TermsAndConditions, {
+      slots: {
+        Agreements: (ctx) => {
+          ctx.appendAgreement(() => ({
+            name: 'default',
+            mode: 'manual',
+            translationId: 'Checkout.TermsAndConditions.label',
+          }));
+        },
+      },
+    })($termsAndConditions),
+
     CheckoutProvider.render(PlaceOrder, {
       handleValidation: () => {
         let success = true;
@@ -462,6 +481,13 @@ export default async function decorate(block) {
           && billingForm.checkVisibility()
         ) {
           success = billingFormRef.current.handleValidationSubmit(false);
+        }
+
+        const termsAndConditionsForm = forms[TERMS_AND_CONDITIONS_FORM_NAME];
+
+        if (success && termsAndConditionsForm) {
+          success = termsAndConditionsForm.checkValidity();
+          if (!success) scrollToElement($termsAndConditions);
         }
 
         return success;
@@ -603,8 +629,8 @@ export default async function decorate(block) {
         },
         isOpen: true,
         onChange: (values) => {
-          const syncAddress = !isFirstRenderShipping || !hasCartShippingAddress;
-          if (syncAddress) setShippingAddressOnCart(values);
+          const canSetShippingAddressOnCart = !isFirstRenderShipping || !hasCartShippingAddress;
+          if (canSetShippingAddressOnCart) setShippingAddressOnCart(values);
           if (!hasCartShippingAddress) estimateShippingCostOnCart(values);
           if (isFirstRenderShipping) isFirstRenderShipping = false;
         },
@@ -700,6 +726,11 @@ export default async function decorate(block) {
         placeOrderBtn: placeOrder,
       });
 
+      const estimateShippingCostOnCart = estimateShippingCost({
+        api: checkoutApi.estimateShippingMethods,
+        debounceMs: DEBOUNCE_TIME,
+      });
+
       shippingAddresses = await AccountProvider.render(Addresses, {
         addressFormTitle: 'Deliver to new address',
         defaultSelectAddressId: shippingAddressId,
@@ -710,6 +741,7 @@ export default async function decorate(block) {
         onAddressData: (values) => {
           const canSetShippingAddressOnCart = !isFirstRenderShipping || !hasCartShippingAddress;
           if (canSetShippingAddressOnCart) setShippingAddressOnCart(values);
+          if (!hasCartShippingAddress) estimateShippingCostOnCart(values);
           if (isFirstRenderShipping) isFirstRenderShipping = false;
         },
         selectable: true,

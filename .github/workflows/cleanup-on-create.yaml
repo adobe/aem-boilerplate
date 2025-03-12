@@ -26,6 +26,7 @@ jobs:
         run: | 
           rm -rf \
             .github/workflows/cleanup-on-create.yaml \
+            .renovaterc.json \
             CHANGELOG.md
 
       - name: Initialize README

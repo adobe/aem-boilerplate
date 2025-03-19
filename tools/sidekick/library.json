@@ -1,7 +1,7 @@
 {
-  "total": 13,
+  "total": 11,
   "offset": 0,
-  "limit": 13,
+  "limit": 11,
   "data": [
     {
       "name": "Table",
@@ -32,20 +32,12 @@
       "path": "/block-collection/quote"
     },
     {
-      "name": "Modal",
-      "path": "/block-collection/modal"
-    },
-    {
       "name": "Carousel",
       "path": "/block-collection/carousel"
     },
     {
       "name": "Tabs",
       "path": "/block-collection/tabs"
-    },
-    {
-      "name": "Fragment",
-      "path": "/block-collection/fragment"
     },
     {
       "name": "Search",

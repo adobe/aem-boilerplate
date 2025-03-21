@@ -41,13 +41,15 @@ async function loadFonts() {
   }
 }
 
+const disableHeroAutoBlock = true;
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
   try {
-    // buildHeroBlock(main);
+    if (!disableHeroAutoBlock) buildHeroBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

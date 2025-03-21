@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Karantina:wght@300;400;700&display=swap');
+
+p,h1,h2,h3,h4,h5,h6{
+    font-family: "Karantina", system-ui;
+}
+
+.web-sidebar {
+    border-radius: 8px;
+    padding: 1.5rem;
+    width: 200px;
+  }
+
+.web-sidebar-container.section > div{
+    margin: 0;
+}
+  
+  .web-sidebar > div {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    font-family: "Karantina", system-ui;
+  }
+
+  .web-sidebar h5 {
+    margin: 0.2rem 0;
+  }
+  
+  .web-sidebar h6 {
+    margin: 0.2rem 0;
+    margin-left: 1rem;
+  }
+  
+  .web-sidebar > div:first-child {
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 1rem;
+  }
+  
+  .web-sidebar > div:not(:first-child):hover {
+    color: #406e0c;
+    cursor: pointer;
+  }
+  
+  .web-sidebar p {
+    margin: 0;
+    line-height: 1.4;
+    font-size: 1.5rem;
+  }
+
+  .web-sidebar a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  .web-sidebar-container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    background-color: #1b1b1b;
+    gap: 2rem;
+    max-width: 1440px;
+    justify-self: center;
+  }
+  
+  .web-sidebar-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 1rem;
+    position: sticky;
+    top: 5rem;
+    height: fit-content;
+  }
+  
+  @media (max-width: 768px) {
+    .web-sidebar-wrapper {
+      display: none;
+    }
+    
+    .web-sidebar-container {
+      grid-template-columns: 1fr;
+    }
+  }

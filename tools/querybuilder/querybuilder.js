@@ -1,7 +1,7 @@
 /* eslint no-undef: 0 */
 /* eslint no-plusplus: 0 */
 // eslint-disable-next-line import/no-unresolved
-// import DA_SDK from 'https://da.live/nx/utils/sdk.js';
+import DA_SDK from 'https://da.live/nx/utils/sdk.js';
 import {
   getQueryIndex,
 } from '../../scripts/utilities.js';

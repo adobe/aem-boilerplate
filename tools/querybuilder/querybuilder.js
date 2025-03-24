@@ -1,6 +1,6 @@
 /* eslint no-undef: 0 */
 // eslint-disable-next-line import/no-unresolved
-//import DA_SDK from 'https://da.live/nx/utils/sdk.js';
+// import DA_SDK from 'https://da.live/nx/utils/sdk.js';
 import {
   createTag,
   getQueryIndex,
@@ -75,27 +75,27 @@ async function buildDropdownOptions() {
   });
 }
 
-function initControls() {
-  $('#btn-reset').on('click', (e) => {
-    e.preventDefault();
-    $('#builder-basic').queryBuilder('reset');
-  });
+// function initControls() {
+//   $('#btn-reset').on('click', (e) => {
+//     e.preventDefault();
+//     $('#builder-basic').queryBuilder('reset');
+//   });
 
-  $('#btn-get').on('click', (e) => {
-    e.preventDefault();
-    const result = $('#builder-basic').queryBuilder('getRules');
-    console.log(result);
+//   $('#btn-get').on('click', (e) => {
+//     e.preventDefault();
+//     const result = $('#builder-basic').queryBuilder('getRules');
+//     console.log(result);
 
-    if (!$.isEmptyObject(result)) {
-      alert(JSON.stringify(result, null, 2));
-    }
-  });
-}
+//     if (!$.isEmptyObject(result)) {
+//       alert(JSON.stringify(result, null, 2));
+//     }
+//   });
+// }
 
 (async function init() {
-  //const { actions } = await DA_SDK;
+  // const { actions } = await DA_SDK;
 
   buildDropdownOptions();
   addForm();
-  //initControls(actions);
+  // initControls(actions);
 }());

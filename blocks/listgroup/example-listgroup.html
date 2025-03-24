@@ -1,0 +1,37 @@
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script src="/scripts/aem.js" type="module"></script>
+  <script src="/scripts/scripts.js" type="module"></script>
+  <link rel="stylesheet" href="/styles/styles.css"/>
+</head>
+<body>
+  <header></header>
+  <main>
+    <div class="section listgroup-wrapper">
+      <div class="listgroup">
+        <div class="listgroup">
+          <div>
+            <div>index</div>
+            <div>/tools/querybuilder/sample-index.json</div>
+          </div>
+          <div>
+            <div>displayProperties</div>
+            <div>
+              <ol>
+                <li>title</li>
+                <li>description</li>
+              </ol>
+            </div>
+          </div>
+          <div>
+            <div>filter</div>
+            <div>
+              <p>{   "condition": "OR",   "rules": [     {       "condition": "AND",       "rules": [         {           "id": "path",           "field": "path",           "type": "string",           "input": "text",           "operator": "equal",           "value": "test"         },         {           "id": "author",           "field": "author",           "type": "string",           "input": "text",           "operator": "equal",           "value": "me"         }       ]     },     {       "condition": "AND",       "rules": [         {           "id": "path",           "field": "path",           "type": "string",           "input": "text",           "operator": "equal",           "value": "home"         },         {           "id": "author",           "field": "author",           "type": "string",           "input": "text",           "operator": "equal",           "value": "me"         }       ]     }   ],   "valid": true }</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer></footer>
+</body>

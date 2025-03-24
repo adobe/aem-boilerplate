@@ -23,7 +23,7 @@
       "title": "Article A",
       "description": "Article A by Alan",
       "type": "Article",
-      "tags": ["Entertainment"]
+      "tags": "Entertainment"
     },
     {
       "path": "/articles/b",
@@ -31,7 +31,7 @@
       "title": "Article B",
       "description": "Article B by Bob",
       "type": "Article",
-      "tags": ["Technology"]
+      "tags": "Technology"
     },
     {
       "path": "/articles/c",
@@ -39,7 +39,7 @@
       "title": "Article C",
       "description": "Article C by Carl",
       "type": "Article",
-      "tags": ["Travel", "Entertainment"]
+      "tags": "Travel"
     },
     {
       "path": "/articles/d",
@@ -47,7 +47,7 @@
       "title": "Article D",
       "description": "Article D by Darla",
       "type": "Article",
-      "tags": ["Entertainment", "Technology"]
+      "tags": "Entertainment"
     },
     {
       "path": "/videos/e",
@@ -55,7 +55,7 @@
       "title": "Video E",
       "description": "Video E by Ellen",
       "type": "Video",
-      "tags": ["Entertainment"]
+      "tags": "Entertainment"
     },
     {
       "path": "/videos/f",
@@ -63,7 +63,7 @@
       "title": "Video F",
       "description": "Video F by Fred",
       "type": "Video",
-      "tags": ["Technology", "Travel"]
+      "tags": "Travel"
     }
   ],
   "offset": 0,

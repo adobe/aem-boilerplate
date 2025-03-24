@@ -1,6 +1,6 @@
 /* eslint no-undef: 0 */
 // eslint-disable-next-line import/no-unresolved
-import DA_SDK from 'https://da.live/nx/utils/sdk.js';
+//import DA_SDK from 'https://da.live/nx/utils/sdk.js';
 import {
   createTag,
   getQueryIndex,
@@ -93,9 +93,9 @@ function initControls() {
 }
 
 (async function init() {
-  const { actions } = await DA_SDK;
+  //const { actions } = await DA_SDK;
 
   buildDropdownOptions();
   addForm();
-  initControls(actions);
+  //initControls(actions);
 }());

@@ -3,29 +3,29 @@
   <head>
     <title>Query Builder</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-7Pi/otdlbbCR+LnW+F7PwFcSDJOuUJB3OxtEHbg4vSMvzvJjde4Po1v4BR9Gdc9aXNUNFVUY+SK51wWT8WF0Gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-QueryBuilder/3.0.0/js/query-builder.standalone.min.js" integrity="sha512-ps84U7v+A7lcx7y5DAqyEJKcbXJcQhuHRC9ekn2mfvV71D60JEo79eQRs37HSmbJxDGxpROv94B67/DAqZ9Zzw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jQuery-QueryBuilder/3.0.0/css/query-builder.default.min.css" integrity="sha512-c7dOG9T3uhV3MUvXcZhGPPtfkjCKDMtuLTKQoEJgSIHBKQ7OdvfKXFUdAAnq1WVrT/YVnsloECkhOQ4VzdwwgQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel="icon" href="data:,">
     <!-- Import DA App SDK -->
     <script src="https://da.live/nx/utils/sdk.js" type="module"></script>
     <!-- Project App Logic -->
-    <script src="/tools/datepicker/datepicker.js" type="module"></script>
+    <script src="/tools/querybuilder/querybuilder.js" type="module"></script>
 
-    <link rel="stylesheet" type="text/css" href="/tools/datepicker/datepicker.css">
+    <link rel="stylesheet" type="text/css" href="/tools/querybuilder/querybuilder.css">
   </head>
   <body>
-    <form id="typeselect">
-      <label><input type="radio" name="date-picker" value="date">Date</label>
-      <label><input type="radio" name="date-picker" value="datetime" checked>Date + Time</label>
-      <!--
-      <label><input type="radio" name="date-picker" value="time">Time</label>
-      -->
+    <form id="builder-basic">
     </form>
-    <form id="picker">
-      <div id="date-time">
-        <input type="date" id="date-picker" name="date-picker" required>
-        <input type="time" id="time-picker" name="time-picker" required>
-      </div>
-      <select name="time-picker" id="time-zone"></select>
-      <button id="use">Insert</button>
-    </form>
+    <div class="btn-group">
+      <button id="btn-reset" class="btn btn-warning reset">Reset</button>
+      <button id="btn-get" class="btn btn-primary parse-json">Get rules</button>
+    </div>
   </body>
 </html>

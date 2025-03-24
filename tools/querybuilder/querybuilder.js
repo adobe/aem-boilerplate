@@ -1,4 +1,5 @@
 /* eslint no-undef: 0 */
+/* eslint no-plusplus: 0 */
 // eslint-disable-next-line import/no-unresolved
 // import DA_SDK from 'https://da.live/nx/utils/sdk.js';
 import {
@@ -14,7 +15,7 @@ export async function getProperties() {
 async function buildFilters() {
   const properties = await getProperties();
   const filters = [];
-  for (let i=0; i < properties.length; i++) {
+  for (let i = 0; i < properties.length; i++) {
     const prop = properties[i];
     console.log(prop);
     const propFilter = {
@@ -27,7 +28,6 @@ async function buildFilters() {
   }
   return filters;
 }
-
 
 export function addForm(searchFilters) {
   $('#builder-basic').queryBuilder({

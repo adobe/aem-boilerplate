@@ -5,7 +5,9 @@
     "author",
     "title",
     "image",
-    "description"
+    "description",
+    "type",
+    "tags"
   ],
   "data": [
     {
@@ -16,11 +18,52 @@
       "description": "Home page"
     },
     {
-      "path": "/articlea",
-      "author": "",
+      "path": "/articles/a",
+      "author": "Alan",
       "title": "Article A",
-      "image": "/default-meta-image.png?width=1200&format=pjpg&optimize=medium",
-      "description": ""
+      "description": "Article A by Alan",
+      "type": "Article",
+      "tags": ["Entertainment"]
+    },
+    {
+      "path": "/articles/b",
+      "author": "Bob",
+      "title": "Article B",
+      "description": "Article B by Bob",
+      "type": "Article",
+      "tags": ["Technology"]
+    },
+    {
+      "path": "/articles/c",
+      "author": "Carl",
+      "title": "Article C",
+      "description": "Article C by Carl",
+      "type": "Article",
+      "tags": ["Travel", "Entertainment"]
+    },
+    {
+      "path": "/articles/d",
+      "author": "Darla",
+      "title": "Article D",
+      "description": "Article D by Darla",
+      "type": "Article",
+      "tags": ["Entertainment", "Technology"]
+    },
+    {
+      "path": "/videos/e",
+      "author": "Ellen",
+      "title": "Video E",
+      "description": "Video E by Ellen",
+      "type": "Video",
+      "tags": ["Entertainment"]
+    },
+    {
+      "path": "/videos/f",
+      "author": "Fred",
+      "title": "Video F",
+      "description": "Video F by Fred",
+      "type": "Video",
+      "tags": ["Technology", "Travel"]
     }
   ],
   "offset": 0,

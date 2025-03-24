@@ -2,7 +2,7 @@
   "name": "@adobe/aem-boilerplate",
   "private": true,
   "version": "1.3.0",
-  "description": "My sandbox",
+  "description": "My sandbox test",
   "scripts": {
     "lint:js": "eslint .",
     "lint:css": "stylelint \"blocks/**/*.css\" \"styles/*.css\"",

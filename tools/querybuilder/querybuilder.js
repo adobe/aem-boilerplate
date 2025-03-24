@@ -7,7 +7,7 @@ import {
 } from '../../scripts/utilities.js';
 
 export async function getProperties() {
-  const indexUrl = '/index-all.json';
+  const indexUrl = '/tools/querybuilder/sample-index.json';
   const { columns: properties } = await getQueryIndex(indexUrl);
   return properties;
 }

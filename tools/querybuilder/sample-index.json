@@ -1,0 +1,30 @@
+
+{
+  "columns": [
+    "path",
+    "author",
+    "title",
+    "image",
+    "description"
+  ],
+  "data": [
+    {
+      "path": "/home",
+      "author": "Laurel Timko",
+      "title": "Home Page",
+      "image": "/media_1ca6d067afb6eb9fa088723fc87e889e008fb2d77.jpeg?width=1200&format=pjpg&optimize=medium",
+      "description": "Home page"
+    },
+    {
+      "path": "/articlea",
+      "author": "",
+      "title": "Article A",
+      "image": "/default-meta-image.png?width=1200&format=pjpg&optimize=medium",
+      "description": ""
+    }
+  ],
+  "offset": 0,
+  "limit": 2,
+  "total": 2,
+  ":type": "sheet"
+}

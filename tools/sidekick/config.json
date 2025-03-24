@@ -1,0 +1,13 @@
+{
+  "project": "LATIMK-SANDBOX",
+  "editUrlLabel": "Authoring Sandbox",
+  "editUrlPattern": "https://da.live/edit#/{{org}}/{{site}}{{pathname}}",
+  "plugins": [
+    {
+      "id": "querybuilder",
+      "title": "Query Builder",
+      "environments": ["da-edit"],
+      "path": "/tools/querybuilder.html"
+    }
+  ]
+}

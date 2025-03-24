@@ -1,0 +1,55 @@
+form#picker {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+form#picker > * {
+  margin: 4px;
+}
+
+button#use {
+  background-color: dodgerblue;
+  border: none;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+input, label, select, button {
+  font-family: 'Adobe Clean', adobe-clean, 'Trebuchet MS', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+#time-zone {
+  width: 100% - 8px;
+}form#picker {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+form#picker > * {
+  margin: 4px;
+}
+
+button#use {
+  background-color: dodgerblue;
+  border: none;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+input, label, select, button {
+  font-family: 'Adobe Clean', adobe-clean, 'Trebuchet MS', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+#time-zone {
+  width: 100% - 8px;
+}

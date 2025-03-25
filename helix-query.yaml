@@ -6,6 +6,6 @@ indices:
     target: /query-index.json
     properties:
       title:
-        select: select: head > meta[name="og:title"]
+        select: head > meta[name="og:title"]
         value: |
           attribute(el, "content")

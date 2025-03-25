@@ -1,3 +1,4 @@
+/* eslint prefer-destructuring: 0 */
 /**
  * Customized version of readBlockConfig from aem.js
  * Adds options for ordered and unordered lists and

@@ -1,8 +1,9 @@
+/* eslint prefer-destructuring: 0 */
+/* eslint no-plusplus: 0 */
 import {
   getBlockConfig,
   lowercaseObj,
 } from './listgroup-utilities.js';
-
 
 async function getQueryIndex(url) {
   try {
@@ -31,6 +32,7 @@ function evaluateRule(page, rule) {
   if (operator === 'equal') {
     return !page[fieldName] ? false : doEquals(page[fieldName], fieldValue);
   }
+  return null;
 }
 
 function doAnd(page, filterRules) {
@@ -43,9 +45,11 @@ function doAnd(page, filterRules) {
     }
     const currRule = filterRules[i];
     if (currRule.condition) {
+      // eslint-disable-next-line no-use-before-define
       pageMatch = pageMatches(page, currRule);
     } else {
       console.log(`Running rule #${i}`);
+      // eslint-disable-next-line no-use-before-define
       pageMatch = evaluateRule(page, currRule);
     }
   }
@@ -61,9 +65,11 @@ function doOr(page, filterRules) {
     }
     const currRule = filterRules[i];
     if (currRule.condition) {
+      // eslint-disable-next-line no-use-before-define
       pageMatch = pageMatches(page, currRule);
     } else {
       console.log(`Running rule #${i}`);
+      // eslint-disable-next-line no-use-before-define
       pageMatch = evaluateRule(page, currRule);
     }
   }
@@ -73,17 +79,17 @@ function doOr(page, filterRules) {
 function pageMatches(page, filterObj) {
   console.log(filterObj.condition);
   if (filterObj.condition) {
-    if (filterObj.condition === "AND") {
+    if (filterObj.condition === 'AND') {
       return doAnd(page, filterObj.rules);
-    } else {
-      return doOr(page, filterObj.rules);
     }
+    return doOr(page, filterObj.rules);
   }
+  return null;
 }
 
 function writeResults(matching, config) {
   const wrapper = document.createElement('ul');
-  wrapper.classList = `listOfItems`;
+  wrapper.classList = 'listOfItems';
 
   matching?.forEach((item) => {
     const listItem = document.createElement('li');
@@ -118,7 +124,6 @@ function writeResults(matching, config) {
 }
 
 export default async function decorate(block) {
-
   const config = getBlockConfig(block);
   console.log(config);
   block.textContent = '';
@@ -133,8 +138,7 @@ export default async function decorate(block) {
   const lcFilter = lowercaseObj(filterObj);
   console.log(filterObj);
 
-  let wrapper;
-  let matching = [];
+  const matching = [];
   allPages.forEach((page) => {
     const lcPage = lowercaseObj(page);
     if (pageMatches(lcPage, lcFilter)) {
@@ -142,15 +146,6 @@ export default async function decorate(block) {
     }
   });
   console.log(matching);
-  wrapper = writeResults(matching, config);
+  const wrapper = writeResults(matching, config);
   block.append(wrapper);
-
-
-
-  // matching = sortPageList(matching, sortBy, sortOrder);
-
-
-  // // Build initial list.
-  // wrapper = buildListItems(block, matching, tabDictionary, config);
-  // block.append(wrapper);
 }

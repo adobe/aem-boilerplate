@@ -6,7 +6,13 @@ import {
   getQueryIndex,
 } from '../../scripts/utilities.js';
 
-const arrayPropertiesEnum = {
+const TAG_VALUES = {
+  'Entertainment': 'Entertainment',
+  'Travel': 'Travel',
+  'Technology': 'Technology',
+};
+
+const checkboxPropertiesEnum = {
   TAGS: 'tags',
 };
 
@@ -15,8 +21,8 @@ const datePropertiesEnum = {
 };
 
 function getPropertyType(propName) {
-  if (Object.values(arrayPropertiesEnum).includes(propName.toLowerCase())) {
-    return 'array';
+  if (Object.values(checkboxPropertiesEnum).includes(propName.toLowerCase())) {
+    return 'checkbox';
   }
   if (Object.values(datePropertiesEnum).includes(propName.toLowerCase())) {
     return 'date';
@@ -36,13 +42,17 @@ async function buildFilters() {
   for (let i = 0; i < properties.length; i++) {
     const prop = properties[i];
     const propType = getPropertyType(prop);
-    console.log(prop);
     const propFilter = {
       id: `${prop}`,
       label: `${prop}`,
       type: `${propType}`,
-      operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null'],
     };
+    if (propType === 'checkbox') {
+      propFilter.operators = ['equal'];
+      propFilter.values = TAG_VALUES;
+    } else {
+      propFilter.operators = ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null'];
+    }
     filters.push(propFilter);
   }
   return filters;

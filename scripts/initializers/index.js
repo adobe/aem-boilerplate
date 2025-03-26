@@ -36,6 +36,7 @@ export default async function initializeDropins() {
   const init = async () => {
     // Set auth headers on authenticated event
     events.on('authenticated', setAuthHeaders);
+
     // Cache cart data in session storage
     events.on('cart/data', persistCartDataInSession, { eager: true });
 
@@ -43,8 +44,6 @@ export default async function initializeDropins() {
     const token = getUserTokenCookie();
     // set auth headers
     setAuthHeaders(!!token);
-    // emit authenticated event if token has changed
-    events.emit('authenticated', !!token);
 
     // Event Bus Logger
     events.enableLogger(true);
@@ -53,6 +52,7 @@ export default async function initializeDropins() {
 
     // Initialize Global Drop-ins
     await import('./auth.js');
+
     import('./cart.js');
 
     events.on('eds/lcp', async () => {

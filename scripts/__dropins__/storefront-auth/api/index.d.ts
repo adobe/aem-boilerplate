@@ -27,4 +27,5 @@ export * from './revokeCustomerToken';
 export * from './confirmEmail';
 export * from './resendConfirmationEmail';
 export * from './createCustomerAddress';
+export * from './verifyToken';
 //# sourceMappingURL=index.d.ts.map

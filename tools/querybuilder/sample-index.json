@@ -32,7 +32,8 @@
       "title": "Article B",
       "description": "Article B by Bob",
       "type": "Article",
-      "tags": "Technology"
+      "tags": "Technology",
+      "image": "/articles/media_1fe962c23e7839810e0f35218b5c543ce71e624e1.jpeg?width=1200&format=pjpg&optimize=medium"
     },
     {
       "path": "/articles/c",
@@ -40,7 +41,8 @@
       "title": "Article C",
       "description": "Article C by Carl",
       "type": "Article",
-      "tags": "Travel"
+      "tags": "Travel",
+      "image": "/articles/media_1ca6d067afb6eb9fa088723fc87e889e008fb2d77.jpeg?width=1200&format=pjpg&optimize=medium"
     },
     {
       "path": "/articles/d",
@@ -48,7 +50,8 @@
       "title": "Article D",
       "description": "Article D by Darla",
       "type": "Article",
-      "tags": "Entertainment"
+      "tags": "Entertainment",
+      "image": "/articles/media_1f43f8590237e874789278acb4e68e0f5f2756280.avif?width=1200&format=pjpg&optimize=medium"
     },
     {
       "path": "/videos/e",

@@ -6,6 +6,24 @@ import {
   getQueryIndex,
 } from '../../scripts/utilities.js';
 
+const arrayPropertiesEnum = {
+  TAGS: 'tags',
+};
+
+const datePropertiesEnum = {
+  RELEASE_DATE: 'releasedate',
+};
+
+function getPropertyType(propName) {
+  if (Object.values(arrayPropertiesEnum).includes(propName.toLowerCase())) {
+    return 'array';
+  }
+  if (Object.values(datePropertiesEnum).includes(propName.toLowerCase())) {
+    return 'date';
+  }
+  return 'string';
+}
+
 export async function getProperties() {
   const indexUrl = '/tools/querybuilder/sample-index.json';
   const { columns: properties } = await getQueryIndex(indexUrl);
@@ -17,11 +35,12 @@ async function buildFilters() {
   const filters = [];
   for (let i = 0; i < properties.length; i++) {
     const prop = properties[i];
+    const propType = getPropertyType(prop);
     console.log(prop);
     const propFilter = {
       id: `${prop}`,
       label: `${prop}`,
-      type: 'string',
+      type: `${propType}`,
       operators: ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null'],
     };
     filters.push(propFilter);

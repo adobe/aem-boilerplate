@@ -10,19 +10,53 @@
  * governing permissions and limitations under the License.
  */
 
+ @font-face {
+  font-family: "hitman-textregular";
+  src: url("/fonts/HitmarkerText-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "hitman-normalbold";
+  src: url("/fonts/HitmarkerNormal-Bold.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "hitman-textbold";
+  src: url("/fonts/HitmarkerText-Bold.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "hitman-condensedblack";
+  src: url("/fonts/HitmarkerCondensed-Black.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "hitman-textregular";
+  src: url("/fonts/HitmarkerText-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   /* colors */
-  --background-color: white;
+  --background-color: #1b1b1b;
   --light-color: #f8f8f8;
   --dark-color: #505050;
-  --text-color: #131313;
-  --link-color: #3b63fb;
-  --link-hover-color: #1d3ecf;
+  --text-color: #f3f4f5;
+  --link-color: #f3f4f5;
+  --link-hover-color: #f96800;
 
   /* fonts */
   --body-font-family: roboto, roboto-fallback, sans-serif;
-  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
-
+  --heading-font-family: hitman-condensedblack, sans-serif;
   /* body sizes */
   --body-font-size-m: 22px;
   --body-font-size-s: 19px;

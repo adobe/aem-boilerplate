@@ -6,20 +6,30 @@
 .hero {
   position: relative;
   padding: 40px 24px;
-  min-height: 300px;
+  min-height: 690px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
 }
 
 .hero h1 {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  color: var(--background-color);
+  font-size: 9rem;
+  color: white;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
 }
 
 .hero picture {
   position: absolute;
   z-index: -1;
   inset: 0;
+  height: 100%;
+  width: 100%;
   object-fit: cover;
   box-sizing: border-box;
 }
@@ -28,6 +38,37 @@
   object-fit: cover;
   width: 100%;
   height: 100%;
+}
+
+#gradientContainer {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.gradients {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.gradients .left,
+.gradients .right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 25%;
+}
+
+.gradients .left {
+  left: 0;
+  background: linear-gradient(270deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.gradients .right {
+  right: 0;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
 }
 
 @media (width >= 900px) {

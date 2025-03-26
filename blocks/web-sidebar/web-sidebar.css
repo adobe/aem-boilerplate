@@ -1,9 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Karantina:wght@300;400;700&display=swap');
-
-p,h1,h2,h3,h4,h5,h6{
-    font-family: "Karantina", system-ui;
-}
-
 .web-sidebar {
     border-radius: 8px;
     padding: 1.5rem;
@@ -18,7 +12,7 @@ p,h1,h2,h3,h4,h5,h6{
     display: grid;
     grid-template-columns: 1fr;
     gap: 1rem;
-    font-family: "Karantina", system-ui;
+    font-family: var(--heading-font-family);
   }
 
   .web-sidebar h5 {

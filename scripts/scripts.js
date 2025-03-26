@@ -18,13 +18,52 @@ import {
  * @param {Element} main The container element
  */
 function buildHeroBlock(main) {
-  const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');
-  // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
-    const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
-    main.prepend(section);
+  if (!picture) return;
+
+  // Find the closest section or div that contains the picture
+  const section = picture.closest('div') || picture.parentElement;
+  if (!section) return;
+  
+  const heroElements = [picture];
+  const elementsAfterPicture = [];
+  
+  // Get all elements in the same section
+  const h1s = section.querySelectorAll('h1');
+  const paragraphs = section.querySelectorAll('p');
+  const links = section.querySelectorAll('a:not(p a)'); // Get links that aren't inside paragraphs
+  
+  // Process h1s
+  h1s.forEach((h1) => {
+    // eslint-disable-next-line no-bitwise
+    if (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING) {
+      elementsAfterPicture.push(h1);
+    }
+  });
+
+  // Process p tags
+  paragraphs.forEach((p) => {
+    // eslint-disable-next-line no-bitwise
+    if (p.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING) {
+      elementsAfterPicture.push(p);
+    }
+  });
+
+  // Process standalone links
+  links.forEach((link) => {
+    // eslint-disable-next-line no-bitwise
+    if (link.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING) {
+      link.className = 'button';
+      elementsAfterPicture.push(link);
+    }
+  });
+
+  // Add all collected elements to heroElements in order
+  if (elementsAfterPicture.length > 0) {
+    heroElements.push(...elementsAfterPicture);
+    const heroSection = document.createElement('div');
+    heroSection.append(buildBlock('hero', { elems: heroElements }));
+    main.prepend(heroSection);
   }
 }
 

@@ -45,10 +45,11 @@ async function buildFilters() {
     const propFilter = {
       id: `${prop}`,
       label: `${prop}`,
-      type: `${propType}`,
+      type: `${propType !== 'date' ? 'text' : propType}`,
     };
     if (propType === 'checkbox') {
       propFilter.operators = ['equal'];
+      propFilter.input = 'checkbox';
       propFilter.values = TAG_VALUES;
     } else {
       propFilter.operators = ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null'];

@@ -1,9 +1,10 @@
 indices:
-  mysite:
+  mysite-index:
     include:
       - /**
     exclude:
-    target: /query-index.json
+      - /sandbox/**
+    target: /mysite-index.json
     properties:
       title:
         select: head > meta[property="og:title"]

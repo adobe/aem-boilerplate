@@ -23,7 +23,8 @@
       "title": "Article A",
       "description": "Article A by Alan",
       "type": "Article",
-      "tags": "Entertainment"
+      "tags": "Entertainment",
+      "image": "/articles/media_1ca6d067afb6eb9fa088723fc87e889e008fb2d77.jpeg?width=1200&format=pjpg&optimize=medium"
     },
     {
       "path": "/articles/b",

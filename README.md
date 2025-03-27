@@ -28,6 +28,41 @@ Before using the boilerplate, we recommend you to go through the documentation o
 3. [Web Performance](https://www.aem.live/developer/keeping-it-100)
 4. [Markup, Sections, Blocks, and Auto Blocking](https://www.aem.live/developer/markup-sections-blocks)
 
+## Config Service Setup
+
+### Apply Config
+Before running the command, replace the following variables to match your project values:
+* `{ORG}` - Name of your organistation in GitHub.
+* `{SITE}` - Name of your site in the org. For the first site in your org, it must be equal to the GitHub repository name.
+* `{REPO}` - Name of your GitHub repository.
+* `{ADMIN_USER_EMAIL}` - Email address of your config admin user.
+* `{ADMIN_USER_ID}` - User ID of your authoring admin (click user icon in top right, then click "share" icon in da.live to copy).
+* `{DOMAIN}` - Public facing domain of your site (e.g. `www.your-shop.com`).
+* `{YOUR_TOKEN}` - Your personal access token. You can retrieve one from login via one of the methods from https://admin.hlx.page/login and copy the token from the `auth_token` cookie in the response.
+
+```bash
+curl -X POST 'https://admin.hlx.page/config/{org}/sites/{site}.json' \
+  -H 'content-type: application/json' \
+  -H 'x-auth-token: {YOUR_TOKEN}' \
+  --data-binary '@default-config.json'
+```
+
+### Apply Index Configuration
+```bash
+curl -X POST 'https://admin.hlx.page/config/{org}/sites/{site}/content/query.yaml' \
+  -H 'content-type: text/yaml' \
+  -H 'x-auth-token: {YOUR_TOKEN}' \
+  --data-binary '@default-query.yaml'
+```
+
+### Apply Sitemap Configuration
+```bash
+curl -X POST 'https://admin.hlx.page/config/{org}/sites/{site}/content/sitemap.yaml' \
+  -H 'content-type: text/yaml' \
+  -H 'x-auth-token: {YOUR_TOKEN}' \
+  --data-binary '@default-sitemap.yaml'
+```
+
 ## Installation
 
 ```sh

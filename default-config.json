@@ -1,0 +1,86 @@
+{
+	"version": 1,
+	"code": {
+		"owner": "{ORG}",
+		"repo": "{REPO}",
+		"source": {
+			"type": "github",
+			"url": "https://github.com/{ORG}}/{REPO}"
+		}
+	},
+	"content": {
+		"source": {
+			"url": "https://adobe.sharepoint.com/:f:/r/sites/HelixProjects/Shared%20Documents/sites/starter-content-commerce",
+			"type": "onedrive"
+		}
+	},
+	"folders": {
+		"/products/": "/products/default"
+	},
+	"cdn": {
+		"live": {
+			"host": "main--{SITE}--{ORG}.aem.live"
+		},
+		"preview": {
+			"host": "main--{SITE}--{ORG}.aem.page"
+		}
+	},
+	"headers": {
+		"/configs.json": [
+			{
+				"key": "access-control-allow-origin",
+				"value": "*"
+			}
+		],
+		"/configs-stage.json": [
+			{
+				"key": "access-control-allow-origin",
+				"value": "*"
+			}
+		],
+		"/configs-dev.json": [
+			{
+				"key": "access-control-allow-origin",
+				"value": "*"
+			}
+		]
+	},
+	"robots": {
+		"txt": "User-agent: *\nAllow: /\nDisallow: /drafts/\nDisallow: /enrichment/\nDisallow: /tools/\nDisallow: /plugins/experimentation/\n\nSitemap: https://www.aemshop.net/sitemap-index.xml"
+	},
+	"sidekick": {
+		"project": "Boilerplate",
+		"plugins": [
+			{
+				"id": "cif",
+				"title": "Commerce",
+				"environments": [
+					"edit"
+				],
+				"url": "https://main--{SITE}--{ORG}.aem.live/tools/picker/dist/index.html",
+				"isPalette": true,
+				"paletteRect": "top: 54px; left: 5px; bottom: 5px; width: 300px; height: calc(100% - 59px); border-radius: var(--hlx-sk-button-border-radius); overflow: hidden; resize: horizontal;"
+			},
+			{
+				"id": "personalisation",
+				"title": "Personalisation",
+				"environments": [
+					"edit"
+				],
+				"url": "https://main--{SITE}--{ORG}.aem.live/tools/segments/dist/index.html",
+				"isPalette": true,
+				"paletteRect": "top: 54px; left: 5px; bottom: 5px; width: 300px; height: calc(100% - 59px); border-radius: var(--hlx-sk-button-border-radius); overflow: hidden; resize: horizontal;"
+			}
+		]
+	},
+	"access": {
+		"admin": {
+			"role": {
+				"config_admin": [
+					"{ADMIN_USER_EMAIL}"
+				]
+			},
+			"requireAuth": "auto"
+		}
+	}
+}

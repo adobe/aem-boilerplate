@@ -36,11 +36,16 @@ async function buildFilters() {
       type: `${propType !== 'date' ? 'string' : propType}`,
     };
     if (propType === 'date') {
-      propFilter.operators = [
-        { type: 'equal', optgroup: 'basic' },
-        { type: 'not_equal', optgroup: 'basic' },
-        { type: 'between', optgroup: 'basic'},
-      ]
+      propFilter.operators = ['before', 'after', 'equal'];
+      propFilter.validation = { format: 'yyyy/mm/dd' };
+      propFilter.plugin ='datepicker';
+      propFilter.plugin_config = {
+        format: 'yyyy/mm/dd',
+        todayBtn: 'linked',
+        todayHighlight: true,
+        autoclose: true
+      };
+
     } else {
       propFilter.operators = ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null'];
     }
@@ -53,6 +58,29 @@ export function addForm(searchFilters) {
   $('#builder-basic').queryBuilder({
     plugins: ['bt-tooltip-errors'],
     filters: searchFilters,
+    operators: [
+      { type: 'equal' },
+      { type: 'not_equal' },
+      { type: 'in' },
+      { type: 'not_in' },
+      { type: 'less' },
+      { type: 'less_or_equal' },
+      { type: 'greater' },
+      { type: 'greater_or_equal' },
+      { type: 'between' },
+      { type: 'not_between' },
+      { type: 'begins_with' },
+      { type: 'not_begins_with' },
+      { type: 'contains' },
+      { type: 'not_contains' },
+      { type: 'ends_with' },
+      { type: 'not_ends_with' },
+      { type: 'is_not_empty' },
+      { type: 'is_null' },
+      { type: 'is_not_null' },
+      { type: 'before', nb_inputs: 1, multiple: false, apply_to: ['date'] },
+      { type: 'after', nb_inputs: 1, apply_to: ['date']},
+    ]
   });
 }
 

@@ -26,7 +26,7 @@
       "type": "Article",
       "tags": "Entertainment",
       "image": "/articles/media_1ca6d067afb6eb9fa088723fc87e889e008fb2d77.jpeg?width=1200&format=pjpg&optimize=medium",
-      "releasedate": "01-01-2025"
+      "releasedate": "2025/01/01"
     },
     {
       "path": "/articles/b",
@@ -36,7 +36,7 @@
       "type": "Article",
       "tags": "Technology",
       "image": "/articles/media_1fe962c23e7839810e0f35218b5c543ce71e624e1.jpeg?width=1200&format=pjpg&optimize=medium",
-      "releasedate": "02-01-2025"
+      "releasedate": "2025/02/01"
     },
     {
       "path": "/articles/c",
@@ -46,7 +46,7 @@
       "type": "Article",
       "tags": "Travel",
       "image": "/articles/media_1ca6d067afb6eb9fa088723fc87e889e008fb2d77.jpeg?width=1200&format=pjpg&optimize=medium",
-      "releasedate": "03-01-2025"
+      "releasedate": "2025/03/01"
     },
     {
       "path": "/articles/d",
@@ -56,7 +56,7 @@
       "type": "Article",
       "tags": "Entertainment",
       "image": "/articles/media_1f43f8590237e874789278acb4e68e0f5f2756280.avif?width=1200&format=pjpg&optimize=medium",
-      "releasedate": "04-01-2025"
+      "releasedate": "2025/04/01"
     },
     {
       "path": "/videos/e",
@@ -65,7 +65,7 @@
       "description": "Video E by Ellen",
       "type": "Video",
       "tags": "Entertainment",
-      "releasedate": "03-05-2025"
+      "releasedate": "2025/03/05"
     },
     {
       "path": "/videos/f",
@@ -74,7 +74,7 @@
       "description": "Video F by Fred",
       "type": "Video",
       "tags": "Travel",
-      "releasedate": "03-06-2025"
+      "releasedate": "2025/03/06"
     }
   ],
   "offset": 0,

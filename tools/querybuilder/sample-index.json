@@ -7,7 +7,8 @@
     "image",
     "description",
     "type",
-    "tags"
+    "tags",
+    "releasedate"
   ],
   "data": [
     {
@@ -24,7 +25,8 @@
       "description": "Article A by Alan",
       "type": "Article",
       "tags": "Entertainment",
-      "image": "/articles/media_1ca6d067afb6eb9fa088723fc87e889e008fb2d77.jpeg?width=1200&format=pjpg&optimize=medium"
+      "image": "/articles/media_1ca6d067afb6eb9fa088723fc87e889e008fb2d77.jpeg?width=1200&format=pjpg&optimize=medium",
+      "releasedate": "01-01-2025"
     },
     {
       "path": "/articles/b",
@@ -33,7 +35,8 @@
       "description": "Article B by Bob",
       "type": "Article",
       "tags": "Technology",
-      "image": "/articles/media_1fe962c23e7839810e0f35218b5c543ce71e624e1.jpeg?width=1200&format=pjpg&optimize=medium"
+      "image": "/articles/media_1fe962c23e7839810e0f35218b5c543ce71e624e1.jpeg?width=1200&format=pjpg&optimize=medium",
+      "releasedate": "02-01-2025"
     },
     {
       "path": "/articles/c",
@@ -42,7 +45,8 @@
       "description": "Article C by Carl",
       "type": "Article",
       "tags": "Travel",
-      "image": "/articles/media_1ca6d067afb6eb9fa088723fc87e889e008fb2d77.jpeg?width=1200&format=pjpg&optimize=medium"
+      "image": "/articles/media_1ca6d067afb6eb9fa088723fc87e889e008fb2d77.jpeg?width=1200&format=pjpg&optimize=medium",
+      "releasedate": "03-01-2025"
     },
     {
       "path": "/articles/d",
@@ -51,7 +55,8 @@
       "description": "Article D by Darla",
       "type": "Article",
       "tags": "Entertainment",
-      "image": "/articles/media_1f43f8590237e874789278acb4e68e0f5f2756280.avif?width=1200&format=pjpg&optimize=medium"
+      "image": "/articles/media_1f43f8590237e874789278acb4e68e0f5f2756280.avif?width=1200&format=pjpg&optimize=medium",
+      "releasedate": "04-01-2025"
     },
     {
       "path": "/videos/e",
@@ -59,7 +64,8 @@
       "title": "Video E",
       "description": "Video E by Ellen",
       "type": "Video",
-      "tags": "Entertainment"
+      "tags": "Entertainment",
+      "releasedate": "03-05-2025"
     },
     {
       "path": "/videos/f",
@@ -67,7 +73,8 @@
       "title": "Video F",
       "description": "Video F by Fred",
       "type": "Video",
-      "tags": "Travel"
+      "tags": "Travel",
+      "releasedate": "03-06-2025"
     }
   ],
   "offset": 0,

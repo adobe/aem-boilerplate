@@ -2,7 +2,6 @@
 import { getConfigValue } from './configs.js';
 import { getUserTokenCookie } from './initializers/index.js';
 import { getConsent } from './scripts.js';
-import trackViewedProduct from './api/productTracking.js';
 
 async function initAnalytics() {
   // Load Commerce events SDK and collector
@@ -34,10 +33,6 @@ async function initAnalytics() {
         },
       },
     );
-
-    window.adobeDataLayer.push((dl) => {
-      dl.addEventListener('product-page-view', ({ eventInfo }) => trackViewedProduct(eventInfo.productContext.sku));
-    });
 
     // Load events SDK and collector
     import('./commerce-events-sdk.js');

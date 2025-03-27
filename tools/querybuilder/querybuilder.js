@@ -22,7 +22,7 @@ const datePropertiesEnum = {
 
 function getPropertyType(propName) {
   if (Object.values(checkboxPropertiesEnum).includes(propName.toLowerCase())) {
-    return 'checkbox';
+    return 'select';
   }
   if (Object.values(datePropertiesEnum).includes(propName.toLowerCase())) {
     return 'date';
@@ -47,9 +47,9 @@ async function buildFilters() {
       label: `${prop}`,
       type: `${propType !== 'date' ? 'string' : propType}`,
     };
-    if (propType === 'checkbox') {
+    if (propType === 'select') {
       propFilter.operators = ['equal', 'contains'];
-      propFilter.input = 'checkbox';
+      propFilter.input = 'select';
       propFilter.multiple = true;
       propFilter.values = TAG_VALUES;
     } else {

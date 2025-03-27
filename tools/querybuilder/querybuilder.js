@@ -39,8 +39,6 @@ async function buildFilters() {
       propFilter.operators = [
         { type: 'equal', optgroup: 'basic' },
         { type: 'not_equal', optgroup: 'basic' },
-        { type: 'before', optgroup: 'custom', nb_inputs: 1, multiple: false, apply_to: ['date'] },
-        { type: 'after', optgroup: 'custom', nb_inputs: 1, apply_to: ['date']},
         { type: 'between', optgroup: 'basic'},
       ]
     } else {

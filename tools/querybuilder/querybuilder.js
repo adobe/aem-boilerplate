@@ -29,6 +29,7 @@ async function buildFilters() {
   for (let i = 0; i < properties.length; i++) {
     const prop = properties[i];
     const propType = getPropertyType(prop);
+    console.log(propType);
     const propFilter = {
       id: `${prop}`,
       label: `${prop}`,

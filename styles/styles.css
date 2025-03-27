@@ -141,7 +141,7 @@ h6 {
   margin-top: 0.8em;
   margin-bottom: 0.25em;
   font-family: var(--heading-font-family);
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.25;
   scroll-margin: 40px;
 }
@@ -202,30 +202,30 @@ a:hover {
 /* buttons */
 a.button:any-link,
 button {
-  text-decoration: none;
-  border: none;
-  font-family: inherit;
-  padding: 0;
-  cursor: pointer;
-  display: inline-flex
+text-decoration: none;
+    border: none;
+    font-family: inherit;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex
 ;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  line-height: 1.1;
-  font-family: "Hitmarker Text Bold";
-  font-weight: 700;
-  font-style: normal;
-  font-size: 0.88rem;
-  line-height: 0.88rem;
-  letter-spacing: 0.05em;
-  padding: 12px 24px;
-  border-radius: 2px;
-  text-transform: uppercase;
-  color: #ffffff;
-  background-color: transparent;
-  border: 1px solid #858585;
-  transition: opacity 150ms;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    line-height: 1.1;
+    font-family: "Hitmarker Text Bold";
+    font-weight: 700;
+    font-style: normal;
+    font-size: 0.88rem;
+    line-height: 0.88rem;
+    letter-spacing: 0.05em;
+    padding: 12px 24px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    color: #ffffff;
+    background-color: transparent;
+    border: 1px solid #858585;
+    transition: opacity 150ms;
 }
 
 a.button:hover,
@@ -268,7 +268,7 @@ main img {
 
 /* sections */
 main > .section {
-  margin: 40 20 30 50;
+  margin: auto;
 
 }
 
@@ -285,9 +285,6 @@ main > .section:first-of-type {
 @media (width >= 900px) {
   main > .section > div {
     padding: 0 32px;
-  }
-  p {
-    font-size:1rem;
   }
 }
 

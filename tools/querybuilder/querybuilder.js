@@ -6,24 +6,11 @@ import {
   getQueryIndex,
 } from '../../scripts/utilities.js';
 
-const TAG_VALUES = {
-  'Entertainment': 'Entertainment',
-  'Travel': 'Travel',
-  'Technology': 'Technology',
-};
-
-const checkboxPropertiesEnum = {
-  TAGS: 'tags',
-};
-
 const datePropertiesEnum = {
   RELEASE_DATE: 'releasedate',
 };
 
 function getPropertyType(propName) {
-  if (Object.values(checkboxPropertiesEnum).includes(propName.toLowerCase())) {
-    return 'select';
-  }
   if (Object.values(datePropertiesEnum).includes(propName.toLowerCase())) {
     return 'date';
   }
@@ -47,11 +34,14 @@ async function buildFilters() {
       label: `${prop}`,
       type: `${propType !== 'date' ? 'string' : propType}`,
     };
-    if (propType === 'select') {
-      propFilter.operators = ['equal', 'contains'];
-      propFilter.input = 'select';
-      propFilter.multiple = true;
-      propFilter.values = TAG_VALUES;
+    if (propType === 'date') {
+      propFilter.operators = [
+        { type: 'equal', optgroup: 'basic' },
+        { type: 'not_equal', optgroup: 'basic' },
+        { type: 'before', optgroup: 'custom', nb_inputs: 1, multiple: false, apply_to: ['date'] },
+        { type: 'after', optgroup: 'custom', nb_inputs: 1, apply_to: ['date']},
+        { type: 'between', optgroup: 'basic'},
+      ]
     } else {
       propFilter.operators = ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null'];
     }

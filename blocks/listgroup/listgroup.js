@@ -1,6 +1,9 @@
 /* eslint prefer-destructuring: 0 */
 /* eslint no-plusplus: 0 */
 import {
+  doEquals,
+  doNotEquals,
+  doContains,
   getBlockConfig,
   lowercaseObj,
 } from './listgroup-utilities.js';
@@ -17,22 +20,29 @@ async function getQueryIndex(url) {
   return null;
 }
 
-function doEquals(pageValue, searchValue) {
-  const lcPageValue = pageValue.toLowerCase();
-  const lcSearchValue = searchValue.toLowerCase();
-  console.log(`${lcPageValue} === ${lcSearchValue}`);
-  return lcPageValue === lcSearchValue;
-}
-
 function evaluateRule(page, rule) {
   const fieldName = rule.field.toLowerCase();
   const operator = rule.operator;
   const fieldValue = rule.value;
 
-  if (operator === 'equal') {
-    return !page[fieldName] ? false : doEquals(page[fieldName], fieldValue);
+  switch (operator) {
+    case 'equal':
+      return !page[fieldName] ? false : doEquals(page[fieldName], fieldValue);
+    case 'not_equal':
+      return !page[fieldName] ? false : doNotEquals(page[fieldName], fieldValue);
+    case 'contains':
+      return doContains(page, rule);
+    case 'not_contains':
+      return doNotContains(page, rule);
+    case 'is_null':
+      return page[fieldName] === null;
+    case 'is_not_null':
+      return page[fieldName] !== null;
+    case 'is_not_empty':
+      return !page[fieldName] ? true : page[fieldName].length === 0;
+    default:
+      return false;
   }
-  return null;
 }
 
 function doAnd(page, filterRules) {

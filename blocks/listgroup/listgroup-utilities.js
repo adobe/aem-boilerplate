@@ -56,7 +56,115 @@ function lowercaseObj(obj) {
   return newObj;
 }
 
+/*
+ * Check if an array includes all values of another array
+Are all of the values in Array B included in Array A?
+Is B contained within A?
+ */
+function arrayIncludesAllValues(arrayA, arrayB) {
+  return arrayB.every((val) => arrayA.includes(val));
+}
+
+/*
+ * Check if an array contains any of the values of another array.
+ */
+function arrayIncludesSomeValues(filterValues, pageValues) {
+  return pageValues.some((val) => filterValues.includes(val));
+}
+
+function doEquals(pageValue, searchValue) {
+  const lcPageValue = pageValue.toLowerCase();
+  const lcSearchValue = searchValue.toLowerCase();
+  return lcPageValue === lcSearchValue;
+}
+
+function doNotEquals(pageValue, searchValue) {
+  const lcPageValue = pageValue.toLowerCase();
+  const lcSearchValue = searchValue.toLowerCase();
+  return lcPageValue !== lcSearchValue;
+}
+
+function doContains(pageObj, condObj) {
+  let flag = true;
+  const propertyName = condObj.property.toLowerCase();
+  const filterValue = condObj.value.toLowerCase();
+  const pageValue = pageObj[propertyName];
+  try {
+    // filterValue is an array
+    if (filterValue.indexOf(',') > 0) {
+      const filterValueArray = filterValue.split(',');
+      const trimmedFilter = filterValueArray.map((str) => str.trim().toLowerCase());
+      // filterValue is an array and pageValue is an array
+      // in a comma-delimited filter value, the conditions should be OR.
+      if (pageValue !== undefined && pageValue.indexOf(',') > -1) {
+        const list = pageValue.split(',');
+        const trimmedList = list.map((str) => str.trim().toLowerCase());
+        if (!arrayIncludesSomeValues(trimmedList, trimmedFilter)) {
+          throw new Error('condition not met');
+        }
+      } else if (!trimmedFilter.includes(pageValue.toLowerCase())) {
+        throw new Error('condition not met');
+      }
+    // filterValue is a single string but pageValue is array
+    } else if (pageValue !== undefined && pageValue.indexOf(',') > -1) {
+      const list = pageValue.split(',');
+      const trimmedList = list.map((str) => str.trim().toLowerCase());
+      if (!trimmedList.includes(filterValue)) {
+        throw new Error('condition not met');
+      }
+    // both pageValue and filterValue are strings so test ===
+    } else if (filterValue !== pageValue?.toLowerCase()) {
+      throw new Error('condition not met');
+    }
+  } catch (e) {
+    flag = false;
+  }
+  return flag;
+}
+
+function doNotContains(pageObj, condObj) {
+  let flag = true;
+  const propertyName = condObj.property.toLowerCase();
+  const filterValue = condObj.value.toLowerCase();
+  const pageValue = pageObj[propertyName];
+  try {
+    // filterValue is an array
+    if (filterValue.indexOf(',') > 0) {
+      const filterValueArray = filterValue.split(',');
+      const trimmedFilter = filterValueArray.map((str) => str.trim().toLowerCase());
+      // filterValue is an array and pageValue is an array
+      // in a comma-delimited filter value, the conditions should be OR.
+      if (pageValue !== undefined && pageValue.indexOf(',') > -1) {
+        const list = pageValue.split(',');
+        const trimmedList = list.map((str) => str.trim().toLowerCase());
+        if (arrayIncludesSomeValues(trimmedList, trimmedFilter)) {
+          throw new Error('condition not met');
+        }
+      } else if (trimmedFilter.includes(pageValue.toLowerCase())) {
+        throw new Error('condition not met');
+      }
+    // filterValue is a single string but pageValue is array
+    } else if (pageValue !== undefined && pageValue.indexOf(',') > -1) {
+      const list = pageValue.split(',');
+      const trimmedList = list.map((str) => str.trim().toLowerCase());
+      if (trimmedList.includes(filterValue)) {
+        throw new Error('condition not met');
+      }
+    // both pageValue and filterValue are strings so test ===
+    } else if (filterValue === pageValue?.toLowerCase()) {
+      throw new Error('condition not met');
+    }
+  } catch (e) {
+    flag = false;
+  }
+  return flag;
+}
+
 export {
+  doContains,
+  doNotContains,
+  doEquals,
+  doNotEquals,
   getBlockConfig,
   lowercaseObj,
 };

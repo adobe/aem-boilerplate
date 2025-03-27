@@ -47,7 +47,7 @@ async function buildFilters() {
       };
 
     } else {
-      propFilter.operators = ['equal', 'not_equal', 'in', 'not_in', 'is_null', 'is_not_null'];
+      propFilter.operators = ['equal', 'not_equal', 'contains', 'not_contains', 'is_null', 'is_not_null', 'is_not_empty'];
     }
     filters.push(propFilter);
   }

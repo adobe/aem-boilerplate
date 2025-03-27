@@ -55,7 +55,7 @@
   --link-hover-color: #f96800;
 
   /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
+  --body-font-family: hitman-textregular, sans-serif;
   --heading-font-family: hitman-condensedblack, sans-serif;
   /* body sizes */
   --body-font-size-m: 22px;
@@ -141,7 +141,7 @@ h6 {
   margin-top: 0.8em;
   margin-bottom: 0.25em;
   font-family: var(--heading-font-family);
-  font-weight: 600;
+  font-weight: 800;
   line-height: 1.25;
   scroll-margin: 40px;
 }
@@ -202,25 +202,30 @@ a:hover {
 /* buttons */
 a.button:any-link,
 button {
-  box-sizing: border-box;
-  display: inline-block;
-  max-width: 100%;
-  margin: 12px 0;
-  border: 2px solid transparent;
-  border-radius: 2.4em;
-  padding: 0.5em 1.2em;
-  font-family: var(--body-font-family);
-  font-style: normal;
-  font-weight: 500;
-  line-height: 1.25;
-  text-align: center;
   text-decoration: none;
-  background-color: var(--link-color);
-  color: var(--background-color);
+  border: none;
+  font-family: inherit;
+  padding: 0;
   cursor: pointer;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: inline-flex
+;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.1;
+  font-family: "Hitmarker Text Bold";
+  font-weight: 700;
+  font-style: normal;
+  font-size: 0.88rem;
+  line-height: 0.88rem;
+  letter-spacing: 0.05em;
+  padding: 12px 24px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  color: #ffffff;
+  background-color: transparent;
+  border: 1px solid #858585;
+  transition: opacity 150ms;
 }
 
 a.button:hover,
@@ -263,7 +268,8 @@ main img {
 
 /* sections */
 main > .section {
-  margin: 40px 0;
+  margin: 40 20 30 50;
+
 }
 
 main > .section > div {
@@ -279,6 +285,9 @@ main > .section:first-of-type {
 @media (width >= 900px) {
   main > .section > div {
     padding: 0 32px;
+  }
+  p {
+    font-size:1rem;
   }
 }
 

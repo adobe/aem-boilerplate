@@ -26,7 +26,8 @@ function buildHeroBlock(main) {
   if (!section) return;
   
   const heroElements = [picture];
-  const elementsAfterPicture = [];
+  const contentWrapper = document.createElement('div');
+  contentWrapper.className = 'hero-content-wrapper';
   
   // Get all elements in the same section
   const h1s = section.querySelectorAll('h1');
@@ -37,7 +38,7 @@ function buildHeroBlock(main) {
   h1s.forEach((h1) => {
     // eslint-disable-next-line no-bitwise
     if (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING) {
-      elementsAfterPicture.push(h1);
+      contentWrapper.appendChild(h1.cloneNode(true));
     }
   });
 
@@ -45,7 +46,7 @@ function buildHeroBlock(main) {
   paragraphs.forEach((p) => {
     // eslint-disable-next-line no-bitwise
     if (p.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING) {
-      elementsAfterPicture.push(p);
+      contentWrapper.appendChild(p.cloneNode(true));
     }
   });
 
@@ -53,14 +54,15 @@ function buildHeroBlock(main) {
   links.forEach((link) => {
     // eslint-disable-next-line no-bitwise
     if (link.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING) {
-      link.className = 'button';
-      elementsAfterPicture.push(link);
+      const clonedLink = link.cloneNode(true);
+      clonedLink.className = 'button';
+      contentWrapper.appendChild(clonedLink);
     }
   });
 
   // Add all collected elements to heroElements in order
-  if (elementsAfterPicture.length > 0) {
-    heroElements.push(...elementsAfterPicture);
+  if (contentWrapper.children.length > 0) {
+    heroElements.push(contentWrapper);
     const heroSection = document.createElement('div');
     heroSection.append(buildBlock('hero', { elems: heroElements }));
     main.prepend(heroSection);

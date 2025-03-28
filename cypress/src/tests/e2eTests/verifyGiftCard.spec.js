@@ -67,7 +67,7 @@ describe('Verify price summary on cart', () => {
 
     cy.get(`.cart-coupons.cart-gift-cards ${fields.giftCardField}`)
       .should('be.visible')
-      .type('0AGN6OHDPG42');
+      .type('0BYALMABVTJD');
 
     cy.wait(2000);
 
@@ -90,7 +90,7 @@ describe('Verify price summary on cart', () => {
       .click({ multiple: true });
 
     cy.get(`.cart-coupons.cart-gift-cards .coupon-code-form__applied`)
-      .contains(/0AGN6OHDPG42/i)
+      .contains(/0BYALMABVTJD/i)
       .should('be.visible');
 
     cy.get(`.cart-coupons.cart-gift-cards .coupon-code-form__applied`)
@@ -100,7 +100,7 @@ describe('Verify price summary on cart', () => {
     cy.get('.coupon-code-form__applied').children().should('have.length', 2);
 
     cy.get('.cart-order-summary__coupon__code span')
-      .contains(/0AGN6OHDPG42/i)
+      .contains(/0BYALMABVTJD/i)
       .should('be.visible');
 
     cy.get('.cart-order-summary__coupon__code span')
@@ -181,7 +181,7 @@ describe('Verify price summary on cart', () => {
       .click({ multiple: true });
 
     cy.get(`.coupon-code-form__error`).contains(
-      'The gift card code couldn\'t be added. Verify your information and try again.'
+      'No such entity'
     );
   });
 });

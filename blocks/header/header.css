@@ -1,9 +1,13 @@
 /* header and nav layout */
 header .nav-wrapper {
-  background-color: var(--background-color);
+  background-color: var(--dark-color);
   width: 100%;
   z-index: 2;
-  position: fixed;
+  position: sticky;
+  /* left: 50%;
+  top: 2%;
+  
+  transform: translate(-50%, 0); */
 }
 
 header nav {
@@ -241,7 +245,7 @@ header nav .nav-sections ul > li > ul > li {
     width: 200px;
     top: 150%;
     padding: 16px;
-    background-color: var(--light-color);
+    background-color: var(--dark-color);
     white-space: initial;
     z-index: 1;
   }

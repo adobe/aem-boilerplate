@@ -228,17 +228,13 @@ export default async function decorate(block) {
   }, { eager: true });
 
   // Set JSON-LD and Meta Tags
-  events.on(
-    'eds/lcp',
-    () => {
-      if (product) {
-        setJsonLdProduct(product);
-        setMetaTags(product);
-        document.title = product.name;
-      }
-    },
-    { eager: true },
-  );
+  events.on('aem/lcp', () => {
+    if (product) {
+      setJsonLdProduct(product);
+      setMetaTags(product);
+      document.title = product.name;
+    }
+  }, { eager: true });
 
   return Promise.resolve();
 }

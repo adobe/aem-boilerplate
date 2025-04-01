@@ -140,6 +140,21 @@ async function applyTemplates(doc) {
 }
 
 /**
+ * Notifies dropins about the current loading state.
+ * @param {string} state The loading state to notify
+ */
+function notifyUI(event) {
+  // skip if the event was already sent
+  if (events.lastPayload(`aem/${event}`) === event) return;
+  // notify dropins about the current loading state
+  const handleEmit = () => events.emit(`aem/${event}`);
+  // listen for prerender event
+  document.addEventListener('prerenderingchange', handleEmit, { once: true });
+  // emit the event immediately
+  handleEmit();
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -272,7 +287,8 @@ async function loadEager(doc) {
     document.body.classList.add('appear');
   }
 
-  events.emit('eds/lcp', true);
+  // notify that the page is ready for eager loading
+  notifyUI('lcp');
 
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */

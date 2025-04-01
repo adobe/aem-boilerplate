@@ -14,9 +14,17 @@ import {
 } from './listgroup-utilities.js';
 
 import {
-  getQueryIndex
+  getQueryIndex,
 } from '../../scripts/utilities.js';
 
+/**
+ * Given a page and a rule object, determine if the page
+ * passes the provided rule.
+ * Equal is used for both dates and strings so type needs to be checked.
+ * @param {object} page the indexed page data object
+ * @param {object} rule the object representing a single rule with field, operator, value, and types
+ * @returns true if the page passes, otherwise false
+ */
 function evaluateRule(page, rule) {
   const fieldName = rule.field.toLowerCase();
   const operator = rule.operator;
@@ -49,6 +57,13 @@ function evaluateRule(page, rule) {
   }
 }
 
+/**
+ * Given more than one rule, evaluate them together against the
+ * page with an AND condition. Both rules must pass.
+ * @param {object} page the indexed page data object
+ * @param {[object]} filterRules an array of objects representing rules with field, operator, value, and type
+ * @returns true if the page passes all rules, otherwise false.
+ */
 function doAnd(page, filterRules) {
   let pageMatch = true;
   for (let i = 0; i < filterRules.length; i++) {
@@ -60,6 +75,7 @@ function doAnd(page, filterRules) {
       // eslint-disable-next-line no-use-before-define
       pageMatch = pageMatches(page, currRule);
     } else {
+      // eslint-disable-next-line no-console
       console.debug(`Running rule #${i}`);
       // eslint-disable-next-line no-use-before-define
       pageMatch = evaluateRule(page, currRule);
@@ -68,6 +84,14 @@ function doAnd(page, filterRules) {
   return pageMatch;
 }
 
+/**
+ * Given more than one rule, evaluate them together against the
+ * page with an OR condition. At least one rule must pass. Method will
+ * return as soon as it finds a passing rule. It may not evaluate all rules.
+ * @param {object} page the indexed page data object
+ * @param {[object]} filterRules an array of objects representing rules with field, operator, value, and type
+ * @returns true if the page passes at least one rule.
+ */
 function doOr(page, filterRules) {
   let pageMatch = false;
   for (let i = 0; i < filterRules.length; i++) {
@@ -79,6 +103,7 @@ function doOr(page, filterRules) {
       // eslint-disable-next-line no-use-before-define
       pageMatch = pageMatches(page, currRule);
     } else {
+      // eslint-disable-next-line no-console
       console.debug(`Running rule #${i}`);
       // eslint-disable-next-line no-use-before-define
       pageMatch = evaluateRule(page, currRule);
@@ -87,6 +112,13 @@ function doOr(page, filterRules) {
   return pageMatch;
 }
 
+/**
+ * Given a page and an complete filter json object, break the object down
+ * and run sets of rules using an AND/OR condition.
+ * @param {object} page the indexed page data object
+ * @param {object} filterObj an object that contains one or more rules and how they should be evaluated.
+ * @returns true if the page passes the provided rules, otherwise false
+ */
 function pageMatches(page, filterObj) {
   if (filterObj.condition) {
     if (filterObj.condition === 'AND') {
@@ -97,6 +129,14 @@ function pageMatches(page, filterObj) {
   return null;
 }
 
+/**
+ * Now that the rules have been evaluated, write out the matching pages.
+ * Use the displayProperties field to determine which of the properties to
+ * include in the html.
+ * @param {[object]} matching array of page objects that passed the rules
+ * @param {object} config json object that represents the block configuration
+ * @returns HTML response that includes are the pages that match the rules.
+ */
 function writeResults(matching, config) {
   const wrapper = document.createElement('ul');
   wrapper.classList = 'list-of-items';

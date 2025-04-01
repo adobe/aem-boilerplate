@@ -11,6 +11,11 @@ const datePropertiesEnum = {
   RELEASE_DATE: 'releasedate',
 };
 
+/**
+ * is a property expected to be a string or date
+ * @param {*} propName string of the property name
+ * @returns whether property value is expected to be date or string
+ */
 function getPropertyType(propName) {
   if (Object.values(datePropertiesEnum).includes(propName.toLowerCase())) {
     return 'date';
@@ -18,12 +23,22 @@ function getPropertyType(propName) {
   return 'string';
 }
 
+/**
+ * Get the list of available properties from the index.
+ * This is in the columns property at the parent level.
+ * @returns array of property names
+ */
 export async function getProperties() {
   const indexUrl = '/tools/querybuilder/sample-index.json';
   const { columns: properties } = await getQueryIndex(indexUrl);
   return properties;
 }
 
+/**
+ * Customize the query picker based on properties.
+ * Operators are different for date properties from string properties.
+ * @returns array of json objects containing the filter properties and their associated operations
+ */
 async function buildFilters() {
   const properties = await getProperties();
   const filters = [];
@@ -53,6 +68,10 @@ async function buildFilters() {
   return filters;
 }
 
+/**
+ * Build the query picker form for the Toolbar
+ * @param {[obj]} searchFilters filter options used to populate the dropdowns
+ */
 export function addForm(searchFilters) {
   $('#builder-basic').queryBuilder({
     plugins: ['bt-tooltip-errors'],
@@ -83,6 +102,13 @@ export function addForm(searchFilters) {
   });
 }
 
+/**
+ * Add functionality for Reset Rules and Get Rules buttons.
+ * When Reset Rules is pressed, clear out all the current rules.
+ * When Get Rules is pressed, make the query into a json object and return it
+ * as a string where the cursor was in DA. Finally close the querypicker.
+ * @param {*} actions 
+ */
 function initControls(actions) {
   $('#btn-reset').on('click', (e) => {
     e.preventDefault();

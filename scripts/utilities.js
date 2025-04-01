@@ -1,3 +1,9 @@
+/**
+ * Get a query index in the form of a json object
+ * from a given URL.
+ * @param {string} url path of the query index being used.
+ * @returns json string representation of a query index or null
+ */
 async function getQueryIndex(url) {
   try {
     const response = await window.fetch(url);
@@ -5,7 +11,7 @@ async function getQueryIndex(url) {
     const json = await response.json();
     return json;
   } catch (error) {
-    // eslint-disable-next-line no-use-before-define
+    // eslint-disable-next-line no-console
     console.error('Failed to get query index', { error });
   }
   return null;

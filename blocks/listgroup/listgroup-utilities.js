@@ -3,6 +3,8 @@
  * Customized version of readBlockConfig from aem.js
  * Adds options for ordered and unordered lists and
  * preserves html elements if no match found.
+ * @param {Element} block configuration table for a given block
+ * @returns json object representing the block configuration
  */
 function getBlockConfig(block) {
   const config = {};
@@ -48,6 +50,11 @@ function getBlockConfig(block) {
   return config;
 }
 
+/**
+ * Given a json object, convert all the fields and values to lowercase.
+ * @param {object} obj json object to transform
+ * @returns transformed json object that is all lowercase
+ */
 function lowercaseObj(obj) {
   const newObj = {};
   Object.keys(obj).forEach((key) => {
@@ -56,46 +63,85 @@ function lowercaseObj(obj) {
   return newObj;
 }
 
-/*
- * Check if an array includes all values of another array
-Are all of the values in Array B included in Array A?
-Is B contained within A?
+/**
+ * NOT CURRENTLY USED
+ * Given 2 arrays, check if the first array contains the second array
+ * Evaluates where all items of Array B are included in Array A.
+ * @param {*} arrayA array of objects
+ * @param {*} arrayB array of objects
+ * @returns true if every item of Array B is in Array A, otherwise false.
  */
 function arrayIncludesAllValues(arrayA, arrayB) {
   return arrayB.every((val) => arrayA.includes(val));
 }
 
-/*
- * Check if an array contains any of the values of another array.
+/**
+ * NOT CURRENTLY USED
+ * Given 2 arrays, check if the first array contains any items from the second array
+ * Evaluates whether at least one item of Array B is included in Array A.
+ * @param {*} arrayA array of objects
+ * @param {*} arrayB array of objects
+ * @returns true if at least one item of Array B is in Array A, otherwise false.
  */
 function arrayIncludesSomeValues(filterValues, pageValues) {
   return pageValues.some((val) => filterValues.includes(val));
 }
 
+/**
+ * Compare to string values to see if they are equal
+ * @param {*} pageValue string value of page property to check
+ * @param {*} searchValue expected value of page property
+ * @returns true if the values match, case-insensitive. Otherwise false.
+ */
 function doEquals(pageValue, searchValue) {
   const lcPageValue = pageValue.toLowerCase();
   const lcSearchValue = searchValue.toLowerCase();
   return lcPageValue === lcSearchValue;
 }
 
+/**
+ * Compare to string values to see if they are not equal
+ * @param {*} pageValue string value of page property to check
+ * @param {*} searchValue expected value of page property to not equal
+ * @returns true if the values do not match, case-insensitive. Otherwise false.
+ */
 function doNotEquals(pageValue, searchValue) {
-  const lcPageValue = pageValue.toLowerCase();
-  const lcSearchValue = searchValue.toLowerCase();
-  return lcPageValue !== lcSearchValue;
+  return !doEquals(pageValue, searchValue);
 }
 
+/**
+ * Check if string contains a different string.
+ * @param {*} pageValue string value of page property to check
+ * @param {*} searchValue substring to check for in pageValue
+ * @returns true if the searchValue is in pageValue, case-insensitive. Otherwise false.
+ */
 function doContainsString(pageValue, searchValue) {
   const lcPageValue = pageValue.toLowerCase();
   const lcSearchValue = searchValue.toLowerCase();
   return lcPageValue.indexOf(lcSearchValue) > -1;
 }
 
+/**
+ * Check if string does not contain a different string.
+ * @param {*} pageValue string value of page property to check
+ * @param {*} searchValue substring to check for in pageValue
+ * @returns true if the searchValue is not in pageValue, case-insensitive. Otherwise false.
+ */
 function doNotContainsString(pageValue, searchValue) {
   const lcPageValue = pageValue.toLowerCase();
   const lcSearchValue = searchValue.toLowerCase();
   return lcPageValue.indexOf(lcSearchValue) === -1;
 }
 
+/**
+ * NOT CURRENTLY USED.
+ * Check if one or more values are found within an array.
+ * The condObj may have a single value or a list of string values.
+ * The pageObj could be a single value or an array of string values.
+ * @param {obj} pageObj entire json object of the page
+ * @param {obj} condObj object represent the search field and expected value(s)
+ * @returns true if the pageObject contains all of the values in the condition value. Otherwise false.
+ */
 function doContainsArray(pageObj, condObj) {
   let flag = true;
   const propertyName = condObj.field?.toLowerCase();
@@ -134,6 +180,15 @@ function doContainsArray(pageObj, condObj) {
   return flag;
 }
 
+/**
+ * NOT CURRENTLY USED.
+ * Check if one or more values are found within an array.
+ * The condObj may have a single value or a list of string values.
+ * The pageObj could be a single value or an array of string values.
+ * @param {obj} pageObj entire json object of the page
+ * @param {obj} condObj object represent the search field and expected value(s)
+ * @returns true if the pageObject contains none of the values in the condition value. Otherwise false.
+ */
 function doNotContainsArray(pageObj, condObj) {
   let flag = true;
   const propertyName = condObj.field?.toLowerCase();
@@ -172,24 +227,53 @@ function doNotContainsArray(pageObj, condObj) {
   return flag;
 }
 
+/**
+ * Check if a page's date is before a provided date.
+ * @param {string} pageValue string value of a date property from a page
+ * @param {string} searchValue string value of a date property to compare against
+ * @returns true if the pageValue date comes before the searchValue Date. Otherwise false.
+ */
 function doDateBefore(pageValue, searchValue) {
   const datePageValue = Date.parse(pageValue);
   const dateSearchValue = Date.parse(searchValue);
   return datePageValue < dateSearchValue;
 }
 
+/**
+ * Check if a page's date is after a provided date.
+ * @param {string} pageValue string value of a date property from a page
+ * @param {string} searchValue string value of a date property to compare against
+ * @returns true if the pageValue date comes after the searchValue Date. Otherwise false.
+ */
 function doDateAfter(pageValue, searchValue) {
   const datePageValue = Date.parse(pageValue);
   const dateSearchValue = Date.parse(searchValue);
   return datePageValue > dateSearchValue;
 }
 
+/**
+ * Check if a page's date is equal to a provided date.
+ * @param {string} pageValue string value of a date property from a page
+ * @param {string} searchValue string value of a date property to compare against
+ * @returns true if the pageValue date equals the searchValue Date
+ */
 function doDateEquals(pageValue, searchValue) {
   const datePageValue = Date.parse(pageValue);
   const dateSearchValue = Date.parse(searchValue);
   return datePageValue === dateSearchValue;
 }
 
+/**
+ * Given a list of pages, sort them. Use the sortBy property
+ * to determine which property to compare. By default, the order is
+ * ascending. If the sortOrder property is not null and is descending, then
+ * reverse the order.
+ * Right now, only can sort by title or releasedate. This is customizable.
+ * @param {*} pageList list of page objects
+ * @param {*} sortBy property to sort the list by
+ * @param {*} sortOrder descending or null (ascending)
+ * @returns sorted list of page objects
+ */
 function sortPageList(pageList, sortBy, sortOrder) {
   const sortedList = pageList;
   switch (sortBy) {

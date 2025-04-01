@@ -5,8 +5,10 @@ This block adds the ability to automatically create a list of pages using a heli
 
 In order to make building a filter easy, the Query Builder plugin has been added to the toolbar. This tool is built using [jQuery QueryBuilder](https://querybuilder.js.org/). One or more conditions may be specified. The dropdown list is populated from a helix index. In this case, I used [a sample index](https://main--latimk-sandbox--latimk.aem.live/tools/querybuilder/sample-index.json) included in this repo so the values never change. You can customize this plugin to point to your own index. 
 
-
-<img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/QueryBuilderInToolbar.png" width="200">
+<figure>
+  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/QueryBuilderInToolbar.png" width="200" alt="QueryBuilder Plugin in Tool Library">
+  <figcaption>QueryBuilder Tool in the Sidekick</figcaption>
+</figure>
 
 ![QueryBuilder Plugin shown in the Library](https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/QueryBuilderInToolbar.png)
 

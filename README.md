@@ -6,7 +6,7 @@ In order to make building a filter easy, the Query Builder plugin has been added
 
 <div display="flex">
   <img src="/documentation/images/SimpleQueryWithToolbar.png" height="500" width="300" alt="Simple Query Example With Toolbar">
-  <img src="/documentation/images/ComplexQuery.png" height="500" alt="Complex Query Example">
+  <img src="/documentation/images/ComplexQuery.png" alt="Complex Query Example">
 </div>
 
 <figure>

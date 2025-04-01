@@ -14,7 +14,7 @@ In order to make building a filter easy, the Query Builder plugin has been added
 ### Sample Listgroup Block
 
 <figure>
-  <img src="/documentation/images/ListgroupBlock.png" width="600" alt="Query in Listgroup Block">
+  <img src="/documentation/images/ListgroupBlock.png" width="657" alt="Query in Listgroup Block">
   <figcaption>Query Object in a Listgroup Block</figcaption>
 </figure>
 

@@ -2,13 +2,22 @@
 This block adds the ability to automatically create a list of pages using a helix site's index. In traditional AEM, it was possible to get a list of pages from the JCR with it's tree structure. Rather than using the Cards block to list out every page that you want, you can specify a filter to identify a set of pages to write out, along with what metadata properties to include in the HTML output.
 
 
-In order to make building a filter easy, the Query Builder plugin has been added to the toolbar. This tool is built using [jQuery QueryBuilder](https://querybuilder.js.org/). One or more conditions may be specified. The dropdown list is populated from a helix index. In this case, I used [a sample index](https://main--latimk-sandbox--latimk.aem.live/tools/querybuilder/sample-index.json) included in this repo so the values never change. You can customize this plugin to point to your own index. 
+In order to make building a filter easy, the Query Builder plugin has been added to the toolbar. This tool is built using [jQuery QueryBuilder](https://querybuilder.js.org/). One or more conditions may be specified. The dropdown list is populated from a helix index. In this case, I used [a sample index](https://main--latimk-sandbox--latimk.aem.live/tools/querybuilder/sample-index.json) included in this repo so the values never change. You can customize this plugin to point to your own index.
 
-<div class="flex-container"><!-- .element: style="display: flex; flex-direction: row;" -->
-  <img src="/documentation/images/SimpleQuery.png" alt="Simple Query Example"><!-- .element: style="margin: 10px; padding: 20px;"-->
-  <img src="/documentation/images/ComplexQuery.png" alt="Complex Query Example"><!-- .element: style="margin: 10px; padding: 20px;"-->
+<figure>
+  <img src="/documentation/images/QueryBuilderPropertiesDropdown.png" width="350" alt="QueryBuilder Properties Dropdown">
+  <figcaption>Properties Dropdown populated from Index</figcaption>
+</figure>
+
+<div display="flex">
+  <img src="/documentation/images/SimpleQuery.png" height="500" width="300" alt="Simple Query Example">
+  <img src="/documentation/images/ComplexQuery.png" height="500" alt="Complex Query Example">
 </div>
 
+<figure>
+  <img src="/documentation/images/ListgroupBlock.png" width="400" alt="Query in Listgroup Block">
+  <figcaption>Query Object in a Listgroup Block</figcaption>
+</figure>
 
 ## Environments
 - Preview: https://main--latimk-sandbox--latimk.aem.page/

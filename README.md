@@ -11,17 +11,17 @@ In order to make building a filter easy, the Query Builder plugin has been added
 </figure>
 
 <figure>
-  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/QueryBuilderPropertiesDropdown.png" width="400" alt="QueryBuilder Properties Dropdown">
+  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/QueryBuilderPropertiesDropdown.png" width="350" alt="QueryBuilder Properties Dropdown">
   <figcaption>Properties Dropdown populated from Index</figcaption>
 </figure>
 
 <figure>
-  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/SimpleQuery.png" width="400" alt="Simple Query Example">
+  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/SimpleQuery.png" width="350" alt="Simple Query Example">
   <figcaption>Example of a Simple Query to find pages under /videos</figcaption>
 </figure>
 
 <figure>
-  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/ComplexQuery.png" width="400" alt="Complex Query Example">
+  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/ComplexQuery.png" width="350" alt="Complex Query Example">
   <figcaption>Complex Query Utilizing AND's and OR's</figcaption>
 </figure>
 

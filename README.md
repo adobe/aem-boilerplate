@@ -7,11 +7,11 @@ In order to make building a filter easy, the Query Builder plugin has been added
 
 <p float="left">
   <figure>
-    <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/QueryBuilderInToolbar.png" width="400" alt="QueryBuilder Plugin in Tool Library">
+    <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/QueryBuilderInToolbar.png" width="100%" alt="QueryBuilder Plugin in Tool Library">
     <figcaption>QueryBuilder Tool in the Sidekick</figcaption>
   </figure>
   <figure>
-    <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/ComplexQuery.png" width="350" alt="Complex Query Example">
+    <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/ComplexQuery.png" width="100%" alt="Complex Query Example">
     <figcaption>Complex Query Utilizing AND's and OR's</figcaption>
   </figure>
 </p>

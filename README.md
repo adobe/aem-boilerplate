@@ -1,9 +1,11 @@
-# Your Project's Title...
-Your project's description...
+# Listgroup Block and Query Builder Plugin
+This block adds the ability to automatically create a list of pages using a helix site's index. In traditional AEM, it was possible to get a list of pages from the JCR with it's tree structure. Rather than using the Cards block to list out every page that you want, you can specify a filter to identify a set of pages to write out, along with what metadata properties to include in the HTML output.
+
+In order to make building a filter easy, the Query Builder plugin has been added to the toolbar. This tool is built using [jQuery QueryBuilder](https://querybuilder.js.org/). One or more conditions may be specified. The dropdown list is populated from a helix index. In this case, I used [a sample index](https://main--latimk-sandbox--latimk.aem.live/tools/querybuilder/sample-index.json) included in this repo so the values never change. You can customize this plugin to point to your own index. 
 
 ## Environments
-- Preview: https://main--{repo}--{owner}.aem.page/
-- Live: https://main--{repo}--{owner}.aem.live/
+- Preview: https://main--latimk-sandbox--latimk.aem.page/
+- Live: https://main--latimk-sandbox--latimk.aem.live/
 
 ## Documentation
 

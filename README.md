@@ -2,12 +2,11 @@
 This block adds the ability to automatically create a list of pages using a helix site's index. In traditional AEM, it was possible to get a list of pages from the JCR with it's tree structure. Rather than using the Cards block to list out every page that you want, you can specify a filter to identify a set of pages to write out, along with what metadata properties to include in the HTML output.
 
 
-
 In order to make building a filter easy, the Query Builder plugin has been added to the toolbar. This tool is built using [jQuery QueryBuilder](https://querybuilder.js.org/). One or more conditions may be specified. The dropdown list is populated from a helix index. In this case, I used [a sample index](https://main--latimk-sandbox--latimk.aem.live/tools/querybuilder/sample-index.json) included in this repo so the values never change. You can customize this plugin to point to your own index. 
 
-<p float="left">
-  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/SimpleQuery.png" width="300" alt="Simple Query Example">
-  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/ComplexQuery.png" height="500" alt="Complex Query Example">
+<p display="flex">
+  <img src="/documentation/images/SimpleQuery.png" height="500" width="300" alt="Simple Query Example">
+  <img src="/documentation/images/ComplexQuery.png" height="500" alt="Complex Query Example">
 </p>
 
 <figure>
@@ -20,15 +19,6 @@ In order to make building a filter easy, the Query Builder plugin has been added
   <figcaption>Properties Dropdown populated from Index</figcaption>
 </figure>
 
-<figure>
-  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/SimpleQuery.png" width="350" alt="Simple Query Example">
-  <figcaption>Example of a Simple Query to find pages under /videos</figcaption>
-</figure>
-
-<figure>
-  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/ComplexQuery.png" width="350" alt="Complex Query Example">
-  <figcaption>Complex Query Utilizing AND's and OR's</figcaption>
-</figure>
 
 <figure>
   <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/ListgroupBlock.png" width="400" alt="Query in Listgroup Block">

@@ -6,7 +6,7 @@
 }
 
 .fragment-wrapper .icon-xbox_logo{
-    padding-right: 20px;
+    padding-right: 30px;
 }
 
 .fragment-wrapper > .section {
@@ -15,6 +15,13 @@
   margin: 0 auto;
   max-width: 1400px;
   padding: 0;
+}
+
+.fragment-wrapper > .section > .default-content-wrapper > p{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
 }
 
 .fragment-wrapper > .section > .default-content-wrapper > .button-container {
@@ -27,6 +34,11 @@
   padding: 16px 24px;
 }
 
+.icon-xbox-game-pass-white{
+    width: 175px;
+    height: auto;
+}
+
 .fragment-wrapper > .section > .default-content-wrapper > .button-container > a > sup{
     font-size: 1rem;
   }
@@ -36,7 +48,14 @@
         display: block;
         text-align: center;
       }
-      .fragment-wrapper .icon-xbox_logo{
-        padding-right: 0;
+      .fragment-wrapper .icon-xbox-game-pass-white{
+        width: 200px;
+        height: auto;
+        justify-content: center;
+    }
+    .fragment-wrapper > .section > .default-content-wrapper > p{
+        align-items: center;
+        display: grid;
+        justify-content: center;
     }
 }

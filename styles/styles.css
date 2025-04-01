@@ -252,7 +252,7 @@ main > .section {
 }
 
 main > .section > div {
-  max-width: 1200px;
+  max-width: 1440px;
   margin: auto;
   padding: 0 24px;
 }
@@ -657,7 +657,7 @@ div.columns-25-25-25-25 {
 div.columns-50-50, div.columns-25-75, div.columns-75-25, div.columns-60-40, div.columns-40-60, div.columns-66-33, div.columns-33-66, div.columns-20-80 , div.columns-80-20 {
   @media (width >=900px) {
     .layout-wrapper {
-      column-gap: 64px !important;
+      column-gap: 36px !important;
     }
   }
   @media (width <=900px) {

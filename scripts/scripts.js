@@ -25,7 +25,7 @@ function buildHeroBlock(main) {
   const section = picture.closest('div') || picture.parentElement;
   if (!section) return;
   
-  const heroElements = [picture];
+  const heroElements = [picture.cloneNode(true)];
   const contentWrapper = document.createElement('div');
   contentWrapper.className = 'hero-content-wrapper';
   
@@ -34,11 +34,15 @@ function buildHeroBlock(main) {
   const paragraphs = section.querySelectorAll('p');
   const links = section.querySelectorAll('a:not(p a)'); // Get links that aren't inside paragraphs
   
+  // Elements to remove after processing
+  const elementsToRemove = [picture];
+  
   // Process h1s
   h1s.forEach((h1) => {
     // eslint-disable-next-line no-bitwise
     if (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING) {
       contentWrapper.appendChild(h1.cloneNode(true));
+      elementsToRemove.push(h1);
     }
   });
 
@@ -47,6 +51,7 @@ function buildHeroBlock(main) {
     // eslint-disable-next-line no-bitwise
     if (p.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING) {
       contentWrapper.appendChild(p.cloneNode(true));
+      elementsToRemove.push(p);
     }
   });
 
@@ -57,6 +62,7 @@ function buildHeroBlock(main) {
       const clonedLink = link.cloneNode(true);
       clonedLink.className = 'button';
       contentWrapper.appendChild(clonedLink);
+      elementsToRemove.push(link);
     }
   });
 
@@ -66,6 +72,9 @@ function buildHeroBlock(main) {
     const heroSection = document.createElement('div');
     heroSection.append(buildBlock('hero', { elems: heroElements }));
     main.prepend(heroSection);
+    
+    // Remove the original elements to prevent duplication
+    elementsToRemove.forEach(element => element.remove());
   }
 }
 

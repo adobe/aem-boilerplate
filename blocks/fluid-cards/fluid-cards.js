@@ -63,7 +63,7 @@ export default function decorate(block) {
       cards.forEach(card => {
         const width = card.getAttribute('data-width');
         if (width === '50') {
-          card.style.width = 'calc(50% - 16px)';
+          card.style.width = 'calc(50% - 18px)';
         } else if (width === '100') {
           card.style.width = '100%';
         }

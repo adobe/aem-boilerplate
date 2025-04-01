@@ -3,22 +3,19 @@
 import {
   doEquals,
   doNotEquals,
-  doContains,
   getBlockConfig,
   lowercaseObj,
+  doContainsString,
+  doNotContainsString,
+  doDateBefore,
+  doDateAfter,
+  doDateEquals,
+  sortPageList,
 } from './listgroup-utilities.js';
 
-async function getQueryIndex(url) {
-  try {
-    const response = await window.fetch(url);
-    if (!response.ok) return null;
-    const json = await response.json();
-    return json;
-  } catch (error) {
-    console.error('Failed to get query index', { error });
-  }
-  return null;
-}
+import {
+  getQueryIndex
+} from '../../scripts/utilities.js';
 
 function evaluateRule(page, rule) {
   const fieldName = rule.field.toLowerCase();
@@ -27,27 +24,32 @@ function evaluateRule(page, rule) {
 
   switch (operator) {
     case 'equal':
+      if (!page[fieldName] && rule.type === 'date') {
+        return doDateEquals(page[fieldName], fieldValue);
+      }
       return !page[fieldName] ? false : doEquals(page[fieldName], fieldValue);
     case 'not_equal':
       return !page[fieldName] ? false : doNotEquals(page[fieldName], fieldValue);
     case 'contains':
-      return doContains(page, rule);
+      return doContainsString(page[fieldName], fieldValue);
     case 'not_contains':
-      return doNotContains(page, rule);
+      return doNotContainsString(page[fieldName], fieldValue);
     case 'is_null':
       return page[fieldName] === null;
     case 'is_not_null':
       return page[fieldName] !== null;
     case 'is_not_empty':
       return !page[fieldName] ? true : page[fieldName].length === 0;
+    case 'before':
+      return doDateBefore(page[fieldName], fieldValue);
+    case 'after':
+      return doDateAfter(page[fieldName], fieldValue);
     default:
       return false;
   }
 }
 
 function doAnd(page, filterRules) {
-  console.log('in and');
-  // assume multiple rules to do.
   let pageMatch = true;
   for (let i = 0; i < filterRules.length; i++) {
     if (!pageMatch) {
@@ -58,7 +60,7 @@ function doAnd(page, filterRules) {
       // eslint-disable-next-line no-use-before-define
       pageMatch = pageMatches(page, currRule);
     } else {
-      console.log(`Running rule #${i}`);
+      console.debug(`Running rule #${i}`);
       // eslint-disable-next-line no-use-before-define
       pageMatch = evaluateRule(page, currRule);
     }
@@ -67,7 +69,6 @@ function doAnd(page, filterRules) {
 }
 
 function doOr(page, filterRules) {
-  console.log('in or');
   let pageMatch = false;
   for (let i = 0; i < filterRules.length; i++) {
     if (pageMatch) {
@@ -78,7 +79,7 @@ function doOr(page, filterRules) {
       // eslint-disable-next-line no-use-before-define
       pageMatch = pageMatches(page, currRule);
     } else {
-      console.log(`Running rule #${i}`);
+      console.debug(`Running rule #${i}`);
       // eslint-disable-next-line no-use-before-define
       pageMatch = evaluateRule(page, currRule);
     }
@@ -87,7 +88,6 @@ function doOr(page, filterRules) {
 }
 
 function pageMatches(page, filterObj) {
-  console.log(filterObj.condition);
   if (filterObj.condition) {
     if (filterObj.condition === 'AND') {
       return doAnd(page, filterObj.rules);
@@ -99,7 +99,7 @@ function pageMatches(page, filterObj) {
 
 function writeResults(matching, config) {
   const wrapper = document.createElement('ul');
-  wrapper.classList = 'listOfItems';
+  wrapper.classList = 'list-of-items';
 
   matching?.forEach((item) => {
     const listItem = document.createElement('li');
@@ -135,18 +135,14 @@ function writeResults(matching, config) {
 
 export default async function decorate(block) {
   const config = getBlockConfig(block);
-  console.log(config);
   block.textContent = '';
 
   const indexUrl = config.indexUrl;
-  console.log(indexUrl);
   const { data: allPages } = await getQueryIndex(indexUrl);
-  console.log(allPages);
 
   const filterField = config.filter;
   const filterObj = JSON.parse(filterField);
   const lcFilter = lowercaseObj(filterObj);
-  console.log(filterObj);
 
   const matching = [];
   allPages.forEach((page) => {
@@ -155,7 +151,15 @@ export default async function decorate(block) {
       matching.push(page);
     }
   });
-  console.log(matching);
-  const wrapper = writeResults(matching, config);
+
+  let adjustedList = matching;
+  // Sort List
+  const sortBy = config.sortBy;
+  const sortOrder = config.sortOrder;
+  if (sortBy) {
+    adjustedList = sortPageList(adjustedList, sortBy, sortOrder);
+  }
+
+  const wrapper = writeResults(adjustedList, config);
   block.append(wrapper);
 }

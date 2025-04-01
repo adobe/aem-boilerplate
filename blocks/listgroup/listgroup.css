@@ -1,0 +1,34 @@
+ul.list-of-items {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0 -1.25%;
+  padding: 0;
+}
+
+.image {
+  order: 0;
+  float: left;
+  width: auto;
+  display: flex;
+  max-width: 100%;
+  margin: 0;
+  grid-row: 1;
+  aspect-ratio: 1.5;
+}
+
+.listgroup ul li {
+  clear: both;
+  list-style-type: none;
+  padding: 0;
+  float: left;
+  width: 22.5%;
+  margin: 0 1.25% 1.5rem;
+
+  @media (width <= 600px) {
+    width: 47.5%;
+  }
+
+  a {
+    text-align: left;
+  }
+}

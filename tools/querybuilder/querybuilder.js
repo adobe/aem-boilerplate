@@ -1,5 +1,6 @@
 /* eslint no-undef: 0 */
 /* eslint no-plusplus: 0 */
+/* eslint object-curly-newline: 0 */
 // eslint-disable-next-line import/no-unresolved
 import DA_SDK from 'https://da.live/nx/utils/sdk.js';
 import {
@@ -29,7 +30,6 @@ async function buildFilters() {
   for (let i = 0; i < properties.length; i++) {
     const prop = properties[i];
     const propType = getPropertyType(prop);
-    console.log(propType);
     const propFilter = {
       id: `${prop}`,
       label: `${prop}`,
@@ -38,14 +38,13 @@ async function buildFilters() {
     if (propType === 'date') {
       propFilter.operators = ['before', 'after', 'equal'];
       propFilter.validation = { format: 'yyyy/mm/dd' };
-      propFilter.plugin ='datepicker';
+      propFilter.plugin = 'datepicker';
       propFilter.plugin_config = {
         format: 'yyyy/mm/dd',
         todayBtn: 'linked',
         todayHighlight: true,
-        autoclose: true
+        autoclose: true,
       };
-
     } else {
       propFilter.operators = ['equal', 'not_equal', 'contains', 'not_contains', 'is_null', 'is_not_null', 'is_not_empty'];
     }
@@ -79,8 +78,8 @@ export function addForm(searchFilters) {
       { type: 'is_null' },
       { type: 'is_not_null' },
       { type: 'before', nb_inputs: 1, multiple: false, apply_to: ['date'] },
-      { type: 'after', nb_inputs: 1, apply_to: ['date']},
-    ]
+      { type: 'after', nb_inputs: 1, apply_to: ['date'] },
+    ],
   });
 }
 
@@ -93,8 +92,6 @@ function initControls(actions) {
   $('#btn-get').on('click', (e) => {
     e.preventDefault();
     const result = $('#builder-basic').queryBuilder('getRules');
-    console.log(result);
-
     if (!$.isEmptyObject(result)) {
       actions.sendText(JSON.stringify(result, null, 2));
       actions.closeLibrary();

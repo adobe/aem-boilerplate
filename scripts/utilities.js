@@ -5,13 +5,14 @@ async function getQueryIndex(url) {
     const json = await response.json();
     return json;
   } catch (error) {
+    // eslint-disable-next-line no-use-before-define
     console.error('Failed to get query index', { error });
   }
   return null;
 }
 
 /**
- * From Adobe blog: https://github.com/adobe/blog/
+ * Pulled from Adobe blog: https://github.com/adobe/blog/
  * Create an element with ID, class, children, and attributes
  * @param {String} tag the tag nav of the element
  * @param {Object} attributes the attributes of the tag

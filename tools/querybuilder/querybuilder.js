@@ -107,7 +107,7 @@ export function addForm(searchFilters) {
  * When Reset Rules is pressed, clear out all the current rules.
  * When Get Rules is pressed, make the query into a json object and return it
  * as a string where the cursor was in DA. Finally close the querypicker.
- * @param {*} actions 
+ * @param {*} actions
  */
 function initControls(actions) {
   $('#btn-reset').on('click', (e) => {

@@ -140,7 +140,8 @@ function doNotContainsString(pageValue, searchValue) {
  * The pageObj could be a single value or an array of string values.
  * @param {obj} pageObj entire json object of the page
  * @param {obj} condObj object represent the search field and expected value(s)
- * @returns true if the pageObject contains all of the values in the condition value. Otherwise false.
+ * @returns true if the pageObject contains all of the values in the condition
+ * value. Otherwise false.
  */
 function doContainsArray(pageObj, condObj) {
   let flag = true;
@@ -187,7 +188,8 @@ function doContainsArray(pageObj, condObj) {
  * The pageObj could be a single value or an array of string values.
  * @param {obj} pageObj entire json object of the page
  * @param {obj} condObj object represent the search field and expected value(s)
- * @returns true if the pageObject contains none of the values in the condition value. Otherwise false.
+ * @returns true if the pageObject contains none of the values in the condition
+ * value. Otherwise false.
  */
 function doNotContainsArray(pageObj, condObj) {
   let flag = true;

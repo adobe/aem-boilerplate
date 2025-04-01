@@ -61,7 +61,8 @@ function evaluateRule(page, rule) {
  * Given more than one rule, evaluate them together against the
  * page with an AND condition. Both rules must pass.
  * @param {object} page the indexed page data object
- * @param {[object]} filterRules an array of objects representing rules with field, operator, value, and type
+ * @param {[object]} filterRules an array of objects representing rules
+ * with field, operator, value, and type
  * @returns true if the page passes all rules, otherwise false.
  */
 function doAnd(page, filterRules) {
@@ -89,7 +90,8 @@ function doAnd(page, filterRules) {
  * page with an OR condition. At least one rule must pass. Method will
  * return as soon as it finds a passing rule. It may not evaluate all rules.
  * @param {object} page the indexed page data object
- * @param {[object]} filterRules an array of objects representing rules with field, operator, value, and type
+ * @param {[object]} filterRules an array of objects representing rules with
+ * field, operator, value, and type
  * @returns true if the page passes at least one rule.
  */
 function doOr(page, filterRules) {
@@ -116,7 +118,8 @@ function doOr(page, filterRules) {
  * Given a page and an complete filter json object, break the object down
  * and run sets of rules using an AND/OR condition.
  * @param {object} page the indexed page data object
- * @param {object} filterObj an object that contains one or more rules and how they should be evaluated.
+ * @param {object} filterObj an object that contains one or more rules
+ * and how they should be evaluated.
  * @returns true if the page passes the provided rules, otherwise false
  */
 function pageMatches(page, filterObj) {

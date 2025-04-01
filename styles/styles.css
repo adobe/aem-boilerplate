@@ -10,41 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
- @font-face {
-  font-family: "hitman-textregular";
-  src: url("/fonts/HitmarkerText-Regular.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "hitman-normalbold";
-  src: url("/fonts/HitmarkerNormal-Bold.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "hitman-textbold";
-  src: url("/fonts/HitmarkerText-Bold.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "hitman-condensedblack";
-  src: url("/fonts/HitmarkerCondensed-Black.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "hitman-textregular";
-  src: url("/fonts/HitmarkerText-Regular.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
+@import url("./fonts.css");
 :root {
   /* colors */
   --background-color: #1b1b1b;
@@ -55,8 +21,8 @@
   --link-hover-color: #f96800;
 
   /* fonts */
-  --body-font-family: hitman-textregular, sans-serif;
-  --heading-font-family: hitman-condensedblack, sans-serif;
+  --body-font-family: Hitmarker Text Regular, sans-serif;
+  --heading-font-family: Hitmarker Condensed Black, sans-serif;
   /* body sizes */
   --body-font-size-m: 22px;
   --body-font-size-s: 19px;
@@ -220,8 +186,7 @@ text-decoration: none;
     font-family: inherit;
     padding: 0;
     cursor: pointer;
-    display: inline-flex
-;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     text-align: center;

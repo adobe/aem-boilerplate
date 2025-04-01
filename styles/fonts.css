@@ -109,7 +109,7 @@
 }
 @font-face {
   font-family: 'Hitmarker Condensed Black';
-  src: url('../fonts/Hitmarker/HitmarkerCondensed-Black.woff2') format('woff2'), url('../fonts/Hitmarker/HitmarkerCondensed-Black.woff') format('woff'), url('../fonts/Hitmarker/HitmarkerCondensed-Black.ttf') format('truetype');
+  src: url('../fonts/Hitmarker/HitmarkerCondensed-Black.woff2') format('woff2');
   font-weight: 900;
   font-style: normal;
   font-display: swap;

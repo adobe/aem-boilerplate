@@ -1,0 +1,168 @@
+.fluid-cards-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 6px;
+}
+
+/* Main container for all cards */
+.fluid-cards {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 12px;
+  column-gap: 30px;
+  margin-bottom: 24px;
+}
+
+.fluid-cards .icon-cod-eyebrow{
+    width: 75px;
+}
+
+
+
+/* Individual card container */
+.fluid-cards > div {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 12px;
+  transition: box-shadow 0.3s ease;
+  max-height: 370px;
+}
+
+/* Card hover effect - only shadow change, no growth */
+.fluid-cards > div:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Hide the first div in each card (hidden data) */
+.fluid-cards > div > div:first-child {
+  display: none;
+}
+
+/* Background image container */
+.fluid-cards > div > div:nth-child(2) {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000;
+}
+
+/* Default image styling */
+.fluid-cards > div > div:nth-child(2) img {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+/* Object-fit based on card width */
+.fluid-cards > div[data-width="50"] > div:nth-child(2) img {
+  object-fit: cover;
+}
+
+.fluid-cards > div[data-width="100"] > div:nth-child(2) img {
+  object-fit: contain;
+}
+
+/* Image alignment based on data attributes */
+.fluid-cards > div[data-alignment="right"] > div:nth-child(2) img {
+  object-position: right center;
+}
+
+.fluid-cards > div[data-alignment="center"] > div:nth-child(2) img {
+  object-position: center center;
+}
+
+.fluid-cards > div[data-alignment="left"] > div:nth-child(2) img {
+  object-position: left center;
+}
+
+/* Image zoom effect on hover */
+.fluid-cards > div:hover > div:nth-child(2) img {
+  transform: scale(1.05);
+}
+
+/* Content overlay */
+.fluid-cards > div > div:nth-child(3) {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 24px;
+  color: #fff;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4), transparent);
+  z-index: 1;
+}
+
+/* Create a wrapper for the text content */
+.fluid-cards > div > div:nth-child(3) > * {
+  transition: transform 0.3s ease;
+}
+
+/* Text content translation on hover */
+.fluid-cards > div:hover > div:nth-child(3) > * {
+  transform: translateX(5px);
+}
+
+/* Typography for card content */
+.fluid-cards > div > div:nth-child(3) p:nth-child(1) {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0 0 4px 0;
+}
+
+.fluid-cards > div > div:nth-child(3) p:nth-child(2) {
+  font-size: 3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  max-width: 200px;
+  line-height: 1;
+  margin: 0 0 4px 0;
+  font-family: "Hitmarker Condensed Black", Arial;
+}
+
+.fluid-cards > div > div:nth-child(3) p:nth-child(3):not(.button-container) {
+  font-size: 16px;
+  margin: 0 0 4px 0;
+}
+
+/* Button styling */
+.fluid-cards .button-container {
+  margin: 0;
+  position: relative;
+  z-index: 3; /* Make button appear above the card */
+}
+
+.fluid-cards .button {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 0px !important;
+  background-color: transparent;
+  color: #000;
+  text-decoration: none;
+  border: 0 !important;
+}
+
+.fluid-cards .button:hover {
+  background-color: transparent;
+}
+
+.fluid-cards .button .icon {
+  margin-left: 8px;
+}
+
+/* Responsive layout */
+@media (min-width: 768px) {
+  /* For cards with width 50% */
+  .fluid-cards > div[data-width="50"] {
+    width: calc(50% - 12px);
+  }
+  
+  /* For cards with width 100% */
+  .fluid-cards > div[data-width="100"] {
+    width: 100%;
+  }
+}

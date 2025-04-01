@@ -94,6 +94,7 @@ main .section.hero-container {
   margin: 0;
   font-size: clamp(3rem, 8vw, 9rem);
   color: white;
+  font-family: "Hitmarker Condensed Black", sans-serif !important;
   font-weight: 900;
   letter-spacing: 1px;
   text-align: left;
@@ -129,7 +130,7 @@ main .section.hero-container {
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-family: 'hitman-textbold' !important;
+  font-family: 'Hitmarker Text Bold' !important;
   font-weight: bold;
   border: 1px solid #858585;
   border-radius: 2px !important;

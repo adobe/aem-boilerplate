@@ -4,9 +4,14 @@ This block adds the ability to automatically create a list of pages using a heli
 
 In order to make building a filter easy, the Query Builder plugin has been added to the toolbar. This tool is built using [jQuery QueryBuilder](https://querybuilder.js.org/). One or more conditions may be specified. The dropdown list is populated from a helix index. In this case, I used [a sample index](https://main--latimk-sandbox--latimk.aem.live/tools/querybuilder/sample-index.json) included in this repo so the values never change. You can customize this plugin to point to your own index.
 
-<img src="/documentation/images/SimpleQueryWithToolbar.png" height="400" alt="Simple Query Example With Toolbar">
-<img src="/documentation/images/ComplexQuery.png" height="400" alt="Complex Query Example">
-### Sample Queries
+### Sample Queries in the QueryBuilder
+
+<div display="flex">
+  <img src="/documentation/images/SimpleQueryWithToolbar.png" height="400" alt="Simple Query Example With Toolbar">
+  <img src="/documentation/images/ComplexQuery.png" height="400" alt="Complex Query Example">
+</div>
+
+### Sample Listgroup Block
 
 <figure>
   <img src="/documentation/images/ListgroupBlock.png" width="600" alt="Query in Listgroup Block">

@@ -5,30 +5,9 @@ This block adds the ability to automatically create a list of pages using a heli
 In order to make building a filter easy, the Query Builder plugin has been added to the toolbar. This tool is built using [jQuery QueryBuilder](https://querybuilder.js.org/). One or more conditions may be specified. The dropdown list is populated from a helix index. In this case, I used [a sample index](https://main--latimk-sandbox--latimk.aem.live/tools/querybuilder/sample-index.json) included in this repo so the values never change. You can customize this plugin to point to your own index. 
 
 <div class="flex-container"><!-- .element: style="display: flex; flex-direction: row;" -->
-  <img src="/documentation/images/SimpleQuery.png" height="500" width="300" alt="Simple Query Example"><!-- .element: style="margin: 10px; padding: 20px;"-->
-  <img src="/documentation/images/ComplexQuery.png" height="500" alt="Complex Query Example"><!-- .element: style="margin: 10px; padding: 20px;"-->
+  <img src="/documentation/images/SimpleQuery.png" alt="Simple Query Example"><!-- .element: style="margin: 10px; padding: 20px;"-->
+  <img src="/documentation/images/ComplexQuery.png" alt="Complex Query Example"><!-- .element: style="margin: 10px; padding: 20px;"-->
 </div>
-
-<p display="flex">
-  <img src="/documentation/images/SimpleQuery.png" height="500" width="300" alt="Simple Query Example">
-  <img src="/documentation/images/ComplexQuery.png" height="500" alt="Complex Query Example">
-</p>
-
-<figure>
-  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/QueryBuilderInToolbar.png" width="400" alt="QueryBuilder Plugin in Tool Library">
-  <figcaption>QueryBuilder Tool in the Sidekick</figcaption>
-</figure>
-
-<figure>
-  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/QueryBuilderPropertiesDropdown.png" width="350" alt="QueryBuilder Properties Dropdown">
-  <figcaption>Properties Dropdown populated from Index</figcaption>
-</figure>
-
-
-<figure>
-  <img src="https://github.com/latimk/latimk-sandbox/blob/main/documentation/images/ListgroupBlock.png" width="400" alt="Query in Listgroup Block">
-  <figcaption>Query Object in a Listgroup Block</figcaption>
-</figure>
 
 
 ## Environments

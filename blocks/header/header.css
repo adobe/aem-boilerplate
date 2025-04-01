@@ -1,17 +1,25 @@
 /* header and nav layout */
+header {
+  position: relative;
+  z-index: 10;
+}
+
 header .nav-wrapper {
-  background-color: var(--dark-color);
   width: 100%;
-  z-index: 2;
-  position: sticky;
-  /* left: 50%;
-  top: 2%;
-  
-  transform: translate(-50%, 0); */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  transition: transform 0.3s ease;
+}
+
+header .nav-wrapper.nav-hidden {
+  transform: translateY(-100%);
 }
 
 header nav {
   box-sizing: border-box;
+  background: rgba(51, 51, 51, 0.6);
   display: grid;
   grid-template:
     'hamburger brand tools' var(--nav-height)
@@ -19,10 +27,12 @@ header nav {
   align-items: center;
   gap: 0 24px;
   margin: auto;
-  max-width: 1248px;
+  max-width: 1440px;
   height: var(--nav-height);
   padding: 0 24px;
   font-family: var(--body-font-family);
+  margin-top: 10px;
+  backdrop-filter: blur(8px);
 }
 
 header nav[aria-expanded='true'] {
@@ -40,7 +50,7 @@ header nav[aria-expanded='true'] {
     justify-content: space-between;
     gap: 0 32px;
     max-width: 1264px;
-    padding: 0 32px;
+    padding: 0 20px;
   }
 
   header nav[aria-expanded='true'] {
@@ -171,6 +181,7 @@ header nav .nav-sections ul {
   list-style: none;
   padding-left: 0;
   font-size: var(--body-font-size-s);
+  align-items: center;
 }
 
 header nav .nav-sections ul > li {
@@ -183,6 +194,14 @@ header nav .nav-sections ul > li > ul {
 
 header nav .nav-sections ul > li > ul > li {
   font-weight: 400;
+}
+
+#nav > div.section.nav-sections > div > ul > li:last-child {
+  margin-left: auto;
+}
+
+#nav > div.section.nav-sections > div > ul > li:last-child > p> a{
+  padding: 10px 15px;
 }
 
 @media (width >= 900px) {
@@ -206,7 +225,7 @@ header nav .nav-sections ul > li > ul > li {
     content: '';
     display: inline-block;
     position: absolute;
-    top: 0.5em;
+    bottom: 30%;
     right: 2px;
     transform: rotate(135deg);
     width: 6px;
@@ -257,9 +276,7 @@ header nav .nav-sections ul > li > ul > li {
     left: 16px;
     width: 0;
     height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 8px solid var(--light-color);
+
   }
 
   header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
@@ -322,5 +339,11 @@ header .breadcrumbs ol li[aria-current] {
     display: block;
     max-width: 1264px;
     padding: 0 32px;
+  }
+}
+
+@media (max-width: 900px) {
+  header nav{
+    margin-top:0;
   }
 }

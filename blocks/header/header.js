@@ -237,6 +237,33 @@ export default async function decorate(block) {
   navWrapper.append(nav);
   block.append(navWrapper);
 
+  // Add scroll hide functionality
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  const handleScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+        
+        // Show nav when scrolling up or at the top
+        if (currentScrollY < lastScrollY || currentScrollY < 50) {
+          navWrapper.classList.remove('nav-hidden');
+        } 
+        // Hide nav when scrolling down and not at the top
+        else if (currentScrollY > lastScrollY && currentScrollY > 50) {
+          navWrapper.classList.add('nav-hidden');
+        }
+        
+        lastScrollY = currentScrollY;
+        ticking = false;
+      });
+      ticking = true;
+    }
+  };
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+
   if (getMetadata('breadcrumbs').toLowerCase() === 'true') {
     navWrapper.append(await buildBreadcrumbs());
   }

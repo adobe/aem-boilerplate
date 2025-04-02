@@ -1,0 +1,87 @@
+.studios-wrapper {
+  display: grid;
+  justify-content: center;
+  width: 100%;
+}
+
+.studios {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 2rem;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.studios > div {
+  flex: 0 0 calc(16.666% - 2rem); /* 6 items per row with gap consideration */
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  box-sizing: border-box;
+  margin-bottom: 2rem;
+}
+
+.studios > div > div:first-child {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  box-sizing: border-box;
+}
+
+.studios > div > div:first-child picture,
+.studios > div > div:first-child p {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  box-sizing: border-box;
+}
+
+.studios img {
+  width: 115px;
+  height: auto;
+  object-fit: contain;
+  justify-self: center;
+}
+
+/* Tablet adjustments */
+@media (max-width: 992px) {
+  .studios > div {
+    flex: 0 0 calc(25% - 1.5rem); /* 4 items per row */
+  }
+  
+  .studios {
+    gap: 1.5rem;
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .studios > div {
+    flex: 0 0 calc(33.333% - 1.5rem); /* 3 items per row */
+  }
+  
+  .studios {
+    gap: 1.5rem;
+    padding: 1.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .studios > div {
+    flex: 0 0 calc(50% - 1rem); /* 2 items per row */
+  }
+  
+  .studios {
+    gap: 1rem;
+  }
+  
+  /* Center the last item when it's alone in a row */
+  .studios > div:last-child:nth-child(odd) {
+    flex: 0 0 100%;
+  }
+}

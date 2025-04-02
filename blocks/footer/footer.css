@@ -3,18 +3,91 @@ footer {
   font-size: var(--body-font-size-xs);
 }
 
-footer .footer > div {
-  margin: auto;
-  max-width: 1200px;
-  padding: 40px 24px 24px;
+/* Main container styling */
+footer .section.divider-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
 }
 
-footer .footer p {
+/* Row styling */
+footer .default-content-wrapper,
+footer .divider-wrapper {
+  width: 100%;
+  position: relative;
+  padding: 12px 0;
+}
+
+/* Links row styling */
+footer .default-content-wrapper {
+  text-align: center;
+}
+
+footer .default-content-wrapper p {
   margin: 0;
+  max-width: 770px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  color: #adabab;
+}
+
+/* Divider styling - horizontal line with gradient */
+footer .divider-wrapper .divider {
+  position: relative;
+  height: 1px;
+  width: 100%;
+  margin: 10px 0;
+}
+
+footer .divider-wrapper .divider::before {
+  content: "";
+  background: -moz-linear-gradient(left, rgba(0, 0, 0, 0) 1%, rgba(88, 88, 88, 0.5) 12%, #707070 50%, rgba(88, 88, 88, 0.5) 88%, rgba(0, 0, 0, 0) 100%);
+  background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 1%, rgba(88, 88, 88, 0.5) 12%, #707070 50%, rgba(88, 88, 88, 0.5) 88%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0) 1%, rgba(88, 88, 88, 0.5) 12%, #707070 50%, rgba(88, 88, 88, 0.5) 88%, rgba(0, 0, 0, 0) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#00000000', GradientType=1);
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 @media (width >= 900px) {
-  footer .footer > div {
+  footer .section.divider-container {
     padding: 40px 32px 24px;
   }
+
+}
+
+footer > div > div > div > div:nth-child(5) > p:nth-child(1){
+  padding-bottom:24px;
+}
+
+footer > div > div > div > div:nth-child(5) > p:nth-child(1) > picture:nth-child(1) img{
+  height: 105px;
+  width: auto;
+  display: inline-block;
+  margin-right: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+footer > div > div > div > div:nth-child(5) > p:nth-child(1) > picture:nth-child(2) img{
+  height: 105px;
+  width: auto;
+  display: inline-block;
+}
+
+footer > div > div > div > div:nth-child(1) > p > a{
+  padding: 0 16px;
+  color: #adabab;
+  text-decoration: none;
+}
+
+footer > div > div > div > div:nth-child(1) > p{
+  max-width: 100%;
+  color: #adabab;
 }

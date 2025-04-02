@@ -5,6 +5,7 @@ import {
   decorateIcons,
   decorateSections,
   loadBlock,
+  loadScript,
   loadSections,
 } from './aem.js';
 import { decorateRichtext } from './editor-support-rte.js';
@@ -23,7 +24,11 @@ async function applyChanges(event) {
   const { content } = updates[0];
   if (!content) return false;
 
-  const parsedUpdate = new DOMParser().parseFromString(content, 'text/html');
+  // load dompurify
+  await loadScript(`${window.hlx.codeBasePath}/scripts/dompurify.min.js`);
+
+  const sanitizedContent = window.DOMPurify.sanitize(content, { USE_PROFILES: { html: true } });
+  const parsedUpdate = new DOMParser().parseFromString(sanitizedContent, 'text/html');
   const element = document.querySelector(`[data-aue-resource="${resource}"]`);
 
   if (element) {

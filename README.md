@@ -40,8 +40,10 @@ Before running the command, replace the following variables to match your projec
 * `{DOMAIN}` - Public facing domain of your site (e.g. `www.your-shop.com`).
 * `{YOUR_TOKEN}` - Your personal access token. You can retrieve one from login via one of the methods from https://admin.hlx.page/login and copy the token from the `auth_token` cookie in the response.
 
+Please use HTTP [PUT](https://www.aem.live/docs/admin.html#tag/siteConfig/operation/createSiteSite) for the initial creation of the configuration and [POST](https://www.aem.live/docs/admin.html#tag/siteConfig/operation/updateConfigSite) for subsequent updates.
+
 ```bash
-curl -X POST 'https://admin.hlx.page/config/{org}/sites/{site}.json' \
+curl -X PUT 'https://admin.hlx.page/config/{org}/sites/{site}.json' \
   -H 'content-type: application/json' \
   -H 'x-auth-token: {YOUR_TOKEN}' \
   --data-binary '@default-config.json'

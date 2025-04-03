@@ -39,7 +39,7 @@
     "@dropins/storefront-auth": "~1.0.6",
     "@dropins/storefront-cart": "~1.2.1",
     "@dropins/storefront-checkout": "~1.3.0",
-    "@dropins/storefront-order": "~1.0.5",
+    "@dropins/storefront-order": "1.0.6-alpha1",
     "@dropins/storefront-payment-services": "~1.0.1",
     "@dropins/storefront-pdp": "~1.0.0",
     "@dropins/tools": "^0.42.0"

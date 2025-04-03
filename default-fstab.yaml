@@ -1,0 +1,7 @@
+mountpoints:
+  /:
+    url: https://content.da.live/{org}/{site}/
+    type: markup
+
+folders:
+  /products/: /products/default

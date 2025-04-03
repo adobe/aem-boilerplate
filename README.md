@@ -28,10 +28,23 @@ Before using the boilerplate, we recommend you to go through the documentation o
 3. [Web Performance](https://www.aem.live/developer/keeping-it-100)
 4. [Markup, Sections, Blocks, and Auto Blocking](https://www.aem.live/developer/markup-sections-blocks)
 
-## Config Service Setup
+## Initial Setup
 
-### Apply Config
+The boilerplate assumes you already have an `aem.live` org and will onboard a new site via config service. If you do not have an `aem.live` org, you will need to [contact Adobe](https://discord.gg/aem-live) to have one created, or you can do the following:
+
+1. Upload the [starter content](https://github.com/hlxsites/aem-boilerplate-commerce/releases/tag/starter-content) somewhere (https://da.live, sharepoint, google drive, etc).
+1. Update the mountpoint in the `default-fstab.yaml` to point to your content.
+1. Rename the file to `fstab.yaml` and commit/push the change.
+1. Install the [AEM Code Sync Bot](https://github.com/apps/aem-code-sync)
+1. Verify the site is working at https://main--{site}--{org}.aem.page
+1. Add a `/.helix/config.xlsx` to your content, and add a `admin.role.admin` row with your email address.
+1. Preview/save this file. This should update the site config with the permissions.
+1. Delete the `/.helix/config.xlsx` and the `fstab.yaml` again and use the site config from here on.
+
+### Config Service
+
 Before running the command, replace the following variables to match your project values:
+
 * `{ORG}` - Name of your organistation in GitHub.
 * `{SITE}` - Name of your site in the org. For the first site in your org, it must be equal to the GitHub repository name.
 * `{REPO}` - Name of your GitHub repository.
@@ -65,6 +78,8 @@ curl -X POST 'https://admin.hlx.page/config/{org}/sites/{site}/content/sitemap.y
   --data-binary '@default-sitemap.yaml'
 ```
 
+After you onboard to config service you can delete fstab.yaml and [other files](https://www.aem.live/docs/config-service-setup#remove-unused-configuration-files) that are no longer necessary.
+
 ## Installation
 
 ```sh
@@ -90,11 +105,11 @@ npm run lint
 
 ## Local development
 
-1. Create a new repository based on the `aem-boilerplate-commerce` template and add a mountpoint in the `fstab.yaml`
+1. Create a new repository based on the `aem-boilerplate-commerce` template, rename `default-fstab.yaml` to `fstab.yaml` and add a mountpoint for your site content.
 1. Add the [AEM Code Sync GitHub App](https://github.com/apps/aem-code-sync) to the repository
-1. Add your Adobe Commerce SaaS configuration in the `configs.xlsx` sheet in your content repository.
+1. Add your Adobe Commerce configuration in the `configs-dev.xlsx` sheet in your content repository.
 1. Install all dependencies using `npm i`.
-1. Start AEM Proxy: `npm run up` (opens your browser at `http://localhost:3000`)
+1. Start AEM Proxy: `npm run start` (opens your browser at `http://localhost:3000`)
 1. Open the `{repo}` directory in your favourite IDE and start coding :)
 
 ## Changelog

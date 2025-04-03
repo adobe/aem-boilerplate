@@ -5,7 +5,7 @@
 		"repo": "{REPO}",
 		"source": {
 			"type": "github",
-			"url": "https://github.com/{ORG}}/{REPO}"
+			"url": "https://github.com/{ORG}/{REPO}"
 		}
 	},
 	"content": {

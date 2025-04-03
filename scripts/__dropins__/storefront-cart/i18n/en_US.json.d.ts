@@ -155,7 +155,11 @@ declare const _default: {
         "wrappingText": "Wrapping choice",
         "wrappingSubText": "",
         "modalConfirmButton": "Apply",
-        "modalCancelButton": "Cancel"
+        "modalCancelButton": "Cancel",
+        "ariaLabelModal": "Gift modal",
+        "ariaLabelModalOpen": "open",
+        "ariaLabelModalClose": "close",
+        "ariaLabelWrapping": "Wrapping options"
       },
       "order": {
         "customize": "Customize",

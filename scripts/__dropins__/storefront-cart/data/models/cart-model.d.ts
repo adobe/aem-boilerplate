@@ -75,6 +75,7 @@ export interface AppliedGiftCardProps {
     code: string;
     appliedBalance: Price;
     currentBalance: Price;
+    giftCardBalance: Price;
     expirationDate: string;
 }
 interface TotalPriceModifier {

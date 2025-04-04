@@ -1,7 +1,45 @@
 describe('Store Switcher', () => {
+    beforeEach(() => {
+      // add root meta tag to the page
+      cy.on('window:before:load', (win) => {
+        const meta = win.document.createElement('meta');
+        meta.name = 'root';
+        meta.content = '/';
+        win.document.head.appendChild(meta);
+      });
+    });
+
     it('should allow the user to switch stores', () => {
+        cy.intercept('GET', '/store-switcher.plain.html', (req) => {
+          req.reply({
+            statusCode: 200,
+            body: `
+              <div>
+                <h3 id="select-a-store">Select a store</h3>
+              </div>
+              <div>
+                <ul>
+                  <li>United States ($)
+                    <ul>
+                      <li><a href="/">United States ($)</a></li>
+                    </ul>
+                  </li>
+                  <li>Canada (CA$)
+                    <ul>
+                      <li><a href="/">Canada (EN)</a></li>
+                      <li><a href="/">Canada (FR)</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+              <div></div>
+            `
+          });
+        });
+
         // Visit the homepage
-        cy.visit('/drafts/multistore/en/');
+        cy.visit('/');
+
 
         // Open storeview-switcher-button button and click
         cy.get('.storeview-switcher-button > button')
@@ -63,15 +101,36 @@ describe('Store Switcher', () => {
         // click on storeview-multiple-stores, accordion should be visble, click on the first link, and check if storeview-switcher-button button contains the storeName text
         let multiStoreName;
         cy.get('.storeview-multiple-stores')
-            .click()
-            .get('.storeview-multiple-stores > ul')
-            .should('be.visible')
-            .find('li a').then(($multiStoreName) => {
-                multiStoreName = $multiStoreName.first().text();
-                cy.get('.storeview-multiple-stores > ul > li a').first().click()
-                cy.get('.storeview-switcher-button > button')
-                    .should('contain', multiStoreName);
-            }
-            )
+        .click()
+        .get('.storeview-multiple-stores > ul')
+        .should('be.visible')
+        .find('li a').then(($multiStoreName) => {
+            multiStoreName = $multiStoreName.first().text();
+            cy.intercept('GET', '/store-switcher.plain.html', (req) => {
+              req.reply({
+                statusCode: 200,
+                body: `
+                  <div>
+                    <h3 id="choisissez-un-magasin">Choisissez un magasin</h3>
+                  </div>
+                  <div>
+                    <ul>
+                      <li>Canada (CA$)
+                        <ul>
+                          <li><a href="/">Canada (EN)</a></li>
+                          <li><a href="/">Canada (FR)</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                  <div></div>
+                `
+              });
+            });
+            cy.get('.storeview-multiple-stores > ul > li a').first().click()
+            cy.get('.storeview-switcher-button > button')
+                .should('contain', multiStoreName);
+        }
+        )
     });
 });

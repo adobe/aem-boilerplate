@@ -1,7 +1,6 @@
+import { getMetadata } from './aem.js';
+
 /* eslint-disable import/no-cycle */
-
-import { getRootPath } from './scripts.js';
-
 const ALLOWED_CONFIGS = ['prod', 'stage', 'dev'];
 
 /**
@@ -33,22 +32,54 @@ export const calcEnvironment = () => {
   return environment;
 };
 
-function buildConfigURL(environment, root = '/') {
+function buildConfigURL(environment) {
   const env = environment || calcEnvironment();
   let fileName = 'configs.json';
   if (env !== 'prod') {
     fileName = `configs-${env}.json`;
   }
-  const configURL = new URL(`${window.location.origin}${root}${fileName}`);
+  const configURL = new URL(`${window.location.origin}/${fileName}`);
   return configURL;
+}
+
+function applyConfigOverrides(config) {
+  // get overrides
+  const website = getMetadata('commerce-website');
+  const store = getMetadata('commerce-store');
+  const storeview = getMetadata('commerce-storeview');
+
+  // add overrides
+  const updates = new Map([
+    ['commerce.headers.cs.Magento-Website-Code', website],
+    ['commerce.headers.cs.Magento-Store-Code', store],
+    ['commerce.headers.cs.Magento-Store-View-Code', storeview],
+    ['commerce.headers.all.Store', storeview],
+  ]);
+
+  // apply updates
+  config.data.forEach((item) => {
+    const next = updates.get(item.key);
+    if (next) {
+      item.value = next;
+      updates.delete(item.key);
+    }
+  });
+
+  // add any updates that weren't applied
+  updates.forEach((value, key) => {
+    if (value) {
+      config.data.push({ key, value });
+    }
+  });
+
+  return config;
 }
 
 const getConfigForEnvironment = async (environment) => {
   const env = environment || calcEnvironment();
-  const root = getRootPath() || '/';
 
   try {
-    const configJSON = window.sessionStorage.getItem(`config:${env}:${root}`);
+    const configJSON = window.sessionStorage.getItem(`config:${env}`);
     if (!configJSON) {
       throw new Error('No config in session storage');
     }
@@ -58,16 +89,16 @@ const getConfigForEnvironment = async (environment) => {
       throw new Error('Config expired');
     }
 
-    return parsedConfig;
+    return applyConfigOverrides(parsedConfig);
   } catch (e) {
-    let configJSON = await fetch(buildConfigURL(env, root));
+    let configJSON = await fetch(buildConfigURL(env));
     if (!configJSON.ok) {
       throw new Error(`Failed to fetch config for ${env}`);
     }
     configJSON = await configJSON.json();
     configJSON[':expiry'] = Math.round(Date.now() / 1000) + 7200;
-    window.sessionStorage.setItem(`config:${env}:${root}`, JSON.stringify(configJSON));
-    return configJSON;
+    window.sessionStorage.setItem(`config:${env}`, JSON.stringify(configJSON));
+    return applyConfigOverrides(configJSON);
   }
 };
 

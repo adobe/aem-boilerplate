@@ -67,7 +67,7 @@ export default async function decorate(block) {
 
     try {
       fragmentStoreView = await loadFragment(storeSwitcherPath);
-      if (!fragmentStoreView) throw new Error('Footer does not render due to Store Switcher fragment (/storeswitcher) not found');
+      if (!fragmentStoreView) throw new Error(`Footer does not render due to Store Switcher fragment (${storeSwitcherPath}) not found`);
     } catch (error) {
       console.error('Error loading store switcher fragment:', error);
       return;

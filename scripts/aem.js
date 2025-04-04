@@ -503,7 +503,8 @@ function decorateSections(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 async function fetchPlaceholders(prefix = 'default') {
-  const overrides = getMetadata('placeholders') || '';
+  const overrides = getMetadata('placeholders') || getMetadata('root')?.replace(/\/$/, '/placeholders.json') || '';
+
   const [fallback, override] = overrides.split('\n');
   window.placeholders = window.placeholders || {};
   if (!window.placeholders[prefix]) {

@@ -16,12 +16,12 @@ function sampleRUM(checkpoint, data) {
   const timeShift = () => (window.performance ? window.performance.now() : Date.now() - window.hlx.rum.firstReadTime);
   try {
     window.hlx = window.hlx || {};
-    sampleRUM.enhance = () => {};
+    sampleRUM.enhance = () => { };
     if (!window.hlx.rum) {
       const param = new URLSearchParams(window.location.search).get('rum');
-      const weight = (window.SAMPLE_PAGEVIEWS_AT_RATE === 'high' && 10)
+      const weight = (param === 'on' && 1)
+        || (window.SAMPLE_PAGEVIEWS_AT_RATE === 'high' && 10)
         || (window.SAMPLE_PAGEVIEWS_AT_RATE === 'low' && 1000)
-        || (param === 'on' && 1)
         || 100;
       const id = Math.random().toString(36).slice(-4);
       const isSelected = param !== 'off' && Math.random() * weight < 1;

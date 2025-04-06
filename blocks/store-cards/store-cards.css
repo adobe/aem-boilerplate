@@ -1,28 +1,380 @@
+.store-cards-container{
+  max-width: 1440px;
+}
+
 .store-cards > ul {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
     grid-gap: 24px;
   }
   
   .store-cards > ul > li {
-    border: 1px solid #dadada;
-    background-color: var(--background-color);
+    border: 1px solid #3c4147;
+    background: #24272a;
+    box-shadow: 0px 8px 12px 0px rgba(0, 0, 0, 0.5);
+    position: relative;
+    transition: box-shadow 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Make the entire card clickable by creating a pseudo-element that links to the same URL */
+  .store-cards > ul > li::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+
+  /* Link the pseudo-element to the button link */
+  .store-cards > ul > li .button-container a {
+    position: relative;
+    z-index: 2; /* Higher than the overlay */
+  }
+
+  /* Hover effects for the card */
+  .store-cards > ul > li:hover {
+    box-shadow: 0px 12px 16px 0px rgba(0, 0, 0, 0.8);
   }
   
-  .store-cards .store-cards-card-body {
-    margin: 16px;
+  /* First store-cards-card-body contains the images */
+  .store-cards > ul > li > .store-cards-card-body:first-child {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    z-index: 2;
+    flex: 0 0 auto;
   }
   
-  .store-cards .store-cards-card-image {
+  /* Background image container (first paragraph) */
+  .store-cards > ul > li > .store-cards-card-body:first-child > p:first-child {
+    margin: 0;
+    padding: 0;
     line-height: 0;
+    position: relative;
+    overflow: hidden;
   }
   
-  .store-cards > ul > li img {
+  /* Add gradient overlay for better logo visibility */
+  .store-cards > ul > li > .store-cards-card-body:first-child > p:first-child::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    aspect-ratio: 4 / 3;
+    height: 30%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+    z-index: 2;
+    pointer-events: none; /* Ensure clicks pass through to the card */
+  }
+  
+  /* Logo overlay container (second paragraph) */
+  .store-cards > ul > li > .store-cards-card-body:first-child > p:nth-child(2) {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: 0;
+    padding: 0 16px 16px 16px;
+    z-index: 3;
+    line-height: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  
+  /* Logo image styling */
+  .store-cards > ul > li > .store-cards-card-body:first-child > p:nth-child(2) img {
+    max-height: 60px;
+    width: auto;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  }
+  
+  /* Second store-cards-card-body contains the text content */
+  .store-cards > ul > li > .store-cards-card-body:nth-child(2) {
+    margin: 0 16px 16px 16px;
+    position: relative;
+    z-index: 2; /* Make text appear above the clickable overlay */
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Spacing for text content */
+  .store-cards > ul > li > .store-cards-card-body:nth-child(2) p {
+    margin: 0;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  /* Add top padding to the first text element when there's no sale price */
+  .store-cards > ul > li > .store-cards-card-body:nth-child(2) p:first-child:not(:has(em)) {
+    padding-top: 16px;
+  }
+
+  /* Game title styling */
+  .store-cards > ul > li > .store-cards-card-body:nth-child(2) .button-container {
+    margin: 8px 0;
+  }
+  
+  /* Image hover effect */
+  .store-cards > ul > li > .store-cards-card-body:first-child > p:first-child img {
+    transition: transform 0.5s ease;
+    width: 100%;
+    aspect-ratio: 1;
     object-fit: cover;
   }
+
+  .store-cards > ul > li:hover > .store-cards-card-body:first-child > p:first-child img {
+    transform: scale(1.1);
+  }
+
+/* Sale price styling */
+.store-cards > ul > li > .store-cards-card-body:nth-child(2) p:first-child em {
+    display: block;
+    margin: 0 -16px 16px -16px;
+    padding: 4px 16px;
+    background-color: #006603;
+    text-transform: uppercase;
+    color: white;
+    font-style: normal;
+    font-size: 0.8rem;
+    text-align: center;
+    position: relative;
+    z-index: 2; /* Make sure sale price is above the clickable overlay */
+}
+
+/* Only apply these styles to cards that have a sale price */
+.store-cards > ul > li > .store-cards-card-body:nth-child(2) p:first-child em strong {
+    font-weight: 700;
+}
+
+.store-cards > ul > li > .store-cards-card-body:nth-child(2) p:first-child em sup {
+    font-size: 70%;
+    vertical-align: super;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+  /* Hide the button styling since the whole card is now clickable */
+  .store-cards .button-container .button.primary {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-weight: bold;
+    text-decoration: none;
+    font-family: 'Hitmarker Condensed Black', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 1px;
+    line-height: 1.3rem;
+  }
+
+  .store-cards .button-container .button.primary:hover {
+    background: transparent;
+    color: inherit;
+  }
+
+  /* Platform icons styling */
+  .store-cards > ul > li > .store-cards-card-body:nth-child(2) p:nth-of-type(3) {
+    text-align: left;
+  }
+
+  /* Icon specific styling */
+  .store-cards > ul > li > .store-cards-card-body:nth-child(2) .icon {
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  /* Free to play text - using a class that can be added to the element */
+  .store-cards > ul > li > .store-cards-card-body:nth-child(2) p.free-to-play {
+    margin-top: auto;
+    font-weight: 500;
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+    font-family: 'Hitmarker Condensed Black', sans-serif;
+    text-align: right;
+  }
   
+  /* Target specifically the "FREE TO PLAY" text */
+  .store-cards > ul > li > .store-cards-card-body:nth-child(2) p:nth-of-type(4) {
+    margin-top: auto;
+    font-weight: 500;
+    font-size: 1.25rem;
+    letter-spacing: 1px;
+    font-family: 'Hitmarker Condensed Black', sans-serif;
+    text-align: right;
+  }
+  
+  /* Responsive grid layout */
+@media (min-width: 600px) {
+  .store-cards > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .store-cards > ul {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .store-cards > ul {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+body > main > div.section.store-cards-container > div:nth-child(3) {
+  color: #999;
+  font-weight: 400;
+  letter-spacing: 1px;
+  padding-top: 1rem;
+  font-family: 'Hitmarker Text Regular', sans-serif;
+  line-height: 1.3rem;
+  letter-spacing: 1px;
+  font-size: 1rem;
+}
+
+/* Style the button itself */
+body > main > div.section.store-cards-container > div:nth-child(3) > .button-container .button {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.12);
+  color: white !important;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Hitmarker Text Bold' !important;
+  font-weight: bold;
+  border: 1px solid #858585;
+  border-radius: 2px !important;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Button container for the last button */
+body > main > div.section.store-cards-container > div:nth-child(3) > .button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  padding: 1rem 0;
+  margin-top: 1rem;
+}
+
+/* Add gradient dividers on both sides of the button */
+body > main > div.section.store-cards-container > div:nth-child(3) > .button-container::before,
+body > main > div.section.store-cards-container > div:nth-child(3) > .button-container::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  height: 1px;
+  width: 95%;
+  max-width: 40%;
+  transform: translateY(-50%);
+}
+
+/* Left side gradient */
+body > main > div.section.store-cards-container > div:nth-child(3) > .button-container::before {
+  left: 0;
+  background: linear-gradient(90deg, #636262 0%, rgba(62, 62, 62, 0) 100%);
+}
+
+/* Right side gradient */
+body > main > div.section.store-cards-container > div:nth-child(3) > .button-container::after {
+  right: 0;
+  background: linear-gradient(90deg, rgba(62, 62, 62, 0) 0%, #636262 100%);
+}
+
+/* Shine effect for the last button */
+body > main > div.section.store-cards-container > div:nth-child(3) > .button-container .button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+body > main > div.section.store-cards-container > div:nth-child(3) > .button-container .button:hover::after {
+  left: 100%;
+}
+
+body > main > div.section.store-cards-container > div:nth-child(3) > .button-container .button:hover {
+  background: rgba(27, 27, 27, 0.8);
+}
+
+/* Button container for the game title links (to override the styles above) */
+.store-cards .button-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.store-cards .button {
+  display: inline-block;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.12);
+  color: white !important;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Hitmarker Text Bold' !important;
+  font-weight: bold;
+  border: 1px solid #858585;
+  border-radius: 2px !important;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.store-cards .button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.store-cards .button:hover::after {
+  left: 100%;
+}
+
+.store-cards .button:hover {
+  background: rgba(27, 27, 27, 0.8);
+}

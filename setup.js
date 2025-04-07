@@ -46,7 +46,7 @@ if (projectType === 'crosswalk') {
   if (fs.existsSync(blocksDir)) {
     // Delete block JSON files
     const blockDirs = fs.readdirSync(blocksDir);
-    blockDirs.forEach(blockDir => {
+    blockDirs.forEach((blockDir) => {
       const blockPath = path.join(blocksDir, blockDir);
       if (fs.statSync(blockPath).isDirectory()) {
         const jsonFile = path.join(blockPath, `_${blockDir}.json`);
@@ -57,14 +57,14 @@ if (projectType === 'crosswalk') {
     // Remove moveInstrumentation lines from JavaScript files
     const processDirectory = (dir) => {
       const entries = fs.readdirSync(dir, { withFileTypes: true });
-      entries.forEach(entry => {
+      entries.forEach((entry) => {
         const fullPath = path.join(dir, entry.name);
         if (entry.isDirectory()) {
           processDirectory(fullPath);
         } else if (entry.isFile() && entry.name.endsWith('.js')) {
-          let content = fs.readFileSync(fullPath, 'utf8');
+          const content = fs.readFileSync(fullPath, 'utf8');
           const lines = content.split('\n');
-          const filteredLines = lines.filter(line => !line.includes('moveInstrumentation'));
+          const filteredLines = lines.filter((line) => !line.includes('moveInstrumentation'));
           if (lines.length !== filteredLines.length) {
             fs.writeFileSync(fullPath, filteredLines.join('\n'));
             console.log(`Removed moveInstrumentation lines from ${fullPath}`);
@@ -86,13 +86,13 @@ if (projectType === 'crosswalk') {
   const packageJsonPath = 'package.json';
   if (fs.existsSync(packageJsonPath)) {
     const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
-    const scripts = packageJson.scripts;
-    Object.keys(scripts).forEach(key => {
+    const { scripts } = packageJson;
+    Object.keys(scripts).forEach((key) => {
       if (key.startsWith('build:json')) {
         delete scripts[key];
       }
     });
-    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
+    fs.writeFileSync(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`);
     console.log('Removed build:json scripts from package.json');
   }
 }
@@ -100,4 +100,4 @@ if (projectType === 'crosswalk') {
 // Delete this script
 deleteFile(__filename);
 
-console.log(`Setup completed for ${projectType} project type.`); 
+console.log(`Setup completed for ${projectType} project type.`);

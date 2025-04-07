@@ -506,27 +506,47 @@ function decorateSections(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 async function fetchPlaceholders(prefix = 'default') {
+  const overrides = getMetadata('placeholders') || getMetadata('root')?.replace(/\/$/, '/placeholders.json') || '';
+  const [fallback, override] = overrides.split('\n');
   window.placeholders = window.placeholders || {};
+
   if (!window.placeholders[prefix]) {
     window.placeholders[prefix] = new Promise((resolve) => {
-      fetch(`${prefix === 'default' ? '' : prefix}/placeholders.json`)
-        .then((resp) => {
+      const url = fallback || `${prefix === 'default' ? '' : prefix}/placeholders.json`;
+      Promise.all([fetch(url), override ? fetch(override) : Promise.resolve()])
+        .then(async ([resp, oResp]) => {
           if (resp.ok) {
-            return resp.json();
+            if (oResp?.ok) {
+              return Promise.all([resp.json(), await oResp.json()]);
+            }
+            return Promise.all([resp.json(), {}]);
           }
           return {};
         })
-        .then((json) => {
+
+        .then(([json, oJson]) => {
           const placeholders = {};
-          json.data
-            .filter((placeholder) => placeholder.Key)
-            .forEach((placeholder) => {
-              placeholders[toCamelCase(placeholder.Key)] = placeholder.Text;
-            });
+          const overrideMap = new Map(
+            oJson?.data?.map(({ Key, Value }) => [Key, Value]) || [],
+          );
+
+          json.data.forEach(({ Key, Value: originalValue }) => {
+            if (!Key) return;
+            const finalValue = overrideMap.has(Key) ? overrideMap.get(Key) : originalValue;
+            const keys = Key.split('.');
+            const lastKey = keys.pop();
+            const target = keys.reduce((obj, key) => {
+              obj[key] = obj[key] || {};
+              return obj[key];
+            }, placeholders);
+            target[lastKey] = finalValue;
+          });
           window.placeholders[prefix] = placeholders;
-          resolve(window.placeholders[prefix]);
+          resolve(placeholders);
         })
-        .catch(() => {
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error('error loading placeholders', error);
           // error loading placeholders
           window.placeholders[prefix] = {};
           resolve(window.placeholders[prefix]);
@@ -535,7 +555,6 @@ async function fetchPlaceholders(prefix = 'default') {
   }
   return window.placeholders[`${prefix}`];
 }
-
 /**
  * Builds a block DOM Element from a two dimensional array, string, or object
  * @param {string} blockName name of the block

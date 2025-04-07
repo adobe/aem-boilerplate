@@ -41,9 +41,10 @@ if (projectType === 'crosswalk') {
   // Delete models directory
   deleteDirectory('models');
 
-  // Delete block JSON files
+  // Process blocks directory
   const blocksDir = 'blocks';
   if (fs.existsSync(blocksDir)) {
+    // Delete block JSON files
     const blockDirs = fs.readdirSync(blocksDir);
     blockDirs.forEach(blockDir => {
       const blockPath = path.join(blocksDir, blockDir);
@@ -52,6 +53,26 @@ if (projectType === 'crosswalk') {
         deleteFile(jsonFile);
       }
     });
+
+    // Remove moveInstrumentation lines from JavaScript files
+    const processDirectory = (dir) => {
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      entries.forEach(entry => {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          processDirectory(fullPath);
+        } else if (entry.isFile() && entry.name.endsWith('.js')) {
+          let content = fs.readFileSync(fullPath, 'utf8');
+          const lines = content.split('\n');
+          const filteredLines = lines.filter(line => !line.includes('moveInstrumentation'));
+          if (lines.length !== filteredLines.length) {
+            fs.writeFileSync(fullPath, filteredLines.join('\n'));
+            console.log(`Removed moveInstrumentation lines from ${fullPath}`);
+          }
+        }
+      });
+    };
+    processDirectory(blocksDir);
   }
 
   // Delete root JSON files

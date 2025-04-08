@@ -3,7 +3,7 @@
 import { events } from '@dropins/tools/event-bus.js';
 import { Header, provider as uiProvider } from '@dropins/tools/components.js';
 import { CUSTOMER_ORDER_DETAILS_PATH, CUSTOMER_ORDERS_PATH } from '../../scripts/constants.js';
-import { fetchPlaceholders } from '../../scripts/aem.js';
+import { fetchPlaceholders } from '../../scripts/commerce.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {

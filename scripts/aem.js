@@ -497,69 +497,6 @@ function decorateSections(main) {
 }
 
 /**
- * Gets placeholders object.
- * @param {string} [prefix] Location of placeholders
- * @returns {object} Window placeholders object
- */
-// eslint-disable-next-line import/prefer-default-export
-async function fetchPlaceholders(prefix = 'default') {
-  const overrides = getMetadata('placeholders') || getMetadata('root')?.replace(/\/$/, '/placeholders.json') || '';
-
-  const [fallback, override] = overrides.split('\n');
-  window.placeholders = window.placeholders || {};
-  if (!window.placeholders[prefix]) {
-    window.placeholders[prefix] = new Promise((resolve) => {
-      const url = fallback || `${prefix === 'default' ? '' : prefix}/placeholders.json`;
-      Promise.all([fetch(url), override ? fetch(override) : Promise.resolve()])
-        .then(async ([resp, oResp]) => {
-          if (resp.ok) {
-            if (oResp?.ok) {
-              return Promise.all([resp.json(), await oResp.json()]);
-            }
-            return Promise.all([resp.json(), {}]);
-          }
-          return {};
-        })
-
-        .then(([json, oJson]) => {
-          const placeholders = {};
-          // build placeholders object
-          json.data.forEach(({ Key, Value }) => {
-            // check for overrides
-            if (oJson?.data) {
-              const overrideItem = oJson.data.find((item) => item.Key === Key);
-              if (overrideItem) {
-                // eslint-disable-next-line no-param-reassign
-                Value = overrideItem.Value;
-              }
-            }
-            if (Key) {
-              const keys = Key.split('.');
-              const lastKey = keys.pop();
-              const target = keys.reduce((obj, key) => {
-                obj[key] = obj[key] || {};
-                return obj[key];
-              }, placeholders);
-              target[lastKey] = Value;
-            }
-          });
-          // cache placeholders
-          window.placeholders[prefix] = placeholders;
-          // return placeholders
-          resolve(window.placeholders[prefix]);
-        })
-        .catch((error) => {
-          console.error('error loading placeholders', error);
-          // error loading placeholders
-          window.placeholders[prefix] = {};
-          resolve(window.placeholders[prefix]);
-        });
-    });
-  }
-  return window.placeholders[`${prefix}`];
-}
-
-/**
  * Builds a block DOM Element from a two dimensional array, string, or object
  * @param {string} blockName name of the block
  * @param {*} content two dimensional array or string or object of content
@@ -741,7 +678,6 @@ export {
   decorateIcons,
   decorateSections,
   decorateTemplateAndTheme,
-  fetchPlaceholders,
   getMetadata,
   loadBlock,
   loadCSS,

@@ -11,13 +11,13 @@ import {
 } from '@dropins/storefront-pdp/api.js';
 import { initializeDropin } from './index.js';
 import {
+  fetchPlaceholders,
   commerceEndpointWithQueryParams,
   getOptionsUIDsFromUrl,
   getSkuFromUrl,
   loadErrorPage,
 } from '../commerce.js';
 import { getHeaders } from '../configs.js';
-import { fetchPlaceholders } from '../aem.js';
 
 export const IMAGES_SIZES = {
   width: 960,

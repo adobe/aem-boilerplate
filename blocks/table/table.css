@@ -65,3 +65,9 @@
 .table.bordered table td {
   border: 1px solid #dadada;
 }
+
+/* COD version*/
+.table.cod table th, .table.table.cod table td {
+  border: 1px solid #FF851B;
+  background-color: var(#3C4147);
+};

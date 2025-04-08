@@ -11,6 +11,7 @@ import {
   loadSection,
   loadSections,
   loadCSS,
+  readBlockConfig,
 } from './aem.js';
 
 /**
@@ -278,6 +279,7 @@ export function decorateMain(main) {
   decorateButtons(main);
   decorateIcons(main);
   buildHeroBlock(main);
+  buildAutoBlocks(main);
   decorateSections(main);
   updateSectionIds(main); // JMP Added
   decorateBlocks(main);
@@ -308,6 +310,40 @@ async function loadEager(doc) {
   }
 }
 
+/**
+ * Add background image to entire section if present.
+ * @param {*} main the Container Element
+ * @author JMP
+ */
+function buildSectionBackground(main) {
+  main.querySelectorAll('div.section-metadata').forEach((metadata) => {
+    const config = readBlockConfig(metadata);
+    const position = Object.keys(config).indexOf('background-image');
+    console.log(config);
+    if (position >= 0) {
+      const picture = metadata.children[position].children[1].querySelector('picture');
+      const block = buildBlock('background-img', { elems: [picture] });
+      metadata.children[position].remove();
+      metadata.parentElement.prepend(block);
+      console.log(picture);
+    }
+  });
+}
+
+/**
+ * Builds all synthetic blocks in a container element.
+ * @param {Element} main The container element
+ * @author Adobe & JMP modified
+ */
+export function buildAutoBlocks(main) {
+  try {
+    // buildHeroBlock(main);
+    buildSectionBackground(main);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Auto Blocking failed', error);
+  }
+}
 
 
 /**

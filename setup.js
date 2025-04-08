@@ -3,8 +3,8 @@ const path = require('path');
 
 const projectType = process.argv[2];
 
-if (!projectType || !['docbased', 'crosswalk'].includes(projectType)) {
-  console.error('Please specify project type: "docbased" or "crosswalk"');
+if (!projectType || !['doc', 'xwalk'].includes(projectType)) {
+  console.error('Please specify project type: "doc" or "xwalk"');
   process.exit(1);
 }
 
@@ -32,12 +32,12 @@ function copyFile(source, target) {
   }
 }
 
-// Handle crosswalk scenario
-if (projectType === 'crosswalk') {
-  // Overwrite fstab.yaml with fstab.yaml.crosswalk and then delete the original
-  copyFile('fstab.yaml.crosswalk', 'fstab.yaml');
-  deleteFile('fstab.yaml.crosswalk');
-} else if (projectType === 'docbased') {
+// Handle xwalk scenario
+if (projectType === 'xwalk') {
+  // Overwrite fstab.yaml with fstab.yaml.xwalk and then delete the original
+  copyFile('fstab.yaml.xwalk', 'fstab.yaml');
+  deleteFile('fstab.yaml.xwalk');
+} else if (projectType === 'doc') {
   // Delete models directory
   deleteDirectory('models');
 
@@ -80,7 +80,7 @@ if (projectType === 'crosswalk') {
   deleteFile('component-filters.json');
   deleteFile('component-models.json');
   deleteFile('component-definition.json');
-  deleteFile('fstab.yaml.crosswalk');
+  deleteFile('fstab.yaml.xwalk');
 
   // Remove build:json scripts from package.json
   const packageJsonPath = 'package.json';

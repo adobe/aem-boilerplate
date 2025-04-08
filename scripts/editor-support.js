@@ -12,6 +12,32 @@ import {
 import { decorateRichtext } from './editor-support-rte.js';
 import { decorateMain } from './scripts.js';
 
+/**
+ *
+ * @param {Element} block
+ * @param {HTMLElement} block
+ * Use this function to trigger a mutation for the UI editor overlay when you
+ * have a scrollable block
+ */
+function createMutation(block) {
+  block.setAttribute('xwalk-scroll-mutation', 'true');
+  block.querySelector('.carousel-slides').onscrollend = () => {
+    block.removeAttribute('xwalk-scroll-mutation');
+  };
+}
+
+function getState(block) {
+  if (block.matches('.accordion')) {
+    return [...block.querySelectorAll('details[open]')].map(
+      (details) => details.dataset.aueResource,
+    );
+  }
+  if (block.matches('.carousel')) {
+    return block.dataset.activeSlide;
+  }
+  return null;
+}
+
 function setState(block, state) {
   if (block.matches('.accordion')) {
     block.querySelectorAll('details').forEach((details) => {
@@ -65,6 +91,7 @@ async function applyChanges(event) {
       const blockResource = block.getAttribute('data-aue-resource');
       const newBlock = parsedUpdate.querySelector(`[data-aue-resource="${blockResource}"]`);
       if (newBlock) {
+        const state = getState(block);
         newBlock.style.display = 'none';
         block.insertAdjacentElement('afterend', newBlock);
         decorateButtons(newBlock);
@@ -73,6 +100,7 @@ async function applyChanges(event) {
         decorateRichtext(newBlock);
         await loadBlock(newBlock);
         block.remove();
+        setState(newBlock, state);
         newBlock.style.display = null;
         return true;
       }

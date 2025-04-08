@@ -1,3 +1,4 @@
+import { showSlide } from '../blocks/carousel/carousel.js';
 import {
   decorateBlock,
   decorateBlocks,
@@ -10,6 +11,19 @@ import {
 } from './aem.js';
 import { decorateRichtext } from './editor-support-rte.js';
 import { decorateMain } from './scripts.js';
+
+function setState(block, state) {
+  if (block.matches('.accordion')) {
+    block.querySelectorAll('details').forEach((details) => {
+      details.open = state.includes(details.dataset.aueResource);
+    });
+  }
+  if (block.matches('.carousel')) {
+    block.style.display = null;
+    createMutation(block);
+    showSlide(block, state);
+  }
+}
 
 async function applyChanges(event) {
   // redecorate default content and blocks on patches (in the properties rail)

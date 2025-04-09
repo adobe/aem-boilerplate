@@ -1,4 +1,4 @@
 mountpoints:
   /:
-    url: https://content.da.live/arbory-digital-inc/DA-demo/
+    url: https://content.da.live/arbory-digital-inc/ACT-demo/
     type: markup

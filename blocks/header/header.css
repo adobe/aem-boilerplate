@@ -50,7 +50,7 @@ header nav[aria-expanded='true'] {
     justify-content: space-between;
     gap: 0 32px;
     max-width: 1264px;
-    padding: 0 20px;
+    padding: 0 15px;
   }
 
   header nav[aria-expanded='true'] {
@@ -63,6 +63,15 @@ header nav[aria-expanded='true'] {
 header nav p {
   margin: 0;
   line-height: 1;
+  font-family: "Hitmarker Text Regular", Arial;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: 1px;
+    font-size: 0.88rem;
+    line-height: 1.38rem;
+    color: #FFF;
+    text-transform: uppercase;
+    text-decoration: none;
 }
 
 header nav a:any-link {
@@ -197,9 +206,6 @@ header nav .nav-sections ul > li > ul > li {
   font-weight: 400;
 }
 
-#nav > div.section.nav-sections > div > ul > li:last-child {
-  margin-left: auto;
-}
 
 #nav > div.section.nav-sections > div > ul > li:last-child > p> a{
   padding: 10px 15px;
@@ -223,23 +229,24 @@ header nav .nav-sections ul > li > ul > li {
   }
 
   header nav .nav-sections .nav-drop::after {
-    content: '';
+    content: '+';
     display: inline-block;
     position: absolute;
-    bottom: 30%;
+    top: 1px;
     right: 2px;
-    transform: rotate(135deg);
-    width: 6px;
-    height: 6px;
-    border: 2px solid currentcolor;
-    border-radius: 0 1px 0 0;
-    border-width: 2px 2px 0 0;
+    font-size: 16px;
+    line-height: 1;
+    font-weight: bold;
+  }
+
+  header nav .nav-sections .nav-drop:hover::after {
+    content: '-';
   }
 
   header nav .nav-sections .nav-drop[aria-expanded='true']::after {
+    content: '-';
     top: unset;
     bottom: 0.5em;
-    transform: rotate(315deg);
   }
 
   header nav .nav-sections ul {
@@ -258,6 +265,7 @@ header nav .nav-sections ul > li > ul > li {
     position: relative;
   }
 
+  header nav .nav-sections .default-content-wrapper > ul > li:hover > ul,
   header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul {
     display: block;
     position: absolute;
@@ -354,10 +362,23 @@ header nav .button-container .button{
   color: #fff;
   text-decoration: none;
   padding: 10px 15px;
+  font-weight: 700;
+    font-style: normal;
+    font-size: 0.88rem;
+    line-height: 0.88rem;
+    letter-spacing: 0.05em;
+  font-family: "Hitmarker Normal Bold";
 }
 
 header nav .button-container .button:hover{
   border: 1px solid #f96800;
   border-style: outset;
+  background-image: url('../img/media_140f63f096fbc0eb6c650151eaf0aaf62701fc3d7.gif');
+  outline: 1px solid #F96800;
+    outline-offset: 4px;
 }
-  
+
+#nav > div.section.nav-sections > div > ul > li:nth-child(7){
+  margin-left: auto;
+  text-align: right;
+}

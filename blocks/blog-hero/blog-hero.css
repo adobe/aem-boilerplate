@@ -114,3 +114,25 @@ div.section.blog-hero-container > div > div > div > div:nth-child(2) > p:nth-chi
     font-size: 2.25rem;
   }
 }
+
+/* Mobile layout - two columns with 60/40 split */
+@media (max-width: 900px) {
+    .blog-hero > div {
+      align-items:center;
+      margin: 1rem;
+    }
+  
+    /* Image column - 60% */
+    .blog-hero > div > div:first-child {
+      width: 100%;
+    }
+  
+    /* Content column - 40% */
+    .blog-hero > div > div:last-child {
+      padding: 1rem;
+    }
+  
+    .blog-hero h1 {
+      font-size: 2.25rem;
+    }
+  }

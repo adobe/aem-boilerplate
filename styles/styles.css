@@ -949,3 +949,10 @@ div.blog-columns {
     }
   }
 }
+
+
+@media (max-width: 900px) {
+  main > .section > div{
+    padding: 0;
+  }
+}

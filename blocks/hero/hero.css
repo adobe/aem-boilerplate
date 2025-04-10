@@ -36,7 +36,7 @@ main .section.hero-container {
   position: relative;
   height: 100%;
   width: 100%;
-  max-width: 1240px;
+  max-width: 1440px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -92,7 +92,7 @@ main .section.hero-container {
 
 .hero h1 {
   margin: 0;
-  font-size: clamp(3rem, 8vw, 9rem);
+  font-size: 200px;
   color: white;
   font-family: "Hitmarker Condensed Black", sans-serif !important;
   font-weight: 900;
@@ -110,6 +110,7 @@ main .section.hero-container {
   text-align: left;
   box-sizing: border-box;
   text-wrap-style: balance;
+  max-width: 500px;
 }
 
 .hero .button-container {

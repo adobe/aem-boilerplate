@@ -19,6 +19,7 @@ import ProductQuantity from '@dropins/storefront-pdp/containers/ProductQuantity.
 import ProductDescription from '@dropins/storefront-pdp/containers/ProductDescription.js';
 import ProductAttributes from '@dropins/storefront-pdp/containers/ProductAttributes.js';
 import ProductGallery from '@dropins/storefront-pdp/containers/ProductGallery.js';
+import WishlistToggle from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
 
 // Libs
 import { fetchPlaceholders, setJsonLd } from '../../scripts/commerce.js';
@@ -26,6 +27,7 @@ import { fetchPlaceholders, setJsonLd } from '../../scripts/commerce.js';
 // Initializers
 import { IMAGES_SIZES } from '../../scripts/initializers/pdp.js';
 import '../../scripts/initializers/cart.js';
+import '../../scripts/initializers/wishlist.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
@@ -87,7 +89,6 @@ export default async function decorate(block) {
     _options,
     _quantity,
     addToCart,
-    addToWishlist,
     _description,
     _attributes,
   ] = await Promise.all([
@@ -182,35 +183,10 @@ export default async function decorate(block) {
       },
     })($addToCart),
 
-    // Configuration - Add to Wishlist
-    UI.render(Button, {
-      icon: Icon({ source: 'Heart' }),
-      variant: 'secondary',
-      'aria-label': labels.Custom?.AddToWishlist?.label,
-      onClick: async () => {
-        try {
-          addToWishlist.setProps((prev) => ({
-            ...prev,
-            disabled: true,
-            'aria-label': labels.Custom?.AddingToWishlist?.label,
-          }));
-
-          const values = pdpApi.getProductConfigurationValues();
-
-          if (values?.sku) {
-            const wishlist = await import('../../scripts/wishlist/api.js');
-            await wishlist.addToWishlist(values.sku);
-          }
-        } catch (error) {
-          console.error(error);
-        } finally {
-          addToWishlist.setProps((prev) => ({
-            ...prev,
-            disabled: false,
-            'aria-label': labels.Custom?.AddToWishlist?.label,
-          }));
-        }
-      },
+    // Add to Wishlist
+    UI.render(WishlistToggle, {
+      isGuestWishlistEnabled: false,
+      product,
     })($addToWishlist),
 
     // Description

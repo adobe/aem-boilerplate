@@ -1,9 +1,9 @@
-.table {
+.table.block {
   width: 100%;
   overflow-x: auto;
 }
 
-.table table {
+.table.block table {
   width: 100%;
   max-width: 100%;
   border-collapse: collapse;
@@ -11,32 +11,32 @@
 }
 
 @media (width >= 600px) {
-  .table table {
+  .table.block table {
     font-size: var(--body-font-size-s);
   }
 }
 
 @media (width >= 900px) {
-  .table table {
+  .table.block table {
     font-size: var(--body-font-size-m);
   }
 }
 
-.table table thead tr {
-  border-top: 2px solid #dadada;
-  border-bottom: 2px solid #dadada;
+.table.block table thead tr {
+  border-top: 2px solid;
+  border-bottom: 2px solid;
 }
 
-.table table tbody tr {
-  border-bottom: 1px solid #dadada;
+.table.block table tbody tr {
+  border-bottom: 1px solid;
 }
 
-.table table th {
+.table.block table th {
   font-weight: 700;
 }
 
-.table table th,
-.table table td {
+.table.block table th,
+.table.block table td {
   padding: 0.5em;
   text-align: left;
 }
@@ -51,17 +51,17 @@
 }
 
 /* no header variant */
-.table.no-header table tbody tr {
-  border-top: 1px solid #dadada;
+.table.block.no-header table tbody tr {
+  border-top: 1px solid;
 }
 
 /* striped variant */
-.table.striped tbody tr:nth-child(odd) {
-  background-color: var(--light-color);
+.table.block.striped tbody tr:nth-child(odd) {
+  background-color: var(--overlay-background-color);
 }
 
 /* bordered variant */
-.table.bordered table th,
-.table.bordered table td {
-  border: 1px solid #dadada;
+.table.block.bordered table th,
+.table.block.bordered table td {
+  border: 1px solid;
 }

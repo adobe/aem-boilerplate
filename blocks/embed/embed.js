@@ -50,6 +50,9 @@ const embedVimeo = (url, autoplay) => {
 };
 
 const embedTwitter = (url) => {
+  if (!url.href.startsWith('https://twitter.com')) {
+    url.href = url.href.replace('https://x.com', 'https://twitter.com');
+  }
   const embedHTML = `<blockquote class="twitter-tweet"><a href="${url.href}"></a></blockquote>`;
   loadScript('https://platform.twitter.com/widgets.js');
   return embedHTML;
@@ -70,11 +73,10 @@ const loadEmbed = (block, link, autoplay) => {
       embed: embedVimeo,
     },
     {
-      match: ['twitter'],
+      match: ['twitter', 'x.com'],
       embed: embedTwitter,
     },
   ];
-
   const config = EMBEDS_CONFIG.find((e) => e.match.some((match) => link.includes(match)));
   const url = new URL(link);
   if (config) {

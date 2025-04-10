@@ -18,24 +18,24 @@
   text-indent: -0.5ch;
 }
 
-.quote blockquote .quote-quotation > :first-child::before,
-.quote blockquote .quote-quotation > :last-child::after {
+.quote blockquote .quote-quotation p:first-child::before,
+.quote blockquote .quote-quotation p:last-child::after {
   line-height: 0;
 }
 
-.quote blockquote .quote-quotation > :first-child::before {
-  content: "“";
+.quote blockquote .quote-quotation p:first-child::before {
+  content: '“';
 }
 
-.quote blockquote .quote-quotation > :last-child::after {
-  content: "”";
+.quote blockquote .quote-quotation p:last-child::after {
+  content: '”';
 }
 
 .quote blockquote .quote-attribution {
   text-align: right;
 }
 
-.quote blockquote .quote-attribution > :first-child::before {
-  content: "—";
+.quote blockquote .quote-attribution p:first-child::before {
+  content: '—';
   padding-right: 0.5ch;
 }

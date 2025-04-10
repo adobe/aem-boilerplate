@@ -1,0 +1,53 @@
+.sticky-battlepass-block {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.sticky-battlepass-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.sticky-battlepass {
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1; /* Ensure it's above content but below header */
+}
+
+.sticky-battlepass img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.sticky-battlepass .button-container {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.sticky-battlepass .button {
+  display: inline-block;
+  background-color: #406e0c;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: "Hitmarker Condensed Black", sans-serif;
+  letter-spacing: 1px;
+  transition: background-color 0.2s ease;
+}
+
+.sticky-battlepass .button:hover {
+  background-color: #5a9a12;
+}
+
+/* Hide on mobile */
+@media (max-width: 900px) {
+  .desktop-only {
+    display: none !important;
+  }
+}

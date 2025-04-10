@@ -56,6 +56,7 @@ header nav[aria-expanded='true'] {
   header nav[aria-expanded='true'] {
     min-height: 0;
     overflow: visible;
+    max-width: 1440px;
   }
 }
 

@@ -1,75 +1,152 @@
-.web-sidebar {
-    border-radius: 8px;
-    padding: 1.5rem;
-    width: 200px;
-  }
-
-.web-sidebar-container.section > div{
-    margin: 0;
+.web-sidebar-block {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-  
-  .web-sidebar > div {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    font-family: var(--heading-font-family);
-  }
 
-  .web-sidebar h5 {
-    margin: 0.2rem 0;
-  }
-  
-  .web-sidebar h6 {
-    margin: 0.2rem 0;
-    margin-left: 1rem;
-  }
-  
-  .web-sidebar > div:first-child {
-    margin-bottom: 0.75rem;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 1rem;
-  }
-  
-  .web-sidebar > div:not(:first-child):hover {
-    color: #406e0c;
-    cursor: pointer;
-  }
-  
-  .web-sidebar p {
-    margin: 0;
-    line-height: 1.4;
-    font-size: 1.5rem;
-  }
+.web-sidebar-wrapper {
+  position: relative;
+  width: 100%;
+}
 
-  .web-sidebar a {
-    color: inherit;
-    text-decoration: none;
+.web-sidebar {
+  border-radius: 8px;
+  padding: 1rem 0.25rem 0.25rem 0.25rem;
+  width: 100%;
+  color: #fff;
+  box-sizing: border-box;
+  z-index: 1; /* Ensure it's above content but below header */
+}
+
+.web-sidebar > div {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.web-sidebar > div:nth-child(1) > h3{
+  color: #fff;
+  padding-bottom: 0.25rem;
+  font-weight: bold;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  line-height: 1;
+  text-transform: uppercase;
+  font-family: "Hitmarker Condensed Black";
+  text-wrap: balance;
+  padding-left: 0.5rem;
+}
+
+.web-sidebar h2 {
+  margin: 0;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-family: "Hitmarker Condensed Black";
+  text-transform: uppercase !important;
+  color: #fff;
+  letter-spacing: 1px;
+  line-height: 0.8 !important;
+  text-wrap: balance;
+}
+
+.web-sidebar h3 {
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+.web-sidebar h5 {
+  margin: 0.2rem 0;
+}
+
+.web-sidebar h6 {
+  margin: 0.2rem 0;
+  margin-left: 1rem;
+}
+
+.web-sidebar > div:first-child {
+  margin-bottom: 0rem;
+}
+
+.web-sidebar > div:not(:first-child):hover {
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;;
+}
+
+.web-sidebar p {
+  margin: 0;
+  line-height: 1.4;
+  font-size: 1rem;
+}
+
+.web-sidebar a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.toc-entry {
+  padding: 0.5rem 0;
+}
+
+.toc-entry:last-child {
+  border-bottom: none;
+}
+
+.toc-entry a {
+  color: inherit;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color 0.2s ease;
+  display: block;
+  padding-left: 0.5rem;
+  border-left: 3px solid transparent;
+  line-height: 1.1;
+}
+
+/* H2 heading styles */
+.toc-h2 a {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  line-height: 1;
+  text-transform: uppercase;
+  font-family: "Hitmarker Condensed Black";
+}
+
+/* H3 heading styles */
+.toc-h3 {
+  padding-left: 1.5rem;
+  font-size: 1rem;
+  letter-spacing: 1px;
+  line-height: 1;
+  font-weight: 400;
+  font-family: "Hitmarker Text Regular";
+}
+
+.toc-h3 a {
+  color: #cccccc;
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+.toc-entry a:hover {
+  color: #fff;
+}
+
+.toc-entry a.active {
+  color: #fff;
+  border-left: 3px solid #406e0c;
+  font-weight: bold;
+  border-left: 4px solid #FFF;
+  padding: 0.5rem 0.5rem;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.2), transparent);
+}
+
+/* Hide on mobile */
+@media (max-width: 900px) {
+  .desktop-only {
+    display: none !important;
   }
-  
-  .web-sidebar-container {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    background-color: #1b1b1b;
-    gap: 2rem;
-    max-width: 1440px;
-    justify-self: center;
-  }
-  
-  .web-sidebar-wrapper {
-    display: flex;
-    justify-content: flex-end;
-    padding-right: 1rem;
-    position: sticky;
-    top: 5rem;
-    height: fit-content;
-  }
-  
-  @media (max-width: 768px) {
-    .web-sidebar-wrapper {
-      display: none;
-    }
-    
-    .web-sidebar-container {
-      grid-template-columns: 1fr;
-    }
-  }
+}

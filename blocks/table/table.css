@@ -71,3 +71,45 @@
   border: 1px solid #FF851B;
   background-color: var(#3C4147);
 };
+
+/* Default Table Styling */
+.table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* COD variant */
+.table.cod {
+  background-color: #111;
+  color: #0f0;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* BO6 variant */
+.table.bo6 {
+  background-color: #1a1a1a;
+  color: #ff6a00;
+  border: 2px solid #ff6a00;
+}
+
+/* Warzone variant */
+.table.warzone {
+  background-color: #2e3a4f;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* Warzone Mobile */
+.table.warzone-mobile {
+  background-color: #003366;
+  color: #00ffff;
+  font-size: 0.95rem;
+}
+
+/* COD Mobile */
+.table.cod-mobile {
+  background-color: #000;
+  color: #ffd700;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+}

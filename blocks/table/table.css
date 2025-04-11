@@ -1,6 +1,8 @@
 .table {
   width: 100%;
   overflow-x: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 .table table {
@@ -66,24 +68,83 @@
   border: 1px solid #dadada;
 }
 
-/* COD version*/
-.table.cod table th, .table.table.cod table td {
-  border: 1px solid #FF851B;
-  background-color: var(#3C4147);
-};
-
 /* Default Table Styling */
 .table {
   border-collapse: collapse;
   width: 100%;
 }
 
+.table h1,h2.h3,h4,h5,h6{
+  font-family: "Hitmarker Condensed Black", Arial;
+  margin: 0;
+}
+
+/* Single column row styling */
+.table table tbody tr.single-column-row {
+  background-color: inherit;
+  text-align: center;
+}
+
+.table tbody strong{
+  font-family: "Hitmarker Text Bold";
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.table tbody{
+  font-size: 0.88rem;
+  border: none;
+}
+
 /* COD variant */
 .table.cod {
-  background-color: #111;
-  color: #0f0;
-  font-family: 'Orbitron', sans-serif;
+  background: #24272A;
+  color: #fff;
+  border: 1px solid #FF851B;
 }
+
+.table.cod thead{
+  position: relative;
+  background: url(../img/ScreenStripeTexture_1x4.png) 0% 0% / 4px 2px repeat, #1b1b1b;
+  color: #F3F4F5;
+  min-height: 44px;
+}
+
+.table.cod thead::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(0deg, #FF851B80 0%, #FF851B80 100%);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.35), 0px 0px 24px 0px #FF851B inset;
+}
+
+.table.cod thead tr{
+  font-family: "Hitmarker Condensed Black", Arial;
+  font-weight: 900;
+  font-style: normal;
+  letter-spacing: 1px;
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+  text-transform: uppercase;
+  position: relative;
+  color: #fff;
+  border: none;
+}
+
+.table.cod table tbody tr.single-column-row {
+  background: #3C4147;
+  text-align: center;
+  color: #fff;
+  border: none;
+}
+
+.table.cod table tbody tr{
+  border: none;
+}
+
 
 /* BO6 variant */
 .table.bo6 {
@@ -92,24 +153,167 @@
   border: 2px solid #ff6a00;
 }
 
-/* Warzone variant */
-.table.warzone {
+/* Warzone Mobile variant */
+.table.warzone-mobile {
   background-color: #2e3a4f;
   color: #ffffff;
   font-weight: bold;
 }
 
-/* Warzone Mobile */
 .table.warzone-mobile {
-  background-color: #003366;
-  color: #00ffff;
-  font-size: 0.95rem;
+  background: #24272A;
+  color: #fff;
+  border: 1px solid #ff0000;
+}
+
+.table.warzone-mobile thead{
+  position: relative;
+  background: url(../img/ScreenStripeTexture_1x4.png) 0% 0% / 4px 2px repeat, #1b1b1b;
+  color: #F3F4F5;
+  min-height: 44px;
+}
+
+.table.warzone-mobile thead::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(0deg, #ff000080 0%, #ff000080 100%);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.35), 0px 0px 24px 0px #ff0000 inset;
+}
+
+.table.warzone-mobile thead tr{
+  font-family: "Hitmarker Condensed Black", Arial;
+  font-weight: 900;
+  font-style: normal;
+  letter-spacing: 1px;
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+  text-transform: uppercase;
+  position: relative;
+  color: #fff;
+  border: none;
+}
+
+.table.warzone-mobile table tbody tr.single-column-row {
+  background: #3C4147;
+  text-align: center;
+  color: #fff;
+  border: none;
+}
+
+.table.warzone-mobile table tbody tr{
+  border: none;
+}
+
+/* Warzone variant */
+.table.warzone-mobile {
+  background-color: #2e3a4f;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.table.warzone-mobile {
+  background: #24272A;
+  color: #fff;
+  border: 1px solid #ffff03;
+}
+
+.table.warzone-mobile thead{
+  position: relative;
+  background: url(../img/ScreenStripeTexture_1x4.png) 0% 0% / 4px 2px repeat, #1b1b1b;
+  color: #F3F4F5;
+  min-height: 44px;
+}
+
+.table.warzone-mobile thead::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(0deg, #ffff0380 0%, #ffff0380 100%);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.35), 0px 0px 24px 0px #ffff03 inset;
+}
+
+.table.warzone-mobile thead tr{
+  font-family: "Hitmarker Condensed Black", Arial;
+  font-weight: 900;
+  font-style: normal;
+  letter-spacing: 1px;
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+  text-transform: uppercase;
+  position: relative;
+  color: #fff;
+  border: none;
+}
+
+.table.warzone-mobile table tbody tr.single-column-row {
+  background: #3C4147;
+  text-align: center;
+  color: #fff;
+  border: none;
+}
+
+.table.warzone-mobile table tbody tr{
+  border: none;
 }
 
 /* COD Mobile */
 .table.cod-mobile {
   background-color: #000;
-  color: #ffd700;
-  font-family: 'Roboto', sans-serif;
+  color: #ffff03;
   font-size: 1rem;
+}
+
+.table.cod-mobile {
+  background: #24272A;
+  color: #fff;
+  border: 1px solid #ffff03;
+}
+
+.table.cod-mobile thead{
+  position: relative;
+  background: url(../img/ScreenStripeTexture_1x4.png) 0% 0% / 4px 2px repeat, #1b1b1b;
+  color: #F3F4F5;
+  min-height: 44px;
+}
+
+.table.cod-mobile thead::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(0deg, #ffff0380 0%, #ffff0380 100%);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.35), 0px 0px 24px 0px #ffff03 inset;
+}
+
+.table.cod-mobile thead tr{
+  font-family: "Hitmarker Condensed Black", Arial;
+  font-weight: 900;
+  font-style: normal;
+  letter-spacing: 1px;
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+  text-transform: uppercase;
+  position: relative;
+  color: #fff;
+  border: none;
+}
+
+.table.cod-mobile table tbody tr.single-column-row {
+  background: #3C4147;
+  text-align: center;
+  color: #fff;
+  border: none;
+}
+
+.table.cod-mobile table tbody tr{
+  border: none;
 }

@@ -373,7 +373,7 @@ header nav .button-container .button{
 header nav .button-container .button:hover{
   border: 1px solid #f96800;
   border-style: outset;
-  background-image: url('../img/media_140f63f096fbc0eb6c650151eaf0aaf62701fc3d7.gif');
+  background-image: url('../../img/CerberusBtnAnim.gif');
   outline: 1px solid #F96800;
     outline-offset: 4px;
 }

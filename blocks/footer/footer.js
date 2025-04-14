@@ -11,10 +11,27 @@ export default async function decorate(block) {
   const footerPath = footerMeta ? new URL(footerMeta, window.location).pathname : '/footer';
   const fragment = await loadFragment(footerPath);
 
+  // Check if current page is specifically the /blog page
+  const isBlogPage = window.location.pathname === '/blog' || 
+                     window.location.pathname === '/blog/';
+  
   // decorate footer DOM
   block.textContent = '';
   const footer = document.createElement('div');
   while (fragment.firstElementChild) footer.append(fragment.firstElementChild);
+
+  // Add transparent-footer class if it's the blog page
+  if (isBlogPage) {
+    // Add class to the parent footer element for transparent background
+    const parentFooter = block.closest('footer');
+    if (parentFooter) {
+      parentFooter.classList.add('transparent-footer');
+    }
+    
+    // Also add class to the footer wrapper
+    footer.classList.add('transparent-footer-wrapper');
+    block.classList.add('transparent-footer-container');
+  }
 
   block.append(footer);
 }

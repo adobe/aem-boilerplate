@@ -958,6 +958,16 @@ div.blog-columns {
   }
 }
 
+/* Transparent Footer for Blog Page */
+footer.transparent-footer {
+  background-color: transparent !important;
+}
+
+footer .transparent-footer-wrapper,
+.transparent-footer-container {
+  background-color: transparent !important;
+}
+
 .button-center {
   .button-container {
     text-align: center;

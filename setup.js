@@ -34,9 +34,9 @@ function copyFile(source, target) {
 
 // Handle xwalk scenario
 if (projectType === 'xwalk') {
-  // Overwrite fstab.yaml with fstab.yaml.xwalk and then delete the original
-  copyFile('fstab.yaml.xwalk', 'fstab.yaml');
-  deleteFile('fstab.yaml.xwalk');
+  // Overwrite fstab.yaml with fstab.yaml.xwalk-sample and then delete the original
+  copyFile('fstab.yaml.xwalk-sample', 'fstab.yaml');
+  deleteFile('fstab.yaml.xwalk-sample');
 } else if (projectType === 'doc') {
   // Delete models directory
   deleteDirectory('models');
@@ -80,7 +80,7 @@ if (projectType === 'xwalk') {
   deleteFile('component-filters.json');
   deleteFile('component-models.json');
   deleteFile('component-definition.json');
-  deleteFile('fstab.yaml.xwalk');
+  deleteFile('fstab.yaml.xwalk-sample');
 
   // Remove build:json scripts from package.json
   const packageJsonPath = 'package.json';

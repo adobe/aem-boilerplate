@@ -1,0 +1,51 @@
+div {
+  display: flex;
+  flex-direction: column;
+}
+
+h2, li, p {
+  font-family: 'Adobe Clean', adobe-clean, 'Trebuchet MS', sans-serif;
+}
+
+h2 {
+  color: #676767;
+  font-size: 24px;
+  font-weight: 800;
+  margin: 4px;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li, li * {
+  color: #4D7BFF;
+  cursor: pointer;
+}
+
+li input {
+  margin-right: 8px;
+  vertical-align: bottom;
+}
+
+li input[type="radio"] {
+  vertical-align: baseline;
+}
+
+span.up {
+  cursor: pointer;
+}
+
+em {
+  color: lightgrey;
+}
+
+button#use {
+  background-color: dodgerblue;
+  border: none;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+}

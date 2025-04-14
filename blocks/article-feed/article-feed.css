@@ -1,113 +1,236 @@
 .article-feed {
-    h2 {
-      font-weight: 400;
-      font-size: 20px;
-      line-height: 24px;
-      padding: 32px 0 16px;
-      margin: 0;
-    }
-  
-    .article-feed-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-  
-    .article-feed-article {
-      margin-bottom: 24px;
-    }
-  
-    &.grid {
-      max-width: var(--grid-container-width);
-      margin: 0 auto;
-  
-      .article-feed-list {
-        display: grid;
-        gap: 12px;
-      }
-    }
-  }
-  
-  .article-feed-article-image-link {
-    display: block;
-    position: relative;
-    padding-bottom: 50%;
-  
-    picture {
-      position: absolute;
-      inset: 0;
-    }
-  
-    img {
-      object-fit: cover;
-      width: 100%;
-      height: 100%;
-    }
-  }
-  
-  .article-feed-article-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    font-size: 12px;
-    color: #666;
-    padding: 24px 24px 12px;
-  }
-  
-  .article-feed-article-author-wrapper {
-    display: flex;
-    gap: 6px;
-  }
-  
-  .article-feed-article-author::after {
-    margin-left: 6px;
-    content: "|";
-  }
-  
-  .article-feed-article-author:last-child::after {
-    display: none;
-  }
-  
-  .article-feed-article-date {
-    margin: 0;
-  }
-  
-  a.article-feed-article-title-link {
-    color: rgb(47 47 47);
-    text-decoration: none;
-  
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-  
-  .article-feed-article-title {
-    margin: 0;
-    font-size: 28px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 16px;
+
+  h2 {
     font-weight: 400;
-    padding: 0 24px 24px;
+    font-size: 20px;
+    line-height: 24px;
+    padding: 32px 0 16px;
+    margin: 0;
   }
-  
-  @media (width >= 600px) {
-    .article-feed {
-      &.grid {
-        .article-feed-list {
-          grid-template-columns: repeat(3, 1fr);
-        }
-      }
-    }
-  
-    .split-template {
-      .article-feed {
-        &.grid {
-          .article-feed-list {
-            grid-template-columns: repeat(1, 1fr);
-          }
-  
-          .article-feed-article-title {
-            font-size: 18px;
-          }
-        }
-      }
+
+  .article-feed-container {
+    width: 100%;
+  }
+
+  /* Featured section (first row) */
+  .article-feed-featured-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 40px;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
     }
   }
+
+  .article-feed-featured-article {
+    width: 100%;
+
+    @media (min-width: 768px) {
+      width: 60%;
+    }
+  }
+
+  .article-feed-secondary-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+
+    @media (min-width: 768px) {
+      width: 40%;
+    }
+  }
+
+  .article-feed-secondary-article {
+    height: calc(50% - 12px);
+  }
+
+  /* MORE NEWS section */
+  .article-feed-more-news-heading {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 24px 0;
+    padding: 0;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 8px;
+  }
+
+  .article-feed-more-news-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+
+    @media (min-width: 600px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 900px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .article-feed-more-news-article {
+    margin-bottom: 24px;
+  }
+
+  .article-feed-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .article-feed-article {
+    margin-bottom: 24px;
+  }
+
+  &.grid {
+    .article-feed-list {
+      display: grid;
+      gap: 12px;
+    }
+  }
+}
+
+.article-feed-article-image-link {
+  display: block;
+  position: relative;
+  padding-bottom: 50%;
+
+  picture {
+    position: absolute;
+    inset: 0;
+  }
+
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.article-feed-article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+  color: #9c978f;
+  padding: 24px 24px 12px;
+}
+
+.article-feed-article-author-wrapper {
+  display: flex;
+  gap: 6px;
+}
+
+.article-feed-article-author::after {
+  margin-left: 6px;
+  content: "|";
+}
+
+.article-feed-article-author:last-child::after {
+  display: none;
+}
+
+/* Header with left-aligned date */
+.article-feed-article-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0px;
+  padding: 8px 0;
+}
+
+.article-feed-article-date {
+  margin: 0;
+  font-size: 14px;
+  color: #9c978f;
+  text-align: left;
+}
+
+.article-feed-featured-article .article-feed-article-date {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  padding-top: 6px;
+  padding-bottom: 0;;
+}
+
+/* Tags styling */
+.article-feed-article-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.article-feed-article-tag {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  background-color: transparent;
+  color: #9c978f;
+  border-radius: 0;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.article-feed-article-tag-featured {
+  background-color: #f96800;
+  color: white;
+}
+
+.article-feed-featured-article .article-feed-article-tag {
+  color: #fff;
+  border: 1px solid #9c978f;
+}
+
+.article-feed-featured-article .article-feed-article-tag-featured {
+  background-color: #f96800;
+  color: white;
+}
+
+a.article-feed-article-title-link {
+  color: rgb(47 47 47);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.article-feed-article-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 400;
+  padding: 0 0 16px;
+  color: #fff;
+
+  .article-feed-featured-article & {
+    font-size: 28px;
+    color: #fff;
+  }
+
+  .article-feed-secondary-article & {
+    font-size: 20px;
+  }
+
+  .article-feed-more-news-article & {
+    font-size: 18px;
+  }
+}
+
+.article-feed-article-description {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #9c978f;
+  font-weight: 400;
+}
+
+.article-feed-featured-article .article-feed-article-description {
+  color: rgba(255, 255, 255, 0.9);
+}

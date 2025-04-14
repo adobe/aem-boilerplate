@@ -1,10 +1,8 @@
-import { buildBlock } from '../../scripts/aem.js';
-
 /**
  * Builds hero block and prepends to main in a new section.
  * @param {Element} main The container element
  */
-export function buildHeroBlock(main) {
+function buildHeroBlock(main) {
     const picture = main.querySelector('picture');
     if (!picture) return;
   
@@ -64,7 +62,4 @@ export function buildHeroBlock(main) {
       elementsToRemove.forEach(element => element.remove());
     }
   }
-
-export function decorateMain(main) {
-    buildHeroBlock(main);
-}
+  

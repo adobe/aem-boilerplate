@@ -36,27 +36,79 @@ function formatDateForDisplay(dateValue) {
   if (!dateValue) return 'Unknown date';
   
   try {
-    let timestamp;
-    if (typeof dateValue === 'number') {
-      // Convert seconds to milliseconds if needed
-      timestamp = dateValue * 1000;
+    let dateObj;
+    
+    // Check if it's an Excel date number (small number like 45749)
+    if (typeof dateValue === 'number' && dateValue < 50000) {
+      console.log('Detected Excel date number:', dateValue);
+      // Convert Excel date to JavaScript date using the existing calculateExcelDate function
+      const excelDateStr = calculateExcelDate(dateValue);
+      dateObj = new Date(excelDateStr);
+      
+      // Format the date as MM/DD/YYYY for daysSince function
+      const formattedDate = dateObj.toLocaleDateString('en-US', {
+        month: 'numeric',
+        day: 'numeric',
+        year: 'numeric'
+      });
+      
+      // Calculate days ago using the daysSince function
+      const daysAgo = daysSince(formattedDate);
+      
+      // Format based on how recent
+      if (daysAgo === 0) {
+        return 'Today';
+      } else if (daysAgo > 0 && daysAgo <= 14) {
+        return `${daysAgo} days ago`;
+      } else {
+        return formattedDate;
+      }
+      
+    } else if (typeof dateValue === 'number') {
+      // Regular timestamp in seconds, convert to milliseconds
+      dateObj = new Date(dateValue * 1000);
+      
+      // Format the date as MM/DD/YYYY for daysSince function
+      const formattedDate = dateObj.toLocaleDateString('en-US', {
+        month: 'numeric',
+        day: 'numeric',
+        year: 'numeric'
+      });
+      
+      // Calculate days ago using the daysSince function
+      const daysAgo = daysSince(formattedDate);
+      
+      // Format based on how recent
+      if (daysAgo === 0) {
+        return 'Today';
+      } else if (daysAgo > 0 && daysAgo <= 14) {
+        return `${daysAgo} days ago`;
+      } else {
+        return formattedDate;
+      }
+      
     } else {
       // Try to parse as date string
-      timestamp = new Date(dateValue).getTime();
-    }
-    
-    // Calculate days ago
-    const now = Date.now();
-    const diffInMs = now - timestamp;
-    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-    
-    // Format based on how recent
-    if (diffInDays === 0) {
-      return 'Today';
-    } else if (diffInDays > 0 && diffInDays <= 14) {
-      return `${diffInDays} days ago`;
-    } else {
-      return new Date(timestamp).toLocaleDateString();
+      dateObj = new Date(dateValue);
+      
+      // Format the date as MM/DD/YYYY for daysSince function
+      const formattedDate = dateObj.toLocaleDateString('en-US', {
+        month: 'numeric',
+        day: 'numeric',
+        year: 'numeric'
+      });
+      
+      // Calculate days ago using the daysSince function
+      const daysAgo = daysSince(formattedDate);
+      
+      // Format based on how recent
+      if (daysAgo === 0) {
+        return 'Today';
+      } else if (daysAgo > 0 && daysAgo <= 14) {
+        return `${daysAgo} days ago`;
+      } else {
+        return formattedDate;
+      }
     }
   } catch (e) {
     console.error('Error formatting date:', e, dateValue);
@@ -65,8 +117,8 @@ function formatDateForDisplay(dateValue) {
 }
 
 function howManyDaysAgo(timestamp) {
-    const now = Date.now();
-    console.log('Date timestamp:', timestamp, 'Type:', typeof timestamp);
+  const now = Date.now();
+  console.log('Date timestamp:', timestamp, 'Type:', typeof timestamp);
     
     // Handle different date formats
     let dateInMs;
@@ -88,6 +140,15 @@ function howManyDaysAgo(timestamp) {
     console.log('Days difference:', diffInDays);
     return diffInDays;
 }
+
+function daysSince(date) {
+    const now = Date.now();
+    const [month, day, year] = date.split('/').map(Number);
+    const jDate = new Date(year, month - 1, day);
+    const diffInMs = now - jDate.getTime();
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    return diffInDays;
+  }
 
 function decorateFeed(data, opts) {
   const container = document.createElement('div');

@@ -164,6 +164,7 @@
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 16px;
+  
 }
 
 .article-feed-article-tag {
@@ -176,21 +177,23 @@
   text-transform: uppercase;
   font-weight: 500;
   letter-spacing: 0.5px;
+  border: 1px solid #9c978f;
 }
 
 .article-feed-article-tag-featured {
-  background-color: #f96800;
-  color: white;
+  background: #9c978f;
+  border: solid 1px #9c978f;
+  color: #000000;
 }
 
 .article-feed-featured-article .article-feed-article-tag {
-  color: #fff;
   border: 1px solid #9c978f;
 }
 
 .article-feed-featured-article .article-feed-article-tag-featured {
-  background-color: #f96800;
-  color: white;
+  background: #9c978f;
+  border: solid 1px #9c978f;
+  color: #000000;
 }
 
 a.article-feed-article-title-link {

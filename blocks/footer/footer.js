@@ -12,8 +12,8 @@ export default async function decorate(block) {
   const fragment = await loadFragment(footerPath);
 
   // Check if current page is specifically the /blog page
-  const isBlogPage = window.location.pathname === '/blog' || 
-                     window.location.pathname === '/blog/';
+  const isBlogPage = window.location.pathname === '/en/blog' || 
+                     window.location.pathname === '/en/blog/';
   
   // decorate footer DOM
   block.textContent = '';

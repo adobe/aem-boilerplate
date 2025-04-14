@@ -1,3 +1,18 @@
+main:before {
+    content: ' ';
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    background-image: url("../../img/bg-grid-v3.png");
+    background-repeat: no-repeat;
+    background-position: top center;
+    pointer-events: none;
+  }
+
 .article-feed {
   max-width: 1440px;
   margin: 0 auto;

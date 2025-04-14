@@ -1,20 +1,14 @@
 {
-    "project": "act-demo",
+    "project": "Activision POC",
     "editUrlLabel": "Document Authoring",
     "editUrlPattern": "https://da.live/edit#/{{org}}/{{site}}{{pathname}}",
     "plugins": [
-      {
-        "id": "jmptags",
-        "title": "AEM Tags",
-        "environments": ["da-edit"],
-        "path": "/tools/tags.html"
-      },
-      {
-        "id": "datepicker",
-        "title": "Date Picker",
-        "environments": ["da-edit"],
-        "path": "/tools/datepicker.html"
-      }
-    ]
-  }
-  
+    {
+      "id": "da-tags",
+      "title": "Tag Browser",
+      "environments": ["edit"],
+      "daLibrary": true,
+      "url": "https://main--arbory-da--arbory-digital-inc.hlx.live/tools/tags.html"
+    }
+  ]
+}

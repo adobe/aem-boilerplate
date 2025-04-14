@@ -1,0 +1,154 @@
+  /* Made with mana crystals by your boy Frank */
+
+  .video-hero-container .video-hero-wrapper {
+    max-width: unset;
+    padding: 0;
+    max-height: 400px;
+  }
+  
+  .video-hero-container{
+  
+    padding: 0 !important;
+  }
+  
+  .video-hero {
+    position: relative;
+    height: 400px;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  /* Video Background */
+  .video-hero video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  
+  /* Hide the video wrapper paragraph */
+  .video-hero > div > div > p:first-child {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Content Container */
+  .video-hero > div {
+    z-index: 1;
+    height: 300px;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: grid;
+    grid-template-columns: 1.4fr 0.6fr;
+    padding: 40px;
+  }
+  
+  .video-hero > div > div {
+    display: grid;
+    align-items: center;
+    align-content: center;
+  }
+  
+  /* Left Column Content */
+  .video-hero > div > div > h1 {
+    grid-column: 1;
+    align-self: center;
+    color: white;
+    font-size: 3.5rem;
+    font-weight: 500;
+    z-index: 1;
+    margin: 0;
+    padding-right: 40px;
+    font-family: 'Poppins';
+  }
+  
+  /* H6 Container */
+  .video-hero > div > div > h6 {
+    grid-column: 1;
+    top: calc(50% + 80px); /* Position below h1 */
+    left: 40px;
+    font-family: 'Poppins';
+    color: #f7f7f7;
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0;
+    min-height: 1.5em;
+    z-index: 1;
+  }
+  
+  /* Logo Column */
+  .video-hero > div > div > p:last-child {
+    grid-column: 2;
+    align-self: center;
+    justify-self: center;
+    margin: 0;
+    width: 100%;
+    z-index: 1;
+  }
+  
+  .video-hero picture {
+    display: block;
+    width: 100%;
+    text-align: center;
+    z-index: 1;
+  }
+  
+  .video-hero picture img {
+    max-width: 250px;
+    z-index: 1;
+  }
+  
+  
+  /* Typing cursor */
+  .video-hero h6.typing::after {
+    content: "▊";
+    display: inline-block;
+    margin-left: 2px;
+    animation: blink 1s infinite;
+  }
+  
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  
+  /* Mobile Adjustments */
+  @media (max-width: 768px) {
+    .video-hero > div{
+      grid-template-columns: 1fr;
+    }
+  
+    .video-hero > div > div {
+      grid-template-columns: 1fr;
+      text-align: center;
+      padding: 10px;
+    }
+  
+    .video-hero-container > div > div > div > div:nth-child(2){
+      display: none;
+    }
+  
+    .video-hero > div > div > h1 {
+      grid-column: 1;
+      padding-right: 0;
+      font-size: 2.5rem;
+      padding-bottom: 10px;
+    }
+  
+    .video-hero > div > div > h6 {
+      grid-column: 1;
+      top: calc(50% + 60px);
+      left: 20px;
+      right: 20px;
+      text-align: center;
+      font-size: 0.75em;
+    }
+  
+    .video-hero > div > div > p:last-child {
+      grid-column: 1;
+      margin-top: 160px;
+    }
+  }

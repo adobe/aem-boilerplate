@@ -1,0 +1,14 @@
+{
+    "project": "Activision POC",
+    "editUrlLabel": "Document Authoring",
+    "editUrlPattern": "https://da.live/edit#/{{org}}/{{site}}{{pathname}}",
+    "plugins": [
+    {
+      "id": "da-tags",
+      "title": "Tag Browser",
+      "environments": ["edit"],
+      "daLibrary": true,
+      "url": "https://main--arbory-da--arbory-digital-inc.hlx.live/tools/tags.html"
+    }
+  ]
+}

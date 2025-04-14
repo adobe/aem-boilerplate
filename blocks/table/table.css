@@ -71,3 +71,8 @@
   border: 1px solid #FF851B;
   background-color: var(#3C4147);
 };
+
+/*bo6 version*/
+.table.bo6 tbody tr:nth-child(odd) {
+  background-color: var(--light-color);
+}

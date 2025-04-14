@@ -1,7 +1,7 @@
 /**
  * ADOBE CONFIDENTIAL
  * __________________
- * Copyright 2023 Adobe
+ * Copyright 2025 Adobe
  * All Rights Reserved.
  * __________________
  * NOTICE: All information contained herein is, and remains
@@ -13,5 +13,7 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  */
-export declare const PRODUCT_FRAGMENT: string;
-//# sourceMappingURL=ProductFragment.graphql.d.ts.map
+export { PRODUCT_FRAGMENT } from './graphql/ProductFragment.graphql';
+export { PRODUCT_OPTION_FRAGMENT } from './graphql/ProductOptionFragment.graphql';
+export { PRICE_RANGE_FRAGMENT } from './graphql/PriceRangeFragment.graphql';
+//# sourceMappingURL=fragments.d.ts.map

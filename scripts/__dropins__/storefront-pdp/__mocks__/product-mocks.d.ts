@@ -23,7 +23,7 @@ export declare const MOCK_DATA_BUNDLE: {
         title: string;
         required: boolean;
         multi: null;
-        values: {
+        values: ({
             id: string;
             title: string;
             inStock: boolean;
@@ -53,7 +53,39 @@ export declare const MOCK_DATA_BUNDLE: {
                     roles: string[];
                 };
             };
-        }[];
+            enabled?: undefined;
+        } | {
+            id: string;
+            title: string;
+            inStock: boolean;
+            __typename: string;
+            quantity: number;
+            isDefault: boolean;
+            enabled: boolean;
+            product: {
+                sku: string;
+                shortDescription: string;
+                metaDescription: string;
+                metaKeyword: string;
+                metaTitle: string;
+                name: string;
+                price: {
+                    final: {
+                        amount: {
+                            value: number;
+                            currency: string;
+                        };
+                    };
+                    regular: {
+                        amount: {
+                            value: number;
+                            currency: string;
+                        };
+                    };
+                    roles: string[];
+                };
+            };
+        })[];
     }[];
     priceRange: {
         maximum: {

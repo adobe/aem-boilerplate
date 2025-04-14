@@ -10,4 +10,14 @@ overrideGQLOperations([
   //   npm: '@dropins/storefront-checkout',
   //   operations: [],
   // },
+  // {
+  //   npm: '@dropins/storefront-pdp',
+  //   operations: [
+  //     `
+  //     fragment PRODUCT_FRAGMENT on ProductView {
+  //       lowStock
+  //     }
+  //     `,
+  //   ],
+  // },
 ]);

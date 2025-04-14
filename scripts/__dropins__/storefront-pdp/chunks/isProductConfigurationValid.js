@@ -1,155 +1,14 @@
-/*! Copyright 2024 Adobe
+/*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{merge as se,Initializer as ae}from"@dropins/tools/lib.js";import{events as N}from"@dropins/tools/event-bus.js";import{FetchGraphQL as ue}from"@dropins/tools/fetch-graphql.js";import{s as le}from"./getProductConfigurationValues.js";function Me(e){const n=new URLSearchParams(window.location.search);Object.entries(e).forEach(([r,t])=>{t===null?n.delete(r):n.set(r,String(t))});let i=window.location.pathname;i+=`?${n.toString()}`,i+=window.location.hash,window.history.replaceState({},"",i)}function me(){const e=new URLSearchParams(window.location.search),n={};return e.forEach((i,r)=>{n[r]=i}),n}function ce(e){var n,i,r,t,o,a,l,s,m,u,c,f;return{productId:Number(e==null?void 0:e.externalId),name:e==null?void 0:e.name,sku:(e==null?void 0:e.variantSku)||(e==null?void 0:e.sku),topLevelSku:e==null?void 0:e.sku,specialToDate:void 0,specialFromDate:void 0,newToDate:void 0,newFromDate:void 0,createdAt:void 0,updatedAt:void 0,manufacturer:void 0,countryOfManufacture:void 0,categories:void 0,productType:e==null?void 0:e.productType,pricing:{regularPrice:((i=(n=e==null?void 0:e.prices)==null?void 0:n.regular)==null?void 0:i.amount)||0,minimalPrice:(t=(r=e==null?void 0:e.prices)==null?void 0:r.final)==null?void 0:t.minimumAmount,maximalPrice:(a=(o=e==null?void 0:e.prices)==null?void 0:o.final)==null?void 0:a.maximumAmount,specialPrice:(s=(l=e==null?void 0:e.prices)==null?void 0:l.final)==null?void 0:s.amount,tierPricing:void 0,currencyCode:((u=(m=e==null?void 0:e.prices)==null?void 0:m.final)==null?void 0:u.currency)||"USD"},canonicalUrl:e==null?void 0:e.url,mainImageUrl:(f=(c=e==null?void 0:e.images)==null?void 0:c[0])==null?void 0:f.url}}const fe={PRODUCT_CONTEXT:"productContext"},de={PRODUCT_PAGE_VIEW:"product-page-view"};function ne(){return window.adobeDataLayer=window.adobeDataLayer||[],window.adobeDataLayer}function Pe(e,n){const i=ne();i.push({[e]:null}),i.push({[e]:n})}function ge(e,n){ne().push(r=>{const t=r.getState?r.getState():{};r.push({event:e,eventInfo:{...t,...n}})})}function we(e){const n=ce(e);Pe(fe.PRODUCT_CONTEXT,n),ge(de.PRODUCT_PAGE_VIEW)}var K=(e=>(e.ComplexProduct="complex",e.SimpleProduct="simple",e))(K||{}),re=(e=>(e.ComplexProductView="ComplexProductView",e.SimpleProductView="SimpleProductView",e))(re||{});function H(e,n){var a,l,s,m,u,c,f,P,g,y,d,b;const i=((m=(s=(l=(a=e==null?void 0:e.options)==null?void 0:a[0])==null?void 0:l.values)==null?void 0:s[0])==null?void 0:m.__typename)==="ProductViewOptionValueProduct",r=Ce(e,i,n==null?void 0:n.preselectFirstOption),t=(e==null?void 0:e.__typename)===re.SimpleProductView?K.SimpleProduct:K.ComplexProduct,o=e?{name:e.name,sku:e.sku,isBundle:i,addToCartAllowed:e.addToCartAllowed,inStock:e.inStock,shortDescription:e.shortDescription,metaDescription:e.metaDescription,metaKeyword:e.metaKeyword,metaTitle:e.metaTitle,description:e.description,images:ye(e),prices:Se(e,i,r),attributes:he(e),options:pe(e,i),optionUIDs:r,url:e.url,urlKey:e.urlKey,externalId:e.externalId,externalParentId:e.externalParentId,variantSku:e.variantSku,productType:t}:null;return se(o,((P=(f=(c=(u=k.getConfig())==null?void 0:u.models)==null?void 0:c.ProductDetails)==null?void 0:f.transformer)==null?void 0:P.call(f,e))??((b=(d=(y=(g=k.getConfig())==null?void 0:g.models)==null?void 0:y.ProductDetails)==null?void 0:d.transform)==null?void 0:b.call(d,e)))}function ye(e){var n,i;return(i=(n=e.images)==null?void 0:n.filter(r=>{var t;return!((t=r.roles)!=null&&t.includes("hide_from_pdp"))}))==null?void 0:i.map(r=>(r.url=r.url.replace(/^https?:/,""),r))}function he(e){var n,i;return(i=(n=e.attributes)==null?void 0:n.filter(({roles:r})=>(r==null?void 0:r.indexOf("visible_in_pdp"))!==-1))==null?void 0:i.map(({label:r,value:t,name:o})=>({id:o,label:r,value:t.toString().split(",").join(", ")}))}function pe(e,n){const{options:i,optionUIDs:r}=e;return i==null?void 0:i.map(({id:t,title:o,required:a,multi:l,values:s})=>{var c;const m=(c=s==null?void 0:s[0])==null?void 0:c.__typename;let u=s==null?void 0:s[0].type;return u?u=u.replace("COLOR_HEX","color").replace("TEXT","text").replace("IMAGE","image"):u="dropdown",{id:t,type:u,typename:m,label:o,required:a,multiple:l,items:n?De(s,r):xe(s,r,u)}})}function De(e,n){return e==null?void 0:e.map(({id:i,title:r,inStock:t,isDefault:o,product:a})=>({id:i,inStock:t,label:r,selected:(n==null?void 0:n.indexOf(i))>-1||o,value:i,product:a}))}function xe(e,n,i){return e==null?void 0:e.map(({id:r,title:t,inStock:o,value:a})=>({id:r,inStock:o,label:t,selected:(n==null?void 0:n.indexOf(r))>-1,value:(i==null?void 0:i.toLowerCase())==="dropdown"?r:a==null?void 0:a.replace(/^https?:/,"")}))}function Se(e,n,i){var d,b,X,B,z;const{price:r,priceRange:t,options:o,optionUIDs:a=i}=e;let{__typename:l}=e;function s(){var x;const p=r.regular.amount.value,w=((x=r.final)==null?void 0:x.amount.value)??r.regular.amount.value,D=r.regular.amount.currency==="NONE"?"USD":r==null?void 0:r.regular.amount.currency;return[p,w,w,D]}function m(){var C,v,E,T,_,V,I,F,U,A,$,L;const p=(C=t==null?void 0:t.minimum)==null?void 0:C.final.amount.value,w=(v=t==null?void 0:t.maximum)==null?void 0:v.final.amount.value;let D;((T=(E=t==null?void 0:t.minimum)==null?void 0:E.regular)==null?void 0:T.amount.value)===((V=(_=t==null?void 0:t.maximum)==null?void 0:_.regular)==null?void 0:V.amount.value)&&(D=(F=(I=t==null?void 0:t.minimum)==null?void 0:I.regular)==null?void 0:F.amount.value);const x=((A=(U=t==null?void 0:t.minimum)==null?void 0:U.final)==null?void 0:A.amount.currency)==="NONE"?"USD":(L=($=t==null?void 0:t.minimum)==null?void 0:$.final)==null?void 0:L.amount.currency;return[D,p,w,x]}function u(){var E,T,_,V,I,F,U,A,$,L,W,Y;let p=0,w=0;o==null||o.forEach(O=>{var J;const j=O==null?void 0:O.values;if(j&&Array.isArray(j)){const S=j.map(h=>{var G,M,Z,R;return(R=(Z=(M=(G=h==null?void 0:h.product)==null?void 0:G.price)==null?void 0:M.regular)==null?void 0:Z.amount)==null?void 0:R.value}).filter(h=>h!==void 0),Q=S.length>0?Math.max(...S):0;p+=Q}(J=O==null?void 0:O.values)==null||J.forEach(S=>{var Q,h,G,M;a!=null&&a.includes(S.id)&&(w+=(M=(G=(h=(Q=S==null?void 0:S.product)==null?void 0:Q.price)==null?void 0:h.final)==null?void 0:G.amount)==null?void 0:M.value)})});const D=(E=t==null?void 0:t.minimum)==null?void 0:E.final.amount.value,x=(T=t==null?void 0:t.maximum)==null?void 0:T.final.amount.value;let C;((V=(_=t==null?void 0:t.minimum)==null?void 0:_.regular)==null?void 0:V.amount.value)===((F=(I=t==null?void 0:t.maximum)==null?void 0:I.regular)==null?void 0:F.amount.value)&&(C=(A=(U=t==null?void 0:t.minimum)==null?void 0:U.regular)==null?void 0:A.amount.value);const v=((L=($=t==null?void 0:t.minimum)==null?void 0:$.final)==null?void 0:L.amount.currency)==="NONE"?"USD":(Y=(W=t==null?void 0:t.minimum)==null?void 0:W.final)==null?void 0:Y.amount.currency;return n&&(a==null?void 0:a.length)<1?[C,D,x,v]:p===(t==null?void 0:t.maximum.regular.amount.value)?[w,w,w,v]:[C,D,x,v]}const[c,f,P,g]=l==="SimpleProductView"?s():n?u():m(),y=l==="SimpleProductView"?(d=r==null?void 0:r.roles)==null?void 0:d.includes("visible"):((X=(b=t==null?void 0:t.maximum)==null?void 0:b.roles)==null?void 0:X.includes("visible"))&&((z=(B=t==null?void 0:t.minimum)==null?void 0:B.roles)==null?void 0:z.includes("visible"));return P&&f===P?{regular:{amount:c,currency:g,variant:c&&f!==c?"strikethrough":"default"},final:{amount:P,currency:g,variant:"default"},visible:y}:{final:{minimumAmount:f,maximumAmount:P,currency:g},visible:y}}function Ce(e,n,i){var r;return n?((r=e==null?void 0:e.options)==null?void 0:r.map(({values:o})=>{var s;const a=((s=o==null?void 0:o.find(({isDefault:m})=>m))==null?void 0:s.id)??null,l=i?o[0].id:null;return a||l})).filter(o=>o!==null):e==null?void 0:e.optionUIDs}const q=new ae({init:async e=>{var o,a,l;const n=(a=(o=e==null?void 0:e.models)==null?void 0:o.ProductDetails)==null?void 0:a.initialData,t={...{defaultLocale:"en-US",persistURLParams:!1,acdl:!1,optionsUIDs:((l=me().optionsUIDs)==null?void 0:l.split(","))||(n==null?void 0:n.optionsUIDs)},...e};if(q.config.setConfig({...t}),t!=null&&t.sku){const s=n?H(n):await te(t.sku,{preselectFirstOption:t.preselectFirstOption});N.emit("pdp/data",s);const m={sku:t.sku,quantity:1,optionsUIDs:s==null?void 0:s.optionUIDs};le(()=>({...m})),Fe(()=>{var u;return s!=null&&s.options?s.options.length===((u=s==null?void 0:s.optionUIDs)==null?void 0:u.length):!0}),t.acdl&&s&&we(s)}},listeners:()=>[N.on("locale",async()=>{const{sku:e}=q.config.getConfig();if(e){const n=await te(e);N.emit("pdp/data",n)}})]}),k=q.config,{setEndpoint:Ne,setFetchGraphQlHeader:Qe,removeFetchGraphQlHeader:je,setFetchGraphQlHeaders:Ke,fetchGraphQl:ie,getConfig:qe}=new ue().getMethods(),ve=`
-fragment ProductOptionFragment on ProductViewOption {
-    id
-    title
-    required
-    multi
-    values {
-      id
-      title
-      inStock
-      __typename
-      ... on ProductViewOptionValueProduct {
-        title
-        quantity
-        isDefault
-        __typename
-        product {
-          sku
-          shortDescription
-          metaDescription
-          metaKeyword
-          metaTitle
-          name
-          price {
-            final {
-              amount {
-                value
-                currency
-              }
-            }
-            regular {
-              amount {
-                value
-                currency
-              }
-            }
-            roles
-          }
-        }
-      }
-      ... on ProductViewOptionValueSwatch {
-        id
-        title
-        type
-        value
-        inStock
-      }
-    }
-  }
-`,oe=`
-fragment ProductFragment on ProductView {
-  __typename
-  id
-  sku
-  name
-  shortDescription
-  metaDescription
-  metaKeyword
-  metaTitle
-  description
-  inStock
-  addToCartAllowed
-  url
-  urlKey
-  externalId
-
-  images(roles: []) {
-    url
-    label
-    roles
-  }
-
-  attributes(roles: []) {
-    name
-    label
-    value
-    roles
-  }
-
-... on SimpleProductView {
-    price {
-        roles
-
-        regular {
-            amount {
-                value
-                currency
-            }
-        }
-
-        final {
-            amount {
-                value
-                currency
-            }
-        }
-    }
-}
-
-
-  ... on ComplexProductView {
-    options {
-      ...ProductOptionFragment
-    }
-
-    priceRange {
-      maximum {
-        final {
-          amount {
-            value
-            currency
-          }
-        }
-        regular {
-          amount {
-            value
-            currency
-          }
-        }
-        roles
-      }
-      minimum {
-        final {
-          amount {
-            value
-            currency
-          }
-        }
-        regular {
-          amount {
-            value
-            currency
-          }
-        }
-        roles
-      }
-    }
-  }
-}
-
-${ve}
-`,Oe=`
+import{merge as oe,Initializer as ue}from"@dropins/tools/lib.js";import{events as L}from"@dropins/tools/event-bus.js";import{PRODUCT_FRAGMENT as ne}from"../fragments.js";import{FetchGraphQL as le}from"@dropins/tools/fetch-graphql.js";import{s as ae}from"./getProductConfigurationValues.js";function $e(e){const n=new URLSearchParams(window.location.search);Object.entries(e).forEach(([i,t])=>{t===null?n.delete(i):n.set(i,String(t))});let r=window.location.pathname;r+=`?${n.toString()}`,r+=window.location.hash,window.history.replaceState({},"",r)}function me(){const e=new URLSearchParams(window.location.search),n={};return e.forEach((r,i)=>{n[i]=r}),n}function ce(e){var n,r,i,t,s,u,a,o,m,l,c,f;return{productId:Number(e==null?void 0:e.externalId),name:e==null?void 0:e.name,sku:(e==null?void 0:e.variantSku)||(e==null?void 0:e.sku),topLevelSku:e==null?void 0:e.sku,specialToDate:void 0,specialFromDate:void 0,newToDate:void 0,newFromDate:void 0,createdAt:void 0,updatedAt:void 0,manufacturer:void 0,countryOfManufacture:void 0,categories:void 0,productType:e==null?void 0:e.productType,pricing:{regularPrice:((r=(n=e==null?void 0:e.prices)==null?void 0:n.regular)==null?void 0:r.amount)||0,minimalPrice:(t=(i=e==null?void 0:e.prices)==null?void 0:i.final)==null?void 0:t.minimumAmount,maximalPrice:(u=(s=e==null?void 0:e.prices)==null?void 0:s.final)==null?void 0:u.maximumAmount,specialPrice:(o=(a=e==null?void 0:e.prices)==null?void 0:a.final)==null?void 0:o.amount,tierPricing:void 0,currencyCode:((l=(m=e==null?void 0:e.prices)==null?void 0:m.final)==null?void 0:l.currency)||"USD"},canonicalUrl:e==null?void 0:e.url,mainImageUrl:(f=(c=e==null?void 0:e.images)==null?void 0:c[0])==null?void 0:f.url}}const fe={PRODUCT_CONTEXT:"productContext"},Pe={PRODUCT_PAGE_VIEW:"product-page-view"};function ie(){return window.adobeDataLayer=window.adobeDataLayer||[],window.adobeDataLayer}function de(e,n){const r=ie();r.push({[e]:null}),r.push({[e]:n})}function he(e,n){ie().push(i=>{const t=i.getState?i.getState():{};i.push({event:e,eventInfo:{...t,...n}})})}function we(e){const n=ce(e);de(fe.PRODUCT_CONTEXT,n),he(Pe.PRODUCT_PAGE_VIEW)}var H=(e=>(e.ComplexProduct="complex",e.SimpleProduct="simple",e))(H||{}),re=(e=>(e.ComplexProductView="ComplexProductView",e.SimpleProductView="SimpleProductView",e))(re||{});function X(e,n){var u,a,o,m,l,c,f,d,h,D,P,k;const r=((m=(o=(a=(u=e==null?void 0:e.options)==null?void 0:u[0])==null?void 0:a.values)==null?void 0:o[0])==null?void 0:m.__typename)==="ProductViewOptionValueProduct",i=Te(e,r,n==null?void 0:n.preselectFirstOption),t=(e==null?void 0:e.__typename)===re.SimpleProductView?H.SimpleProduct:H.ComplexProduct,s=e?{name:e.name,sku:e.sku,isBundle:r,addToCartAllowed:e.addToCartAllowed,inStock:e.inStock,shortDescription:e.shortDescription,metaDescription:e.metaDescription,metaKeyword:e.metaKeyword,metaTitle:e.metaTitle,description:e.description,images:De(e),prices:Ee(e,r,i),attributes:ye(e),options:ge(e,r),optionUIDs:i,url:e.url,urlKey:e.urlKey,externalId:e.externalId,externalParentId:e.externalParentId,variantSku:e.variantSku,productType:t}:null;return oe(s,((d=(f=(c=(l=p.getConfig())==null?void 0:l.models)==null?void 0:c.ProductDetails)==null?void 0:f.transformer)==null?void 0:d.call(f,e))??((k=(P=(D=(h=p.getConfig())==null?void 0:h.models)==null?void 0:D.ProductDetails)==null?void 0:P.transform)==null?void 0:k.call(P,e)))}function De(e){var n,r;return(r=(n=e.images)==null?void 0:n.filter(i=>{var t;return!((t=i.roles)!=null&&t.includes("hide_from_pdp"))}))==null?void 0:r.map(i=>(i.url=i.url.replace(/^https?:/,""),i))}function ye(e){var n,r;return(r=(n=e.attributes)==null?void 0:n.filter(({roles:i})=>(i==null?void 0:i.indexOf("visible_in_pdp"))!==-1))==null?void 0:r.map(({label:i,value:t,name:s})=>({id:s,label:i,value:t.toString().split(",").join(", ")}))}function ge(e,n){const{options:r,optionUIDs:i}=e;return r==null?void 0:r.map(({id:t,title:s,required:u,multi:a,values:o})=>{var c;const m=(c=o==null?void 0:o[0])==null?void 0:c.__typename;let l=o==null?void 0:o[0].type;return l?l=l.replace("COLOR_HEX","color").replace("TEXT","text").replace("IMAGE","image"):l="dropdown",{id:t,type:l,typename:m,label:s,required:u,multiple:a,items:n?Ce(o,i):xe(o,i,l)}})}function Ce(e,n){return e==null?void 0:e.filter(({enabled:r})=>typeof r>"u"||r).map(({id:r,title:i,inStock:t,isDefault:s,product:u})=>({id:r,inStock:t,label:i,selected:(n==null?void 0:n.indexOf(r))>-1||s,value:r,product:u}))}function xe(e,n,r){return e==null?void 0:e.map(({id:i,title:t,inStock:s,value:u})=>({id:i,inStock:s,label:t,selected:(n==null?void 0:n.indexOf(i))>-1,value:(r==null?void 0:r.toLowerCase())==="dropdown"?i:u==null?void 0:u.replace(/^https?:/,"")}))}function Ee(e,n,r){var P,k,q,B,z;const{price:i,priceRange:t,options:s,optionUIDs:u=r}=e;let{__typename:a}=e;function o(){var x;const g=i.regular.amount.value,w=((x=i.final)==null?void 0:x.amount.value)??i.regular.amount.value,C=i.regular.amount.currency==="NONE"?"USD":i==null?void 0:i.regular.amount.currency;return[g,w,w,C]}function m(){var T,O,_,b,U,v,A,I,F,V,G,N;const g=(T=t==null?void 0:t.minimum)==null?void 0:T.final.amount.value,w=(O=t==null?void 0:t.maximum)==null?void 0:O.final.amount.value;let C;((b=(_=t==null?void 0:t.minimum)==null?void 0:_.regular)==null?void 0:b.amount.value)===((v=(U=t==null?void 0:t.maximum)==null?void 0:U.regular)==null?void 0:v.amount.value)&&(C=(I=(A=t==null?void 0:t.minimum)==null?void 0:A.regular)==null?void 0:I.amount.value);const x=((V=(F=t==null?void 0:t.minimum)==null?void 0:F.final)==null?void 0:V.amount.currency)==="NONE"?"USD":(N=(G=t==null?void 0:t.minimum)==null?void 0:G.final)==null?void 0:N.amount.currency;return[C,g,w,x]}function l(){var _,b,U,v,A,I,F,V,G,N,W,Y;let g=0,w=0;s==null||s.forEach(S=>{var J;const j=S==null?void 0:S.values;if(j&&Array.isArray(j)){const E=j.map(y=>{var M,$,Z,R;return(R=(Z=($=(M=y==null?void 0:y.product)==null?void 0:M.price)==null?void 0:$.regular)==null?void 0:Z.amount)==null?void 0:R.value}).filter(y=>y!==void 0),Q=E.length>0?Math.max(...E):0;g+=Q}(J=S==null?void 0:S.values)==null||J.forEach(E=>{var Q,y,M,$;u!=null&&u.includes(E.id)&&(w+=($=(M=(y=(Q=E==null?void 0:E.product)==null?void 0:Q.price)==null?void 0:y.final)==null?void 0:M.amount)==null?void 0:$.value)})});const C=(_=t==null?void 0:t.minimum)==null?void 0:_.final.amount.value,x=(b=t==null?void 0:t.maximum)==null?void 0:b.final.amount.value;let T;((v=(U=t==null?void 0:t.minimum)==null?void 0:U.regular)==null?void 0:v.amount.value)===((I=(A=t==null?void 0:t.maximum)==null?void 0:A.regular)==null?void 0:I.amount.value)&&(T=(V=(F=t==null?void 0:t.minimum)==null?void 0:F.regular)==null?void 0:V.amount.value);const O=((N=(G=t==null?void 0:t.minimum)==null?void 0:G.final)==null?void 0:N.amount.currency)==="NONE"?"USD":(Y=(W=t==null?void 0:t.minimum)==null?void 0:W.final)==null?void 0:Y.amount.currency;return n&&(u==null?void 0:u.length)<1?[T,C,x,O]:g===(t==null?void 0:t.maximum.regular.amount.value)?[w,w,w,O]:[T,C,x,O]}const[c,f,d,h]=a==="SimpleProductView"?o():n?l():m(),D=a==="SimpleProductView"?(P=i==null?void 0:i.roles)==null?void 0:P.includes("visible"):((q=(k=t==null?void 0:t.maximum)==null?void 0:k.roles)==null?void 0:q.includes("visible"))&&((z=(B=t==null?void 0:t.minimum)==null?void 0:B.roles)==null?void 0:z.includes("visible"));return d&&f===d?{regular:{amount:c,currency:h,variant:c&&f!==c?"strikethrough":"default"},final:{amount:d,currency:h,variant:"default"},visible:D}:{final:{minimumAmount:f,maximumAmount:d,currency:h},visible:D}}function Te(e,n,r){var i;return n?((i=e==null?void 0:e.options)==null?void 0:i.map(({values:s})=>{var o;const u=((o=s==null?void 0:s.find(({isDefault:m})=>m))==null?void 0:o.id)??null,a=r?s[0].id:null;return u||a})).filter(s=>s!==null):e==null?void 0:e.optionUIDs}const K=new ue({init:async e=>{var s,u,a;const n=(u=(s=e==null?void 0:e.models)==null?void 0:s.ProductDetails)==null?void 0:u.initialData,t={...{defaultLocale:"en-US",persistURLParams:!1,acdl:!1,optionsUIDs:((a=me().optionsUIDs)==null?void 0:a.split(","))||(n==null?void 0:n.optionsUIDs)},...e};if(K.config.setConfig({...t}),t!=null&&t.sku){const o=n?X(n):await te(t.sku,{preselectFirstOption:t.preselectFirstOption});L.emit("pdp/data",o);const m={sku:t.sku,quantity:1,optionsUIDs:o==null?void 0:o.optionUIDs};ae(()=>({...m})),Ae(()=>{var l;return o!=null&&o.options?o.options.length===((l=o==null?void 0:o.optionUIDs)==null?void 0:l.length):!0}),t.acdl&&o&&we(o)}},listeners:()=>[L.on("locale",async()=>{const{sku:e}=K.config.getConfig();if(e){const n=await te(e);L.emit("pdp/data",n)}})]}),p=K.config,{setEndpoint:Le,setFetchGraphQlHeader:Qe,removeFetchGraphQlHeader:je,setFetchGraphQlHeaders:He,fetchGraphQl:se,getConfig:Ke}=new le().getMethods(),Oe=`
 query GET_PRODUCT_DATA($skus: [String]) {
     products(skus: $skus) {
-        ...ProductFragment
+        ...PRODUCT_FRAGMENT
     }
 }
 
-${oe}
-`,ke=async(e,n,i)=>{var o;const{data:r}=await ie(Oe,{method:"GET",variables:{skus:[e]}}),t=(o=r==null?void 0:r.products)==null?void 0:o[0];return n!=null&&n.optionsUIDs&&(t.optionUIDs=n.optionsUIDs),i?t:H(t,{preselectFirstOption:n==null?void 0:n.preselectFirstOption})},be=`
+${ne}
+`,Se=async(e,n,r)=>{var s;const{data:i}=await se(Oe,{method:"GET",variables:{skus:[e]}}),t=(s=i==null?void 0:i.products)==null?void 0:s[0];return n!=null&&n.optionsUIDs&&(t.optionUIDs=n.optionsUIDs),t?r?t:X(t,{preselectFirstOption:n==null?void 0:n.preselectFirstOption}):null},pe=`
 query REFINE_PRODUCT_QUERY(
     $optionIds: [String!]!
     $sku: String!
@@ -159,29 +18,29 @@ query REFINE_PRODUCT_QUERY(
         optionIds: $optionIds 
         sku: $sku
     ) {
-        ...ProductFragment
+        ...PRODUCT_FRAGMENT
     }
 
     # Parent Product
     products(skus: [$sku]) {
-        ...ProductFragment
+        ...PRODUCT_FRAGMENT
     }
 
     # %extendedPlaceholder%
 }
 
-${oe}
-`;async function ee(e,n){const i=Te(n),r=_e(i,e),t=be.replace("# %extendedPlaceholder%",r),{data:o}=await ie(t,{method:"GET",variables:{optionIds:n,sku:e}});return o}const Ee=async(e,n,i,r)=>{var P,g,y;const t=await ee(e,n);if(!t)return null;let{products:o,refineProduct:a,...l}=t;const s=o==null?void 0:o[0],m=Ve(Object.values(l),s.options,i);if(i!=null&&i.length&&a===null){n=Ie(m,n,i);const d=await ee(e,n);a=d==null?void 0:d.refineProduct}const u={...a||s,sku:s.sku,name:s.name,externalParentId:s==null?void 0:s.externalId,options:m,optionUIDs:n,variantSku:(a==null?void 0:a.__typename)==="SimpleProductView"?a==null?void 0:a.sku:void 0},c=r?u:H(u),f=(y=(g=(P=k==null?void 0:k.getConfig())==null?void 0:P.models)==null?void 0:g.ProductDetails)==null?void 0:y.fallbackData;return f?f(s,c):c};function Te(e){if(e.length<2)return[e];const n=[];return e.forEach(i=>{const r=[];e.forEach(t=>{i!==t&&r.push(t)}),n.push(r)}),n}function _e(e,n){return e.map((i,r)=>`
-          ProductOption${r}: refineProduct(
+${ne}
+`;async function ee(e,n){const r=_e(n),i=be(r,e),t=pe.replace("# %extendedPlaceholder%",i),{data:s}=await se(t,{method:"GET",variables:{optionIds:n,sku:e}});return s}const ke=async(e,n,r,i)=>{var d,h,D;const t=await ee(e,n);if(!t)return null;let{products:s,refineProduct:u,...a}=t;const o=s==null?void 0:s[0],m=Ue(Object.values(a),o.options,r);if(r!=null&&r.length&&u===null){n=ve(m,n,r);const P=await ee(e,n);u=P==null?void 0:P.refineProduct}const l={...u||o,sku:o.sku,name:o.name,externalParentId:o==null?void 0:o.externalId,options:m,optionUIDs:n,variantSku:(u==null?void 0:u.__typename)==="SimpleProductView"?u==null?void 0:u.sku:void 0},c=i?l:X(l),f=(D=(h=(d=p==null?void 0:p.getConfig())==null?void 0:d.models)==null?void 0:h.ProductDetails)==null?void 0:D.fallbackData;return f?f(o,c):c};function _e(e){if(e.length<2)return[e];const n=[];return e.forEach(r=>{const i=[];e.forEach(t=>{r!==t&&i.push(t)}),n.push(i)}),n}function be(e,n){return e.map((r,i)=>`
+          ProductOption${i}: refineProduct(
             optionIds: [
-              ${i.map(t=>`"${t}"`).join(", ")}
+              ${r.map(t=>`"${t}"`).join(", ")}
             ]
             sku: "${n}"
           ) {
             ... on ComplexProductView {
               options {
-                ...ProductOptionFragment
+                ...PRODUCT_OPTION_FRAGMENT
               }
             }
           }
-        `).join("")}function Ve(e,n=[],i){const r=Object.values(e).filter(o=>!!o).reduce((o,a)=>a.options?[...o,...a.options]:[...o],[]),t=new Map(n.map(o=>[o.id,o]));return r.forEach(o=>{i!=null&&i.includes(o.id)||t.set(o.id,o)}),[...t.values()]}function Ie(e,n,i){const r=[];let t;return e.forEach(o=>{var a,l,s,m;i.includes(o.id)?t=((l=(a=o.values)==null?void 0:a.find(u=>n.includes(u==null?void 0:u.id)))==null?void 0:l.id)||((s=o.values[0])==null?void 0:s.id):t=(m=o.values[0])==null?void 0:m.id,r.push(t)}),r}const te=async(e,n)=>{const{anchors:i,optionsUIDs:r}=k.getConfig(),{optionsUIDs:t=r,anchors:o=i,preselectFirstOption:a,isBundle:l,skipTransform:s}=n??{};return!l&&t?await Ee(e,t,o,s):await ke(e,{preselectFirstOption:a,optionsUIDs:t},s)},Fe=e=>{const n=Ue(),i=e(n);n!==i&&N.emit("pdp/valid",i)},Ue=()=>{var e;return((e=N._lastEvent["pdp/valid"])==null?void 0:e.payload)??null};export{Qe as a,Ke as b,k as c,ke as d,Ee as e,ie as f,qe as g,te as h,q as i,Fe as j,Ue as k,Me as l,we as p,je as r,Ne as s,H as t};
+        `).join("")}function Ue(e,n=[],r){const i=Object.values(e).filter(s=>!!s).reduce((s,u)=>u.options?[...s,...u.options]:[...s],[]),t=new Map(n.map(s=>[s.id,s]));return i.forEach(s=>{r!=null&&r.includes(s.id)||t.set(s.id,s)}),[...t.values()]}function ve(e,n,r){const i=[];let t;return e.forEach(s=>{var u,a,o,m;r.includes(s.id)?t=((a=(u=s.values)==null?void 0:u.find(l=>n.includes(l==null?void 0:l.id)))==null?void 0:a.id)||((o=s.values[0])==null?void 0:o.id):t=(m=s.values[0])==null?void 0:m.id,i.push(t)}),i}const te=async(e,n)=>{const{anchors:r,optionsUIDs:i}=p.getConfig(),{optionsUIDs:t=i,anchors:s=r,preselectFirstOption:u,isBundle:a,skipTransform:o}=n??{};return!a&&t?await ke(e,t,s,o):await Se(e,{preselectFirstOption:u,optionsUIDs:t},o)},Ae=e=>{const n=Ie(),r=e(n);n!==r&&L.emit("pdp/valid",r)},Ie=()=>{var e;return((e=L._lastEvent["pdp/valid"])==null?void 0:e.payload)??null};export{Qe as a,He as b,p as c,Se as d,ke as e,se as f,Ke as g,te as h,K as i,Ae as j,Ie as k,$e as l,we as p,je as r,Le as s,X as t};

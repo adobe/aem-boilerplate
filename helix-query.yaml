@@ -1,9 +1,12 @@
 auto-generated: true
 indices:
-  blog:
+  blog-en:
     include:
-      - /en/blog/**
-    target: /en/blog/query-index.json
+      - /en/**
+    exclude:
+      - /en/drafts/**
+      - /en/sandbox/**
+    target: /en/blog.json
     properties:
       title:
         select: head > meta[property="og:title"]

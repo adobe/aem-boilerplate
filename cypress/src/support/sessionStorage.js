@@ -8,26 +8,39 @@ Cypress.Commands.add('setSessionStorage', (key, value) => {
 beforeEach(() => {
   // TODO: Eventually, we should fix the tests to work against prod config/prod commerce backend, but for now we manually write the following to sessionStorage so that the tests will complete (against staging environment)
   const config = {
-    total: 10,
-    offset: 0,
-    limit: 10,
-    data: [
-      { key: "commerce.headers.all.Store", value: "default" },
-      { key: "commerce.headers.cs.Magento-Customer-Group", value: "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c" },
-      { key: "commerce.headers.cs.Magento-Environment-Id", value: "1f131648-b696-4bd1-af57-2021c7080b56" },
-      { key: "commerce.headers.cs.Magento-Store-Code", value: "main_website_store" },
-      { key: "commerce.headers.cs.Magento-Store-View-Code", value: "default" },
-      { key: "commerce.headers.cs.Magento-Website-Code", value: "base" },
-      { key: "commerce.headers.cs.x-api-key", value: "9753cd30401a477e816ed850c4f77e18" },
-      { key: "commerce-base-currency-code", value: "USD" },
-      { key: "commerce-core-endpoint", value: "https://mcstaging.aemshop.net/graphql" },
-      { key: "commerce-endpoint", value: "https://catalog-service-sandbox.adobe.io/graphql" },
-    ],
-    columns: ["key", "value"],
-    ":type": "sheet",
+    "public": {
+      "default": {
+        "commerce-core-endpoint": "https://mcstaging.aemshop.net/graphql",
+        "commerce-endpoint": "https://catalog-service-sandbox.adobe.io/graphql",
+        "headers": {
+          "all": {
+            "Store": "default"
+          },
+          "cs": {
+            "Magento-Customer-Group": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
+            "Magento-Store-Code": "main_website_store",
+            "Magento-Store-View-Code": "default",
+            "Magento-Website-Code": "base",
+            "x-api-key": "9753cd30401a477e816ed850c4f77e18",
+            "Magento-Environment-Id": "1f131648-b696-4bd1-af57-2021c7080b56"
+          }
+        },
+        "analytics": {
+          "base-currency-code": "USD",
+          "environment": "Production",
+          "store-id": 1,
+          "store-name": "Main Website Store",
+          "store-url": "https://www.aemshop.net",
+          "store-view-id": 1,
+          "store-view-name": "Default Store View",
+          "website-id": 1,
+          "website-name": "Main Website"
+        }
+      }
+    },
     ":expiry": Math.round(Date.now() / 1000) + 7200,
-  };
+  }
 
   // write to dev because cypress runs against localhost.
-  cy.setSessionStorage('config:dev', JSON.stringify(config));
+  cy.setSessionStorage('config', JSON.stringify(config));
 });

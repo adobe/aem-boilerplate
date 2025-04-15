@@ -1,7 +1,10 @@
 /* eslint-disable import/prefer-default-export, import/no-cycle */
 import { getMetadata } from './aem.js';
 import {
-  getConfigValue, getCookie, getHeaders,
+  getConfigValue,
+  getCookie,
+  getHeaders,
+  getRootPath,
 } from './configs.js';
 import { getConsent } from './scripts.js';
 
@@ -12,7 +15,7 @@ import { getConsent } from './scripts.js';
  */
 // eslint-disable-next-line import/prefer-default-export
 export async function fetchPlaceholders(prefix = 'default') {
-  const overrides = getMetadata('placeholders') || getMetadata('root')?.replace(/\/$/, '/placeholders.json') || '';
+  const overrides = getMetadata('placeholders') || getRootPath().replace(/\/$/, '/placeholders.json') || '';
   const [fallback, override] = overrides.split('\n');
   window.placeholders = window.placeholders || {};
 
@@ -86,9 +89,9 @@ export const priceFieldsFragment = `fragment priceFields on ProductViewPrice {
 }`;
 
 export async function commerceEndpointWithQueryParams() {
-  const urlWithQueryParams = new URL(await getConfigValue('commerce-endpoint'));
+  const urlWithQueryParams = new URL(getConfigValue('commerce-endpoint'));
   // Set some query parameters for use as a cache-buster. No other purpose.
-  urlWithQueryParams.searchParams.append('ac-storecode', await getConfigValue('commerce.headers.cs.Magento-Store-Code'));
+  urlWithQueryParams.searchParams.append('ac-storecode', getConfigValue('headers.cs.Magento-Store-Code'));
   return urlWithQueryParams;
 }
 
@@ -96,7 +99,7 @@ export async function commerceEndpointWithQueryParams() {
 
 export async function performCatalogServiceQuery(query, variables) {
   const headers = {
-    ...(await getHeaders('cs')),
+    ...(getHeaders('cs')),
     'Content-Type': 'application/json',
   };
 
@@ -124,11 +127,11 @@ export function getSignInToken() {
 }
 
 export async function performMonolithGraphQLQuery(query, variables, GET = true, USE_TOKEN = false) {
-  const GRAPHQL_ENDPOINT = await getConfigValue('commerce-core-endpoint');
+  const GRAPHQL_ENDPOINT = getConfigValue('commerce-core-endpoint');
 
   const headers = {
     'Content-Type': 'application/json',
-    Store: await getConfigValue('commerce.headers.cs.Magento-Store-View-Code'),
+    Store: getConfigValue('headers.cs.Magento-Store-View-Code'),
   };
 
   if (USE_TOKEN) {
@@ -223,7 +226,7 @@ export async function trackHistory() {
     return;
   }
   // Store product view history in session storage
-  const storeViewCode = await getConfigValue('commerce.headers.cs.Magento-Store-View-Code');
+  const storeViewCode = getConfigValue('headers.cs.Magento-Store-View-Code');
   window.adobeDataLayer.push((dl) => {
     dl.addEventListener('adobeDataLayer:change', (event) => {
       if (!event.productContext) {

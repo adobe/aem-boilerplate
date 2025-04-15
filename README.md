@@ -10,7 +10,7 @@ https://experienceleague.adobe.com/developer/commerce/storefront/
 
 ## Pre-requisites
 
-Out of the box, this project template uses a pre-configured Adobe Commerce environment. If you want to use your own Adobe Commerce environment, you'll need to update the `configs.xlsx` file in your content repository to have values that match your environment.
+Out of the box, this project template uses a pre-configured Adobe Commerce environment. If you want to use your own Adobe Commerce environment, you'll need to update the public `config` in your [site config](https://www.aem.live/docs/admin.html#tag/siteConfig) to have values that match your environment.
 
 Additionally, you need to have the following modules and customizations installed on your environment:
 
@@ -33,8 +33,11 @@ Before using the boilerplate, we recommend you to go through the documentation o
 The boilerplate assumes you already have an `aem.live` org and will onboard a new site via config service. If you do not have an `aem.live` org, you will need to [contact Adobe](https://discord.gg/aem-live) to have one created, or you can do the following:
 
 1. Upload the [starter content](https://github.com/hlxsites/aem-boilerplate-commerce/releases/tag/starter-content) somewhere (https://da.live, sharepoint, google drive, etc).
-1. Update the mountpoint in the `default-fstab.yaml` to point to your content.
-1. Rename the file to `fstab.yaml` and commit/push the change.
+1. Copy `default-fstab.yaml` to a file named `fstab.yaml`.
+1. Update `fstab.yaml` with your own mountpoint for your content.
+1. Rename `demo-config.json` to a file named `config.json`
+1. Update `config.json` with your endpoints, headers, etc.
+1. Commit and push both files.
 1. Install the [AEM Code Sync Bot](https://github.com/apps/aem-code-sync)
 1. Verify the site is working at https://main--{site}--{org}.aem.page
 1. Add a `/.helix/config.xlsx` to your content, and add a `admin.role.admin` row with your email address.
@@ -43,7 +46,7 @@ The boilerplate assumes you already have an `aem.live` org and will onboard a ne
 
 ### Config Service
 
-Before running the command, replace the following variables to match your project values:
+Before running the command, replace all variables to match your project values:
 
 * `{ORG}` - Name of your organistation in GitHub.
 * `{SITE}` - Name of your site in the org. For the first site in your org, it must be equal to the GitHub repository name.
@@ -51,7 +54,11 @@ Before running the command, replace the following variables to match your projec
 * `{ADMIN_USER_EMAIL}` - Email address of your config admin user.
 * `{ADMIN_USER_ID}` - User ID of your authoring admin (click user icon in top right, then click "share" icon in da.live to copy).
 * `{DOMAIN}` - Public facing domain of your site (e.g. `www.your-shop.com`).
+* `{ENDPOINT}` - Your Commerce graphql endpoint.
+* `{CS_ENDPOINT}` - Your Catalog Services endpoint.
 * `{YOUR_TOKEN}` - Your personal access token. You can retrieve one from login via one of the methods from https://admin.hlx.page/login and copy the token from the `auth_token` cookie in the response.
+
+! Double check that there are no remaining template variables in the default files before you push !
 
 Please use HTTP [PUT](https://www.aem.live/docs/admin.html#tag/siteConfig/operation/createSiteSite) for the initial creation of the configuration and [POST](https://www.aem.live/docs/admin.html#tag/siteConfig/operation/updateConfigSite) for subsequent updates.
 
@@ -59,7 +66,7 @@ Please use HTTP [PUT](https://www.aem.live/docs/admin.html#tag/siteConfig/operat
 curl -X PUT 'https://admin.hlx.page/config/{org}/sites/{site}.json' \
   -H 'content-type: application/json' \
   -H 'x-auth-token: {YOUR_TOKEN}' \
-  --data-binary '@default-config.json'
+  --data-binary '@default-site.json'
 ```
 
 ### Apply Index Configuration
@@ -105,9 +112,10 @@ npm run lint
 
 ## Local development
 
-1. Create a new repository based on the `aem-boilerplate-commerce` template, rename `default-fstab.yaml` to `fstab.yaml` and add a mountpoint for your site content.
+1. Create a new repository based on the `aem-boilerplate-commerce` template,
+1. Rename `default-fstab.yaml` to `fstab.yaml` and add a mountpoint for your site content. Commit and push this file.
+1. Rename `demo-config.json` to `config.json` and update with your site values.
 1. Add the [AEM Code Sync GitHub App](https://github.com/apps/aem-code-sync) to the repository
-1. Add your Adobe Commerce configuration in the `configs-dev.xlsx` sheet in your content repository.
 1. Install all dependencies using `npm i`.
 1. Start AEM Proxy: `npm run start` (opens your browser at `http://localhost:3000`)
 1. Open the `{repo}` directory in your favourite IDE and start coding :)

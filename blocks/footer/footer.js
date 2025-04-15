@@ -8,7 +8,7 @@ import {
 import createModal from '../modal/modal.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { getRootPath } from '../../scripts/scripts.js';
+import { getRootPath, isMultistore } from '../../scripts/configs.js';
 
 /**
  * Toggles all storeSelector sections
@@ -39,10 +39,7 @@ export default async function decorate(block) {
   const footer = document.createElement('div');
 
   // Footer content - Store Switcher
-  // Check if root metadata exists for multistore
-  const hasRootMeta = getMetadata('root');
-
-  if (hasRootMeta) {
+  if (isMultistore()) {
     footer.innerHTML = `
       <div class="storeview-switcher-button"></div>
     `;

@@ -197,7 +197,7 @@ async function loadRecommendation(block, context, visibility, filters) {
     return;
   }
 
-  const storeViewCode = await getConfigValue('commerce.headers.cs.Magento-Store-View-Code');
+  const storeViewCode = getConfigValue('headers.cs.Magento-Store-View-Code');
 
   if (unitsPromise) {
     return;

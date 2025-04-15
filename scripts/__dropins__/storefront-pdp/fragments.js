@@ -1,4 +1,6 @@
-const e = `
+/*! Copyright 2025 Adobe
+All Rights Reserved. */
+const e=`
 fragment PRODUCT_OPTION_FRAGMENT on ProductViewOption {
     id
     title
@@ -47,7 +49,7 @@ fragment PRODUCT_OPTION_FRAGMENT on ProductViewOption {
       }
     }
   }
-`, t = `
+`,t=`
   fragment PRICE_RANGE_FRAGMENT on ComplexProductView {
     priceRange {
       maximum {
@@ -82,7 +84,8 @@ fragment PRODUCT_OPTION_FRAGMENT on ProductViewOption {
       }
     }
   }
-`, r = (`fragment PRODUCT_FRAGMENT on ProductView {
+`,r=`
+fragment PRODUCT_FRAGMENT on ProductView {
   __typename
   id
   sku
@@ -97,46 +100,49 @@ fragment PRODUCT_OPTION_FRAGMENT on ProductViewOption {
   url
   urlKey
   externalId
+
   images(roles: []) {
     url
     label
     roles
   }
+
   attributes(roles: []) {
     name
     label
     value
     roles
   }
-  ... on SimpleProductView {
+
+... on SimpleProductView {
     price {
-      roles
-      regular {
-        amount {
-          value
-          currency
+        roles
+
+        regular {
+            amount {
+                value
+                currency
+            }
         }
-      }
-      final {
-        amount {
-          value
-          currency
+
+        final {
+            amount {
+                value
+                currency
+            }
         }
       }
     }
-  }
+
   ... on ComplexProductView {
     options {
       ...PRODUCT_OPTION_FRAGMENT
     }
+
     ...PRICE_RANGE_FRAGMENT
   }
-  lowStock
 }
+
 ${e}
-${t}`);
-export {
-t as PRICE_RANGE_FRAGMENT,
-r as PRODUCT_FRAGMENT,
-e as PRODUCT_OPTION_FRAGMENT
-};
+${t}
+`;export{t as PRICE_RANGE_FRAGMENT,r as PRODUCT_FRAGMENT,e as PRODUCT_OPTION_FRAGMENT};

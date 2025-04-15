@@ -1,118 +1,130 @@
 /**
- * Builds hero block and prepends to main in a new section.
+ * Builds hero-variable block based on the Adobe Document Authoring structure.
  * @param {Element} main The container element
  */
-function buildHeroBlock(main) {
-    const picture = main.querySelector('picture');
-    if (!picture) return;
-  
-    // Find the closest section or div that contains the picture
-    const section = picture.closest('div') || picture.parentElement;
-    if (!section) return;
+function buildHeroVariableBlock(main) {
+    // Find all hero-variable containers
+    const heroContainers = main.querySelectorAll('.hero-variable-container');
+    if (!heroContainers.length) return;
     
-    // Create the hero section container
-    const heroSection = document.createElement('div');
-    heroSection.className = 'section hero-container';
-    heroSection.setAttribute('data-section-status', 'loaded');
-    
-    // Create the default content wrapper (this will contain all content)
-    const defaultContentWrapper = document.createElement('div');
-    defaultContentWrapper.className = 'default-content-wrapper';
-    
-    // Create a paragraph for the picture
-    const picturePara = document.createElement('p');
-    
-    // Clone the picture with all its content
-    const pictureClone = picture.cloneNode(true);
-    
-    // Make sure the img inside has the proper attributes
-    const img = pictureClone.querySelector('img');
-    if (img) {
-        img.style.width = '100%';
-        img.style.height = '100%';
-        img.style.objectFit = 'cover';
-        img.setAttribute('loading', 'eager');
-    }
-    
-    picturePara.appendChild(pictureClone);
-    defaultContentWrapper.appendChild(picturePara);
-    
-    // Get all elements in the same section
-    const h1s = section.querySelectorAll('h1');
-    const paragraphs = section.querySelectorAll('p:not(:has(picture))');
-    const links = section.querySelectorAll('a:not(p a)');
-    
-    // Elements to remove after processing
-    const elementsToRemove = [];
-    
-    // Process h1s
-    h1s.forEach((h1) => {
-        const clonedH1 = h1.cloneNode(true);
-        defaultContentWrapper.appendChild(clonedH1);
-        elementsToRemove.push(h1);
-    });
-  
-    // Process p tags (excluding those with pictures)
-    paragraphs.forEach((p) => {
-        const clonedP = p.cloneNode(true);
-        defaultContentWrapper.appendChild(clonedP);
-        elementsToRemove.push(p);
-    });
-  
-    // Process standalone links
-    links.forEach((link) => {
-        // Create a button container paragraph
-        const buttonContainer = document.createElement('p');
-        buttonContainer.className = 'button-container';
+    heroContainers.forEach(container => {
+      // Get the original hero-variable block
+      const originalBlock = container.querySelector('.hero-variable');
+      if (!originalBlock) return;
+      
+      // Create new structure
+      const heroWrapper = document.createElement('div');
+      heroWrapper.className = 'hero-variable-wrapper';
+      
+      const heroBlock = document.createElement('div');
+      heroBlock.className = 'hero-variable block';
+      heroBlock.setAttribute('data-block-name', 'hero-variable');
+      heroBlock.setAttribute('data-block-status', 'loaded');
+      
+      // Create content container
+      const contentContainer = document.createElement('div');
+      contentContainer.className = 'hero-content-container';
+      
+      // Extract content from original structure
+      let imageElement = null;
+      let titleElement = null;
+      let buttonElement = null;
+      let descriptionElement = null;
+      
+      // Process each content div
+      const contentDivs = originalBlock.querySelectorAll(':scope > div');
+      contentDivs.forEach(div => {
+        const labelDiv = div.querySelector(':scope > div:first-child');
+        const contentDiv = div.querySelector(':scope > div:last-child');
         
-        const clonedLink = link.cloneNode(true);
-        clonedLink.className = 'button';
-        buttonContainer.appendChild(clonedLink);
+        if (!labelDiv || !contentDiv) return;
         
-        defaultContentWrapper.appendChild(buttonContainer);
-        elementsToRemove.push(link);
-    });
-    
-    // Add the default content wrapper to the hero section
-    heroSection.appendChild(defaultContentWrapper);
-    
-    // Create the empty hero structure
-    const heroWrapper = document.createElement('div');
-    heroWrapper.className = 'hero-wrapper';
-    
-    const heroBlock = document.createElement('div');
-    heroBlock.className = 'hero block';
-    heroBlock.setAttribute('data-block-name', 'hero');
-    heroBlock.setAttribute('data-block-status', 'loaded');
-    
-    // Create the nested divs (empty)
-    const div1 = document.createElement('div');
-    const div2 = document.createElement('div');
-    
-    // Build the empty hero structure
-    div1.appendChild(div2);
-    heroBlock.appendChild(div1);
-    heroWrapper.appendChild(heroBlock);
-    heroSection.appendChild(heroWrapper);
-    
-    // Add to the page
-    main.prepend(heroSection);
-    
-    // Remove the original elements to prevent duplication
-    if (picture.parentNode) {
-        if (picture.parentNode.childNodes.length === 1) {
-            // If picture is the only child of its parent, remove the parent
-            elementsToRemove.push(picture.parentNode);
-        } else {
-            // Otherwise just remove the picture
-            elementsToRemove.push(picture);
+        const labelText = labelDiv.textContent.trim().toLowerCase();
+        
+        switch (labelText) {
+          case 'image':
+            imageElement = contentDiv.querySelector('picture');
+            break;
+          case 'title':
+            titleElement = contentDiv;
+            break;
+          case 'button-link':
+            buttonElement = contentDiv;
+            break;
+          case 'description':
+            descriptionElement = contentDiv;
+            break;
         }
-    }
-    
-    // Remove all elements that need to be removed
-    elementsToRemove.forEach(element => {
-        if (element.parentNode) {
-            element.parentNode.removeChild(element);
-        }
+      });
+      
+      // Add image
+      if (imageElement) {
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'hero-image-container';
+        imageContainer.appendChild(imageElement.cloneNode(true));
+        heroBlock.appendChild(imageContainer);
+      }
+      
+      // Add title
+      if (titleElement) {
+        const titleContainer = document.createElement('div');
+        titleContainer.className = 'hero-title-container';
+        titleContainer.innerHTML = titleElement.innerHTML;
+        contentContainer.appendChild(titleContainer);
+      }
+      
+      // Add description
+      if (descriptionElement) {
+        const descriptionContainer = document.createElement('div');
+        descriptionContainer.className = 'hero-description-container';
+        descriptionContainer.innerHTML = descriptionElement.innerHTML;
+        contentContainer.appendChild(descriptionContainer);
+      }
+      
+      // Add button
+      if (buttonElement) {
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'hero-button-container';
+        buttonContainer.innerHTML = buttonElement.innerHTML;
+        contentContainer.appendChild(buttonContainer);
+      }
+      
+      // Add content container to hero block
+      heroBlock.appendChild(contentContainer);
+      
+      // Add gradients for better text visibility
+      const gradients = document.createElement('div');
+      gradients.className = 'gradients';
+      
+      const leftGradient = document.createElement('div');
+      leftGradient.className = 'left';
+      
+      const rightGradient = document.createElement('div');
+      rightGradient.className = 'right';
+      
+      gradients.appendChild(leftGradient);
+      gradients.appendChild(rightGradient);
+      
+      heroBlock.appendChild(gradients);
+      
+      // Add hero block to wrapper
+      heroWrapper.appendChild(heroBlock);
+      
+      // Replace original content with new structure
+      container.innerHTML = '';
+      container.appendChild(heroWrapper);
     });
-}
+  }
+  
+  // Add the block to the blocks object for initialization
+  (function() {
+    const { buildBlock, loadBlocks } = window.nx;
+    
+    // Define the hero-variable block builder
+    buildBlock('hero-variable', buildHeroVariableBlock);
+    
+    // Run on document load
+    document.addEventListener('DOMContentLoaded', () => {
+      loadBlocks(document.querySelector('main'));
+    });
+  })();

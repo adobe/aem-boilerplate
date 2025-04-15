@@ -3,17 +3,17 @@
   .video-hero-container .video-hero-wrapper {
     max-width: unset;
     padding: 0;
-    max-height: 400px;
+    max-height: 800px;
+    margin-top: -100px;
   }
   
-  .video-hero-container{
-  
+  .video-hero-container {
     padding: 0 !important;
   }
   
   .video-hero {
     position: relative;
-    height: 400px;
+    height: 120vh;
     width: 100%;
     overflow: hidden;
   }
@@ -29,126 +29,119 @@
     z-index: 0;
   }
   
+  /* Video Overlay */
+  .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+    z-index: 1;
+  }
+  
   /* Hide the video wrapper paragraph */
-  .video-hero > div > div > p:first-child {
+  .video-hero > div:first-child {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+  .video-hero > div:first-child > div {
     margin: 0;
     padding: 0;
   }
   
   /* Content Container */
   .video-hero > div {
-    z-index: 1;
-    height: 300px;
-    background-color: rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 2;
+    height: 100%;
     display: grid;
-    grid-template-columns: 1.4fr 0.6fr;
-    padding: 40px;
+    grid-template-columns: 1fr;
   }
   
-  .video-hero > div > div {
-    display: grid;
+  /* Content Overlay */
+  .video-hero > div:nth-child(2) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 3;
+  }
+  
+  .video-hero > div:nth-child(2) > div {
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 40px 80px 40px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    align-content: center;
-  }
-  
-  /* Left Column Content */
-  .video-hero > div > div > h1 {
-    grid-column: 1;
-    align-self: center;
-    color: white;
-    font-size: 3.5rem;
-    font-weight: 500;
-    z-index: 1;
-    margin: 0;
-    padding-right: 40px;
-    font-family: 'Poppins';
-  }
-  
-  /* H6 Container */
-  .video-hero > div > div > h6 {
-    grid-column: 1;
-    top: calc(50% + 80px); /* Position below h1 */
-    left: 40px;
-    font-family: 'Poppins';
-    color: #f7f7f7;
-    font-size: 1.125rem;
-    font-weight: 400;
-    line-height: 1.5;
-    margin: 0;
-    min-height: 1.5em;
-    z-index: 1;
-  }
-  
-  /* Logo Column */
-  .video-hero > div > div > p:last-child {
-    grid-column: 2;
-    align-self: center;
-    justify-self: center;
-    margin: 0;
-    width: 100%;
-    z-index: 1;
-  }
-  
-  .video-hero picture {
-    display: block;
-    width: 100%;
     text-align: center;
+    justify-content: flex-end;
+  }
+  
+  /* Title and Logo */
+  .video-hero > div:nth-child(2) > div > h1 {
+    color: white;
+    margin: 0 0 20px 0;
     z-index: 1;
+    max-width: 300px;
   }
   
-  .video-hero picture img {
-    max-width: 250px;
-    z-index: 1;
+  /* Button Styling */
+  .video-hero .button-container {
+    margin: 64px 0;
   }
   
-  
-  /* Typing cursor */
-  .video-hero h6.typing::after {
-    content: "▊";
-    display: inline-block;
-    margin-left: 2px;
-    animation: blink 1s infinite;
+  /* Headings */
+  .video-hero h3 {
+    color: white;
+    font-size: 2.5rem;
+    margin: 0;
+    text-transform: uppercase;
   }
   
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+  .video-hero h4 {
+    color: white;
+    font-size: 1.8rem;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  
+  /* Description */
+  .video-hero p:last-of-type {
+    color: white;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 800px;
   }
   
   /* Mobile Adjustments */
   @media (max-width: 768px) {
-    .video-hero > div{
-      grid-template-columns: 1fr;
+    .video-hero {
+      height: 800px;
     }
-  
-    .video-hero > div > div {
-      grid-template-columns: 1fr;
+    
+    .video-hero > div:nth-child(2) > div {
+      padding: 0 20px 60px 20px;
+      align-items: center;
       text-align: center;
-      padding: 10px;
     }
-  
-    .video-hero-container > div > div > div > div:nth-child(2){
-      display: none;
+    
+    .video-hero h3 {
+      font-size: 1.8rem;
     }
-  
-    .video-hero > div > div > h1 {
-      grid-column: 1;
-      padding-right: 0;
-      font-size: 2.5rem;
-      padding-bottom: 10px;
+    
+    .video-hero h4 {
+      font-size: 1.4rem;
     }
-  
-    .video-hero > div > div > h6 {
-      grid-column: 1;
-      top: calc(50% + 60px);
-      left: 20px;
-      right: 20px;
-      text-align: center;
-      font-size: 0.75em;
-    }
-  
-    .video-hero > div > div > p:last-child {
-      grid-column: 1;
-      margin-top: 160px;
+    
+    .video-hero p:last-of-type {
+      font-size: 1rem;
     }
   }

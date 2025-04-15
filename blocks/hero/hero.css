@@ -4,9 +4,16 @@
   height: 800px;
   margin: 0;
   box-sizing: border-box;
-  overflow-x: hidden;
+  overflow: hidden;
   position: relative;
   z-index: 0;
+  display: block; /* Ensure block display */
+}
+
+/* Ensure the hero container doesn't create a scrollbox */
+body .section.hero-container {
+  max-height: 800px;
+  min-height: 800px;
 }
 
 main .section.hero-container {
@@ -47,47 +54,40 @@ main .section.hero-container {
 
 .hero > div {
   max-width: 1440px;
+  width: 100%;
 }
 
 .hero > div > div {
   width: 100%;
   box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 24px;
 }
 
-.hero > div > div > p {
-  margin: 0;
-  padding: 0;
-  text-align: left;
-  width: 100%;
-  box-sizing: border-box;
+.hero > div > div > * {
+  position: relative;
+  z-index: 1;
 }
 
-.hero picture {
+.hero picture,
+.hero > div > div > p picture {
   position: absolute;
   z-index: 0;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100vw;
+  left: 0;
+  width: 100%;
   height: 100%;
   box-sizing: border-box;
+  display: block;
 }
 
 .hero img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.hero-content-wrapper {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  gap: 1rem;
-  width: 100%;
-  margin: 0 auto;
-  padding: 40px 24px;
-  box-sizing: border-box;
+  display: block;
 }
 
 .hero h1 {
@@ -101,16 +101,45 @@ main .section.hero-container {
   text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   text-transform: uppercase;
   line-height: 0.9;
+  position: relative;
+  z-index: 1;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding-left: 24px;
+  padding-right: 24px;
+  box-sizing: border-box;
 }
 
-.hero-content-wrapper p {
+.hero > div > div > p:first-child {
   margin: 0;
-  color: white;
-  font-size: 1.5rem;
-  text-align: left;
-  box-sizing: border-box;
-  text-wrap-style: balance;
-  max-width: 500px;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.hero > div > div > p:first-child picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.hero > div > div > p:first-child img {
+  width: 100vw;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .hero .button-container {
@@ -118,8 +147,14 @@ main .section.hero-container {
   justify-content: flex-start;
   width: 100%;
   text-align: left;
-  margin: 0;
+  margin: 1rem 0 0;
   padding: 0;
+  box-sizing: border-box;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
   box-sizing: border-box;
 }
 
@@ -200,6 +235,198 @@ main .section.hero-container {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
 }
 
+/* Style for the default-content-wrapper */
+.section.hero-container .default-content-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+  padding: 40px 24px;
+  box-sizing: border-box;
+  overflow: visible; /* Ensure content doesn't get clipped */
+  max-width: 100%; /* Allow full width */
+}
+
+/* Add a content container for horizontal alignment */
+.section.hero-container .default-content-wrapper::before {
+  content: '';
+  display: block;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Style for the picture in the default-content-wrapper */
+.section.hero-container .default-content-wrapper > p:first-child {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  z-index: 0;
+  overflow: hidden; /* Prevent image overflow */
+}
+
+.section.hero-container .default-content-wrapper > p:first-child picture {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.section.hero-container .default-content-wrapper > p:first-child img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Button styles */
+.section.hero-container .default-content-wrapper .button {
+  display: inline-block;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.12);
+  color: white !important;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: 'Hitmarker Text Bold' !important;
+  font-weight: bold;
+  border: 1px solid #858585;
+  border-radius: 2px !important;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+.section.hero-container .default-content-wrapper .button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.section.hero-container .default-content-wrapper .button:hover::after {
+  left: 100%;
+}
+
+.section.hero-container .default-content-wrapper .button:hover {
+  background: rgba(27, 27, 27, 0.8);
+}
+
+/* Style for the h1 elements */
+.section.hero-container .default-content-wrapper h1 {
+  margin: 0;
+  font-size: 200px;
+  color: white;
+  font-family: "Hitmarker Condensed Black", sans-serif !important;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-align: left;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  line-height: 0.9;
+  position: relative;
+  z-index: 1;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding-left: 24px;
+  padding-right: 24px;
+  box-sizing: border-box;
+}
+
+/* Style for paragraphs (excluding the first one with the picture) */
+.section.hero-container .default-content-wrapper > p:not(:first-child) {
+  margin: 0;
+  color: white;
+  font-size: 1.5rem;
+  text-align: left;
+  box-sizing: border-box;
+  max-width: 1440px;
+  text-wrap: balance;
+  position: relative;
+  z-index: 1;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-top: 24px;
+  padding-bottom: 6px;
+  box-sizing: border-box;
+}
+
+/* Style for the button container */
+.section.hero-container .default-content-wrapper .button-container {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  text-align: left;
+  margin: 1rem 0 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  box-sizing: border-box;
+}
+
+/* Style for the content div */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 40px 24px;
+  color: white;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Style for paragraphs inside the content div */
+.hero-content p {
+  margin: 0;
+  color: white;
+  font-size: 1.5rem;
+  text-align: left;
+  box-sizing: border-box;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding-left: 24px;
+  padding-right: 24px;
+  box-sizing: border-box;
+}
+
 /* Mobile adjustments */
 @media (max-width: 768px) {
   .section.hero-container {
@@ -268,4 +495,8 @@ main .section.hero-container {
   z-index: -1;
   pointer-events: none;
   box-sizing: border-box;
+}
+
+.hero-wrapper {
+  display: none; /* Hide the empty hero structure */
 }

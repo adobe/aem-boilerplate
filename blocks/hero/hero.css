@@ -1,4 +1,4 @@
-.section.hero-variable-container {
+.section.hero-container {
   padding: 0 !important;
   width: 100%;
   height: 800px;
@@ -11,22 +11,22 @@
 }
 
 /* Hide the label divs that contain the authoring labels */
-.hero-variable > div > div:first-child {
+.hero > div > div:first-child {
   display: none !important;
 }
 
 /* Ensure the hero container doesn't create a scrollbox */
-body .section.hero-variable-container {
+body .section.hero-container {
   max-height: 900px;
   min-height: 900px;
 }
 
-main .section.hero-variable-container {
+main .section.hero-container {
   margin-top: calc(var(--nav-height) * -1);
   padding-top: 0;
 }
 
-.section.hero-variable-container > div {
+.section.hero-container > div {
   width: 100%;
   max-width: 100%;
   margin: 0;
@@ -34,7 +34,7 @@ main .section.hero-variable-container {
   box-sizing: border-box;
 }
 
-.hero-variable-container .hero-variable-wrapper {
+.hero-container .hero-wrapper {
   max-width: unset;
   padding: 0;
   width: 100%;
@@ -44,7 +44,7 @@ main .section.hero-variable-container {
   overflow: hidden;
 }
 
-.hero-variable {
+.hero {
   position: relative;
   height: 100%;
   width: 100%;
@@ -57,14 +57,14 @@ main .section.hero-variable-container {
   box-sizing: border-box;
 }
 
-/* Structure the hero-variable content properly */
-.hero-variable > div {
+/* Structure the hero content properly */
+.hero > div {
   position: static;
   width: 100%;
 }
 
 /* Make content container with max-width */
-.hero-variable > div:not(:first-child) {
+.hero > div:not(:first-child) {
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 24px;
@@ -73,16 +73,16 @@ main .section.hero-variable-container {
 }
 
 /* Change order of button and description */
-.hero-variable > div:nth-child(3) {
+.hero > div:nth-child(3) {
   order: 4; /* Move button after description */
 }
 
-.hero-variable > div:nth-child(4) {
+.hero > div:nth-child(4) {
   order: 3; /* Move description before button */
 }
 
 /* Image container styling - make it full width */
-.hero-variable > div:first-child {
+.hero > div:first-child {
   position: absolute;
   top: 0;
   left: 0;
@@ -91,7 +91,7 @@ main .section.hero-variable-container {
   z-index: 0;
 }
 
-.hero-variable > div:first-child > div:last-child {
+.hero > div:first-child > div:last-child {
   position: absolute;
   top: 0;
   left: 0;
@@ -100,13 +100,13 @@ main .section.hero-variable-container {
   z-index: 0;
 }
 
-.hero-variable > div:first-child > div:last-child picture {
+.hero > div:first-child > div:last-child picture {
   display: block;
   width: 100%;
   height: 100%;
 }
 
-.hero-variable > div:first-child > div:last-child img {
+.hero > div:first-child > div:last-child img {
   width: 100vw;
   height: 100%;
   object-fit: cover;
@@ -114,11 +114,11 @@ main .section.hero-variable-container {
 }
 
 /* Title styling */
-.hero-variable > div:nth-child(2) > div:last-child {
+.hero > div:nth-child(2) > div:last-child {
   margin-bottom: 1rem;
 }
 
-.hero-variable > div:nth-child(2) > div:last-child h1 {
+.hero > div:nth-child(2) > div:last-child h1 {
   margin: 0;
   font-size: 200px;
   color: white;
@@ -132,12 +132,12 @@ main .section.hero-variable-container {
 }
 
 /* Description styling - now comes before button */
-.hero-variable > div:nth-child(4) > div:last-child {
+.hero > div:nth-child(4) > div:last-child {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
-.hero-variable > div:nth-child(4) > div:last-child p {
+.hero > div:nth-child(4) > div:last-child p {
   margin: 0;
   color: white;
   font-size: 1.5rem;
@@ -146,7 +146,7 @@ main .section.hero-variable-container {
 }
 
 /* Button styling - now comes after description */
-.hero-variable > div:nth-child(3) > div:last-child {
+.hero > div:nth-child(3) > div:last-child {
   display: flex;
   justify-content: flex-start;
   width: 100%;
@@ -155,7 +155,7 @@ main .section.hero-variable-container {
   padding: 0;
 }
 
-.hero-variable .button {
+.hero .button {
   display: inline-block;
   padding: 12px 24px;
   background: rgba(255, 255, 255, 0.12);
@@ -172,7 +172,7 @@ main .section.hero-variable-container {
   overflow: hidden;
 }
 
-.hero-variable .button::after {
+.hero .button::after {
   content: '';
   position: absolute;
   top: 0;
@@ -188,16 +188,16 @@ main .section.hero-variable-container {
   transition: 0.5s;
 }
 
-.hero-variable .button:hover::after {
+.hero .button:hover::after {
   left: 100%;
 }
 
-.hero-variable .button:hover {
+.hero .button:hover {
   background: rgba(27, 27, 27, 0.8);
 }
 
 /* Add gradient overlays for better text visibility */
-.hero-variable::before {
+.hero::before {
   content: '';
   position: absolute;
   top: 0;
@@ -209,7 +209,7 @@ main .section.hero-variable-container {
   pointer-events: none;
 }
 
-.hero-variable::after {
+.hero::after {
   content: '';
   position: absolute;
   top: 0;
@@ -222,7 +222,7 @@ main .section.hero-variable-container {
 }
 
 /* Create a content container to group all content elements */
-.hero-variable-content-container {
+.hero-content-container {
   position: absolute;
   top: 0;
   left: 0;
@@ -236,67 +236,67 @@ main .section.hero-variable-container {
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
-  .section.hero-variable-container {
+  .section.hero-container {
     height: 600px; /* Reduce height on mobile */
     min-height: 500px;
   }
   
-  body .section.hero-variable-container {
+  body .section.hero-container {
     max-height: 600px;
     min-height: 600px;
   }
   
   /* Adjust heading size for mobile */
-  .hero-variable > div:nth-child(2) > div:last-child h1 {
+  .hero > div:nth-child(2) > div:last-child h1 {
     font-size: 80px; /* Smaller font size for mobile */
     line-height: 0.9;
   }
   
   /* Adjust paragraph size and spacing for mobile */
-  .hero-variable > div:nth-child(4) > div:last-child p {
+  .hero > div:nth-child(4) > div:last-child p {
     font-size: 1.2rem;
   }
   
   /* Adjust button styles for mobile */
-  .hero-variable > div:nth-child(3) > div:last-child {
+  .hero > div:nth-child(3) > div:last-child {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   }
   
-  .hero-variable .button {
+  .hero .button {
     padding: 10px 20px;
     font-size: 0.9rem;
   }
   
-  .hero-variable::before,
-  .hero-variable::after {
+  .hero::before,
+  .hero::after {
     width: 35%;
   }
 }
 
 /* Small mobile adjustments */
 @media (max-width: 480px) {
-  .section.hero-variable-container {
+  .section.hero-container {
     height: 500px; /* Further reduce height on small mobile */
   }
   
-  body .section.hero-variable-container {
+  body .section.hero-container {
     max-height: 500px;
     min-height: 500px;
   }
   
   /* Adjust heading size for small mobile */
-  .hero-variable > div:nth-child(2) > div:last-child h1 {
+  .hero > div:nth-child(2) > div:last-child h1 {
     font-size: 60px; /* Even smaller font size for small mobile */
   }
   
   /* Adjust paragraph size for small mobile */
-  .hero-variable > div:nth-child(4) > div:last-child p {
+  .hero > div:nth-child(4) > div:last-child p {
     font-size: 1rem;
   }
   
   /* Adjust button size for small mobile */
-  .hero-variable .button {
+  .hero .button {
     padding: 8px 16px;
     font-size: 0.9rem;
   }

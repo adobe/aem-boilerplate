@@ -1,24 +1,24 @@
 /**
- * Builds hero-variable block based on the Adobe Document Authoring structure.
+ * Builds hero block based on the Adobe Document Authoring structure.
  * @param {Element} main The container element
  */
-function buildHeroVariableBlock(main) {
-    // Find all hero-variable containers
-    const heroContainers = main.querySelectorAll('.hero-variable-container');
+function buildHeroBlock(main) {
+    // Find all hero containers
+    const heroContainers = main.querySelectorAll('.hero-container');
     if (!heroContainers.length) return;
     
     heroContainers.forEach(container => {
-      // Get the original hero-variable block
-      const originalBlock = container.querySelector('.hero-variable');
+      // Get the original hero block
+      const originalBlock = container.querySelector('.hero');
       if (!originalBlock) return;
       
       // Create new structure
       const heroWrapper = document.createElement('div');
-      heroWrapper.className = 'hero-variable-wrapper';
+      heroWrapper.className = 'hero-wrapper';
       
       const heroBlock = document.createElement('div');
-      heroBlock.className = 'hero-variable block';
-      heroBlock.setAttribute('data-block-name', 'hero-variable');
+      heroBlock.className = 'hero block';
+      heroBlock.setAttribute('data-block-name', 'hero');
       heroBlock.setAttribute('data-block-status', 'loaded');
       
       // Create content container
@@ -120,8 +120,8 @@ function buildHeroVariableBlock(main) {
   (function() {
     const { buildBlock, loadBlocks } = window.nx;
     
-    // Define the hero-variable block builder
-    buildBlock('hero-variable', buildHeroVariableBlock);
+    // Define the hero block builder
+    buildBlock('hero', buildHeroBlock);
     
     // Run on document load
     document.addEventListener('DOMContentLoaded', () => {

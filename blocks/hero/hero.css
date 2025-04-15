@@ -430,32 +430,56 @@ main .section.hero-container {
 /* Mobile adjustments */
 @media (max-width: 768px) {
   .section.hero-container {
-    height: 75vh;
+    height: 600px; /* Reduce height on mobile */
     min-height: 500px;
     box-sizing: border-box;
   }
-
-  .hero-content-wrapper {
-    padding: 24px 16px;
-    box-sizing: border-box;
+  
+  body .section.hero-container {
+    max-height: 600px;
+    min-height: 600px;
   }
   
-  .hero h1 {
-    font-size: clamp(6rem, 6vw, 3rem);
+  /* Adjust heading size for mobile */
+  .section.hero-container .default-content-wrapper h1 {
+    font-size: 80px; /* Smaller font size for mobile */
+    line-height: 0.9;
+    padding-left: 16px;
+    padding-right: 16px;
   }
-
-}
-
-/* Medium screens */
-@media (min-width: 769px) and (max-width: 1024px) {
-  .hero-content-wrapper {
-    padding: 32px;
-    box-sizing: border-box;
+  
+  /* Adjust paragraph size and spacing for mobile */
+  .section.hero-container .default-content-wrapper > p:not(:first-child) {
+    font-size: 1.2rem;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 16px;
+    padding-bottom: 4px;
   }
-}
-
-/* Mobile styles */
-@media (max-width: 768px) {
+  
+  /* Adjust button container for mobile */
+  .section.hero-container .default-content-wrapper .button-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  
+  /* Adjust padding for content wrapper */
+  .section.hero-container .default-content-wrapper {
+    padding: 24px 16px;
+  }
+  
+  /* Adjust hero image for mobile */
+  .hero picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Adjust button styles for mobile */
+  .button-container {
+    margin-top: 1rem;
+  }
+  
   .hero {
     min-height: 80vh;
     box-sizing: border-box;
@@ -486,6 +510,42 @@ main .section.hero-container {
   .gradients .left,
   .gradients .right {
     width: 35%;
+  }
+}
+
+/* Small mobile adjustments */
+@media (max-width: 480px) {
+  .section.hero-container {
+    height: 500px; /* Further reduce height on small mobile */
+  }
+  
+  body .section.hero-container {
+    max-height: 500px;
+    min-height: 500px;
+  }
+  
+  /* Adjust heading size for small mobile */
+  .section.hero-container .default-content-wrapper h1 {
+    font-size: 60px; /* Even smaller font size for small mobile */
+  }
+  
+  /* Adjust paragraph size for small mobile */
+  .section.hero-container .default-content-wrapper > p:not(:first-child) {
+    font-size: 1rem;
+  }
+  
+  /* Adjust button size for small mobile */
+  .section.hero-container .default-content-wrapper .button {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Medium screens */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .hero-content-wrapper {
+    padding: 32px;
+    box-sizing: border-box;
   }
 }
 

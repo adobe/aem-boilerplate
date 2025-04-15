@@ -19,7 +19,6 @@ import ProductQuantity from '@dropins/storefront-pdp/containers/ProductQuantity.
 import ProductDescription from '@dropins/storefront-pdp/containers/ProductDescription.js';
 import ProductAttributes from '@dropins/storefront-pdp/containers/ProductAttributes.js';
 import ProductGallery from '@dropins/storefront-pdp/containers/ProductGallery.js';
-import WishlistToggle from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
 
 // Libs
 import { fetchPlaceholders, setJsonLd } from '../../scripts/commerce.js';
@@ -34,6 +33,7 @@ export default async function decorate(block) {
   // eslint-disable-next-line no-underscore-dangle
   const product = events._lastEvent?.['pdp/data']?.payload ?? null;
   const labels = await fetchPlaceholders();
+  let wishlistItem;
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`
@@ -89,6 +89,7 @@ export default async function decorate(block) {
     _options,
     _quantity,
     addToCart,
+    addToWishlist,
     _description,
     _attributes,
   ] = await Promise.all([
@@ -184,9 +185,58 @@ export default async function decorate(block) {
     })($addToCart),
 
     // Add to Wishlist
-    UI.render(WishlistToggle, {
-      isGuestWishlistEnabled: false,
-      product,
+    UI.render(Button, {
+      variant: 'secondary',
+      icon: Icon({ source: 'Heart' }), // how to choose filled vs. empty here?
+      isGuestWishlistEnabled: false, // ??? how to hide button for Guest user?
+      onClick: async () => {
+        try {
+          addToWishlist.setProps((prev) => ({
+            ...prev,
+            disabled: false,
+          }));
+
+          const {
+            addProductsToWishlist,
+            removeProductsFromWishlist,
+          } = await import('@dropins/storefront-wishlist/api.js');
+          if (wishlistItem && wishlistItem.id) {
+            await removeProductsFromWishlist(
+              [
+                {
+                  id: wishlistItem.id,
+                  product: {
+                    sku: product.sku,
+                  },
+                },
+              ],
+            );
+            wishlistItem = null;
+          } else {
+            await addProductsToWishlist([{ sku: product.sku, quantity: 1 }]);
+          }
+        } catch (error) {
+          // add alert message
+          inlineAlert = await UI.render(InLineAlert, {
+            heading: 'Error',
+            description: error.message,
+            icon: Icon({ source: 'Warning' }),
+            'aria-live': 'assertive',
+            role: 'alert',
+            onDismiss: () => {
+              inlineAlert.remove();
+            },
+          })($alert);
+
+          // Scroll the alertWrapper into view
+          $alert.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          });
+        } finally {
+          // todo
+        }
+      },
     })($addToWishlist),
 
     // Description
@@ -200,6 +250,50 @@ export default async function decorate(block) {
   events.on('pdp/valid', (valid) => {
     // update add to cart button disabled state based on product selection validity
     addToCart.setProps((prev) => ({ ...prev, disabled: !valid }));
+  }, { eager: true });
+
+  // Lifecycle Events
+  events.on('pdp/data', () => {
+    const WISHLIST_KEY = 'DROPIN__WISHLIST__WISHLIST__DATA';
+    const wishlist = localStorage.getItem(WISHLIST_KEY) ? JSON.parse(localStorage.getItem(WISHLIST_KEY)) : { id: '', items: [] };
+    const item = wishlist?.items?.includes((i) => i.product.sku === product.sku);
+
+    if (item) {
+      wishlistItem = item;
+      addToWishlist.setProps((prev) => ({
+        ...prev,
+        icon: Icon({ source: 'HeartFilled' }),
+      }));
+    } else {
+      addToWishlist.setProps((prev) => ({
+        ...prev,
+        icon: Icon({ source: 'Heart' }),
+      }));
+    }
+  }, { eager: true });
+
+  // Lifecycle Events
+  events.on('wishlist/data', (data) => {
+    const WISHLIST_KEY = 'DROPIN__WISHLIST__WISHLIST__DATA';
+    const wishlist = localStorage.getItem(WISHLIST_KEY) ? JSON.parse(localStorage.getItem(WISHLIST_KEY)) : { id: '', items: [] };
+    const item = wishlist?.items?.find((i) => i.product.sku === product.sku);
+
+    if (item) {
+      wishlistItem = data.item;
+    }
+  }, { eager: true });
+
+  // Lifecycle Events
+  events.on('wishlist/update', (data) => {
+    const WISHLIST_KEY = 'DROPIN__WISHLIST__WISHLIST__DATA';
+    const wishlist = localStorage.getItem(WISHLIST_KEY) ? JSON.parse(localStorage.getItem(WISHLIST_KEY)) : { id: '', items: [] };
+    const item = wishlist?.items?.includes((i) => i.product.sku === product.sku);
+
+    if (data.action === 'add' && !item) {
+      wishlist.items.push(data.item);
+      localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
+      wishlistItem = data.item;
+    }
   }, { eager: true });
 
   // Set JSON-LD and Meta Tags

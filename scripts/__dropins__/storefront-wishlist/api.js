@@ -1,6 +1,65 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{Initializer as p}from"@dropins/tools/lib.js";import{events as l}from"@dropins/tools/event-bus.js";import{s as e,a as g,f as _,h as a,c as m,g as c,t as u,W as d}from"./chunks/removeProductsFromWishlist.js";import{k as O,i as $,r as A,d as M,e as z,j as Q}from"./chunks/removeProductsFromWishlist.js";import{a as B,g as q}from"./chunks/getProductBySku.js";import"@dropins/tools/fetch-graphql.js";const I=new p({init:async s=>{const t={...s};I.config.setConfig({defaultConfig:t}),h().catch(console.error)},listeners:()=>[l.on("authenticated",s=>{e.authenticated&&!s&&l.emit("wishlist/reset",void 0),s&&!e.authenticated&&(e.authenticated=s,h().catch(console.error))},{eager:!0}),l.on("wishlist/data",s=>{g(s)}),l.on("wishlist/reset",()=>{y().catch(console.error),l.emit("wishlist/data",null)})]}),b=I.config;function w(s){if(!s)return null;const t=r=>{switch(r){case 1:return"INCLUDING_FPT_AND_DESCRIPTION";case 2:return"EXCLUDING_FPT_INCLUDING_DESCRIPTION_FINAL_PRICE";case 3:return"EXCLUDING_FPT";default:return"INCLUDING_FPT_ONLY"}};return{wishlistIsEnabled:s.storeConfig.magento_wishlist_general_is_enabled,wishlistMultipleListIsEnabled:s.storeConfig.enable_multiple_wishlists,wishlistMaxNumber:s.storeConfig.maximum_number_of_wishlists,fixedProductTaxesEnabled:s.storeConfig.fixed_product_taxes_enable,fixedProductTaxesApply:s.storeConfig.fixed_product_taxes_apply_tax_to_fpt,fixedProductTaxesEnabledDisplayInProductLists:t(s.storeConfig.fixed_product_taxes_display_prices_in_product_lists),fixedProductTaxesEnabledDisplayInSalesModules:t(s.storeConfig.fixed_product_taxes_display_prices_in_sales_modules),fixedProductTaxesEnabledDisplayInProductView:t(s.storeConfig.fixed_product_taxes_display_prices_on_product_view_page)}}const T=`
+import { Initializer } from "@dropins/tools/lib.js";
+import { events } from "@dropins/tools/event-bus.js";
+import { s as state, b as setPersistedWishlistData, f as fetchGraphQl, h as handleFetchError, W as WISHLIST_PAGINATION_ARGUMENTS, d as WISHLIST_PAGINATION_VARIABLES, e as WISHLIST_ITEM_FRAGMENT, g as getPersistedWishlistData, c as transformWishlist, a as WISHLIST_FRAGMENT } from "./chunks/removeProductsFromWishlist.js";
+import { m, k, r, i, j, l } from "./chunks/removeProductsFromWishlist.js";
+import { a, g } from "./chunks/addProductsToWishlist.js";
+import "@dropins/tools/fetch-graphql.js";
+const initialize = new Initializer({
+  init: async (config2) => {
+    const defaultConfig = {
+      ...config2
+    };
+    initialize.config.setConfig({
+      defaultConfig
+    });
+    initializeWishlist().catch(console.error);
+  },
+  listeners: () => [events.on("authenticated", (authenticated) => {
+    if (state.authenticated && !authenticated) {
+      events.emit("wishlist/reset", void 0);
+    }
+    if (authenticated && !state.authenticated) {
+      state.authenticated = authenticated;
+      initializeWishlist().catch(console.error);
+    }
+  }, {
+    eager: true
+  }), events.on("wishlist/data", (payload) => {
+    setPersistedWishlistData(payload);
+  }), events.on("wishlist/reset", () => {
+    resetWishlist().catch(console.error);
+    events.emit("wishlist/data", null);
+  })]
+});
+const config = initialize.config;
+function transformStoreConfig(data) {
+  if (!data) return null;
+  const transformFixedProductTaxDisplaySetting = (fptDisplaySetting) => {
+    switch (fptDisplaySetting) {
+      case 1:
+        return "INCLUDING_FPT_AND_DESCRIPTION";
+      case 2:
+        return "EXCLUDING_FPT_INCLUDING_DESCRIPTION_FINAL_PRICE";
+      case 3:
+        return "EXCLUDING_FPT";
+      default:
+        return "INCLUDING_FPT_ONLY";
+    }
+  };
+  return {
+    wishlistIsEnabled: data.storeConfig.magento_wishlist_general_is_enabled,
+    wishlistMultipleListIsEnabled: data.storeConfig.enable_multiple_wishlists,
+    wishlistMaxNumber: data.storeConfig.maximum_number_of_wishlists,
+    fixedProductTaxesEnabled: data.storeConfig.fixed_product_taxes_enable,
+    fixedProductTaxesApply: data.storeConfig.fixed_product_taxes_apply_tax_to_fpt,
+    fixedProductTaxesEnabledDisplayInProductLists: transformFixedProductTaxDisplaySetting(data.storeConfig.fixed_product_taxes_display_prices_in_product_lists),
+    fixedProductTaxesEnabledDisplayInSalesModules: transformFixedProductTaxDisplaySetting(data.storeConfig.fixed_product_taxes_display_prices_in_sales_modules),
+    fixedProductTaxesEnabledDisplayInProductView: transformFixedProductTaxDisplaySetting(data.storeConfig.fixed_product_taxes_display_prices_on_product_view_page)
+  };
+}
+const STORE_CONFIG_QUERY = `
 query STORE_CONFIG_QUERY {
   storeConfig {
     magento_wishlist_general_is_enabled
@@ -13,11 +72,23 @@ query STORE_CONFIG_QUERY {
     fixed_product_taxes_display_prices_on_product_view_page    
   }
 }
-`,x=async()=>_(T,{method:"GET",cache:"force-cache"}).then(({errors:s,data:t})=>s?a(s):w(t)),E=`
+`;
+const getStoreConfig = async () => {
+  return fetchGraphQl(STORE_CONFIG_QUERY, {
+    method: "GET",
+    cache: "force-cache"
+  }).then(({
+    errors,
+    data
+  }) => {
+    if (errors) return handleFetchError(errors);
+    return transformStoreConfig(data);
+  });
+};
+const GET_WISHLIST_BY_ID_QUERY = `
   query GET_WISHLIST_BY_ID_QUERY(
     $wishlistId: ID!,
-    $currentPage: Int!,
-    $pageSize: Int!
+    ${WISHLIST_PAGINATION_ARGUMENTS}
   ) {
     customer {
       wishlist_v2(id: $wishlistId) {
@@ -26,8 +97,7 @@ query STORE_CONFIG_QUERY {
         sharing_code
         items_count
         items_v2(
-            currentPage: $currentPage,
-            pageSize: $pageSize
+            ${WISHLIST_PAGINATION_VARIABLES}
           ) {
           items {
             ...WISHLIST_ITEM_FRAGMENT
@@ -42,9 +112,35 @@ query STORE_CONFIG_QUERY {
     }
   }
 
-  ${m}
-`,R=async(s,t,r)=>{if(!e.authenticated)return c();if(!s)throw Error("Wishlist ID is not set");return _(E,{variables:{wishlistId:s,currentPage:t,pageSize:r}}).then(({errors:i,data:n})=>{var o;return i?a(i):(o=n==null?void 0:n.customer)!=null&&o.wishlist_v2?u(n.customer.wishlist_v2):null})},S=`
-  query getWishlists {
+${WISHLIST_ITEM_FRAGMENT}
+`;
+const getWishlistById = async (wishlistId, currentPage, pageSize) => {
+  if (!state.authenticated) {
+    return getPersistedWishlistData();
+  }
+  if (!wishlistId) {
+    throw Error("Wishlist ID is not set");
+  }
+  return fetchGraphQl(GET_WISHLIST_BY_ID_QUERY, {
+    variables: {
+      wishlistId,
+      currentPage,
+      pageSize
+    }
+  }).then(({
+    errors,
+    data
+  }) => {
+    var _a;
+    if (errors) return handleFetchError(errors);
+    if (!((_a = data == null ? void 0 : data.customer) == null ? void 0 : _a.wishlist_v2)) {
+      return null;
+    }
+    return transformWishlist(data.customer.wishlist_v2);
+  });
+};
+const GET_WISHLISTS_QUERY = `
+  query GET_WISHLISTS_QUERY(${WISHLIST_PAGINATION_ARGUMENTS}) {
     customer {
       wishlists {
         ...WISHLIST_FRAGMENT
@@ -52,8 +148,25 @@ query STORE_CONFIG_QUERY {
     }
   }
 
-  ${d}
-`,P=async()=>e.authenticated?_(S).then(({errors:s,data:t})=>{var r;return s?a(s):(r=t==null?void 0:t.customer)!=null&&r.wishlists?t.customer.wishlists.map(i=>u(i)):null}):c(),W=`
+  ${WISHLIST_FRAGMENT}
+`;
+const getWishlists = async () => {
+  if (!state.authenticated) {
+    return getPersistedWishlistData();
+  }
+  return fetchGraphQl(GET_WISHLISTS_QUERY).then(({
+    errors,
+    data
+  }) => {
+    var _a;
+    if (errors) return handleFetchError(errors);
+    if (!((_a = data == null ? void 0 : data.customer) == null ? void 0 : _a.wishlists)) {
+      return null;
+    }
+    return data.customer.wishlists.map((wishlist) => transformWishlist(wishlist));
+  });
+};
+const UPDATE_PRODUCTS_IN_WISHLIST_MUTATION = `
   mutation UPDATE_PRODUCTS_IN_WISHLIST_MUTATION(
       $wishlistId: ID!, 
       $wishlistItems: [WishlistItemUpdateInput!]!,
@@ -72,5 +185,93 @@ query STORE_CONFIG_QUERY {
     }
   }
   
-   ${d} 
-`,U=async s=>{const t=e.wishlistId;if(!t)throw Error("Wishlist ID is not set");return _(W,{variables:{wishlistId:t,wishlistItems:s.map(({wishlistItemId:r,quantity:i,description:n,selectedOptions:o,enteredOptions:f})=>({wishlistItemId:r,quantity:i,description:n,selected_options:o,entered_options:f}))}}).then(({errors:r,data:i})=>{var o;const n=[...((o=i==null?void 0:i.updateProductsInWishlist)==null?void 0:o.user_errors)??[],...r??[]];return n.length>0?a(n):u(i.updateProductsInWishlist.wishlist)})},y=()=>(e.wishlistId=null,e.authenticated=!1,Promise.resolve(null)),h=async()=>{if(e.initializing)return null;e.initializing=!0,e.config||(e.config=await x());const s=e.authenticated?await C():await D();return l.emit("wishlist/initialized",s),l.emit("wishlist/data",s),e.initializing=!1,s};async function C(){const s=await P(),t=s?s[0]:null;return t?(e.wishlistId=t.id,t):null}async function D(){try{return await c()}catch(s){throw console.error(s),s}}export{B as addProductsToWishlist,b as config,_ as fetchGraphQl,O as getConfig,C as getDefaultWishlist,D as getGuestWishlist,c as getPersistedWishlistData,q as getProductBySku,x as getStoreConfig,R as getWishlistById,P as getWishlists,I as initialize,h as initializeWishlist,$ as removeFetchGraphQlHeader,A as removeProductsFromWishlist,y as resetWishlist,M as setEndpoint,z as setFetchGraphQlHeader,Q as setFetchGraphQlHeaders,g as setPersistedWishlistData,U as updateProductsInWishlist};
+   ${WISHLIST_FRAGMENT} 
+`;
+const updateProductsInWishlist = async (items) => {
+  const wishlistId = state.wishlistId;
+  if (!wishlistId) {
+    throw Error("Wishlist ID is not set");
+  }
+  return fetchGraphQl(UPDATE_PRODUCTS_IN_WISHLIST_MUTATION, {
+    variables: {
+      wishlistId,
+      wishlistItems: items.map(({
+        wishlistItemId,
+        quantity,
+        description,
+        selectedOptions: selected_options,
+        enteredOptions: entered_options
+      }) => ({
+        wishlistItemId,
+        quantity,
+        description,
+        selected_options,
+        entered_options
+      }))
+    }
+  }).then(({
+    errors,
+    data
+  }) => {
+    var _a;
+    const _errors = [...((_a = data == null ? void 0 : data.updateProductsInWishlist) == null ? void 0 : _a.user_errors) ?? [], ...errors ?? []];
+    if (_errors.length > 0) return handleFetchError(_errors);
+    return transformWishlist(data.updateProductsInWishlist.wishlist);
+  });
+};
+const resetWishlist = () => {
+  state.wishlistId = null;
+  state.authenticated = false;
+  return Promise.resolve(null);
+};
+const initializeWishlist = async () => {
+  if (state.initializing) return null;
+  state.initializing = true;
+  if (!state.config) {
+    state.config = await getStoreConfig();
+  }
+  const payload = state.authenticated ? await getDefaultWishlist() : await getGuestWishlist();
+  events.emit("wishlist/initialized", payload);
+  events.emit("wishlist/data", payload);
+  state.initializing = false;
+  return payload;
+};
+async function getDefaultWishlist() {
+  const wishlists = await getWishlists();
+  const wishlist = wishlists ? wishlists[0] : null;
+  if (!wishlist) return null;
+  state.wishlistId = wishlist.id;
+  return wishlist;
+}
+async function getGuestWishlist() {
+  try {
+    return await getPersistedWishlistData();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export {
+  a as addProductsToWishlist,
+  config,
+  fetchGraphQl,
+  m as getConfig,
+  getDefaultWishlist,
+  getGuestWishlist,
+  getPersistedWishlistData,
+  g as getProductBySku,
+  getStoreConfig,
+  getWishlistById,
+  getWishlists,
+  initialize,
+  initializeWishlist,
+  k as removeFetchGraphQlHeader,
+  r as removeProductsFromWishlist,
+  resetWishlist,
+  i as setEndpoint,
+  j as setFetchGraphQlHeader,
+  l as setFetchGraphQlHeaders,
+  setPersistedWishlistData,
+  updateProductsInWishlist
+};
+//# sourceMappingURL=api.js.map

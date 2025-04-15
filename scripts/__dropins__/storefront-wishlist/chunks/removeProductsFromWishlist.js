@@ -1,6 +1,179 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{events as E}from"@dropins/tools/event-bus.js";import{FetchGraphQL as R}from"@dropins/tools/fetch-graphql.js";function P(e){const t=document.cookie.split(";");for(const r of t)if(r.trim().startsWith(`${e}=`))return r.trim().substring(e.length+1);return null}const O={wishlistId:null,authenticated:!1,currentPage:1,pageSize:12},m=new Proxy(O,{set(e,t,r){if(e[t]=r,t==="wishlistId"){if(r===m.wishlistId)return!0;if(r===null)return document.cookie="DROPIN__WISHLIST__WISHLIST-ID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/",!0;const i=new Date;i.setDate(i.getDate()+30),document.cookie=`DROPIN__WISHLIST__WISHLIST-ID=${r}; expires=${i.toUTCString()}; path=/`}return Reflect.set(e,t,r)},get(e,t){return t==="wishlistId"?P("DROPIN__WISHLIST__WISHLIST-ID"):e[t]}}),p="DROPIN__WISHLIST__WISHLIST__DATA";function A(e){if(e)try{localStorage.setItem(p,JSON.stringify(e))}catch(t){M(t)?console.error("LocalStorage quota exceeded:",t):console.error("Error saving wishlist:",t)}else localStorage.removeItem(p)}const M=e=>e instanceof DOMException&&e.name==="QuotaExceededError";function W(){try{const e=localStorage.getItem(p);return e?JSON.parse(e):{id:"",items:[]}}catch(e){return console.error("Error retrieving wishlist:",e),{id:"",items:[]}}}const{setEndpoint:q,setFetchGraphQlHeader:V,removeFetchGraphQlHeader:j,setFetchGraphQlHeaders:B,fetchGraphQl:v,getConfig:J}=new R().getMethods();function N(e){var t;return e?{name:e.name,sku:e.sku,uid:e.uid,image:w(e),stockStatus:e.stock_status,canonicalUrl:e.canonical_url,urlKey:e.url_key,categories:(t=e.categories)==null?void 0:t.map(r=>r.name),prices:F(e),productAttributes:y(e)}:null}function w(e){var t,r;return{src:(t=e.thumbnail)==null?void 0:t.url,alt:(r=e.thumbnail)==null?void 0:r.label}}function F(e){var t,r,i,s,n,c,u,o,a,l,_,I,d,f,h,g,T,S;return{regularPrice:{currency:(i=(r=(t=e.price_range)==null?void 0:t.minimum_price)==null?void 0:r.regular_price)==null?void 0:i.currency,value:(c=(n=(s=e.price_range)==null?void 0:s.minimum_price)==null?void 0:n.regular_price)==null?void 0:c.value},finalPrice:{currency:(a=(o=(u=e.price_range)==null?void 0:u.minimum_price)==null?void 0:o.final_price)==null?void 0:a.currency,value:(I=(_=(l=e.price_range)==null?void 0:l.minimum_price)==null?void 0:_.final_price)==null?void 0:I.value},discount:{amountOff:(h=(f=(d=e.price_range)==null?void 0:d.minimum_price)==null?void 0:f.discount)==null?void 0:h.amount_off,percentOff:(S=(T=(g=e.price_range)==null?void 0:g.minimum_price)==null?void 0:T.discount)==null?void 0:S.percent_off},fixedProductTaxes:G(e)}}function y(e){var t,r;return(r=(t=e.custom_attributesV2)==null?void 0:t.items)==null?void 0:r.map(i=>{const s=i.code.split("_").map(n=>n.charAt(0).toUpperCase()+n.slice(1)).join(" ");return{...i,code:s}})}function G(e){var t,r,i;return(i=(r=(t=e.price_range)==null?void 0:t.minimum_price)==null?void 0:r.fixed_product_taxes)==null?void 0:i.map(s=>({money:{value:s.amount.value,currency:s.amount.currency},label:s.label}))}function b(e){return e?{id:e.id,updated_at:e.updated_at,sharing_code:e.sharing_code,items_count:e.items_count,total_pages:e.items_v2.page_info.total_pages,items:D(e)}:null}function D(e){var t,r;return(r=(t=e==null?void 0:e.items_v2)==null?void 0:t.items)!=null&&r.length?e.items_v2.items.map(i=>({id:i.id,quantity:i.quantity,description:i.description,added_at:i.added_at,product:N(i.product)})):[]}const L=e=>{const t=e.map(r=>r.message).join(" ");throw Error(t)},x=`
+import { events } from "@dropins/tools/event-bus.js";
+import { FetchGraphQL } from "@dropins/tools/fetch-graphql.js";
+function getCookie(cookieName) {
+  const cookies = document.cookie.split(";");
+  for (const cookie of cookies) {
+    if (cookie.trim().startsWith(`${cookieName}=`)) {
+      return cookie.trim().substring(cookieName.length + 1);
+    }
+  }
+  return null;
+}
+const _state = /* @__PURE__ */ (() => {
+  return {
+    wishlistId: null,
+    authenticated: false,
+    currentPage: 1,
+    pageSize: 12
+  };
+})();
+const state = new Proxy(_state, {
+  set(target, key, value) {
+    target[key] = value;
+    if (key === "wishlistId") {
+      if (value === state.wishlistId) return true;
+      if (value === null) {
+        document.cookie = `DROPIN__WISHLIST__WISHLIST-ID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+        return true;
+      }
+      const expires = /* @__PURE__ */ new Date();
+      expires.setDate(expires.getDate() + 30);
+      document.cookie = `DROPIN__WISHLIST__WISHLIST-ID=${value}; expires=${expires.toUTCString()}; path=/`;
+    }
+    return Reflect.set(target, key, value);
+  },
+  get(target, key) {
+    if (key === "wishlistId") {
+      return getCookie("DROPIN__WISHLIST__WISHLIST-ID");
+    }
+    return target[key];
+  }
+});
+const WISHLIST_KEY = "DROPIN__WISHLIST__WISHLIST__DATA";
+function setPersistedWishlistData(data) {
+  if (data) {
+    try {
+      localStorage.setItem(WISHLIST_KEY, JSON.stringify(data));
+    } catch (error) {
+      if (isQuotaExceededError(error)) {
+        console.error("LocalStorage quota exceeded:", error);
+      } else {
+        console.error("Error saving wishlist:", error);
+      }
+    }
+  } else {
+    localStorage.removeItem(WISHLIST_KEY);
+  }
+}
+const isQuotaExceededError = (error) => {
+  return error instanceof DOMException && error.name === "QuotaExceededError";
+};
+function getPersistedWishlistData() {
+  try {
+    const wishlist = localStorage.getItem(WISHLIST_KEY);
+    return wishlist ? JSON.parse(wishlist) : {
+      id: "",
+      items: []
+    };
+  } catch (error) {
+    console.error("Error retrieving wishlist:", error);
+    return {
+      id: "",
+      items: []
+    };
+  }
+}
+const {
+  setEndpoint,
+  setFetchGraphQlHeader,
+  removeFetchGraphQlHeader,
+  setFetchGraphQlHeaders,
+  fetchGraphQl,
+  getConfig
+} = new FetchGraphQL().getMethods();
+function transformProduct(data) {
+  var _a;
+  if (!data) return null;
+  return {
+    name: data.name,
+    sku: data.sku,
+    uid: data.uid,
+    image: getImage(data),
+    stockStatus: data.stock_status,
+    canonicalUrl: data.canonical_url,
+    urlKey: data.url_key,
+    categories: (_a = data.categories) == null ? void 0 : _a.map((category) => category.name),
+    prices: getPrices(data),
+    productAttributes: transformProductAttributes(data)
+  };
+}
+function getImage(product) {
+  var _a, _b;
+  return {
+    // TODO: Check if we need to use the config as is done in cart, use parent thumbnail if configured, otherwise use own variant. use the parent thumbnail as a fallback
+    src: (_a = product.thumbnail) == null ? void 0 : _a.url,
+    alt: (_b = product.thumbnail) == null ? void 0 : _b.label
+  };
+}
+function getPrices(product) {
+  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r;
+  return {
+    regularPrice: {
+      currency: (_c = (_b = (_a = product.price_range) == null ? void 0 : _a.minimum_price) == null ? void 0 : _b.regular_price) == null ? void 0 : _c.currency,
+      value: (_f = (_e = (_d = product.price_range) == null ? void 0 : _d.minimum_price) == null ? void 0 : _e.regular_price) == null ? void 0 : _f.value
+    },
+    finalPrice: {
+      currency: (_i = (_h = (_g = product.price_range) == null ? void 0 : _g.minimum_price) == null ? void 0 : _h.final_price) == null ? void 0 : _i.currency,
+      value: (_l = (_k = (_j = product.price_range) == null ? void 0 : _j.minimum_price) == null ? void 0 : _k.final_price) == null ? void 0 : _l.value
+    },
+    discount: {
+      amountOff: (_o = (_n = (_m = product.price_range) == null ? void 0 : _m.minimum_price) == null ? void 0 : _n.discount) == null ? void 0 : _o.amount_off,
+      percentOff: (_r = (_q = (_p = product.price_range) == null ? void 0 : _p.minimum_price) == null ? void 0 : _q.discount) == null ? void 0 : _r.percent_off
+    },
+    fixedProductTaxes: transformFixedProductTaxes(product)
+  };
+}
+function transformProductAttributes(product) {
+  var _a, _b;
+  return (_b = (_a = product.custom_attributesV2) == null ? void 0 : _a.items) == null ? void 0 : _b.map((attribute) => {
+    const transformedCode = attribute.code.split("_").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
+    return {
+      ...attribute,
+      code: transformedCode
+    };
+  });
+}
+function transformFixedProductTaxes(product) {
+  var _a, _b, _c;
+  return (_c = (_b = (_a = product.price_range) == null ? void 0 : _a.minimum_price) == null ? void 0 : _b.fixed_product_taxes) == null ? void 0 : _c.map((attribute) => {
+    return {
+      money: {
+        value: attribute.amount.value,
+        currency: attribute.amount.currency
+      },
+      label: attribute.label
+    };
+  });
+}
+function transformWishlist(data) {
+  if (!data) return null;
+  return {
+    id: data.id,
+    updated_at: data.updated_at,
+    sharing_code: data.sharing_code,
+    items_count: data.items_count,
+    total_pages: data.items_v2.page_info.total_pages,
+    items: transformItems(data)
+  };
+}
+function transformItems(data) {
+  var _a, _b;
+  if (!((_b = (_a = data == null ? void 0 : data.items_v2) == null ? void 0 : _a.items) == null ? void 0 : _b.length)) return [];
+  return data.items_v2.items.map((item) => ({
+    id: item.id,
+    quantity: item.quantity,
+    description: item.description,
+    added_at: item.added_at,
+    product: transformProduct(item.product)
+  }));
+}
+const handleFetchError = (errors) => {
+  const errorMessage = errors.map((e) => e.message).join(" ");
+  throw Error(errorMessage);
+};
+const PRICE_RANGE_FRAGMENT = `
   fragment PRICE_RANGE_FRAGMENT on PriceRange {
     minimum_price {
       regular_price {
@@ -45,7 +218,8 @@ import{events as E}from"@dropins/tools/event-bus.js";import{FetchGraphQL as R}fr
       }      
     }
   }
-`,H=`
+`;
+const PRODUCT_FRAGMENT = `
   fragment PRODUCT_FRAGMENT on ProductInterface {
     name
     sku
@@ -81,8 +255,9 @@ import{events as E}from"@dropins/tools/event-bus.js";import{FetchGraphQL as R}fr
     }
   }
 
-${x}
-`,C=`
+${PRICE_RANGE_FRAGMENT}
+`;
+const CUSTOMIZABLE_OPTIONS_FRAGMENT = `
   fragment CUSTOMIZABLE_OPTIONS_FRAGMENT on SelectedCustomizableOption {
     type
     customizable_option_uid
@@ -98,7 +273,8 @@ ${x}
       }
     }
   }
-`,k=`
+`;
+const WISHLIST_ITEM_FRAGMENT = `
 fragment WISHLIST_ITEM_FRAGMENT on WishlistItemInterface {
     __typename
     id
@@ -113,17 +289,25 @@ fragment WISHLIST_ITEM_FRAGMENT on WishlistItemInterface {
     }
   }
   
-  ${H}
-  ${C}
-`,U=`
+  ${PRODUCT_FRAGMENT}
+  ${CUSTOMIZABLE_OPTIONS_FRAGMENT}
+`;
+const WISHLIST_PAGINATION_ARGUMENTS = `
+    $pageSize: Int! = 4,
+    $currentPage: Int! = 0,
+`;
+const WISHLIST_PAGINATION_VARIABLES = `
+    pageSize: $pageSize,
+    currentPage: $currentPage,
+`;
+const WISHLIST_FRAGMENT = `
 fragment WISHLIST_FRAGMENT on Wishlist {
     id
     updated_at
     sharing_code
     items_count
     items_v2(
-        currentPage: 0,
-        pageSize: 0
+      ${WISHLIST_PAGINATION_VARIABLES}
       ) {
       items {
         ...WISHLIST_ITEM_FRAGMENT
@@ -136,11 +320,13 @@ fragment WISHLIST_FRAGMENT on Wishlist {
     }
   }
 
-${k}
-`,$=`
+${WISHLIST_ITEM_FRAGMENT}
+`;
+const REMOVE_PRODUCTS_FROM_WISHLIST_MUTATION = `
   mutation REMOVE_PRODUCTS_FROM_WISHLIST_MUTATION(
       $wishlistId: ID!, 
       $wishlistItemsIds: [ID!]!,
+      ${WISHLIST_PAGINATION_ARGUMENTS}
     ) {
     removeProductsFromWishlist(
       wishlistId: $wishlistId
@@ -156,5 +342,56 @@ ${k}
     }
   }
 
-${U}     
-`,Z=async e=>{var c,u;if(!m.authenticated){const o=W(),a={...o,items:(c=o.items)==null?void 0:c.filter(l=>!e.map(_=>_.product.sku).includes(l.product.sku))};return A(a),E.emit("wishlist/data",a),null}if(!m.wishlistId)throw Error("Wishlist ID is not set");const t=e.map(o=>o.id),{errors:r,data:i}=await v($,{variables:{wishlistId:m.wishlistId,wishlistItemsIds:t}}),s=[...((u=i==null?void 0:i.removeProductsFromWishlist)==null?void 0:u.user_errors)??[],...r??[]];if(s.length>0)return L(s);const n=b(i.removeProductsFromWishlist.wishlist);return E.emit("wishlist/data",n),n};export{U as W,A as a,N as b,k as c,q as d,V as e,v as f,W as g,L as h,j as i,B as j,J as k,Z as r,m as s,b as t};
+${WISHLIST_FRAGMENT}
+`;
+const removeProductsFromWishlist = async (items) => {
+  var _a, _b;
+  if (!state.authenticated) {
+    const wishlist = getPersistedWishlistData();
+    const updatedWishlist = {
+      ...wishlist,
+      items: (_a = wishlist.items) == null ? void 0 : _a.filter((item) => !items.map((i) => i.product.sku).includes(item.product.sku))
+    };
+    setPersistedWishlistData(updatedWishlist);
+    events.emit("wishlist/data", updatedWishlist);
+    return null;
+  }
+  if (!state.wishlistId) {
+    throw Error("Wishlist ID is not set");
+  }
+  const itemIds = items.map((item) => item.id);
+  const {
+    errors,
+    data
+  } = await fetchGraphQl(REMOVE_PRODUCTS_FROM_WISHLIST_MUTATION, {
+    variables: {
+      wishlistId: state.wishlistId,
+      wishlistItemsIds: itemIds
+    }
+  });
+  const _errors = [...((_b = data == null ? void 0 : data.removeProductsFromWishlist) == null ? void 0 : _b.user_errors) ?? [], ...errors ?? []];
+  if (_errors.length > 0) return handleFetchError(_errors);
+  const payload = transformWishlist(data.removeProductsFromWishlist.wishlist);
+  events.emit("wishlist/data", payload);
+  return payload;
+};
+export {
+  WISHLIST_PAGINATION_ARGUMENTS as W,
+  WISHLIST_FRAGMENT as a,
+  setPersistedWishlistData as b,
+  transformWishlist as c,
+  WISHLIST_PAGINATION_VARIABLES as d,
+  WISHLIST_ITEM_FRAGMENT as e,
+  fetchGraphQl as f,
+  getPersistedWishlistData as g,
+  handleFetchError as h,
+  setEndpoint as i,
+  setFetchGraphQlHeader as j,
+  removeFetchGraphQlHeader as k,
+  setFetchGraphQlHeaders as l,
+  getConfig as m,
+  removeProductsFromWishlist as r,
+  state as s,
+  transformProduct as t
+};
+//# sourceMappingURL=removeProductsFromWishlist.js.map

@@ -190,7 +190,7 @@ export default async function decorate(block) {
     // Add to Wishlist
     UI.render(Button, {
       variant: 'secondary',
-      icon: Icon({ source: 'Heart' }), // how to choose filled vs. empty here?
+      icon: Icon({ source: 'Heart' }),
       isGuestWishlistEnabled: false, // ??? how to hide button for Guest user?
       onClick: async () => {
         try {

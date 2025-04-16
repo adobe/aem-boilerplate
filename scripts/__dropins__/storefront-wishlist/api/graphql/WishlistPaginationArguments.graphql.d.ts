@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const WISHLIST_PAGINATION_ARGUMENTS = "\n    $pageSize: Int! = 4,\n    $currentPage: Int! = 0,\n";
+export declare const WISHLIST_PAGINATION_ARGUMENTS: string;
 //# sourceMappingURL=WishlistPaginationArguments.graphql.d.ts.map

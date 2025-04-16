@@ -1,0 +1,8 @@
+/*! Copyright 2025 Adobe
+All Rights Reserved. */
+import * as React from "@dropins/tools/preact-compat.js";
+const SvgOrder = (props) => /* @__PURE__ */ React.createElement("svg", { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", xmlns: "http://www.w3.org/2000/svg", ...props }, /* @__PURE__ */ React.createElement("path", { vectorEffect: "non-scaling-stroke", d: "M12 22.2125L2 18.375V5.76245L12 9.66245V22.2125Z", stroke: "currentColor", strokeWidth: 1, strokeLinecap: "round", strokeLinejoin: "round" }), /* @__PURE__ */ React.createElement("path", { vectorEffect: "non-scaling-stroke", d: "M12 22.2125L22 18.375V5.76245L12 9.66245V22.2125Z", stroke: "currentColor", strokeWidth: 1, strokeLinecap: "round", strokeLinejoin: "round" }), /* @__PURE__ */ React.createElement("path", { vectorEffect: "non-scaling-stroke", d: "M2 5.76249L12 1.79999L22 5.76249L12 9.66249L2 5.76249Z", stroke: "currentColor", strokeWidth: 1, strokeLinecap: "round", strokeLinejoin: "round" }), /* @__PURE__ */ React.createElement("path", { vectorEffect: "non-scaling-stroke", d: "M7.41309 3.61249L17.4131 7.52499V11.3625", stroke: "currentColor", strokeWidth: 1, strokeLinecap: "round", strokeLinejoin: "round" }));
+export {
+  SvgOrder as default
+};
+//# sourceMappingURL=Order.js.map

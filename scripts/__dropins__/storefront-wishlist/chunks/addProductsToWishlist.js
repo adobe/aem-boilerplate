@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import { f as fetchGraphQl, h as handleFetchError, t as transformProduct, W as WISHLIST_PAGINATION_ARGUMENTS, a as WISHLIST_FRAGMENT, s as state, g as getPersistedWishlistData, b as setPersistedWishlistData, c as transformWishlist } from "./removeProductsFromWishlist.js";
+import { f as fetchGraphQl, h as handleFetchError, c as transformProduct, W as WISHLIST_PAGINATION_ARGUMENTS, d as WISHLIST_FRAGMENT, s as state, g as getPersistedWishlistData, e as setPersistedWishlistData, t as transformWishlist } from "./removeProductsFromWishlist.js";
 import { events } from "@dropins/tools/event-bus.js";
 const GET_PRODUCT_BY_SKU = `
   query GET_PRODUCT_BY_SKU($sku: String!) {
@@ -161,6 +161,7 @@ const addProductsToWishlist = async (items) => {
   const _errors = [...((_b = data == null ? void 0 : data.addProductsToWishlist) == null ? void 0 : _b.user_errors) ?? [], ...errors ?? []];
   if (_errors.length > 0) return handleFetchError(_errors);
   const payload = transformWishlist(data.addProductsToWishlist.wishlist);
+  state.currentPage = 1;
   events.emit("wishlist/data", payload);
   events.emit("wishlist/update", {
     action: "add",

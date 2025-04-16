@@ -196,22 +196,25 @@ export default async function decorate(block) {
             disabled: false,
           }));
 
+          const WISHLIST_KEY = 'DROPIN__WISHLIST__WISHLIST__DATA';
+          const wishlist = localStorage.getItem(WISHLIST_KEY) ? JSON.parse(localStorage.getItem(WISHLIST_KEY)) : { id: '', items: [] };
+          const item = wishlist?.items?.find((i) => i.product.sku === product.sku);
+
           const {
             addProductsToWishlist,
             removeProductsFromWishlist,
           } = await import('@dropins/storefront-wishlist/api.js');
-          if (wishlistItem && wishlistItem.id) {
+          if (item) {
             await removeProductsFromWishlist(
               [
                 {
-                  id: wishlistItem.id,
+                  id: item.id ?? '',
                   product: {
                     sku: product.sku,
                   },
                 },
               ],
             );
-            wishlistItem = null;
           } else {
             await addProductsToWishlist([{ sku: product.sku, quantity: 1 }]);
           }
@@ -280,19 +283,16 @@ export default async function decorate(block) {
 
     if (item) {
       wishlistItem = data.item;
-    }
-  }, { eager: true });
-
-  // Lifecycle Events
-  events.on('wishlist/update', (data) => {
-    const WISHLIST_KEY = 'DROPIN__WISHLIST__WISHLIST__DATA';
-    const wishlist = localStorage.getItem(WISHLIST_KEY) ? JSON.parse(localStorage.getItem(WISHLIST_KEY)) : { id: '', items: [] };
-    const item = wishlist?.items?.includes((i) => i.product.sku === product.sku);
-
-    if (data.action === 'add' && !item) {
-      wishlist.items.push(data.item);
-      localStorage.setItem(WISHLIST_KEY, JSON.stringify(wishlist));
-      wishlistItem = data.item;
+      addToWishlist.setProps((prev) => ({
+        ...prev,
+        icon: Icon({ source: 'HeartFilled' }),
+      }));
+    } else {
+      wishlistItem = null;
+      addToWishlist.setProps((prev) => ({
+        ...prev,
+        icon: Icon({ source: 'Heart' }),
+      }));
     }
   }, { eager: true });
 

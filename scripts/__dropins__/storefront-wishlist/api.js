@@ -2,9 +2,10 @@
 All Rights Reserved. */
 import { Initializer } from "@dropins/tools/lib.js";
 import { events } from "@dropins/tools/event-bus.js";
-import { s as state, b as setPersistedWishlistData, f as fetchGraphQl, h as handleFetchError, W as WISHLIST_PAGINATION_ARGUMENTS, d as WISHLIST_PAGINATION_VARIABLES, e as WISHLIST_ITEM_FRAGMENT, g as getPersistedWishlistData, c as transformWishlist, a as WISHLIST_FRAGMENT } from "./chunks/removeProductsFromWishlist.js";
+import { s as state, e as setPersistedWishlistData, f as fetchGraphQl, h as handleFetchError, W as WISHLIST_PAGINATION_ARGUMENTS, d as WISHLIST_FRAGMENT, g as getPersistedWishlistData, t as transformWishlist } from "./chunks/removeProductsFromWishlist.js";
 import { m, k, r, i, j, l } from "./chunks/removeProductsFromWishlist.js";
 import { a, g } from "./chunks/addProductsToWishlist.js";
+import { g as g2 } from "./chunks/getWishlistById.js";
 import "@dropins/tools/fetch-graphql.js";
 const initialize = new Initializer({
   init: async (config2) => {
@@ -83,60 +84,6 @@ const getStoreConfig = async () => {
   }) => {
     if (errors) return handleFetchError(errors);
     return transformStoreConfig(data);
-  });
-};
-const GET_WISHLIST_BY_ID_QUERY = `
-  query GET_WISHLIST_BY_ID_QUERY(
-    $wishlistId: ID!,
-    ${WISHLIST_PAGINATION_ARGUMENTS}
-  ) {
-    customer {
-      wishlist_v2(id: $wishlistId) {
-        id
-        updated_at
-        sharing_code
-        items_count
-        items_v2(
-            ${WISHLIST_PAGINATION_VARIABLES}
-          ) {
-          items {
-            ...WISHLIST_ITEM_FRAGMENT
-          }
-          page_info {
-            page_size
-            current_page
-            total_pages
-          }
-        }
-      }
-    }
-  }
-
-${WISHLIST_ITEM_FRAGMENT}
-`;
-const getWishlistById = async (wishlistId, currentPage, pageSize) => {
-  if (!state.authenticated) {
-    return getPersistedWishlistData();
-  }
-  if (!wishlistId) {
-    throw Error("Wishlist ID is not set");
-  }
-  return fetchGraphQl(GET_WISHLIST_BY_ID_QUERY, {
-    variables: {
-      wishlistId,
-      currentPage,
-      pageSize
-    }
-  }).then(({
-    errors,
-    data
-  }) => {
-    var _a;
-    if (errors) return handleFetchError(errors);
-    if (!((_a = data == null ? void 0 : data.customer) == null ? void 0 : _a.wishlist_v2)) {
-      return null;
-    }
-    return transformWishlist(data.customer.wishlist_v2);
   });
 };
 const GET_WISHLISTS_QUERY = `
@@ -261,7 +208,7 @@ export {
   getPersistedWishlistData,
   g as getProductBySku,
   getStoreConfig,
-  getWishlistById,
+  g2 as getWishlistById,
   getWishlists,
   initialize,
   initializeWishlist,

@@ -16,7 +16,7 @@ const _state = /* @__PURE__ */ (() => {
     wishlistId: null,
     authenticated: false,
     currentPage: 1,
-    pageSize: 12
+    pageSize: 4
   };
 })();
 const state = new Proxy(_state, {
@@ -292,9 +292,13 @@ fragment WISHLIST_ITEM_FRAGMENT on WishlistItemInterface {
   ${PRODUCT_FRAGMENT}
   ${CUSTOMIZABLE_OPTIONS_FRAGMENT}
 `;
+const {
+  pageSize,
+  currentPage
+} = state;
 const WISHLIST_PAGINATION_ARGUMENTS = `
-    $pageSize: Int! = 4,
-    $currentPage: Int! = 0,
+    $pageSize: Int! = ${pageSize},
+    $currentPage: Int! = ${currentPage},
 `;
 const WISHLIST_PAGINATION_VARIABLES = `
     pageSize: $pageSize,
@@ -372,16 +376,17 @@ const removeProductsFromWishlist = async (items) => {
   const _errors = [...((_b = data == null ? void 0 : data.removeProductsFromWishlist) == null ? void 0 : _b.user_errors) ?? [], ...errors ?? []];
   if (_errors.length > 0) return handleFetchError(_errors);
   const payload = transformWishlist(data.removeProductsFromWishlist.wishlist);
+  state.currentPage = 1;
   events.emit("wishlist/data", payload);
   return payload;
 };
 export {
   WISHLIST_PAGINATION_ARGUMENTS as W,
-  WISHLIST_FRAGMENT as a,
-  setPersistedWishlistData as b,
-  transformWishlist as c,
-  WISHLIST_PAGINATION_VARIABLES as d,
-  WISHLIST_ITEM_FRAGMENT as e,
+  WISHLIST_PAGINATION_VARIABLES as a,
+  WISHLIST_ITEM_FRAGMENT as b,
+  transformProduct as c,
+  WISHLIST_FRAGMENT as d,
+  setPersistedWishlistData as e,
   fetchGraphQl as f,
   getPersistedWishlistData as g,
   handleFetchError as h,
@@ -392,6 +397,6 @@ export {
   getConfig as m,
   removeProductsFromWishlist as r,
   state as s,
-  transformProduct as t
+  transformWishlist as t
 };
 //# sourceMappingURL=removeProductsFromWishlist.js.map

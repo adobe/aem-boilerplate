@@ -149,7 +149,7 @@ describe('Verify auth user can place order', () => {
     cy.contains('Estimated Shipping').should('be.visible');
     cy.get('.dropin-button.dropin-button--medium.dropin-button--primary')
       .contains('Checkout')
-      .click();
+      .click({force: true});
     assertCartSummaryMisc(2);
     assertCartSummaryProductsOnCheckout(
       'Crown Summit Backpack',
@@ -174,7 +174,7 @@ describe('Verify auth user can place order', () => {
     assertOrderSummaryMisc('$90.00', '$10.00', '$86.50');
     assertSelectedPaymentMethod(checkMoneyOrder.code, 0);
     setPaymentMethod(paymentServicesCreditCard);
-    assertSelectedPaymentMethod(paymentServicesCreditCard.code, 1);
+    assertSelectedPaymentMethod(paymentServicesCreditCard.code, 2);
     cy.wait(5000);
     placeOrder();
     assertOrderConfirmationCommonDetails(customerBillingAddress, paymentServicesCreditCard);

@@ -393,7 +393,11 @@ function filterFeed(filter, data) {
 }
 
 function filterBlogArticles(data) {
-  return data.filter(article => article.path && article.path.includes('/blog/'));
+  return data.filter(article => article.path && (
+    article.path.includes('/blog/') || 
+    article.path.includes('/guides/') || 
+    article.path.includes('/patchnotes/')
+  ));
 }
 
 function sortFeed(data) {

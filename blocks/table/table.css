@@ -48,6 +48,10 @@
   margin: 0;
 }
 
+.table table td img {
+  max-width: 65px;
+}
+
 .table table td p + p {
   margin-top: 0.25em;
 }
@@ -60,6 +64,15 @@
 /* striped variant */
 .table.striped tbody tr:nth-child(odd) {
   background-color: var(--light-color);
+}
+
+/* striped variant with cod */
+.table.cod.striped tbody tr:nth-child(even) {
+  background-color: var(--cod-table-rows-even);
+}
+
+.table.cod.striped tbody tr:nth-child(odd) {
+  background-color: var(--cod-table-rows-odd);
 }
 
 /* bordered variant */
@@ -121,7 +134,7 @@
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.35), 0px 0px 24px 0px #FF851B inset;
 }
 
-.table.cod thead tr{
+.table.cod thead tr {
   font-family: "Hitmarker Condensed Black", Arial;
   font-weight: 900;
   font-style: normal;

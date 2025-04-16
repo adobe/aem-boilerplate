@@ -9,6 +9,10 @@ import {
 import { events } from '@dropins/tools/event-bus.js';
 import * as pdpApi from '@dropins/storefront-pdp/api.js';
 import { render as pdpRendered } from '@dropins/storefront-pdp/render.js';
+import {
+  addProductsToWishlist,
+  removeProductsFromWishlist,
+} from '@dropins/storefront-wishlist/api.js';
 
 // Containers
 import ProductHeader from '@dropins/storefront-pdp/containers/ProductHeader.js';
@@ -190,20 +194,9 @@ export default async function decorate(block) {
       isGuestWishlistEnabled: false, // ??? how to hide button for Guest user?
       onClick: async () => {
         try {
-          addToWishlist.setProps((prev) => ({
-            ...prev,
-            disabled: false,
-          }));
-
-          const WISHLIST_KEY = 'DROPIN__WISHLIST__WISHLIST__DATA';
-          const wishlist = localStorage.getItem(WISHLIST_KEY) ? JSON.parse(localStorage.getItem(WISHLIST_KEY)) : { id: '', items: [] };
-          const item = wishlist?.items?.find((i) => i.product.sku === product.sku);
+          const item = getWishlistItemFromStorage(product?.sku);
           let msgIcon = 'Heart';
 
-          const {
-            addProductsToWishlist,
-            removeProductsFromWishlist,
-          } = await import('@dropins/storefront-wishlist/api.js');
           if (item) {
             await removeProductsFromWishlist(
               [
@@ -222,9 +215,8 @@ export default async function decorate(block) {
           }
           // @todo: add translations
           inlineAlert = await UI.render(InLineAlert, {
-            heading: 'Wishlist updated successfuly',
+            heading: `${product?.name} was ${msgIcon === 'Heart' ? 'removed from' : 'added to'} your wishlist`,
             type: 'success',
-            description: `${product?.name} was ${msgIcon === 'Heart' ? 'removed from' : 'added to'} your wishlist`,
             icon: Icon({ source: msgIcon }),
             'aria-live': 'assertive',
             role: 'alert',
@@ -269,16 +261,47 @@ export default async function decorate(block) {
     addToCart.setProps((prev) => ({ ...prev, disabled: !valid }));
   }, { eager: true });
 
-  // Lifecycle Events
   events.on('wishlist/data', () => {
-    const WISHLIST_KEY = 'DROPIN__WISHLIST__WISHLIST__DATA';
-    const wishlist = localStorage.getItem(WISHLIST_KEY) ? JSON.parse(localStorage.getItem(WISHLIST_KEY)) : { id: '', items: [] };
-    const item = wishlist?.items?.find((i) => i.product.sku === product.sku);
-
+    const item = getWishlistItemFromStorage(product.sku);
     addToWishlist.setProps((prev) => ({
       ...prev,
       icon: Icon({ source: (item) ? 'HeartFilled' : 'Heart' }),
     }));
+  }, { eager: true });
+
+  events.on('cart/updated', async (data) => {
+    const item = getWishlistItemFromStorage(product.sku);
+    if (!item) {
+      return;
+    }
+    const inCart = data?.items?.find((cartItem) => cartItem.sku === item.product.sku);
+    if (inCart) {
+      await removeProductsFromWishlist(
+        [
+          {
+            id: item.id ?? '',
+            product: {
+              sku: item.product.sku,
+            },
+          },
+        ],
+      );
+      addToWishlist.setProps((prev) => ({
+        ...prev,
+        icon: Icon({ source: 'Heart' }),
+      }));
+      // @todo: add translations
+      inlineAlert = await UI.render(InLineAlert, {
+        heading: `${product?.name} was successfully added to your cart and removed from your wishlist`,
+        type: 'success',
+        icon: Icon({ source: 'Heart' }),
+        'aria-live': 'assertive',
+        role: 'alert',
+        onDismiss: () => {
+          inlineAlert.remove();
+        },
+      })($alert);
+    }
   }, { eager: true });
 
   // Set JSON-LD and Meta Tags
@@ -373,6 +396,13 @@ async function setJsonLdProduct(product) {
   }
 
   setJsonLd(ldJson, 'product');
+}
+
+function getWishlistItemFromStorage(productSku) {
+  const WISHLIST_KEY = 'DROPIN__WISHLIST__WISHLIST__DATA';
+  const wishlist = localStorage.getItem(WISHLIST_KEY)
+    ? JSON.parse(localStorage.getItem(WISHLIST_KEY)) : { id: '', items: [] };
+  return wishlist?.items?.find((i) => i.product.sku === productSku);
 }
 
 function createMetaTag(property, content, type) {

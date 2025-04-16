@@ -48,7 +48,7 @@ export default async function initializeDropins() {
     // Event Bus Logger
     events.enableLogger(true);
     // Set Fetch Endpoint (Global)
-    setEndpoint(await getConfigValue('commerce-core-endpoint'));
+    setEndpoint(getConfigValue('commerce-core-endpoint'));
 
     // Initialize Global Drop-ins
     await import('./auth.js');

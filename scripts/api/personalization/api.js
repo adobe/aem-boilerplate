@@ -5,7 +5,7 @@ import { getHeaders } from '../../configs.js';
 import { getUserTokenCookie } from '../../initializers/index.js';
 
 const addCartHeaders = async () => {
-  const cartHeaders = await getHeaders('cart');
+  const cartHeaders = getHeaders('cart');
   Object.keys(cartHeaders).forEach((key) => {
     if (cartHeaders[key] !== undefined) {
       setFetchGraphQlHeader(key, cartHeaders[key]);
@@ -96,7 +96,7 @@ const getCatalogPriceRules = async (sku) => {
           products(filter: {
             sku: {
               eq: $sku
-            } 
+            }
           })
           {
             items {

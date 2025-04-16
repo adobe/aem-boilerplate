@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "code": {
+    "owner": "{ORG}",
+    "repo": "{REPO}",
+    "source": {
+      "type": "github",
+      "url": "https://github.com/{ORG}/{REPO}"
+    }
+  },
+  "content": {
+    "source": {
+      "url": "{CONTENT_SOURCE}",
+      "type": "onedrive"
+    }
+  },
+  "folders": {
+    "/products/": "/products/default"
+  },
+  "cdn": {
+    "live": {
+      "host": "main--{SITE}--{ORG}.aem.live"
+    },
+    "preview": {
+      "host": "main--{SITE}--{ORG}.aem.page"
+    }
+  },
+  "headers": {},
+  "public": {
+    "default": {
+      "commerce-core-endpoint": "{ENDPOINT}",
+      "commerce-endpoint": "{CS_ENDPOINT}",
+      "headers": {
+        "cs": {
+          "Magento-Customer-Group": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
+          "Magento-Store-Code": "{STORE_CODE}",
+          "Magento-Store-View-Code": "{STORE_VIEW_CODE}",
+          "Magento-Website-Code": "{WEBSITE_CODE}",
+          "x-api-key": "{COMMERCE_API_KEY}",
+          "Magento-Environment-Id": "{COMMERCE_ENVIRONMENT_ID}"
+        }
+      },
+      "analytics": {
+        "base-currency-code": "USD",
+        "environment": "Production",
+        "store-id": "{STORE_ID}",
+        "store-name": "Main Website Store",
+        "store-url": "{DOMAIN}",
+        "store-view-id": "{STORE_VIEW_ID}",
+        "store-view-name": "Default Store View",
+        "website-id": "{WEBSITE_ID}",
+        "website-name": "Main Website"
+      }
+    }
+  },
+  "robots": {
+    "txt": "User-agent: *\nAllow: /\nDisallow: /drafts/\nDisallow: /enrichment/\nDisallow: /tools/\nDisallow: /plugins/experimentation/\n\nSitemap: https://{DOMAIN}/sitemap-index.xml"
+  },
+  "sidekick": {
+    "project": "Boilerplate",
+    "plugins": [
+      {
+        "id": "cif",
+        "title": "Commerce",
+        "environments": [
+          "edit"
+        ],
+        "url": "https://main--{SITE}--{ORG}.aem.live/tools/picker/dist/index.html",
+        "isPalette": true,
+        "paletteRect": "top: 54px; left: 5px; bottom: 5px; width: 300px; height: calc(100% - 59px); border-radius: var(--hlx-sk-button-border-radius); overflow: hidden; resize: horizontal;"
+      },
+      {
+        "id": "personalisation",
+        "title": "Personalisation",
+        "environments": [
+          "edit"
+        ],
+        "url": "https://main--{SITE}--{ORG}.aem.live/tools/segments/dist/index.html",
+        "isPalette": true,
+        "paletteRect": "top: 54px; left: 5px; bottom: 5px; width: 300px; height: calc(100% - 59px); border-radius: var(--hlx-sk-button-border-radius); overflow: hidden; resize: horizontal;"
+      }
+    ]
+  },
+  "access": {
+    "admin": {
+      "role": {
+        "config_admin": [
+          "{ADMIN_USER_EMAIL}"
+        ]
+      },
+      "requireAuth": "auto"
+    }
+  }
+}

@@ -5,11 +5,8 @@
  * https://www.aem.live/developer/block-collection/fragment
  */
 
-import {
-  decorateMain,
-  getRootPath,
-} from '../../scripts/scripts.js';
-
+import { decorateMain } from '../../scripts/scripts.js';
+import { getRootPath } from '../../scripts/configs.js';
 import {
   loadSections,
 } from '../../scripts/aem.js';
@@ -17,7 +14,7 @@ import {
 /**
  * Loads a fragment.
  * @param {string} path The path to the fragment
- * @returns {HTMLElement} The root element of the fragment
+ * @returns {Promise<HTMLElement>} The root element of the fragment
  */
 export async function loadFragment(path) {
   if (path && path.startsWith('/')) {

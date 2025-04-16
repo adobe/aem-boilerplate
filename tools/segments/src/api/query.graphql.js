@@ -7,7 +7,7 @@ import { fetchGraphQl, setEndpoint } from '@dropins/tools/fetch-graphql.js';
 
 async function executeGraphQlQuery(query, environment) {
   try {
-    setEndpoint(new URL(await getConfigValue('commerce-core-endpoint', environment)).href);
+    setEndpoint(new URL(getConfigValue('commerce-core-endpoint', environment)).href);
     const response = await fetchGraphQl(query, {
       method: 'GET'
     });

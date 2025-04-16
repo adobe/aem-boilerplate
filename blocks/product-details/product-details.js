@@ -33,7 +33,6 @@ export default async function decorate(block) {
   // eslint-disable-next-line no-underscore-dangle
   const product = events._lastEvent?.['pdp/data']?.payload ?? null;
   const labels = await fetchPlaceholders();
-  let wishlistItem;
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`
@@ -199,6 +198,7 @@ export default async function decorate(block) {
           const WISHLIST_KEY = 'DROPIN__WISHLIST__WISHLIST__DATA';
           const wishlist = localStorage.getItem(WISHLIST_KEY) ? JSON.parse(localStorage.getItem(WISHLIST_KEY)) : { id: '', items: [] };
           const item = wishlist?.items?.find((i) => i.product.sku === product.sku);
+          let msgIcon = 'Heart';
 
           const {
             addProductsToWishlist,
@@ -215,9 +215,23 @@ export default async function decorate(block) {
                 },
               ],
             );
+            msgIcon = 'Heart';
           } else {
             await addProductsToWishlist([{ sku: product.sku, quantity: 1 }]);
+            msgIcon = 'HeartFilled';
           }
+          // @todo: add translations
+          inlineAlert = await UI.render(InLineAlert, {
+            heading: 'Wishlist updated successfuly',
+            type: 'success',
+            description: `${product?.name} was ${msgIcon === 'Heart' ? 'removed from' : 'added to'} your wishlist`,
+            icon: Icon({ source: msgIcon }),
+            'aria-live': 'assertive',
+            role: 'alert',
+            onDismiss: () => {
+              inlineAlert.remove();
+            },
+          })($alert);
         } catch (error) {
           // add alert message
           inlineAlert = await UI.render(InLineAlert, {
@@ -256,44 +270,15 @@ export default async function decorate(block) {
   }, { eager: true });
 
   // Lifecycle Events
-  events.on('pdp/data', () => {
-    const WISHLIST_KEY = 'DROPIN__WISHLIST__WISHLIST__DATA';
-    const wishlist = localStorage.getItem(WISHLIST_KEY) ? JSON.parse(localStorage.getItem(WISHLIST_KEY)) : { id: '', items: [] };
-    const item = wishlist?.items?.includes((i) => i.product.sku === product.sku);
-
-    if (item) {
-      wishlistItem = item;
-      addToWishlist.setProps((prev) => ({
-        ...prev,
-        icon: Icon({ source: 'HeartFilled' }),
-      }));
-    } else {
-      addToWishlist.setProps((prev) => ({
-        ...prev,
-        icon: Icon({ source: 'Heart' }),
-      }));
-    }
-  }, { eager: true });
-
-  // Lifecycle Events
-  events.on('wishlist/data', (data) => {
+  events.on('wishlist/data', () => {
     const WISHLIST_KEY = 'DROPIN__WISHLIST__WISHLIST__DATA';
     const wishlist = localStorage.getItem(WISHLIST_KEY) ? JSON.parse(localStorage.getItem(WISHLIST_KEY)) : { id: '', items: [] };
     const item = wishlist?.items?.find((i) => i.product.sku === product.sku);
 
-    if (item) {
-      wishlistItem = data.item;
-      addToWishlist.setProps((prev) => ({
-        ...prev,
-        icon: Icon({ source: 'HeartFilled' }),
-      }));
-    } else {
-      wishlistItem = null;
-      addToWishlist.setProps((prev) => ({
-        ...prev,
-        icon: Icon({ source: 'Heart' }),
-      }));
-    }
+    addToWishlist.setProps((prev) => ({
+      ...prev,
+      icon: Icon({ source: (item) ? 'HeartFilled' : 'Heart' }),
+    }));
   }, { eager: true });
 
   // Set JSON-LD and Meta Tags

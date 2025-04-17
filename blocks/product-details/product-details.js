@@ -74,7 +74,7 @@ export default async function decorate(block) {
   const $options = fragment.querySelector('.product-details__options');
   const $quantity = fragment.querySelector('.product-details__quantity');
   const $addToCart = fragment.querySelector('.product-details__buttons__add-to-cart');
-  const $addToWishlist = fragment.querySelector('.product-details__buttons__add-to-wishlist');
+  const $wishlistToggleBtn = fragment.querySelector('.product-details__buttons__add-to-wishlist');
   const $description = fragment.querySelector('.product-details__description');
   const $attributes = fragment.querySelector('.product-details__attributes');
 
@@ -93,7 +93,7 @@ export default async function decorate(block) {
     _options,
     _quantity,
     addToCart,
-    addToWishlist,
+    wishlistToggleBtn,
     _description,
     _attributes,
   ] = await Promise.all([
@@ -199,7 +199,7 @@ export default async function decorate(block) {
         try {
           const item = getWishlistItemFromStorage(product?.sku);
           if (item) {
-            addToWishlist.setProps((prev) => ({
+            wishlistToggleBtn.setProps((prev) => ({
               ...prev,
               disabled: true,
               'aria-label': labels.Custom?.AddingToWishlist?.label,
@@ -216,7 +216,7 @@ export default async function decorate(block) {
             );
             msgIcon = 'Heart';
           } else {
-            addToWishlist.setProps((prev) => ({
+            wishlistToggleBtn.setProps((prev) => ({
               ...prev,
               disabled: true,
               'aria-label': labels.Custom?.RemovingFromWishlist?.label,
@@ -254,14 +254,14 @@ export default async function decorate(block) {
             block: 'center',
           });
         } finally {
-          addToWishlist.setProps((prev) => ({
+          wishlistToggleBtn.setProps((prev) => ({
             ...prev,
             disabled: false,
             'aria-label': (msgIcon === 'Heart') ? labels.Custom?.AddToWishlist?.label : labels.Custom?.RemoveFromWishlist?.label,
           }));
         }
       },
-    })($addToWishlist),
+    })($wishlistToggleBtn),
 
     // Description
     pdpRendered.render(ProductDescription, {})($description),
@@ -278,7 +278,7 @@ export default async function decorate(block) {
 
   events.on('wishlist/data', () => {
     const item = getWishlistItemFromStorage(product.sku);
-    addToWishlist.setProps((prev) => ({
+    wishlistToggleBtn.setProps((prev) => ({
       ...prev,
       icon: Icon({ source: (item) ? 'HeartFilled' : 'Heart' }),
     }));
@@ -301,7 +301,7 @@ export default async function decorate(block) {
           },
         ],
       );
-      addToWishlist.setProps((prev) => ({
+      wishlistToggleBtn.setProps((prev) => ({
         ...prev,
         icon: Icon({ source: 'Heart' }),
       }));

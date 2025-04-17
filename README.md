@@ -37,6 +37,8 @@ The boilerplate assumes you already have an `aem.live` org and will onboard a ne
 1. Update `fstab.yaml` with your own mountpoint for your content.
 1. Rename `demo-config.json` to a file named `config.json`
 1. Update `config.json` with your endpoints, headers, etc.
+1. Move and rename `demo-sidekick.json` to a file named `tools/sidekick/config.json`.
+1. Update `tools/sidekick/config.json` with your site urls (replace aem-boilerplate-commerce, hlxsites with your site and org)
 1. Commit and push both files.
 1. Install the [AEM Code Sync Bot](https://github.com/apps/aem-code-sync)
 1. Verify the site is working at https://main--{site}--{org}.aem.page
@@ -117,7 +119,7 @@ npm run lint
 1. Rename `demo-config.json` to `config.json` and update with your site values.
 1. Add the [AEM Code Sync GitHub App](https://github.com/apps/aem-code-sync) to the repository
 1. Install all dependencies using `npm i`.
-1. Start AEM Proxy: `npm run start` (opens your browser at `http://localhost:3000`)
+1. Start AEM Proxy: `aem-up --url htps://main--{SITE}--{ORG}.aem.page` (opens your browser at `http://localhost:3000`)
 1. Open the `{repo}` directory in your favourite IDE and start coding :)
 
 ## Changelog

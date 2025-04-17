@@ -192,13 +192,18 @@ export default async function decorate(block) {
     UI.render(Button, {
       variant: 'secondary',
       icon: Icon({ source: 'Heart' }),
+      'aria-label': labels.Custom?.AddToWishlist?.label,
       isGuestWishlistEnabled: false, // ??? how to hide button for Guest user?
       onClick: async () => {
+        let msgIcon = 'Heart';
         try {
           const item = getWishlistItemFromStorage(product?.sku);
-          let msgIcon = 'Heart';
-
           if (item) {
+            addToWishlist.setProps((prev) => ({
+              ...prev,
+              disabled: true,
+              'aria-label': labels.Custom?.AddingToWishlist?.label,
+            }));
             await removeProductsFromWishlist(
               [
                 {
@@ -211,6 +216,11 @@ export default async function decorate(block) {
             );
             msgIcon = 'Heart';
           } else {
+            addToWishlist.setProps((prev) => ({
+              ...prev,
+              disabled: true,
+              'aria-label': labels.Custom?.RemovingFromWishlist?.label,
+            }));
             await addProductsToWishlist([{ sku: product.sku, quantity: 1 }]);
             msgIcon = 'HeartFilled';
           }
@@ -244,7 +254,11 @@ export default async function decorate(block) {
             block: 'center',
           });
         } finally {
-          // todo
+          addToWishlist.setProps((prev) => ({
+            ...prev,
+            disabled: false,
+            'aria-label': (msgIcon === 'Heart') ? labels.Custom?.AddToWishlist?.label : labels.Custom?.RemoveFromWishlist?.label,
+          }));
         }
       },
     })($addToWishlist),

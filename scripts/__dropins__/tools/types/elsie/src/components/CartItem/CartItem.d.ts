@@ -22,6 +22,7 @@ export interface CartItemProps extends Omit<HTMLAttributes<HTMLDivElement>, 'tit
     alert?: VNode;
     discount?: VNode;
     savings?: VNode;
+    actions?: VNode;
     loading?: boolean;
     updating?: boolean;
     onRemove?: () => void;

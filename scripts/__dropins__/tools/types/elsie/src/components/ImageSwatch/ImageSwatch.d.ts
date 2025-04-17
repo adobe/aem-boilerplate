@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'preact';
+import { FunctionComponent, VNode } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
 
 export interface ImageSwatchProps extends Omit<HTMLAttributes<HTMLInputElement>, 'label'> {
@@ -13,6 +13,7 @@ export interface ImageSwatchProps extends Omit<HTMLAttributes<HTMLInputElement>,
     selected?: boolean;
     outOfStock?: boolean;
     multi?: boolean;
+    imageNode?: VNode;
     onValue?: (value: any) => void;
     onUpdateError?: (error: Error) => void;
 }

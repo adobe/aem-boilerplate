@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 import { SVGProps } from 'preact/compat';
 
-export type IconType = keyof typeof import('@adobe/elsie/icons');
+export type IconType = keyof typeof import('@adobe-commerce/elsie/icons');
 export interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'size'> {
     source: FunctionComponent<SVGProps<SVGSVGElement> & {
         title?: string;

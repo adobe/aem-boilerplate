@@ -4,6 +4,9 @@
       "commerce-core-endpoint": "https://www.aemshop.net/graphql",
       "commerce-endpoint": "https://www.aemshop.net/cs-graphql",
       "headers": {
+        "all": {
+          "Store": "default"
+        },
         "cs": {
           "Magento-Customer-Group": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
           "Magento-Store-Code": "main_website_store",

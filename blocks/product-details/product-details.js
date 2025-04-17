@@ -12,6 +12,7 @@ import { render as pdpRendered } from '@dropins/storefront-pdp/render.js';
 import {
   addProductsToWishlist,
   removeProductsFromWishlist,
+  getWishlistItemFromStorage,
 } from '@dropins/storefront-wishlist/api.js';
 
 // Containers
@@ -396,13 +397,6 @@ async function setJsonLdProduct(product) {
   }
 
   setJsonLd(ldJson, 'product');
-}
-
-function getWishlistItemFromStorage(productSku) {
-  const WISHLIST_KEY = 'DROPIN__WISHLIST__WISHLIST__DATA';
-  const wishlist = localStorage.getItem(WISHLIST_KEY)
-    ? JSON.parse(localStorage.getItem(WISHLIST_KEY)) : { id: '', items: [] };
-  return wishlist?.items?.find((i) => i.product.sku === productSku);
 }
 
 function createMetaTag(property, content, type) {

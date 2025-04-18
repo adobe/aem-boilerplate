@@ -1,6 +1,7 @@
 .product-recommendations {
     overflow: hidden;
     min-height: 512px;
+    margin-top: 30px;
 }
 
 .product-recommendations .scrollable {
@@ -61,7 +62,7 @@
     scroll-snap-align: start;
 }
 
-@media (width >= 900px) {
+@media (width >=900px) {
     .product-recommendations {
         min-height: 534px;
     }

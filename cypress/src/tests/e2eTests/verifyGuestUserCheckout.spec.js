@@ -98,7 +98,7 @@ describe('Verify guest user can place order', () => {
     assertOrderSummaryMisc('$76.00', '$10.00', '$86.00');
     assertSelectedPaymentMethod(checkMoneyOrder.code, 0);
     setPaymentMethod(paymentServicesCreditCard);
-    assertSelectedPaymentMethod(paymentServicesCreditCard.code, 1);
+    assertSelectedPaymentMethod(paymentServicesCreditCard.code, 2);
     checkTermsAndConditions();
     cy.wait(5000);
     placeOrder();

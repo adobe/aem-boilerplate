@@ -167,7 +167,7 @@ describe('Verify price summary on cart', () => {
   });
 
   it('Validate GiftOptions changed printed card price is checked (New value and new currency)', () => {
-    const urlTest = 'https://mcstaging.aemshop.net/**';
+    const urlTest = 'https://www.aemshop.net/**';
 
     cy.visit('/products/affirm-water-bottle/24-UG06');
     cy.get('.product-details__buttons__add-to-cart button')

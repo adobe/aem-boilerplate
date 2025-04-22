@@ -215,69 +215,73 @@ const renderAuthCombine = (navSections, toggleMenu) => {
   const listItems = navListEl.querySelectorAll(
     '.default-content-wrapper > ul > li',
   );
+
   const accountLi = Array.from(listItems).find((li) =>
     li.textContent.includes('Account'));
-  const accountLiItems = accountLi.querySelectorAll('ul > li');
-  const authCombineLink = accountLiItems[accountLiItems.length - 1];
 
-  authCombineLink.classList.add('authCombineNavElement');
-  const text = authCombineLink.textContent || '';
-  authCombineLink.innerHTML = `<a href="#">${text}</a>`;
-  authCombineLink.addEventListener('click', (event) => {
-    event.preventDefault();
-    onHeaderLinkClick(accountLi);
+  if (accountLi) {
+    const accountLiItems = accountLi.querySelectorAll('ul > li');
+    const authCombineLink = accountLiItems[accountLiItems.length - 1];
 
-    function getPopupElements() {
-      const headerBlock = document.querySelector('.header.block');
-      const headerLoginButton = document.querySelector('#header-login-button');
-      const popupElement = document.querySelector('#popup-menu');
-      const popupMenuContainer = document.querySelector('.popupMenuContainer');
+    authCombineLink.classList.add('authCombineNavElement');
+    const text = authCombineLink.textContent || '';
+    authCombineLink.innerHTML = `<a href="#">${text}</a>`;
+    authCombineLink.addEventListener('click', (event) => {
+      event.preventDefault();
+      onHeaderLinkClick(accountLi);
 
-      return {
-        headerBlock,
-        headerLoginButton,
-        popupElement,
-        popupMenuContainer,
-      };
-    }
+      function getPopupElements() {
+        const headerBlock = document.querySelector('.header.block');
+        const headerLoginButton = document.querySelector('#header-login-button');
+        const popupElement = document.querySelector('#popup-menu');
+        const popupMenuContainer = document.querySelector('.popupMenuContainer');
 
-    events.on('authenticated', (isAuthenticated) => {
-      const authCombineNavElement = document.querySelector(
-        '.authCombineNavElement',
-      );
-      if (isAuthenticated) {
-        const { headerLoginButton, popupElement, popupMenuContainer } = getPopupElements();
+        return {
+          headerBlock,
+          headerLoginButton,
+          popupElement,
+          popupMenuContainer,
+        };
+      }
 
-        if (
-          !authCombineNavElement
+      events.on('authenticated', (isAuthenticated) => {
+        const authCombineNavElement = document.querySelector(
+          '.authCombineNavElement',
+        );
+        if (isAuthenticated) {
+          const { headerLoginButton, popupElement, popupMenuContainer } = getPopupElements();
+
+          if (
+            !authCombineNavElement
           || !headerLoginButton
           || !popupElement
           || !popupMenuContainer
-        ) {
-          return;
-        }
+          ) {
+            return;
+          }
 
-        authCombineNavElement.style.display = 'none';
-        popupMenuContainer.innerHTML = '';
-        popupElement.style.minWidth = '250px';
-        if (headerLoginButton) {
-          const spanElementText = headerLoginButton.querySelector('span');
-          spanElementText.textContent = `Hi, ${getCookie(
-            'auth_dropin_firstname',
-          )}`;
-        }
-        popupMenuContainer.insertAdjacentHTML(
-          'afterend',
-          `<ul class="popupMenuUrlList">
+          authCombineNavElement.style.display = 'none';
+          popupMenuContainer.innerHTML = '';
+          popupElement.style.minWidth = '250px';
+          if (headerLoginButton) {
+            const spanElementText = headerLoginButton.querySelector('span');
+            spanElementText.textContent = `Hi, ${getCookie(
+              'auth_dropin_firstname',
+            )}`;
+          }
+          popupMenuContainer.insertAdjacentHTML(
+            'afterend',
+            `<ul class="popupMenuUrlList">
               <li><a href="${rootLink(CUSTOMER_ACCOUNT_PATH)}">My Account</a></li>
               <li><a href="${rootLink('/products/hollister-backyard-sweatshirt/MH05')}">Product page</a></li>
               <li><button class="logoutButton">Logout</button></li>
             </ul>`,
-        );
-      }
+          );
+        }
+      });
+      toggleMenu?.();
     });
-    toggleMenu?.();
-  });
+  }
 };
 
 export default renderAuthCombine;

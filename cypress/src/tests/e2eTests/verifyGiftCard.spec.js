@@ -38,7 +38,7 @@ describe('Verify price summary on cart', () => {
 
     cy.get(`.cart-coupons.cart-gift-cards ${fields.giftCardField}`)
       .should('be.visible')
-      .type('0AGN6OHDPG42');
+      .type('01XI83CYG8HW');
 
     cy.wait(2000);
 
@@ -48,11 +48,11 @@ describe('Verify price summary on cart', () => {
       .click({ multiple: true });
 
     cy.get(`.cart-coupons.cart-gift-cards .coupon-code-form__applied`)
-      .contains(/0AGN6OHDPG42/i)
+      .contains(/01XI83CYG8HW/i)
       .should('be.visible');
 
     cy.get('.cart-order-summary__coupon__code span')
-      .contains(/0AGN6OHDPG42/i)
+      .contains(/01XI83CYG8HW/i)
       .should('be.visible');
   });
 
@@ -67,7 +67,7 @@ describe('Verify price summary on cart', () => {
 
     cy.get(`.cart-coupons.cart-gift-cards ${fields.giftCardField}`)
       .should('be.visible')
-      .type('0BYALMABVTJD');
+      .type('02OXAVEIIHK5');
 
     cy.wait(2000);
 
@@ -80,7 +80,7 @@ describe('Verify price summary on cart', () => {
 
     cy.get(`.cart-coupons.cart-gift-cards ${fields.giftCardField}`)
       .should('be.visible')
-      .type('0A6GF150P3IZ');
+      .type('05KEO44BIA93');
 
     cy.wait(2000);
 
@@ -90,21 +90,21 @@ describe('Verify price summary on cart', () => {
       .click({ multiple: true });
 
     cy.get(`.cart-coupons.cart-gift-cards .coupon-code-form__applied`)
-      .contains(/0BYALMABVTJD/i)
+      .contains(/02OXAVEIIHK5/i)
       .should('be.visible');
 
     cy.get(`.cart-coupons.cart-gift-cards .coupon-code-form__applied`)
-      .contains(/0A6GF150P3IZ/i)
+      .contains(/05KEO44BIA93/i)
       .should('be.visible');
 
     cy.get('.coupon-code-form__applied').children().should('have.length', 2);
 
     cy.get('.cart-order-summary__coupon__code span')
-      .contains(/0BYALMABVTJD/i)
+      .contains(/02OXAVEIIHK5/i)
       .should('be.visible');
 
     cy.get('.cart-order-summary__coupon__code span')
-      .contains(/0A6GF150P3IZ/i)
+      .contains(/05KEO44BIA93/i)
       .should('be.visible');
   });
 
@@ -119,7 +119,7 @@ describe('Verify price summary on cart', () => {
 
     cy.get(`.cart-coupons.cart-gift-cards ${fields.giftCardField}`)
       .should('be.visible')
-      .type('0AGN6OHDPG42');
+      .type('01XI83CYG8HW');
 
     cy.wait(2000);
 
@@ -129,7 +129,7 @@ describe('Verify price summary on cart', () => {
       .click({ multiple: true });
 
     cy.get(`.cart-coupons.cart-gift-cards .coupon-code-form__applied`)
-      .contains(/0AGN6OHDPG42/i)
+      .contains(/01XI83CYG8HW/i)
       .should('be.visible');
 
     cy.get(`.dropin-tag-container.coupon-code-form__applied-item button`)

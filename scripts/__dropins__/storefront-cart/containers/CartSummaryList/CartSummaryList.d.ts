@@ -1,5 +1,5 @@
 import { HTMLAttributes } from 'preact/compat';
-import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
+import { Container, SlotProps } from '../../../@adobe-commerce/elsie/src/lib';
 import { CartModel } from '../../data/models/cart-model';
 
 export interface CartSummaryListProps extends HTMLAttributes<HTMLDivElement> {
@@ -24,6 +24,7 @@ export interface CartSummaryListProps extends HTMLAttributes<HTMLDivElement> {
         Thumbnail?: SlotProps;
         ProductAttributes?: SlotProps;
         CartSummaryFooter?: SlotProps;
+        CartItem?: SlotProps;
     };
     enableRemoveItem?: boolean;
     enableUpdateItemQuantity?: boolean;

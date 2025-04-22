@@ -1,27 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{s as o,f as m,h as l}from"./chunks/resetCart.js";import{g as $,r as Q,d as H,a as k,b as z,c as V}from"./chunks/resetCart.js";import{C as T,t as f,c as g}from"./chunks/refreshCart.js";import{g as j,b as q,d as B,e as J,i as K,a as W,r as X}from"./chunks/refreshCart.js";import{events as C}from"@dropins/tools/event-bus.js";import{CART_FRAGMENT as h}from"./fragments.js";import{b as A,a as I,c as _}from"./chunks/acdl.js";import{u as Z}from"./chunks/updateProductsFromCart.js";import{g as rt,b as at,a as et}from"./chunks/getEstimateShipping.js";import{g as ot}from"./chunks/getEstimatedTotals.js";import{g as E}from"./chunks/persisted-data.js";import{A as nt,a as ct}from"./chunks/applyCouponsToCart.js";import{a as Ct,r as mt}from"./chunks/removeGiftCardFromCart.js";import{s as ut}from"./chunks/setGiftOptionsOnCart.js";import"@dropins/tools/fetch-graphql.js";import"@dropins/tools/lib.js";const G=`
-  mutation ADD_PRODUCTS_TO_CART_MUTATION(
-      $cartId: String!, 
-      $cartItems: [CartItemInput!]!,
-      ${T}
-    ) {
-    addProductsToCart(
-      cartId: $cartId
-      cartItems: $cartItems
-    ) {
-      cart {
-        ...CART_FRAGMENT
-      }
-      user_errors {
-        code
-        message
-      }
-    }
-  }
-    
-  ${h}
-`,y=async a=>{let r=!1;const i=o.cartId||await R().then(s=>(r=!0,s));return m(G,{variables:{cartId:i,cartItems:a.map(({sku:s,parentSku:e,quantity:n,optionsUIDs:t,enteredOptions:c})=>({sku:s,parent_sku:e,quantity:n,selected_options:t,entered_options:c}))}}).then(({errors:s,data:e})=>{var c;const n=[...((c=e==null?void 0:e.addProductsToCart)==null?void 0:c.user_errors)??[],...s??[]];if(n.length>0)return l(n);const t=f(e.addProductsToCart.cart);if(C.emit("cart/updated",t),C.emit("cart/data",t),t){const p=t.items.filter(d=>a.some(({sku:u})=>u===d.topLevelSku));r?A(t,p,o.locale??"en-US"):I(t,p,o.locale??"en-US")}return t})},S=`
+import{s as p,f as g,h as E}from"./chunks/resetCart.js";import{g as q,r as z,d as V,a as L,b as $,c as j}from"./chunks/resetCart.js";import{t as G,c as I}from"./chunks/refreshCart.js";import{g as J,b as K,d as W,e as X,i as Y,a as Z,r as tt}from"./chunks/refreshCart.js";import{events as C}from"@dropins/tools/event-bus.js";import{g as h}from"./chunks/persisted-data.js";import{A as S}from"./chunks/updateProductsFromCart.js";import{u as rt}from"./chunks/updateProductsFromCart.js";import{b as A,a as _,c as b}from"./chunks/acdl.js";import{g as st,b as ot,a as it}from"./chunks/getEstimateShipping.js";import{g as pt}from"./chunks/getEstimatedTotals.js";import{A as mt,a as ut}from"./chunks/applyCouponsToCart.js";import{a as Ct,r as lt}from"./chunks/removeGiftCardFromCart.js";import{s as gt}from"./chunks/setGiftOptionsOnCart.js";import"@dropins/tools/fetch-graphql.js";import"@dropins/tools/lib.js";import"./fragments.js";const N=async r=>{let e=!1;const c=p.cartId||await U().then(o=>(e=!0,o));return g(S,{variables:{cartId:c,cartItems:r.map(({sku:o,parentSku:a,quantity:m,optionsUIDs:t,enteredOptions:i})=>({sku:o,parent_sku:a,quantity:m,selected_options:t,entered_options:i}))}}).then(({errors:o,data:a})=>{var f;const m=[...((f=a==null?void 0:a.addProductsToCart)==null?void 0:f.user_errors)??[],...o??[]];if(m.length>0)return E(m);const t=G(a.addProductsToCart.cart),i=h(),l=(i==null?void 0:i.items)||[];if(C.emit("cart/updated",t),C.emit("cart/data",t),t){const n=t.items.filter(s=>!l.some(d=>d.sku===s.sku)),u=t.items.filter(s=>{const d=l.find(T=>T.sku===s.sku);return d&&s.quantity!==d.quantity});n.length>0&&C.emit("cart/product/added",n),u.length>0&&C.emit("cart/product/updated",u)}if(t){const n=t.items.filter(u=>r.some(({sku:s})=>s===u.topLevelSku));e?A(t,n,p.locale??"en-US"):_(t,n,p.locale??"en-US")}return t})},y=`
     mutation CREATE_GUEST_CART_MUTATION {
         createGuestCart {
           cart {
@@ -29,4 +8,4 @@ import{s as o,f as m,h as l}from"./chunks/resetCart.js";import{g as $,r as Q,d a
           }
         }
     }
-`,R=async()=>{const{disableGuestCart:a}=g.getConfig();if(a)throw new Error("Guest cart is disabled");return await m(S).then(({data:r})=>{const i=r.createGuestCart.cart.id;return o.cartId=i,i})},F=()=>{const a=o.locale??"en-US",r=E();r&&_(r,a)};export{nt as ApplyCouponsStrategy,y as addProductsToCart,ct as applyCouponsToCart,Ct as applyGiftCardToCart,g as config,R as createGuestCart,m as fetchGraphQl,j as getCartData,E as getCartDataFromCache,$ as getConfig,rt as getCountries,q as getCustomerCartPayload,at as getEstimateShipping,ot as getEstimatedTotals,B as getGuestCartPayload,et as getRegions,J as getStoreConfig,K as initialize,W as initializeCart,F as publishShoppingCartViewEvent,X as refreshCart,Q as removeFetchGraphQlHeader,mt as removeGiftCardFromCart,H as resetCart,k as setEndpoint,z as setFetchGraphQlHeader,V as setFetchGraphQlHeaders,ut as setGiftOptionsOnCart,Z as updateProductsFromCart};
+`,U=async()=>{const{disableGuestCart:r}=I.getConfig();if(r)throw new Error("Guest cart is disabled");return await g(y).then(({data:e})=>{const c=e.createGuestCart.cart.id;return p.cartId=c,c})},Q=()=>{const r=p.locale??"en-US",e=h();e&&b(e,r)};export{mt as ApplyCouponsStrategy,N as addProductsToCart,ut as applyCouponsToCart,Ct as applyGiftCardToCart,I as config,U as createGuestCart,g as fetchGraphQl,J as getCartData,h as getCartDataFromCache,q as getConfig,st as getCountries,K as getCustomerCartPayload,ot as getEstimateShipping,pt as getEstimatedTotals,W as getGuestCartPayload,it as getRegions,X as getStoreConfig,Y as initialize,Z as initializeCart,Q as publishShoppingCartViewEvent,tt as refreshCart,z as removeFetchGraphQlHeader,lt as removeGiftCardFromCart,V as resetCart,L as setEndpoint,$ as setFetchGraphQlHeader,j as setFetchGraphQlHeaders,gt as setGiftOptionsOnCart,rt as updateProductsFromCart};

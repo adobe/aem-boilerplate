@@ -1,6 +1,7 @@
 import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { HTMLAttributes } from 'preact/compat';
 import { OrderDetails, OrderItem, ShipmentsTracingModel } from '../data/models';
+import { ImageProps } from '@dropins/tools/types/elsie/src/components';
 
 export interface OrdersListActionContext {
     orderHistoryListItem: OrderDetails;
@@ -15,6 +16,10 @@ export interface OrdersListProps extends HTMLAttributes<HTMLDivElement> {
     slots?: {
         OrdersListAction?: SlotProps<OrdersListActionContext>;
         OrdersListCard?: SlotProps<OrdersListCardContext>;
+        OrderItemImage?: SlotProps<{
+            data: OrderItem;
+            defaultImageProps: ImageProps;
+        }>;
     };
     routeOrdersList?: () => string;
     routeOrderDetails?: () => string;
@@ -38,6 +43,10 @@ export interface OrdersListCardProps extends HTMLAttributes<HTMLDivElement> {
     withThumbnails: boolean;
     slots?: {
         OrdersListCard?: SlotProps<OrdersListCardContext>;
+        OrderItemImage?: SlotProps<{
+            data: OrderItem;
+            defaultImageProps: ImageProps;
+        }>;
     };
     routeTracking?: (shipping: ShipmentsTracingModel) => string;
     routeOrderProduct?: (product: OrderItem) => string;

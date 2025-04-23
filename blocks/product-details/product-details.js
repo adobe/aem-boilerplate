@@ -36,15 +36,17 @@ import { rootLink } from '../../scripts/scripts.js';
 import { readBlockConfig } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
+  const {
+    'guest-wishlist-enabled': isGuestWishlistEnabled,
+  } = readBlockConfig(block);
+  block.textContent = '';
+
   // eslint-disable-next-line no-underscore-dangle
   const product = events._lastEvent?.['pdp/data']?.payload ?? null;
   const labels = await fetchPlaceholders();
 
   // determine if Wishlist button should be enabled
   const isAuthenticated = events._lastEvent?.['authenticated']?.payload ?? false;
-  const {
-    'guest-wishlist-enabled': isGuestWishlistEnabled,
-  } = readBlockConfig(block);
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`

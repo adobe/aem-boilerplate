@@ -1,5 +1,5 @@
 import { Item } from '../../data/models';
-import { Container } from '@dropins/tools/types/elsie/src/lib';
+import { Container } from '../../../@adobe-commerce/elsie/src/lib';
 import { GiftOptionsViewProps, GiftOptionsDataSourcesProps, GiftFormDataType, ProductGiftOptionsConfig, GiftOptionsReadOnlyViewProps } from '../../types';
 
 export interface GiftOptionsProps {

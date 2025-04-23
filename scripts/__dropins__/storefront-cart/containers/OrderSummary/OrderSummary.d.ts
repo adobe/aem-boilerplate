@@ -1,5 +1,5 @@
 import { HTMLAttributes } from 'preact/compat';
-import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
+import { Container, SlotProps } from '../../../@adobe-commerce/elsie/src/lib';
 import { CartModel } from '../../data/models';
 import { OrderSummaryLineItem } from '../../components';
 

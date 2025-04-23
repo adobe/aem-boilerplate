@@ -35,9 +35,9 @@
   "dependencies": {
     "@adobe/magento-storefront-event-collector": "^1.8.0",
     "@adobe/magento-storefront-events-sdk": "^1.8.0",
-    "@dropins/storefront-account": "~1.0.4",
+    "@dropins/storefront-account": "~1.0.6",
     "@dropins/storefront-auth": "~1.0.6",
-    "@dropins/storefront-cart": "~1.2.2",
+    "@dropins/storefront-cart": "1.3.0-beta1",
     "@dropins/storefront-checkout": "~1.3.0",
     "@dropins/storefront-order": "~1.0.5",
     "@dropins/storefront-payment-services": "~1.0.1",

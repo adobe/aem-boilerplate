@@ -296,33 +296,34 @@ export default async function decorate(block) {
       return;
     }
     const inCart = data?.items?.find((cartItem) => cartItem.sku === item.product.sku);
-    if (inCart) {
-      await removeProductsFromWishlist(
-        [
-          {
-            id: item.id ?? '',
-            product: {
-              sku: item.product.sku,
-            },
-          },
-        ],
-      );
-      wishlistToggleBtn.setProps((prev) => ({
-        ...prev,
-        icon: Icon({ source: 'Heart' }),
-      }));
-      // @todo: add translations
-      inlineAlert = await UI.render(InLineAlert, {
-        heading: `${product?.name} was successfully added to your cart and removed from your wishlist`,
-        type: 'success',
-        icon: Icon({ source: 'Heart' }),
-        'aria-live': 'assertive',
-        role: 'alert',
-        onDismiss: () => {
-          inlineAlert.remove();
-        },
-      })($alert);
+    if (!inCart) {
+      return;
     }
+    await removeProductsFromWishlist(
+      [
+        {
+          id: item.id ?? '',
+          product: {
+            sku: item.product.sku,
+          },
+        },
+      ],
+    );
+    wishlistToggleBtn.setProps((prev) => ({
+      ...prev,
+      icon: Icon({ source: 'Heart' }),
+    }));
+    // @todo: add translations
+    inlineAlert = await UI.render(InLineAlert, {
+      heading: `${product?.name} was successfully added to your cart and removed from your wishlist`,
+      type: 'success',
+      icon: Icon({ source: 'Heart' }),
+      'aria-live': 'assertive',
+      role: 'alert',
+      onDismiss: () => {
+        inlineAlert.remove();
+      },
+    })($alert);
   }, { eager: true });
 
   // Set JSON-LD and Meta Tags

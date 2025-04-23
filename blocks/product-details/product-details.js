@@ -39,6 +39,10 @@ export default async function decorate(block) {
   const product = events._lastEvent?.['pdp/data']?.payload ?? null;
   const labels = await fetchPlaceholders();
 
+  // determine if Wishlist button should be enabled
+  const isAuthenticated = events._lastEvent?.['authenticated']?.payload ?? false;
+  const isGuestWishlistEnabled = true; // fetch isGuestWishlistEnabled from config here
+
   // Layout
   const fragment = document.createRange().createContextualFragment(`
     <div class="product-details__wrapper">
@@ -189,7 +193,7 @@ export default async function decorate(block) {
     })($addToCart),
 
     // Add to Wishlist
-    UI.render(Button, {
+    (isAuthenticated || isGuestWishlistEnabled) && UI.render(Button, {
       variant: 'secondary',
       icon: Icon({ source: 'Heart' }),
       'aria-label': labels.Custom?.AddToWishlist?.label,

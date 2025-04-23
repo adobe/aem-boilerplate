@@ -33,6 +33,7 @@ import { IMAGES_SIZES } from '../../scripts/initializers/pdp.js';
 import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
 import { rootLink } from '../../scripts/scripts.js';
+import { readBlockConfig } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
   // eslint-disable-next-line no-underscore-dangle
@@ -41,7 +42,9 @@ export default async function decorate(block) {
 
   // determine if Wishlist button should be enabled
   const isAuthenticated = events._lastEvent?.['authenticated']?.payload ?? false;
-  const isGuestWishlistEnabled = true; // fetch isGuestWishlistEnabled from config here
+  const {
+    'guest-wishlist-enabled': isGuestWishlistEnabled,
+  } = readBlockConfig(block);
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`
@@ -193,11 +196,10 @@ export default async function decorate(block) {
     })($addToCart),
 
     // Add to Wishlist
-    (isAuthenticated || isGuestWishlistEnabled) && UI.render(Button, {
+    (isAuthenticated || isGuestWishlistEnabled === 'true') && UI.render(Button, {
       variant: 'secondary',
       icon: Icon({ source: 'Heart' }),
       'aria-label': labels.Custom?.AddToWishlist?.label,
-      isGuestWishlistEnabled: false, // ??? how to hide button for Guest user?
       onClick: async () => {
         let msgIcon = 'Heart';
         try {

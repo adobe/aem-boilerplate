@@ -15,6 +15,8 @@ import {
   getWishlistItemFromStorage,
 } from '@dropins/storefront-wishlist/api.js';
 
+import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
+
 // Containers
 import ProductHeader from '@dropins/storefront-pdp/containers/ProductHeader.js';
 import ProductPrice from '@dropins/storefront-pdp/containers/ProductPrice.js';
@@ -198,6 +200,7 @@ export default async function decorate(block) {
     })($addToCart),
 
     // Add to Wishlist
+    /**
     (isAuthenticated || isGuestWishlistEnabled === 'true') && UI.render(Button, {
       variant: 'secondary',
       icon: Icon({ source: 'Heart' }),
@@ -255,20 +258,11 @@ export default async function decorate(block) {
               inlineAlert.remove();
             },
           })($alert);
+*/
 
-          // Scroll the alertWrapper into view
-          $alert.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-          });
-        } finally {
-          wishlistToggleBtn.setProps((prev) => ({
-            ...prev,
-            disabled: false,
-            'aria-label': (msgIcon === 'Heart') ? labels.Custom?.AddToWishlist?.label : labels.Custom?.RemoveFromWishlist?.label,
-          }));
-        }
-      },
+    (isAuthenticated || isGuestWishlistEnabled === 'true') && UI.render(WishlistToggle, {
+      isGuestWishlistEnabled: isGuestWishlistEnabled === 'true', // @todo
+      product,
     })($wishlistToggleBtn),
 
     // Description

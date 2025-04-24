@@ -36,6 +36,7 @@ import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
 import { rootLink } from '../../scripts/scripts.js';
 import { readBlockConfig } from '../../scripts/aem.js';
+import { checkIsAuthenticated } from '../../scripts/configs.js';
 
 export default async function decorate(block) {
   const {
@@ -46,9 +47,6 @@ export default async function decorate(block) {
   // eslint-disable-next-line no-underscore-dangle
   const product = events._lastEvent?.['pdp/data']?.payload ?? null;
   const labels = await fetchPlaceholders();
-
-  // determine if Wishlist button should be enabled
-  const isAuthenticated = events._lastEvent?.['authenticated']?.payload ?? false;
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`
@@ -201,7 +199,7 @@ export default async function decorate(block) {
 
     // Add to Wishlist
     /**
-    (isAuthenticated || isGuestWishlistEnabled === 'true') && UI.render(Button, {
+    (checkIsAuthenticated() || isGuestWishlistEnabled === 'true') && UI.render(Button, {
       variant: 'secondary',
       icon: Icon({ source: 'Heart' }),
       'aria-label': labels.Custom?.AddToWishlist?.label,
@@ -260,7 +258,7 @@ export default async function decorate(block) {
           })($alert);
 */
 
-    (isAuthenticated || isGuestWishlistEnabled === 'true') && UI.render(WishlistToggle, {
+    (checkIsAuthenticated() || isGuestWishlistEnabled === 'true') && UI.render(WishlistToggle, {
       isGuestWishlistEnabled: isGuestWishlistEnabled === 'true', // @todo
       product,
     })($wishlistToggleBtn),

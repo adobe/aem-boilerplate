@@ -7,7 +7,7 @@ export const customerShippingAddress = {
   postCode: '78758',
   telephone: '1234567890',
   email: 'test@example.com',
-  region: 'TX,169',
+  region: 'TX,171',
   regionFull: 'Texas',
   countryFull: 'United States',
   countryCode: 'US',
@@ -24,7 +24,7 @@ export const customerBillingAddress = {
   postCode: '12345',
   telephone: '0987654321',
   email: 'test_cypresstest@example.com',
-  region: 'NY,127',
+  region: 'NY,129',
   regionFull: 'New York',
   countryFull: 'United States',
   countryCode: 'US',
@@ -47,7 +47,7 @@ export const checkMoneyOrder = {
 
 export const products = {
   configurable: {
-    urlPath: "/products/frankie-sweatshirt/MH04",
-    urlPathWithOptions: "/products/frankie-sweatshirt/MH04?optionsUIDs=Y29uZmlndXJhYmxlLzU1Ni81Mjk%3D%2CY29uZmlndXJhYmxlLzI3Ny8yMDI%3D"
+    urlPath: "/products/cypress-configurable-product-latest/CYPRESS456",
+    urlPathWithOptions: "/products/cypress-configurable-product-latest/CYPRESS456?optionsUIDs=Y29uZmlndXJhYmxlLzI3OS8zOQ%3D%3D"
   },
 };

@@ -197,7 +197,7 @@ export default async function decorate(block) {
       },
     })($addToCart),
 
-    // Add to Wishlist
+    // Wishlist button - Wishlist API wrapper + custom logic
     /**
     (checkIsAuthenticated() || isGuestWishlistEnabled === 'true') && UI.render(Button, {
       variant: 'secondary',
@@ -230,14 +230,13 @@ export default async function decorate(block) {
               disabled: true,
               'aria-label': labels.Custom?.RemovingFromWishlist?.label,
             }));
-            await addProductsToWishlist([{ sku: product.sku, quantity: 1 }]);
+            await addProductsToWishlist([{sku: product.sku, quantity: 1}]);
             msgIcon = 'HeartFilled';
           }
-          // @todo: add translations
           inlineAlert = await UI.render(InLineAlert, {
             heading: `${product?.name} was ${msgIcon === 'Heart' ? 'removed from' : 'added to'} your wishlist`,
             type: 'success',
-            icon: Icon({ source: msgIcon }),
+            icon: Icon({source: msgIcon}),
             'aria-live': 'assertive',
             role: 'alert',
             onDismiss: () => {
@@ -249,15 +248,19 @@ export default async function decorate(block) {
           inlineAlert = await UI.render(InLineAlert, {
             heading: 'Error',
             description: error.message,
-            icon: Icon({ source: 'Warning' }),
+            icon: Icon({source: 'Warning'}),
             'aria-live': 'assertive',
             role: 'alert',
             onDismiss: () => {
               inlineAlert.remove();
             },
           })($alert);
-*/
+        }
+      },
+    })($wishlistToggleBtn),
+    */
 
+    // Wishlist button - WishlistToggle Container
     (checkIsAuthenticated() || isGuestWishlistEnabled === 'true') && UI.render(WishlistToggle, {
       isGuestWishlistEnabled: isGuestWishlistEnabled === 'true', // @todo: do we still need it here?
       product,

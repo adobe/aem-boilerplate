@@ -259,7 +259,7 @@ export default async function decorate(block) {
 */
 
     (checkIsAuthenticated() || isGuestWishlistEnabled === 'true') && UI.render(WishlistToggle, {
-      isGuestWishlistEnabled: isGuestWishlistEnabled === 'true', // @todo
+      isGuestWishlistEnabled: isGuestWishlistEnabled === 'true', // @todo: do we still need it here?
       product,
     })($wishlistToggleBtn),
 

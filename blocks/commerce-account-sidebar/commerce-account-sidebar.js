@@ -9,11 +9,15 @@ export default async function decorate(block) {
   const sidebarItemsConfig = fragment.querySelectorAll('.default-content-wrapper > ol > li');
   const sidebarItems = Array.from(sidebarItemsConfig).map((item) => {
     const itemParams = Array.from(item.querySelectorAll('ol > li'));
+    const itemTitle = item.childNodes[0]?.textContent?.trim() || item.querySelector(':scope > p')?.textContent?.trim() || 'Default Title';
+    const itemSubtitle = itemParams[0]?.innerText || '';
+    const itemLink = itemParams[1]?.innerText || rootLink('#');
+    const itemIcon = itemParams[2]?.innerText || 'Placeholder';
     const itemConfig = {
-      itemTitle: item.childNodes[0]?.textContent.trim() || 'Default Title',
-      itemSubtitle: itemParams[0]?.innerText || '',
-      itemLink: itemParams[1]?.innerText || rootLink('#'),
-      itemIcon: itemParams[2]?.innerText || 'Placeholder',
+      itemTitle,
+      itemSubtitle,
+      itemLink,
+      itemIcon,
     };
 
     const menuItemEl = document.createElement('a');

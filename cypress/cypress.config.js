@@ -24,6 +24,9 @@ module.exports = defineConfig({
   },
   env: {
     graphqlEndPoint: 'https://www.aemshop.net/graphql',
+    giftCard: '000Y7YLECJ34',
+    // staging env
+    // giftCardStaging: '00GO12SK6WF3',
   },
   reporter: 'cypress-multi-reporters',
   reporterOptions: {

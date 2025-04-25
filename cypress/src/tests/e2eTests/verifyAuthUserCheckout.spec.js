@@ -25,153 +25,149 @@ import {
   customerBillingAddress,
   paymentServicesCreditCard,
   checkMoneyOrder,
+  products
 } from '../../fixtures/index';
 import * as fields from "../../fields";
 
 describe('Verify auth user can place order', () => {
   it('Verify auth user can place order', () => {
     // TODO: replace with single "test" product shared between all tests (not this vs products.configurable.urlPathWithOptions).
-    cy.visit('/products/hollister-backyard-sweatshirt/MH05');
-    cy.get('[id="Y29uZmlndXJhYmxlLzI3Ny8yMDI="]').click({
-      force: true,
-    });
-    cy.get('[id="Y29uZmlndXJhYmxlLzU1Ni81MjM="]').click({
-      force: true,
-    });
+    cy.visit(products.configurable.urlPathWithOptions);
     cy.wait(5000);
     cy.contains('Add to Cart').click();
     cy.get('.minicart-wrapper').click();
     assertCartSummaryProduct(
-      'Hollister Backyard Sweatshirt',
-      'MH05',
+      'Cypress Configurable product latest',
+      'CYPRESS456',
       '1',
-      '$52.00',
-      '$52.00',
+      '$60.00',
+      '$60.00',
       '0'
     )('.cart-mini-cart');
     assertTitleHasLink(
-      'Hollister Backyard Sweatshirt',
-      '/products/hollister-backyard-sweatshirt/MH05'
+      'Cypress Configurable product latest',
+      '/products/cypress-configurable-product-latest/CYPRESS456'
     )('.cart-mini-cart');
-    assertProductImage('/mh05-white_main_1.jpg')('.cart-mini-cart');
+    assertProductImage('/thumbnail.jpg')('.cart-mini-cart');
     cy.contains('View Cart').click();
     assertCartSummaryProduct(
-      'Hollister Backyard Sweatshirt',
-      'MH05',
+      'Cypress Configurable product latest',
+      'CYPRESS456',
       '1',
-      '$52.00',
-      '$52.00',
+      '$60.00',
+      '$60.00',
       '0'
     )('.commerce-cart-wrapper');
     assertTitleHasLink(
-      'Hollister Backyard Sweatshirt',
-      '/products/hollister-backyard-sweatshirt/MH05'
+      'Cypress Configurable product latest',
+      '/products/cypress-configurable-product-latest/CYPRESS456'
     )('.commerce-cart-wrapper');
     cy.visit("/customer/create");
     cy.get('.minicart-wrapper').should('be.visible')
-    cy.fixture('userInfo').then(({sign_up}) => {
+    cy.fixture('userInfo').then(({ sign_up }) => {
       signUpUser(sign_up);
       assertAuthUser(sign_up);
       cy.wait(5000);
     });
     cy.get('.minicart-wrapper').click();
     assertCartSummaryProduct(
-      'Hollister Backyard Sweatshirt',
-      'MH05',
+      'Cypress Configurable product latest',
+      'CYPRESS456',
       '1',
-      '$52.00',
-      '$52.00',
+      '$60.00',
+      '$60.00',
       '0'
     )('.cart-mini-cart');
     assertTitleHasLink(
-      'Hollister Backyard Sweatshirt',
-      '/products/hollister-backyard-sweatshirt/MH05'
+      'Cypress Configurable product latest',
+      '/products/cypress-configurable-product-latest/CYPRESS456'
     )('.cart-mini-cart');
-    assertProductImage('/mh05-white_main_1.jpg')('.cart-mini-cart');
-    cy.visit("/products/crown-summit-backpack/24-MB03");
-    cy.contains('Add to Cart').click();
+    assertProductImage('/thumbnail.jpg')('.cart-mini-cart');
+    cy.visit("/products/youth-tee/ADB150");
+    cy.get('.product-details__buttons__add-to-cart button')
+      .should('be.visible')
+      .click();
     cy.get('.minicart-wrapper').click();
     assertCartSummaryProduct(
-      'Crown Summit Backpack',
-      '24-MB03',
+      'Youth tee',
+      'ADB150',
       '1',
-      '$38.00',
-      '$38.00',
+      '$10.00',
+      '$10.00',
       '0'
     )('.cart-mini-cart');
     assertTitleHasLink(
-      'Crown Summit Backpack',
-      '/products/crown-summit-backpack/24-MB03'
+      'Youth tee',
+      '/products/youth-tee/ADB150'
     )('.cart-mini-cart');
-    assertProductImage('/mb03-black-0.jpg')('.cart-mini-cart');
-
+    assertProductImage('/ADB150.jpg')('.cart-mini-cart');
     assertCartSummaryProduct(
-      'Hollister Backyard Sweatshirt',
-      'MH05',
+      'Cypress Configurable product latest',
+      'CYPRESS456',
       '1',
-      '$52.00',
-      '$52.00',
+      '$60.00',
+      '$60.00',
       '1'
     )('.cart-mini-cart');
     assertTitleHasLink(
-      'Hollister Backyard Sweatshirt',
-      '/products/hollister-backyard-sweatshirt/MH05'
+      'Cypress Configurable product latest',
+      '/products/cypress-configurable-product-latest/CYPRESS456'
     )('.cart-mini-cart');
-    assertProductImage('/mh05-white_main_1.jpg')('.cart-mini-cart');
+    assertProductImage('/thumbnail.jpg')('.cart-mini-cart');
     cy.contains('View Cart').click();
     assertCartSummaryProduct(
-      'Crown Summit Backpack',
-      '24-MB03',
+      'Youth tee',
+      'ADB150',
       '1',
-      '$38.00',
-      '$38.00',
+      '$10.00',
+      '$10.00',
       '0'
     )('.commerce-cart-wrapper');
     assertTitleHasLink(
-      'Crown Summit Backpack',
-      '/products/crown-summit-backpack/24-MB03'
+      'Youth tee',
+      '/products/youth-tee/ADB150'
     )('.commerce-cart-wrapper');
-    assertProductImage('/mb03-black-0.jpg')('.commerce-cart-wrapper');
+    assertProductImage('/ADB150.jpg')('.commerce-cart-wrapper');
 
     assertCartSummaryProduct(
-      'Hollister Backyard Sweatshirt',
-      'MH05',
+      'Cypress Configurable product latest',
+      'CYPRESS456',
       '1',
-      '$52.00',
-      '$52.00',
+      '$60.00',
+      '$60.00',
       '1'
     )('.commerce-cart-wrapper');
     assertTitleHasLink(
-      'Hollister Backyard Sweatshirt',
-      '/products/hollister-backyard-sweatshirt/MH05'
+      'Cypress Configurable product latest',
+      '/products/cypress-configurable-product-latest/CYPRESS456'
     )('.commerce-cart-wrapper');
-    assertProductImage('/mh05-white_main_1.jpg')('.commerce-cart-wrapper');
+    assertProductImage('/thumbnail.jpg')('.commerce-cart-wrapper');
     cy.contains('Estimated Shipping').should('be.visible');
     cy.get('.dropin-button.dropin-button--medium.dropin-button--primary')
       .contains('Checkout')
-      .click({force: true});
+      .click({ force: true });
     assertCartSummaryMisc(2);
     assertCartSummaryProductsOnCheckout(
-      'Crown Summit Backpack',
-      '24-MB03',
+      'Youth tee',
+      'ADB150',
       '1',
-      '$38.00',
-      '$38.00',
+      '$10.00',
+      '$10.00',
       '0'
     );
     assertCartSummaryProductsOnCheckout(
-      'Hollister Backyard Sweatshirt',
-      'MH05',
+      'Cypress Configurable product latest',
+      'CYPRESS456',
       '1',
-      '$52.00',
-      '$52.00',
+      '$60.00',
+      '$60.00',
       '1'
     );
     setGuestShippingAddress(customerShippingAddress, true);
     uncheckBillToShippingAddress();
     cy.wait(2000);
     setGuestBillingAddress(customerBillingAddress, true);
-    assertOrderSummaryMisc('$90.00', '$10.00', '$86.50');
+    assertOrderSummaryMisc('$70.00', '$10.00', '$80.00');
     assertSelectedPaymentMethod(checkMoneyOrder.code, 0);
     setPaymentMethod(paymentServicesCreditCard);
     assertSelectedPaymentMethod(paymentServicesCreditCard.code, 2);
@@ -213,7 +209,7 @@ describe('Verify auth user can place order', () => {
 
     cy.get(fields.submitCancelOrderButton).click();
 
-    cy.get('.dropin-header-container__title', {timeout: 3000})
+    cy.get('.dropin-header-container__title', { timeout: 3000 })
       .should('exist')
       .and('be.visible')
       .and('contain.text', 'Canceled');

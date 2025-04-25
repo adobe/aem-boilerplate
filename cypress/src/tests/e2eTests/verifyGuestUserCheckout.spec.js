@@ -34,7 +34,7 @@ describe('Verify guest user can place order', () => {
       .first()
       .trigger('mouseenter')
     cy.wait(1000);
-    cy.contains('Crown Summit Backpack').click();
+    cy.contains('Youth Tee').click();
     cy.get('.dropin-incrementer__increase-button').click();
     cy.get('.dropin-incrementer__input').should('have.value', '2');
     // cypress fails intermittently as it takes old value 1, this is needed for tests to be stable
@@ -42,43 +42,43 @@ describe('Verify guest user can place order', () => {
     cy.contains('Add to Cart').click();
     cy.get('.minicart-wrapper').click();
     assertCartSummaryProduct(
-      'Crown Summit Backpack',
-      '24-MB03',
+      'Youth tee',
+      'ADB150',
       '2',
-      '$38.00',
-      '$76.00',
+      '$10.00',
+      '$20.00',
       '0'
     )('.cart-mini-cart');
     assertTitleHasLink(
-      'Crown Summit Backpack',
-      '/products/crown-summit-backpack/24-MB03'
+      'Youth tee',
+      '/products/youth-tee/ADB150'
     )('.cart-mini-cart');
-    assertProductImage('/mb03-black-0.jpg')('.cart-mini-cart');
+    assertProductImage('/ADB150.jpg')('.cart-mini-cart');
     cy.contains('View Cart').click();
     assertCartSummaryProduct(
-      'Crown Summit Backpack',
-      '24-MB03',
+      'Youth tee',
+      'ADB150',
       '2',
-      '$38.00',
-      '$76.00',
+      '$10.00',
+      '$20.00',
       '0'
     )('.commerce-cart-wrapper');
     assertTitleHasLink(
-      'Crown Summit Backpack',
-      '/products/crown-summit-backpack/24-MB03'
+      'Youth tee',
+      '/products/youth-tee/ADB150'
     )('.commerce-cart-wrapper');
-    assertProductImage('/mb03-black-0.jpg')('.commerce-cart-wrapper');
+    assertProductImage('/ADB150.jpg')('.commerce-cart-wrapper');
     cy.contains('Estimated Shipping').should('be.visible');
     cy.get('.dropin-button--primary')
       .contains('Checkout')
       .click();
     assertCartSummaryMisc(2);
     assertCartSummaryProductsOnCheckout(
-      'Crown Summit Backpack',
-      '24-MB03',
+      'Youth tee',
+      'ADB150',
       '2',
-      '$38.00',
-      '$76.00',
+      '$10.00',
+      '$20.00',
       '0'
     );
     cy.contains('Estimated Shipping').should('be.visible')
@@ -95,7 +95,7 @@ describe('Verify guest user can place order', () => {
     setGuestEmail(customerShippingAddress.email);
     cy.wait('@setEmailOnCart');
     setGuestShippingAddress(customerShippingAddress, true);
-    assertOrderSummaryMisc('$76.00', '$10.00', '$86.00');
+    assertOrderSummaryMisc('$20.00', '$10.00', '$86.00');
     assertSelectedPaymentMethod(checkMoneyOrder.code, 0);
     setPaymentMethod(paymentServicesCreditCard);
     assertSelectedPaymentMethod(paymentServicesCreditCard.code, 2);

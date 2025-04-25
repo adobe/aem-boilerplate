@@ -1,6 +1,6 @@
 describe('Verify stock notification message', () => {
     it('Verify low stock and max qty allowed notification message', () => {
-        cy.visit('/products/compete-track-tote/24-WB02');
+        cy.visit('/products/play-create-repeat-crewneck/ADB388');
         cy.get('.dropin-incrementer__input').clear().type('1000');
         cy.wait(1000)
         cy.get('.dropin-incrementer__increase-button').click();

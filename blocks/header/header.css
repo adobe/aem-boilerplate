@@ -222,6 +222,10 @@ header nav .nav-sections ul > li:empty {
     align-self: unset;
   }
 
+  header .nav-drop {
+    align-self: center;
+  }
+
   header nav .nav-sections .default-content-wrapper > ul > li,
   header nav .nav-sections .nav-drop {
     border-radius: 4px;

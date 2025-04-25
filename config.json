@@ -1,0 +1,51 @@
+{
+  "public": {
+    "default": {
+      "commerce-core-endpoint": "https://mcstaging.aemshop.net/graphql",
+      "commerce-endpoint": "https://catalog-service-sandbox.adobe.io/graphql",
+      "headers": {
+        "all": {
+          "Store": "default"
+        },
+        "cs": {
+          "Magento-Customer-Group": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
+          "Magento-Store-Code": "main_website_store",
+          "Magento-Store-View-Code": "default",
+          "Magento-Website-Code": "base",
+          "x-api-key": "9753cd30401a477e816ed850c4f77e18",
+          "Magento-Environment-Id": "1f131648-b696-4bd1-af57-2021c7080b56"
+        }
+      },
+      "analytics": {
+        "base-currency-code": "USD",
+        "environment": "Production",
+        "store-id": 1,
+        "store-name": "Main Website Store",
+        "store-url": "https://www.aemshop.net",
+        "store-view-id": 1,
+        "store-view-name": "Default Store View",
+        "website-id": 1,
+        "website-name": "Main Website"
+      }
+    },
+    "/drafts/multistore/en/": {},
+    "/drafts/multistore/en_ca/": {
+      "headers": {
+        "all": {
+          "Store": "en_ca"
+        },
+        "cs": {
+          "Magento-Store-Code": "ca_store",
+          "Magento-Store-View-Code": "en_ca",
+          "Magento-Website-Code": "ca_website"
+        }
+      },
+      "analytics": {
+        "base-currency-code": "CAD",
+        "store-name": "Main Website Store (CA)",
+        "store-view-name": "Default Store View (CA)",
+        "website-name": "Main Website (CA)"
+      }
+    }
+  }
+}

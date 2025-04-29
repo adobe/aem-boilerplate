@@ -5,7 +5,8 @@ import { CUSTOMER_ORDERS_PATH } from '../../scripts/constants.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
-  const fragment = await loadFragment('/customer/sidebar-fragment');
+  //const fragment = await loadFragment('/customer/sidebar-fragment');
+  const fragment = await loadFragment('/drafts/iberian-lynx/customer/sidebar-fragment');
   const sidebarItemsConfig = fragment.querySelectorAll('.default-content-wrapper > ol > li');
   const sidebarItems = Array.from(sidebarItemsConfig).map((item) => {
     const itemParams = Array.from(item.querySelectorAll('ol > li'));

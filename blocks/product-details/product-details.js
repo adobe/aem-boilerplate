@@ -9,8 +9,8 @@ import {
 import { events } from '@dropins/tools/event-bus.js';
 import * as pdpApi from '@dropins/storefront-pdp/api.js';
 import { render as pdpRendered } from '@dropins/storefront-pdp/render.js';
+import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 import {
-  addProductsToWishlist,
   removeProductsFromWishlist,
   getWishlistItemFromStorage,
 } from '@dropins/storefront-wishlist/api.js';
@@ -35,15 +35,8 @@ import { IMAGES_SIZES } from '../../scripts/initializers/pdp.js';
 import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
 import { rootLink } from '../../scripts/scripts.js';
-import { readBlockConfig } from '../../scripts/aem.js';
-import { checkIsAuthenticated } from '../../scripts/configs.js';
 
 export default async function decorate(block) {
-  const {
-    'guest-wishlist-enabled': isGuestWishlistEnabled,
-  } = readBlockConfig(block);
-  block.textContent = '';
-
   // eslint-disable-next-line no-underscore-dangle
   const product = events._lastEvent?.['pdp/data']?.payload ?? null;
   const labels = await fetchPlaceholders();
@@ -197,72 +190,8 @@ export default async function decorate(block) {
       },
     })($addToCart),
 
-    // Wishlist button - Wishlist API wrapper + custom logic
-    /**
-    (checkIsAuthenticated() || isGuestWishlistEnabled === 'true') && UI.render(Button, {
-      variant: 'secondary',
-      icon: Icon({ source: 'Heart' }),
-      'aria-label': labels.Custom?.AddToWishlist?.label,
-      onClick: async () => {
-        let msgIcon = 'Heart';
-        try {
-          const item = getWishlistItemFromStorage(product?.sku);
-          if (item) {
-            wishlistToggleBtn.setProps((prev) => ({
-              ...prev,
-              disabled: true,
-              'aria-label': labels.Custom?.AddingToWishlist?.label,
-            }));
-            await removeProductsFromWishlist(
-              [
-                {
-                  id: item.id ?? '',
-                  product: {
-                    sku: product.sku,
-                  },
-                },
-              ],
-            );
-            msgIcon = 'Heart';
-          } else {
-            wishlistToggleBtn.setProps((prev) => ({
-              ...prev,
-              disabled: true,
-              'aria-label': labels.Custom?.RemovingFromWishlist?.label,
-            }));
-            await addProductsToWishlist([{sku: product.sku, quantity: 1}]);
-            msgIcon = 'HeartFilled';
-          }
-          inlineAlert = await UI.render(InLineAlert, {
-            heading: `${product?.name} was ${msgIcon === 'Heart' ? 'removed from' : 'added to'} your wishlist`,
-            type: 'success',
-            icon: Icon({source: msgIcon}),
-            'aria-live': 'assertive',
-            role: 'alert',
-            onDismiss: () => {
-              inlineAlert.remove();
-            },
-          })($alert);
-        } catch (error) {
-          // add alert message
-          inlineAlert = await UI.render(InLineAlert, {
-            heading: 'Error',
-            description: error.message,
-            icon: Icon({source: 'Warning'}),
-            'aria-live': 'assertive',
-            role: 'alert',
-            onDismiss: () => {
-              inlineAlert.remove();
-            },
-          })($alert);
-        }
-      },
-    })($wishlistToggleBtn),
-    */
-
     // Wishlist button - WishlistToggle Container
-    (checkIsAuthenticated() || isGuestWishlistEnabled === 'true') && UI.render(WishlistToggle, {
-      isGuestWishlistEnabled: isGuestWishlistEnabled === 'true', // @todo: do we still need it here?
+    wishlistRender.render(WishlistToggle, {
       product,
     })($wishlistToggleBtn),
 
@@ -277,14 +206,6 @@ export default async function decorate(block) {
   events.on('pdp/valid', (valid) => {
     // update add to cart button disabled state based on product selection validity
     addToCart.setProps((prev) => ({ ...prev, disabled: !valid }));
-  }, { eager: true });
-
-  events.on('wishlist/data', () => {
-    const item = getWishlistItemFromStorage(product.sku);
-    wishlistToggleBtn.setProps((prev) => ({
-      ...prev,
-      icon: Icon({ source: (item) ? 'HeartFilled' : 'Heart' }),
-    }));
   }, { eager: true });
 
   events.on('cart/updated', async (data) => {

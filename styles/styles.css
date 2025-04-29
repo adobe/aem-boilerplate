@@ -21,13 +21,15 @@
   --really-dark-color: black;
   --text-color: #f3f4f5;
   --link-color: #f3f4f5;
+  --btn-primary-color: #f96800;
+  --btn-tertiary-color: rgb(16 124 16);
   --link-hover-color: #f96800;
   --cod-table-rows-odd: #24272A;
   --cod-table-rows-even: #3C4147;
 
   /* fonts */
-  --body-font-family: Hitmarker Text Regular, sans-serif;
-  --heading-font-family: Hitmarker Condensed Black, sans-serif;
+  --body-font-family: "Hitmarker Text Regular", sans-serif;
+  --heading-font-family: "Hitmarker Condensed Black", sans-serif;
 
   /* body sizes */
   --body-font-size-m: 22px;
@@ -43,7 +45,7 @@
   --heading-font-size-xs: 22px;
 
   /* nav height */
-  --nav-height: 64px;
+  --nav-height: 45px;
 }
 
 /* fallback fonts */
@@ -77,7 +79,7 @@
 }
 
 html {
-  overflow-x: hidden;
+  overflow: hidden;
   overflow-y: scroll;
 }
 
@@ -202,32 +204,54 @@ a:hover {
   text-decoration: underline;
 }
 
+.icon {
+  display: inline-block;
+  height: 24px;
+  width: 24px;
+}
+
+.icon img {
+  height: 100%;
+  width: 100%;
+}
+
+.button-group,
+.button-group > *:only-child {
+  display: flex;
+  gap: 15px;
+}
+
 /* buttons */
 a.button:any-link,
 button {
   text-decoration: none;
-  border: none;
-  font-family: inherit;
-  padding: 0;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  line-height: 1.1;
-  font-family: "Hitmarker Text Bold";
+  font-family: "Hitmarker Text Bold", sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 0.88rem;
   line-height: 0.88rem;
   letter-spacing: 0.05em;
-  padding: 12px 24px;
+  padding: 12px 34px;
   border-radius: 2px;
   text-transform: uppercase;
-  color: #ffffff;
+  color: #fff;
   background-color: transparent;
   border: 1px solid #858585;
   transition: opacity 150ms;
+  box-shadow: 0 1px 2px 0 rgba(0 0 0 / 50%);
+  position: relative;
+  overflow: hidden;
+}
+
+a.button.primary {
+  background-color: var(--btn-primary-color);
+  border-color: var(--btn-primary-color);
+  text-shadow: 3px 2px 2px rgba(0 0 0 / 20%);
 }
 
 a.button:hover,
@@ -236,6 +260,10 @@ button:hover,
 button:focus {
   background-color: var(--link-hover-color);
   cursor: pointer;
+}
+
+a.button.primary:hover {
+  background-image: url('../../img/CerberusBtnAnim.gif');
 }
 
 button:disabled,
@@ -247,25 +275,66 @@ button:disabled:hover {
 a.button.secondary,
 button.secondary {
   background-color: unset;
-  border: 2px solid currentcolor;
+  border: 1px solid currentcolor;
   color: var(--text-color);
+  transition: background-color 100ms linear;
+}
+
+a.button.secondary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(255 255 255 / 0%) 0%, rgba(255 255 255 / 30%) 50%, rgba(255 255 255 / 0%),rgba(255 255 255 / 0%) 0%, rgba(255 255 255 / 30%) 50%, rgba(255 255 255 / 0%) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+a.button.secondary:hover::before {
+  opacity: 1;
+  animation: glimmer 0.6s ease forwards;
+}
+
+a.button.secondary:hover {
+  background-color: rgba(255 255 255 / 5%);
+}
+
+a.button.primary.color-green {
+  border: 1px solid var(--btn-tertiary-color);
+  background-color: var(--btn-tertiary-color);
+}
+
+a.button.secondary.color-orange {
+  border: 1px solid var(--btn-primary-color);
+}
+
+a.button.primary.animate-off:hover,
+button.primary.animate-off:hover {
+  background-image: unset;
+  filter: brightness(95%);
+}
+
+a.button.secondary.animate-off:hover,
+button.secondary.animate-off:hover {
+  background-color: unset;
+}
+
+a.button.secondary.animate-off::before {
+  background: unset;
+}
+
+a.button .icon {
+  position: relative;
+  left: 10px;
+  fill: currentcolor;
 }
 
 main img {
   max-width: 100%;
   width: auto;
   height: auto;
-}
-
-.icon {
-  display: inline-block;
-  height: 24px;
-  width: 24px;
-}
-
-.icon img {
-  height: 100%;
-  width: 100%;
 }
 
 /* sections */
@@ -284,7 +353,7 @@ main>.section:first-of-type {
   margin-top: 0;
 }
 
-@media (min-width: 900px) {
+@media (width >= 900px) {
   main>.section>div {
     padding: 0 32px;
   }
@@ -525,6 +594,24 @@ main .section {
   padding: 64px 16px;
   scroll-margin: calc(var(--nav-height) + 1em);
 
+  &.text-center .default-content-wrapper {
+    text-align: center;
+  }
+
+  &.text-center.s03 .default-content-wrapper #play-season03now {
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+
+  &.text-center.s03 .default-content-wrapper #play-season03now .highlight {
+    color: #119a58;
+  }
+
+  &.text-center.s03 .default-content-wrapper p {
+    margin-bottom: 45px;
+    margin-top: 0;
+  }
+
   &.section-padding-none {
     padding-bottom: 0 !important;
   }
@@ -617,6 +704,10 @@ main .section {
 }
 
 /* Column layouts */
+div.columns-max-866 > div {
+  max-width: 866px;
+}
+
 div.columns-50-50 {
   .layout-wrapper {
     .group-1 {
@@ -1178,5 +1269,15 @@ footer .transparent-footer-wrapper,
         }
       }
     }
+  }
+}
+
+@keyframes glimmer {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(100%);
   }
 }

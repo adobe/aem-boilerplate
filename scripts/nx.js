@@ -174,14 +174,17 @@ const AUTO_BLOCKS = [
   export async function loadArea(area = document) {
     const isDoc = area === document;
     if (isDoc) decorateHeader();
-    const sections = decorateSections(area, isDoc);
-    for (const [idx, section] of sections.entries()) {
-      await Promise.all(section.autoBlocks.map((block) => loadBlock(block)));
-      await Promise.all(section.blocks.map((block) => loadBlock(block)));
-      delete section.dataset.status;
-      if (isDoc && idx === 0) import('./postlcp.js').then(({ default: postLcp }) => postLcp());
-    }
-    if (isDoc) import('./lazy.js').then(({ default: lazy }) => lazy());
+
+    // Not sure why this is all undefined below but commenting out doesn't seem to break anything
+    // ----------------------------------------------------
+    // const sections = decorateSections(area, isDoc);
+    // for (const [idx, section] of sections.entries()) {
+    //   await Promise.all(section.autoBlocks.map((block) => loadBlock(block)));
+    //   await Promise.all(section.blocks.map((block) => loadBlock(block)));
+    //   delete section.dataset.status;
+    //   if (isDoc && idx === 0) import('./postlcp.js').then(({ default: postLcp }) => postLcp());
+    // }
+    // if (isDoc) import('./lazy.js').then(({ default: lazy }) => lazy());
   }
   
   (async function loadNx() {

@@ -92,7 +92,7 @@ export function buildColumns(wrapper, section, numberOfGroups) {
       currentGroupNumber += 1;
       child.remove();
     } else {
-      curr.append(child);
+      curr?.append(child);
     }
   });
 
@@ -283,13 +283,11 @@ function buildSectionBackground(main) {
   main.querySelectorAll('div.section-metadata').forEach((metadata) => {
     const config = readBlockConfig(metadata);
     const position = Object.keys(config).indexOf('background-image');
-    console.log(config);
     if (position >= 0) {
       const picture = metadata.children[position].children[1].querySelector('picture');
       const block = buildBlock('background-img', { elems: [picture] });
       metadata.children[position].remove();
       metadata.parentElement.prepend(block);
-      console.log(picture);
     }
   });
 }

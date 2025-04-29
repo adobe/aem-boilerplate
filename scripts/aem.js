@@ -387,6 +387,41 @@ function wrapTextNodes(block) {
   });
 }
 
+function decorateButton(a) {
+  const up = a.parentElement;
+  const twoup = a.parentElement.parentElement;
+  let btnStyle = 'link';
+  if (up.tagName === 'STRONG') btnStyle = 'button primary';
+  else if (up.tagName === 'EM' && twoup.tagName === 'STRONG') btnStyle = 'button secondary';
+  a.className = btnStyle;
+  const btnTag = '#_btn:';
+  const queryIndex = a.textContent.indexOf(btnTag);
+  if (queryIndex > 0) {
+    const query = a.textContent.substring(queryIndex + btnTag.length, a.textContent.length);
+    const params = query.trim().split('&').filter(i => i.length);
+    params.forEach(p => a.classList.add(p.replace('=', '-')));
+    a.textContent = a.textContent.substring(0, queryIndex);
+    // check link title for button options query and remove
+    if (a.title.indexOf(btnTag) > 0) a.title = a.title.substring(0, a.title.indexOf(btnTag));
+  }
+}
+
+function decorateBtnGroup(group, isNested) {
+  if (isNested !== null) {
+    group.classList.add('button-group');
+    if (isNested) {
+      // remove spaces in button groups
+      [...group.childNodes].forEach((node) => {
+        if (node.nodeType === Node.TEXT_NODE
+          && (node.nodeValue.trim() === ''
+            || node.nodeValue === String.fromCharCode(160))) {
+          node.remove();
+        }
+      });
+    }
+  }
+}
+
 /**
  * Decorates paragraphs containing a single link as buttons.
  * @param {Element} element container element
@@ -397,28 +432,25 @@ function decorateButtons(element) {
     if (a.href !== a.textContent) {
       const up = a.parentElement;
       const twoup = a.parentElement.parentElement;
+
       if (!a.querySelector('img')) {
-        if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
-          a.className = 'button'; // default
-          up.classList.add('button-container');
+        const isSolo = up.childNodes.length === 1 && twoup.childNodes.length === 1;
+        let isNested = null;
+        if (!isSolo && !['P', 'DIV'].includes(up.tagName)) {
+          // make sure each child (elem only) has a button
+          const links = twoup.querySelectorAll('a');
+          // when you put two of the same next to each other they get nested by AEM
+          if (links.length === up.children.length) isNested = true;
+          if (links.length === twoup.children.length) isNested = false;
         }
-        if (
-          up.childNodes.length === 1
-          && up.tagName === 'STRONG'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
-        ) {
-          a.className = 'button primary';
-          twoup.classList.add('button-container');
-        }
-        if (
-          up.childNodes.length === 1
-          && up.tagName === 'EM'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
-        ) {
-          a.className = 'button secondary';
-          twoup.classList.add('button-container');
+        if (!isSolo && isNested === null) return;
+        decorateButton(a);
+        if (isSolo) twoup.classList.add('button-container');
+        if (isNested !== null && a.classList.contains('button')) {
+          const group = isNested ? up : twoup;
+          if (!group.classList.contains('button-group')) {
+            decorateBtnGroup(group, isNested);
+          }
         }
       }
     }
@@ -455,6 +487,19 @@ function decorateIcons(element, prefix = '') {
   icons.forEach((span) => {
     decorateIcon(span, prefix);
   });
+}
+
+function decorateCustomHeaders(section) {
+  for (const className of section.classList) {
+    if (className.includes('header-highlight')) {
+      const type = className.slice(-2);
+      const headers = section.querySelectorAll(type);
+      [...headers].forEach(h => {
+        h.innerHTML = h.innerHTML.replace(/(\d+)/g, '<span class="highlight">$1</span>');
+      })
+      break;
+    }
+  }
 }
 
 /**
@@ -495,6 +540,7 @@ function decorateSections(main) {
         }
       });
       sectionMeta.parentNode.remove();
+      decorateCustomHeaders(section);
     }
   });
 }

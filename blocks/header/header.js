@@ -191,6 +191,14 @@ export default async function decorate(block) {
   });
 
   const navBrand = nav.querySelector('.nav-brand');
+
+  const logos = navBrand.querySelectorAll('.icon');
+  [...logos].forEach((logo) => {
+    if (logo.classList.contains('icon-brand-logo') || logos.length === 1) {
+      logo.parentElement.className = 'nav-brand-logo';    
+    } else logo.parentElement.className = 'nav-sub-logo';
+  });
+  
   const brandLink = navBrand.querySelector('.button');
   if (brandLink) {
     brandLink.className = '';

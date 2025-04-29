@@ -19,11 +19,10 @@ header .nav-wrapper.nav-hidden {
 
 header nav {
   box-sizing: border-box;
-  background: rgba(51, 51, 51, 0.6);
+  background: rgb(51 51 51 / 60%);
   display: grid;
   grid-template:
-    'hamburger brand tools' var(--nav-height)
-    'sections sections sections' 1fr / auto 1fr auto;
+    'hamburger brand tools' var(--nav-height) 'sections sections sections' 1fr / auto 1fr auto;
   align-items: center;
   gap: 0 24px;
   margin: auto;
@@ -31,20 +30,19 @@ header nav {
   height: var(--nav-height);
   padding: 0 24px;
   font-family: var(--body-font-family);
-  margin-top: 10px;
+  margin-top: 16px;
   backdrop-filter: blur(8px);
 }
 
 header nav[aria-expanded='true'] {
   grid-template:
-    'hamburger brand' var(--nav-height)
-    'sections sections' 1fr
+    'hamburger brand' var(--nav-height) 'sections sections' 1fr
     'tools tools' var(--nav-height) / auto 1fr;
   overflow-y: auto;
   min-height: 100dvh;
 }
 
-@media (width >= 900px) {
+@media (width >=900px) {
   header nav {
     display: flex;
     justify-content: space-between;
@@ -62,16 +60,15 @@ header nav[aria-expanded='true'] {
 
 header nav p {
   margin: 0;
-  line-height: 1;
-  font-family: "Hitmarker Text Regular", Arial;
-    font-weight: 400;
-    font-style: normal;
-    letter-spacing: 1px;
-    font-size: 0.88rem;
-    line-height: 1.38rem;
-    color: #FFF;
-    text-transform: uppercase;
-    text-decoration: none;
+  font-family: "Hitmarker Text Regular", Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 1px;
+  font-size: 0.88rem;
+  line-height: 1.38rem;
+  color: #FFF;
+  text-transform: uppercase;
+  text-decoration: none;
 }
 
 header nav a:any-link {
@@ -152,7 +149,7 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
   transform: rotate(-45deg);
 }
 
-@media (width >= 900px) {
+@media (width >=900px) {
   header nav .nav-hamburger {
     display: none;
     visibility: hidden;
@@ -168,9 +165,28 @@ header .nav-brand {
   line-height: 1;
 }
 
-header nav .nav-brand img {
+header .nav-brand > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .nav-brand > div > * {
+  line-height: unset;
+}
+
+header nav .nav-brand .nav-brand-logo .icon,
+header nav .nav-brand .nav-brand-logo img {
   width: 128px;
   height: auto;
+}
+
+header nav .nav-brand .nav-sub-logo .icon {
+  width: 59px;
+  height: 17px;
+  margin-left: 15px;
+  border-left: 1px solid white;
+  padding-left: 20px;
 }
 
 /* sections */
@@ -194,24 +210,24 @@ header nav .nav-sections ul {
   align-items: center;
 }
 
-header nav .nav-sections ul > li {
+header nav .nav-sections ul>li {
   font-weight: 500;
 }
 
-header nav .nav-sections ul > li > ul {
+header nav .nav-sections ul>li>ul {
   margin-top: 0;
 }
 
-header nav .nav-sections ul > li > ul > li {
+header nav .nav-sections ul>li>ul>li {
   font-weight: 400;
 }
 
 
-#nav > div.section.nav-sections > div > ul > li:last-child > p> a{
+#nav>div.section.nav-sections>div>ul>li:last-child>p>a {
   padding: 10px 15px;
 }
 
-@media (width >= 900px) {
+@media (width >=900px) {
   header nav .nav-sections {
     display: block;
     visibility: visible;
@@ -255,18 +271,18 @@ header nav .nav-sections ul > li > ul > li {
     margin: 0;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li {
+  header nav .nav-sections .default-content-wrapper>ul>li {
     flex: 0 1 auto;
     position: relative;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li > ul {
+  header nav .nav-sections .default-content-wrapper>ul>li>ul {
     display: none;
     position: relative;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li:hover > ul,
-  header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul {
+  header nav .nav-sections .default-content-wrapper>ul>li:hover>ul,
+  header nav .nav-sections .default-content-wrapper>ul>li[aria-expanded='true']>ul {
     display: block;
     position: absolute;
     left: -24px;
@@ -278,7 +294,7 @@ header nav .nav-sections ul > li > ul > li {
     z-index: 1;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li > ul::before {
+  header nav .nav-sections .default-content-wrapper>ul>li>ul::before {
     content: '';
     position: absolute;
     top: -8px;
@@ -288,7 +304,7 @@ header nav .nav-sections ul > li > ul > li {
 
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
+  header nav .nav-sections .default-content-wrapper>ul>li>ul>li {
     padding: 8px 0;
   }
 }
@@ -351,34 +367,24 @@ header .breadcrumbs ol li[aria-current] {
   }
 }
 
-@media (max-width: 900px) {
-  header nav{
-    margin-top:0;
+@media (width <= 899px) {
+  header nav {
+    margin-top: 0;
   }
 }
 
-header nav .button-container .button{
-  background-color: #f96800;
-  color: #fff;
-  text-decoration: none;
-  padding: 10px 15px;
-  font-weight: 700;
-    font-style: normal;
-    font-size: 0.88rem;
-    line-height: 0.88rem;
-    letter-spacing: 0.05em;
-  font-family: "Hitmarker Normal Bold";
+header nav .button.primary {
+  padding: 5px 15px;
+  outline-offset: 0;
+  transition: outline-offset 0.2s ease-in;
 }
 
-header nav .button-container .button:hover{
-  border: 1px solid #f96800;
-  border-style: outset;
-  background-image: url('../../img/CerberusBtnAnim.gif');
+header nav .button.primary:hover {
   outline: 1px solid #F96800;
-    outline-offset: 4px;
+  outline-offset: 3px;
 }
 
-#nav > div.section.nav-sections > div > ul > li:nth-child(7){
+#nav>div.section.nav-sections>div>ul>li:nth-last-child(2) {
   margin-left: auto;
   text-align: right;
 }

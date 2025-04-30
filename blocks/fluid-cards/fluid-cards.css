@@ -9,23 +9,21 @@
 .fluid-cards {
   display: flex;
   flex-wrap: wrap;
-  row-gap: 12px;
-  column-gap: 30px;
+  gap: 12px 30px;
   margin-bottom: 24px;
+  justify-content: space-around;
 }
 
-.fluid-cards .icon-cod-eyebrow{
-    width: 75px;
+.fluid-cards .icon-cod-eyebrow {
+  width: 75px;
 }
-
-
 
 /* Individual card container */
 .fluid-cards > div {
   position: relative;
   overflow: hidden;
   border-radius: 4px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0 0 0 / 10%);
   margin-bottom: 12px;
   transition: box-shadow 0.3s ease;
   max-height: 370px;
@@ -34,7 +32,7 @@
 
 /* Card hover effect - only shadow change, no growth */
 .fluid-cards > div:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px rgba(0 0 0 / 20%);
 }
 
 /* Hide the first div in each card (hidden data) */
@@ -93,7 +91,7 @@
   width: 100%;
   padding: 24px;
   color: #fff;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.4), transparent);
+  background: linear-gradient(to top, rgba(0 0 0 / 80%), rgba(0 0 0 / 40%), transparent);
   z-index: 1;
 }
 
@@ -112,7 +110,7 @@
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
-  margin: 0 0 4px 0;
+  margin: 0 0 4px;
 }
 
 .fluid-cards > div > div:nth-child(3) p:nth-child(2) {
@@ -121,26 +119,26 @@
   text-transform: uppercase;
   max-width: 200px;
   line-height: 1;
-  margin: 0 0 4px 0;
-  font-family: "Hitmarker Condensed Black", Arial;
+  margin: 0 0 4px;
+  font-family: "Hitmarker Condensed Black", Arial, sans-serif;
 }
 
 .fluid-cards > div > div:nth-child(3) p:nth-child(3):not(.button-container) {
   font-size: 16px;
-  margin: 0 0 4px 0;
+  margin: 0 0 4px;
 }
 
 /* Button styling */
 .fluid-cards .button-container {
   margin: 0;
   position: relative;
-  z-index: 3; /* Make button appear above the card */
+  z-index: 3;
 }
 
 .fluid-cards .button {
   display: inline-flex;
   align-items: center;
-  padding: 4px 0px !important;
+  padding: 4px 0 !important;
   background-color: transparent;
   color: #000;
   text-decoration: none;
@@ -155,20 +153,19 @@
   margin-left: 8px;
 }
 
-.fluid-cards a{
-    text-decoration: none;
-    text-transform: uppercase;
-    font-family: "Hitmarker Condensed Black", Arial;
-    letter-spacing: 1px;
+.fluid-cards a {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: "Hitmarker Condensed Black", Arial, sans-serif;
+  letter-spacing: 1px;
 }
 
 /* Responsive layout */
-@media (min-width: 768px) {
-  /* For cards with width 50% */
+@media (width >= 768px) {
   .fluid-cards > div[data-width="50"] {
     width: calc(50% - 12px);
   }
-  
+
   /* For cards with width 100% */
   .fluid-cards > div[data-width="100"] {
     width: 100%;

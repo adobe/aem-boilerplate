@@ -490,12 +490,18 @@ function decorateIcons(element, prefix = '') {
 }
 
 function decorateCustomHeaders(section) {
+  const getType = (name) => name.slice(-2);
   for (const className of section.classList) {
     if (className.includes('header-highlight')) {
-      const type = className.slice(-2);
-      const headers = section.querySelectorAll(type);
-      [...headers].forEach(h => {
+      [...section.querySelectorAll(getType(className))].forEach(h => {
+        h.classList.add('header-highlight');
         h.innerHTML = h.innerHTML.replace(/(\d+)/g, '<span class="highlight">$1</span>');
+      })
+      break;
+    }
+    if (className.includes('header-primary')) {
+      [...section.querySelectorAll(getType(className))].forEach(h => {
+        h.classList.add('header-primary');
       })
       break;
     }

@@ -62,7 +62,9 @@ export default function decorate(block) {
       // On desktop, respect the data-width attribute
       cards.forEach(card => {
         const width = card.getAttribute('data-width');
-        if (width === '50') {
+        if (width === '33') {
+          card.style.width = 'calc(33.3% - 25px)';
+        } else if (width === '50') {
           card.style.width = 'calc(50% - 18px)';
         } else if (width === '100') {
           card.style.width = '100%';

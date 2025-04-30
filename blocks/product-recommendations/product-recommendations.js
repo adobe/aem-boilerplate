@@ -5,6 +5,7 @@ import { Button, provider as UI } from '@dropins/tools/components.js';
 import { readBlockConfig } from '../../scripts/aem.js';
 import { performCatalogServiceQuery } from '../../scripts/commerce.js';
 import { getConfigValue } from '../../scripts/configs.js';
+import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 
 // initialize dropins
 import '../../scripts/initializers/cart.js';
@@ -121,8 +122,7 @@ function renderItem(unitId, product) {
     children: ctaText,
     onClick: addToCartHandler,
   })(buttonEl);
-  UI.render(WishlistToggle, {
-    isGuestWishlistEnabled: false,
+  wishlistRender.render(WishlistToggle, {
     product,
   })(buttonWishlist);
   return item;

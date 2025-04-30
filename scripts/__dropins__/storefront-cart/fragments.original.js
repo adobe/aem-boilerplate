@@ -165,6 +165,7 @@ const e=`
     product {
       name
       sku
+      quantity
       gift_message_available
       gift_wrapping_available
       gift_wrapping_price {

@@ -1,4 +1,4 @@
-import { Render } from '@dropins/tools/types/elsie/src/lib';
+import { Render } from '../../@adobe-commerce/elsie/src/lib';
 import { Provider } from './Provider';
 
 export { Provider };

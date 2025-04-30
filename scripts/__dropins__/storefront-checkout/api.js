@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{d as l,t as I,a as T,b as M}from"./chunks/synchronizeCheckout.js";import{e as it,c as rt,g as nt,f as at,i as ot,h as dt,r as pt,s as ct}from"./chunks/synchronizeCheckout.js";import{M as A,a as y,b as O}from"./chunks/errors.js";import{F as gt,I as mt,e as ut,c as _t,d as lt,U as At}from"./chunks/errors.js";import{s as p}from"./chunks/state.js";import{g as ft}from"./chunks/state.js";import{s as x,g as G,i as _}from"./chunks/transform-store-config.js";import{D as Et,S as It,l as Tt,m as Mt,r as yt,h as Ot,j as xt,k as Gt}from"./chunks/transform-store-config.js";import"@dropins/tools/lib.js";import{a as N,t as v}from"./chunks/setShippingMethods.js";import{s as vt}from"./chunks/setShippingMethods.js";import{events as U}from"@dropins/tools/event-bus.js";import{A as $}from"./chunks/checkout.js";import{h as D}from"./chunks/setGuestEmailOnCart.js";import{i as $t,s as Dt}from"./chunks/setGuestEmailOnCart.js";import{s as Rt}from"./chunks/setBillingAddress.js";import{s as wt}from"./chunks/setPaymentMethod.js";import{CHECKOUT_DATA_FRAGMENT as S}from"./fragments.js";import"@dropins/tools/fetch-graphql.js";import"./chunks/store-config.js";import"@dropins/tools/signals.js";const F=`
+import{t as E,a as f,b as C}from"./chunks/synchronizeCheckout.js";import{d as X,c as Z,g as tt,i as et,e as st,r as it,s as rt}from"./chunks/synchronizeCheckout.js";import{s as p,S as T}from"./chunks/subscription-email-statuses.js";import{g as nt}from"./chunks/subscription-email-statuses.js";import"@dropins/tools/lib.js";import{a as I}from"./chunks/setShippingMethods.js";import{s as dt}from"./chunks/setShippingMethods.js";import{M as _,b as M,d,Q as A,s as y,i as N,c as b,e as O}from"./chunks/IsBillToShippingSignal.js";import{D as pt,F as gt,I as mt,o as ht,n as ut,S as lt,U as _t,k as At,l as St,m as Et,r as ft,f as Ct,g as Tt,j as It}from"./chunks/IsBillToShippingSignal.js";import"@dropins/tools/event-bus.js";import{A as w}from"./chunks/checkout.js";import{g as yt,i as Nt,s as bt}from"./chunks/setGuestEmailOnCart.js";import{s as wt}from"./chunks/setBillingAddress.js";import{s as Gt}from"./chunks/setPaymentMethod.js";import{CHECKOUT_DATA_FRAGMENT as S}from"./fragments.js";import"@dropins/tools/signals.js";import"@dropins/tools/fetch-graphql.js";const x=`
   mutation estimateShippingMethods(
     $cartId: String!
     $address: EstimateAddressInput!
@@ -26,19 +26,19 @@ import{d as l,t as I,a as T,b as M}from"./chunks/synchronizeCheckout.js";import{
       error_message
     }
   }
-`,R=e=>e?e.filter(t=>!!t).map(t=>({id:t.agreement_id,name:t.name,mode:$[t.mode],text:t.checkbox_text,content:{value:t.content,html:t.is_html,height:t.content_height??null}})):[],X=async e=>{var g,m,u;const t=p.cartId,{criteria:n}=e||{},{country_code:a,region_id:s,region_name:i,zip:o}=n||{},d=a||((g=p.config)==null?void 0:g.defaultCountry);if(!t)throw new A;if(!d)throw new y;const c=typeof s=="string"?parseInt(s,10):s,h=s||i?{...c&&{region_id:c},...i&&{region_code:i}}:void 0,r={country_code:d,...o&&{postcode:o},...h&&{region:h}},f={country_id:r.country_code,region:(m=r.region)==null?void 0:m.region_code,region_id:(u=r.region)==null?void 0:u.region_id,postcode:r.postcode},C=await l({type:"mutation",query:F,options:{variables:{cartId:t,address:r}},path:"estimateShippingMethods",signalType:"estimateShippingMethods",transformer:I});return setTimeout(()=>{const E={address:N(f),shippingMethod:v(x.value)};U.emit("shipping/estimate",E)},0),C},k=`
+`,G=t=>t?t.filter(e=>!!e).map(e=>({id:e.agreement_id,name:e.name,mode:w[e.mode],text:e.checkbox_text,content:{value:e.content,html:e.is_html,height:e.content_height??null}})):[],L=async t=>{var m,h,u,l;const e=p.cartId,r=((m=t==null?void 0:t.criteria)==null?void 0:m.country_code)??((h=p.config)==null?void 0:h.defaultCountry);if(!e)throw new _;if(!r)throw new M;const{region_id:s,region_name:o,zip:a}=(t==null?void 0:t.criteria)??{},i=s||o?{region_id:typeof s=="string"?parseInt(s,10):s,region_code:o}:void 0,n={country_code:r,...a&&{postcode:a},...i&&{region:{...i.region_id&&{region_id:i.region_id},...i.region_code&&{region_code:i.region_code}}}},c={country_id:r,region:(u=n.region)==null?void 0:u.region_code,region_id:(l=n.region)==null?void 0:l.region_id,postcode:a},g=await d({options:{variables:{cartId:e,address:n}},path:"estimateShippingMethods",query:x,queueName:A.ShippingEstimate,transformer:E,type:"mutation"});return y.value={address:I(c),options:g},g},$=`
   query GET_CHECKOUT_AGREEMENTS {
     checkoutAgreements {
       agreement_id
       checkbox_text
       content
       content_height
-      is_html 
+      is_html
       mode
       name
     }
   }
-`,Z=async()=>G(k,{method:"GET",cache:"no-cache"}).then(({errors:e,data:t})=>(e&&D(e),R(t.checkoutAgreements))),w=`
+`,V=async()=>await d({defaultValueOnFail:[],options:{method:"GET",cache:"no-cache"},path:"checkoutAgreements",query:$,transformer:G,type:"query"}),U=`
   mutation SET_SHIPPING_ADDRESS_ON_CART_MUTATION(
     $cartId: String!
     $shippingAddressInput: ShippingAddressInput!
@@ -53,7 +53,7 @@ import{d as l,t as I,a as T,b as M}from"./chunks/synchronizeCheckout.js";import{
   }
 
   ${S}
-`,H=`
+`,v=`
   mutation SET_SHIPPING_ADDRESS_ON_CART_AND_USE_AS_BILLING_MUTATION(
     $cartId: String!
     $shippingAddressInput: ShippingAddressInput!
@@ -76,4 +76,10 @@ import{d as l,t as I,a as T,b as M}from"./chunks/synchronizeCheckout.js";import{
   }
 
   ${S}
-`,tt=async({address:e,customerAddressId:t,pickupLocationCode:n})=>{const a=p.cartId;if(!a)throw new A;const s=()=>{if(t)return{customer_address_id:t};if(n)return{pickup_location_code:n};if(!e)throw new O;return{address:T(e)}},i=_.value?H:w,o=_.value?"setBillingAddressOnCart.cart":"setShippingAddressesOnCart.cart",d={cartId:a,shippingAddressInput:s()};return await l({type:"mutation",query:i,options:{variables:d},path:o,queueName:"cartUpdate",signalType:"cart",transformer:M})};export{Et as DEFAULT_COUNTRY,gt as FetchError,mt as InvalidArgument,ut as MissingBillingAddress,A as MissingCart,y as MissingCountry,_t as MissingEmail,lt as MissingPaymentMethod,O as MissingShippinghAddress,It as STORE_CONFIG_DEFAULTS,At as UnexpectedError,it as authenticateCustomer,rt as config,X as estimateShippingMethods,G as fetchGraphQl,nt as getCart,Z as getCheckoutAgreements,Tt as getConfig,at as getCustomer,Mt as getStoreConfig,ft as getStoreConfigCache,ot as initialize,dt as initializeCheckout,$t as isEmailAvailable,yt as removeFetchGraphQlHeader,pt as resetCheckout,Rt as setBillingAddress,Ot as setEndpoint,xt as setFetchGraphQlHeader,Gt as setFetchGraphQlHeaders,Dt as setGuestEmailOnCart,wt as setPaymentMethod,tt as setShippingAddress,vt as setShippingMethodsOnCart,ct as synchronizeCheckout};
+`,j=async({address:t,customerAddressId:e,pickupLocationCode:r})=>{const s=p.cartId;if(!s)throw new _;const o=()=>{if(e)return{customer_address_id:e};if(r)return{pickup_location_code:r};if(!t)throw new b;return{address:f(t)}},a=N.peek(),i=a?v:U,n=a?"setBillingAddressOnCart.cart":"setShippingAddressesOnCart.cart",c={cartId:s,shippingAddressInput:o()};return await d({type:"mutation",query:i,options:{variables:c},path:n,queueName:A.CartUpdate,transformer:C})},F=`
+  mutation subscribeEmailToNewsletter($email: String!) {
+    subscribeEmailToNewsletter(email: $email) {
+      status
+    }
+  }
+`,Y=async t=>{if(!t)throw new O;return await d({defaultValueOnFail:T.Error,options:{variables:{email:t}},path:"subscribeEmailToNewsletter.status",query:F,type:"mutation"})};export{pt as DEFAULT_COUNTRY,gt as FetchError,mt as InvalidArgument,ht as MissingBillingAddress,_ as MissingCart,M as MissingCountry,O as MissingEmail,ut as MissingPaymentMethod,b as MissingShippinghAddress,lt as STORE_CONFIG_DEFAULTS,_t as UnexpectedError,X as authenticateCustomer,Z as config,L as estimateShippingMethods,At as fetchGraphQl,tt as getCart,V as getCheckoutAgreements,St as getConfig,yt as getCustomer,Et as getStoreConfig,nt as getStoreConfigCache,et as initialize,st as initializeCheckout,Nt as isEmailAvailable,ft as removeFetchGraphQlHeader,it as resetCheckout,wt as setBillingAddress,Ct as setEndpoint,Tt as setFetchGraphQlHeader,It as setFetchGraphQlHeaders,bt as setGuestEmailOnCart,Gt as setPaymentMethod,j as setShippingAddress,dt as setShippingMethodsOnCart,Y as subscribeEmailToNewsletter,rt as synchronizeCheckout};

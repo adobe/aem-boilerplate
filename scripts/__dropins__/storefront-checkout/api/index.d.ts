@@ -15,7 +15,6 @@
  * from Adobe.
  *******************************************************************/
 export * from './authenticateCustomer';
-export * from './errors';
 export * from './estimateShippingMethods';
 export * from './fetch-graphql';
 export * from './getCart';
@@ -31,6 +30,8 @@ export * from './setGuestEmailOnCart';
 export * from './setPaymentMethod';
 export * from './setShippingAddress';
 export * from './setShippingMethods';
+export * from './subscribeEmailToNewsletter';
 export * from './synchronizeCheckout';
+export * from '../errors';
 export { getStoreConfigCache } from '../lib/state';
 //# sourceMappingURL=index.d.ts.map

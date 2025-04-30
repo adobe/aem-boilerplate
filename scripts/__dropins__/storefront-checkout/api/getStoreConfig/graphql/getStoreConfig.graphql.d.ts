@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const getStoreConfigQuery = "\n  query getStoreConfig {\n    storeConfig {\n      default_country\n      is_checkout_agreements_enabled\n      is_guest_checkout_enabled\n      is_one_page_checkout_enabled\n      shopping_cart_display_shipping\n    }\n  }\n";
+export declare const getStoreConfigQuery = "\n  query getStoreConfig {\n    storeConfig {\n      default_country\n      is_checkout_agreements_enabled\n      is_guest_checkout_enabled\n      is_one_page_checkout_enabled\n      newsletter_enabled\n      shopping_cart_display_shipping\n    }\n  }\n";
 //# sourceMappingURL=getStoreConfig.graphql.d.ts.map

@@ -4,7 +4,6 @@ import { HTMLAttributes } from 'preact/compat';
 export interface TermsAndConditionsProps extends HTMLAttributes<HTMLFormElement> {
     agreements?: VNode;
     error?: string;
-    isInitialized?: boolean;
 }
-export declare const TermsAndConditions: FunctionComponent<TermsAndConditionsProps>;
+export declare const TermsAndConditions: FunctionComponent<TermsAndConditionsProps & import('..').ConditionalProps>;
 //# sourceMappingURL=TermsAndConditions.d.ts.map

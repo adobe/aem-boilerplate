@@ -32,9 +32,9 @@ import * as cartApi from '@dropins/storefront-cart/api.js';
 import CartSummaryList from '@dropins/storefront-cart/containers/CartSummaryList.js';
 import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
 import EmptyCart from '@dropins/storefront-cart/containers/EmptyCart.js';
-import OrderSummary from '@dropins/storefront-cart/containers/OrderSummary.js';
 import GiftCards from '@dropins/storefront-cart/containers/GiftCards.js';
 import GiftOptions from '@dropins/storefront-cart/containers/GiftOptions.js';
+import OrderSummary from '@dropins/storefront-cart/containers/OrderSummary.js';
 import { render as CartProvider } from '@dropins/storefront-cart/render.js';
 
 // Checkout Dropin
@@ -208,9 +208,6 @@ export default async function decorate(block) {
 
   block.appendChild(checkoutFragment);
 
-  // Global state
-  let initialized = false;
-
   // Container and component references
   let loader;
   let modal;
@@ -225,7 +222,7 @@ export default async function decorate(block) {
   const creditCardFormRef = { current: null };
 
   // Adobe Commerce GraphQL endpoint
-  const commerceCoreEndpoint = getConfigValue('commerce-core-endpoint');
+  const commerceCoreEndpoint = await getConfigValue('commerce-core-endpoint');
 
   // Render the initial containers
   const [
@@ -247,9 +244,11 @@ export default async function decorate(block) {
     CheckoutProvider.render(MergedCartBanner)($mergedCartBanner),
 
     UI.render(Header, {
+      className: 'checkout-header',
       title: 'Checkout',
       size: 'large',
       divider: true,
+      level: 1,
     })($heading),
 
     CheckoutProvider.render(ServerError, {
@@ -298,12 +297,12 @@ export default async function decorate(block) {
     })($login),
 
     AccountProvider.render(AddressForm, {
+      fieldIdPrefix: 'shipping',
       isOpen: true,
       showFormLoader: true,
     })($shippingForm),
 
     CheckoutProvider.render(BillToShippingAddress, {
-      hideOnVirtualCart: true,
       onChange: (checked) => {
         $billingForm.style.display = checked ? 'none' : 'block';
         if (!checked && billingFormRef?.current) {
@@ -318,9 +317,7 @@ export default async function decorate(block) {
       },
     })($billToShipping),
 
-    CheckoutProvider.render(ShippingMethods, {
-      hideOnVirtualCart: true,
-    })($delivery),
+    CheckoutProvider.render(ShippingMethods)($delivery),
 
     CheckoutProvider.render(PaymentMethods, {
       slots: {
@@ -356,6 +353,7 @@ export default async function decorate(block) {
     })($paymentMethods),
 
     AccountProvider.render(AddressForm, {
+      fieldIdPrefix: 'billing',
       isOpen: true,
       showFormLoader: true,
     })($billingForm),
@@ -575,7 +573,6 @@ export default async function decorate(block) {
   };
 
   const initializeCheckout = async (data) => {
-    if (initialized) return;
     removeEmptyCart();
     if (data.isGuest) await displayGuestAddressForms(data);
     else {
@@ -621,6 +618,7 @@ export default async function decorate(block) {
       shippingForm = await AccountProvider.render(AddressForm, {
         addressesFormTitle: 'Shipping address',
         className: 'checkout-shipping-form__address-form',
+        fieldIdPrefix: 'shipping',
         formName: SHIPPING_FORM_NAME,
         forwardFormRef: shippingFormRef,
         hideActionFormButtons: true,
@@ -667,6 +665,7 @@ export default async function decorate(block) {
       billingForm = await AccountProvider.render(AddressForm, {
         addressesFormTitle: 'Billing address',
         className: 'checkout-billing-form__address-form',
+        fieldIdPrefix: 'billing',
         formName: BILLING_FORM_NAME,
         forwardFormRef: billingFormRef,
         hideActionFormButtons: true,
@@ -734,6 +733,7 @@ export default async function decorate(block) {
       shippingAddresses = await AccountProvider.render(Addresses, {
         addressFormTitle: 'Deliver to new address',
         defaultSelectAddressId: shippingAddressId,
+        fieldIdPrefix: 'shipping',
         formName: SHIPPING_FORM_NAME,
         forwardFormRef: shippingFormRef,
         inputsDefaultValueSet,
@@ -954,16 +954,17 @@ export default async function decorate(block) {
   };
 
   const handleCheckoutInitialized = async (data) => {
-    if (!data || isCheckoutEmpty(data)) return;
+    if (isCheckoutEmpty(data)) return;
     initializeCheckout(data);
   };
 
   const handleCheckoutUpdated = async (data) => {
     if (isCheckoutEmpty(data)) {
       await displayEmptyCart();
-    } else if (!initialized) {
-      await initializeCheckout(data);
+      return;
     }
+
+    await initializeCheckout(data);
   };
 
   const handleAuthenticated = (authenticated) => {

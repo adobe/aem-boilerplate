@@ -3,10 +3,11 @@ import { ShippingMethod } from '../../data/models/shipping-method';
 
 declare const emptyCart: Cart;
 declare const simpleCart: Cart;
-declare const simpleCartWithShippingInfo: ({ methods, selection, }?: {
+declare const guestCart: Cart;
+declare const cartWithShippingInfo: ({ methods, selection, }?: {
     methods?: ShippingMethod[] | undefined;
     selection?: ShippingMethod | undefined;
 }) => Cart;
 declare const virtualCart: Cart;
-export { emptyCart, virtualCart, simpleCart, simpleCartWithShippingInfo };
+export { emptyCart, virtualCart, guestCart, simpleCart, cartWithShippingInfo };
 //# sourceMappingURL=fixtures.d.ts.map

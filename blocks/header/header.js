@@ -252,23 +252,29 @@ export default async function decorate(block) {
 
     if (stateChanged && show) {
       publishShoppingCartViewEvent();
+      toggleAllNavSections(navSections);
+      overlay.classList.remove('show');
     }
   }
 
-  cartButton.addEventListener('click', () => toggleMiniCart());
+  cartButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleMiniCart();
+  });
+  
+  function updateCartCounter(data) {
+    if (data?.totalQuantity) {
+      cartButton.setAttribute('data-count', data.totalQuantity);
+      cartButton.setAttribute('aria-label', `Cart with ${data.totalQuantity} items`);
+    } else {
+      cartButton.removeAttribute('data-count');
+      cartButton.setAttribute('aria-label', 'Cart');
+    }
+  }
 
-  // Cart Item Counter
-  events.on(
-    'cart/data',
-    (data) => {
-      if (data?.totalQuantity) {
-        cartButton.setAttribute('data-count', data.totalQuantity);
-      } else {
-        cartButton.removeAttribute('data-count');
-      }
-    },
-    { eager: true },
-  );
+  events.on('cart/data', updateCartCounter, { eager: true });
+  events.on('cart/updated', updateCartCounter, { eager: true });
+  events.on('cart/initialized', updateCartCounter, { eager: true });
 
   /** Search */
 

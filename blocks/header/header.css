@@ -336,6 +336,12 @@ header nav .nav-tools {
   z-index: 3;
 }
 
+header nav .nav-tools-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 header nav .nav-tools-wrapper > button {
   color: var(--color-brand-700);
   background: transparent;
@@ -369,6 +375,44 @@ header nav .nav-tools button.nav-cart-button[data-count]::after {
   justify-content: center;
 }
 
+/* Mini Cart Panel */
+header nav .nav-tools .minicart-panel {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  width: 100%;
+  max-width: 400px;
+  height: 100vh;
+  background-color: var(--background-color);
+  z-index: 999;
+  box-sizing: border-box;
+  transition: right 0.3s ease-in-out;
+  overflow-y: auto;
+  box-shadow: var(--shape-shadow-2);
+}
+
+header nav .nav-tools .nav-tools-panel--show {
+  right: 0;
+}
+
+/* Hide navigation sections when mini cart is open */
+header nav .nav-tools .minicart-panel.nav-tools-panel--show ~ .nav-sections [aria-expanded="true"] {
+  display: none;
+}
+
+/* Hide overlay when mini cart is open */
+header nav .nav-tools .minicart-panel.nav-tools-panel--show ~ .overlay.show {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media (width < 900px) {
+  header nav .nav-tools .minicart-panel {
+    width: 100%;
+    max-width: none;
+  }
+}
+
 header nav .nav-tools button.nav-search-button {
   font-size: 0;
   background-image: url('../../icons/search.svg');
@@ -390,40 +434,13 @@ header .nav-search-panel input {
   appearance: none;
 }
 
-/* Mini Cart  */
 
-.cart-mini-cart:not(:has(.cart-empty-cart)) {
-  max-height: 760px;
-  min-height: 360px;
-}
-
-/* If viewport height is below max, set max height to 90% of viewport */
-@media (height < 820px) {
-  .cart-mini-cart:not(:has(.cart-empty-cart)) {
-    max-height: calc(100vh - var(--nav-height));
-  }
-}
-
-header .nav-search-input .search_autocomplete .popover-container {
-  width: 100%;
-}
 
 @media (width >= 1024px) {
   header nav .nav-tools-wrapper {
     position: relative;
   }
 
-  header nav .nav-tools-panel {
-    top: calc(-12px + var(--nav-height));
-  }
-
-  header nav .minicart-panel {
-    width: 398px;
-  }
-
-  header nav .nav-search-panel {
-    width: 398px;
-  }
 }
 
 /* CSS for authCombine */

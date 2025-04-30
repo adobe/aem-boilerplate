@@ -454,6 +454,26 @@ body.columns main > .section:empty {
   display: none;
 }
 
+.cart-mini-cart {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
+  background-color: white;
+  z-index: 999;
+  box-sizing: border-box;
+  display: grid;
+  overflow-y: scroll;
+  padding: 0;
+  display: none;
+}
+
+.cart-mini-cart--open {
+  display: grid;
+}
+
 @media (width >= 600px) {
   body.columns main {
     padding: var(--spacing-large) var(--spacing-big);

@@ -574,6 +574,7 @@ main .section .layout-wrapper {
 
     .tabs-list button[aria-selected='true'] {
       cursor: pointer;
+      border: 0;
       border-bottom: none;
       background-color: var(--blue) !important;
       color: white;

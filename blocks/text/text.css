@@ -1,0 +1,44 @@
+.text {
+    display: flex;
+    width: 100%;
+}
+
+.text.center {
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.text.no-margin-header {
+    h2 {
+        margin: 0;
+    }
+
+    p {
+        margin: 0;
+    }
+}
+
+.text.top-s {
+    padding-top: var(--body-spacing-s);
+}
+
+.text.top-m {
+    padding-top: var(--body-spacing-m);
+}
+
+.text.top-l {
+    padding-top: var(--body-spacing-l);
+}
+
+.text.bottom-s {
+    padding-bottom: var(--body-spacing-s);
+}
+
+.text.bottom-m {
+    padding-bottom: var(--body-spacing-m);
+}
+
+.text.bottom-l {
+    padding-bottom: var(--body-spacing-l);
+}

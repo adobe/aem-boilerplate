@@ -20,6 +20,7 @@
 
 /* Individual card container */
 .fluid-cards > div {
+  width: 100%;
   position: relative;
   overflow: hidden;
   border-radius: 4px;
@@ -35,13 +36,8 @@
   box-shadow: 0 8px 16px rgba(0 0 0 / 20%);
 }
 
-/* Hide the first div in each card (hidden data) */
-.fluid-cards > div > div:first-child {
-  display: none;
-}
-
 /* Background image container */
-.fluid-cards > div > div:nth-child(2) {
+.fluid-cards .background {
   position: relative;
   width: 100%;
   height: 100%;
@@ -50,41 +46,41 @@
 }
 
 /* Default image styling */
-.fluid-cards > div > div:nth-child(2) img {
+.fluid-cards .background img {
   width: 100%;
   height: 100%;
   transition: transform 0.3s ease;
 }
 
 /* Object-fit based on card width */
-.fluid-cards > div[data-width="50"] > div:nth-child(2) img {
+.fluid-cards > div[data-width="50"] .background img {
   object-fit: cover;
 }
 
-.fluid-cards > div[data-width="100"] > div:nth-child(2) img {
+.fluid-cards > div[data-width="100"] .background img {
   object-fit: contain;
 }
 
 /* Image alignment based on data attributes */
-.fluid-cards > div[data-alignment="right"] > div:nth-child(2) img {
+.fluid-cards > div[data-alignment="right"] .background img {
   object-position: right center;
 }
 
-.fluid-cards > div[data-alignment="center"] > div:nth-child(2) img {
+.fluid-cards > div[data-alignment="center"] .background img {
   object-position: center center;
 }
 
-.fluid-cards > div[data-alignment="left"] > div:nth-child(2) img {
+.fluid-cards > div[data-alignment="left"] .background img {
   object-position: left center;
 }
 
 /* Image zoom effect on hover */
-.fluid-cards > div:hover > div:nth-child(2) img {
+.fluid-cards > div:hover .background img {
   transform: scale(1.05);
 }
 
 /* Content overlay */
-.fluid-cards > div > div:nth-child(3) {
+.fluid-cards > div > .foreground {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -96,24 +92,24 @@
 }
 
 /* Create a wrapper for the text content */
-.fluid-cards > div > div:nth-child(3) > * {
+.fluid-cards > div > .foreground > * {
   transition: transform 0.3s ease;
 }
 
 /* Text content translation on hover */
-.fluid-cards > div:hover > div:nth-child(3) > * {
+.fluid-cards > div:hover .foreground > * {
   transform: translateX(5px);
 }
 
 /* Typography for card content */
-.fluid-cards > div > div:nth-child(3) p:nth-child(1) {
+.fluid-cards > div .foreground p:nth-child(1) {
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
   margin: 0 0 4px;
 }
 
-.fluid-cards > div > div:nth-child(3) p:nth-child(2) {
+.fluid-cards > div .foreground p:nth-child(2) {
   font-size: 3rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -123,7 +119,7 @@
   font-family: "Hitmarker Condensed Black", Arial, sans-serif;
 }
 
-.fluid-cards > div > div:nth-child(3) p:nth-child(3):not(.button-container) {
+.fluid-cards > div .foreground p:nth-child(3):not(.button-container) {
   font-size: 16px;
   margin: 0 0 4px;
 }
@@ -162,8 +158,12 @@
 
 /* Responsive layout */
 @media (width >= 768px) {
+  .fluid-cards > div[data-width="33"] {
+    width: calc(33.3% - 25px);
+  }
+
   .fluid-cards > div[data-width="50"] {
-    width: calc(50% - 12px);
+    width: calc(50% - 18px);
   }
 
   /* For cards with width 100% */

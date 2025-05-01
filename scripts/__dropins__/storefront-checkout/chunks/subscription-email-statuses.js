@@ -1,0 +1,3 @@
+/*! Copyright 2025 Adobe
+All Rights Reserved. */
+const I={authenticated:!1,cartId:null,initialized:!1,config:null},d=new Proxy(I,{set(e,N,U){return e[N]=U,!0},get(e,N){return e[N]}}),A=()=>d.config;var C=(e=>(e.EXCLUDING_TAX="EXCLUDING_TAX",e.INCLUDING_EXCLUDING_TAX="INCLUDING_AND_EXCLUDING_TAX",e.INCLUDING_TAX="INCLUDING_TAX",e))(C||{}),r=(e=>(e.NotActive="NOT_ACTIVE",e.Subscribed="SUBSCRIBED",e.Unconfirmed="UNCONFIRMED",e.Unsubscribed="UNSUBSCRIBED",e))(r||{}),c=(e=>(e[e.NotActive=r.NotActive]="NotActive",e[e.Subscribed=r.Subscribed]="Subscribed",e[e.Unconfirmed=r.Unconfirmed]="Unconfirmed",e[e.Unsubscribed=r.Unsubscribed]="Unsubscribed",e.Error="ERROR",e))(c||{});export{c as S,C as T,A as g,d as s};

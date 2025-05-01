@@ -18,6 +18,7 @@ export * from './BillToShippingAddress';
 export * from './EstimateShipping';
 export * from './LoginForm';
 export * from './MergedCartBanner';
+export * from './Newsletter';
 export * from './OutOfStock';
 export * from './PaymentMethods';
 export * from './PlaceOrder';

@@ -28,4 +28,5 @@ export * from './region';
 export * from './shipping-estimate';
 export * from './shipping-method';
 export * from './store-config';
+export * from './subscription-email-statuses';
 //# sourceMappingURL=index.d.ts.map

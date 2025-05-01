@@ -1,4 +1,4 @@
-import { Container } from '@dropins/tools/types/elsie/src/lib';
+import { Container } from '../../../@adobe-commerce/elsie/src/lib';
 
 export interface ServerErrorProps {
     autoScroll?: boolean;

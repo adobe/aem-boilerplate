@@ -1,6 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
 import { Container, SlotProps } from '../../../@adobe-commerce/elsie/src/lib';
 import { CartModel } from '../../data/models';
+import { ImageProps } from '../../../@adobe-commerce/elsie/src/components';
 
 export interface MiniCartProps extends HTMLAttributes<HTMLDivElement> {
     routeProduct?: (item: CartModel['items'][0]) => string;
@@ -13,12 +14,16 @@ export interface MiniCartProps extends HTMLAttributes<HTMLDivElement> {
         PreCheckoutSection?: SlotProps;
         Thumbnail?: SlotProps<{
             item: CartModel['items'][number];
+            defaultImageProps: ImageProps;
         }>;
     };
     hideFooter?: boolean;
     displayAllItems?: boolean;
     showDiscount?: boolean;
     showSavings?: boolean;
+    enableItemRemoval?: boolean;
+    enableQuantityUpdate?: boolean;
+    hideHeading?: boolean;
 }
 export declare const MiniCart: Container<MiniCartProps, CartModel | null>;
 //# sourceMappingURL=MiniCart.d.ts.map

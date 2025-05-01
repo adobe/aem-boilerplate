@@ -9,7 +9,7 @@
 .fluid-cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 30px;
+  gap: 30px;
   margin-bottom: 24px;
   justify-content: space-around;
 }
@@ -19,7 +19,7 @@
 }
 
 /* Individual card container */
-.fluid-cards > div {
+.fluid-cards.zoom > div {
   width: 100%;
   position: relative;
   overflow: hidden;
@@ -31,13 +31,21 @@
   border: 1px solid #444;
 }
 
+.fluid-cards.outline > div {
+  border: 1px solid var(--primary-color);
+}
+
+.fluid-cards.center > div {
+  text-align: center;
+}
+
 /* Card hover effect - only shadow change, no growth */
 .fluid-cards > div:hover {
   box-shadow: 0 8px 16px rgba(0 0 0 / 20%);
 }
 
 /* Background image container */
-.fluid-cards .background {
+.fluid-cards.zoom .background {
   position: relative;
   width: 100%;
   height: 100%;
@@ -75,12 +83,12 @@
 }
 
 /* Image zoom effect on hover */
-.fluid-cards > div:hover .background img {
+.fluid-cards.zoom > div:hover .background img {
   transform: scale(1.05);
 }
 
 /* Content overlay */
-.fluid-cards > div > .foreground {
+.fluid-cards.zoom > div > .foreground {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -92,12 +100,12 @@
 }
 
 /* Create a wrapper for the text content */
-.fluid-cards > div > .foreground > * {
+.fluid-cards.zoom > div > .foreground > * {
   transition: transform 0.3s ease;
 }
 
 /* Text content translation on hover */
-.fluid-cards > div:hover .foreground > * {
+.fluid-cards.zoom > div:hover .foreground > * {
   transform: translateX(5px);
 }
 
@@ -109,7 +117,7 @@
   margin: 0 0 4px;
 }
 
-.fluid-cards > div .foreground p:nth-child(2) {
+.fluid-cards > div .foreground h2 {
   font-size: 3rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -119,10 +127,21 @@
   font-family: "Hitmarker Condensed Black", Arial, sans-serif;
 }
 
-.fluid-cards > div .foreground p:nth-child(3):not(.button-container) {
+.fluid-cards > div .foreground h4,
+.fluid-cards > div .foreground h5 {
+  margin: 0 0 5px;
+}
+
+.fluid-cards > div .foreground p:not(.button-container) {
+  font-size: 12px;
+  margin: 0 0 10px;
+}
+
+.fluid-cards.zoom > div .foreground p:not(.button-container) {
   font-size: 16px;
   margin: 0 0 4px;
 }
+
 
 /* Button styling */
 .fluid-cards .button-container {

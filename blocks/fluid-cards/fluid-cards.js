@@ -2,7 +2,17 @@ import { createOptimizedPicture } from '../../scripts/aem.js';
 
 export default function decorate(block) {
   // Process each card
+  let hasBg = false;
   [...block.children].forEach((card) => {
+    if (card.children.length !== 3) {
+      const bg = card.querySelector('picture');
+      if (bg) hasBg = bg.querySelector('img').src;
+      card.remove();
+      return;
+    } else if (hasBg) {
+      card.style.backgroundImage = `url(${hasBg})`;
+    }
+
     // Extract data from the first div (hidden data)
     const meta = card.firstElementChild;
     if (meta && meta.textContent) {

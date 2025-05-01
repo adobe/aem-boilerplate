@@ -23,7 +23,6 @@ import {
 } from './aem.js';
 import { trackHistory } from './commerce.js';
 import initializeDropins from './initializers/index.js';
-import { removeHashTags } from './api/hashtags/parser.js';
 import { initializeConfig, getRootPath, getListOfRootPaths } from './configs.js';
 
 const AUDIENCES = {
@@ -179,12 +178,6 @@ function decorateLinks(main) {
   const roots = getListOfRootPaths();
 
   main.querySelectorAll('a').forEach((a) => {
-    if (a.hash) {
-      a.addEventListener('click', (evt) => {
-        removeHashTags(evt.target);
-      });
-    }
-
     // If we are in the root, do nothing
     if (roots.length === 0) return;
 

@@ -62,6 +62,7 @@ declare const bundleOptions: {
     product: {
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -128,6 +129,7 @@ declare const bundleOptionsEmpty: {
     product: {
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -196,6 +198,7 @@ declare const giftCardPhysical: {
     product: {
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -266,6 +269,7 @@ declare const giftCardVirtual: {
     product: {
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -330,6 +334,7 @@ declare const simple: {
     product: {
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -413,6 +418,7 @@ declare const simpleCustomizable: {
     product: {
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -506,6 +512,7 @@ declare const configurable: {
     product: {
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -617,6 +624,7 @@ declare const configurableCustomizable: {
     product: {
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -682,6 +690,7 @@ declare const giftCard: {
     product: {
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -751,6 +760,7 @@ declare const downloadbleWithMultipleLinks: {
     product: {
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -786,6 +796,7 @@ declare const simpleLowInventory: {
         only_x_left_in_stock: number;
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -854,6 +865,7 @@ declare const complexInsufficientQuantity: {
         stock_status: string;
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -927,6 +939,7 @@ declare const complexInsufficientQuantityGeneralMessage: {
         stock_status: string;
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -1010,6 +1023,7 @@ declare const complexWithProductAttributes: {
         };
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;
@@ -1124,6 +1138,7 @@ declare const simpleWithNoDiscount: {
         };
         name: string;
         sku: string;
+        quantity: number;
         thumbnail: {
             url: string;
             label: string;

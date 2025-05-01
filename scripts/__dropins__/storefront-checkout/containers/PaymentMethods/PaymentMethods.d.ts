@@ -1,4 +1,6 @@
-import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
+import { UIComponentType } from '../../types/ComponentTypes';
+import { TitleProps } from '../../types/TitleProps';
+import { Container, SlotProps } from '../../../@adobe-commerce/elsie/src/lib';
 import { HTMLAttributes } from 'preact/compat';
 
 export interface PaymentMethodRenderCtx {
@@ -21,7 +23,7 @@ export interface PaymentMethodsSlot {
 export interface PaymentMethodsHandlerSlot {
     [code: string]: PaymentMethodConfig['render'];
 }
-export interface PaymentMethodsProps extends HTMLAttributes<HTMLDivElement> {
+export interface PaymentMethodsProps extends HTMLAttributes<HTMLDivElement>, TitleProps {
     /**
      * @deprecated This property is deprecated and will be removed in future versions.
      */
@@ -34,10 +36,8 @@ export interface PaymentMethodsProps extends HTMLAttributes<HTMLDivElement> {
          */
         Handlers?: PaymentMethodsHandlerSlot;
         Methods?: PaymentMethodsSlot;
-    };
+    } & TitleProps['slots'];
+    UIComponentType?: UIComponentType;
 }
-export declare const PaymentMethods: {
-    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: import('../../hocs/withConditionalRendering').ConditionalProps & PaymentMethodsProps): import("preact/compat").JSX.Element;
-    displayName: string;
-};
+export declare const PaymentMethods: Container<PaymentMethodsProps>;
 //# sourceMappingURL=PaymentMethods.d.ts.map

@@ -1,6 +1,20 @@
 declare const _default: {
   "Checkout": {
-    "title": "Checkout",
+    "BillToShippingAddress": {
+      "title": "Bill to shipping address"
+    },
+    "EmptyCart": {
+      "title": "Your cart is empty",
+      "button": "Start shopping"
+    },
+    "EstimateShipping": {
+      "estimated": "Estimated Shipping",
+      "freeShipping": "Free",
+      "label": "Shipping",
+      "taxToBeDetermined": "TBD",
+      "withTaxes": "Including taxes",
+      "withoutTaxes": "Excluding taxes"
+    },
     "LoginForm": {
       "title": "Contact details",
       "account": "Already have an account?",
@@ -18,16 +32,14 @@ declare const _default: {
       "switch": "Do you want to switch account?",
       "signOut": "Sign Out"
     },
-    "ShippingMethods": {
-      "title": "Shipping options",
-      "emptyState": "This order can't be shipped to the address provided. Please review the address details you entered and make sure they're correct."
+    "MergedCartBanner": {
+      "items": {
+        "one": "1 item from a previous session was added to your cart. Please review your new subtotal.",
+        "many": "{{count}} items from a previous session were added to your cart. Please review your new subtotal."
+      }
     },
-    "BillToShippingAddress": {
-      "title": "Bill to shipping address"
-    },
-    "PaymentMethods": {
-      "title": "Payment",
-      "emptyState": "No payment methods available"
+    "Newsletter": {
+      "title": "Sign up to the latest news and events"
     },
     "OutOfStock": {
       "title": "Your cart contains items that are out of stock",
@@ -42,6 +54,10 @@ declare const _default: {
       },
       "alert": "Out of stock!"
     },
+    "PaymentMethods": {
+      "title": "Payment",
+      "emptyState": "No payment methods available"
+    },
     "PlaceOrder": {
       "button": "Place Order"
     },
@@ -51,28 +67,15 @@ declare const _default: {
       "unexpected": "An unexpected error occurred while processing your order. Please try again later.",
       "button": "Try again"
     },
-    "EmptyCart": {
-      "title": "Your cart is empty",
-      "button": "Start shopping"
-    },
-    "MergedCartBanner": {
-      "items": {
-        "one": "1 item from a previous session was added to your cart. Please review your new subtotal.",
-        "many": "{{count}} items from a previous session were added to your cart. Please review your new subtotal."
-      }
-    },
-    "EstimateShipping": {
-      "estimated": "Estimated Shipping",
-      "freeShipping": "Free",
-      "label": "Shipping",
-      "taxToBeDetermined": "TBD",
-      "withTaxes": "Including taxes",
-      "withoutTaxes": "Excluding taxes"
+    "ShippingMethods": {
+      "title": "Shipping options",
+      "emptyState": "This order can't be shipped to the address provided. Please review the address details you entered and make sure they're correct."
     },
     "TermsAndConditions": {
       "label": "I have read, understand, and accept our <a href='https://www.adobe.com/legal/terms.html' target='_blank'>Terms of Use, Terms of Sales, Privacy Policy, and Return Policy</a>.",
       "error": "Please accept the Terms and Conditions to continue."
-    }
+    },
+    "title": "Checkout"
   }
 }
 ;

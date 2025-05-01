@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const setShippingMethodsOnCart: (shippingMethods: import('../../__generated__/types').InputMaybe<import('../../__generated__/types').ShippingMethodInput>[]) => Promise<import('../../data/models/cart').Cart | null | undefined>;
+export declare const setShippingMethodsOnCart: (shippingMethods: import('../../__generated__/types').InputMaybe<import('../../__generated__/types').ShippingMethodInput>[]) => Promise<import('../../data/models/cart').Cart | undefined>;
 //# sourceMappingURL=setShippingMethods.d.ts.map

@@ -1,17 +1,16 @@
 import { ShippingMethod } from '../../data/models';
-import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
+import { TitleProps } from '../../types/TitleProps';
+import { Container } from '../../../@adobe-commerce/elsie/src/lib';
 import { HTMLAttributes } from 'preact/compat';
+import { UIComponentType } from '../../types/ComponentTypes';
 
-export interface ShippingMethodsProps extends HTMLAttributes<HTMLDivElement> {
+export interface ShippingMethodsProps extends HTMLAttributes<HTMLDivElement>, TitleProps {
     onShippingMethodSelect?: (method: ShippingMethod) => void;
     preSelectedMethod?: {
         carrierCode: string;
         methodCode: string;
     };
-    shippingMethodsSlot?: SlotProps;
+    UIComponentType?: UIComponentType;
 }
-export declare const ShippingMethods: {
-    ({ hideOnEmptyCart, hideOnVirtualCart, ...props }: import('../../hocs/withConditionalRendering').ConditionalProps & ShippingMethodsProps): import("preact/compat").JSX.Element;
-    displayName: string;
-};
+export declare const ShippingMethods: Container<ShippingMethodsProps>;
 //# sourceMappingURL=ShippingMethods.d.ts.map

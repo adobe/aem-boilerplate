@@ -1,6 +1,6 @@
-import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
+import { SlotProps } from '../../@adobe-commerce/elsie/src/lib';
 import { OrderDataModel, OrdersReturnPropsModel } from '../data/models';
-import { IconNode, IconType } from '@dropins/tools/types/elsie/src/components';
+import { IconNode, IconType } from '../../@adobe-commerce/elsie/src/components';
 
 export interface KeysSortOrderProps {
     name: string;

@@ -1,0 +1,37 @@
+.accordion-menu {
+    display: flex;
+    flex-direction: column;
+    top: 20px;
+    width: 232px;
+    min-width: calc(20% - 118px);
+}
+
+.accordion-menu .title {
+    margin: 4px 0;
+}
+
+.accordion-menu .title h6 {
+    font-size: 0.9em;
+    line-height: 19px;
+}
+
+.accordion-menu .title:not(:first-of-type) {
+    margin-top: 15px;
+}
+
+.accordion-menu .menu-anchor {
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #999;
+    border-left: 4px solid transparent;
+    line-height: 17px;
+    padding: 5px 7px 5px 13px;
+    margin: 5px 0;
+}
+
+.accordion-menu .active .menu-anchor {
+    background: #999;
+    background: linear-gradient(90deg,rgba(153 153 153 / 30%) 0%, rgba(255 255 255 / 0%) 100%);
+    border-left: 4px solid white;
+    color: white;
+}

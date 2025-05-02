@@ -1,6 +1,5 @@
 .text {
     display: flex;
-    width: 100%;
 }
 
 .text.center {
@@ -41,4 +40,71 @@
 
 .text.bottom-l {
     padding-bottom: var(--body-spacing-l);
+}
+
+.text.left-s {
+    padding-left: var(--body-spacing-s);
+}
+
+.text.left-m {
+    padding-left: var(--body-spacing-m);
+}
+
+.text.left-l {
+    padding-left: var(--body-spacing-l);
+}
+
+.text.right-s {
+    padding-right: var(--body-spacing-s);
+}
+
+.text.right-m {
+    padding-right: var(--body-spacing-m);
+}
+
+.text.right-l {
+    padding-right: var(--body-spacing-l);
+}
+
+.text.heading-m h2,
+.text.heading-m h1 {
+    font-size: 30px;
+    margin: 0;
+}
+
+.text-content {
+    width: 100%;
+}
+
+.text.heading-m p {
+    font-size: 12px;
+    margin: 0;
+}
+
+.text.heading-m p:first-of-type {
+    font-size: 16px;
+    margin: 0;
+}
+
+.text.heading-m.heading-line h2 {
+    display: flex;
+    flex: 1;
+    position: relative;
+    margin: 0 auto 25px;
+}
+
+.text.heading-m.heading-line h2::after {
+    content: '';
+    flex-grow: 1;
+    margin: 0 0 0 10px;
+    background: linear-gradient(90deg, #f3f4f5 0%, transparent 100%);
+    background-size: 100% 1px;
+    background-position: 0% 72%;
+    background-repeat: repeat-x;
+}
+
+/* border variant */
+.text.border .text-content {
+    border: 1px solid white;
+    padding: 10px 20px;
 }

@@ -424,6 +424,50 @@
   border: none;
 }
 
-.table.blue table tbody tr{
+.table.blue table tbody tr {
   border: none;
+}
+
+.table.spec {
+  border: 1px solid black;
+
+  thead {
+    background: black;
+
+    tr {
+      border-color: black;
+    }
+  }
+
+  tbody {
+    tr {
+      border-color: transparent;
+      background-color: #3c4147;
+
+      &:first-child  {
+        text-transform: uppercase;
+      }
+      
+      &:nth-child(odd) {
+        background-color: #24272A;
+      }
+
+      td {
+        text-align: center;
+
+        strong {
+          sub {
+            color: red;
+            vertical-align: baseline;
+            font-size: 1em;
+          }
+        }
+
+        &:first-child {
+          text-align: left;
+          padding-left: 15px;
+        }
+      }
+    }
+  }
 }

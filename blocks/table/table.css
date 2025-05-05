@@ -3,6 +3,7 @@
   overflow-x: auto;
   margin-top: 1em;
   margin-bottom: 1em;
+  border-collapse: collapse;
 }
 
 .table table {
@@ -81,14 +82,8 @@
   border: 1px solid #dadada;
 }
 
-/* Default Table Styling */
-.table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.table h1,h2.h3,h4,h5,h6{
-  font-family: "Hitmarker Condensed Black", Arial;
+.table h1, h2, h3, h4, h5, h6 {
+  font-family: "Hitmarker Condensed Black", Arial, sans-serif;
   margin: 0;
 }
 
@@ -99,7 +94,7 @@
 }
 
 .table tbody strong{
-  font-family: "Hitmarker Text Bold";
+  font-family: "Hitmarker Text Bold", Arial, sans-serif;
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -116,14 +111,14 @@
   border: 1px solid #FF851B;
 }
 
-.table.cod thead{
+.table.cod thead {
   position: relative;
-  background: url(../img/ScreenStripeTexture_1x4.png) 0% 0% / 4px 2px repeat, #1b1b1b;
+  background: url("../img/ScreenStripeTexture_1x4.png") 0% 0% / 4px 2px repeat, #1b1b1b;
   color: #F3F4F5;
   min-height: 44px;
 }
 
-.table.cod thead::before{
+.table.cod thead::before {
   content: '';
   position: absolute;
   top: 0;
@@ -131,11 +126,11 @@
   height: 100%;
   width: 100%;
   background: linear-gradient(0deg, #FF851B80 0%, #FF851B80 100%);
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.35), 0px 0px 24px 0px #FF851B inset;
+  box-shadow: 0 4px 8px 0 rgba(0 0 0 / 35%), 0 0 24px 0 #FF851B inset;
 }
 
 .table.cod thead tr {
-  font-family: "Hitmarker Condensed Black", Arial;
+  font-family: "Hitmarker Condensed Black", Arial, sans-serif;
   font-weight: 900;
   font-style: normal;
   letter-spacing: 1px;
@@ -168,7 +163,7 @@
 
 .table.bo6 thead{
   position: relative;
-  background: url(../img/ScreenStripeTexture_1x4.png) 0% 0% / 4px 2px repeat, #1b1b1b;
+  background: url("../img/ScreenStripeTexture_1x4.png") 0% 0% / 4px 2px repeat, #1b1b1b;
   color: #F3F4F5;
   min-height: 44px;
 }
@@ -181,11 +176,11 @@
   height: 100%;
   width: 100%;
   background: linear-gradient(0deg, #FF851B80 0%, #FF851B80 100%);
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.35), 0px 0px 24px 0px #FF851B inset;
+  box-shadow: 0 4px 8px 0 rgba(0 0 0 / 35%), 0 0 24px 0 #FF851B inset;
 }
 
 .table.bo6 thead tr{
-  font-family: "Hitmarker Condensed Black", Arial;
+  font-family: "Hitmarker Condensed Black", Arial, sans-serif;
   font-weight: 900;
   font-style: normal;
   letter-spacing: 1px;
@@ -211,24 +206,24 @@
 /* Warzone Mobile variant */
 .table.warzone-mobile {
   background-color: #2e3a4f;
-  color: #ffffff;
+  color: #fff;
   font-weight: bold;
 }
 
 .table.warzone-mobile {
   background: #24272A;
   color: #fff;
-  border: 1px solid #ff0000;
+  border: 1px solid #f00;
 }
 
-.table.warzone-mobile thead{
+.table.warzone-mobile thead {
   position: relative;
-  background: url(../img/ScreenStripeTexture_1x4.png) 0% 0% / 4px 2px repeat, #1b1b1b;
+  background: url("../img/ScreenStripeTexture_1x4.png") 0% 0% / 4px 2px repeat, #1b1b1b;
   color: #F3F4F5;
   min-height: 44px;
 }
 
-.table.warzone-mobile thead::before{
+.table.warzone-mobile thead::before {
   content: '';
   position: absolute;
   top: 0;
@@ -236,11 +231,11 @@
   height: 100%;
   width: 100%;
   background: linear-gradient(0deg, #ff000080 0%, #ff000080 100%);
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.35), 0px 0px 24px 0px #ff0000 inset;
+  box-shadow: 0 4px 8px 0 rgba(0 0 0 / 35%), 0 0 24px 0 #f00 inset;
 }
 
-.table.warzone-mobile thead tr{
-  font-family: "Hitmarker Condensed Black", Arial;
+.table.warzone-mobile thead tr {
+  font-family: "Hitmarker Condensed Black", Arial, sans-serif;
   font-weight: 900;
   font-style: normal;
   letter-spacing: 1px;
@@ -259,14 +254,14 @@
   border: none;
 }
 
-.table.warzone-mobile table tbody tr{
+.table.warzone-mobile table tbody tr {
   border: none;
 }
 
 /* Warzone variant */
 .table.warzone {
   background-color: #2e3a4f;
-  color: #ffffff;
+  color: #fff;
   font-weight: bold;
 }
 
@@ -276,14 +271,14 @@
   border: 1px solid #f96800;
 }
 
-.table.warzone thead{
+.table.warzone thead {
   position: relative;
-  background: url(../img/ScreenStripeTexture_1x4.png) 0% 0% / 4px 2px repeat, #1b1b1b;
+  background: url("../img/ScreenStripeTexture_1x4.png") 0% 0% / 4px 2px repeat, #1b1b1b;
   color: #F3F4F5;
   min-height: 44px;
 }
 
-.table.warzone thead::before{
+.table.warzone thead::before {
   content: '';
   position: absolute;
   top: 0;
@@ -291,11 +286,11 @@
   height: 100%;
   width: 100%;
   background: linear-gradient(0deg, #f9680080 0%, #f9680080 100%);
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.35), 0px 0px 24px 0px #f96800 inset;
+  box-shadow: 0 4px 8px 0 rgba(0 0 0 / 35%), 0 0 24px 0 #f96800 inset;
 }
 
-.table.warzone thead tr{
-  font-family: "Hitmarker Condensed Black", Arial;
+.table.warzone thead tr {
+  font-family: "Hitmarker Condensed Black", Arial, sans-serif;
   font-weight: 900;
   font-style: normal;
   letter-spacing: 1px;
@@ -314,7 +309,7 @@
   border: none;
 }
 
-.table.warzone table tbody tr{
+.table.warzone table tbody tr {
   border: none;
 }
 
@@ -331,14 +326,14 @@
   border: 1px solid #ffff03;
 }
 
-.table.cod-mobile thead{
+.table.cod-mobile thead {
   position: relative;
-  background: url(../img/ScreenStripeTexture_1x4.png) 0% 0% / 4px 2px repeat, #1b1b1b;
+  background: url("../img/ScreenStripeTexture_1x4.png") 0% 0% / 4px 2px repeat, #1b1b1b;
   color: #F3F4F5;
   min-height: 44px;
 }
 
-.table.cod-mobile thead::before{
+.table.cod-mobile thead::before {
   content: '';
   position: absolute;
   top: 0;
@@ -346,11 +341,11 @@
   height: 100%;
   width: 100%;
   background: linear-gradient(0deg, #ffff0380 0%, #ffff0380 100%);
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.35), 0px 0px 24px 0px #ffff03 inset;
+  box-shadow: 0 4px 8px 0 rgba(0 0 0 / 35%), 0 0 24px 0 #ffff03 inset;
 }
 
-.table.cod-mobile thead tr{
-  font-family: "Hitmarker Condensed Black", Arial;
+.table.cod-mobile thead tr {
+  font-family: "Hitmarker Condensed Black", Arial, sans-serif;
   font-weight: 900;
   font-style: normal;
   letter-spacing: 1px;
@@ -369,7 +364,7 @@
   border: none;
 }
 
-.table.cod-mobile table tbody tr{
+.table.cod-mobile table tbody tr {
   border: none;
 }
 
@@ -386,14 +381,14 @@
   border: 1px solid #3ECCED;
 }
 
-.table.blue thead{
+.table.blue thead {
   position: relative;
-  background: url(../img/ScreenStripeTexture_1x4.png) 0% 0% / 4px 2px repeat, #1b1b1b;
+  background: url("../img/ScreenStripeTexture_1x4.png") 0% 0% / 4px 2px repeat, #1b1b1b;
   color: #F3F4F5;
   min-height: 44px;
 }
 
-.table.blue thead::before{
+.table.blue thead::before {
   content: '';
   position: absolute;
   top: 0;
@@ -401,11 +396,11 @@
   height: 100%;
   width: 100%;
   background: linear-gradient(0deg, #3ECCED80 0%, #3ECCED80 100%);
-  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.35), 0px 0px 24px 0px #3ECCED inset;
+  box-shadow: 0 4px 8px 0 rgba(0 0 0 / 35%), 0 0 24px 0 #3ECCED inset;
 }
 
-.table.blue thead tr{
-  font-family: "Hitmarker Condensed Black", Arial;
+.table.blue thead tr {
+  font-family: "Hitmarker Condensed Black", Arial, sans-serif;
   font-weight: 900;
   font-style: normal;
   letter-spacing: 1px;

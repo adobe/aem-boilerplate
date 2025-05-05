@@ -40,6 +40,7 @@
 
 .adjustments {
   border: 1px solid #F96800;
+  padding: 0 !important;
 
   .table-title {
     background: linear-gradient(0deg, #F9680080 0%, #F9680080 100%);

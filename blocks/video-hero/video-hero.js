@@ -1,4 +1,4 @@
-// made with moon energy crystals by ur boy frank
+// video hero block
 
 function decorateHeroLayout(block) {
   const background = block.firstElementChild;

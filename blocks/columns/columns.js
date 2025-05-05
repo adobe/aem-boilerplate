@@ -9,9 +9,10 @@ function sliceContent(arr, indexes) {
 }
 
 function decorateBlockTable(block) {
-  const blockSection = block.closest('.section.block-table-section');
+  const blockSection = block.closest('.section');
+  blockSection.classList.add('block-table-section');
   const blockTable = document.createElement('div');
-  blockTable.className = 'custom-block-table';
+  blockTable.className = 'adjustments';
 
   // create title
   const [blockTitle, blockCols] = [...block.children];
@@ -41,7 +42,7 @@ function decorateBlockTable(block) {
   sliced.forEach(row => {
     const tableRow = document.createElement('div');
     tableRow.className = 'block-table-row block-cols';
-    const colIds = row.filter(r => !!r.querySelector('.col-start'));
+    const colIds = row.filter(r => !!r.querySelector('.detail'));
     const colIndex = colIds.map(id => row.indexOf(id));
     const slices = sliceContent([...row], [0, ...colIndex]);
     slices.forEach(slice => {
@@ -73,5 +74,5 @@ export default function decorate(block) {
       }
     });
   });
-  if (block.classList.contains('custom-block-table')) decorateBlockTable(block);
+  if (block.classList.contains('adjustments')) decorateBlockTable(block);
 }

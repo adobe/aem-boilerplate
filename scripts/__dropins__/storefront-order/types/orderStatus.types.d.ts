@@ -1,5 +1,5 @@
 import { OrderDataModel, OrdersReturnPropsModel } from '../data/models';
-import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
+import { SlotProps } from '../../@adobe-commerce/elsie/src/lib';
 import { UserInputErrorProps } from '.';
 
 export declare enum StatusEnumProps {

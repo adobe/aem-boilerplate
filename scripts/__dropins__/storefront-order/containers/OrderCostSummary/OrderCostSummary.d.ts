@@ -1,4 +1,4 @@
-import { Container } from '@dropins/tools/types/elsie/src/lib';
+import { Container } from '../../../@adobe-commerce/elsie/src/lib';
 import { OrderCostSummaryProps } from '../../types';
 
 export declare const OrderCostSummary: Container<OrderCostSummaryProps>;

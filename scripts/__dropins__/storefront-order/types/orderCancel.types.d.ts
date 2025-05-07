@@ -1,5 +1,5 @@
-import { ButtonProps, PickerProps } from '@dropins/tools/types/elsie/src/src/components';
-import { PickerOption } from '@dropins/tools/types/elsie/src/components';
+import { ButtonProps, PickerProps } from '../../@adobe-commerce/elsie/src/src/components';
+import { PickerOption } from '../../@adobe-commerce/elsie/src/components';
 
 export interface OrderCancelProps {
     orderRef: string;

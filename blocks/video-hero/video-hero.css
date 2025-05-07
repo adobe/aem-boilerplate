@@ -1,0 +1,156 @@
+/* video hero block */
+
+.video-hero-container {
+  margin-top: -47px !important;
+}
+
+.video-hero-container,
+.video-hero-wrapper {
+  max-width: unset !important;
+  padding: 0 !important;
+}
+  
+.video-hero {
+  position: relative;
+  width: 100vw;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.video-hero .foreground {
+  position: relative;
+  z-index: 4;
+  width: 100vw;
+  margin: 0 auto;
+  display: flex;
+  padding-top: 496px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.video-hero .background {
+  background-color: black;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.video-hero .background video {
+  width: 120vw;
+  height: auto;
+  position: absolute;
+  inset: 1px 50%;
+  transform: translateX(-50%);
+}
+
+/* Title and Logo */
+.video-hero .foreground h1 {
+  margin: 15px 0;
+}
+
+.video-hero .foreground p {
+  margin: 0;
+}
+
+.video-hero .foreground h1 img {
+  color: white;
+  margin: 0 0 20px;
+  z-index: 1;
+  max-width: 400px;
+}
+
+/* Button Styling */
+.video-hero .foreground .button {
+  margin: 101px 0;
+  font-size: 0.9em;
+  padding: 18px 40px;
+}
+
+/* Headings */
+.video-hero h3 {
+  font-family: "Hitmarker Condensed Black", Arial, sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  letter-spacing: 1px;
+  font-size: 4.25rem;
+  line-height: 4.25rem;
+  text-transform: uppercase;
+  background-image: url("/img/TitleTextures_Orange.webp");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: #f96800;
+  margin-bottom: 0;
+}
+
+.video-hero h4 {
+  font-family: "Hitmarker Condensed Black", Arial, sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  letter-spacing: 1px;
+  font-size: 3.25rem;
+  line-height: 3.25rem;
+  text-transform: uppercase;
+  background-image: url("/img/TitleTextures_White.webp");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: #fff;
+  margin-top: 0;
+}
+
+/* Description */
+.video-hero p:last-of-type {
+  color: white;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin-top: 25px;
+  margin-bottom: 50px;
+}
+
+/* Mobile Adjustments */
+@media (width <= 768px) {
+  .video-hero {
+    height: 100vh;
+  }
+
+  .video-hero .foreground {
+    padding-top: 260px;
+  }
+
+  .video-hero .background video {
+    width: auto;
+    height: 90vh;
+  }
+
+  .video-hero .foreground h1 img {
+    max-width: 280px;
+  }
+
+  .video-hero .foreground .button {
+    margin: 50px 0;
+    font-size: 0.7em;
+    padding: 10px 20px;
+  }
+  
+  .video-hero h3 {
+    font-size: 2.2rem;
+    line-height: 1em;
+  }
+  
+  .video-hero h4 {
+    font-size: 2rem;
+    line-height: 1em;
+  }
+  
+  .video-hero p:last-of-type {
+    font-size: 0.9rem;
+    padding: 0 20px;
+  }
+}

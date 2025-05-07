@@ -1,0 +1,192 @@
+.fluid-cards-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 6px;
+}
+
+/* Main container for all cards */
+.fluid-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 24px;
+  justify-content: space-around;
+}
+
+.fluid-cards .icon-cod-eyebrow {
+  width: 75px;
+}
+
+/* Individual card container */
+.fluid-cards.zoom > div {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0 0 0 / 10%);
+  margin-bottom: 12px;
+  transition: box-shadow 0.3s ease;
+  max-height: 370px;
+  border: 1px solid #444;
+}
+
+.fluid-cards.outline > div {
+  border: 1px solid var(--primary-color);
+}
+
+.fluid-cards.center > div {
+  text-align: center;
+}
+
+/* Card hover effect - only shadow change, no growth */
+.fluid-cards > div:hover {
+  box-shadow: 0 8px 16px rgba(0 0 0 / 20%);
+}
+
+/* Background image container */
+.fluid-cards.zoom .background {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000;
+}
+
+/* Default image styling */
+.fluid-cards .background img {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+/* Object-fit based on card width */
+.fluid-cards > div[data-width="50"] .background img {
+  object-fit: cover;
+}
+
+.fluid-cards > div[data-width="100"] .background img {
+  object-fit: contain;
+}
+
+/* Image alignment based on data attributes */
+.fluid-cards > div[data-alignment="right"] .background img {
+  object-position: right center;
+}
+
+.fluid-cards > div[data-alignment="center"] .background img {
+  object-position: center center;
+}
+
+.fluid-cards > div[data-alignment="left"] .background img {
+  object-position: left center;
+}
+
+/* Image zoom effect on hover */
+.fluid-cards.zoom > div:hover .background img {
+  transform: scale(1.05);
+}
+
+/* Content overlay */
+.fluid-cards.zoom > div > .foreground {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 24px;
+  color: #fff;
+  background: linear-gradient(to top, rgba(0 0 0 / 80%), rgba(0 0 0 / 40%), transparent);
+  z-index: 1;
+}
+
+/* Create a wrapper for the text content */
+.fluid-cards.zoom > div > .foreground > * {
+  transition: transform 0.3s ease;
+}
+
+/* Text content translation on hover */
+.fluid-cards.zoom > div:hover .foreground > * {
+  transform: translateX(5px);
+}
+
+/* Typography for card content */
+.fluid-cards > div .foreground p:nth-child(1) {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+
+.fluid-cards > div .foreground h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  max-width: 200px;
+  line-height: 1;
+  margin: 0 0 4px;
+  font-family: "Hitmarker Condensed Black", Arial, sans-serif;
+}
+
+.fluid-cards > div .foreground h4,
+.fluid-cards > div .foreground h5 {
+  margin: 0 0 5px;
+}
+
+.fluid-cards > div .foreground p:not(.button-container) {
+  font-size: 12px;
+  margin: 0 0 10px;
+}
+
+.fluid-cards.zoom > div .foreground p:not(.button-container) {
+  font-size: 16px;
+  margin: 0 0 4px;
+}
+
+
+/* Button styling */
+.fluid-cards .button-container {
+  margin: 0;
+  position: relative;
+  z-index: 3;
+}
+
+.fluid-cards .button {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 0 !important;
+  background-color: transparent;
+  color: #000;
+  text-decoration: none;
+  border: 0 !important;
+}
+
+.fluid-cards .button:hover {
+  background-color: transparent;
+}
+
+.fluid-cards .button .icon {
+  margin-left: 8px;
+}
+
+.fluid-cards a {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: "Hitmarker Condensed Black", Arial, sans-serif;
+  letter-spacing: 1px;
+}
+
+/* Responsive layout */
+@media (width >= 768px) {
+  .fluid-cards > div[data-width="33"] {
+    width: calc(33.3% - 25px);
+  }
+
+  .fluid-cards > div[data-width="50"] {
+    width: calc(50% - 18px);
+  }
+
+  /* For cards with width 100% */
+  .fluid-cards > div[data-width="100"] {
+    width: 100%;
+  }
+}

@@ -1,0 +1,13 @@
+blocks:
+  table:
+    variants:
+      - name: cod
+        label: Call of Duty Table Styling
+      - name: bo6
+        label: Black Ops 6 Table Styling
+      - name: warzone
+        label: Warzone Table Styling
+      - name: warzone-mobile
+        label: Warzone Mobile Table Styling
+      - name: cod-mobile
+        label: Call of Duty Mobile Table Styling

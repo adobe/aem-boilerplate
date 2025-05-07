@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Date Picker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" href="data:,">
+    <!-- Import DA App SDK -->
+    <script src="https://da.live/nx/utils/sdk.js" type="module"></script>
+    <!-- Project App Logic -->
+    <script src="/tools/datepicker/datepicker.js" type="module"></script>
+
+    <link rel="stylesheet" type="text/css" href="/tools/datepicker/datepicker.css">
+  </head>
+  <body>
+    <form id="typeselect">
+      <label><input type="radio" name="date-picker" value="date">Date</label>
+      <label><input type="radio" name="date-picker" value="datetime" checked>Date + Time</label>
+      <!--
+      <label><input type="radio" name="date-picker" value="time">Time</label>
+      -->
+    </form>
+    <form id="picker">
+      <div id="date-time">
+        <input type="date" id="date-picker" name="date-picker" required>
+        <input type="time" id="time-picker" name="time-picker" required>
+      </div>
+      <select name="time-picker" id="time-zone"></select>
+      <button id="use">Insert</button>
+    </form>
+  </body>
+</html>

@@ -52,7 +52,7 @@ export default function decorate(block) {
       if (block.classList.contains('parallax')) {
         window.onscroll = function(){
           // offset scrollposition by setting inset value
-          const offset = window.pageYOffset * 0.5;
+          const offset = window.pageYOffset * 0.8;
           background.firstChild.style.inset = `calc(1px + ${offset}px) 50%`;
         };
       }

@@ -96,7 +96,24 @@ async function getAemHtml(text) {
   return aemHtml;
 }
 
-async function importUrl({ path, destination, setStatus }) {
+async function copyJson(destination, path, setStatus) {
+  const daDestinationPath = `${DA_ORIGIN}/source${destination}${path}`;
+
+  setStatus({ message: `Importing ${path}` });
+
+  const resp = await fetch(`${IMPORT_BASE}${path}`);
+
+  const content = await resp.json();
+
+  const blob = new Blob([JSON.stringify(content)], { type: 'application/json' });
+
+  const formData = new FormData();
+  formData.set('data', blob);
+  const updateRes = await fetch(daDestinationPath, { method: 'POST', body: formData, headers: getAuthHeaders() });
+  if (!updateRes.ok) { throw new Error(`Failed to write ${path}: ${updateRes.statusText}`); }
+}
+
+async function copyHtml(destination, path, setStatus) {
   const suffix = path.endsWith('/') ? 'index' : '';
   const daDestinationPath = `${DA_ORIGIN}/source${destination}${path}${suffix}.html`;
 
@@ -114,6 +131,15 @@ async function importUrl({ path, destination, setStatus }) {
   formData.set('data', content);
   const updateRes = await fetch(daDestinationPath, { method: 'POST', body: formData, headers: getAuthHeaders() });
   if (!updateRes.ok) { throw new Error(`Failed to write ${path}: ${updateRes.statusText}`); }
+}
+
+async function importUrl({ path, destination, setStatus }) {
+  const isJson = path.endsWith('.json');
+  if (isJson) {
+    await copyJson(destination, path, setStatus);
+  } else {
+    await copyHtml(destination, path, setStatus);
+  }
 }
 
 async function copyContent(data, setStatus) {

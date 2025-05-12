@@ -6,6 +6,5 @@ const e=`
     firstname
     lastname
     email
-    is_subscribed
   }
 `;export{e as CUSTOMER_INFORMATION_FRAGMENT};

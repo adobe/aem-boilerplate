@@ -38,6 +38,7 @@
 
   /* nav height */
   --nav-height: 64px;
+  --header-height: var(--nav-height);
 }
 
 /* fallback fonts */

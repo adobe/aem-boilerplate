@@ -1,6 +1,20 @@
 import { FunctionComponent, VNode } from 'preact';
-import { HTMLAttributes } from 'preact/compat';
+import { HTMLAttributes, JSX } from 'preact/compat';
+import { ImageProps } from '../Image';
 
+export interface ImageNodeRenderProps extends ImageProps {
+    imageSwatchContext: {
+        disabled?: boolean;
+        outOfStock?: boolean;
+        multi?: boolean;
+        selected?: boolean;
+        value?: string;
+        label?: string;
+        groupAriaLabel?: string;
+        name?: string;
+        id?: string;
+    };
+}
 export interface ImageSwatchProps extends Omit<HTMLAttributes<HTMLInputElement>, 'label'> {
     name?: string;
     label?: string;
@@ -13,7 +27,7 @@ export interface ImageSwatchProps extends Omit<HTMLAttributes<HTMLInputElement>,
     selected?: boolean;
     outOfStock?: boolean;
     multi?: boolean;
-    imageNode?: VNode;
+    imageNode?: VNode | ((props: ImageNodeRenderProps) => JSX.Element);
     onValue?: (value: any) => void;
     onUpdateError?: (error: Error) => void;
 }

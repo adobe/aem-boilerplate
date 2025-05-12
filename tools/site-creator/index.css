@@ -1,0 +1,41 @@
+body {
+  display: block;
+  position: relative;
+  background-color: white;
+}
+
+main > div.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+main > div.header > h1 {
+    font-size: 2em;
+    margin: 0;
+}
+
+.subheader {
+    margin-bottom: 50px;
+}
+
+.logo {
+    max-width: 270px;
+    display: block;
+    margin-left: auto;
+    width: 100%;
+    height: auto;
+}
+
+main {
+  max-width: var(--grid-container-width);
+  margin: 84px auto 0 auto;
+}
+
+da-site-creator {
+  display: block;
+  position: relative;
+  z-index: 10;
+  max-width: 450px;
+}

@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
-import { SlotProps } from '../../@adobe-commerce/elsie/src/lib';
+import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { OrderDataModel, OrderItemModel, OrdersReturnItemsPropsModel, OrdersReturnPropsModel, ShipmentItemsModel } from '../data/models';
-import { ImageProps } from '../../@adobe-commerce/elsie/src/components';
+import { ImageProps } from '@dropins/tools/types/elsie/src/components';
 
 type routeOrderDetailsTypes = {
     returnNumber?: string;

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Storefront Content Initialization - Adobe Commerce</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" href="https://da.live/nx/styles/nexter.css">
+  <link rel="stylesheet" href="/tools/site-creator/index.css">
+  <script type="importmap">
+    {
+      "imports": {
+        "da-lit": "https://da.live/deps/lit/dist/index.js"
+      }
+    }
+  </script>
+  <script src="https://da.live/nx/utils/sdk.js" type="module"></script>
+  <script src="/tools/site-creator/site-creator.js" type="module"></script>
+  <link rel="icon" href="data:,">
+</head>
+<body>
+<main>
+  <div class="header">
+    <h1>Initialize your storefront content</h1>
+    <img width="2000" height="558" class="logo" src="./Logo-Adobe-Commerce.png" />
+  </div>
+  <p class="subheader">This tool will clone the content behind <a href="https://www.aemshop.net" target="_blank">aemshop.net</a> to your own content directory. After you create the github repo, please make sure you onboard your site to <a href="https://www.aem.live/docs/config-service-setup" target="_blank">AEM config service</a>, or commit a <a href="https://main--aem-boilerplate-commerce--hlxsites.aem.live/config.json" target="_blank">config.json</a> with your Commerce environment details to your code repo.</p>
+  <da-site-creator></da-site-creator>
+</main>
+</body>
+</html>

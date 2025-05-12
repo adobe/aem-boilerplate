@@ -1,7 +1,7 @@
 import { FunctionComponent, VNode } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
 
-export interface HeaderProps extends HTMLAttributes<HTMLDivElement> {
+export interface HeaderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'size'> {
     title: string;
     size?: 'medium' | 'large';
     divider?: boolean;

@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{CUSTOMER_INFORMATION_FRAGMENT as N}from"../fragments.js";import{f as m,h as u}from"./network-error.js";import{s as I}from"./setReCaptchaToken.js";import"@dropins/tools/event-bus.js";import"@dropins/tools/recaptcha.js";import{merge as U}from"@dropins/tools/lib.js";import{c as g}from"./verifyToken.js";import{t as $}from"./transform-attributes-form.js";import{h as F}from"./getStoreConfig.js";const v=`
+import{CUSTOMER_INFORMATION_FRAGMENT as O}from"../fragments.js";import{f as s,h as u}from"./network-error.js";import{s as b}from"./setReCaptchaToken.js";import"@dropins/tools/event-bus.js";import"@dropins/tools/recaptcha.js";import{merge as p}from"@dropins/tools/lib.js";import{c as N}from"./verifyToken.js";import{t as F}from"./transform-attributes-form.js";import{h as S}from"./getStoreConfig.js";const I=`
   mutation CREATE_CUSTOMER($input: CustomerInput!) {
     createCustomer(input: $input) {
       customer {
@@ -8,8 +8,8 @@ import{CUSTOMER_INFORMATION_FRAGMENT as N}from"../fragments.js";import{f as m,h 
       }
     }
   }
-  ${N}
-`,y=`
+  ${O}
+`,U=`
   mutation CREATE_CUSTOMER_V2($input: CustomerCreateInput!) {
     createCustomerV2(input: $input) {
       customer {
@@ -17,8 +17,8 @@ import{CUSTOMER_INFORMATION_FRAGMENT as N}from"../fragments.js";import{f as m,h 
       }
     }
   }
-  ${N}
-`,G=(r,e)=>{var i,a,c,n,C,l,_,f,E,T,R,A,b,h,d,S,M,O,s,p;let o;if(e){const{data:t}=r;o={firstName:((a=(i=t==null?void 0:t.createCustomerV2)==null?void 0:i.customer)==null?void 0:a.firstname)??"",lastName:((n=(c=t==null?void 0:t.createCustomerV2)==null?void 0:c.customer)==null?void 0:n.lastname)??"",email:((l=(C=t==null?void 0:t.createCustomerV2)==null?void 0:C.customer)==null?void 0:l.email)??"",isSubscribed:((f=(_=t==null?void 0:t.createCustomerV2)==null?void 0:_.customer)==null?void 0:f.is_subscribed)??!1,customAttributes:((E=t==null?void 0:t.createCustomerV2)==null?void 0:E.custom_attributes)??[],errors:(r==null?void 0:r.errors)??[]}}else{const{data:t}=r;o={firstName:((R=(T=t==null?void 0:t.createCustomer)==null?void 0:T.customer)==null?void 0:R.firstname)??"",lastName:((b=(A=t==null?void 0:t.createCustomer)==null?void 0:A.customer)==null?void 0:b.lastname)??"",email:((d=(h=t==null?void 0:t.createCustomer)==null?void 0:h.customer)==null?void 0:d.email)??"",isSubscribed:((M=(S=t==null?void 0:t.createCustomer)==null?void 0:S.customer)==null?void 0:M.is_subscribed)??!1,errors:(r==null?void 0:r.errors)??[]}}return U(o,(p=(s=(O=g.getConfig().models)==null?void 0:O.CustomerModel)==null?void 0:s.transformer)==null?void 0:p.call(s,r))},V=r=>{if(!r.dob)return r;const{dob:e,...o}=r;return{...o,date_of_birth:e}},J=async(r,e)=>{await I();const o=await m(e?y:v,{method:"POST",variables:{input:{...V(r)}}}).catch(u);return G(o,e)},w=`
+  ${O}
+`,g=(r,e)=>{var a,i,c,n,C,l,E,T,_,f,R,A,h,d,m,M;let o;if(e){const{data:t}=r;o={firstName:((i=(a=t==null?void 0:t.createCustomerV2)==null?void 0:a.customer)==null?void 0:i.firstname)??"",lastName:((n=(c=t==null?void 0:t.createCustomerV2)==null?void 0:c.customer)==null?void 0:n.lastname)??"",email:((l=(C=t==null?void 0:t.createCustomerV2)==null?void 0:C.customer)==null?void 0:l.email)??"",customAttributes:((E=t==null?void 0:t.createCustomerV2)==null?void 0:E.custom_attributes)??[],errors:(r==null?void 0:r.errors)??[]}}else{const{data:t}=r;o={firstName:((_=(T=t==null?void 0:t.createCustomer)==null?void 0:T.customer)==null?void 0:_.firstname)??"",lastName:((R=(f=t==null?void 0:t.createCustomer)==null?void 0:f.customer)==null?void 0:R.lastname)??"",email:((h=(A=t==null?void 0:t.createCustomer)==null?void 0:A.customer)==null?void 0:h.email)??"",errors:(r==null?void 0:r.errors)??[]}}return p(o,(M=(m=(d=N.getConfig().models)==null?void 0:d.CustomerModel)==null?void 0:m.transformer)==null?void 0:M.call(m,r))},$=r=>{if(!r.dob)return r;const{dob:e,...o}=r;return{...o,date_of_birth:e}},Q=async(r,e)=>{await b();const o=await s(e?U:I,{method:"POST",variables:{input:{...$(r)}}}).catch(u);return g(o,e)},v=`
   query GET_ATTRIBUTES_FORM($formCode: String!) {
     attributesForm(formCode: $formCode) {
       items {
@@ -50,10 +50,10 @@ import{CUSTOMER_INFORMATION_FRAGMENT as N}from"../fragments.js";import{f as m,h 
       }
     }
   }
-`,K=async r=>await m(w,{method:"GET",cache:"force-cache",variables:{formCode:r}}).then(e=>{var o;return(o=e.errors)!=null&&o.length?F(e.errors):$(e)}).catch(u),D=`
+`,j=async r=>await s(v,{method:"GET",cache:"force-cache",variables:{formCode:r}}).then(e=>{var o;return(o=e.errors)!=null&&o.length?S(e.errors):F(e)}).catch(u),y=`
   mutation CREATE_CUSTOMER_ADDRESS($input: CustomerAddressInput!) {
     createCustomerAddress(input: $input) {
       firstname
     }
   }
-`,L=async r=>await m(D,{method:"POST",variables:{input:r}}).then(e=>{var o;return(o=e.errors)!=null&&o.length?F(e.errors):e.data.createCustomerAddress.firstname||""}).catch(u);export{L as a,J as c,K as g};
+`,z=async r=>await s(y,{method:"POST",variables:{input:r}}).then(e=>{var o;return(o=e.errors)!=null&&o.length?S(e.errors):e.data.createCustomerAddress.firstname||""}).catch(u);export{z as a,Q as c,j as g};

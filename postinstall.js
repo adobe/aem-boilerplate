@@ -64,6 +64,15 @@ function checkPackageLockForArtifactory() {
   });
 }
 
+function checkSourceMaps() {
+  const hlxIgnorePath = '.hlxignore';
+  if (!fs.existsSync(hlxIgnorePath) || !fs.readFileSync(hlxIgnorePath, 'utf-8').includes('*.map')) {
+    console.info('⚠️ Sourcemaps may be added to the repo. WARNING: Please remove the *.map files or add "*.map" to .hlxignore before going live!\n');
+  }
+}
+
+checkSourceMaps();
+
 checkPackageLockForArtifactory()
   .then((found) => {
     if (!found) {

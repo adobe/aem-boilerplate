@@ -1,0 +1,170 @@
+.fieldgroup {
+  margin-bottom: 12px;
+
+  label {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 12px;
+    line-height: 1;
+  }
+
+  p {
+    margin: 3px;
+    font-size: var(--s2-font-size-100);
+    color: #616161;
+  }
+}
+
+sl-textarea {
+  &.tagline {
+    margin-bottom: 24px;
+  }
+}
+
+.form-footer {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status {
+  margin: 24px 0px 0px;
+  font-weight: 700;
+  font-style: italic;
+  background: var(--s2-green);
+  padding: 6px 12px;
+  color: rgb(255, 255, 255);
+  border-radius: 8px;
+
+  &.error {
+    background-color: var(--s2-red-800);
+  }
+
+  &.success {
+    background-color: var(--s2-blue-800);
+  }
+}
+
+.time-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+
+  p {
+    margin: 0;
+    font-weight: 700;
+  }
+}
+
+div.grid-list {
+  list-style: none;
+  display: grid;
+  grid-auto-rows: auto;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0;
+  padding: 0;
+  gap: 12px;
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  input[type="radio"]:checked+label {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  label {
+    padding: 12px;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: rgba(240, 240, 240, 0.45);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .grid-list-item {
+    position: relative;
+  }
+
+  .grid-list-item button {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    background: none;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 6px;
+    opacity: 0.8;
+  }
+
+  .grid-list-item button img {
+    display: block;
+  }
+
+  .grid-list-item button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+pre {
+    background: #dadada;
+    padding: 12px;
+    border-radius: 6px;
+    overflow-y: hidden;
+    overflow-x: scroll;
+}
+
+.fstab-head {
+  margin-top: 56px;
+}
+
+
+.success-panel {
+  padding: 24px;
+  background-color: rgb(255 255 255 / 20%);
+  border-radius: 8px;
+  margin-bottom: 24px;
+
+  pre {
+    background: #dadada;
+    padding: 12px;
+    border-radius: 6px;
+    overflow-y: hidden;
+    overflow-x: scroll;
+  }
+
+  h2 {
+    color: #000;
+    margin-top: 0;
+    line-height: 1;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  a {
+    text-decoration: none;
+    font-weight: 700;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  hr {
+    display: block;
+    border: none;
+    height: 2px;
+    border-radius: 1px;
+    background-color: #676767;
+  }
+}

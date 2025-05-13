@@ -100,7 +100,7 @@ describe('Verify auth user can place order', () => {
       'Youth tee',
       '/products/youth-tee/ADB150'
     )('.cart-mini-cart');
-    assertProductImage('/ADB150.jpg')('.cart-mini-cart');
+    assertProductImage(Cypress.env('productImageName'))('.cart-mini-cart');
     assertCartSummaryProduct(
       'Cypress Configurable product latest',
       'CYPRESS456',
@@ -113,7 +113,7 @@ describe('Verify auth user can place order', () => {
       'Cypress Configurable product latest',
       '/products/cypress-configurable-product-latest/CYPRESS456'
     )('.cart-mini-cart');
-    assertProductImage('/thumbnail.jpg')('.cart-mini-cart');
+    assertProductImage(Cypress.env('productImageName'))('.cart-mini-cart');
     cy.contains('View Cart').click();
     assertCartSummaryProduct(
       'Youth tee',
@@ -127,7 +127,7 @@ describe('Verify auth user can place order', () => {
       'Youth tee',
       '/products/youth-tee/ADB150'
     )('.commerce-cart-wrapper');
-    assertProductImage('/ADB150.jpg')('.commerce-cart-wrapper');
+    assertProductImage(Cypress.env('productImageName'))('.commerce-cart-wrapper');
 
     assertCartSummaryProduct(
       'Cypress Configurable product latest',
@@ -200,30 +200,39 @@ describe('Verify auth user can place order', () => {
       cy.visit('/order-details?' + orderRef)
     })
 
-    // CANCEL ORDER
-    cy.get(fields.cancelButton).should('exist');
-    cy.get(fields.cancelButton).click();
+    // These steps are skipped for ACCS due to cancel flow bug https://jira.corp.adobe.com/browse/LYNX-856
+    cy.get(fields.cancelButton).then(($btn) => {
+      let paasGiftValue = Cypress.env('giftCardA');
+      if ( paasGiftValue == '000Y7YLECJ34') {
+          // CANCEL ORDER
+          cy.get(fields.cancelButton).should('exist');
+          cy.get(fields.cancelButton).click();
 
-    cy.get(fields.cancellationReasonsSelector).select('1');
-    cy.get(fields.cancellationReasonsSelector).should('have.value', '1');
+          cy.get(fields.cancellationReasonsSelector).select('1');
+          cy.get(fields.cancellationReasonsSelector).should('have.value', '1');
 
-    cy.get(fields.submitCancelOrderButton).click();
+          cy.get(fields.submitCancelOrderButton).click();
 
-    cy.get('.dropin-header-container__title', { timeout: 3000 })
-      .should('exist')
-      .and('be.visible')
-      .and('contain.text', 'Canceled');
+          cy.get('.dropin-header-container__title', { timeout: 3000 })
+            .should('exist')
+            .and('be.visible')
+            .and('contain.text', 'Canceled');
 
-    cy.get(fields.cancellationReasonsModal).should('not.exist');
+          cy.get(fields.cancellationReasonsModal).should('not.exist');
 
-    cy.get('.order-order-status-content__wrapper-description p')
-      .should('exist')
-      .and('be.visible')
-      .and(
-        'contain.text',
-        'This order was cancelled by you. You should see a refund to your original payment method with 5-7 business days.'
-      );
+          cy.get('.order-order-status-content__wrapper-description p')
+            .should('exist')
+            .and('be.visible')
+            .and(
+              'contain.text',
+              'This order was cancelled by you. You should see a refund to your original payment method with 5-7 business days.'
+            );
 
-    cy.get(fields.cancelButton).should('not.exist');
+          cy.get(fields.cancelButton).should('not.exist');
+        }
+      else {
+        cy.get(fields.cancelButton).click();
+      }
+    });
   });
 });

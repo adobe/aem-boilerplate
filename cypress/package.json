@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "description": "Boilerplate E2E tests",
   "scripts": {
-    "cypress:open": "cypress open --browser chrome --config-file cypress.config.js",
-    "cypress:run": "cypress run --config-file cypress.config.js"
+    "cypress:open": "cypress open --browser chrome --config-file cypress.paas.config.js",
+    "cypress:run": "cypress run --config-file cypress.paas.config.js --env grepTags=-@skipPaas",
+    "cypress:saas:open": "cypress open --browser chrome --config-file cypress.saas.config.js",
+    "cypress:saas:run": "cypress run --config-file cypress.saas.config.js --env grepTags=-@skipSaas"
   },
   "author": "Adobe Commerce",
   "license": "Apache License 2.0",
   "devDependencies": {
     "@cypress/browserify-preprocessor": "^3.0.0",
     "@cypress/code-coverage": "^3.9.12",
+    "@cypress/grep": "^4.1.0",
     "cross-env": "^7.0.0",
     "cypress": "^13.0.0",
     "cypress-dotenv": "2.0.0",

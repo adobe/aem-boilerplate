@@ -1,7 +1,7 @@
-name: Cypress E2E Tests
+name: Cypress E2E SaaS Tests
 on: push
 jobs:
-  cypress-paas-run:
+  cypress-saas-run:
     # If you want this job to run on your fork, remove the below "if" line.
     # You will need to "fix" the tests as they are specific to Adobe Commmerce's
     # demo backend.
@@ -14,13 +14,13 @@ jobs:
       - name: Install adobe aem cli dependencies
         run: npm install -g @adobe/aem-cli
       - name: Start server in the background
-        run: aem up --url https://main--boilerplate-paas--adobe-commerce.aem.live &
+        run: aem up --url https://main--boilerplate-accs--adobe-commerce.aem.live/ &
       - name: Install Cypress and run tests
         uses: cypress-io/github-action@v6
         with:
           working-directory: cypress
           wait-on: 'http://localhost:3000'
-          command: npm run cypress:run
+          command: npm run cypress:saas:run
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

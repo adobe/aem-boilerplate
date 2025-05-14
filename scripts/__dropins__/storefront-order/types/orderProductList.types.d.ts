@@ -1,6 +1,6 @@
-import { SlotProps } from '../../@adobe-commerce/elsie/src/lib';
+import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { OrderDataModel, OrderItemModel } from '../data/models';
-import { ImageProps } from '../../@adobe-commerce/elsie/src/components';
+import { ImageProps } from '@dropins/tools/types/elsie/src/components';
 
 type options = Record<string, string | number | boolean>;
 export type TaxTypes = {

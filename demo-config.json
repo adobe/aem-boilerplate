@@ -26,6 +26,11 @@
         "store-view-name": "Default Store View",
         "website-id": 1,
         "website-name": "Main Website"
+      },
+      "plugins": {
+        "picker": {
+           "rootCategory": "2"
+         }
       }
     }
   }

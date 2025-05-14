@@ -16,6 +16,7 @@ import {
 } from '@dropins/storefront-wishlist/api.js';
 
 import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
+import { WishlistAlert } from '@dropins/storefront-wishlist/containers/WishlistAlert.js';
 
 // Containers
 import ProductHeader from '@dropins/storefront-pdp/containers/ProductHeader.js';
@@ -26,6 +27,11 @@ import ProductQuantity from '@dropins/storefront-pdp/containers/ProductQuantity.
 import ProductDescription from '@dropins/storefront-pdp/containers/ProductDescription.js';
 import ProductAttributes from '@dropins/storefront-pdp/containers/ProductAttributes.js';
 import ProductGallery from '@dropins/storefront-pdp/containers/ProductGallery.js';
+
+import { checkIsAuthenticated } from '../../scripts/configs.js';
+import {
+  CUSTOMER_WISHLIST_PATH,
+} from '../../scripts/constants.js';
 
 // Libs
 import { fetchPlaceholders, setJsonLd } from '../../scripts/commerce.js';
@@ -84,6 +90,7 @@ export default async function decorate(block) {
 
   // Alert
   let inlineAlert = null;
+  const routeToWishlist = checkIsAuthenticated() ? CUSTOMER_WISHLIST_PATH : null;
 
   // Render Containers
   const [
@@ -227,22 +234,29 @@ export default async function decorate(block) {
         },
       ],
     );
-    wishlistToggleBtn.setProps((prev) => ({
-      ...prev,
-      icon: Icon({ source: 'Heart' }),
-    }));
-    // @todo: add translations
-    inlineAlert = await UI.render(InLineAlert, {
-      heading: `${product?.name} was successfully added to your cart and removed from your wishlist`,
-      type: 'success',
-      icon: Icon({ source: 'Heart' }),
-      'aria-live': 'assertive',
-      role: 'alert',
+    wishlistToggleBtn.setProps(
+      (prev) => ({
+        ...prev,
+        icon: Icon({ source: 'Heart' }),
+      }),
+      events.emit('wishlist/alert', {
+        action: 'move',
+        item,
+        routeToWishlist,
+      }),
+    );
+  }, { eager: true });
+
+  events.on('wishlist/alert', ({ action, item }) => {
+    wishlistRender.render(WishlistAlert, {
+      action,
+      item,
+      routeToWishlist,
       onDismiss: () => {
-        inlineAlert.remove();
+        $alert.innerHTML = '';
       },
     })($alert);
-  }, { eager: true });
+  });
 
   // Set JSON-LD and Meta Tags
   events.on('aem/lcp', () => {

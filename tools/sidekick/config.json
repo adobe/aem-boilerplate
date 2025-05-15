@@ -1,0 +1,25 @@
+{
+  "project": "Boilerplate",
+  "plugins": [
+    {
+      "id": "cif",
+      "title": "Commerce",
+      "environments": [
+        "edit"
+      ],
+      "url": "https://main--{SITE}--{ORG}.aem.live/tools/picker/dist/index.html",
+      "isPalette": true,
+      "paletteRect": "top: 54px; left: 5px; bottom: 5px; width: 300px; height: calc(100% - 59px); border-radius: var(--hlx-sk-button-border-radius); overflow: hidden; resize: horizontal;"
+    },
+    {
+      "id": "personalisation",
+      "title": "Personalisation",
+      "environments": [
+        "edit"
+      ],
+      "url": "https://main--{SITE}--{ORG}.aem.live/tools/segments/dist/index.html",
+      "isPalette": true,
+      "paletteRect": "top: 54px; left: 5px; bottom: 5px; width: 300px; height: calc(100% - 59px); border-radius: var(--hlx-sk-button-border-radius); overflow: hidden; resize: horizontal;"
+    }
+  ]
+}

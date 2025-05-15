@@ -1,0 +1,28 @@
+{
+  "public": {
+    "default": {
+      "commerce-core-endpoint": "https://na1-qa.admin.commerce.adobe.com/VJCE1JomSyRkt8bFeR8mjT/graphql",
+      "commerce-endpoint": "https://na1-qa.admin.commerce.adobe.com/VJCE1JomSyRkt8bFeR8mjT/graphql",
+      "headers": {
+        "cs": {
+          "Magento-Customer-Group": "NLI",
+          "AC-Channel-ID": "",
+          "AC-Environment-ID": "VJCE1JomSyRkt8bFeR8mjT",
+          "AC-Price-Book-ID": "",
+          "AC-Scope-Locale": ""
+        }
+      },
+      "analytics": {
+        "base-currency-code": "USD",
+        "environment": "Production",
+        "store-id": 1,
+        "store-name": "e2e cell prex dropin accs",
+        "store-url": "https://www.aemshop.net",
+        "store-view-id": 1,
+        "store-view-name": "default",
+        "website-id": 1,
+        "website-name": "Main Website"
+      }
+    }
+  }
+}

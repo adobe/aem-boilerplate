@@ -252,10 +252,11 @@ export default async function decorate(block) {
       action,
       item,
       routeToWishlist,
-      onDismiss: () => {
-        $alert.innerHTML = '';
-      },
     })($alert);
+
+    setTimeout(() => {
+      $alert.innerHTML = '';
+    }, 5000);
   });
 
   // Set JSON-LD and Meta Tags

@@ -28,7 +28,7 @@ import {
 import * as fields from "../../fields";
 
 describe('Verify guest user can place order', () => {
-  it('Verify guest user can place order', () => {
+  it('Verify guest user can place order', () => {   
     cy.visit('');
     cy.get('.nav-drop')
       .first()
@@ -53,7 +53,7 @@ describe('Verify guest user can place order', () => {
       'Youth tee',
       '/products/youth-tee/ADB150'
     )('.cart-mini-cart');
-    assertProductImage('/ADB150.jpg')('.cart-mini-cart');
+    assertProductImage(Cypress.env('productImageName'))('.cart-mini-cart');
     cy.contains('View Cart').click();
     assertCartSummaryProduct(
       'Youth tee',
@@ -67,7 +67,7 @@ describe('Verify guest user can place order', () => {
       'Youth tee',
       '/products/youth-tee/ADB150'
     )('.commerce-cart-wrapper');
-    assertProductImage('/ADB150.jpg')('.commerce-cart-wrapper');
+    assertProductImage(Cypress.env('productImageName'))('.commerce-cart-wrapper');
     cy.contains('Estimated Shipping').should('be.visible');
     cy.get('.dropin-button--primary')
       .contains('Checkout')
@@ -128,7 +128,7 @@ describe('Verify guest user can place order', () => {
 
     cy.get(fields.submitCancelOrderButton).click();
 
-    cy.get('.dropin-header-container__title', {timeout: 3000})
+    cy.get('.dropin-header-container__title', { timeout: 3000 })
       .should('exist')
       .and('be.visible')
       .and('contain.text', 'Cancellation requested');
@@ -142,8 +142,8 @@ describe('Verify guest user can place order', () => {
         'contain.text',
         'The cancellation has been requested'
       ).and(
-      'contain.text',
-      'Check your email for further instructions.'
-    );
+        'contain.text',
+        'Check your email for further instructions.'
+      );
   });
 });

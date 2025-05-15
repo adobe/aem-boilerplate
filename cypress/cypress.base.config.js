@@ -1,7 +1,4 @@
-const { defineConfig } = require('cypress')
-
-
-module.exports = defineConfig({
+module.exports = {
   defaultCommandTimeout: 60000,
   screenshotsFolder: 'screenshots',
   downloadsFolder: 'downloads',
@@ -18,18 +15,16 @@ module.exports = defineConfig({
     runMode: 2,
   },
   e2e: {
+    setupNodeEvents(on, config) {
+      require('@cypress/grep/src/plugin')(config);
+      return config;
+    },
     baseUrl: 'http://localhost:3000/',
     supportFile: 'src/support/index.js',
     specPattern: 'src/tests/**/*.spec.js',
-  },
-  env: {
-    graphqlEndPoint: 'https://www.aemshop.net/graphql',
-    giftCard: '000Y7YLECJ34',
-    // staging env
-    // giftCardStaging: '00GO12SK6WF3',
   },
   reporter: 'cypress-multi-reporters',
   reporterOptions: {
     configFile: 'reporter-config.json',
   },
-});
+};

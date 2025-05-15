@@ -93,7 +93,7 @@ export const assertTitleHasLink =
 export const assertProductImage =
   (productImageSrc) =>
     (elem = '.cart-cart') => {
-      cy.get(`${elem} img[src*="${productImageSrc}"]`)
+      cy.get(`${elem} img[src*="${productImageSrc}"]`, { matchCase: false })
         .should('be.visible')
         .and(($img) => expect($img[0].naturalWidth).to.be.gt(0));
     };

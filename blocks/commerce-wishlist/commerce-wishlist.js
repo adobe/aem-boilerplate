@@ -11,7 +11,6 @@ import { rootLink } from '../../scripts/scripts.js';
 import '../../scripts/initializers/wishlist.js';
 
 export default async function decorate(block) {
-
   if (!checkIsAuthenticated()) {
     window.location.href = rootLink(CUSTOMER_WISHLIST_PATH);
   } else {

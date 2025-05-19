@@ -1,11 +1,11 @@
 /* eslint-disable no-underscore-dangle */
+import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 import { addProductsToCart } from '@dropins/storefront-cart/api.js';
 import WishlistToggle from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
 import { Button, provider as UI } from '@dropins/tools/components.js';
 import { readBlockConfig } from '../../scripts/aem.js';
 import { performCatalogServiceQuery } from '../../scripts/commerce.js';
 import { getConfigValue } from '../../scripts/configs.js';
-import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 
 // initialize dropins
 import '../../scripts/initializers/cart.js';

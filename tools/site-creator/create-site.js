@@ -168,6 +168,11 @@ export async function checkEmpty(data) {
     headers: getAuthHeaders(),
   });
 
+  // 404 is good, means the org doesn't exist and is safe to create
+  if (res.status === 404) {
+    return;
+  }
+
   if (!res.ok) {
     throw new Error(`Failed to check if site exists: ${res.statusText}`);
   }

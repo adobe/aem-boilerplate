@@ -97,6 +97,39 @@ export default async function decorate(block) {
         Footer: (ctx) => {
           const giftOptions = document.createElement('div');
 
+          if (ctx.item?.itemType === 'ConfigurableCartItem') {
+            const editLinkContainer = document.createElement('div');
+            editLinkContainer.className = 'cart-item-edit-container';
+
+            const editButton = document.createElement('button');
+            editButton.className = 'cart-item-edit-link';
+            editButton.textContent = 'Edit';
+
+            editButton.addEventListener('click', () => {
+              const { item } = ctx;
+              const productUrl = rootLink(`/products/${item.url.urlKey}/${item.topLevelSku}`);
+
+              const params = new URLSearchParams();
+
+              if (item.selectedOptionsUIDs) {
+                const optionsValues = Object.values(item.selectedOptionsUIDs);
+                if (optionsValues.length > 0) {
+                  const joinedValues = optionsValues.join(',');
+                  params.append('optionsUIDs', joinedValues);
+                }
+              }
+
+              params.append('quantity', item.quantity);
+              params.append('itemUid', item.uid);
+
+              const finalUrl = `${productUrl}?${params.toString()}`;
+              window.location.href = finalUrl;
+            });
+
+            editLinkContainer.appendChild(editButton);
+            ctx.appendChild(editLinkContainer);
+          }
+
           provider.render(GiftOptions, {
             item: ctx.item,
             view: 'product',

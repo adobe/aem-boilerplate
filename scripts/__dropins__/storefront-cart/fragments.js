@@ -208,6 +208,7 @@ const e = `
       configurable_product_option_uid
       option_label
       value_label
+      configurable_product_option_value_uid
     }
     configured_variant {
       uid
@@ -263,7 +264,7 @@ ${_}
 ${a}
 ${i}
 ${r}
-${n}`, c = `fragment CART_FRAGMENT on Cart {
+${n}`, u = `fragment CART_FRAGMENT on Cart {
   id
   total_quantity
   is_virtual
@@ -370,7 +371,7 @@ ${t}`;
 export {
 t as APPLIED_GIFT_CARDS_FRAGMENT,
 n as AVAILABLE_GIFT_WRAPPING_FRAGMENT,
-c as CART_FRAGMENT,
+u as CART_FRAGMENT,
 l as CART_ITEM_FRAGMENT,
 a as DOWNLOADABLE_CART_ITEMS_FRAGMENT,
 r as GIFT_MESSAGE_FRAGMENT,

@@ -1,5 +1,5 @@
 import { FunctionComponent, JSX, VNode } from 'preact';
-import { ImageNodeRenderProps } from '../../../../@adobe-commerce/elsie/src/components';
+import { ImageNodeRenderProps } from '@dropins/tools/types/elsie/src/components';
 import { GiftWrappingConfigProps, GiftOptionsViewProps } from '../../../types';
 
 interface GiftOptionModalProps {

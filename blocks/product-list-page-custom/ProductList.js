@@ -2,7 +2,7 @@
 import {
   h, Component, Fragment,
 } from '@dropins/tools/preact.js';
-import htm from '../../scripts/htm.js';
+import htm from './htm.js';
 import {
   renderPrice,
 } from '../../scripts/commerce.js';

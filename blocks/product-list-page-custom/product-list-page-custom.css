@@ -18,6 +18,9 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
   overflow: auto;
   background: var(--background-color);
   box-sizing: content-box;
+  width: 300px;
+  padding: 20px;
+  transition: width 0.3s ease-in-out;
 }
 
 .product-list-page-custom .facets.active {
@@ -50,6 +53,7 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
   z-index: 2;
   overflow: auto;
   background: var(--background-color);
+  background-color: rgb(0 0 0 / 70%) !important;
 }
 
 .product-list-page-custom .products .title .sort > .overlay.active {
@@ -64,6 +68,16 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
 
 .product-list-page-custom .products .title .sort .overlay ul > li {
   padding: 5px 0;
+}
+
+.product-list-page-custom .products .title .sort .overlay ul > li a {
+  color: var(--color-neutral-50);
+  text-decoration: none;
+}
+
+.product-list-page-custom .products .title .sort .overlay ul > li a:hover {
+  color: var(--color-neutral-50);
+  text-decoration: underline;
 }
 
 .product-list-page-custom .facets .facet-list .facet {
@@ -94,13 +108,35 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
 .product-list-page-custom .facets .facet-list .facet .facet-content {
   transition: all .2s ease;
   overflow: hidden;
-  padding-top: 6px;
+  padding: 0;
 }
 
 .product-list-page-custom .facets .facet-list .facet .facet-content ol {
+  list-style: none;
   list-style-type: none;
+  padding: 0;
   margin: 0;
-  padding: 16px 0 0;
+}
+
+.product-list-page-custom .facets .facet-list .facet .facet-content ol li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  list-style-type: none;
+}
+
+.product-list-page-custom .facets .facet-list .facet .facet-content ol li label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  margin: 0;
+  width: 100%;
+}
+
+.product-list-page-custom .facets .facet-list .facet .facet-content input[type="checkbox"],
+.product-list-page-custom .facets .facet-list .facet .facet-content input[type="radio"] {
+  margin: 0;
 }
 
 .product-list-page-custom .facets .facet-list .facet > input {
@@ -207,11 +243,11 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
 }
 
 .product-list-page-custom .facets .facet-list .facet.swatch.facet-color .facet-content ol li button:hover {
-  box-shadow: inset 0 0 0 18px rgba(255 255 255 / 30%);
+  box-shadow: inset 0 0 0 18px rgb(255 255 255 / 20%);
 }
 
 .product-list-page-custom .facets .facet-list .facet.swatch.facet-color .facet-content ol li button.active:hover {
-  box-shadow: inset 0 0 0 18px rgba(255 255 255 / 30%), 0 0 0 2px var(--color-neutral-50) inset;
+  box-shadow: inset 0 0 0 18px rgb(255 255 255 / 20%), 0 0 0 2px var(--color-neutral-50) inset;
 }
 
 /* Price Facet */
@@ -228,6 +264,23 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
   height: 15px;
   margin-bottom: 10px;
   flex-basis: 100%;
+  position: relative;
+  align-items: center;
+}
+
+.product-list-page-custom .facets .facet-list .facet .price-facet .price-slider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: var(--color-neutral-300);
+  border-radius: 3px;
+  transform: translateY(-50%);
+  z-index: 1;
+  pointer-events: none;
+  outline: none;
 }
 
 .product-list-page-custom .facets .facet-list .facet .price-facet .price-slider input[type='range'] {
@@ -239,52 +292,80 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
   position: relative;
   margin: 0;
   outline: none;
-  pointer-events: none;
+  pointer-events: all;
+  z-index: 2;
+  height: 15px;
+  transform: translateY(-3px);
+  border: none;
+}
+
+/* Ensure min slider is on top but only for its thumb */
+.product-list-page-custom .facets .facet-list .facet .price-facet .price-slider input[type='range']:first-of-type {
+  z-index: 3;
+}
+
+.product-list-page-custom .facets .facet-list .facet .price-facet .price-slider input[type='range']:first-of-type::-webkit-slider-thumb {
+  z-index: 3;
+}
+
+.product-list-page-custom .facets .facet-list .facet .price-facet .price-slider input[type='range']:first-of-type::-moz-range-thumb {
+  z-index: 3;
+}
+
+/* Make the track area clickable for both sliders */
+.product-list-page-custom .facets .facet-list .facet .price-facet .price-slider input[type='range']::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+.product-list-page-custom .facets .facet-list .facet .price-facet .price-slider input[type='range']::-moz-range-track {
+  background: transparent;
+  height: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+.product-list-page-custom .facets .facet-list .facet .price-facet .price-slider input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background-color: var(--color-brand-700);
+  cursor: pointer;
+  margin-top: -3.75px;
+  border: 2px solid var(--color-neutral-50);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
+  position: relative;
+  z-index: 2;
 }
 
 .product-list-page-custom .facets .facet-list .facet .price-facet .price-slider input[type='range']::-moz-range-thumb {
-  height: 15px;
-  width: 15px;
+  height: 20px;
+  width: 20px;
   border-radius: 50%;
-  background-color: var(--color-brand-500);
-  position: relative;
+  background-color: var(--color-brand-700);
   cursor: pointer;
-  appearance: none;
-  pointer-events: all;
-  border: 0;
-  outline: none;
-}
-
-
-.product-list-page-custom .facets .facet-list .facet .price-facet .price-slider input[type='range']::-webkit-slider-thumb {
-  height: 15px;
-  width: 15px;
-  border-radius: 50%;
-  background-color: var(--color-brand-500);
+  border: 2px solid var(--color-neutral-50);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
   position: relative;
-  cursor: pointer;
-  appearance: none;
-  pointer-events: all;
-  border: 0;
-  outline: none;
-  z-index: 1;
-  margin-top: -5px;
+  z-index: 2;
 }
 
-.product-list-page-custom .facets .facet-list .facet .price-facet .price-slider input[type='range']::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 5px;
-  background: var(--color-neutral-500);
-  border-radius: 3px;
-  border: none;
+.product-list-page-custom .facets .facet-list .facet .price-facet .price-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
 }
 
-.product-list-page-custom .facets .facet-list .facet .price-facet .price-slider input[type='range']:first-of-type::-moz-range-track {
-  width: 100%;
-  height: 5px;
-  background: var(--color-neutral-500);
-  border-radius: 3px;
-  border: none;
+.product-list-page-custom .facets .facet-list .facet .price-facet .price-inputs input {
+  width: 80px;
+  padding: 4px 8px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: 4px;
 }
 
 .product-list-page-custom .products {
@@ -292,6 +373,8 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
   display: flex;
   gap: 25px;
   flex-direction: column;
+  padding: 20px;
+  transition: margin-left 0.3s ease-in-out;
 }
 
 /* Category Title */
@@ -305,7 +388,6 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
     /* gap: 2rem; */
     align-items: last baseline;
   }
-
 }
 
 .product-list-page-custom .products .title h1 {
@@ -542,9 +624,8 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
 
   .product-list-page-custom .facets {
     display: block;
-    flex: 25;
     max-width: 430px;
-    background: var(--color-neutral-500);
+    background: var(--color-neutral-200);
     padding: 20px 30px;
     position: unset;
     z-index: unset;
@@ -657,4 +738,48 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
   border-radius: 8px;
   min-height: 1.5rem;
   margin-bottom: 4px;
+}
+
+.product-list-page-custom .facets .facet-list .facet .facet-content ol ul.list {
+  padding-left: 0;
+  margin: 0;
+}
+
+.facets.empty {
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* When facets are empty, adjust products margin */
+.facets.empty + .products {
+  margin-left: 0;
+}
+
+/* Mobile styles */
+@media (width <= 900px) {
+  .facets {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 300px;
+    background: var(--background-color);
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .facets.active {
+    transform: translateX(0);
+  }
+
+  .facets.empty {
+    width: 300px;
+    transform: translateX(-100%);
+  }
+
+  .products {
+    margin-left: 0;
+  }
 }

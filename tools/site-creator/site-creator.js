@@ -71,6 +71,7 @@ class SiteCreator extends LitElement {
       this._status = ({ type: 'error', message: err });
       throw err;
     } finally {
+      this._loading = false;
       clearTimeout(getTime);
     }
 

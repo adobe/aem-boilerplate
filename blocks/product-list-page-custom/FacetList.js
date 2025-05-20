@@ -2,12 +2,15 @@
 import {
   h, Component, createRef,
 } from '@dropins/tools/preact.js';
-import htm from '../../scripts/htm.js';
+import htm from './htm.js';
 
 const html = htm.bind(h);
 
 // TODO
 const facetTypeMapping = {
+  categories: {
+    type: 'checkbox',
+  },
   silhouette: {
     type: 'checkbox',
   },
@@ -51,29 +54,60 @@ class PriceFacet extends Component {
     }
 
     this.state = {
-      min, max, currentMin, currentMax,
+      min,
+      max,
+      currentMin,
+      currentMax,
+      isDragging: false,
     };
 
     this.minRef = createRef();
     this.maxRef = createRef();
+    this.debounceTimer = null;
   }
 
   onChange = (notify = true) => {
-    const left = this.minRef.current.value;
-    const right = this.maxRef.current.value;
+    const left = parseInt(this.minRef.current.value, 10);
+    const right = parseInt(this.maxRef.current.value, 10);
+
+    // Prevent sliders from crossing
     let currentMin = Math.min(left, right);
     let currentMax = Math.max(left, right);
-    if (currentMin === currentMax) {
+
+    // Ensure minimum gap between sliders
+    if (currentMax - currentMin < 1) {
       if (currentMin > this.state.min) {
-        currentMin -= 1;
+        currentMin = currentMax - 1;
       } else if (currentMax < this.state.max) {
-        currentMax += 1;
+        currentMax = currentMin + 1;
       }
     }
+
     this.setState({ currentMin, currentMax });
-    if (notify) {
-      this.props.onSelectionChange(this.props.attribute, [currentMin, currentMax]);
+
+    if (notify && !this.state.isDragging) {
+      if (this.debounceTimer) {
+        clearTimeout(this.debounceTimer);
+      }
+      this.debounceTimer = setTimeout(() => {
+        this.props.onSelectionChange(
+          this.props.attribute,
+          [currentMin, currentMax],
+        );
+      }, 500);
     }
+  };
+
+  handleMouseDown = () => {
+    this.setState({ isDragging: true });
+  };
+
+  handleMouseUp = () => {
+    this.setState({ isDragging: false });
+    this.props.onSelectionChange(
+      this.props.attribute,
+      [this.state.currentMin, this.state.currentMax],
+    );
   };
 
   render() {
@@ -90,8 +124,32 @@ class PriceFacet extends Component {
 
     return html`<div class="price-facet">
         <div class="price-slider">
-          <input type="range" ref=${this.minRef} id="price-slider-min" defaultValue=${selectionMin} min=${min} max=${max} step="1" onchange=${this.onChange} oninput=${() => this.onChange(false)} />
-          <input type="range" ref=${this.maxRef} id="price-slider-max" defaultValue=${selectionMax} min=${min} max=${max} step="1" onchange=${this.onChange} oninput=${() => this.onChange(false)} />
+          <input
+            type="range"
+            ref=${this.minRef}
+            id="price-slider-min"
+            defaultValue=${selectionMin}
+            min=${min}
+            max=${max}
+            step="1"
+            onchange=${this.onChange}
+            oninput=${() => this.onChange(false)}
+            onMouseDown=${this.handleMouseDown}
+            onMouseUp=${this.handleMouseUp}
+          />
+          <input
+            type="range"
+            ref=${this.maxRef}
+            id="price-slider-max"
+            defaultValue=${selectionMax}
+            min=${min}
+            max=${max}
+            step="1"
+            onchange=${this.onChange}
+            oninput=${() => this.onChange(false)}
+            onMouseDown=${this.handleMouseDown}
+            onMouseUp=${this.handleMouseUp}
+          />
         </div>
         <label for="price-slider-min">${this.formatter.format(currentMin)}</label>
         <label for="price-slider-max">${this.formatter.format(currentMax)}</label>
@@ -113,31 +171,6 @@ function Facet({
   }
 
   const renderOptions = () => {
-    const handleClickSingle = (event) => {
-      const { value } = event.target;
-      if (attribute === 'price') {
-        const [from, to] = value.split(',').map((v) => parseInt(v, 10) || 0);
-        if (selection[0] === from && selection[1] === to) {
-          onSelectionChange(attribute, []);
-        } else {
-          onSelectionChange(attribute, [from, to]);
-        }
-      } else if (selection.includes(value)) {
-        onSelectionChange(attribute, []);
-      } else {
-        onSelectionChange(attribute, [value]);
-      }
-    };
-
-    const handleClickMultiple = (event) => {
-      const { value } = event.target;
-      if (selection.includes(value)) {
-        onSelectionChange(attribute, selection.filter((selected) => selected !== value));
-      } else {
-        onSelectionChange(attribute, [...selection, value]);
-      }
-    };
-
     if (displayType === 'swatch') {
       return buckets.map((bucket) => html`
           <li>
@@ -145,25 +178,52 @@ function Facet({
               title=${bucket.title}
               value=${bucket.id}
               class="${selection.includes(bucket.id) ? 'active' : ''}"
-              onClick=${handleClickMultiple}>${bucket.title}</button>
+              onClick=${(event) => {
+    const { value } = event.target;
+    if (selection.includes(value)) {
+      onSelectionChange(attribute, selection.filter((selected) => selected !== value));
+    } else {
+      onSelectionChange(attribute, [...selection, value]);
+    }
+  }}>${bucket.title}</button>
           </li>
         `);
     }
-    if (displayType === 'checkbox') {
-      return buckets.map((bucket) => html`<li>
-          <input type="checkbox" name="facet-${attribute}" id="facet-${bucket.id}" value=${bucket.id} checked=${selection.includes(bucket.id)} onClick=${handleClickMultiple} />
-          <label for="facet-${bucket.id}">
-            ${bucket.title} <span class="count">${bucket.count}</span>
-          </label>
-        </li>`);
-    }
+    if (displayType === 'checkbox' || displayType === 'radio') {
+      return html`<ul class="${displayStyle || 'list'}">
+        ${buckets
+    // eslint-disable-next-line no-underscore-dangle
+    .filter((bucket) => bucket?.__typename === 'ScalarBucket')
+    .map((bucket) => {
+      // For categories, we store IDs in selection but display titles
+      const isSelected = attribute === 'categories'
+        ? selection.includes(bucket.id)
+        : selection.includes(bucket.title);
+      return html`<li>
+              <label>
+                <input
+                  type=${displayType === 'radio' ? 'radio' : 'checkbox'}
+                  name=${attribute}
+                  value=${attribute === 'categories' ? bucket.id : bucket.title}
+                  checked=${isSelected}
+                  onChange=${(e) => {
+    e.stopPropagation(); // Prevent event from bubbling up
+    const value = attribute === 'categories' ? bucket.id : bucket.title;
     if (displayType === 'radio') {
-      return buckets.map((bucket) => html`<li>
-          <input type="radio" name="facet-${attribute}" id="facet-${bucket.id}" value=${bucket.id} checked=${selection.includes(bucket.id)} onClick=${handleClickSingle} />
-          <label for="facet-${bucket.id}">
-            ${bucket.title} <span class="count">${bucket.count}</span>
-          </label>
-        </li>`);
+      onSelectionChange(attribute, [value]);
+    } else {
+      const newSelection = isSelected
+        ? selection.filter((s) => s !== value)
+        : [...selection, value];
+      onSelectionChange(attribute, newSelection);
+    }
+  }}
+                />
+                <span>${bucket.title}${bucket.count ? ` (${bucket.count})` : ''}</span>
+              </label>
+            </li>`;
+    })}
+      </ul>`;
     }
     if (displayType === 'price') {
       return html`<${PriceFacet}
@@ -177,7 +237,7 @@ function Facet({
   };
 
   return html`<div class="facet ${displayType} ${displayStyle || ''}">
-    <input type="checkbox" id="facet-toggle-${attribute}" checked=${selection.length > 0}  />
+    <input type="checkbox" id="facet-toggle-${attribute}" checked=${true} />
     <label for="facet-toggle-${attribute}">${title}</label>
     <div class="facet-content">
         <ol>${renderOptions()}</ol>
@@ -192,26 +252,32 @@ export default class FacetList extends Component {
     this.props.onFilterChange(newFilters);
   };
 
-  // eslint-disable-next-line class-methods-use-this
   render({
     facetMenuRef, facets, filters, loading,
   }) {
-    if (loading) {
-      return html`<div class="facets shimmer"></div>`;
+    // Don't render anything if loading or no facets data
+    if (loading || !facets || facets.length === 0) {
+      return html`<div class="facets empty"></div>`;
+    }
+
+    // Filter out facets with empty buckets
+    const nonEmptyFacets = facets.filter((facet) => facet.buckets && facet.buckets.length > 0);
+
+    // If no non-empty facets, show empty state
+    if (nonEmptyFacets.length === 0) {
+      return html`<div class="facets empty"></div>`;
     }
 
     return html`
-      <div class="facets ${loading ? 'shimmer' : ''}" ref=${facetMenuRef}>
+      <div class="facets" ref=${facetMenuRef}>
           <h2>Filters</h2>
           <button class="close" onClick=${() => facetMenuRef.current.classList.toggle('active')}>Close</button>
           <div class="facet-list">
-            ${facets
-    .filter((facet) => facet.buckets.length > 0)
-    .map((facet) => {
-      const selection = filters[facet.attribute] || [];
-      return html`<${Facet} ...${facet} selection=${selection} onSelectionChange=${this.onSelectionChange} />`;
-    })}
-        </div>
+            ${nonEmptyFacets.map((facet) => {
+    const selection = filters[facet.attribute] || [];
+    return html`<${Facet} ...${facet} selection=${selection} onSelectionChange=${this.onSelectionChange} />`;
+  })}
+          </div>
       </div>`;
   }
 }

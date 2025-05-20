@@ -1,4 +1,7 @@
-import { FunctionComponent } from 'preact';
+import { Container } from '@dropins/tools/types/elsie/src/lib';
 
-export declare const EstimateShipping: FunctionComponent;
+export interface EstimateShippingProps {
+    active?: boolean;
+}
+export declare const EstimateShipping: Container<EstimateShippingProps>;
 //# sourceMappingURL=EstimateShipping.d.ts.map

@@ -452,6 +452,7 @@ declare const configurable: {
         configurable_product_option_uid: string;
         option_label: string;
         value_label: string;
+        configurable_product_option_value_uid: string;
     }[];
     configured_variant: {
         uid: string;
@@ -564,6 +565,7 @@ declare const configurableCustomizable: {
         configurable_product_option_uid: string;
         option_label: string;
         value_label: string;
+        configurable_product_option_value_uid: string;
     }[];
     configured_variant: {
         uid: string;

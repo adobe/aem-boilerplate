@@ -1,4 +1,4 @@
-import { SlotProps } from '../../@adobe-commerce/elsie/src/lib';
+import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
 
 export interface TitleProps {
     displayTitle?: boolean;

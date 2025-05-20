@@ -9,5 +9,5 @@ declare const cartWithShippingInfo: ({ methods, selection, }?: {
     selection?: ShippingMethod | undefined;
 }) => Cart;
 declare const virtualCart: Cart;
-export { emptyCart, virtualCart, guestCart, simpleCart, cartWithShippingInfo };
-//# sourceMappingURL=fixtures.d.ts.map
+export { cartWithShippingInfo, emptyCart, guestCart, simpleCart, virtualCart };
+//# sourceMappingURL=cart.d.ts.map

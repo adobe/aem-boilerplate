@@ -1,13 +1,13 @@
 import { ShippingMethod } from '../../data/models';
+import { UIComponentType } from '../../types/ComponentTypes';
 import { FunctionComponent, VNode } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
-import { UIComponentType } from '../../types/ComponentTypes';
 
 export interface ShippingMethodsProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
     onSelectionChange?: (method: ShippingMethod) => void;
     isLoading?: boolean;
     options: ShippingMethod[];
-    selection?: ShippingMethod;
+    selection: ShippingMethod | null;
     title?: VNode;
     UIComponentType?: UIComponentType;
 }

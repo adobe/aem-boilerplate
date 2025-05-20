@@ -19,7 +19,6 @@ export * from './ConditionalWrapper/index';
 export * from './EstimateShipping';
 export * from './LoginForm';
 export * from './Markup';
-export * from './Newsletter';
 export * from './OutOfStock';
 export * from './PaymentMethods';
 export * from './PlaceOrder';

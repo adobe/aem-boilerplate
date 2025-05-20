@@ -132,6 +132,9 @@ export interface Item {
     selectedOptions?: {
         [key: string]: any;
     };
+    selectedOptionsUIDs?: {
+        [key: string]: any;
+    };
     customizableOptions?: {
         [key: string]: any;
     };

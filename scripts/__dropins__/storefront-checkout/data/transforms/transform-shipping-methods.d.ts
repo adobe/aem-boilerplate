@@ -10,6 +10,6 @@ type SelectedShippingMethod = ShippingAddress['selected_shipping_method'];
 export declare const isNullish: (value: any) => boolean;
 export declare const transformSelectedShippingMethod: (data: SelectedShippingMethod) => ShippingMethod | undefined;
 export declare const transformAvailableShippingMethod: (data: AvailableShippingMethod) => ShippingMethod | undefined;
-export declare const transformShippingMethods: (data: AvailableShippingMethods) => ShippingMethod[] | undefined;
+export declare const transformShippingMethods: (data: AvailableShippingMethods) => ShippingMethod[];
 export {};
 //# sourceMappingURL=transform-shipping-methods.d.ts.map

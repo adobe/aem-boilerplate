@@ -1,6 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
 import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { CartModel } from '../../data/models/cart-model';
+import { ImageProps } from '@dropins/tools/types/elsie/src/components';
 
 export interface CartSummaryListProps extends HTMLAttributes<HTMLDivElement> {
     hideHeading?: boolean;
@@ -21,9 +22,13 @@ export interface CartSummaryListProps extends HTMLAttributes<HTMLDivElement> {
         Heading?: SlotProps;
         EmptyCart?: SlotProps;
         Footer?: SlotProps;
-        Thumbnail?: SlotProps;
+        Thumbnail?: SlotProps<{
+            item: CartModel['items'][number];
+            defaultImageProps: ImageProps;
+        }>;
         ProductAttributes?: SlotProps;
         CartSummaryFooter?: SlotProps;
+        CartItem?: SlotProps;
     };
     enableRemoveItem?: boolean;
     enableUpdateItemQuantity?: boolean;

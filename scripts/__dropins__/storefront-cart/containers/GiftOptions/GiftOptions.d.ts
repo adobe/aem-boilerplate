@@ -1,6 +1,7 @@
 import { Item } from '../../data/models';
-import { Container } from '@dropins/tools/types/elsie/src/lib';
+import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { GiftOptionsViewProps, GiftOptionsDataSourcesProps, GiftFormDataType, ProductGiftOptionsConfig, GiftOptionsReadOnlyViewProps } from '../../types';
+import { ImageNodeRenderProps, ImageProps } from '@dropins/tools/types/elsie/src/components';
 
 export interface GiftOptionsProps {
     item: Item | ProductGiftOptionsConfig;
@@ -15,6 +16,13 @@ export interface GiftOptionsProps {
         item: Item;
     }) => void;
     onGiftOptionsChange?: (data: GiftFormDataType) => void;
+    slots?: {
+        SwatchImage?: SlotProps<{
+            item: Item | ProductGiftOptionsConfig;
+            imageSwatchContext: ImageNodeRenderProps['imageSwatchContext'];
+            defaultImageProps: ImageProps;
+        }>;
+    };
 }
 export declare const GiftOptions: Container<GiftOptionsProps>;
 //# sourceMappingURL=GiftOptions.d.ts.map

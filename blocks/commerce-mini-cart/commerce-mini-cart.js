@@ -14,6 +14,7 @@ export default async function decorate(block) {
     'start-shopping-url': startShoppingURL = '',
     'cart-url': cartURL = '',
     'checkout-url': checkoutURL = '',
+    'enable-updating-product': enableUpdatingProduct = 'false',
   } = readBlockConfig(block);
 
   // Get translations for custom messages
@@ -63,6 +64,42 @@ export default async function decorate(block) {
     routeCart: cartURL ? () => rootLink(cartURL) : undefined,
     routeCheckout: checkoutURL ? () => rootLink(checkoutURL) : undefined,
     routeProduct: (product) => rootLink(`/products/${product.url.urlKey}/${product.topLevelSku}`),
+    slots: {
+      Thumbnail: (ctx) => {
+        if (ctx.item?.itemType === 'ConfigurableCartItem' && enableUpdatingProduct === 'true') {
+          const editLinkContainer = document.createElement('div');
+          editLinkContainer.className = 'cart-item-edit-container';
+
+          const editButton = document.createElement('button');
+          editButton.className = 'cart-item-edit-link';
+          editButton.textContent = 'Edit';
+
+          editButton.addEventListener('click', () => {
+            const { item } = ctx;
+            const productUrl = rootLink(`/products/${item.url.urlKey}/${item.topLevelSku}`);
+
+            const params = new URLSearchParams();
+
+            if (item.selectedOptionsUIDs) {
+              const optionsValues = Object.values(item.selectedOptionsUIDs);
+              if (optionsValues.length > 0) {
+                const joinedValues = optionsValues.join(',');
+                params.append('optionsUIDs', joinedValues);
+              }
+            }
+
+            params.append('quantity', item.quantity);
+            params.append('itemUid', item.uid);
+
+            const finalUrl = `${productUrl}?${params.toString()}`;
+            window.location.href = finalUrl;
+          });
+
+          editLinkContainer.appendChild(editButton);
+          ctx.appendChild(editLinkContainer);
+        }
+      },
+    },
   })(block);
 
   // Find the products container and add the message div at the top

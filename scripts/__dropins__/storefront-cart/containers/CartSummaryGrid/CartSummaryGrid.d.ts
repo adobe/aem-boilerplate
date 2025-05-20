@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
 import { CartModel } from '../../data/models';
-import { Container, SlotProps } from '../../../@adobe-commerce/elsie/src/lib';
-import { ImageProps } from '../../../@adobe-commerce/elsie/src/components';
+import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
+import { ImageProps } from '@dropins/tools/types/elsie/src/components';
 
 export interface CartSummaryGridProps extends HTMLAttributes<HTMLDivElement> {
     routeProduct?: (item: CartModel['items'][0]) => string;

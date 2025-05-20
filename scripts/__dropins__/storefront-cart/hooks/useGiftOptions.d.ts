@@ -1,7 +1,7 @@
 import { CartModel, Item } from '../data/models';
 import { GiftOptionsDataSourcesProps, GiftOptionsViewProps, GiftWrappingConfigProps, GiftFormDataType, ProductGiftOptionsConfig } from '../types';
 
-interface UseGiftOptionsProps {
+export interface UseGiftOptionsProps {
     item: Item | ProductGiftOptionsConfig;
     view: GiftOptionsViewProps;
     dataSource: GiftOptionsDataSourcesProps;
@@ -42,5 +42,4 @@ export declare const useGiftOptions: ({ item, view, dataSource, initialLoading, 
     };
     isGiftOptionsHidden: boolean;
 };
-export {};
 //# sourceMappingURL=useGiftOptions.d.ts.map

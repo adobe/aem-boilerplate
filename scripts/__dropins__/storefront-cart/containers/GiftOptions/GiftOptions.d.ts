@@ -1,7 +1,7 @@
 import { Item } from '../../data/models';
-import { Container, SlotProps } from '../../../@adobe-commerce/elsie/src/lib';
+import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { GiftOptionsViewProps, GiftOptionsDataSourcesProps, GiftFormDataType, ProductGiftOptionsConfig, GiftOptionsReadOnlyViewProps } from '../../types';
-import { ImageNodeRenderProps, ImageProps } from '../../../@adobe-commerce/elsie/src/components';
+import { ImageNodeRenderProps, ImageProps } from '@dropins/tools/types/elsie/src/components';
 
 export interface GiftOptionsProps {
     item: Item | ProductGiftOptionsConfig;

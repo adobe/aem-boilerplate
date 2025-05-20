@@ -1,19 +1,22 @@
 import { HTMLAttributes } from 'preact/compat';
-import { Container, SlotProps, SlotMethod, ResolveImageUrlOptions } from '@dropins/tools/types/elsie/src/lib';
-import { ButtonProps } from '@dropins/tools/types/elsie/src/components';
+import { Container, SlotProps, SlotMethod, ResolveImageUrlOptions } from '../../../@adobe-commerce/elsie/src/lib';
+import { ButtonProps } from '../../../@adobe-commerce/elsie/src/components';
 import { ProductModel } from '../../data/models';
 
-type IconType = keyof typeof import('@dropins/tools/types/elsie/src/icons');
+type IconType = keyof typeof import('@adobe-commerce/elsie/icons');
+/** @deprecated This type is part of the deprecated ProductDetails component. */
 export type Values = {
     sku: string;
     quantity: number;
     optionsUIDs?: string[];
 };
+/** @deprecated This type is part of the deprecated ProductDetails component. */
 type DefaultSlotContext = {
     data: ProductModel | null;
     values: Values;
     valid: boolean;
 };
+/** @deprecated This type is part of the deprecated ProductDetails component. */
 export type CarouselConfig = {
     controls?: {
         desktop?: 'thumbnailsRow' | 'thumbnailsColumn' | 'dots' | null;
@@ -30,9 +33,11 @@ export type CarouselConfig = {
     imageParams?: ResolveImageUrlOptions;
     thumbnailParams?: ResolveImageUrlOptions;
 };
+/** @deprecated This type is part of the deprecated ProductDetails component. */
 export type OptionsConfig = {
     anchorOptions?: string[];
 };
+/** @deprecated This interface is part of the deprecated ProductDetails component. */
 export interface ProductDetailsProps extends HTMLAttributes<HTMLDivElement> {
     sku: string;
     productData?: ProductModel;
@@ -78,6 +83,10 @@ export interface ProductDetailsProps extends HTMLAttributes<HTMLDivElement> {
     closeButton?: boolean;
     disableDropdownPreselection?: boolean;
 }
+/**
+ * @deprecated This container has been deprecated and will be removed in a future release.
+ * Please use the different composable containers to build your product details page.xs
+ */
 export declare const ProductDetails: Container<ProductDetailsProps, ProductModel | null>;
 export {};
 //# sourceMappingURL=ProductDetails.d.ts.map

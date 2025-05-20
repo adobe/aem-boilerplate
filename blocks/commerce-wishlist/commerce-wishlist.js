@@ -10,12 +10,18 @@ import { rootLink } from '../../scripts/scripts.js';
 // Initialize
 import '../../scripts/initializers/wishlist.js';
 
+import { readBlockConfig } from '../../scripts/aem.js';
+
 export default async function decorate(block) {
+  const {
+    'start-shopping-url': startShoppingURL = '',
+  } = readBlockConfig(block);
+
   if (!checkIsAuthenticated()) {
     window.location.href = rootLink(CUSTOMER_WISHLIST_PATH);
   } else {
     await wishlistRenderer.render(Wishlist, {
-      routeEmptyWishlistCTA: () => '#empty-cart',
+      routeEmptyWishlistCTA: startShoppingURL ? () => rootLink(startShoppingURL) : undefined,
       moveProdToCart: cartApi.addProductsToCart,
     })(block);
   }

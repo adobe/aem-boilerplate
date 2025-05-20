@@ -1,4 +1,4 @@
-import { ReadonlySignal } from '../../@adobe-commerce/elsie/src/lib/signals';
+import { ReadonlySignal } from '@dropins/tools/types/elsie/src/lib/signals';
 
 export declare enum QueueName {
     CartUpdate = "cartUpdate",

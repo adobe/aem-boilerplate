@@ -8,10 +8,10 @@ interface ExtendedPaymentMethod extends PaymentMethodConfig, PaymentMethod {
 }
 export interface PaymentMethodsProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'loading' | 'title'> {
     isLoading?: boolean;
-    onChange?: (value: string) => void;
+    onChange?: (value: PaymentMethod) => void;
     options?: ExtendedPaymentMethod[];
     paymentMethodContent?: VNode;
-    selection?: string;
+    selection: PaymentMethod | null;
     title?: VNode;
     UIComponentType?: UIComponentType;
 }

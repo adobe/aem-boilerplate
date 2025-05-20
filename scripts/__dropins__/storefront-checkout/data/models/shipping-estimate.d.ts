@@ -14,4 +14,8 @@ export interface ShippingEstimateShippingMethod {
     amountExclTax?: Price;
     amountInclTax?: Price;
 }
+export interface ShippingEstimate {
+    address: ShippingEstimatePartialAddress;
+    shippingMethod: ShippingEstimateShippingMethod | null;
+}
 //# sourceMappingURL=shipping-estimate.d.ts.map

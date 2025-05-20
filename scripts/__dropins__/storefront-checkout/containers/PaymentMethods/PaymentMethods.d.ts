@@ -1,6 +1,6 @@
 import { UIComponentType } from '../../types/ComponentTypes';
 import { TitleProps } from '../../types/TitleProps';
-import { Container, SlotProps } from '../../../@adobe-commerce/elsie/src/lib';
+import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { HTMLAttributes } from 'preact/compat';
 
 export interface PaymentMethodRenderCtx {
@@ -11,33 +11,19 @@ export interface PaymentMethodConfig {
     displayLabel?: boolean;
     enabled?: boolean;
     icon?: string;
-    setOnChange?: boolean;
+    autoSync?: boolean;
     render?: SlotProps<PaymentMethodRenderCtx>;
 }
 export interface PaymentMethodsSlot {
     [code: string]: PaymentMethodConfig;
 }
-/**
- * @deprecated This property is deprecated and will be removed in future versions.
- */
-export interface PaymentMethodsHandlerSlot {
-    [code: string]: PaymentMethodConfig['render'];
-}
 export interface PaymentMethodsProps extends HTMLAttributes<HTMLDivElement>, TitleProps {
-    /**
-     * @deprecated This property is deprecated and will be removed in future versions.
-     */
-    setOnChange?: {
-        [key: string]: boolean;
-    };
     slots?: {
-        /**
-         * @deprecated This property is deprecated and will be removed in future versions, use Methods instead.
-         */
-        Handlers?: PaymentMethodsHandlerSlot;
         Methods?: PaymentMethodsSlot;
     } & TitleProps['slots'];
     UIComponentType?: UIComponentType;
+    active?: boolean;
+    autoSync?: boolean;
 }
 export declare const PaymentMethods: Container<PaymentMethodsProps>;
 //# sourceMappingURL=PaymentMethods.d.ts.map

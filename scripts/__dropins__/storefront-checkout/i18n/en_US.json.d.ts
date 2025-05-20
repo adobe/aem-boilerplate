@@ -38,9 +38,6 @@ declare const _default: {
         "many": "{{count}} items from a previous session were added to your cart. Please review your new subtotal."
       }
     },
-    "Newsletter": {
-      "title": "Sign up to the latest news and events"
-    },
     "OutOfStock": {
       "title": "Your cart contains items that are out of stock",
       "message": "The following items are out of stock:",

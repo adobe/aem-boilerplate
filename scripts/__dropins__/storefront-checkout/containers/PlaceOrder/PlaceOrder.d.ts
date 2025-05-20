@@ -1,4 +1,4 @@
-import { Container, SlotProps } from '../../../@adobe-commerce/elsie/src/lib';
+import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { HTMLAttributes } from 'preact/compat';
 
 export interface ContentSlotContext {
@@ -7,11 +7,10 @@ export interface ContentSlotContext {
 export interface HandlePlaceOrderContext {
     code: string;
     cartId: string;
-    isSubscribedToNewsletter?: boolean;
-    email?: string;
 }
 export interface PlaceOrderProps extends HTMLAttributes<HTMLDivElement> {
     disabled?: boolean;
+    active?: boolean;
     handleValidation?: () => boolean;
     handlePlaceOrder: (ctx: HandlePlaceOrderContext) => Promise<void>;
     slots?: {

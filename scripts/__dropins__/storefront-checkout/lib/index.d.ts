@@ -16,8 +16,11 @@
  *******************************************************************/
 export * from './dispatchApiCall';
 export * from './dom';
+export * from './enqueueRequest';
+export * from './events';
 export * from './network-error';
 export * from './preact';
 export * from './state';
 export * from './validation';
+export * from './values';
 //# sourceMappingURL=index.d.ts.map

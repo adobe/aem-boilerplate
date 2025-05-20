@@ -1,7 +1,8 @@
 import { AgreementMode } from '../../data/models';
-import { Container, SlotMethod, SlotProps } from '../../../@adobe-commerce/elsie/src/lib';
+import { Container, SlotMethod, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 
 export interface TermsAndConditionsProps {
+    active?: boolean;
     slots?: {
         Agreements?: SlotProps<{
             appendAgreement: SlotMethod<{

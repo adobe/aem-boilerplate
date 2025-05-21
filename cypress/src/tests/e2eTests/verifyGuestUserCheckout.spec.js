@@ -28,7 +28,7 @@ import {
 import * as fields from "../../fields";
 
 describe('Verify guest user can place order', () => {
-  it('Verify guest user can place order', () => {   
+  it('Verify guest user can place order', () => {
     cy.visit('');
     cy.get('.nav-drop')
       .first()
@@ -94,14 +94,18 @@ describe('Verify guest user can place order', () => {
     });
     setGuestEmail(customerShippingAddress.email);
     cy.wait('@setEmailOnCart');
+
     setGuestShippingAddress(customerShippingAddress, true);
     assertOrderSummaryMisc('$20.00', '$10.00', '$86.00');
+
     assertSelectedPaymentMethod(checkMoneyOrder.code, 0);
     setPaymentMethod(paymentServicesCreditCard);
     assertSelectedPaymentMethod(paymentServicesCreditCard.code, 2);
+
     checkTermsAndConditions();
     cy.wait(5000);
     placeOrder();
+
     assertOrderConfirmationCommonDetails(customerShippingAddress, paymentServicesCreditCard);
     assertOrderConfirmationShippingDetails(customerShippingAddress);
     assertOrderConfirmationBillingDetails(customerShippingAddress);

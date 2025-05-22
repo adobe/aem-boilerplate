@@ -33,6 +33,7 @@ export default async function decorate(block) {
     'enable-estimate-shipping': enableEstimateShipping = 'false',
     'start-shopping-url': startShoppingURL = '',
     'checkout-url': checkoutURL = '',
+    'enable-updating-product': enableUpdatingProduct = 'false',
   } = readBlockConfig(block);
 
   const placeholders = await fetchPlaceholders();
@@ -97,7 +98,7 @@ export default async function decorate(block) {
         Footer: (ctx) => {
           const giftOptions = document.createElement('div');
 
-          if (ctx.item?.itemType === 'ConfigurableCartItem') {
+          if (ctx.item?.itemType === 'ConfigurableCartItem' && enableUpdatingProduct === 'true') {
             const editLinkContainer = document.createElement('div');
             editLinkContainer.className = 'cart-item-edit-container';
 

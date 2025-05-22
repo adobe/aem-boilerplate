@@ -15,5 +15,4 @@
  * from Adobe.
  *******************************************************************/
 export * from './ServerErrorSignal';
-export * from './ShippingEstimateSignal';
 //# sourceMappingURL=index.d.ts.map

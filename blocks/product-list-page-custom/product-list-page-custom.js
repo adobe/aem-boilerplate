@@ -1,7 +1,7 @@
 import {
   h, Component, Fragment, render, createRef,
 } from '@dropins/tools/preact.js';
-import htm from '../../scripts/htm.js';
+import htm from './htm.js';
 import ProductList from './ProductList.js';
 import FacetList from './FacetList.js';
 import { readBlockConfig, sampleRUM } from '../../scripts/aem.js';
@@ -11,7 +11,7 @@ import { rootLink } from '../../scripts/scripts.js';
 const html = htm.bind(h);
 
 // You can get this list dynamically via attributeMetadata query
-export const ALLOWED_FILTER_PARAMETERS = ['page', 'pageSize', 'sort', 'sortDirection', 'q', 'price', 'size', 'color_family', 'activity', 'color', 'gender'];
+export const ALLOWED_FILTER_PARAMETERS = ['page', 'pageSize', 'sort', 'sortDirection', 'q', 'price', 'size', 'color_family', 'activity', 'color', 'gender', 'categories'];
 const isMobile = window.matchMedia('only screen and (max-width: 900px)').matches;
 
 const PAGE_SIZE_DESKTOP = 12;
@@ -67,10 +67,8 @@ export const productSearchQuery = (addCategory = false) => `query ProductSearch(
           }
       }
       items {
-          product {
-            id
-          }
           productView {
+              id
               name
               sku
               urlKey
@@ -119,13 +117,20 @@ async function loadCategory(state) {
 
     variables.phrase = state.type === 'search' ? state.searchTerm : '';
 
+    // Always filter for in-stock products
+    variables.filter = [{ attribute: 'inStock', eq: 'true' }];
+
     if (Object.keys(state.filters).length > 0) {
-      variables.filter = [];
       Object.keys(state.filters).forEach((key) => {
         if (key === 'price') {
           const [from, to] = state.filters[key];
           if (from && to) {
             variables.filter.push({ attribute: key, range: { from, to } });
+          }
+        } else if (key === 'categories') {
+          // For categories, use the 'in' operator with category IDs
+          if (state.filters[key] && state.filters[key].length > 0) {
+            variables.filter.push({ attribute: 'categoryIds', in: state.filters[key] });
           }
         } else if (state.filters[key].length > 1) {
           variables.filter.push({ attribute: key, in: state.filters[key] });
@@ -179,7 +184,7 @@ async function loadCategory(state) {
         total: response.productSearch.total_count,
       },
       category: { ...state.category, ...response.categories?.[0] ?? {} },
-      facets: response.productSearch.facets.filter((facet) => facet.attribute !== 'categories'),
+      facets: response.productSearch.facets,
     };
   } catch (e) {
     console.error('Error loading products', e);
@@ -197,9 +202,7 @@ async function loadCategory(state) {
 function parseQueryParams() {
   const params = new URLSearchParams(window.location.search);
   const newState = {
-    filters: {
-      inStock: ['true'],
-    },
+    filters: {},
   };
   params.forEach((value, key) => {
     if (!ALLOWED_FILTER_PARAMETERS.includes(key)) {
@@ -218,6 +221,9 @@ function parseQueryParams() {
       newState.searchTerm = value;
     } else if (key === 'price') {
       newState.filters[key] = value.split(',').map((v) => parseInt(v, 10) || 0);
+    } else if (key === 'categories') {
+      // For categories, store the IDs directly from the URL
+      newState.filters[key] = value.split(',');
     } else {
       newState.filters[key] = value.split(',');
     }
@@ -239,7 +245,7 @@ export async function preloadCategory(category) {
     sort: DEFAULT_PARAMS.sort,
     sortDirection: DEFAULT_PARAMS.sortDirection,
     ...queryParams,
-  });
+  }, []); // Pass empty facets array for initial load
 }
 
 function Pagination(props) {
@@ -318,7 +324,6 @@ class ProductListPage extends Component {
     let sort = 'relevance';
     let sortDirection = 'desc';
     if (type === 'category') {
-      // Get from H1
       headline = document.querySelector('.default-content-wrapper > h1')?.innerText;
       sort = 'position';
       sortDirection = 'asc';
@@ -329,7 +334,7 @@ class ProductListPage extends Component {
     }
 
     this.state = {
-      loading: true,
+      productsLoading: true,
       pages: DEFAULT_PARAMS.page,
       currentPage: DEFAULT_PARAMS.page,
       basePageSize: DEFAULT_PARAMS.basePageSize,
@@ -394,14 +399,14 @@ class ProductListPage extends Component {
   };
 
   loadState = async (state) => {
-    await this.setStatePromise({ ...state, loading: false });
+    await this.setStatePromise({ ...state, productsLoading: false });
     if (this.state && this.state.products) {
       this.filterChange = false;
       this.paginationClick = false;
     }
     this.props.resolve();
 
-    if (this.state.loading === false) {
+    if (this.state.productsLoading === false) {
       window.adobeDataLayer.push((dl) => {
         const searchResultsContext = dl.getState('searchResultsContext') ?? { units: [] };
         const searchRequestId = window.sessionStorage.getItem('searchRequestId');
@@ -430,10 +435,8 @@ class ProductListPage extends Component {
           searchResultsContext.units[index] = searchResultUnit;
         }
         dl.push({ searchResultsContext });
-        // TODO: Remove eventInfo once collector is updated
         dl.push({ event: 'search-response-received', eventInfo: { ...dl.getState(), searchUnitId } });
         if (this.props.type === 'search') {
-          // TODO: Remove eventInfo once collector is updated
           dl.push({ event: 'search-results-view', eventInfo: { ...dl.getState(), searchUnitId } });
         } else {
           dl.push({
@@ -443,7 +446,6 @@ class ProductListPage extends Component {
               urlPath: this.state.category.urlPath,
             },
           });
-          // TODO: Remove eventInfo once collector is updated
           dl.push({ event: 'category-results-view', eventInfo: { ...dl.getState(), searchUnitId } });
         }
       });
@@ -451,10 +453,13 @@ class ProductListPage extends Component {
   };
 
   loadProducts = async () => {
-    this.setState({ loading: true });
+    this.setState({ productsLoading: true });
 
     const state = await loadCategory(this.state);
-    await this.loadState(state);
+    // Use the new facets from the query response
+    await this.loadState({
+      ...state,
+    });
   };
 
   async componentDidMount() {
@@ -514,15 +519,28 @@ class ProductListPage extends Component {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  handleFilterChange(filters) {
-    const newState = { filters, currentPage: 1 };
-    if (this.state.currentPageSize === PAGE_SIZE_MOBILE) {
-      newState.basePageSize = PAGE_SIZE_DESKTOP;
-      newState.currentPageSize = PAGE_SIZE_DESKTOP;
-    }
-    this.setState(newState);
-    this.filterChange = true;
-  }
+  handleFilterChange = async (filters) => {
+    const newState = {
+      ...this.state,
+      filters,
+      currentPage: 1, // Reset to first page when filters change
+    };
+
+    // Update URL without page refresh
+    const params = new URLSearchParams(window.location.search);
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value && value.length > 0) {
+        params.set(key, value.join(','));
+      } else {
+        params.delete(key);
+      }
+    });
+    window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
+
+    // Update state and reload products
+    await this.setStatePromise(newState);
+    await this.loadProducts();
+  };
 
   handleSortChange(sort, direction) {
     const newState = { sort, sortDirection: direction };
@@ -537,18 +555,18 @@ class ProductListPage extends Component {
     const { type = 'category' } = props;
 
     return html`<${Fragment}>
-    <${FacetList} 
+    <${FacetList}
       facets=${state.facets}
       filters=${state.filters}
       facetMenuRef=${this.facetMenuRef}
-      onFilterChange=${this.handleFilterChange.bind(this)}
-      loading=${state.loading} />
+      onFilterChange=${this.handleFilterChange}
+      loading=${false} />
     <div class="products">
       <div class="title">
         <h1>${state.category.name}</h1>
-        ${!state.loading && html`<span>(${state.products.total} ${state.products.total === 1 ? 'Product' : 'Products'})</span>`}
+        ${!state.productsLoading && html`<span>(${state.products.total} ${state.products.total === 1 ? 'Product' : 'Products'})</span>`}
         <${Sort}
-          disabled=${state.loading}
+          disabled=${state.productsLoading}
           currentSort=${state.sort}
           sortDirection=${state.sortDirection}
           type=${type}
@@ -556,20 +574,20 @@ class ProductListPage extends Component {
           sortMenuRef=${this.sortMenuRef} />
       </div>
       <div class="mobile-menu">
-        <button disabled=${state.loading} id="toggle-filters" onClick=${() => this.facetMenuRef.current.classList.toggle('active')}>Filters</button>
-        <button disabled=${state.loading} id="toggle-sortby" onClick=${() => this.sortMenuRef.current.classList.toggle('active')}>Sort By</button>
+        <button disabled=${state.productsLoading} id="toggle-filters" onClick=${() => this.facetMenuRef.current.classList.toggle('active')}>Filters</button>
+        <button disabled=${state.productsLoading} id="toggle-sortby" onClick=${() => this.sortMenuRef.current.classList.toggle('active')}>Sort By</button>
       </div>
       <${ProductList}
         products=${state.products}
         secondLastProduct=${this.secondLastProduct}
-        loading=${state.loading}
+        loading=${state.productsLoading}
         currentPageSize=${state.currentPageSize} />
       <${Pagination}
         pages=${state.pages}
         currentPage=${state.currentPage}
         pageSizeOptions=${[state.basePageSize, 24, 36]}
         currentPageSize=${state.currentPageSize}
-        loading=${state.loading}
+        loading=${state.productsLoading}
         onPageChange=${this.onPageChange.bind(this)}
         onPageSizeChange=${(pageSize) => this.setState({ currentPageSize: pageSize, currentPage: 1 })} />
     </div>

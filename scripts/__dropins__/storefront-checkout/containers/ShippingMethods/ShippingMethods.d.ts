@@ -11,5 +11,6 @@ export interface ShippingMethodsProps extends HTMLAttributes<HTMLDivElement>, Ti
     active?: boolean;
     autoSync?: boolean;
 }
+export declare function emitShippingEstimateEvent(selection: ShippingMethod): void;
 export declare const ShippingMethods: Container<ShippingMethodsProps>;
 //# sourceMappingURL=ShippingMethods.d.ts.map

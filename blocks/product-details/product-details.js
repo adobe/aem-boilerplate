@@ -42,10 +42,30 @@ import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
 import { rootLink } from '../../scripts/scripts.js';
 
+// Function to update the Add to Cart button text
+function updateAddToCartButtonText(addToCartInstance, inCart, labels) {
+  const buttonText = inCart
+    ? labels.PDP?.Product?.UpdateInCart?.label
+    : labels.PDP?.Product?.AddToCart?.label;
+  if (addToCartInstance) {
+    addToCartInstance.setProps((prev) => ({
+      ...prev,
+      children: buttonText,
+    }));
+  }
+}
+
 export default async function decorate(block) {
   // eslint-disable-next-line no-underscore-dangle
   const product = events._lastEvent?.['pdp/data']?.payload ?? null;
   const labels = await fetchPlaceholders();
+
+  // Read itemUid from URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const itemUidFromUrl = urlParams.get('itemUid');
+
+  // State to track if we are in update mode
+  let isUpdateMode = false;
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`
@@ -93,6 +113,10 @@ export default async function decorate(block) {
   const routeToWishlist = checkIsAuthenticated() ? CUSTOMER_WISHLIST_PATH : null;
 
   // Render Containers
+  // Need let here because they are assigned later, after Promise.all
+  let addToCart;
+  let addToWishlist;
+
   const [
     _galleryMobile,
     _gallery,
@@ -145,57 +169,100 @@ export default async function decorate(block) {
     // Configuration  Quantity
     pdpRendered.render(ProductQuantity, {})($quantity),
 
-    // Configuration – Button - Add to Cart
-    UI.render(Button, {
-      children: labels.PDP?.Product?.AddToCart?.label,
-      icon: Icon({ source: 'Cart' }),
-      onClick: async () => {
-        try {
-          addToCart.setProps((prev) => ({
-            ...prev,
-            children: labels.Custom?.AddingToCart?.label,
-            disabled: true,
-          }));
+    // Description
+    pdpRendered.render(ProductDescription, {})($description),
 
-          // get the current selection values
-          const values = pdpApi.getProductConfigurationValues();
-          const valid = pdpApi.isProductConfigurationValid();
+    // Attributes
+    pdpRendered.render(ProductAttributes, {})($attributes),
+  ]);
 
-          // add the product to the cart
-          if (valid) {
-            const { addProductsToCart } = await import('@dropins/storefront-cart/api.js');
-            await addProductsToCart([{ ...values }]);
+  // Configuration – Button - Add to Cart (Rendered AFTER Promise.all)
+  // eslint-disable-next-line prefer-const
+  addToCart = await UI.render(Button, {
+    children: labels.PDP?.Product?.AddToCart?.label,
+    icon: Icon({ source: 'Cart' }),
+    onClick: async () => {
+      const buttonActionText = isUpdateMode
+        ? labels.Custom?.UpdatingInCart?.label
+        : labels.Custom?.AddingToCart?.label;
+      try {
+        addToCart.setProps((prev) => ({
+          ...prev,
+          children: buttonActionText,
+          disabled: true,
+        }));
+
+        // get the current selection values
+        const values = pdpApi.getProductConfigurationValues();
+        const valid = pdpApi.isProductConfigurationValid();
+
+        // add or update the product in the cart
+        if (valid) {
+          if (isUpdateMode) {
+            // --- Update existing item ---
+            const { updateProductsFromCart } = await import(
+              '@dropins/storefront-cart/api.js'
+            );
+
+            await updateProductsFromCart([{ ...values, uid: itemUidFromUrl }]);
+
+            // --- START REDIRECT ON UPDATE ---
+            const updatedSku = values?.sku;
+            if (updatedSku) {
+              const cartRedirectUrl = new URL(
+                rootLink('/cart'),
+                window.location.origin,
+              );
+              cartRedirectUrl.searchParams.set('itemUid', itemUidFromUrl);
+              window.location.href = cartRedirectUrl.toString();
+            } else {
+              // Fallback if SKU is somehow missing (shouldn't happen in normal flow)
+              // eslint-disable-next-line no-console
+              console.warn(
+                'Could not retrieve SKU for updated item. Redirecting to cart without parameter.',
+              );
+              window.location.href = rootLink('/cart');
+            }
+            return;
           }
-
-          // reset any previous alerts if successful
-          inlineAlert?.remove();
-        } catch (error) {
-          // add alert message
-          inlineAlert = await UI.render(InLineAlert, {
-            heading: 'Error',
-            description: error.message,
-            icon: Icon({ source: 'Warning' }),
-            'aria-live': 'assertive',
-            role: 'alert',
-            onDismiss: () => {
-              inlineAlert.remove();
-            },
-          })($alert);
-
-          // Scroll the alertWrapper into view
-          $alert.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-          });
-        } finally {
-          addToCart.setProps((prev) => ({
-            ...prev,
-            children: labels.PDP?.Product?.AddToCart?.label,
-            disabled: false,
-          }));
+          // --- Add new item ---
+          const { addProductsToCart } = await import(
+            '@dropins/storefront-cart/api.js'
+          );
+          await addProductsToCart([{ ...values }]);
         }
-      },
-    })($addToCart),
+
+        // reset any previous alerts if successful
+        inlineAlert?.remove();
+      } catch (error) {
+        // add alert message
+        inlineAlert = await UI.render(InLineAlert, {
+          heading: 'Error',
+          description: error.message,
+          icon: Icon({ source: 'Warning' }),
+          'aria-live': 'assertive',
+          role: 'alert',
+          onDismiss: () => {
+            inlineAlert.remove();
+          },
+        })($alert);
+
+        // Scroll the alertWrapper into view
+        $alert.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      } finally {
+        // Reset button text using the helper function which respects the current mode
+        updateAddToCartButtonText(addToCart, isUpdateMode, labels);
+        // Re-enable button
+        addToCart.setProps((prev) => ({
+          ...prev,
+          disabled: false,
+        }));
+      }
+    },
+  })($addToCart);
 
     // Wishlist button - WishlistToggle Container
     wishlistRender.render(WishlistToggle, {
@@ -258,6 +325,25 @@ export default async function decorate(block) {
       $alert.innerHTML = '';
     }, 5000);
   });
+
+  // --- Add new event listener for cart/data ---
+  events.on(
+    'cart/data',
+    (cartData) => {
+      let itemIsInCart = false;
+      if (itemUidFromUrl && cartData?.items) {
+        itemIsInCart = cartData.items.some(
+          (item) => item.uid === itemUidFromUrl,
+        );
+      }
+      // Set the update mode state
+      isUpdateMode = itemIsInCart;
+
+      // Update button text based on whether the item is in the cart
+      updateAddToCartButtonText(addToCart, itemIsInCart, labels);
+    },
+    { eager: true },
+  );
 
   // Set JSON-LD and Meta Tags
   events.on('aem/lcp', () => {

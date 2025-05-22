@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
-import { Container, SlotProps } from '../../../@adobe-commerce/elsie/src/lib';
+import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { CartModel } from '../../data/models/cart-model';
-import { ImageProps } from '../../../@adobe-commerce/elsie/src/components';
+import { ImageProps } from '@dropins/tools/types/elsie/src/components';
 
 export interface CartSummaryListProps extends HTMLAttributes<HTMLDivElement> {
     hideHeading?: boolean;

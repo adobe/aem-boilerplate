@@ -53,7 +53,15 @@ export function getCartDeliveryMethod(data) {
   return shippingAddresses[0]?.selectedShippingMethod;
 }
 
-const transformAddressFormValues = (data) => {
+export function getCartPaymentMethod(data) {
+  if (!data) return null;
+  const { selectedPaymentMethod } = data;
+  if (!selectedPaymentMethod || !selectedPaymentMethod?.code) return null;
+
+  return data.selectedPaymentMethod;
+}
+
+export const transformAddressFormValues = (data) => {
   const isNewAddress = !data?.id;
 
   const customAttributes = data.customAttributes?.map(({ code, value }) => ({

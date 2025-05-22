@@ -28,8 +28,6 @@ import ProductDescription from '@dropins/storefront-pdp/containers/ProductDescri
 import ProductAttributes from '@dropins/storefront-pdp/containers/ProductAttributes.js';
 import ProductGallery from '@dropins/storefront-pdp/containers/ProductGallery.js';
 
-import { checkIsAuthenticated } from '../../scripts/configs.js';
-
 // Libs
 import { fetchPlaceholders, setJsonLd } from '../../scripts/commerce.js';
 

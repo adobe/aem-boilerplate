@@ -16,7 +16,6 @@ export const CUSTOMER_CREATE_RETURN_PATH = `${CUSTOMER_PATH}${CREATE_RETURN_PATH
 export const CUSTOMER_ORDERS_PATH = `${CUSTOMER_PATH}/orders`;
 export const CUSTOMER_RETURNS_PATH = `${CUSTOMER_PATH}/returns`;
 export const CUSTOMER_ADDRESS_PATH = `${CUSTOMER_PATH}/address`;
-export const CUSTOMER_WISHLIST_PATH = `${CUSTOMER_PATH}/wishlist`;
 export const CUSTOMER_LOGIN_PATH = `${CUSTOMER_PATH}/login`;
 export const CUSTOMER_ACCOUNT_PATH = `${CUSTOMER_PATH}/account`;
 export const CUSTOMER_FORGOTPASSWORD_PATH = `${CUSTOMER_PATH}/forgotpassword`;

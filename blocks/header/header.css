@@ -373,6 +373,13 @@ header nav .nav-tools button.nav-cart-button[data-count]::after {
   justify-content: center;
 }
 
+header nav .nav-tools button.nav-wishlist-button {
+    background-image: url('../../icons/heart.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+}
+
 header nav .nav-tools button.nav-search-button {
   font-size: 0;
   background-image: url('../../icons/search.svg');

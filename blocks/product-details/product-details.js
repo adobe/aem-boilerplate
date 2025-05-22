@@ -29,9 +29,6 @@ import ProductAttributes from '@dropins/storefront-pdp/containers/ProductAttribu
 import ProductGallery from '@dropins/storefront-pdp/containers/ProductGallery.js';
 
 import { checkIsAuthenticated } from '../../scripts/configs.js';
-import {
-  CUSTOMER_WISHLIST_PATH,
-} from '../../scripts/constants.js';
 
 // Libs
 import { fetchPlaceholders, setJsonLd } from '../../scripts/commerce.js';
@@ -110,12 +107,11 @@ export default async function decorate(block) {
 
   // Alert
   let inlineAlert = null;
-  const routeToWishlist = checkIsAuthenticated() ? CUSTOMER_WISHLIST_PATH : null;
+  const routeToWishlist = '/drafts/iberian-lynx/wishlist';
 
   // Render Containers
   // Need let here because they are assigned later, after Promise.all
   let addToCart;
-  let addToWishlist;
 
   const [
     _galleryMobile,
@@ -125,7 +121,6 @@ export default async function decorate(block) {
     _shortDescription,
     _options,
     _quantity,
-    addToCart,
     wishlistToggleBtn,
     _description,
     _attributes,
@@ -174,6 +169,11 @@ export default async function decorate(block) {
 
     // Attributes
     pdpRendered.render(ProductAttributes, {})($attributes),
+
+    // Wishlist button - WishlistToggle Container
+    wishlistRender.render(WishlistToggle, {
+      product,
+    })($wishlistToggleBtn),
   ]);
 
   // Configuration – Button - Add to Cart (Rendered AFTER Promise.all)
@@ -263,18 +263,6 @@ export default async function decorate(block) {
       }
     },
   })($addToCart);
-
-    // Wishlist button - WishlistToggle Container
-    wishlistRender.render(WishlistToggle, {
-      product,
-    })($wishlistToggleBtn),
-
-    // Description
-    pdpRendered.render(ProductDescription, {})($description),
-
-    // Attributes
-    pdpRendered.render(ProductAttributes, {})($attributes),
-  ]);
 
   // Lifecycle Events
   events.on('pdp/valid', (valid) => {

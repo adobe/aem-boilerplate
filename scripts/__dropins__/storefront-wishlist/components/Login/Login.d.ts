@@ -1,4 +1,7 @@
 import { FunctionComponent } from 'preact';
 
-export declare const Login: FunctionComponent;
+export interface LoginProps {
+    onLoginClick?: () => void;
+}
+export declare const Login: FunctionComponent<LoginProps>;
 //# sourceMappingURL=Login.d.ts.map

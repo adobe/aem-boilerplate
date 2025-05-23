@@ -6,7 +6,6 @@ import { render as wishlistRenderer } from '@dropins/storefront-wishlist/render.
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { AuthCombine } from '@dropins/storefront-auth/containers/AuthCombine.js';
 import { events } from '@dropins/tools/event-bus.js';
-import { provider as UI } from '@dropins/tools/components.js';
 import Wishlist from '@dropins/storefront-wishlist/containers/Wishlist.js';
 import { rootLink } from '../../scripts/scripts.js';
 
@@ -15,9 +14,9 @@ import '../../scripts/initializers/wishlist.js';
 
 import { readBlockConfig } from '../../scripts/aem.js';
 
-const showAuthModal = (e) => {
-  if (e) {
-    e.preventDefault();
+const showAuthModal = (event) => {
+  if (event) {
+    event.preventDefault();
   }
 
   const signInModal = document.createElement('div');
@@ -26,8 +25,8 @@ const showAuthModal = (e) => {
   const signInForm = document.createElement('div');
   signInForm.setAttribute('id', 'signin-form');
 
-  signInModal.onclick = (e) => {
-    if (e.target === signInModal) {
+  signInModal.onclick = (clickEvent) => {
+    if (clickEvent.target === signInModal) {
       signInModal.remove();
     }
   };
@@ -36,7 +35,7 @@ const showAuthModal = (e) => {
   document.body.appendChild(signInModal);
 
   // Render auth form
- authRenderer.render(AuthCombine, {
+  authRenderer.render(AuthCombine, {
     signInFormConfig: { renderSignUpLink: true },
     signUpFormConfig: {},
     resetPasswordFormConfig: {},

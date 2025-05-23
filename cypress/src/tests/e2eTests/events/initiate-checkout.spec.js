@@ -1,22 +1,20 @@
-import { products } from '../../../fixtures';
+import { products } from "../../../fixtures";
 /**
  * https://github.com/adobe/commerce-events/blob/main/examples/events/initiate-checkout.md
  *
  * Required Contexts: page, storefront, shoppingCart
  */
 it("is sent on mini cart Checkout button click", () => {
-  cy.visit(
-    products.configurable.urlPathWithOptions
-  );
+  cy.visit(products.configurable.urlPathWithOptions);
   cy.waitForResource("commerce-events-collector.js").then(() => {
     cy.window()
       .its("adobeDataLayer")
       .then((adobeDataLayer) => {
         const pageContextIndex = adobeDataLayer.findIndex(
-          (event) => !!event?.pageContext
+          (event) => !!event?.pageContext,
         );
         const storefrontInstanceContextIndex = adobeDataLayer.findIndex(
-          (event) => !!event?.storefrontInstanceContext
+          (event) => !!event?.storefrontInstanceContext,
         );
         // page and storefront pushed before spy
         expect(pageContextIndex).to.be.greaterThan(-1);
@@ -27,7 +25,9 @@ it("is sent on mini cart Checkout button click", () => {
     cy.window().then((win) => {
       cy.spy(win.adobeDataLayer, "push").as("adl");
       // add to cart
-      cy.get(".product-details__buttons__add-to-cart button").should("be.visible").click();
+      cy.get(".product-details__buttons__add-to-cart button")
+        .should("be.visible")
+        .click();
       // click the minicart toggle
       cy.get('button[data-count="1"]').should("be.visible").click();
       // click the checkout button
@@ -37,10 +37,10 @@ it("is sent on mini cart Checkout button click", () => {
         .then(() => {
           cy.get("@adl", { timeout: 1000 }).should((adobeDataLayerPush) => {
             const targetEventIndex = adobeDataLayerPush.args.findIndex(
-              (event) => event[0]?.event === "initiate-checkout"
+              (event) => event[0]?.event === "initiate-checkout",
             );
             const shoppingCartContextIndex = adobeDataLayerPush.args.findIndex(
-              (event) => !!event[0]?.shoppingCartContext
+              (event) => !!event[0]?.shoppingCartContext,
             );
             expect(targetEventIndex).to.be.greaterThan(-1);
             expect(shoppingCartContextIndex).to.be.greaterThan(-1);
@@ -52,11 +52,11 @@ it("is sent on mini cart Checkout button click", () => {
 
 it("is sent on cart page Checkout button click", () => {
   // add item to cart
-  cy.visit(
-    products.configurable.urlPathWithOptions
-  );
+  cy.visit(products.configurable.urlPathWithOptions);
   // add to cart
-  cy.get(".product-details__buttons__add-to-cart button").should("be.visible").click();
+  cy.get(".product-details__buttons__add-to-cart button")
+    .should("be.visible")
+    .click();
   // after mini cart count updates, go to /cart page
   cy.get('button[data-count="1"]').should("be.visible");
   cy.visit("/cart");
@@ -66,10 +66,10 @@ it("is sent on cart page Checkout button click", () => {
       .its("adobeDataLayer")
       .then((adobeDataLayer) => {
         const pageContextIndex = adobeDataLayer.findIndex(
-          (event) => !!event?.pageContext
+          (event) => !!event?.pageContext,
         );
         const storefrontInstanceContextIndex = adobeDataLayer.findIndex(
-          (event) => !!event?.storefrontInstanceContext
+          (event) => !!event?.storefrontInstanceContext,
         );
         // page and storefront pushed before spy
         expect(pageContextIndex).to.be.greaterThan(-1);
@@ -86,10 +86,10 @@ it("is sent on cart page Checkout button click", () => {
         .then(() => {
           cy.get("@adl", { timeout: 1000 }).should((adobeDataLayerPush) => {
             const targetEventIndex = adobeDataLayerPush.args.findIndex(
-              (event) => event[0]?.event === "initiate-checkout"
+              (event) => event[0]?.event === "initiate-checkout",
             );
             const shoppingCartContextIndex = adobeDataLayerPush.args.findIndex(
-              (event) => !!event[0]?.shoppingCartContext
+              (event) => !!event[0]?.shoppingCartContext,
             );
             expect(targetEventIndex).to.be.greaterThan(-1);
             expect(shoppingCartContextIndex).to.be.greaterThan(-1);

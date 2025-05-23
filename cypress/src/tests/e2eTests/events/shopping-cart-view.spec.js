@@ -26,7 +26,7 @@ it("is sent on view cart button click", () => {
         expectsEventWithContext(
           "shopping-cart-view",
           ["pageContext", "storefrontInstanceContext", "shoppingCartContext"],
-          adobeDataLayer
+          adobeDataLayer,
         );
       });
   });

@@ -662,7 +662,9 @@ export default async function decorate(block) {
 
       const storeConfig = checkoutApi.getStoreConfigCache();
 
-      $billingForm.style.display = 'none';
+      if (!data.isVirtual) {
+        $billingForm.style.display = 'none';
+      }
       billingForm = await AccountProvider.render(AddressForm, {
         addressesFormTitle: 'Billing address',
         className: 'checkout-billing-form__address-form',

@@ -3,7 +3,7 @@ import {
   placeOrder,
   setGuestEmail,
   setGuestShippingAddress,
-} from '../../../actions';
+} from "../../../actions";
 import { expectsEventWithContext } from "../../../assertions";
 import { customerShippingAddress, products } from "../../../fixtures";
 
@@ -68,7 +68,7 @@ it("is sent on place order button click", () => {
             "shoppingCartContext",
             "orderContext",
           ],
-          adobeDataLayer
+          adobeDataLayer,
         );
       });
   });

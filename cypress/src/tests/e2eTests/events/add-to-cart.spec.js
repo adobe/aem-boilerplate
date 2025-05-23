@@ -26,7 +26,7 @@ it("is sent on add to cart button click", () => {
             "shoppingCartContext",
             "changedProductsContext",
           ],
-          adobeDataLayer
+          adobeDataLayer,
         );
       });
   });

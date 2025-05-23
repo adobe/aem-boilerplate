@@ -50,4 +50,8 @@ export const products = {
     urlPath: "/products/cypress-configurable-product-latest/CYPRESS456",
     urlPathWithOptions:  Cypress.env('productUrlWithOptions'),
   },
+  virtual: {
+    urlPath: "/products/sample-virtual-product/VIRTUAL123",
+    sku: 'VIRTUAL123',
+  },
 };

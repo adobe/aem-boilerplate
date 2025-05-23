@@ -1,83 +1,78 @@
 import {
   setGuestEmail,
-  setGuestShippingAddress,
   setPaymentMethod,
   placeOrder,
   checkTermsAndConditions,
+  setGuestBillingAddress,
 } from "../../actions";
 import {
   assertCartSummaryProduct,
   assertCartSummaryProductsOnCheckout,
   assertTitleHasLink,
-  assertProductImage,
   assertCartSummaryMisc,
   assertOrderSummaryMisc,
   assertOrderConfirmationCommonDetails,
-  assertOrderConfirmationShippingDetails,
   assertOrderConfirmationBillingDetails,
-  assertOrderConfirmationShippingMethod,
+  assertSelectedPaymentMethod,
 } from "../../assertions";
-import { assertSelectedPaymentMethod } from "../../assertions";
 import {
-  customerShippingAddress,
   paymentServicesCreditCard,
   checkMoneyOrder,
+  customerBillingAddress,
+  products,
 } from "../../fixtures/index";
 import * as fields from "../../fields";
 
-describe("Verify guest user can place order", () => {
-  it("Verify guest user can place order", () => {
-    cy.visit("");
-    cy.get(".nav-drop").first().trigger("mouseenter");
-    cy.wait(1000);
-    cy.contains("Youth Tee").click();
-    cy.get(".dropin-incrementer__increase-button").click();
-    cy.get(".dropin-incrementer__input").should("have.value", "2");
+describe("Verify guest user can place order with virtual product", () => {
+  it("Verify guest user can place order with virtual product", () => {
+    cy.visit(products.virtual.urlPath);
+
+    cy.get(".dropin-incrementer__input").should("have.value", "1");
     // cypress fails intermittently as it takes old value 1, this is needed for tests to be stable
     cy.wait(1000);
     cy.contains("Add to Cart").click();
     cy.get(".minicart-wrapper").click();
+    cy.wait(2000);
+
     assertCartSummaryProduct(
-      "Youth tee",
-      "ADB150",
-      "2",
-      "$10.00",
-      "$20.00",
+      "Sample Virtual Product",
+      "VIRTUAL123",
+      "1",
+      "$100.00",
+      "$100.00",
       "0",
     )(".cart-mini-cart");
+
     assertTitleHasLink(
-      "Youth tee",
-      "/products/youth-tee/ADB150",
+      "Sample Virtual Product",
+      "/products/sample-virtual-product/VIRTUAL123",
     )(".cart-mini-cart");
-    assertProductImage(Cypress.env("productImageName"))(".cart-mini-cart");
     cy.contains("View Cart").click();
     assertCartSummaryProduct(
-      "Youth tee",
-      "ADB150",
-      "2",
-      "$10.00",
-      "$20.00",
+      "Sample Virtual Product",
+      "VIRTUAL123",
+      "1",
+      "$100.00",
+      "$100.00",
       "0",
     )(".commerce-cart-wrapper");
     assertTitleHasLink(
-      "Youth tee",
-      "/products/youth-tee/ADB150",
+      "Sample Virtual Product",
+      "/products/sample-virtual-product/VIRTUAL123",
     )(".commerce-cart-wrapper");
-    assertProductImage(Cypress.env("productImageName"))(
-      ".commerce-cart-wrapper",
-    );
-    cy.contains("Estimated Shipping").should("be.visible");
+
     cy.get(".dropin-button--primary").contains("Checkout").click();
-    assertCartSummaryMisc(2);
+
+    assertCartSummaryMisc(1);
     assertCartSummaryProductsOnCheckout(
-      "Youth tee",
-      "ADB150",
-      "2",
-      "$10.00",
-      "$20.00",
+      "Sample Virtual Product",
+      "VIRTUAL123",
+      "1",
+      "$100.00",
+      "$100.00",
       "0",
     );
-    cy.contains("Estimated Shipping").should("be.visible");
+
     const apiMethod = "setGuestEmailOnCart";
     const urlTest = Cypress.env("graphqlEndPoint");
     cy.intercept("POST", urlTest, (req) => {
@@ -88,36 +83,31 @@ describe("Verify guest user can place order", () => {
         }
       }
     });
-    setGuestEmail(customerShippingAddress.email);
+    setGuestEmail(customerBillingAddress.email);
     cy.wait("@setEmailOnCart");
 
-    setGuestShippingAddress(customerShippingAddress, true);
-    assertOrderSummaryMisc("$20.00", "$10.00", "$86.00");
+    // Assert that shipping form is not present for Sample Virtual Products
+    cy.get(".checkout__shipping-form").should("not.be.visible");
+
+    assertOrderSummaryMisc("$100.00", null, "$100.00");
 
     assertSelectedPaymentMethod(checkMoneyOrder.code, 0);
     setPaymentMethod(paymentServicesCreditCard);
     assertSelectedPaymentMethod(paymentServicesCreditCard.code, 2);
+
+    setGuestBillingAddress(customerBillingAddress, true);
 
     checkTermsAndConditions();
     cy.wait(5000);
     placeOrder();
 
     assertOrderConfirmationCommonDetails(
-      customerShippingAddress,
+      customerBillingAddress,
       paymentServicesCreditCard,
     );
-    assertOrderConfirmationShippingDetails(customerShippingAddress);
-    assertOrderConfirmationBillingDetails(customerShippingAddress);
-    assertOrderConfirmationShippingMethod(customerShippingAddress);
-
-    /**
-     * TODO - when /order-details page will be ready
-     * Redirect to /order-details?orderRef={ORDER_TOKEN}
-     * Confirm that elements similar to orderConfirmation page present (not exactly the same, separate assert needed)
-     */
+    assertOrderConfirmationBillingDetails(customerBillingAddress);
 
     // Obtain order reference from URL and visit order details page
-
     cy.url().then((url) => {
       const orderRef = url.split("?")[1];
       cy.visit("/order-details?" + orderRef);

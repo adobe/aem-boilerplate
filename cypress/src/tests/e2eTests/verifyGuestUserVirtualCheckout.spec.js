@@ -35,7 +35,7 @@ describe("Verify guest user can place order with virtual product", () => {
     cy.wait(2000);
 
     assertCartSummaryProduct(
-      "Sample Virtual Product",
+      "Virtual Product",
       "VIRTUAL123",
       "1",
       "$100.00",
@@ -44,12 +44,12 @@ describe("Verify guest user can place order with virtual product", () => {
     )(".cart-mini-cart");
 
     assertTitleHasLink(
-      "Sample Virtual Product",
-      "/products/sample-virtual-product/VIRTUAL123",
+      "Virtual Product",
+      "/products/virtual-product/VIRTUAL123",
     )(".cart-mini-cart");
     cy.contains("View Cart").click();
     assertCartSummaryProduct(
-      "Sample Virtual Product",
+      "Virtual Product",
       "VIRTUAL123",
       "1",
       "$100.00",
@@ -57,15 +57,15 @@ describe("Verify guest user can place order with virtual product", () => {
       "0",
     )(".commerce-cart-wrapper");
     assertTitleHasLink(
-      "Sample Virtual Product",
-      "/products/sample-virtual-product/VIRTUAL123",
+      "Virtual Product",
+      "/products/virtual-product/VIRTUAL123",
     )(".commerce-cart-wrapper");
 
     cy.get(".dropin-button--primary").contains("Checkout").click();
 
     assertCartSummaryMisc(1);
     assertCartSummaryProductsOnCheckout(
-      "Sample Virtual Product",
+      "Virtual Product",
       "VIRTUAL123",
       "1",
       "$100.00",
@@ -86,7 +86,7 @@ describe("Verify guest user can place order with virtual product", () => {
     setGuestEmail(customerBillingAddress.email);
     cy.wait("@setEmailOnCart");
 
-    // Assert that shipping form is not present for Sample Virtual Products
+    // Assert that shipping form is not present for Virtual Products
     cy.get(".checkout__shipping-form").should("not.be.visible");
 
     assertOrderSummaryMisc("$100.00", null, "$100.00");

@@ -29,8 +29,7 @@ import '../../scripts/initializers/cart.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
-  // eslint-disable-next-line no-underscore-dangle
-  const product = events._lastEvent?.['pdp/data']?.payload ?? null;
+  const product = events.lastPayload('pdp/data') ?? null;
   const labels = await fetchPlaceholders();
 
   // Layout

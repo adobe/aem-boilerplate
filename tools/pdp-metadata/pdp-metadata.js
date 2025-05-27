@@ -3,26 +3,22 @@ import fs from 'fs';
 import he from 'he';
 import productSearchQuery from './queries/products.graphql.js';
 import { variantsFragment } from './queries/variants.graphql.js';
-
 const basePath = 'https://www.aemshop.net';
-const configFile = `${basePath}/configs.json?sheet=prod`;
+const configFile = `${basePath}/config.json`;
 
 export async function commerceEndpointWithQueryParams(config) {
   const urlWithQueryParams = new URL(config['commerce-endpoint']);
   // Set some query parameters for use as a cache-buster. No other purpose.
-  urlWithQueryParams.searchParams.append('ac-storecode', config['commerce.headers.cs.Magento-Store-Code']);
+  const hash = createHashFromObject(config.headers?.cs ?? {});
+  urlWithQueryParams.searchParams.append('cb', hash);
   return urlWithQueryParams;
 }
 
 async function performCatalogServiceQuery(config, query, variables) {
   const headers = {
     'Content-Type': 'application/json',
-    'x-api-key': config['commerce.headers.cs.x-api-key'],
-    'Magento-Customer-Group': config['commerce.headers.cs.Magento-Customer-Group'],
-    'Magento-Environment-Id': config['commerce.headers.cs.Magento-Environment-Id'],
-    'Magento-Store-Code': config['commerce.headers.cs.Magento-Store-Code'],
-    'Magento-Store-View-Code': config['commerce.headers.cs.Magento-Store-View-Code'],
-    'Magento-Website-Code': config['commerce.headers.cs.Magento-Website-Code'],
+    ...config.headers?.all,
+    ...config.headers?.cs,
   };
 
   const apiCall = await commerceEndpointWithQueryParams(config);
@@ -43,6 +39,27 @@ async function performCatalogServiceQuery(config, query, variables) {
   const queryResponse = await response.json();
 
   return queryResponse.data;
+}
+
+/**
+ * Creates a short hash from an object by sorting its entries and hashing them.
+ * @param {Object} obj - The object to hash
+ * @param {number} [length=5] - Length of the resulting hash
+ * @returns {string} A short hash string
+ */
+function createHashFromObject(obj, length = 5) {
+  // Sort entries by key and create a string of key-value pairs
+  const objString = Object.entries(obj)
+    .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+    .map(([key, value]) => `${key}:${value}`)
+    .join('|');
+
+  // Create a short hash using a simple string manipulation
+  return objString
+    .split('')
+    .reduce((hash, char) => (hash * 31 + char.charCodeAt(0)) % 2147483647, 0)
+    .toString(36)
+    .slice(0, length);
 }
 
 function getJsonLd(product, { variants }) {
@@ -193,16 +210,13 @@ async function addVariantsToProducts(products, config) {
 }
 
 (async () => {
-  const config = {};
-  try {
-    const resp = await fetch(configFile).then((res) => res.json());
-    resp.data.forEach((item) => {
-      config[item.key] = item.value;
+  const config = await fetch(configFile)
+    .then((res) => res.json())
+    .then((data) => data.public.default)
+    .catch((err) => {
+      console.error(err);
+      return {};
     });
-  } catch (err) {
-    console.error(err);
-    return;
-  }
 
   const products = await getProducts(config, 1);
 

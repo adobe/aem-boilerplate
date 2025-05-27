@@ -122,6 +122,15 @@ npm run lint
 1. Start AEM Proxy: `aem-up --url htps://main--{SITE}--{ORG}.aem.page` (opens your browser at `http://localhost:3000`)
 1. Open the `{repo}` directory in your favourite IDE and start coding :)
 
+## Site Creator Tool
+
+The [Site Creator Tool](https://da.live/app/hlxsites/aem-boilerplate-commerce/tools/site-creator/site-creator) clones content from the boilerplate content source to a destination content source in DA.
+
+The tool source is found in `tools/site-creator` in this repository.
+
+If you want to develop on the tool, you can use DA's `ref` capability in conjunction with your org and site name: `https://da.live/app/${ORG}$/${SITE}/tools/site-creator/site-creator?ref=${BRANCH_NAME}`
+
+
 ## Changelog
 
 Major changes are described and documented as part of pull requests and tracked via the `changelog` tag. To keep your project up to date, please follow this list:

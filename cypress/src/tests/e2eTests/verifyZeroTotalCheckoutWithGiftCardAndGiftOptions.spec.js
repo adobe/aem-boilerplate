@@ -39,15 +39,15 @@ describe("Verify price summary on cart", () => {
       .click();
     cy.get(".minicart-wrapper").click();
     assertCartSummaryProduct(
-      "Cypress Configurable product latest",
-      "CYPRESS456",
-      "1",
-      "$60.00",
-      "$60.00",
-      "0",
-    )(".cart-mini-cart");
-    cy.visit("/cart");
-    cy.get(fields.orderSummary).contains("Order Summary").should("be.visible");
+      'Configurable product',
+      'CYPRESS456',
+      '1',
+      '$60.00',
+      '$60.00',
+      '0'
+    )('.cart-mini-cart');
+    cy.visit('/cart');
+    cy.get(fields.orderSummary).contains('Order Summary').should('be.visible');
     cy.get(`.cart-coupons.cart-gift-cards`)
       .contains("Gift Card")
       .should("be.visible")
@@ -85,12 +85,12 @@ describe("Verify price summary on cart", () => {
       .click({ force: true });
     assertCartSummaryMisc(1);
     assertCartSummaryProductsOnCheckout(
-      "Cypress Configurable product latest",
-      "CYPRESS456",
-      "1",
-      "$60.00",
-      "$60.00",
-      "1",
+      'Configurable product',
+      'CYPRESS456',
+      '1',
+      '$60.00',
+      '$60.00',
+      '1'
     );
     assertGiftOptionsSummary("Printed card", "$100.00");
     assertGiftOptionsSummary("Item gift wrapping", "$100.00");

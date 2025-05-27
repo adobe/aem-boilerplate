@@ -11,12 +11,15 @@ import EmptyCart from '@dropins/storefront-cart/containers/EmptyCart.js';
 import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
 import GiftCards from '@dropins/storefront-cart/containers/GiftCards.js';
 import GiftOptions from '@dropins/storefront-cart/containers/GiftOptions.js';
+import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
+import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
 
 // API
 import { publishShoppingCartViewEvent } from '@dropins/storefront-cart/api.js';
 
 // Initializers
 import '../../scripts/initializers/cart.js';
+import '../../scripts/initializers/wishlist.js';
 
 import { readBlockConfig } from '../../scripts/aem.js';
 import { rootLink } from '../../scripts/scripts.js';
@@ -141,6 +144,20 @@ export default async function decorate(block) {
           })(giftOptions);
 
           ctx.appendChild(giftOptions);
+
+          // Wishlist Button
+          const $wishlistToggle = document.createElement('div');
+          $wishlistToggle.classList.add('cart__action--wishlist-toggle');
+
+          // Render Icon
+          wishlistRender.render(WishlistToggle, {
+            product: ctx.item,
+            labelToWishlist: 'Move to wishlist',
+            labelWishlisted: 'Remove from wishlist',
+          })($wishlistToggle);
+
+          // Append to Cart Item
+          ctx.prependSibling($wishlistToggle);
         },
       },
     })($list),

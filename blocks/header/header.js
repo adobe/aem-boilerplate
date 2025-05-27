@@ -230,7 +230,7 @@ export default async function decorate(block) {
   const wishlistButton = navTools.querySelector('.nav-wishlist-button');
 
   const wishlistMeta = getMetadata('wishlist');
-  const wishlistPath = wishlistMeta ? new URL(wishlistMeta, window.location).pathname : '/drafts/iberian-lynx/wishlist';
+  const wishlistPath = wishlistMeta ? new URL(wishlistMeta, window.location).pathname : '/wishlist';
 
   wishlistButton.addEventListener('click', () => {
     window.location.href = rootLink(wishlistPath);

@@ -105,7 +105,7 @@ export default async function decorate(block) {
 
   // Alert
   let inlineAlert = null;
-  const routeToWishlist = '/drafts/iberian-lynx/wishlist';
+  const routeToWishlist = '/wishlist';
 
   // Render Containers
   // Need let here because they are assigned later, after Promise.all

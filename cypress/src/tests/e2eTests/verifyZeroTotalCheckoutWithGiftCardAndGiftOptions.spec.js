@@ -43,7 +43,7 @@ describe('Verify price summary on cart',() => {
       .click();
     cy.get('.minicart-wrapper').click();
     assertCartSummaryProduct(
-      'Cypress Configurable product latest',
+      'Configurable product',
       'CYPRESS456',
       '1',
       '$60.00',
@@ -95,7 +95,7 @@ describe('Verify price summary on cart',() => {
       .click({ force: true });
     assertCartSummaryMisc(1);
     assertCartSummaryProductsOnCheckout(
-      'Cypress Configurable product latest',
+      'Configurable product',
       'CYPRESS456',
       '1',
       '$60.00',

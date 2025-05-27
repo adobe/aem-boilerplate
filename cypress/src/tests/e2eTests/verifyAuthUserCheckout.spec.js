@@ -37,7 +37,7 @@ describe('Verify auth user can place order', () => {
     cy.contains('Add to Cart').click();
     cy.get('.minicart-wrapper').click();
     assertCartSummaryProduct(
-      'Cypress Configurable product latest',
+      'Configurable product',
       'CYPRESS456',
       '1',
       '$60.00',
@@ -45,13 +45,13 @@ describe('Verify auth user can place order', () => {
       '0'
     )('.cart-mini-cart');
     assertTitleHasLink(
-      'Cypress Configurable product latest',
+      'Configurable product',
       '/products/cypress-configurable-product-latest/CYPRESS456'
     )('.cart-mini-cart');
-    assertProductImage('/thumbnail.jpg')('.cart-mini-cart');
+    assertProductImage(Cypress.env('productImageNameConfigurable'))('.cart-mini-cart');
     cy.contains('View Cart').click();
     assertCartSummaryProduct(
-      'Cypress Configurable product latest',
+      'Configurable product',
       'CYPRESS456',
       '1',
       '$60.00',
@@ -59,7 +59,7 @@ describe('Verify auth user can place order', () => {
       '0'
     )('.commerce-cart-wrapper');
     assertTitleHasLink(
-      'Cypress Configurable product latest',
+      'Configurable product',
       '/products/cypress-configurable-product-latest/CYPRESS456'
     )('.commerce-cart-wrapper');
     cy.visit("/customer/create");
@@ -71,7 +71,7 @@ describe('Verify auth user can place order', () => {
     });
     cy.get('.minicart-wrapper').click();
     assertCartSummaryProduct(
-      'Cypress Configurable product latest',
+      'Configurable product',
       'CYPRESS456',
       '1',
       '$60.00',
@@ -79,10 +79,10 @@ describe('Verify auth user can place order', () => {
       '0'
     )('.cart-mini-cart');
     assertTitleHasLink(
-      'Cypress Configurable product latest',
+      'Configurable product',
       '/products/cypress-configurable-product-latest/CYPRESS456'
     )('.cart-mini-cart');
-    assertProductImage('/thumbnail.jpg')('.cart-mini-cart');
+    assertProductImage(Cypress.env('productImageNameConfigurable'))('.cart-mini-cart');
     cy.visit("/products/youth-tee/ADB150");
     cy.get('.product-details__buttons__add-to-cart button')
       .should('be.visible')
@@ -102,7 +102,7 @@ describe('Verify auth user can place order', () => {
     )('.cart-mini-cart');
     assertProductImage(Cypress.env('productImageName'))('.cart-mini-cart');
     assertCartSummaryProduct(
-      'Cypress Configurable product latest',
+      'Configurable product',
       'CYPRESS456',
       '1',
       '$60.00',
@@ -110,7 +110,7 @@ describe('Verify auth user can place order', () => {
       '1'
     )('.cart-mini-cart');
     assertTitleHasLink(
-      'Cypress Configurable product latest',
+      'Configurable product',
       '/products/cypress-configurable-product-latest/CYPRESS456'
     )('.cart-mini-cart');
     assertProductImage(Cypress.env('productImageName'))('.cart-mini-cart');
@@ -130,7 +130,7 @@ describe('Verify auth user can place order', () => {
     assertProductImage(Cypress.env('productImageName'))('.commerce-cart-wrapper');
 
     assertCartSummaryProduct(
-      'Cypress Configurable product latest',
+      'Configurable product',
       'CYPRESS456',
       '1',
       '$60.00',
@@ -138,10 +138,10 @@ describe('Verify auth user can place order', () => {
       '1'
     )('.commerce-cart-wrapper');
     assertTitleHasLink(
-      'Cypress Configurable product latest',
+      'Configurable product',
       '/products/cypress-configurable-product-latest/CYPRESS456'
     )('.commerce-cart-wrapper');
-    assertProductImage('/thumbnail.jpg')('.commerce-cart-wrapper');
+    assertProductImage(Cypress.env('productImageNameConfigurable'))('.commerce-cart-wrapper');
     cy.contains('Estimated Shipping').should('be.visible');
     cy.get('.dropin-button.dropin-button--medium.dropin-button--primary')
       .contains('Checkout')
@@ -156,7 +156,7 @@ describe('Verify auth user can place order', () => {
       '0'
     );
     assertCartSummaryProductsOnCheckout(
-      'Cypress Configurable product latest',
+      'Configurable product',
       'CYPRESS456',
       '1',
       '$60.00',

@@ -1,9 +1,9 @@
 /* eslint-disable import/prefer-default-export, import/no-cycle */
 import { getMetadata } from './aem.js';
 import {
+  getHeaders,
   getConfigValue,
   getCookie,
-  getHeaders,
   getRootPath,
 } from './configs.js';
 import { getConsent } from './scripts.js';
@@ -88,10 +88,32 @@ export const priceFieldsFragment = `fragment priceFields on ProductViewPrice {
   }
 }`;
 
+/**
+ * Creates a short hash from an object by sorting its entries and hashing them.
+ * @param {Object} obj - The object to hash
+ * @param {number} [length=5] - Length of the resulting hash
+ * @returns {string} A short hash string
+ */
+function createHashFromObject(obj, length = 5) {
+  // Sort entries by key and create a string of key-value pairs
+  const objString = Object.entries(obj)
+    .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+    .map(([key, value]) => `${key}:${value}`)
+    .join('|');
+
+  // Create a short hash using a simple string manipulation
+  return objString
+    .split('')
+    .reduce((hash, char) => (hash * 31 + char.charCodeAt(0)) % 2147483647, 0)
+    .toString(36)
+    .slice(0, length);
+}
+
 export async function commerceEndpointWithQueryParams() {
   const urlWithQueryParams = new URL(getConfigValue('commerce-endpoint'));
-  // Set some query parameters for use as a cache-buster. No other purpose.
-  urlWithQueryParams.searchParams.append('ac-storecode', getConfigValue('headers.cs.Magento-Store-Code'));
+  const headers = getHeaders('cs');
+  const shortHash = createHashFromObject(headers);
+  urlWithQueryParams.searchParams.append('cb', shortHash);
   return urlWithQueryParams;
 }
 

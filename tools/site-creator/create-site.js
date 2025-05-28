@@ -19,6 +19,37 @@ export const SITE_CREATION_STATUS = {
   NO_FSTAB: 2,
 };
 
+function getLibraryConfigJson(org, site) {
+  const basePath = `https://content.da.live/${org}/${site}/.da/library`;
+
+  const configJson = {
+    data: {
+      total: 1,
+      limit: 1,
+      offset: 0,
+      data: [{}],
+      ':colWidths': [],
+    },
+    library: {
+      total: 1,
+      limit: 1,
+      offset: 0,
+      data: [
+        {
+          title: 'Blocks',
+          path: `${basePath}/blocks.json`,
+          format: '',
+        },
+      ],
+      ':colWidths': [75, 500, 100],
+    },
+    ':names': ['data', 'library'],
+    ':version': 3,
+    ':type': 'multi-sheet',
+  };
+  return JSON.stringify(configJson);
+}
+
 function getDestinationPath(siteName, org) {
   return `/${org}/${siteName}`;
 }
@@ -42,6 +73,7 @@ async function checkCodeBus(data) {
 
 async function previewOrPublishPages(data, action, setStatus) {
   const parent = getDestinationPath(data.repo, data.org);
+  const daInternalPath = `${parent}/.da/`;
 
   const label = action === 'preview' ? 'Previewing' : 'Publishing';
 
@@ -49,16 +81,14 @@ async function previewOrPublishPages(data, action, setStatus) {
 
   const callback = async (item) => {
     if (item.path.endsWith('.svg') || item.path.endsWith('.png') || item.path.endsWith('.jpg')) return;
+    // skip publishing library
+    if (item.path.startsWith(daInternalPath)) return;
     setStatus({ message: `${label}: ${item.path.replace(parent, '').replace('.html', '')}` });
     const aemPath = item.path.replace(parent, `${parent}/main`).replace('.html', '');
     const resp = await fetch(`${AEM_ORIGIN}/${action}${aemPath}`, opts);
     if (!resp.ok) throw new Error(`Could not preview ${aemPath}`);
   };
 
-  // Get the library
-  crawl({
-    path: `${parent}/.da`, callback, concurrent: 5, throttle: 250,
-  });
   const { results, getCallbackErrors } = crawl({
     path: parent, callback, concurrent: 5, throttle: 250,
   });
@@ -183,6 +213,17 @@ export async function checkEmpty(data) {
   }
 }
 
+async function updateDaConfig(data) {
+  const url = `${DA_ORIGIN}/config/${data.org}/${data.repo}/`;
+
+  const jsonString = getLibraryConfigJson(data.org, data.repo);
+
+  const formData = new FormData();
+  formData.set('config', jsonString);
+  const updateRes = await fetch(url, { method: 'PUT', body: formData, headers: getAuthHeaders() });
+  if (!updateRes.ok) { throw new Error(`Failed to update config: ${updateRes.statusText}`); }
+}
+
 function checkAuth() {
   if (!token || token === 'undefined') {
     throw new Error('Please sign in.');
@@ -211,6 +252,8 @@ export async function createSite(data, setStatus) {
   }
   setStatus({ message: 'Publishing pages.' });
   await previewOrPublishPages(data, 'live', setStatus);
+  setStatus({ message: 'Updating DA config.' });
+  await updateDaConfig(data);
 
   return SITE_CREATION_STATUS.COMPLETE;
 }

@@ -36,7 +36,7 @@ export default async function decorate(block) {
     'enable-estimate-shipping': enableEstimateShipping = 'false',
     'start-shopping-url': startShoppingURL = '',
     'checkout-url': checkoutURL = '',
-    'enable-updating-product': enableUpdatingProduct = 'false',
+    'enable-updating-product': enableUpdatingProduct = 'true',
   } = readBlockConfig(block);
 
   const placeholders = await fetchPlaceholders();
@@ -146,18 +146,18 @@ export default async function decorate(block) {
           ctx.appendChild(giftOptions);
 
           // Wishlist Button
-          const $wishlistToggle = document.createElement('div');
-          $wishlistToggle.classList.add('cart__action--wishlist-toggle');
+          // const $wishlistToggle = document.createElement('div');
+          // $wishlistToggle.classList.add('cart__action--wishlist-toggle');
 
-          // Render Icon
-          wishlistRender.render(WishlistToggle, {
-            product: ctx.item,
-            labelToWishlist: 'Move to wishlist',
-            labelWishlisted: 'Remove from wishlist',
-          })($wishlistToggle);
+          // // Render Icon
+          // wishlistRender.render(WishlistToggle, {
+          //   product: ctx.item,
+          //   // labelToWishlist: 'Move to wishlist',
+          //   // labelWishlisted: 'Remove from wishlist',
+          // })($wishlistToggle);
 
-          // Append to Cart Item
-          ctx.prependSibling($wishlistToggle);
+          // // Append to Cart Item
+          // ctx.prependSibling($wishlistToggle);
         },
       },
     })($list),

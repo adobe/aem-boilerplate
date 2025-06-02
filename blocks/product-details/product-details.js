@@ -9,6 +9,14 @@ import {
 import { events } from '@dropins/tools/event-bus.js';
 import * as pdpApi from '@dropins/storefront-pdp/api.js';
 import { render as pdpRendered } from '@dropins/storefront-pdp/render.js';
+import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
+import {
+  removeProductsFromWishlist,
+  getWishlistItemFromStorage,
+} from '@dropins/storefront-wishlist/api.js';
+
+import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
+import { WishlistAlert } from '@dropins/storefront-wishlist/containers/WishlistAlert.js';
 
 // Containers
 import ProductHeader from '@dropins/storefront-pdp/containers/ProductHeader.js';
@@ -26,6 +34,7 @@ import { fetchPlaceholders, setJsonLd } from '../../scripts/commerce.js';
 // Initializers
 import { IMAGES_SIZES } from '../../scripts/initializers/pdp.js';
 import '../../scripts/initializers/cart.js';
+import '../../scripts/initializers/wishlist.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 // Function to update the Add to Cart button text
@@ -87,7 +96,7 @@ export default async function decorate(block) {
   const $options = fragment.querySelector('.product-details__options');
   const $quantity = fragment.querySelector('.product-details__quantity');
   const $addToCart = fragment.querySelector('.product-details__buttons__add-to-cart');
-  const $addToWishlist = fragment.querySelector('.product-details__buttons__add-to-wishlist');
+  const $wishlistToggleBtn = fragment.querySelector('.product-details__buttons__add-to-wishlist');
   const $description = fragment.querySelector('.product-details__description');
   const $attributes = fragment.querySelector('.product-details__attributes');
 
@@ -95,11 +104,11 @@ export default async function decorate(block) {
 
   // Alert
   let inlineAlert = null;
+  const routeToWishlist = '/wishlist';
 
   // Render Containers
   // Need let here because they are assigned later, after Promise.all
   let addToCart;
-  let addToWishlist;
 
   const [
     _galleryMobile,
@@ -109,6 +118,7 @@ export default async function decorate(block) {
     _shortDescription,
     _options,
     _quantity,
+    wishlistToggleBtn,
     _description,
     _attributes,
   ] = await Promise.all([
@@ -156,6 +166,11 @@ export default async function decorate(block) {
 
     // Attributes
     pdpRendered.render(ProductAttributes, {})($attributes),
+
+    // Wishlist button - WishlistToggle Container
+    wishlistRender.render(WishlistToggle, {
+      product,
+    })($wishlistToggleBtn),
   ]);
 
   // Configuration – Button - Add to Cart (Rendered AFTER Promise.all)
@@ -246,44 +261,55 @@ export default async function decorate(block) {
     },
   })($addToCart);
 
-  // Configuration - Add to Wishlist (Rendered AFTER Promise.all)
-  // eslint-disable-next-line prefer-const
-  addToWishlist = await UI.render(Button, {
-    icon: Icon({ source: 'Heart' }),
-    variant: 'secondary',
-    'aria-label': labels.Custom?.AddToWishlist?.label,
-    onClick: async () => {
-      try {
-        // Original logic to disable button and update label
-        addToWishlist.setProps((prev) => ({
-          ...prev,
-          disabled: true,
-          'aria-label': labels.Custom?.AddingToWishlist?.label,
-        }));
-
-        const values = pdpApi.getProductConfigurationValues();
-
-        if (values?.sku) {
-          const wishlist = await import('../../scripts/wishlist/api.js');
-          await wishlist.addToWishlist(values.sku);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        addToWishlist.setProps((prev) => ({
-          ...prev,
-          disabled: false,
-          'aria-label': labels.Custom?.AddToWishlist?.label,
-        }));
-      }
-    },
-  })($addToWishlist);
-
   // Lifecycle Events
   events.on('pdp/valid', (valid) => {
     // update add to cart button disabled state based on product selection validity
     addToCart.setProps((prev) => ({ ...prev, disabled: !valid }));
   }, { eager: true });
+
+  events.on('cart/updated', async (data) => {
+    const item = getWishlistItemFromStorage(product.sku);
+    if (!item) {
+      return;
+    }
+    const inCart = data?.items?.find((cartItem) => cartItem.sku === item.product.sku);
+    if (!inCart) {
+      return;
+    }
+    await removeProductsFromWishlist(
+      [
+        {
+          id: item.id ?? '',
+          product: {
+            sku: item.product.sku,
+          },
+        },
+      ],
+    );
+    wishlistToggleBtn.setProps(
+      (prev) => ({
+        ...prev,
+        icon: Icon({ source: 'Heart' }),
+      }),
+      events.emit('wishlist/alert', {
+        action: 'move',
+        item,
+        routeToWishlist,
+      }),
+    );
+  }, { eager: true });
+
+  events.on('wishlist/alert', ({ action, item }) => {
+    wishlistRender.render(WishlistAlert, {
+      action,
+      item,
+      routeToWishlist,
+    })($alert);
+
+    setTimeout(() => {
+      $alert.innerHTML = '';
+    }, 5000);
+  });
 
   // --- Add new event listener for cart/data ---
   events.on(

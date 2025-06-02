@@ -1,5 +1,7 @@
 /* eslint-disable no-underscore-dangle */
+import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 import { addProductsToCart } from '@dropins/storefront-cart/api.js';
+import WishlistToggle from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
 import { Button, provider as UI } from '@dropins/tools/components.js';
 import { readBlockConfig } from '../../scripts/aem.js';
 import { performCatalogServiceQuery } from '../../scripts/commerce.js';
@@ -7,6 +9,7 @@ import { getConfigValue } from '../../scripts/configs.js';
 
 // initialize dropins
 import '../../scripts/initializers/cart.js';
+import '../../scripts/initializers/wishlist.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 const isMobile = window.matchMedia('only screen and (max-width: 900px)').matches;
@@ -107,14 +110,21 @@ function renderItem(unitId, product) {
       </picture>
       <span>${product.name}</span>
     </a>
-    <span class="product-grid-cta"></span>
+    <div class="product-grid-actions">
+      <span class="product-grid-cta"></span>
+      <span class="product-grid-wishlist"></span>
+    </div>
   </div>`);
   item.querySelector('a').addEventListener('click', clickHandler);
   const buttonEl = item.querySelector('.product-grid-cta');
+  const buttonWishlist = item.querySelector('.product-grid-wishlist');
   UI.render(Button, {
     children: ctaText,
     onClick: addToCartHandler,
   })(buttonEl);
+  wishlistRender.render(WishlistToggle, {
+    product,
+  })(buttonWishlist);
   return item;
 }
 

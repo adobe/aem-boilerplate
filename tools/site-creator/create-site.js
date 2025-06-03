@@ -191,26 +191,34 @@ async function copyContent(data, setStatus) {
   }
 }
 
-export async function checkEmpty(data) {
+export async function checkDestinationAccess(data) {
   const destination = getDestinationPath(data.repo, data.org);
 
-  const res = await fetch(`${DA_ORIGIN}/list${destination}`, {
-    headers: getAuthHeaders(),
-  });
+  // First try without auth to see if we can access the org
+  const res = await fetch(`${DA_ORIGIN}/list${destination}`);
 
   // 404 is good, means the org doesn't exist and is safe to create
   if (res.status === 404) {
-    return;
+    return { exists: false, requiresAuth: false };
+  }
+
+  // If we get a 401/403, the org exists but requires auth
+  if (res.status === 401 || res.status === 403) {
+    return { exists: true, requiresAuth: true };
   }
 
   if (!res.ok) {
     throw new Error(`Failed to check if site exists: ${res.statusText}`);
   }
+
   const json = await res.json();
 
   if (json.length > 0) {
     throw new Error(`Site already exists. Please delete the content at https://da.live/#${destination} before creating a new site.`);
   }
+
+  // If we get here, the org exists but has no content and doesn't require auth
+  return { exists: true, requiresAuth: false };
 }
 
 async function updateDaConfig(data) {
@@ -224,7 +232,7 @@ async function updateDaConfig(data) {
   if (!updateRes.ok) { throw new Error(`Failed to update config: ${updateRes.statusText}`); }
 }
 
-function checkAuth() {
+function verifyAuthentication() {
   if (!token || token === 'undefined') {
     throw new Error('Please sign in.');
   }
@@ -232,8 +240,13 @@ function checkAuth() {
 
 // eslint-disable-next-line import/prefer-default-export
 export async function createSite(data, setStatus) {
-  checkAuth();
-  await checkEmpty(data);
+  const { exists, requiresAuth } = await checkDestinationAccess(data);
+
+  // Only require auth if the org exists AND requires authentication
+  if (exists && requiresAuth) {
+    verifyAuthentication();
+  }
+
   setStatus({ message: 'Copying content.' });
   await copyContent(data, setStatus);
   setStatus({ message: 'Checking code bus.' });

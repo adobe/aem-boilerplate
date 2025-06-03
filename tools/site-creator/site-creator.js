@@ -166,10 +166,23 @@ mountpoints:
 
   renderForm() {
     return html`
-      <form>
+      <form @submit=${this.handleSubmit}>
         <div class="fieldgroup">
           <label>Project Github URL</label>
-          <sl-input @keyup=${this.formChanged} @changed=${this.formChanged} type="text" name="github" placeholder="Enter Github URL"></sl-input>
+          <sl-input
+            @keyup=${(e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      this.handleSubmit(e);
+    } else {
+      this.formChanged(e);
+    }
+  }}
+            @changed=${this.formChanged}
+            type="text"
+            name="github"
+            placeholder="Enter Github URL">
+          </sl-input>
           <p>Don't have a Github repo yet? <a target="_blank" href="https://github.com/hlxsites/aem-boilerplate-commerce">Start here.</a></p>
         </div>
         <div class="form-footer">

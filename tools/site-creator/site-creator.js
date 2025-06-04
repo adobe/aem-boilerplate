@@ -26,6 +26,21 @@ class SiteCreator extends LitElement {
     return `${String(crawlTime / 1000).substring(0, 4)}s`;
   }
 
+  formChanged(e) {
+    const input = e.target;
+    const value = input.value.toLowerCase();
+    input.value = value; // Update the input field with lowercase value
+
+    const url = new URL(value);
+    const org = url.pathname.split('/')[1];
+    const repo = url.pathname.split('/')[2];
+
+    if (org && repo && url.hostname === 'github.com') {
+      this._status = null;
+      this._data = { org, repo };
+    }
+  }
+
   async handleSubmit(e) {
     e.preventDefault();
     this._time = null;
@@ -40,7 +55,7 @@ class SiteCreator extends LitElement {
     }
 
     try {
-      const url = new URL(entries.github);
+      const url = new URL(entries.github.toLowerCase());
       const org = url.pathname.split('/')[1];
       const repo = url.pathname.split('/')[2];
 
@@ -151,17 +166,6 @@ mountpoints:
       return this.renderNoFstab();
     }
     return this.renderSiteComplete();
-  }
-
-  formChanged(e) {
-    const url = new URL(e.target.value);
-    const org = url.pathname.split('/')[1];
-    const repo = url.pathname.split('/')[2];
-
-    if (org && repo && url.hostname === 'github.com') {
-      this._status = null;
-      this._data = { org, repo };
-    }
   }
 
   renderForm() {

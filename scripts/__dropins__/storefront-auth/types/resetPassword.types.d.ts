@@ -5,6 +5,7 @@ export interface ResetPasswordProps {
     formSize?: 'default' | 'small';
     routeSignIn?: () => string;
     onErrorCallback?: (value?: unknown) => void;
+    onSuccessCallback?: () => void | Promise<void>;
 }
 export interface ResetPasswordFormProps extends ResetPasswordProps {
     setActiveComponent?: (componentName: activeComponentType) => void;

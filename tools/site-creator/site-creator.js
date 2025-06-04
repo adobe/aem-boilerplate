@@ -31,13 +31,17 @@ class SiteCreator extends LitElement {
     const value = input.value.toLowerCase();
     input.value = value; // Update the input field with lowercase value
 
-    const url = new URL(value);
-    const org = url.pathname.split('/')[1];
-    const repo = url.pathname.split('/')[2];
+    try {
+      const url = new URL(value);
+      const org = url.pathname.split('/')[1];
+      const repo = url.pathname.split('/')[2];
 
-    if (org && repo && url.hostname === 'github.com') {
-      this._status = null;
-      this._data = { org, repo };
+      if (org && repo && url.hostname === 'github.com') {
+        this._status = null;
+        this._data = { org, repo };
+      }
+    } catch (error) {
+      // Do not error when user is typing the url - validation happens on submit.
     }
   }
 

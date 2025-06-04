@@ -1,6 +1,107 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{events as d}from"@dropins/tools/event-bus.js";import{FetchGraphQL as m}from"@dropins/tools/fetch-graphql.js";function S(s){const t=document.cookie.split(";");for(const e of t)if(e.trim().startsWith(`${s}=`))return e.trim().substring(s.length+1);return null}const g={wishlistId:null,authenticated:!1},i=new Proxy(g,{set(s,t,e){if(s[t]=e,t==="wishlistId"){if(e===i.wishlistId)return!0;if(e===null)return document.cookie="DROPIN__WISHLIST__WISHLIST-ID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/",!0;const r=new Date;r.setDate(r.getDate()+30),document.cookie=`DROPIN__WISHLIST__WISHLIST-ID=${e}; expires=${r.toUTCString()}; path=/`}return Reflect.set(s,t,e)},get(s,t){return t==="wishlistId"?S("DROPIN__WISHLIST__WISHLIST-ID"):s[t]}}),n="DROPIN__WISHLIST__WISHLIST__DATA";function E(s){const t=i.authenticated?sessionStorage:localStorage;if(s)try{t.setItem(n,JSON.stringify(s))}catch(e){_(e)?console.error("Storage quota exceeded:",e):console.error("Error saving wishlist:",e)}else t.removeItem(n)}const _=s=>s instanceof DOMException&&s.name==="QuotaExceededError";function f(){const s=i.authenticated?sessionStorage:localStorage;try{const t=s.getItem(n);return t?JSON.parse(t):{id:"",items:[]}}catch(t){return console.error("Error retrieving wishlist:",t),{id:"",items:[]}}}function O(s){var r;const t=i.authenticated?sessionStorage:localStorage,e=t.getItem(n)?JSON.parse(t.getItem(n)):{items:[]};return(r=e==null?void 0:e.items)==null?void 0:r.find(a=>{var o;return((o=a.product)==null?void 0:o.sku)===s})}const{setEndpoint:H,setFetchGraphQlHeader:L,removeFetchGraphQlHeader:P,setFetchGraphQlHeaders:F,fetchGraphQl:p,getConfig:R}=new m().getMethods(),w=s=>{const t=s.map(e=>e.message).join(" ");throw Error(t)},T=`
+import { events } from "@dropins/tools/event-bus.js";
+import { FetchGraphQL } from "@dropins/tools/fetch-graphql.js";
+function getCookie(cookieName) {
+  const cookies = document.cookie.split(";");
+  for (const cookie of cookies) {
+    if (cookie.trim().startsWith(`${cookieName}=`)) {
+      return cookie.trim().substring(cookieName.length + 1);
+    }
+  }
+  return null;
+}
+const _state = /* @__PURE__ */ (() => {
+  return {
+    wishlistId: null,
+    authenticated: false
+  };
+})();
+const state = new Proxy(_state, {
+  set(target, key, value) {
+    target[key] = value;
+    if (key === "wishlistId") {
+      if (value === state.wishlistId) return true;
+      if (value === null) {
+        document.cookie = `DROPIN__WISHLIST__WISHLIST-ID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+        return true;
+      }
+      const expires = /* @__PURE__ */ new Date();
+      expires.setDate(expires.getDate() + 30);
+      document.cookie = `DROPIN__WISHLIST__WISHLIST-ID=${value}; expires=${expires.toUTCString()}; path=/`;
+    }
+    return Reflect.set(target, key, value);
+  },
+  get(target, key) {
+    if (key === "wishlistId") {
+      return getCookie("DROPIN__WISHLIST__WISHLIST-ID");
+    }
+    return target[key];
+  }
+});
+const WISHLIST_KEY = "DROPIN__WISHLIST__WISHLIST__DATA";
+function setPersistedWishlistData(data) {
+  const $storage = state.authenticated ? sessionStorage : localStorage;
+  if (data) {
+    try {
+      $storage.setItem(WISHLIST_KEY, JSON.stringify(data));
+    } catch (error) {
+      if (isQuotaExceededError(error)) {
+        console.error("Storage quota exceeded:", error);
+      } else {
+        console.error("Error saving wishlist:", error);
+      }
+    }
+  } else {
+    $storage.removeItem(WISHLIST_KEY);
+  }
+}
+const isQuotaExceededError = (error) => {
+  return error instanceof DOMException && error.name === "QuotaExceededError";
+};
+function getPersistedWishlistData(guest = false) {
+  const $storage = state.authenticated && !guest ? sessionStorage : localStorage;
+  try {
+    const wishlist = $storage.getItem(WISHLIST_KEY);
+    return wishlist ? JSON.parse(wishlist) : {
+      id: "",
+      items: []
+    };
+  } catch (error) {
+    console.error("Error retrieving wishlist:", error);
+    return {
+      id: "",
+      items: []
+    };
+  }
+}
+function clearPersistedLocalStorage() {
+  localStorage.removeItem(WISHLIST_KEY);
+}
+function getWishlistItemFromStorage(productSku) {
+  var _a;
+  const $storage = state.authenticated ? sessionStorage : localStorage;
+  const wishlist = $storage.getItem(WISHLIST_KEY) ? JSON.parse($storage.getItem(WISHLIST_KEY)) : {
+    items: []
+  };
+  return (_a = wishlist == null ? void 0 : wishlist.items) == null ? void 0 : _a.find((i) => {
+    var _a2;
+    return ((_a2 = i.product) == null ? void 0 : _a2.sku) === productSku;
+  });
+}
+const {
+  setEndpoint,
+  setFetchGraphQlHeader,
+  removeFetchGraphQlHeader,
+  setFetchGraphQlHeaders,
+  fetchGraphQl,
+  getConfig
+} = new FetchGraphQL().getMethods();
+const handleFetchError = (errors) => {
+  const errorMessage = errors.map((e) => e.message).join(" ");
+  throw Error(errorMessage);
+};
+const REMOVE_PRODUCTS_FROM_WISHLIST_MUTATION = `
   mutation REMOVE_PRODUCTS_FROM_WISHLIST_MUTATION(
       $wishlistId: ID!, 
       $wishlistItemsIds: [ID!]!,
@@ -15,4 +116,52 @@ import{events as d}from"@dropins/tools/event-bus.js";import{FetchGraphQL as m}fr
       }
     }
   }
-`,$=async s=>{var r,a,o;const t=f(),e={...t,items:(r=t.items)==null?void 0:r.filter(c=>!s.map(I=>I.product.sku).includes(c.product.sku))};if(e.items_count=(a=e.items)==null?void 0:a.length,d.emit("wishlist/data",e),i.authenticated){if(!i.wishlistId)throw Error("Wishlist ID is not set");const c=s.map(u=>u.id),{errors:I,data:l}=await p(T,{variables:{wishlistId:i.wishlistId,wishlistItemsIds:c}}),h=[...((o=l==null?void 0:l.removeProductsFromWishlist)==null?void 0:o.user_errors)??[],...I??[]];return h.length>0?(d.emit("wishlist/data",t),w(h)):null}return null};export{H as a,L as b,P as c,F as d,R as e,p as f,f as g,w as h,E as i,O as j,$ as r,i as s};
+`;
+const removeProductsFromWishlist = async (items) => {
+  var _a, _b, _c;
+  const wishlist = getPersistedWishlistData();
+  const updatedWishlist = {
+    ...wishlist,
+    items: (_a = wishlist.items) == null ? void 0 : _a.filter((item) => !items.map((i) => i.product.sku).includes(item.product.sku))
+  };
+  updatedWishlist.items_count = (_b = updatedWishlist.items) == null ? void 0 : _b.length;
+  events.emit("wishlist/data", updatedWishlist);
+  if (state.authenticated) {
+    if (!state.wishlistId) {
+      throw Error("Wishlist ID is not set");
+    }
+    const itemIds = items.map((item) => item.id);
+    const {
+      errors,
+      data
+    } = await fetchGraphQl(REMOVE_PRODUCTS_FROM_WISHLIST_MUTATION, {
+      variables: {
+        wishlistId: state.wishlistId,
+        wishlistItemsIds: itemIds
+      }
+    });
+    const _errors = [...((_c = data == null ? void 0 : data.removeProductsFromWishlist) == null ? void 0 : _c.user_errors) ?? [], ...errors ?? []];
+    if (_errors.length > 0) {
+      events.emit("wishlist/data", wishlist);
+      return handleFetchError(_errors);
+    }
+    return null;
+  }
+  return null;
+};
+export {
+  setEndpoint as a,
+  setFetchGraphQlHeader as b,
+  removeFetchGraphQlHeader as c,
+  setFetchGraphQlHeaders as d,
+  getConfig as e,
+  fetchGraphQl as f,
+  getPersistedWishlistData as g,
+  handleFetchError as h,
+  setPersistedWishlistData as i,
+  clearPersistedLocalStorage as j,
+  getWishlistItemFromStorage as k,
+  removeProductsFromWishlist as r,
+  state as s
+};
+//# sourceMappingURL=removeProductsFromWishlist.js.map

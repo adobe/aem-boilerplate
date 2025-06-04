@@ -13,7 +13,17 @@ export interface Item {
     quantity: number;
     description: string;
     added_at: string;
+    selectedOptions: ConfigurableOption[];
+    enteredOptions?: {
+        uid: string;
+        value: string;
+    }[];
     product: Product;
     customizableOptions: SelectedCustomizableOption[];
+}
+export interface ConfigurableOption {
+    value: string;
+    label: string;
+    uid: string;
 }
 //# sourceMappingURL=wishlist.d.ts.map

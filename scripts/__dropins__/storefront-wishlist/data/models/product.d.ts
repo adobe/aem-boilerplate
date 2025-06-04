@@ -15,6 +15,7 @@
  * from Adobe.
  *******************************************************************/
 export interface Product {
+    type: string;
     name: string;
     sku: string;
     uid: string;
@@ -25,6 +26,7 @@ export interface Product {
     categories: string[];
     prices: PriceDetails;
     productAttributes?: Attribute[];
+    options: Option[];
 }
 export interface PriceDetails {
     regularPrice: MoneyProps;
@@ -35,7 +37,7 @@ export interface PriceDetails {
     };
     fixedProductTaxes: FixedProductTaxesProps[];
 }
-interface MoneyProps {
+export interface MoneyProps {
     value: number;
     currency: string;
 }
@@ -55,6 +57,11 @@ interface Attribute {
     code: string;
     value?: string;
     selected_options?: AttributeOption[];
+}
+interface Option {
+    uid: string;
+    required: boolean;
+    title: string;
 }
 export {};
 //# sourceMappingURL=product.d.ts.map

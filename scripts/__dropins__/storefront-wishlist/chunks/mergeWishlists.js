@@ -2,7 +2,7 @@
 All Rights Reserved. */
 import { Initializer } from "@dropins/tools/lib.js";
 import { events } from "@dropins/tools/event-bus.js";
-import { s as state, i as setPersistedWishlistData, f as fetchGraphQl, h as handleFetchError, g as getPersistedWishlistData } from "./removeProductsFromWishlist.js";
+import { s as state, i as setPersistedWishlistData, f as fetchGraphQl, h as handleFetchError, g as getPersistedWishlistData, j as clearPersistedLocalStorage } from "./removeProductsFromWishlist.js";
 const initialize = new Initializer({
   init: async (config2) => {
     const defaultConfig = {
@@ -12,13 +12,16 @@ const initialize = new Initializer({
     initialize.config.setConfig(defaultConfig);
     initializeWishlist().catch(console.error);
   },
-  listeners: () => [events.on("authenticated", (authenticated) => {
+  listeners: () => [events.on("authenticated", async (authenticated) => {
     if (state.authenticated && !authenticated) {
       events.emit("wishlist/reset", void 0);
     }
     if (authenticated && !state.authenticated) {
       state.authenticated = authenticated;
-      initializeWishlist().catch(console.error);
+      const wishlist = await initializeWishlist().catch(console.error);
+      if (wishlist) {
+        mergeWishlists(wishlist);
+      }
     }
   }, {
     eager: true
@@ -56,9 +59,10 @@ function transformStoreConfig(data) {
   };
 }
 function transformProduct(data) {
-  var _a;
+  var _a, _b;
   if (!data) return null;
   return {
+    type: data.__typename,
     name: data.name,
     sku: data.sku,
     uid: data.uid,
@@ -68,7 +72,12 @@ function transformProduct(data) {
     urlKey: data.url_key,
     categories: (_a = data.categories) == null ? void 0 : _a.map((category) => category.name),
     prices: getPrices(data),
-    productAttributes: transformProductAttributes(data)
+    productAttributes: transformProductAttributes(data),
+    options: data.gift_card_options ? (_b = data.gift_card_options) == null ? void 0 : _b.map((option) => ({
+      uid: option.uid,
+      required: option.required,
+      title: option.title
+    })) : []
   };
 }
 function getImage(product) {
@@ -83,16 +92,16 @@ function getPrices(product) {
   var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r;
   return {
     regularPrice: {
-      currency: (_c = (_b = (_a = product.price_range) == null ? void 0 : _a.minimum_price) == null ? void 0 : _b.regular_price) == null ? void 0 : _c.currency,
-      value: (_f = (_e = (_d = product.price_range) == null ? void 0 : _d.minimum_price) == null ? void 0 : _e.regular_price) == null ? void 0 : _f.value
+      currency: ((_c = (_b = (_a = product.price_range) == null ? void 0 : _a.minimum_price) == null ? void 0 : _b.regular_price) == null ? void 0 : _c.currency) ?? "USD",
+      value: ((_f = (_e = (_d = product.price_range) == null ? void 0 : _d.minimum_price) == null ? void 0 : _e.regular_price) == null ? void 0 : _f.value) ?? 0
     },
     finalPrice: {
-      currency: (_i = (_h = (_g = product.price_range) == null ? void 0 : _g.minimum_price) == null ? void 0 : _h.final_price) == null ? void 0 : _i.currency,
-      value: (_l = (_k = (_j = product.price_range) == null ? void 0 : _j.minimum_price) == null ? void 0 : _k.final_price) == null ? void 0 : _l.value
+      currency: ((_i = (_h = (_g = product.price_range) == null ? void 0 : _g.minimum_price) == null ? void 0 : _h.final_price) == null ? void 0 : _i.currency) ?? "USD",
+      value: ((_l = (_k = (_j = product.price_range) == null ? void 0 : _j.minimum_price) == null ? void 0 : _k.final_price) == null ? void 0 : _l.value) ?? 0
     },
     discount: {
-      amountOff: (_o = (_n = (_m = product.price_range) == null ? void 0 : _m.minimum_price) == null ? void 0 : _n.discount) == null ? void 0 : _o.amount_off,
-      percentOff: (_r = (_q = (_p = product.price_range) == null ? void 0 : _p.minimum_price) == null ? void 0 : _q.discount) == null ? void 0 : _r.percent_off
+      amountOff: ((_o = (_n = (_m = product.price_range) == null ? void 0 : _m.minimum_price) == null ? void 0 : _n.discount) == null ? void 0 : _o.amount_off) ?? 0,
+      percentOff: ((_r = (_q = (_p = product.price_range) == null ? void 0 : _p.minimum_price) == null ? void 0 : _q.discount) == null ? void 0 : _r.percent_off) ?? 0
     },
     fixedProductTaxes: transformFixedProductTaxes(product)
   };
@@ -108,8 +117,11 @@ function transformProductAttributes(product) {
   });
 }
 function transformFixedProductTaxes(product) {
-  var _a, _b, _c;
-  return (_c = (_b = (_a = product.price_range) == null ? void 0 : _a.minimum_price) == null ? void 0 : _b.fixed_product_taxes) == null ? void 0 : _c.map((attribute) => {
+  var _a, _b, _c, _d, _e;
+  if (!((_b = (_a = product.price_range) == null ? void 0 : _a.minimum_price) == null ? void 0 : _b.fixed_product_taxes)) {
+    return [];
+  }
+  return (_e = (_d = (_c = product.price_range) == null ? void 0 : _c.minimum_price) == null ? void 0 : _d.fixed_product_taxes) == null ? void 0 : _e.map((attribute) => {
     return {
       money: {
         value: attribute.amount.value,
@@ -119,17 +131,17 @@ function transformFixedProductTaxes(product) {
     };
   });
 }
-function transformWishlist(data) {
+function transformWishlist(data, enteredOptions) {
   if (!data) return null;
   return {
     id: data.id,
     updated_at: data.updated_at,
     sharing_code: data.sharing_code,
     items_count: data.items_count,
-    items: transformItems(data)
+    items: transformItems(data, enteredOptions ?? [])
   };
 }
-function transformItems(data) {
+function transformItems(data, enteredOptions) {
   var _a, _b;
   if (!((_b = (_a = data == null ? void 0 : data.items_v2) == null ? void 0 : _a.items) == null ? void 0 : _b.length)) return [];
   return data.items_v2.items.map((item) => ({
@@ -137,6 +149,7 @@ function transformItems(data) {
     quantity: item.quantity,
     description: item.description,
     added_at: item.added_at,
+    enteredOptions,
     selectedOptions: item.configurable_options ? item.configurable_options.map((option) => ({
       value: option.value_label,
       label: option.option_label,
@@ -175,6 +188,7 @@ const GET_PRODUCT_BY_SKU = `
   query GET_PRODUCT_BY_SKU($sku: String!) {
     products(filter: { sku: { eq: $sku } }) {
         items {
+          __typename
           sku
           name
           thumbnail {
@@ -217,6 +231,26 @@ const GET_PRODUCT_BY_SKU = `
               product {
                 sku
                 stock_status
+              }
+            }
+          }
+          ... on GiftCardProduct {
+            giftcard_type
+            giftcard_amounts {
+              uid
+              website_id
+              value
+              attribute_id
+              website_value
+            }
+            gift_card_options {
+              title
+              required
+              uid
+              ... on CustomizableFieldOption {
+                value: value {
+                  uid
+                }
               }
             }
           }
@@ -376,6 +410,25 @@ fragment WISHLIST_ITEM_FRAGMENT on WishlistItemInterface {
         canonical_url
       }
     }
+    ... on GiftCardWishlistItem {
+      added_at
+      description
+      gift_card_options {
+        amount {
+          value
+          currency
+        }
+        custom_giftcard_amount {
+          value
+          currency
+        }
+        message
+        recipient_email
+        recipient_name
+        sender_email
+        sender_name
+      }
+    }
     customizable_options {
       ...CUSTOMIZABLE_OPTIONS_FRAGMENT
     }
@@ -447,7 +500,8 @@ const ADD_PRODUCTS_TO_WISHLIST_MUTATION = `
 ${WISHLIST_FRAGMENT}
 `;
 const addProductsToWishlist = async (items) => {
-  var _a, _b, _c, _d;
+  var _a, _b, _c, _d, _e, _f;
+  if (!items) return null;
   const wishlist = getPersistedWishlistData();
   let updatedWishlist = {
     id: (wishlist == null ? void 0 : wishlist.id) ?? "",
@@ -456,9 +510,6 @@ const addProductsToWishlist = async (items) => {
     items_count: 0,
     items: (wishlist == null ? void 0 : wishlist.items) ?? []
   };
-  if (!items) {
-    return null;
-  }
   for (const item of items) {
     const skuExists = (_a = wishlist.items) == null ? void 0 : _a.some((wishlistItem) => wishlistItem.product.sku === item.sku);
     if (skuExists) {
@@ -468,14 +519,18 @@ const addProductsToWishlist = async (items) => {
     if (product) {
       updatedWishlist.items = [...updatedWishlist.items, {
         quantity: item.quantity,
-        selectedOptions: (_b = item.optionsUIDs) == null ? void 0 : _b.map((option) => ({
+        selectedOptions: item.optionsUIDs ? (_b = item.optionsUIDs) == null ? void 0 : _b.map((option) => ({
           uid: option
-        })),
+        })) : [],
+        enteredOptions: item.enteredOptions ? (_c = item.enteredOptions) == null ? void 0 : _c.map((option) => ({
+          uid: option.uid,
+          value: option.value
+        })) : [],
         product
       }];
     }
   }
-  updatedWishlist.items_count = (_c = updatedWishlist.items) == null ? void 0 : _c.length;
+  updatedWishlist.items_count = (_d = updatedWishlist.items) == null ? void 0 : _d.length;
   events.emit("wishlist/data", updatedWishlist);
   if (state.authenticated) {
     if (!state.wishlistId) {
@@ -504,12 +559,12 @@ const addProductsToWishlist = async (items) => {
     } = await fetchGraphQl(ADD_PRODUCTS_TO_WISHLIST_MUTATION, {
       variables
     });
-    const _errors = [...((_d = data == null ? void 0 : data.addProductsToWishlist) == null ? void 0 : _d.user_errors) ?? [], ...errors ?? []];
+    const _errors = [...((_e = data == null ? void 0 : data.addProductsToWishlist) == null ? void 0 : _e.user_errors) ?? [], ...errors ?? []];
     if (_errors.length > 0) {
       events.emit("wishlist/data", wishlist);
       return handleFetchError(_errors);
     }
-    const updatedWishlist2 = transformWishlist(data.addProductsToWishlist.wishlist);
+    const updatedWishlist2 = transformWishlist(data.addProductsToWishlist.wishlist, ((_f = items[0]) == null ? void 0 : _f.enteredOptions) ?? []);
     events.emit("wishlist/data", updatedWishlist2);
   }
   return null;
@@ -546,6 +601,27 @@ async function getGuestWishlist() {
     throw error;
   }
 }
+const mergeWishlists = async (wishlist) => {
+  var _a;
+  if (!wishlist) {
+    return null;
+  }
+  const guestWishlist = getPersistedWishlistData(true);
+  const itemsToMerge = [];
+  (_a = guestWishlist == null ? void 0 : guestWishlist.items) == null ? void 0 : _a.forEach((item) => {
+    const exists = wishlist.items.some((wishlistItem) => wishlistItem.product.sku === item.product.sku);
+    if (!exists) {
+      item.product.quantity = 1;
+      itemsToMerge.push(item.product);
+    }
+  });
+  if (itemsToMerge.length === 0) {
+    return null;
+  }
+  const result = await addProductsToWishlist(itemsToMerge);
+  clearPersistedLocalStorage();
+  return result;
+};
 export {
   WISHLIST_ITEM_FRAGMENT as W,
   addProductsToWishlist as a,
@@ -558,7 +634,8 @@ export {
   getDefaultWishlist as h,
   initialize as i,
   getGuestWishlist as j,
+  mergeWishlists as m,
   resetWishlist as r,
   transformWishlist as t
 };
-//# sourceMappingURL=initializeWishlist.js.map
+//# sourceMappingURL=mergeWishlists.js.map

@@ -267,27 +267,6 @@ export default async function decorate(block) {
     addToCart.setProps((prev) => ({ ...prev, disabled: !valid }));
   }, { eager: true });
 
-  if (sessionStorage.getItem('incompleteProduct')) {
-    inlineAlert = await UI.render(InLineAlert, {
-      heading: 'Warning',
-      description: 'Please complete the product configuration before adding to cart.',
-      icon: Icon({ source: 'Warning' }),
-      'aria-live': 'assertive',
-      role: 'alert',
-      onDismiss: () => {
-        inlineAlert.remove();
-      },
-    })($alert);
-
-    // Scroll the alertWrapper into view
-    $alert.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-    });
-
-    sessionStorage.removeItem('incompleteProduct');
-  }
-
   events.on('cart/updated', async (data) => {
     const item = getWishlistItemFromStorage(product.sku);
     if (!item) {

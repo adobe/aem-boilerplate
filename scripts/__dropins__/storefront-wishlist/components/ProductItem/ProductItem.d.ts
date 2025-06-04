@@ -1,10 +1,10 @@
 import { FunctionComponent } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
-import { Item, Product } from '../../data/models';
+import { Product } from '../../data/models';
 
 export interface ProductItemProps extends HTMLAttributes<HTMLDivElement> {
     className?: string;
-    item?: Item;
+    item?: Product;
     onCartActionButtonClick?: () => boolean;
     onTrashButtonClick?: () => boolean;
     fixedProductTaxesEnabled: boolean;
@@ -12,7 +12,6 @@ export interface ProductItemProps extends HTMLAttributes<HTMLDivElement> {
     fixedProductTaxesEnabledDisplayInProductLists?: string;
     fixedProductTaxesEnabledDisplayInSalesModules?: string;
     fixedProductTaxesEnabledDisplayInProductView?: string;
-    routeProdDetailPage: (product: Product) => string;
 }
 export declare const ProductItem: FunctionComponent<ProductItemProps>;
 //# sourceMappingURL=ProductItem.d.ts.map

@@ -1,151 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import { Initializer } from "@dropins/tools/lib.js";
-import { events } from "@dropins/tools/event-bus.js";
-import { s as state, i as setPersistedWishlistData, f as fetchGraphQl, h as handleFetchError, g as getPersistedWishlistData } from "./removeProductsFromWishlist.js";
-const initialize = new Initializer({
-  init: async (config2) => {
-    const defaultConfig = {
-      isGuestWishlistEnabled: false,
-      ...config2
-    };
-    initialize.config.setConfig(defaultConfig);
-    initializeWishlist().catch(console.error);
-  },
-  listeners: () => [events.on("authenticated", (authenticated) => {
-    if (state.authenticated && !authenticated) {
-      events.emit("wishlist/reset", void 0);
-    }
-    if (authenticated && !state.authenticated) {
-      state.authenticated = authenticated;
-      initializeWishlist().catch(console.error);
-    }
-  }, {
-    eager: true
-  }), events.on("wishlist/data", (payload) => {
-    setPersistedWishlistData(payload);
-  }), events.on("wishlist/reset", () => {
-    resetWishlist().catch(console.error);
-    events.emit("wishlist/data", null);
-  })]
-});
-const config = initialize.config;
-function transformStoreConfig(data) {
-  if (!data) return null;
-  const transformFixedProductTaxDisplaySetting = (fptDisplaySetting) => {
-    switch (fptDisplaySetting) {
-      case 1:
-        return "INCLUDING_FPT_AND_DESCRIPTION";
-      case 2:
-        return "EXCLUDING_FPT_INCLUDING_DESCRIPTION_FINAL_PRICE";
-      case 3:
-        return "EXCLUDING_FPT";
-      default:
-        return "INCLUDING_FPT_ONLY";
-    }
-  };
-  return {
-    wishlistIsEnabled: data.storeConfig.magento_wishlist_general_is_enabled,
-    wishlistMultipleListIsEnabled: data.storeConfig.enable_multiple_wishlists,
-    wishlistMaxNumber: data.storeConfig.maximum_number_of_wishlists,
-    fixedProductTaxesEnabled: data.storeConfig.fixed_product_taxes_enable,
-    fixedProductTaxesApply: data.storeConfig.fixed_product_taxes_apply_tax_to_fpt,
-    fixedProductTaxesEnabledDisplayInProductLists: transformFixedProductTaxDisplaySetting(data.storeConfig.fixed_product_taxes_display_prices_in_product_lists),
-    fixedProductTaxesEnabledDisplayInSalesModules: transformFixedProductTaxDisplaySetting(data.storeConfig.fixed_product_taxes_display_prices_in_sales_modules),
-    fixedProductTaxesEnabledDisplayInProductView: transformFixedProductTaxDisplaySetting(data.storeConfig.fixed_product_taxes_display_prices_on_product_view_page)
-  };
-}
-function transformProduct(data) {
-  var _a;
-  if (!data) return null;
-  return {
-    name: data.name,
-    sku: data.sku,
-    uid: data.uid,
-    image: getImage(data),
-    stockStatus: data.stock_status,
-    canonicalUrl: data.canonical_url,
-    urlKey: data.url_key,
-    categories: (_a = data.categories) == null ? void 0 : _a.map((category) => category.name),
-    prices: getPrices(data),
-    productAttributes: transformProductAttributes(data)
-  };
-}
-function getImage(product) {
-  var _a, _b;
-  return {
-    // TODO: Check if we need to use the config as is done in cart, use parent thumbnail if configured, otherwise use own variant. use the parent thumbnail as a fallback
-    src: (_a = product.thumbnail) == null ? void 0 : _a.url,
-    alt: (_b = product.thumbnail) == null ? void 0 : _b.label
-  };
-}
-function getPrices(product) {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r;
-  return {
-    regularPrice: {
-      currency: (_c = (_b = (_a = product.price_range) == null ? void 0 : _a.minimum_price) == null ? void 0 : _b.regular_price) == null ? void 0 : _c.currency,
-      value: (_f = (_e = (_d = product.price_range) == null ? void 0 : _d.minimum_price) == null ? void 0 : _e.regular_price) == null ? void 0 : _f.value
-    },
-    finalPrice: {
-      currency: (_i = (_h = (_g = product.price_range) == null ? void 0 : _g.minimum_price) == null ? void 0 : _h.final_price) == null ? void 0 : _i.currency,
-      value: (_l = (_k = (_j = product.price_range) == null ? void 0 : _j.minimum_price) == null ? void 0 : _k.final_price) == null ? void 0 : _l.value
-    },
-    discount: {
-      amountOff: (_o = (_n = (_m = product.price_range) == null ? void 0 : _m.minimum_price) == null ? void 0 : _n.discount) == null ? void 0 : _o.amount_off,
-      percentOff: (_r = (_q = (_p = product.price_range) == null ? void 0 : _p.minimum_price) == null ? void 0 : _q.discount) == null ? void 0 : _r.percent_off
-    },
-    fixedProductTaxes: transformFixedProductTaxes(product)
-  };
-}
-function transformProductAttributes(product) {
-  var _a, _b;
-  return (_b = (_a = product.custom_attributesV2) == null ? void 0 : _a.items) == null ? void 0 : _b.map((attribute) => {
-    const transformedCode = attribute.code.split("_").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ");
-    return {
-      ...attribute,
-      code: transformedCode
-    };
-  });
-}
-function transformFixedProductTaxes(product) {
-  var _a, _b, _c;
-  return (_c = (_b = (_a = product.price_range) == null ? void 0 : _a.minimum_price) == null ? void 0 : _b.fixed_product_taxes) == null ? void 0 : _c.map((attribute) => {
-    return {
-      money: {
-        value: attribute.amount.value,
-        currency: attribute.amount.currency
-      },
-      label: attribute.label
-    };
-  });
-}
-function transformWishlist(data) {
-  if (!data) return null;
-  return {
-    id: data.id,
-    updated_at: data.updated_at,
-    sharing_code: data.sharing_code,
-    items_count: data.items_count,
-    items: transformItems(data)
-  };
-}
-function transformItems(data) {
-  var _a, _b;
-  if (!((_b = (_a = data == null ? void 0 : data.items_v2) == null ? void 0 : _a.items) == null ? void 0 : _b.length)) return [];
-  return data.items_v2.items.map((item) => ({
-    id: item.id,
-    quantity: item.quantity,
-    description: item.description,
-    added_at: item.added_at,
-    selectedOptions: item.configurable_options ? item.configurable_options.map((option) => ({
-      value: option.value_label,
-      label: option.option_label,
-      uid: option.configurable_product_option_uid
-    })) : [],
-    product: transformProduct(item.product)
-  }));
-}
-const STORE_CONFIG_QUERY = `
+import{Initializer as R}from"@dropins/tools/lib.js";import{events as u}from"@dropins/tools/event-bus.js";import{s as r,i as A,f as g,h as T,g as E}from"./removeProductsFromWishlist.js";const S=new R({init:async e=>{const t={isGuestWishlistEnabled:!1,...e};S.config.setConfig(t),P().catch(console.error)},listeners:()=>[u.on("authenticated",e=>{r.authenticated&&!e&&u.emit("wishlist/reset",void 0),e&&!r.authenticated&&(r.authenticated=e,P().catch(console.error))},{eager:!0}),u.on("wishlist/data",e=>{A(e)}),u.on("wishlist/reset",()=>{K().catch(console.error),u.emit("wishlist/data",null)})]}),ee=S.config;function G(e){if(!e)return null;const t=i=>{switch(i){case 1:return"INCLUDING_FPT_AND_DESCRIPTION";case 2:return"EXCLUDING_FPT_INCLUDING_DESCRIPTION_FINAL_PRICE";case 3:return"EXCLUDING_FPT";default:return"INCLUDING_FPT_ONLY"}};return{wishlistIsEnabled:e.storeConfig.magento_wishlist_general_is_enabled,wishlistMultipleListIsEnabled:e.storeConfig.enable_multiple_wishlists,wishlistMaxNumber:e.storeConfig.maximum_number_of_wishlists,fixedProductTaxesEnabled:e.storeConfig.fixed_product_taxes_enable,fixedProductTaxesApply:e.storeConfig.fixed_product_taxes_apply_tax_to_fpt,fixedProductTaxesEnabledDisplayInProductLists:t(e.storeConfig.fixed_product_taxes_display_prices_in_product_lists),fixedProductTaxesEnabledDisplayInSalesModules:t(e.storeConfig.fixed_product_taxes_display_prices_in_sales_modules),fixedProductTaxesEnabledDisplayInProductView:t(e.storeConfig.fixed_product_taxes_display_prices_on_product_view_page)}}function b(e){var t;return e?{name:e.name,sku:e.sku,uid:e.uid,image:v(e),stockStatus:e.stock_status,canonicalUrl:e.canonical_url,urlKey:e.url_key,categories:(t=e.categories)==null?void 0:t.map(i=>i.name),prices:O(e),productAttributes:W(e)}:null}function v(e){var t,i;return{src:(t=e.thumbnail)==null?void 0:t.url,alt:(i=e.thumbnail)==null?void 0:i.label}}function O(e){var t,i,s,n,c,a,_,o,l,d,m,f,p,h,I,y,x,w;return{regularPrice:{currency:(s=(i=(t=e.price_range)==null?void 0:t.minimum_price)==null?void 0:i.regular_price)==null?void 0:s.currency,value:(a=(c=(n=e.price_range)==null?void 0:n.minimum_price)==null?void 0:c.regular_price)==null?void 0:a.value},finalPrice:{currency:(l=(o=(_=e.price_range)==null?void 0:_.minimum_price)==null?void 0:o.final_price)==null?void 0:l.currency,value:(f=(m=(d=e.price_range)==null?void 0:d.minimum_price)==null?void 0:m.final_price)==null?void 0:f.value},discount:{amountOff:(I=(h=(p=e.price_range)==null?void 0:p.minimum_price)==null?void 0:h.discount)==null?void 0:I.amount_off,percentOff:(w=(x=(y=e.price_range)==null?void 0:y.minimum_price)==null?void 0:x.discount)==null?void 0:w.percent_off},fixedProductTaxes:D(e)}}function W(e){var t,i;return(i=(t=e.custom_attributesV2)==null?void 0:t.items)==null?void 0:i.map(s=>{const n=s.code.split("_").map(c=>c.charAt(0).toUpperCase()+c.slice(1)).join(" ");return{...s,code:n}})}function D(e){var t,i,s;return(s=(i=(t=e.price_range)==null?void 0:t.minimum_price)==null?void 0:i.fixed_product_taxes)==null?void 0:s.map(n=>({money:{value:n.amount.value,currency:n.amount.currency},label:n.label}))}function C(e){return e?{id:e.id,updated_at:e.updated_at,sharing_code:e.sharing_code,items_count:e.items_count,items:M(e)}:null}function M(e){var t,i;return(i=(t=e==null?void 0:e.items_v2)==null?void 0:t.items)!=null&&i.length?e.items_v2.items.map(s=>({id:s.id,quantity:s.quantity,description:s.description,added_at:s.added_at,product:b(s.product)})):[]}const F=`
 query STORE_CONFIG_QUERY {
   storeConfig {
     magento_wishlist_general_is_enabled
@@ -158,20 +13,7 @@ query STORE_CONFIG_QUERY {
     fixed_product_taxes_display_prices_on_product_view_page    
   }
 }
-`;
-const getStoreConfig = async () => {
-  return fetchGraphQl(STORE_CONFIG_QUERY, {
-    method: "GET",
-    cache: "force-cache"
-  }).then(({
-    errors,
-    data
-  }) => {
-    if (errors) return handleFetchError(errors);
-    return transformStoreConfig(data);
-  });
-};
-const GET_PRODUCT_BY_SKU = `
+`,U=async()=>g(F,{method:"GET",cache:"force-cache"}).then(({errors:e,data:t})=>e?T(e):G(t)),k=`
   query GET_PRODUCT_BY_SKU($sku: String!) {
     products(filter: { sku: { eq: $sku } }) {
         items {
@@ -234,28 +76,7 @@ const GET_PRODUCT_BY_SKU = `
         }
       }
     }
-`;
-const getProductBySku = async (sku) => {
-  if (!sku) {
-    throw Error("Product SKU is not set");
-  }
-  return fetchGraphQl(GET_PRODUCT_BY_SKU, {
-    variables: {
-      sku
-    }
-  }).then(({
-    errors,
-    data
-  }) => {
-    var _a;
-    if (errors) return handleFetchError(errors);
-    if (!((_a = data == null ? void 0 : data.products) == null ? void 0 : _a.items)) {
-      return null;
-    }
-    return transformProduct(data.products.items[0]);
-  });
-};
-const PRICE_RANGE_FRAGMENT = `
+`,L=async e=>{if(!e)throw Error("Product SKU is not set");return g(k,{variables:{sku:e}}).then(({errors:t,data:i})=>{var s;return t?T(t):(s=i==null?void 0:i.products)!=null&&s.items?b(i.products.items[0]):null})},$=`
   fragment PRICE_RANGE_FRAGMENT on PriceRange {
     minimum_price {
       regular_price {
@@ -300,8 +121,7 @@ const PRICE_RANGE_FRAGMENT = `
       }      
     }
   }
-`;
-const PRODUCT_FRAGMENT = `
+`,H=`
   fragment PRODUCT_FRAGMENT on ProductInterface {
     name
     sku
@@ -337,9 +157,8 @@ const PRODUCT_FRAGMENT = `
     }
   }
 
-${PRICE_RANGE_FRAGMENT}
-`;
-const CUSTOMIZABLE_OPTIONS_FRAGMENT = `
+${$}
+`,z=`
   fragment CUSTOMIZABLE_OPTIONS_FRAGMENT on SelectedCustomizableOption {
     type
     customizable_option_uid
@@ -355,8 +174,7 @@ const CUSTOMIZABLE_OPTIONS_FRAGMENT = `
       }
     }
   }
-`;
-const WISHLIST_ITEM_FRAGMENT = `
+`,q=`
 fragment WISHLIST_ITEM_FRAGMENT on WishlistItemInterface {
     __typename
     id
@@ -366,25 +184,14 @@ fragment WISHLIST_ITEM_FRAGMENT on WishlistItemInterface {
     product {
       ...PRODUCT_FRAGMENT
     }
-    ... on ConfigurableWishlistItem {
-      configurable_options {
-        option_label
-        value_label
-        configurable_product_option_uid
-      }
-      configured_variant {
-        canonical_url
-      }
-    }
     customizable_options {
       ...CUSTOMIZABLE_OPTIONS_FRAGMENT
     }
   }
   
-  ${PRODUCT_FRAGMENT}
-  ${CUSTOMIZABLE_OPTIONS_FRAGMENT}
-`;
-const WISHLIST_FRAGMENT = `
+  ${H}
+  ${z}
+`,N=`
 fragment WISHLIST_FRAGMENT on Wishlist {
     id
     updated_at
@@ -397,9 +204,8 @@ fragment WISHLIST_FRAGMENT on Wishlist {
     }
   }
 
-${WISHLIST_ITEM_FRAGMENT}
-`;
-const GET_WISHLISTS_QUERY = `
+${q}
+`,B=`
   query GET_WISHLISTS_QUERY {
     customer {
       wishlists {
@@ -408,25 +214,8 @@ const GET_WISHLISTS_QUERY = `
     }
   }
 
-  ${WISHLIST_FRAGMENT}
-`;
-const getWishlists = async () => {
-  if (!state.authenticated) {
-    return getPersistedWishlistData();
-  }
-  return fetchGraphQl(GET_WISHLISTS_QUERY).then(({
-    errors,
-    data
-  }) => {
-    var _a;
-    if (errors) return handleFetchError(errors);
-    if (!((_a = data == null ? void 0 : data.customer) == null ? void 0 : _a.wishlists)) {
-      return null;
-    }
-    return data.customer.wishlists.map((wishlist) => transformWishlist(wishlist));
-  });
-};
-const ADD_PRODUCTS_TO_WISHLIST_MUTATION = `
+  ${N}
+`,Y=async()=>r.authenticated?g(B).then(({errors:e,data:t})=>{var i;return e?T(e):(i=t==null?void 0:t.customer)!=null&&i.wishlists?t.customer.wishlists.map(s=>C(s)):null}):E(),Q=`
   mutation ADD_PRODUCTS_TO_WISHLIST_MUTATION(
       $wishlistId: ID!, 
       $wishlistItems: [WishlistItemInput!]!,
@@ -444,121 +233,5 @@ const ADD_PRODUCTS_TO_WISHLIST_MUTATION = `
       }
     }
   }
-${WISHLIST_FRAGMENT}
-`;
-const addProductsToWishlist = async (items) => {
-  var _a, _b, _c, _d;
-  const wishlist = getPersistedWishlistData();
-  let updatedWishlist = {
-    id: (wishlist == null ? void 0 : wishlist.id) ?? "",
-    updated_at: "",
-    sharing_code: "",
-    items_count: 0,
-    items: (wishlist == null ? void 0 : wishlist.items) ?? []
-  };
-  if (!items) {
-    return null;
-  }
-  for (const item of items) {
-    const skuExists = (_a = wishlist.items) == null ? void 0 : _a.some((wishlistItem) => wishlistItem.product.sku === item.sku);
-    if (skuExists) {
-      continue;
-    }
-    const product = await getProductBySku(item.sku);
-    if (product) {
-      updatedWishlist.items = [...updatedWishlist.items, {
-        quantity: item.quantity,
-        selectedOptions: (_b = item.optionsUIDs) == null ? void 0 : _b.map((option) => ({
-          uid: option
-        })),
-        product
-      }];
-    }
-  }
-  updatedWishlist.items_count = (_c = updatedWishlist.items) == null ? void 0 : _c.length;
-  events.emit("wishlist/data", updatedWishlist);
-  if (state.authenticated) {
-    if (!state.wishlistId) {
-      events.emit("wishlist/data", wishlist);
-      throw Error("Wishlist ID is not set");
-    }
-    const variables = {
-      wishlistId: state.wishlistId,
-      wishlistItems: items.map(({
-        sku,
-        parentSku,
-        quantity,
-        optionsUIDs,
-        enteredOptions
-      }) => ({
-        sku,
-        parent_sku: parentSku,
-        quantity,
-        selected_options: optionsUIDs,
-        entered_options: enteredOptions
-      }))
-    };
-    const {
-      errors,
-      data
-    } = await fetchGraphQl(ADD_PRODUCTS_TO_WISHLIST_MUTATION, {
-      variables
-    });
-    const _errors = [...((_d = data == null ? void 0 : data.addProductsToWishlist) == null ? void 0 : _d.user_errors) ?? [], ...errors ?? []];
-    if (_errors.length > 0) {
-      events.emit("wishlist/data", wishlist);
-      return handleFetchError(_errors);
-    }
-    const updatedWishlist2 = transformWishlist(data.addProductsToWishlist.wishlist);
-    events.emit("wishlist/data", updatedWishlist2);
-  }
-  return null;
-};
-const resetWishlist = () => {
-  state.wishlistId = null;
-  state.authenticated = false;
-  return Promise.resolve(null);
-};
-const initializeWishlist = async () => {
-  if (state.initializing) return null;
-  state.initializing = true;
-  if (!state.config) {
-    state.config = await getStoreConfig();
-  }
-  const payload = state.authenticated ? await getDefaultWishlist() : await getGuestWishlist();
-  events.emit("wishlist/initialized", payload);
-  events.emit("wishlist/data", payload);
-  state.initializing = false;
-  return payload;
-};
-async function getDefaultWishlist() {
-  const wishlists = await getWishlists();
-  const wishlist = wishlists ? wishlists[0] : null;
-  if (!wishlist) return null;
-  state.wishlistId = wishlist.id;
-  return wishlist;
-}
-async function getGuestWishlist() {
-  try {
-    return await getPersistedWishlistData();
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
-export {
-  WISHLIST_ITEM_FRAGMENT as W,
-  addProductsToWishlist as a,
-  WISHLIST_FRAGMENT as b,
-  config as c,
-  getProductBySku as d,
-  getWishlists as e,
-  initializeWishlist as f,
-  getStoreConfig as g,
-  getDefaultWishlist as h,
-  initialize as i,
-  getGuestWishlist as j,
-  resetWishlist as r,
-  transformWishlist as t
-};
-//# sourceMappingURL=initializeWishlist.js.map
+${N}
+`,te=async e=>{var s,n,c;const t=E();let i={id:(t==null?void 0:t.id)??"",items:(t==null?void 0:t.items)??[],updated_at:"",sharing_code:"",items_count:0};if(!e)return null;for(const a of e){if((s=t.items)==null?void 0:s.some(l=>l.product.sku===a.sku))continue;const o=await L(a.sku);o&&(i.items=[...i.items,{product:o}])}if(i.items_count=(n=i.items)==null?void 0:n.length,u.emit("wishlist/data",i),r.authenticated){if(!r.wishlistId)throw u.emit("wishlist/data",t),Error("Wishlist ID is not set");const a={wishlistId:r.wishlistId,wishlistItems:e.map(({sku:m,parentSku:f,quantity:p,optionsUIDs:h,enteredOptions:I})=>({sku:m,parent_sku:f,quantity:p,selected_options:h,entered_options:I}))},{errors:_,data:o}=await g(Q,{variables:a}),l=[...((c=o==null?void 0:o.addProductsToWishlist)==null?void 0:c.user_errors)??[],..._??[]];if(l.length>0)return u.emit("wishlist/data",t),T(l);const d=C(o.addProductsToWishlist.wishlist);u.emit("wishlist/data",d)}return null},K=()=>(r.wishlistId=null,r.authenticated=!1,Promise.resolve(null)),P=async()=>{if(r.initializing)return null;r.initializing=!0,r.config||(r.config=await U());const e=r.authenticated?await V():await Z();return u.emit("wishlist/initialized",e),u.emit("wishlist/data",e),r.initializing=!1,e};async function V(){const e=await Y(),t=e?e[0]:null;return t?(r.wishlistId=t.id,t):null}async function Z(){try{return await E()}catch(e){throw console.error(e),e}}export{q as W,te as a,N as b,ee as c,L as d,Y as e,P as f,U as g,V as h,S as i,Z as j,K as r,C as t};

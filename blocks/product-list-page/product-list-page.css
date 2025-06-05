@@ -8,7 +8,7 @@
     object-fit: contain;
 }
 
-@media (width >= 750px) {
+@media (min-width: 750px) {
     .product-list-page {
         min-height: auto;
     }

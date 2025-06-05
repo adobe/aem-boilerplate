@@ -41,7 +41,7 @@ header nav[aria-expanded='true'] {
   min-height: 100dvh;
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   header nav {
     display: flex;
     justify-content: space-between;
@@ -136,7 +136,7 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
   transform: rotate(-45deg);
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   header nav .nav-hamburger {
     display: none;
     visibility: hidden;
@@ -211,7 +211,7 @@ header nav .nav-sections ul > li:empty {
   display: none;
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   header nav .nav-sections {
     display: block;
     visibility: visible;
@@ -409,7 +409,7 @@ header .nav-search-panel input {
 }
 
 /* If viewport height is below max, set max height to 90% of viewport */
-@media (height < 820px) {
+@media (max-height: 819px) {
   .cart-mini-cart:not(:has(.cart-empty-cart)) {
     max-height: calc(100vh - var(--nav-height));
   }
@@ -419,7 +419,7 @@ header .nav-search-input .search_autocomplete .popover-container {
   width: 100%;
 }
 
-@media (width >= 1024px) {
+@media (min-width: 1024px) {
   header nav .nav-tools-wrapper {
     position: relative;
   }
@@ -492,7 +492,7 @@ header .nav-search-input .search_autocomplete .popover-container {
   width: 100%;
 }
 
-@media (width >= 1024px) {
+@media (min-width: 1024px) {
   .dropdown-wrapper.nav-tools-wrapper .nav-auth-menu-panel {
     width: 398px;
   }
@@ -567,7 +567,7 @@ li
   display: block;
 }
 
-@media (width < 900px) {
+@media (max-width: 899px) {
   header {
     position: relative;
   }

@@ -66,7 +66,7 @@ footer .footer p {
     margin-bottom: var(--spacing-small);
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
     footer .footer > div {
         padding: 40px 32px 24px;
     }

@@ -107,7 +107,7 @@
     width: fit-content;
 }
 
-@media (width >= 768px) {
+@media (min-width: 768px) {
   .cart__wrapper {
     flex-direction: row;
     position: relative;
@@ -130,7 +130,7 @@
   }
 }
 
-@media (width <= 400px) {
+@media (max-width: 400px) {
   .cart__action--wishlist-toggle span {
     display: none;
   }

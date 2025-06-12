@@ -1,6 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-extraneous-dependencies */
-
 import * as cartApi from '@dropins/storefront-cart/api.js';
 import { render as wishlistRenderer } from '@dropins/storefront-wishlist/render.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';

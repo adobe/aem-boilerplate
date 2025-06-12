@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle, import/no-unresolved */
+/* eslint-disable import/no-unresolved */
 
 import 'https://da.live/nx/public/sl/components.js';
 import getStyle from 'https://da.live/nx/utils/styles.js';

@@ -1,6 +1,7 @@
 {
   "extends": ["stylelint-config-standard"],
   "rules": {
-    "media-feature-range-notation": "prefix"
+    "media-feature-range-notation": "prefix",
+    "selector-class-pattern": null
   }
 }

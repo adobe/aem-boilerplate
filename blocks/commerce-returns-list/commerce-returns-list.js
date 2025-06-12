@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-extraneous-dependencies */
 import { render as orderRenderer } from '@dropins/storefront-order/render.js';
 import ReturnsList from '@dropins/storefront-order/containers/ReturnsList.js';
 import { readBlockConfig } from '../../scripts/aem.js';

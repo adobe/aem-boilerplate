@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-extraneous-dependencies */
 import { SignIn } from '@dropins/storefront-auth/containers/SignIn.js';
 import { SuccessNotification } from '@dropins/storefront-auth/containers/SuccessNotification.js';
 import * as authApi from '@dropins/storefront-auth/api.js';

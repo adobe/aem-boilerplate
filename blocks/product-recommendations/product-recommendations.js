@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 import { addProductsToCart } from '@dropins/storefront-cart/api.js';
 import WishlistToggle from '@dropins/storefront-wishlist/containers/WishlistToggle.js';

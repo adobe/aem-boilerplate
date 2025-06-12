@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { getConfigValue } from './configs.js';
 import { getUserTokenCookie } from './initializers/index.js';
 import { getConsent } from './scripts.js';

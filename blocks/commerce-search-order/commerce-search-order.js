@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-extraneous-dependencies */
 import { SignIn } from '@dropins/storefront-auth/containers/SignIn.js';
 import { OrderSearch } from '@dropins/storefront-order/containers/OrderSearch.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';

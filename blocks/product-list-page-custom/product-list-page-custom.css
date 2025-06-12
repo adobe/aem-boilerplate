@@ -1,4 +1,3 @@
-/* stylelint-disable comment-empty-line-before */
 /* stylelint-disable no-descending-specificity, property-no-vendor-prefix */
 
 main .section.product-list-page-custom-container > .default-content-wrapper h1:first-child {
@@ -385,7 +384,6 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
 @media (min-width: 900px) {
   .product-list-page-custom .products .title {
     display: flex;
-    /* gap: 2rem; */
     align-items: last baseline;
   }
 }

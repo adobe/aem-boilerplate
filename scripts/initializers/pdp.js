@@ -1,6 +1,3 @@
-/* eslint-disable import/no-cycle */
-/* eslint-disable import/prefer-default-export */
-
 import { initializers } from '@dropins/tools/initializer.js';
 import { Image, provider as UI } from '@dropins/tools/components.js';
 import {

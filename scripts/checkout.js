@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import { debounce } from '@dropins/tools/lib.js';
 
 export function scrollToElement(element) {

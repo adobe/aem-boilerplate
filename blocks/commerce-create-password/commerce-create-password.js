@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-extraneous-dependencies */
 import { UpdatePassword } from '@dropins/storefront-auth/containers/UpdatePassword.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { SuccessNotification } from '@dropins/storefront-auth/containers/SuccessNotification.js';

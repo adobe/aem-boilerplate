@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 /*
  * Fragment Block
  * Include content on a page as a fragment.

@@ -50,7 +50,7 @@ it("is sent on place order button click", () => {
 
   // check terms and conditions
   checkTermsAndConditions();
-
+  cy.wait(5000);
   // click the place order button
   placeOrder();
   // wait until the URL includes '/order-details'

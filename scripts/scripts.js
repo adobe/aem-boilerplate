@@ -1,5 +1,3 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable import/no-cycle */
 import { events } from '@dropins/tools/event-bus.js';
 import {
   buildBlock,
@@ -67,7 +65,6 @@ function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
   }
 }
@@ -120,7 +117,6 @@ function notifyUI(event) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-// eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   decorateLinks(main);
   decorateButtons(main);
@@ -213,8 +209,7 @@ async function loadEager(doc) {
     const { category, urlpath } = readBlockConfig(plpBlock);
 
     if (category && urlpath) {
-      // eslint-disable-next-line import/no-unresolved, import/no-absolute-path
-      const { preloadCategory } = await import('/blocks/product-list-page-custom/product-list-page-custom.js');
+      const { preloadCategory } = await import('../blocks/product-list-page-custom/product-list-page-custom.js');
       preloadCategory({ id: category, urlPath: urlpath });
     }
   } else if (document.body.querySelector('main .commerce-cart')) {

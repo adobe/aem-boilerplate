@@ -1,9 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-shadow */
-/* eslint-disable no-use-before-define */
-/* eslint-disable prefer-const */
-
 // Dropin Tools
 import { events } from '@dropins/tools/event-bus.js';
 import { initializers } from '@dropins/tools/initializer.js';
@@ -324,16 +318,16 @@ export default async function decorate(block) {
         Methods: {
           [PaymentMethodCode.CREDIT_CARD]: {
             render: (ctx) => {
-              const $content = document.createElement('div');
+              const $creditCard = document.createElement('div');
 
               PaymentServices.render(CreditCard, {
                 apiUrl: commerceCoreEndpoint,
                 getCustomerToken: getUserTokenCookie,
                 getCartId: () => ctx.cartId,
                 creditCardFormRef,
-              })($content);
+              })($creditCard);
 
-              ctx.replaceHTML($content);
+              ctx.replaceHTML($creditCard);
             },
           },
           [PaymentMethodCode.SMART_BUTTONS]: {
@@ -459,24 +453,24 @@ export default async function decorate(block) {
           if (!success) scrollToElement($login);
         }
 
-        const shippingForm = forms[SHIPPING_FORM_NAME];
+        const selectedShippingForm = forms[SHIPPING_FORM_NAME];
 
         if (
           success
           && shippingFormRef.current
-          && shippingForm
-          && shippingForm.checkVisibility()
+          && selectedShippingForm
+          && selectedShippingForm.checkVisibility()
         ) {
           success = shippingFormRef.current.handleValidationSubmit(false);
         }
 
-        const billingForm = forms[BILLING_FORM_NAME];
+        const selectedBillingForm = forms[BILLING_FORM_NAME];
 
         if (
           success
           && billingFormRef.current
-          && billingForm
-          && billingForm.checkVisibility()
+          && selectedBillingForm
+          && selectedBillingForm.checkVisibility()
         ) {
           success = billingFormRef.current.handleValidationSubmit(false);
         }
@@ -525,18 +519,18 @@ export default async function decorate(block) {
   ]);
 
   // Dynamic containers and components
-  const showModal = async (content) => {
+  async function showModal(content) {
     modal = await createModal([content]);
     modal.showModal();
-  };
+  }
 
-  const removeModal = () => {
+  function removeModal() {
     if (!modal) return;
     modal.removeModal();
     modal = null;
-  };
+  }
 
-  const displayEmptyCart = async () => {
+  async function displayEmptyCart() {
     if (emptyCart) return;
 
     emptyCart = await CartProvider.render(EmptyCart, {
@@ -544,9 +538,9 @@ export default async function decorate(block) {
     })($emptyCart);
 
     $content.classList.add('checkout__content--empty');
-  };
+  }
 
-  const removeEmptyCart = () => {
+  function removeEmptyCart() {
     if (!emptyCart) return;
 
     emptyCart.remove();
@@ -554,34 +548,34 @@ export default async function decorate(block) {
     $emptyCart.innerHTML = '';
 
     $content.classList.remove('checkout__content--empty');
-  };
+  }
 
-  const displayOverlaySpinner = async () => {
+  async function displayOverlaySpinner() {
     if (loader) return;
 
     loader = await UI.render(ProgressSpinner, {
       className: '.checkout__overlay-spinner',
     })($loader);
-  };
+  }
 
-  const removeOverlaySpinner = () => {
+  function removeOverlaySpinner() {
     if (!loader) return;
 
     loader.remove();
     loader = null;
     $loader.innerHTML = '';
-  };
+  }
 
-  const initializeCheckout = async (data) => {
+  async function initializeCheckout(data) {
     removeEmptyCart();
     if (data.isGuest) await displayGuestAddressForms(data);
     else {
       removeOverlaySpinner();
       await displayCustomerAddressForms(data);
     }
-  };
+  }
 
-  const displayGuestAddressForms = async (data) => {
+  async function displayGuestAddressForms(data) {
     if (data.isVirtual) {
       shippingForm?.remove();
       shippingForm = null;
@@ -686,9 +680,9 @@ export default async function decorate(block) {
         showShippingCheckBox: false,
       })($billingForm);
     }
-  };
+  }
 
-  const displayCustomerAddressForms = async (data) => {
+  async function displayCustomerAddressForms(data) {
     if (data.isVirtual) {
       shippingAddresses?.remove();
       shippingAddresses = null;
@@ -811,10 +805,10 @@ export default async function decorate(block) {
         title: 'Billing address',
       })($billingForm);
     }
-  };
+  }
 
   // Define the Layout for the Order Confirmation
-  const displayOrderConfirmation = async (orderData) => {
+  async function displayOrderConfirmation(orderData) {
     // Scroll to the top of the page
     window.scrollTo(0, 0);
 
@@ -949,33 +943,33 @@ export default async function decorate(block) {
       type: 'submit',
       href: rootLink('/'),
     })($orderConfirmationFooterContinueBtn);
-  };
+  }
 
   // Define the event handlers
-  const handleCartInitialized = async (data) => {
+  async function handleCartInitialized(data) {
     if (isCartEmpty(data)) await displayEmptyCart();
-  };
+  }
 
-  const handleCheckoutInitialized = async (data) => {
+  async function handleCheckoutInitialized(data) {
     if (isCheckoutEmpty(data)) return;
     initializeCheckout(data);
-  };
+  }
 
-  const handleCheckoutUpdated = async (data) => {
+  async function handleCheckoutUpdated(data) {
     if (isCheckoutEmpty(data)) {
       await displayEmptyCart();
       return;
     }
 
     await initializeCheckout(data);
-  };
+  }
 
-  const handleAuthenticated = (authenticated) => {
+  function handleAuthenticated(authenticated) {
     if (!authenticated) return;
     removeModal();
-  };
+  }
 
-  const handleOrderPlaced = async (orderData) => {
+  async function handleOrderPlaced(orderData) {
     // Clear address form data
     sessionStorage.removeItem(SHIPPING_ADDRESS_DATA_KEY);
     sessionStorage.removeItem(BILLING_ADDRESS_DATA_KEY);
@@ -994,7 +988,7 @@ export default async function decorate(block) {
 
     // TODO cleanup checkout containers
     await displayOrderConfirmation(orderData);
-  };
+  }
 
   events.on('authenticated', handleAuthenticated);
   events.on('cart/initialized', handleCartInitialized, { eager: true });

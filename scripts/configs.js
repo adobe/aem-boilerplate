@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { deepmerge } from '@dropins/tools/lib.js';
 
 // Private state

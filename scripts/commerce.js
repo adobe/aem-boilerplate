@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export, import/no-cycle */
 import { getMetadata } from './aem.js';
 import {
   getHeaders,
@@ -13,7 +12,6 @@ import { getConsent } from './scripts.js';
  * @param {string} [prefix] Location of placeholders
  * @returns {object} Window placeholders object
  */
-// eslint-disable-next-line import/prefer-default-export
 export async function fetchPlaceholders(prefix = 'default') {
   const overrides = getMetadata('placeholders') || getRootPath().replace(/\/$/, '/placeholders.json') || '';
   const [fallback, override] = overrides.split('\n');
@@ -60,7 +58,6 @@ export async function fetchPlaceholders(prefix = 'default') {
           resolve(placeholders);
         })
         .catch((error) => {
-          // eslint-disable-next-line no-console
           console.error('error loading placeholders', error);
           // error loading placeholders
           window.placeholders[prefix] = {};

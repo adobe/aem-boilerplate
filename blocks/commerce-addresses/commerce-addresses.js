@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-extraneous-dependencies */
 import { Addresses } from '@dropins/storefront-account/containers/Addresses.js';
 import { render as accountRenderer } from '@dropins/storefront-account/render.js';
 import { readBlockConfig } from '../../scripts/aem.js';

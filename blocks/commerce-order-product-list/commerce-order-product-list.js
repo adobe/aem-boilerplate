@@ -1,5 +1,3 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-extraneous-dependencies */
 import { render as orderRenderer } from '@dropins/storefront-order/render.js';
 import { OrderProductList } from '@dropins/storefront-order/containers/OrderProductList.js';
 import GiftOptions from '@dropins/storefront-cart/containers/GiftOptions.js';

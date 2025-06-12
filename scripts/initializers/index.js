@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 // Drop-in Tools
 import { events } from '@dropins/tools/event-bus.js';
 import {

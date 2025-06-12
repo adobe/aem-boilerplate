@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle, import/no-unresolved */
+/* eslint-disable import/no-unresolved */
 
 import { crawl, Queue } from 'https://da.live/nx/public/utils/tree.js';
 import DA_SDK from 'https://da.live/nx/utils/sdk.js';
@@ -230,7 +230,6 @@ function checkAuth() {
   }
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export async function createSite(data, setStatus) {
   checkAuth();
   await checkEmpty(data);

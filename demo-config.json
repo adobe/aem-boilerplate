@@ -19,11 +19,15 @@
       "analytics": {
         "base-currency-code": "USD",
         "environment": "Production",
+        "environment-id": "f38a0de0-764b-41fa-bd2c-5bc2f3c7b39a",
+        "store-code": "main_website_store",
         "store-id": 1,
         "store-name": "Main Website Store",
         "store-url": "https://www.aemshop.net",
+        "store-view-code": "default",
         "store-view-id": 1,
         "store-view-name": "Default Store View",
+        "website-code": "base",
         "website-id": 1,
         "website-name": "Main Website"
       },

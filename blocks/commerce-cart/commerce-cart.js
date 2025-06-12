@@ -1,7 +1,13 @@
 import { events } from '@dropins/tools/event-bus.js';
 import { render as provider } from '@dropins/storefront-cart/render.js';
 import * as Cart from '@dropins/storefront-cart/api.js';
-import { InLineAlert, Icon, provider as UI } from '@dropins/tools/components.js';
+import { h } from '@dropins/tools/preact.js';
+import {
+  InLineAlert,
+  Icon,
+  Button,
+  provider as UI,
+} from '@dropins/tools/components.js';
 
 // Dropin Containers
 import CartSummaryList from '@dropins/storefront-cart/containers/CartSummaryList.js';
@@ -99,40 +105,53 @@ export default async function decorate(block) {
       enableRemoveItem: enableRemoveItem === 'true',
       slots: {
         Footer: (ctx) => {
-          const giftOptions = document.createElement('div');
-
+          // Edit Link
           if (ctx.item?.itemType === 'ConfigurableCartItem' && enableUpdatingProduct === 'true') {
-            const editLinkContainer = document.createElement('div');
-            editLinkContainer.className = 'cart-item-edit-container';
+            const editLink = document.createElement('div');
+            editLink.className = 'cart-item-edit-link';
 
-            const editButton = document.createElement('button');
-            editButton.className = 'cart-item-edit-link';
-            editButton.textContent = 'Edit';
+            const productUrl = rootLink(`/products/${ctx.item.url.urlKey}/${ctx.item.topLevelSku}`);
+            const params = new URLSearchParams();
 
-            editButton.addEventListener('click', () => {
-              const { item } = ctx;
-              const productUrl = rootLink(`/products/${item.url.urlKey}/${item.topLevelSku}`);
-
-              const params = new URLSearchParams();
-
-              if (item.selectedOptionsUIDs) {
-                const optionsValues = Object.values(item.selectedOptionsUIDs);
-                if (optionsValues.length > 0) {
-                  const joinedValues = optionsValues.join(',');
-                  params.append('optionsUIDs', joinedValues);
-                }
+            if (ctx.item.selectedOptionsUIDs) {
+              const optionsValues = Object.values(ctx.item.selectedOptionsUIDs);
+              if (optionsValues.length > 0) {
+                const joinedValues = optionsValues.join(',');
+                params.append('optionsUIDs', joinedValues);
               }
+            }
 
-              params.append('quantity', item.quantity);
-              params.append('itemUid', item.uid);
+            params.append('quantity', ctx.item.quantity);
+            params.append('itemUid', ctx.item.uid);
 
-              const finalUrl = `${productUrl}?${params.toString()}`;
-              window.location.href = finalUrl;
-            });
+            UI.render(Button, {
+              children: placeholders?.Cart?.EditButton?.label,
+              variant: 'tertiary',
+              size: 'medium',
+              icon: h(Icon, { source: 'Edit' }),
+              href: `${productUrl}?${params.toString()}`,
+            })(editLink);
 
-            editLinkContainer.appendChild(editButton);
-            ctx.appendChild(editLinkContainer);
+            ctx.appendChild(editLink);
           }
+
+          // Wishlist Button (if product is not configurable)
+          if (ctx.item.itemType === 'SimpleCartItem') {
+            const $wishlistToggle = document.createElement('div');
+            $wishlistToggle.classList.add('cart__action--wishlist-toggle');
+
+            wishlistRender.render(WishlistToggle, {
+              product: ctx.item,
+              size: 'medium',
+              labelToWishlist: placeholders?.Cart?.MoveToWishlist?.label,
+              labelWishlisted: placeholders?.Cart?.RemoveFromWishlist?.label,
+            })($wishlistToggle);
+
+            ctx.appendChild($wishlistToggle);
+          }
+
+          // Gift Options
+          const giftOptions = document.createElement('div');
 
           provider.render(GiftOptions, {
             item: ctx.item,
@@ -144,20 +163,6 @@ export default async function decorate(block) {
           })(giftOptions);
 
           ctx.appendChild(giftOptions);
-
-          // Wishlist Button
-          const $wishlistToggle = document.createElement('div');
-          $wishlistToggle.classList.add('cart__action--wishlist-toggle');
-
-          // Render Icon
-          wishlistRender.render(WishlistToggle, {
-            product: ctx.item,
-            labelToWishlist: 'Move to wishlist',
-            labelWishlisted: 'Remove from wishlist',
-          })($wishlistToggle);
-
-          // Append to Cart Item
-          ctx.prependSibling($wishlistToggle);
         },
       },
     })($list),

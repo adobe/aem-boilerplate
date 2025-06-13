@@ -6,7 +6,8 @@ declare const _default: {
       "cta": "Start shopping"
     },
     "Wishlist": {
-      "heading": "Wishlist {count}"
+      "heading": "Wishlist {count}",
+      "loading": "Loading..."
     },
     "Alert": {
       "addProduct": {

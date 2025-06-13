@@ -14,8 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './Wishlist';
-export * from './WishlistSkeleton';
-export * from './WishlistItemSkeleton';
-export { Wishlist as default } from './Wishlist';
+export * from './mergeWishlists';
 //# sourceMappingURL=index.d.ts.map

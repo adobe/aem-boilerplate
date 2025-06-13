@@ -26,4 +26,5 @@ export * from './removeProductsFromWishlist';
 export * from './updateProductsInWishlist';
 export * from './resetWishlist';
 export * from './initializeWishlist';
+export * from './mergeWishlists';
 //# sourceMappingURL=index.d.ts.map

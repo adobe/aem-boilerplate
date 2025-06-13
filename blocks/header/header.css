@@ -399,6 +399,15 @@ header .nav-search-panel input {
   appearance: none;
 }
 
+header .nav-search-panel .dropin-input-container {
+    width: 100%;
+}
+
+header .nav-search-panel .search-bar__result {
+    width: 100%;
+    position: relative;
+}
+
 /* Mini Cart  */
 
 .cart-mini-cart:not(:has(.cart-empty-cart)) {

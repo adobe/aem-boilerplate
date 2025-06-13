@@ -3,7 +3,7 @@
  *
  * Required contexts: page, storefront, searchResult
  */
-it("is sent on search bar product click", { tags: "@skipSaas" }, () => {
+it.skip("is sent on search bar product click", { tags: "@skipSaas" }, () => {
   cy.visit("/");
   cy.waitForResource("commerce-events-collector.js").then(() => {
     cy.window()

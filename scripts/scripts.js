@@ -209,8 +209,16 @@ async function loadEager(doc) {
     const { category, urlpath } = readBlockConfig(plpBlock);
 
     if (category && urlpath) {
-      const { preloadCategory } = await import('../blocks/product-list-page-custom/product-list-page-custom.js');
-      preloadCategory({ id: category, urlPath: urlpath });
+      try {
+        const module = await import('../blocks/product-list-page-custom/product-list-page-custom.js');
+        if (module.preloadCategory && typeof module.preloadCategory === 'function') {
+          module.preloadCategory({ id: category, urlPath: urlpath });
+        } else {
+          console.warn('preloadCategory function not found in product-list-page-custom module');
+        }
+      } catch (error) {
+        console.error('Failed to import or execute preloadCategory:', error);
+      }
     }
   } else if (document.body.querySelector('main .commerce-cart')) {
     pageType = 'Cart';

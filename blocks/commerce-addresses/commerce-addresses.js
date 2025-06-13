@@ -1,8 +1,7 @@
 import { Addresses } from '@dropins/storefront-account/containers/Addresses.js';
 import { render as accountRenderer } from '@dropins/storefront-account/render.js';
 import { readBlockConfig } from '../../scripts/aem.js';
-import { checkIsAuthenticated } from '../../scripts/commerce.js';
-import { CUSTOMER_ADDRESS_PATH, CUSTOMER_LOGIN_PATH } from '../../scripts/constants.js';
+import { CUSTOMER_ADDRESS_PATH, CUSTOMER_LOGIN_PATH, checkIsAuthenticated } from '../../scripts/commerce.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 // Initialize

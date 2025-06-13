@@ -3,9 +3,9 @@ import { events } from '@dropins/tools/event-bus.js';
 import { initializers } from '@dropins/tools/initializer.js';
 import { initialize, setFetchGraphQlHeaders } from '@dropins/storefront-order/api.js';
 import { initializeDropin } from './index.js';
-import { fetchPlaceholders, checkIsAuthenticated } from '../commerce.js';
-
 import {
+  fetchPlaceholders,
+  checkIsAuthenticated,
   CUSTOMER_ORDER_DETAILS_PATH,
   ORDER_DETAILS_PATH,
   CUSTOMER_RETURN_DETAILS_PATH,
@@ -15,7 +15,7 @@ import {
   CUSTOMER_ORDERS_PATH,
   ORDER_STATUS_PATH,
   CUSTOMER_PATH, SALES_GUEST_VIEW_PATH, SALES_ORDER_VIEW_PATH,
-} from '../constants.js';
+} from '../commerce.js';
 import { rootLink } from '../scripts.js';
 
 await initializeDropin(async () => {

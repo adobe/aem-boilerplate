@@ -1,11 +1,11 @@
 import { SignUp } from '@dropins/storefront-auth/containers/SignUp.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
-import { checkIsAuthenticated } from '../../scripts/commerce.js';
 import {
-  authPrivacyPolicyConsentSlot,
   CUSTOMER_ACCOUNT_PATH,
   CUSTOMER_LOGIN_PATH,
-} from '../../scripts/constants.js';
+  checkIsAuthenticated,
+  authPrivacyPolicyConsentSlot,
+} from '../../scripts/commerce.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 // Initialize

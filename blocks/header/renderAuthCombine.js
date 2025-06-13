@@ -9,7 +9,7 @@ import {
   CUSTOMER_ACCOUNT_PATH,
   CUSTOMER_FORGOTPASSWORD_PATH,
   CUSTOMER_LOGIN_PATH,
-} from '../../scripts/constants.js';
+} from '../../scripts/commerce.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 const signInFormConfig = {

@@ -3,7 +3,7 @@ import * as authApi from '@dropins/storefront-auth/api.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { SignIn } from '@dropins/storefront-auth/containers/SignIn.js';
 import { events } from '@dropins/tools/event-bus.js';
-import { CUSTOMER_FORGOTPASSWORD_PATH } from '../../scripts/constants.js';
+import { CUSTOMER_FORGOTPASSWORD_PATH } from '../../scripts/commerce.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 function checkAndRedirect(redirections) {

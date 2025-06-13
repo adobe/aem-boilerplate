@@ -3,8 +3,7 @@ import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { SuccessNotification } from '@dropins/storefront-auth/containers/SuccessNotification.js';
 import { Button, provider as UI } from '@dropins/tools/components.js';
 import * as authApi from '@dropins/storefront-auth/api.js';
-import { checkIsAuthenticated } from '../../scripts/commerce.js';
-import { CUSTOMER_LOGIN_PATH, CUSTOMER_ACCOUNT_PATH } from '../../scripts/constants.js';
+import { CUSTOMER_ACCOUNT_PATH, CUSTOMER_LOGIN_PATH, checkIsAuthenticated } from '../../scripts/commerce.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 // Initialize

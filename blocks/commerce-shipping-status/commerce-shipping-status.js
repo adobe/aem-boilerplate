@@ -1,6 +1,6 @@
 import { render as orderRenderer } from '@dropins/storefront-order/render.js';
 import { ShippingStatus } from '@dropins/storefront-order/containers/ShippingStatus.js';
-import { UPS_TRACKING_URL } from '../../scripts/constants.js';
+import { UPS_TRACKING_URL } from '../../scripts/commerce.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 // Initialize

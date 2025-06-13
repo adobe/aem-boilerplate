@@ -3,8 +3,7 @@ import { OrderSearch } from '@dropins/storefront-order/containers/OrderSearch.js
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { render as orderRenderer } from '@dropins/storefront-order/render.js';
 import { events } from '@dropins/tools/event-bus.js';
-import { checkIsAuthenticated } from '../../scripts/commerce.js';
-import { CUSTOMER_ORDER_DETAILS_PATH, ORDER_DETAILS_PATH } from '../../scripts/constants.js';
+import { CUSTOMER_ORDER_DETAILS_PATH, ORDER_DETAILS_PATH, checkIsAuthenticated } from '../../scripts/commerce.js';
 
 // Initialize
 import '../../scripts/initializers/auth.js';

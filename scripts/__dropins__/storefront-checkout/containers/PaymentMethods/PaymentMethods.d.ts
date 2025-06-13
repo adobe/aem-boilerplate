@@ -1,3 +1,4 @@
+import { PaymentMethod } from '../../data/models/payment-method';
 import { UIComponentType } from '../../types/ComponentTypes';
 import { TitleProps } from '../../types/TitleProps';
 import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
@@ -17,6 +18,10 @@ export interface PaymentMethodConfig {
 export interface PaymentMethodsSlot {
     [code: string]: PaymentMethodConfig;
 }
+interface CartSyncError {
+    method: PaymentMethod;
+    error: Error;
+}
 export interface PaymentMethodsProps extends HTMLAttributes<HTMLDivElement>, TitleProps {
     slots?: {
         Methods?: PaymentMethodsSlot;
@@ -24,6 +29,9 @@ export interface PaymentMethodsProps extends HTMLAttributes<HTMLDivElement>, Tit
     UIComponentType?: UIComponentType;
     active?: boolean;
     autoSync?: boolean;
+    onCartSyncError?: (error: CartSyncError) => void;
+    onSelectionChange?: (method: PaymentMethod) => void;
 }
 export declare const PaymentMethods: Container<PaymentMethodsProps>;
+export {};
 //# sourceMappingURL=PaymentMethods.d.ts.map

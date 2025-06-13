@@ -1,4 +1,4 @@
-import { ShippingMethod } from '../../data/models';
+import { ShippingMethod } from '../../../data/models';
 
 declare const flatRate: ShippingMethod;
 declare const freeShipping: ShippingMethod;

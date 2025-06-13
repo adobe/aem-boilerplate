@@ -16,7 +16,8 @@ export interface ShippingEstimateShippingMethod {
 }
 export interface ShippingEstimate {
     address: PartialShippingAddress;
-    shippingMethod: ShippingEstimateShippingMethod | null;
     availableShippingMethods?: ShippingMethod[];
+    shippingMethod: ShippingEstimateShippingMethod | null;
+    success?: boolean;
 }
 //# sourceMappingURL=shipping-estimate.d.ts.map

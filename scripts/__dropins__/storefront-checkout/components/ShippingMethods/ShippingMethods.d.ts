@@ -4,8 +4,10 @@ import { FunctionComponent, VNode } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
 
 export interface ShippingMethodsProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
-    onSelectionChange?: (method: ShippingMethod) => void;
+    error?: string | null;
     isLoading?: boolean;
+    onDismissError?: () => void;
+    onSelectionChange?: (method: ShippingMethod) => void;
     options: ShippingMethod[];
     selection: ShippingMethod | null;
     title?: VNode;

@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2025 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -14,12 +14,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-type expectErrorProps = {
-    candidate: (...args: any[]) => Promise<any>;
-    args: any[];
-    expectedError: any;
-    expectedMessage: string;
-};
-export declare function expectError({ candidate, args, expectedError, expectedMessage, }: expectErrorProps): Promise<void>;
-export {};
-//# sourceMappingURL=expectError.d.ts.map
+export * from './PaymentMethodsSummary';
+export { PaymentMethodsSummary as default } from './PaymentMethodsSummary';
+//# sourceMappingURL=index.d.ts.map

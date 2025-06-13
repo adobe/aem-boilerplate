@@ -22,8 +22,8 @@ export interface Item {
     customizableOptions: SelectedCustomizableOption[];
 }
 export interface ConfigurableOption {
-    value: string;
-    label: string;
     uid: string;
+    label: string;
+    value: string;
 }
 //# sourceMappingURL=wishlist.d.ts.map

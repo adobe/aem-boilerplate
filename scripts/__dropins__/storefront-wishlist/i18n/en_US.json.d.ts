@@ -31,7 +31,8 @@ declare const _default: {
   },
   "ProductItem": {
     "CartActionButton": "Move To Cart",
-    "TrashActionButton": "Remove this product from wishlist"
+    "TrashActionButton": "Remove this product from wishlist",
+    "CustomizeActionButton": "Customize"
   }
 }
 ;

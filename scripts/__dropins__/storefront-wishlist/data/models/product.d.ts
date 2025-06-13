@@ -60,8 +60,12 @@ interface Attribute {
 }
 interface Option {
     uid: string;
+    attributeCode?: string;
+    attributeUid?: string;
     required: boolean;
-    title: string;
+    values: [{
+        uid: string;
+    }];
 }
 export {};
 //# sourceMappingURL=product.d.ts.map

@@ -1,10 +1,15 @@
 import { Container } from '@dropins/tools/types/elsie/src/lib';
+import { HTMLAttributes } from 'preact/compat';
 
-export interface BillToShippingAddressProps {
+interface CartSyncError {
+    error: Error;
+}
+export interface BillToShippingAddressProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
     active?: boolean;
     autoSync?: boolean;
+    onCartSyncError?: (error: CartSyncError) => void;
     onChange?: (checked: boolean) => void;
-    onError?: (error: unknown) => void;
 }
 export declare const BillToShippingAddress: Container<BillToShippingAddressProps>;
+export {};
 //# sourceMappingURL=BillToShippingAddress.d.ts.map

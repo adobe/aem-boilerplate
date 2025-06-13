@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2025 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -14,8 +14,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './get-cart';
-export * from './get-store-config';
-export * from './is-email-available';
-export * from './get-customer';
+export * from './ShippingMethodsSummary';
+export { ShippingMethodsSummary as default } from './ShippingMethodsSummary';
 //# sourceMappingURL=index.d.ts.map

@@ -1,5 +1,5 @@
-import { Cart } from '../../data/models/cart';
-import { ShippingMethod } from '../../data/models/shipping-method';
+import { Cart } from '../../../data/models/cart';
+import { ShippingMethod } from '../../../data/models/shipping-method';
 
 declare const emptyCart: Cart;
 declare const simpleCart: Cart;

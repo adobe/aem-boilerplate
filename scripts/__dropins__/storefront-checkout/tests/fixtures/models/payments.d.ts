@@ -1,4 +1,4 @@
-import { PaymentMethod } from '../../data/models';
+import { PaymentMethod } from '../../../data/models';
 
 declare const bankTransfer: PaymentMethod;
 declare const checkMoney: PaymentMethod;

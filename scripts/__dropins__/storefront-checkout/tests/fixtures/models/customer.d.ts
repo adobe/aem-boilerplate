@@ -1,4 +1,4 @@
-import { Customer } from '../../data/models';
+import { Customer } from '../../../data/models';
 
 declare const johnDoe: Customer;
 export { johnDoe };

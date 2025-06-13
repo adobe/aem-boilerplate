@@ -1,289 +1,240 @@
-import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
-import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
-import { addProductsToCart } from '@dropins/storefront-cart/api.js';
-import WishlistToggle from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
-import { Button, provider as UI } from '@dropins/tools/components.js';
-import { readBlockConfig } from '../../scripts/aem.js';
-import { performCatalogServiceQuery } from '../../scripts/commerce.js';
+// Dropin Components
+import { Button, Icon, provider as UI } from '@dropins/tools/components.js';
 
-// initialize dropins
-import '../../scripts/initializers/cart.js';
-import '../../scripts/initializers/wishlist.js';
+// Cart Dropin
+import * as cartApi from '@dropins/storefront-cart/api.js';
+
+// Recommendations Dropin
+import ProductList from '@dropins/storefront-recommendations/containers/ProductList.js';
+import { render as provider } from '@dropins/storefront-recommendations/render.js';
+
+// Wishlist Dropin
+import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
+import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
+
+// Block-level
+import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
+import { readBlockConfig } from '../../scripts/aem.js';
 import { rootLink } from '../../scripts/scripts.js';
+
+// Initializers
+import '../../scripts/initializers/recommendations.js';
+import '../../scripts/initializers/wishlist.js';
 
 const isMobile = window.matchMedia('only screen and (max-width: 900px)').matches;
 
-const recommendationsQuery = `query GetRecommendations(
-  $pageType: PageType!
-  $category: String
-  $currentSku: String
-  $cartSkus: [String]
-  $userPurchaseHistory: [PurchaseHistory]
-  $userViewHistory: [ViewHistory]
-) {
-  recommendations(
-    cartSkus: $cartSkus
-    category: $category
-    currentSku: $currentSku
-    pageType: $pageType
-    userPurchaseHistory: $userPurchaseHistory
-    userViewHistory: $userViewHistory
-  ) {
-    results {
-      displayOrder
-      pageType
-      productsView {
-        name
-        sku
-        images {
-          url
-        }
-        urlKey
-        externalId
-        __typename
-      }
-      storefrontLabel
-      totalProducts
-      typeId
-      unitId
-      unitName
-    }
-    totalResults
+/**
+ * Gets product view history from localStorage
+ * @param {string} storeViewCode - The store view code
+ * @returns {Array} - Array of view history items
+ */
+function getProductViewHistory(storeViewCode) {
+  try {
+    const viewHistory = window.localStorage.getItem(`${storeViewCode}:productViewHistory`) || '[]';
+    return JSON.parse(viewHistory);
+  } catch (e) {
+    window.localStorage.removeItem(`${storeViewCode}:productViewHistory`);
+    console.error('Error parsing product view history', e);
+    return [];
   }
-}`;
-
-let unitsPromise;
-
-function renderPlaceholder(block) {
-  block.innerHTML = `<h2></h2>
-  <div class="scrollable">
-    <div class="product-grid">
-      ${[...Array(5)].map(() => `
-        <div class="placeholder">
-          <picture><img width="300" height="375" src="" /></picture>
-        </div>
-      `).join('')}
-    </div>
-  </div>`;
 }
 
-function renderItem(unitId, product) {
-  let image = product.images[0]?.url;
-  if (image) {
-    image = image.replace('http://', '//');
+/**
+ * Gets purchase history from localStorage
+ * @param {string} storeViewCode - The store view code
+ * @returns {Array} - Array of purchase history items
+ */
+function getPurchaseHistory(storeViewCode) {
+  try {
+    const purchaseHistory = window.localStorage.getItem(`${storeViewCode}:purchaseHistory`) || '[]';
+    return JSON.parse(purchaseHistory);
+  } catch (e) {
+    window.localStorage.removeItem(`${storeViewCode}:purchaseHistory`);
+    console.error('Error parsing purchase history', e);
+    return [];
   }
-
-  const clickHandler = () => {
-    window.adobeDataLayer.push((dl) => {
-      dl.push({ event: 'recs-item-click', eventInfo: { ...dl.getState(), unitId, productId: parseInt(product.externalId, 10) || 0 } });
-    });
-  };
-
-  const addToCartHandler = async () => {
-    // Always emit the add-to-cart event, regardless of product type.
-    window.adobeDataLayer.push((dl) => {
-      dl.push({ event: 'recs-item-add-to-cart', eventInfo: { ...dl.getState(), unitId, productId: parseInt(product.externalId, 10) || 0 } });
-    });
-    if (product.__typename === 'SimpleProductView') {
-      // Only add simple products directly to cart (no options selections needed)
-      try {
-        await addProductsToCart([{
-          sku: product.sku,
-          quantity: 1,
-        }]);
-      } catch (error) {
-        console.error('Error adding products to cart', error);
-      }
-    } else {
-      // Navigate to page for non-simple products
-      window.location.href = rootLink(`/products/${product.urlKey}/${product.sku}`);
-    }
-  };
-
-  const ctaText = product.__typename === 'SimpleProductView' ? 'Add to Cart' : 'Select Options';
-  const item = document.createRange().createContextualFragment(`<div class="product-grid-item">
-    <a href="${rootLink(`/products/${product.urlKey}/${product.sku}`)}">
-      <picture>
-        <source type="image/webp" srcset="${image}?width=300&format=webply&optimize=medium" />
-        <img loading="lazy" alt="Image of ${product.name}" width="300" height="375" src="${image}?width=300&format=jpg&optimize=medium" />
-      </picture>
-      <span>${product.name}</span>
-    </a>
-    <div class="product-grid-actions">
-      <span class="product-grid-cta"></span>
-      <span class="product-grid-wishlist"></span>
-    </div>
-  </div>`);
-  item.querySelector('a').addEventListener('click', clickHandler);
-  const buttonEl = item.querySelector('.product-grid-cta');
-  const buttonWishlist = item.querySelector('.product-grid-wishlist');
-  UI.render(Button, {
-    children: ctaText,
-    onClick: addToCartHandler,
-  })(buttonEl);
-  wishlistRender.render(WishlistToggle, {
-    product,
-  })(buttonWishlist);
-  return item;
-}
-
-function renderItems(block, results) {
-  // Render only first recommendation
-  const [recommendation] = results;
-  if (!recommendation) {
-    // Hide block content if no recommendations are available
-    block.textContent = '';
-    return;
-  }
-
-  window.adobeDataLayer.push((dl) => {
-    dl.push({ event: 'recs-unit-impression-render', eventInfo: { ...dl.getState(), unitId: recommendation.unitId } });
-  });
-
-  // Title
-  block.querySelector('h2').textContent = recommendation.storefrontLabel;
-
-  // Grid
-  const grid = block.querySelector('.product-grid');
-  grid.innerHTML = '';
-  const { productsView } = recommendation;
-  productsView.forEach((product) => {
-    grid.appendChild(renderItem(recommendation.unitId, product));
-  });
-
-  const inViewObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        window.adobeDataLayer.push((dl) => {
-          dl.push({ event: 'recs-unit-view', eventInfo: { ...dl.getState(), unitId: recommendation.unitId } });
-        });
-      }
-    });
-  }, { threshold: 0.5 });
-  inViewObserver.observe(block);
-}
-
-const mapProduct = (product, index) => ({
-  rank: index,
-  score: 0,
-  sku: product.sku,
-  name: product.name,
-  productId: parseInt(product.externalId, 10) || 0,
-  type: product.__typename,
-  visibility: undefined,
-  categories: [],
-  weight: 0,
-  image: product.images.length > 0 ? product.images[0].url : undefined,
-  url: new URL(rootLink(`/products/${product.urlKey}/${product.sku}`), window.location.origin).toString(),
-  queryType: 'primary',
-});
-
-const mapUnit = (unit) => ({
-  unitId: unit.unitId,
-  unitName: unit.unitName,
-  unitType: 'primary',
-  searchTime: 0,
-  totalProducts: unit.totalProducts,
-  primaryProducts: unit.totalProducts,
-  backupProducts: 0,
-  products: unit.productsView.map(mapProduct),
-  pagePlacement: '',
-  typeId: unit.typeId,
-
-});
-
-async function loadRecommendation(block, context, visibility, filters) {
-  // Only load once the recommendation becomes visible
-  if (!visibility) {
-    return;
-  }
-
-  // Only proceed if all required data is available
-  if (!context.pageType
-    || (context.pageType === 'Product' && !context.currentSku)
-    || (context.pageType === 'Category' && !context.category)
-    || (context.pageType === 'Cart' && !context.cartSkus)) {
-    return;
-  }
-
-  const storeViewCode = getConfigValue('headers.cs.Magento-Store-View-Code');
-
-  if (unitsPromise) {
-    return;
-  }
-
-  unitsPromise = new Promise((resolve, reject) => {
-    // Get product view history
-    try {
-      const viewHistory = window.localStorage.getItem(`${storeViewCode}:productViewHistory`) || '[]';
-      context.userViewHistory = JSON.parse(viewHistory);
-    } catch (e) {
-      window.localStorage.removeItem('productViewHistory');
-      console.error('Error parsing product view history', e);
-    }
-
-    // Get purchase history
-    try {
-      const purchaseHistory = window.localStorage.getItem(`${storeViewCode}:purchaseHistory`) || '[]';
-      context.userPurchaseHistory = JSON.parse(purchaseHistory);
-    } catch (e) {
-      window.localStorage.removeItem('purchaseHistory');
-      console.error('Error parsing purchase history', e);
-    }
-
-    window.adobeDataLayer.push((dl) => {
-      dl.push({ event: 'recs-api-request-sent', eventInfo: { ...dl.getState() } });
-    });
-
-    performCatalogServiceQuery(recommendationsQuery, context).then(({ recommendations }) => {
-      window.adobeDataLayer.push((dl) => {
-        dl.push({ recommendationsContext: { units: recommendations.results.map(mapUnit) } });
-        dl.push({ event: 'recs-api-response-received', eventInfo: { ...dl.getState() } });
-      });
-      resolve(recommendations);
-    }).catch((error) => {
-      console.error('Error fetching recommendations', error);
-      reject(error);
-    });
-  });
-
-  let { results } = await unitsPromise;
-  results = results.filter((unit) => (filters.typeId ? unit.typeId === filters.typeId : true));
-
-  renderItems(block, results);
 }
 
 export default async function decorate(block) {
-  const config = readBlockConfig(block);
+  // Configuration
+  const { typeid: typeId } = readBlockConfig(block);
   const filters = {};
-  if (config.typeid) {
-    filters.typeId = config.typeid;
+  if (typeId) {
+    filters.typeId = typeId;
   }
-  renderPlaceholder(block);
+
+  // Layout
+  const fragment = document.createRange().createContextualFragment(`
+    <div class="recommendations__wrapper">
+      <div class="recommendations__list"></div>
+    </div>
+  `);
+
+  const $list = fragment.querySelector('.recommendations__list');
+
+  block.appendChild(fragment);
+
+  let visibility = !isMobile;
+  let isLoading = false;
+  let loadTimeout = null;
+
+  async function loadRecommendation(
+    context,
+    isVisible,
+    container,
+    forceReload = false,
+  ) {
+    // Only load once the recommendation becomes visible
+    if (!isVisible) {
+      return;
+    }
+
+    // Prevent multiple simultaneous loads
+    if (isLoading) {
+      return;
+    }
+
+    // Only proceed if container is empty or force reload is requested
+    if (container.children.length > 0 && !forceReload) {
+      return;
+    }
+
+    isLoading = true;
+
+    // Clear container if reloading
+    if (forceReload) {
+      container.innerHTML = '';
+    }
+
+    const storeViewCode = getConfigValue('headers.cs.Magento-Store-View-Code');
+
+    // Get product view history
+    context.userViewHistory = getProductViewHistory(storeViewCode);
+
+    // Get purchase history
+    context.userPurchaseHistory = getPurchaseHistory(storeViewCode);
+
+    try {
+      await Promise.all([
+        provider.render(ProductList, {
+          routeProduct: (item) => rootLink(`/products/${item.urlKey}/${item.sku}`),
+          pageType: context.pageType,
+          currentSku: context.currentSku,
+          userViewHistory: context.userViewHistory,
+          userPurchaseHistory: context.userPurchaseHistory,
+          slots: {
+            Footer: (ctx) => {
+              const wrapper = document.createElement('div');
+              wrapper.className = 'footer__wrapper';
+
+              const addToCart = document.createElement('div');
+              addToCart.className = 'footer__button--add-to-cart';
+              wrapper.appendChild(addToCart);
+
+              if (ctx.item.itemType === 'SimpleProductView') {
+                // Add to Cart Button
+                UI.render(Button, {
+                  children:
+                    ctx.dictionary.Recommendations.ProductList.addToCart,
+                  icon: Icon({ source: 'Cart' }),
+                  onClick: () => cartApi.addProductsToCart([{ sku: ctx.item.sku, quantity: 1 }]),
+                  variant: 'primary',
+                })(addToCart);
+              } else {
+                // Select Options Button
+                UI.render(Button, {
+                  children:
+                    ctx.dictionary.Recommendations.ProductList.selectOptions,
+                  href: rootLink(`/products/${ctx.item.urlKey}/${ctx.item.sku}`),
+                  variant: 'tertiary',
+                })(addToCart);
+              }
+
+              // Wishlist Button
+              const $wishlistToggle = document.createElement('div');
+              $wishlistToggle.classList.add('footer__button--wishlist-toggle');
+
+              // Render Icon
+              wishlistRender.render(WishlistToggle, {
+                product: ctx.item,
+              })($wishlistToggle);
+
+              // Append to Cart Item
+              wrapper.appendChild($wishlistToggle);
+
+              ctx.replaceWith(wrapper);
+            },
+          },
+        })(block),
+      ]);
+    } finally {
+      isLoading = false;
+    }
+  }
 
   const context = {};
-  let visibility = !isMobile;
+  // Debounced loader to prevent excessive API calls
+  function debouncedLoadRecommendation(forceReload = false) {
+    if (loadTimeout) {
+      clearTimeout(loadTimeout);
+    }
+
+    loadTimeout = setTimeout(() => {
+      loadRecommendation(context, visibility, $list, forceReload);
+    }, 300); // 300ms debounce
+  }
+
+  // Track previous context values to detect significant changes
+  let previousContext = {};
+
+  function shouldReloadRecommendations(newContext) {
+    // Check if significant context changes occurred that warrant reloading recommendations
+    const significantChanges = ['currentSku', 'pageType', 'category'];
+
+    return significantChanges.some(
+      (key) => newContext[key] !== previousContext[key] && newContext[key] !== undefined,
+    );
+  }
+
+  function updateContext(updates) {
+    const hasSignificantChanges = shouldReloadRecommendations({
+      ...context,
+      ...updates,
+    });
+
+    // Update context
+    Object.assign(context, updates);
+
+    // Update previous context for next comparison
+    previousContext = { ...context };
+
+    // Load or reload recommendations based on whether significant changes occurred
+    if (hasSignificantChanges && $list.children.length > 0) {
+      // Force reload if recommendations already exist and context changed significantly
+      debouncedLoadRecommendation(true);
+    } else {
+      // Initial load or minor context changes
+      debouncedLoadRecommendation(false);
+    }
+  }
 
   function handleProductChanges({ productContext }) {
-    context.currentSku = productContext?.sku;
-    loadRecommendation(block, context, visibility, filters);
+    updateContext({ currentSku: productContext?.sku });
   }
 
   function handleCategoryChanges({ categoryContext }) {
-    context.category = categoryContext?.name;
-    loadRecommendation(block, context, visibility, filters);
+    updateContext({ category: categoryContext?.name });
   }
 
   function handlePageTypeChanges({ pageContext }) {
-    context.pageType = pageContext?.pageType;
-    loadRecommendation(block, context, visibility, filters);
+    updateContext({ pageType: pageContext?.pageType });
   }
 
   function handleCartChanges({ shoppingCartContext }) {
-    context.cartSkus = shoppingCartContext?.totalQuantity === 0
+    const cartSkus = shoppingCartContext?.totalQuantity === 0
       ? []
       : shoppingCartContext?.items?.map(({ product }) => product.sku);
-    loadRecommendation(block, context, visibility, filters);
+    updateContext({ cartSkus });
   }
 
   window.adobeDataLayer.push((dl) => {
@@ -299,7 +250,7 @@ export default async function decorate(block) {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           visibility = true;
-          loadRecommendation(block, context, visibility, filters);
+          debouncedLoadRecommendation(false);
           inViewObserver.disconnect();
         }
       });

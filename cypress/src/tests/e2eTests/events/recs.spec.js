@@ -11,11 +11,11 @@ import { expectsEventWithContext } from "../../../assertions";
  *  required contexts: page, storefront, recommendations
  *
  */
-
+// Skipping until events are updated with ticket https://jira.corp.adobe.com/browse/COMOPT-421
 const RECS_URL = "/products/play-create-repeat-crewneck/ADB388";
 it(
   "api-request-sent, api-response-received, unit-impression-render",
-  { tags: "@skipSaas" },
+  { tags: ["@skipSaas", "@skipPaas"] },
   () => {
     cy.visit(RECS_URL);
     cy.waitForResource("commerce-events-collector.js").then(() => {
@@ -49,8 +49,8 @@ it(
     });
   },
 );
-
-it("recs-unit-view", { tags: "@skipSaas" }, () => {
+// Skipping until events are updated with ticket https://jira.corp.adobe.com/browse/COMOPT-421
+it("recs-unit-view", { tags: ["@skipSaas", "@skipPaas"] }, () => {
   cy.viewport(1440, 600);
   cy.visit(RECS_URL);
   cy.waitForResource("commerce-events-collector.js").then(() => {
@@ -89,8 +89,8 @@ it("recs-unit-view", { tags: "@skipSaas" }, () => {
       });
   });
 });
-
-it("recs-item-click", { tags: "@skipSaas" }, () => {
+// Skipping until events are updated with ticket https://jira.corp.adobe.com/browse/COMOPT-421
+it("recs-item-click", { tags: ["@skipSaas", "@skipPaas"] }, () => {
   cy.visit(RECS_URL);
   cy.waitForResource("commerce-events-collector.js").then(() => {
     cy.window().then((win) => {
@@ -129,8 +129,8 @@ it("recs-item-click", { tags: "@skipSaas" }, () => {
     });
   });
 });
-
-it("reqs-item-add-to-cart", { tags: "@skipSaas" }, () => {
+// Skipping until events are updated with ticket https://jira.corp.adobe.com/browse/COMOPT-421
+it("reqs-item-add-to-cart", { tags: ["@skipSaas", "@skipPaas"] }, () => {
   cy.visit(RECS_URL);
   cy.waitForResource("commerce-events-collector.js").then(() => {
     cy.window().then((win) => {

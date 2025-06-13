@@ -1,5 +1,5 @@
-import { Initializer, Model } from '@dropins/tools/types/elsie/src/lib';
-import { Lang } from '@dropins/tools/types/elsie/src/i18n';
+import { Initializer, Model } from '../../../@adobe-commerce/elsie/src/lib';
+import { Lang } from '../../../@adobe-commerce/elsie/src/i18n';
 import { OrderHistoryModel } from '../../data/models';
 import { CustomerDataModelShort } from '../../data/models/customer';
 
@@ -15,6 +15,6 @@ type ConfigProps = {
     };
 };
 export declare const initialize: Initializer<ConfigProps>;
-export declare const config: import('@dropins/tools/types/elsie/src/lib').Config<ConfigProps>;
+export declare const config: import('../../../@adobe-commerce/elsie/src/lib').Config<ConfigProps>;
 export {};
 //# sourceMappingURL=initialize.d.ts.map

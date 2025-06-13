@@ -77,6 +77,7 @@ import {
 
 import { authPrivacyPolicyConsentSlot, SUPPORT_PATH } from '../../scripts/constants.js';
 import { rootLink } from '../../scripts/scripts.js';
+import { fetchPlaceholders } from '../../scripts/commerce.js';
 
 // Initializers
 import '../../scripts/initializers/account.js';
@@ -856,7 +857,13 @@ export default async function decorate(block) {
       '.order-confirmation__footer',
     );
 
-    await initializers.mountImmediately(orderApi.initialize, { orderData });
+    const labels = await fetchPlaceholders();
+    const langDefinitions = {
+      default: {
+        ...labels,
+      },
+    };
+    await initializers.mountImmediately(orderApi.initialize, { orderData, langDefinitions });
 
     block.replaceChildren(orderConfirmationFragment);
 

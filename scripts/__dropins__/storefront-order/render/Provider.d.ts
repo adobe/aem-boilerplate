@@ -1,8 +1,8 @@
 import { FunctionComponent } from 'preact';
 
-interface CartProviderProps {
+interface IntlProviderProps {
     children?: any;
 }
-export declare const Provider: FunctionComponent<CartProviderProps>;
+export declare const Provider: FunctionComponent<IntlProviderProps>;
 export {};
 //# sourceMappingURL=Provider.d.ts.map

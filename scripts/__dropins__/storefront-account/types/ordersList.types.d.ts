@@ -1,7 +1,7 @@
-import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
+import { SlotProps } from '../../@adobe-commerce/elsie/src/lib';
 import { HTMLAttributes } from 'preact/compat';
 import { OrderDetails, OrderItem, ShipmentsTracingModel } from '../data/models';
-import { ImageProps } from '@dropins/tools/types/elsie/src/components';
+import { ImageProps } from '../../@adobe-commerce/elsie/src/components';
 
 export interface OrdersListActionContext {
     orderHistoryListItem: OrderDetails;

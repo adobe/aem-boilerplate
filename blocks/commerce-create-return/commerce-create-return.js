@@ -1,6 +1,6 @@
 import { render as orderRenderer } from '@dropins/storefront-order/render.js';
 import { CreateReturn } from '@dropins/storefront-order/containers/CreateReturn.js';
-import { checkIsAuthenticated } from '../../scripts/configs.js';
+import { checkIsAuthenticated } from '../../scripts/commerce.js';
 import { ORDER_DETAILS_PATH, CUSTOMER_ORDER_DETAILS_PATH } from '../../scripts/constants.js';
 import { rootLink } from '../../scripts/scripts.js';
 

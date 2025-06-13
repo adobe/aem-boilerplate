@@ -1,3 +1,4 @@
+import { getHeaders } from '@dropins/tools/lib/aem/configs.js';
 import { initializers } from '@dropins/tools/initializer.js';
 import { Image, provider as UI } from '@dropins/tools/components.js';
 import {
@@ -14,7 +15,6 @@ import {
   getSkuFromUrl,
   loadErrorPage,
 } from '../commerce.js';
-import { getHeaders } from '../configs.js';
 
 export const IMAGES_SIZES = {
   width: 960,

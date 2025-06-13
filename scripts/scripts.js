@@ -1,3 +1,4 @@
+import { initializeConfig, getRootPath, getListOfRootPaths } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
 import {
   buildBlock,
@@ -14,9 +15,8 @@ import {
   loadSections,
   loadCSS,
 } from './aem.js';
-import { trackHistory } from './commerce.js';
+import { getConfigFromSession, trackHistory } from './commerce.js';
 import initializeDropins from './initializers/index.js';
-import { initializeConfig, getRootPath, getListOfRootPaths } from './configs.js';
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -372,7 +372,7 @@ export function getConsent(topic) {
 }
 
 async function loadPage() {
-  await initializeConfig();
+  await initializeConfig(await getConfigFromSession());
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();

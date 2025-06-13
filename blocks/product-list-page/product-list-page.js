@@ -1,5 +1,5 @@
+import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { readBlockConfig } from '../../scripts/aem.js';
-import { getConfigValue } from '../../scripts/configs.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {

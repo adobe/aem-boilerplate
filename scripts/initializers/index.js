@@ -1,4 +1,6 @@
 // Drop-in Tools
+import { getCookie } from '@dropins/tools/lib.js';
+import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
 import {
   removeFetchGraphQlHeader,
@@ -6,9 +8,6 @@ import {
   setFetchGraphQlHeader,
 } from '@dropins/tools/fetch-graphql.js';
 import * as authApi from '@dropins/storefront-auth/api.js';
-
-// Libs
-import { getConfigValue, getCookie } from '../configs.js';
 
 export const getUserTokenCookie = () => getCookie('auth_dropin_user_token');
 

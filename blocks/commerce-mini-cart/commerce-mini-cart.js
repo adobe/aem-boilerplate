@@ -1,6 +1,7 @@
 import { render as provider } from '@dropins/storefront-cart/render.js';
 import MiniCart from '@dropins/storefront-cart/containers/MiniCart.js';
 import { events } from '@dropins/tools/event-bus.js';
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 
 // Initializers
 import '../../scripts/initializers/cart.js';
@@ -59,14 +60,26 @@ export default async function decorate(block) {
   block.innerHTML = '';
 
   // Render MiniCart
+  const productLink = (product) => rootLink(`/products/${product.url.urlKey}/${product.topLevelSku}`);
   await provider.render(MiniCart, {
     routeEmptyCartCTA: startShoppingURL ? () => rootLink(startShoppingURL) : undefined,
     routeCart: cartURL ? () => rootLink(cartURL) : undefined,
     routeCheckout: checkoutURL ? () => rootLink(checkoutURL) : undefined,
-    routeProduct: (product) => rootLink(`/products/${product.url.urlKey}/${product.topLevelSku}`),
+    routeProduct: productLink,
+
     slots: {
       Thumbnail: (ctx) => {
-        if (ctx.item?.itemType === 'ConfigurableCartItem' && enableUpdatingProduct === 'true') {
+        const { item, defaultImageProps } = ctx;
+        const anchorWrapper = document.createElement('a');
+        anchorWrapper.href = productLink(item);
+
+        tryRenderAemAssetsImage(ctx, {
+          alias: item.sku,
+          imageProps: defaultImageProps,
+          wrapper: anchorWrapper,
+        });
+
+        if (item?.itemType === 'ConfigurableCartItem' && enableUpdatingProduct === 'true') {
           const editLinkContainer = document.createElement('div');
           editLinkContainer.className = 'cart-item-edit-container';
 
@@ -75,9 +88,7 @@ export default async function decorate(block) {
           editButton.textContent = 'Edit';
 
           editButton.addEventListener('click', () => {
-            const { item } = ctx;
-            const productUrl = rootLink(`/products/${item.url.urlKey}/${item.topLevelSku}`);
-
+            const productUrl = productLink(item);
             const params = new URLSearchParams();
 
             if (item.selectedOptionsUIDs) {

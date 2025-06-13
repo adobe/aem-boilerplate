@@ -2,10 +2,12 @@
 import {
   h, Component, Fragment,
 } from '@dropins/tools/preact.js';
+import { tryGenerateAemAssetsOptimizedUrl } from '@dropins/tools/lib/aem/assets.js';
 import htm from './htm.js';
 import {
   renderPrice,
 } from '../../scripts/commerce.js';
+
 import { rootLink } from '../../scripts/scripts.js';
 
 const html = htm.bind(h);
@@ -41,10 +43,26 @@ class ProductCard extends Component {
     url.protocol = 'https:';
     url.search = '';
 
+    function generateImageUrl(imageUrl, width, format = 'webp') {
+      // This will try generate an AEM Assets URL only if is enabled.
+      // Otherwise, it will return the original URL.
+      return tryGenerateAemAssetsOptimizedUrl(imageUrl, product.sku, { width, format });
+    }
+
+    const mobile1x = generateImageUrl(`${url}?width=163&bg-color=255,255,255&format=webply&optimize=medium`, 163);
+    const mobile2x = generateImageUrl(`${url}?width=326&bg-color=255,255,255&format=webply&optimize=medium`, 326);
+    const mobile3x = generateImageUrl(`${url}?width=489&bg-color=255,255,255&format=webply&optimize=medium`, 489);
+
+    const desktop1x = generateImageUrl(`${url}?width=330&bg-color=255,255,255&format=webply&optimize=medium`, 330);
+    const desktop2x = generateImageUrl(`${url}?width=660&bg-color=255,255,255&format=webply&optimize=medium`, 660);
+    const desktop3x = generateImageUrl(`${url}?width=990&bg-color=255,255,255&format=webply&optimize=medium`, 990);
+
+    const fallbackSrc = generateImageUrl(`${url}?width=330&quality=100&bg-color=255,255,255`, 330);
+
     return html`<picture>
-      <source type="image/webp" srcset="${url}?width=163&bg-color=255,255,255&format=webply&optimize=medium 1x,${url}?width=326&bg-color=255,255,255&format=webply&optimize=medium 2x, ${url}?width=489&bg-color=255,255,255&format=webply&optimize=medium 3x" media="(max-width: 900px)" />
-      <source type="image/webp" srcset="${url}?width=330&bg-color=255,255,255&format=webply&optimize=medium 1x, ${url}?width=660&bg-color=255,255,255&format=webply&optimize=medium 2x, ${url}?width=990&bg-color=255,255,255&format=webply&optimize=medium 3x" />
-      <img class="product-image-photo" src="${url}?width=330&quality=100&bg-color=255,255,255" max-width="330" max-height="396" alt=${product.name} loading=${loading} />
+      <source type="image/webp" srcset="${mobile1x} 1x, ${mobile2x} 2x, ${mobile3x} 3x" media="(max-width: 900px)" />
+      <source type="image/webp" srcset="${desktop1x} 1x, ${desktop2x} 2x, ${desktop3x} 3x" />
+      <img class="product-image-photo" src="${fallbackSrc}" max-width="330" max-height="396" alt=${product.name} loading=${loading} />
     </picture>`;
   }
 

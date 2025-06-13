@@ -2,14 +2,28 @@ import { render as orderRenderer } from '@dropins/storefront-order/render.js';
 import { OrderProductList } from '@dropins/storefront-order/containers/OrderProductList.js';
 import GiftOptions from '@dropins/storefront-cart/containers/GiftOptions.js';
 import { render as CartProvider } from '@dropins/storefront-cart/render.js';
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 
 // Initialize
 import '../../scripts/initializers/order.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
+  const productLink = (product) => rootLink(`/products/${product.productUrlKey}/${product.productSku}`);
+
   await orderRenderer.render(OrderProductList, {
     slots: {
+      CartSummaryItemImage: (ctx) => {
+        const { data, defaultImageProps } = ctx;
+        const anchor = document.createElement('a');
+        anchor.href = productLink(data);
+
+        tryRenderAemAssetsImage(ctx, {
+          alias: data.product.sku,
+          imageProps: defaultImageProps,
+          wrapper: anchor,
+        });
+      },
       Footer: (ctx) => {
         const giftOptions = document.createElement('div');
 
@@ -18,11 +32,21 @@ export default async function decorate(block) {
           view: 'product',
           dataSource: 'order',
           isEditable: false,
+          slots: {
+            SwatchImage: (swatchCtx) => {
+              const { defaultImageProps, imageSwatchContext } = swatchCtx;
+              tryRenderAemAssetsImage(swatchCtx, {
+                alias: imageSwatchContext.label,
+                imageProps: defaultImageProps,
+                wrapper: document.createElement('span'),
+              });
+            },
+          },
         })(giftOptions);
 
         ctx.appendChild(giftOptions);
       },
     },
-    routeProductDetails: (product) => rootLink(`/products/${product.productUrlKey}/${product.product.sku}`),
+    routeProductDetails: productLink,
   })(block);
 }

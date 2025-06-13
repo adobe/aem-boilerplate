@@ -2,6 +2,7 @@
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { initializers } from '@dropins/tools/initializer.js';
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 
 // Dropin Components
 import {
@@ -411,6 +412,13 @@ export default async function decorate(block) {
             );
           });
         },
+        Thumbnail: (ctx) => {
+          const { item, defaultImageProps } = ctx;
+          tryRenderAemAssetsImage(ctx, {
+            alias: item.sku,
+            imageProps: defaultImageProps,
+          });
+        },
         Footer: (ctx) => {
           const giftOptions = document.createElement('div');
 
@@ -422,6 +430,9 @@ export default async function decorate(block) {
             handleItemsLoading: ctx.handleItemsLoading,
             handleItemsError: ctx.handleItemsError,
             onItemUpdate: ctx.onItemUpdate,
+            slots: {
+              SwatchImage: swatchImageSlot,
+            },
           })(giftOptions);
 
           ctx.appendChild(giftOptions);
@@ -515,6 +526,9 @@ export default async function decorate(block) {
       view: 'order',
       dataSource: 'cart',
       isEditable: false,
+      slots: {
+        SwatchImage: swatchImageSlot,
+      },
     })($giftOptions),
   ]);
 
@@ -901,6 +915,9 @@ export default async function decorate(block) {
       dataSource: 'order',
       isEditable: false,
       readOnlyFormOrderView: 'secondary',
+      slots: {
+        SwatchImage: swatchImageSlot,
+      },
     })($orderGiftOptions);
     OrderProvider.render(OrderProductList, {
       slots: {
@@ -912,9 +929,20 @@ export default async function decorate(block) {
             view: 'product',
             dataSource: 'order',
             isEditable: false,
+            slots: {
+              SwatchImage: swatchImageSlot,
+            },
           })(giftOptions);
 
           ctx.appendChild(giftOptions);
+        },
+        CartSummaryItemImage: (ctx) => {
+          const { data, defaultImageProps } = ctx;
+
+          tryRenderAemAssetsImage(ctx, {
+            alias: data.product.sku,
+            imageProps: defaultImageProps,
+          });
         },
       },
     })($orderProductList);
@@ -1001,4 +1029,13 @@ export default async function decorate(block) {
   events.on('checkout/initialized', handleCheckoutInitialized, { eager: true });
   events.on('checkout/updated', handleCheckoutUpdated);
   events.on('order/placed', handleOrderPlaced);
+}
+
+function swatchImageSlot(ctx) {
+  const { imageSwatchContext, defaultImageProps } = ctx;
+  tryRenderAemAssetsImage(ctx, {
+    alias: imageSwatchContext.label,
+    imageProps: defaultImageProps,
+    wrapper: document.createElement('span'),
+  });
 }

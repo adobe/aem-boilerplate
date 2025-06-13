@@ -1,3 +1,4 @@
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { render as orderRenderer } from '@dropins/storefront-order/render.js';
 import { OrderReturns } from '@dropins/storefront-order/containers/OrderReturns.js';
 import {
@@ -18,6 +19,15 @@ export default async function decorate(block) {
     : RETURN_DETAILS_PATH;
 
   await orderRenderer.render(OrderReturns, {
+    slots: {
+      ReturnListImage: (ctx) => {
+        const { data, defaultImageProps } = ctx;
+        tryRenderAemAssetsImage(ctx, {
+          alias: data.product.sku,
+          imageProps: defaultImageProps,
+        });
+      },
+    },
     routeTracking: ({ carrier, number }) => {
       if (carrier?.toLowerCase() === 'ups') {
         return `${UPS_TRACKING_URL}?tracknum=${number}`;

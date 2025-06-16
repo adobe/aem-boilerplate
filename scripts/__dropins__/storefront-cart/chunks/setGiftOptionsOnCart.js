@@ -18,3 +18,4 @@ import{s as a,f as T,h as m}from"./resetCart.js";import{C as u,t as C}from"./ref
 }
 ${N}
 `,E=async d=>{const e=a.cartId;if(!e)throw Error("Cart ID is not set");const{recipientName:o,senderName:p,message:c,giftReceiptIncluded:f,printedCardIncluded:g,giftWrappingId:I,isGiftWrappingSelected:_}=d;return T(A,{variables:{cartId:e,giftMessage:{from:p,to:o,message:c},giftWrappingId:_?I:null,giftReceiptIncluded:f,printedCardIncluded:g}}).then(({errors:l,data:r})=>{var n;const i=[...((n=r==null?void 0:r.addProductsToCart)==null?void 0:n.user_errors)??[],...l??[]];if(i.length>0)return m(i);const t=C(r.setGiftOptionsOnCart.cart);return s.emit("cart/updated",t),s.emit("cart/data",t),t&&O(t,[],a.locale??"en-US"),t})};export{E as s};
+//# sourceMappingURL=setGiftOptionsOnCart.js.map

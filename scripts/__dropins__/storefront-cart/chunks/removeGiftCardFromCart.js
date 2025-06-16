@@ -29,3 +29,4 @@ ${A}
 }
 ${A}
 `,E=async c=>{const a=i.cartId;if(!a)throw Error("Cart ID is not set");return n(p,{variables:{cartId:a,giftCardCode:c}}).then(({errors:s,data:t})=>{var e;const o=[...((e=t==null?void 0:t.addProductsToCart)==null?void 0:e.user_errors)??[],...s??[]];if(o.length>0)return _(o);const r=T(t.removeGiftCardFromCart.cart);return C.emit("cart/updated",r),C.emit("cart/data",r),r&&f(r,[],i.locale??"en-US"),r})};export{N as a,E as r};
+//# sourceMappingURL=removeGiftCardFromCart.js.map

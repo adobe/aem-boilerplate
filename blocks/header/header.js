@@ -17,6 +17,7 @@ import { rootLink } from '../../scripts/scripts.js';
 
 // Required on all pages to track state updates that may affect personalization
 import '../../scripts/initializers/personalization.js';
+import '../../scripts/initializers/search.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -326,7 +327,14 @@ export default async function decorate(block) {
   })(searchInput);
 
   // Render the SearchBarResult component
-  provider.render(SearchBarResults)(searchResult);
+  provider.render(SearchBarResults, {
+    routeSearch: (searchQuery) => {
+      const url = `${rootLink('/search')}?q=${encodeURIComponent(
+        searchQuery,
+      )}`;
+      window.location.href = url;
+    },
+  })(searchResult);
 
   async function toggleSearch(state) {
     const show = state ?? !searchPanel.classList.contains('nav-tools-panel--show');
@@ -334,7 +342,6 @@ export default async function decorate(block) {
     searchPanel.classList.toggle('nav-tools-panel--show', show);
 
     if (show) {
-      await import('./searchbar.js');
       // Focus on the SearchBarInput component if it has a focusable element
       const inputElement = searchInput.querySelector('input');
       if (inputElement) {

@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'preact/compat';
-import { Container, ResolveImageUrlOptions, SlotProps } from '../../../@adobe-commerce/elsie/src/lib';
-import { ImageProps } from '../../../@adobe-commerce/elsie/src/components';
+import { Container, ResolveImageUrlOptions, SlotProps } from '@dropins/tools/types/elsie/src/lib';
+import { ImageProps } from '@dropins/tools/types/elsie/src/components';
 import { ProductModel } from '../../data/models/product-model';
 
 type DefaultSlotContext = {

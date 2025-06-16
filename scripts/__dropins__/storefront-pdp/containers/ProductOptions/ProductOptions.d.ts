@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
-import { Container, SlotProps } from '../../../@adobe-commerce/elsie/src/lib';
+import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { ProductModel } from '../../data/models';
-import { ImageNodeRenderProps, ImageProps } from '../../../@adobe-commerce/elsie/src/components';
+import { ImageNodeRenderProps, ImageProps } from '@dropins/tools/types/elsie/src/components';
 
 export interface ProductOptionsProps extends HTMLAttributes<HTMLDivElement> {
     hideSelectedValue?: boolean;

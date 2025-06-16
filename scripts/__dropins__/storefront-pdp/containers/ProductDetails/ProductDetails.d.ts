@@ -1,9 +1,9 @@
 import { HTMLAttributes } from 'preact/compat';
-import { Container, SlotProps, SlotMethod, ResolveImageUrlOptions } from '../../../@adobe-commerce/elsie/src/lib';
-import { ButtonProps } from '../../../@adobe-commerce/elsie/src/components';
+import { Container, SlotProps, SlotMethod, ResolveImageUrlOptions } from '@dropins/tools/types/elsie/src/lib';
+import { ButtonProps } from '@dropins/tools/types/elsie/src/components';
 import { ProductModel } from '../../data/models';
 
-type IconType = keyof typeof import('@adobe-commerce/elsie/icons');
+type IconType = keyof typeof import('@dropins/tools/types/elsie/src/icons');
 /** @deprecated This type is part of the deprecated ProductDetails component. */
 export type Values = {
     sku: string;

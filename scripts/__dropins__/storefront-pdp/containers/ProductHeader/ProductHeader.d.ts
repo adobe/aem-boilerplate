@@ -1,5 +1,5 @@
 import { HTMLAttributes } from 'preact/compat';
-import { Container } from '../../../@adobe-commerce/elsie/src/lib';
+import { Container } from '@dropins/tools/types/elsie/src/lib';
 import { ProductModel } from '../../data/models';
 
 export interface ProductHeaderProps extends HTMLAttributes<HTMLDivElement> {

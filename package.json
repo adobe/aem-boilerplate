@@ -5,8 +5,9 @@
   "description": "Starter project for Adobe Commerce on Edge Delivery Services",
   "scripts": {
     "lint:js": "eslint .",
-    "lint:css": "stylelint blocks/**/*.css styles/*.css",
+    "lint:css": "stylelint \"blocks/**/*.css\" \"styles/*.css\"",
     "lint": "npm run lint:js && npm run lint:css",
+    "lint:fix": "npm run lint:js -- --fix && npm run lint:css -- --fix",
     "start": "aem up",
     "install:dropins": "node build.mjs && node postinstall.js",
     "postinstall": "npm run install:dropins",
@@ -29,14 +30,14 @@
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.31.0",
-    "stylelint": "16.12.0",
-    "stylelint-config-standard": "36.0.1"
+    "stylelint": "16.20.0",
+    "stylelint-config-standard": "38.0.0"
   },
   "dependencies": {
     "@adobe/magento-storefront-event-collector": "^1.8.0",
     "@adobe/magento-storefront-events-sdk": "^1.8.0",
     "@dropins/storefront-account": "~1.0.7-beta2",
-    "@dropins/storefront-auth": "~2.0.2",
+    "@dropins/storefront-auth": "~2.0.3",
     "@dropins/storefront-cart": "1.4.0-beta2",
     "@dropins/storefront-checkout": "~2.0.0-beta4",
     "@dropins/storefront-order": "~1.2.0-beta1",

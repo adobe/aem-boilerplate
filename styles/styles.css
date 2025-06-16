@@ -279,7 +279,7 @@ a:not(.dropin-design a) {
   font: var(--type-body-1-strong-font);
   letter-spacing: var(--type-body-1-strong-letter-spacing);
   text-decoration: none;
-  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 a:not(.dropin-design a):hover {

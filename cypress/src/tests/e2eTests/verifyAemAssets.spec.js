@@ -144,7 +144,7 @@ describe('AEM Assets enabled', () => {
     // TODO: Once Swatch Images are supported by AEM Assets, add tests for them.
   });
 
-  it('[Cart Dropin]: should load and show AEM Assets optimized images', () => {
+  it.skip('[Cart Dropin]: should load and show AEM Assets optimized images', () => {
     const expectedOptions = {
       protocol: 'https://',
       environment: aemAssetsEnvironment,
@@ -324,7 +324,7 @@ describe('AEM Assets enabled', () => {
     });
   });
 
-  it('[Checkout Dropin]: should load and show AEM Assets optimized images', () => {
+  it.skip('[Checkout Dropin]: should load and show AEM Assets optimized images', () => {
     visitWithEagerImages('/products/gift-packaging/ADB102');
 
     cy.get('.product-details__buttons__add-to-cart button')

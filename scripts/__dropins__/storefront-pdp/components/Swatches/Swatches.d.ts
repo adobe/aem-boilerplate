@@ -1,6 +1,6 @@
 import { FunctionComponent, VNode } from 'preact';
 import { HTMLAttributes, JSX } from 'preact/compat';
-import { ImageNodeRenderProps } from '../../../@adobe-commerce/elsie/src/components';
+import { ImageNodeRenderProps } from '@dropins/tools/types/elsie/src/components';
 
 declare const supportedTypes: string[];
 type OptionValue = {

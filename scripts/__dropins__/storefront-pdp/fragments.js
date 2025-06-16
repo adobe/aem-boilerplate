@@ -146,3 +146,4 @@ fragment PRODUCT_FRAGMENT on ProductView {
 ${e}
 ${t}
 `;export{t as PRICE_RANGE_FRAGMENT,r as PRODUCT_FRAGMENT,e as PRODUCT_OPTION_FRAGMENT};
+//# sourceMappingURL=fragments.js.map

@@ -65,6 +65,7 @@ interface Option {
     required: boolean;
     values: [{
         uid: string;
+        label: string;
     }];
 }
 export {};

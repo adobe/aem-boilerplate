@@ -148,6 +148,13 @@ function decorateLinks(main) {
         hash,
       } = url;
 
+      // Skip localization if #nolocal flag is present
+      if (hash === '#nolocal') {
+        url.hash = '';
+        a.href = url.toString();
+        return;
+      }
+
       // if the links belongs to another store, do nothing
       if (roots.some((r) => r !== root && pathname.startsWith(r))) return;
 

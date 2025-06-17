@@ -33,7 +33,7 @@ await initializeDropin(async () => {
 
   const [product, labels] = await Promise.all([
     fetchProductData(sku, { optionsUIDs, skipTransform: true }).then(preloadImageMiddleware),
-    fetchPlaceholders(),
+    fetchPlaceholders('placeholders/pdp.json'),
   ]);
 
   if (!product?.sku) {

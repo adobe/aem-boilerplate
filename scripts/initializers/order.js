@@ -31,7 +31,7 @@ await initializeDropin(async () => {
 
   setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('order') }));
 
-  const labels = await fetchPlaceholders();
+  const labels = await fetchPlaceholders('placeholders/order.json');
   const langDefinitions = {
     default: {
       ...labels,

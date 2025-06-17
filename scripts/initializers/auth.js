@@ -7,7 +7,7 @@ import { fetchPlaceholders } from '../commerce.js';
 await initializeDropin(async () => {
   setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('auth') }));
 
-  const labels = await fetchPlaceholders();
+  const labels = await fetchPlaceholders('placeholders/auth.json');
   const langDefinitions = {
     default: {
       ...labels,

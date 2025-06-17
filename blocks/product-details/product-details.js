@@ -10,10 +10,6 @@ import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import * as pdpApi from '@dropins/storefront-pdp/api.js';
 import { render as pdpRendered } from '@dropins/storefront-pdp/render.js';
 import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
-import {
-  removeProductsFromWishlist,
-  getWishlistItemFromStorage,
-} from '@dropins/storefront-wishlist/api.js';
 
 import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
 import { WishlistAlert } from '@dropins/storefront-wishlist/containers/WishlistAlert.js';
@@ -309,59 +305,6 @@ export default async function decorate(block) {
         },
       }));
     }
-  }, { eager: true });
-
-  if (sessionStorage.getItem('incompleteProduct')) {
-    inlineAlert = await UI.render(InLineAlert, {
-      heading: 'Warning',
-      description: 'Please complete the product configuration before adding to cart.',
-      icon: Icon({ source: 'Warning' }),
-      'aria-live': 'assertive',
-      role: 'alert',
-      onDismiss: () => {
-        inlineAlert.remove();
-      },
-    })($alert);
-
-    // Scroll the alertWrapper into view
-    $alert.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-    });
-
-    sessionStorage.removeItem('incompleteProduct');
-  }
-
-  events.on('cart/updated', async (data) => {
-    const item = getWishlistItemFromStorage(product.sku);
-    if (!item) {
-      return;
-    }
-    const inCart = data?.items?.find((cartItem) => cartItem.sku === item.product.sku);
-    if (!inCart) {
-      return;
-    }
-    await removeProductsFromWishlist(
-      [
-        {
-          id: item.id ?? '',
-          product: {
-            sku: item.product.sku,
-          },
-        },
-      ],
-    );
-    wishlistToggleBtn.setProps(
-      (prev) => ({
-        ...prev,
-        icon: h(Icon, { source: 'Heart' }),
-      }),
-      events.emit('wishlist/alert', {
-        action: 'move',
-        item,
-        routeToWishlist,
-      }),
-    );
   }, { eager: true });
 
   events.on('wishlist/alert', ({ action, item }) => {

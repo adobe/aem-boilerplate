@@ -359,6 +359,42 @@ describe('AEM Assets enabled', () => {
       }
     })
   });
+
+  it('[Recommendations Dropin]: should load and show AEM Assets optimized images', () => {
+    // Visit products to populate "Recently Viewed" recommendations.
+    // Wait a bit to ensure data is collected by Adobe Analytics.
+    visitWithEagerImages('/products/gift-packaging/ADB102');
+    cy.wait(3000);
+
+    visitWithEagerImages('/products/denim-apron/ADB119');
+    cy.wait(3000);
+
+    visitWithEagerImages('/apparel');
+    const expectedOptions = {
+      protocol: 'https://',
+      environment: aemAssetsEnvironment,
+      format: 'webp',
+      quality: 80,
+      width: 300,
+      height: 300,
+    };
+
+    waitForAemAssetImages('.recommendations-product-list img', (images) => {
+      for (const image of images) {
+        expectAemAssetsImage(image.src, expectedOptions);
+
+        for (const { url, screenWidth, density } of image.srcsetEntries) {
+          expect(density).to.be.undefined;
+          expect(screenWidth).to.be.a('number');
+
+          expectAemAssetsImage(url, {
+            ...expectedOptions,
+            width: (expectedOptions.width * screenWidth) / 1920,
+          })
+        }
+      }
+    });
+  });
 });
 
 /**

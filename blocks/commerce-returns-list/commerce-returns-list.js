@@ -31,6 +31,11 @@ export default async function decorate(block) {
           tryRenderAemAssetsImage(ctx, {
             alias: data.product.sku,
             imageProps: defaultImageProps,
+
+            params: {
+              width: defaultImageProps.width,
+              height: defaultImageProps.height,
+            },
           });
         },
       },

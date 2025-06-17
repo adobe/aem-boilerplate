@@ -175,8 +175,12 @@ export default async function decorate(block) {
               tryRenderAemAssetsImage(ctx, {
                 alias: item.sku,
                 imageProps: defaultImageProps,
-
                 wrapper,
+
+                params: {
+                  width: defaultImageProps.width,
+                  height: defaultImageProps.height,
+                },
               });
             },
           },

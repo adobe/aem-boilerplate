@@ -9,19 +9,23 @@ import '../../scripts/initializers/order.js';
 import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
-  const productLink = (product) => rootLink(`/products/${product.productUrlKey}/${product.productSku}`);
-
+  const getProductLink = (product) => rootLink(`/products/${product.productUrlKey}/${product.productSku}`);
   await orderRenderer.render(OrderProductList, {
     slots: {
       CartSummaryItemImage: (ctx) => {
         const { data, defaultImageProps } = ctx;
         const anchor = document.createElement('a');
-        anchor.href = productLink(data);
+        anchor.href = getProductLink(data);
 
         tryRenderAemAssetsImage(ctx, {
           alias: data.product.sku,
           imageProps: defaultImageProps,
           wrapper: anchor,
+
+          params: {
+            width: defaultImageProps.width,
+            height: defaultImageProps.height,
+          },
         });
       },
       Footer: (ctx) => {
@@ -39,6 +43,11 @@ export default async function decorate(block) {
                 alias: imageSwatchContext.label,
                 imageProps: defaultImageProps,
                 wrapper: document.createElement('span'),
+
+                params: {
+                  width: defaultImageProps.width,
+                  height: defaultImageProps.height,
+                },
               });
             },
           },
@@ -47,6 +56,6 @@ export default async function decorate(block) {
         ctx.appendChild(giftOptions);
       },
     },
-    routeProductDetails: productLink,
+    routeProductDetails: getProductLink,
   })(block);
 }

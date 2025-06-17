@@ -31,5 +31,10 @@ function imageSlotConfig(ctx) {
   return {
     alias: data.product.sku,
     imageProps: defaultImageProps,
+
+    params: {
+      width: defaultImageProps.width,
+      height: defaultImageProps.height,
+    },
   };
 }

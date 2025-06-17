@@ -417,6 +417,11 @@ export default async function decorate(block) {
           tryRenderAemAssetsImage(ctx, {
             alias: item.sku,
             imageProps: defaultImageProps,
+
+            params: {
+              width: defaultImageProps.width,
+              height: defaultImageProps.height,
+            },
           });
         },
         Footer: (ctx) => {
@@ -938,10 +943,14 @@ export default async function decorate(block) {
         },
         CartSummaryItemImage: (ctx) => {
           const { data, defaultImageProps } = ctx;
-
           tryRenderAemAssetsImage(ctx, {
             alias: data.product.sku,
             imageProps: defaultImageProps,
+
+            params: {
+              width: defaultImageProps.width,
+              height: defaultImageProps.height,
+            },
           });
         },
       },
@@ -1037,5 +1046,10 @@ function swatchImageSlot(ctx) {
     alias: imageSwatchContext.label,
     imageProps: defaultImageProps,
     wrapper: document.createElement('span'),
+
+    params: {
+      width: defaultImageProps.width,
+      height: defaultImageProps.height,
+    },
   });
 }

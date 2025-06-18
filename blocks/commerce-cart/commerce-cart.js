@@ -19,6 +19,7 @@ import GiftCards from '@dropins/storefront-cart/containers/GiftCards.js';
 import GiftOptions from '@dropins/storefront-cart/containers/GiftOptions.js';
 import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
+import { WishlistAlert } from '@dropins/storefront-wishlist/containers/WishlistAlert.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 
 // API
@@ -77,6 +78,9 @@ export default async function decorate(block) {
 
   block.innerHTML = '';
   block.appendChild(fragment);
+
+  // Wishlist variables
+  const routeToWishlist = '/wishlist';
 
   // Toggle Empty Cart
   function toggleEmptyCart(state) {
@@ -164,6 +168,7 @@ export default async function decorate(block) {
               size: 'medium',
               labelToWishlist: placeholders?.Cart?.MoveToWishlist?.label,
               labelWishlisted: placeholders?.Cart?.RemoveFromWishlist?.label,
+              removeProdFromCart: Cart.updateProductsFromCart,
             })($wishlistToggle);
 
             ctx.appendChild($wishlistToggle);
@@ -277,6 +282,18 @@ export default async function decorate(block) {
     },
     { eager: true },
   );
+
+  events.on('wishlist/alert', ({ action, item }) => {
+    wishlistRender.render(WishlistAlert, {
+      action,
+      item,
+      routeToWishlist,
+    })($notification);
+
+    setTimeout(() => {
+      $notification.innerHTML = '';
+    }, 5000);
+  });
 
   return Promise.resolve();
 }

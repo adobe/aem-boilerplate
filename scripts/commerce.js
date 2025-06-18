@@ -127,7 +127,7 @@ export async function fetchPlaceholders(path) {
       }
 
       // Create new fetch promise
-      const resourceFetchPromise = fetch(url).then(async (response) => {
+      const resourceFetchPromise = fetch(`${url}?sheet=data`).then(async (response) => {
         if (response.ok) {
           const data = await response.json();
           // Cache the response

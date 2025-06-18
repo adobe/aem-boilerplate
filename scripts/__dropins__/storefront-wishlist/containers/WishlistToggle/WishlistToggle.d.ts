@@ -13,6 +13,10 @@ export interface WishlistToggleProps extends HTMLAttributes<HTMLDivElement> {
     labelToWishlist?: string;
     labelWishlisted?: string;
     onClick?: () => void;
+    removeProdFromCart?: (product: {
+        uid: string;
+        quantity: number;
+    }[]) => Promise<any>;
 }
 export declare const WishlistToggle: Container<WishlistToggleProps>;
 //# sourceMappingURL=WishlistToggle.d.ts.map

@@ -18,6 +18,7 @@ export interface Product {
     type: string;
     name: string;
     sku: string;
+    topLevelSku?: string;
     uid: string;
     image: Image;
     stockStatus?: string;

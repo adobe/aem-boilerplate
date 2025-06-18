@@ -1,8 +1,9 @@
 import { FunctionComponent, VNode } from 'preact';
-import { HTMLAttributes } from 'preact/compat';
+import { AnchorHTMLAttributes } from 'preact/compat';
 import { Product } from '../../data/models/product';
 
-export interface ProductItemProps extends HTMLAttributes<HTMLDivElement> {
+export interface ProductItemProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+    productRouteSearch?: (product: Product) => string;
     productItem: Product;
     productImage?: VNode;
     productName?: VNode;

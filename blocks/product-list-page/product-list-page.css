@@ -20,6 +20,22 @@
     width: 100%;
 }
 
+.product-discovery-product-actions {
+    display: flex;
+    flex-direction: row;
+}
+
+.product-discovery-product-actions__add-to-cart button {
+    width: 150px;
+    margin: 0 -10px;
+    padding: var(--spacing-xsmall) var(--spacing-xxsmall);
+
+}
+
+.product-discovery-product-actions__wishlist-toggle button {
+    width: 50px;
+}
+
 @media only screen and (min-width: 768px) {
     .search__left-column {
         display: flex;

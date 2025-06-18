@@ -3,7 +3,7 @@
  *
  * Required contexts: page, storefront, searchResult
  */
-it.skip("is sent on search bar product click", { tags: "@skipSaas" }, () => {
+it("is sent on search bar product click", { tags: "@skipSaas" }, () => {
   cy.visit("/");
   cy.waitForResource("commerce-events-collector.js").then(() => {
     cy.window()
@@ -25,8 +25,8 @@ it.skip("is sent on search bar product click", { tags: "@skipSaas" }, () => {
       cy.spy(win.adobeDataLayer, "push").as("adl");
       cy.get(".nav-search-button").should("be.visible").click();
       cy.wait(2000);
-      cy.get("#search").type("shirt");
-      cy.get(".livesearch .products-container a", { timeout: 10000 })
+      cy.get("#search-bar-input-form").type("shirt");
+      cy.get(".product-discovery--search-bar-results__grid div a .product-discovery--product-item__details", { timeout: 10000 })
         .first()
         .click()
         .then(() => {

@@ -159,20 +159,18 @@ export default async function decorate(block) {
           }
 
           // Wishlist Button (if product is not configurable)
-          if (ctx.item.itemType === 'SimpleCartItem') {
-            const $wishlistToggle = document.createElement('div');
-            $wishlistToggle.classList.add('cart__action--wishlist-toggle');
+          const $wishlistToggle = document.createElement('div');
+          $wishlistToggle.classList.add('cart__action--wishlist-toggle');
 
-            wishlistRender.render(WishlistToggle, {
-              product: ctx.item,
-              size: 'medium',
-              labelToWishlist: placeholders?.Cart?.MoveToWishlist?.label,
-              labelWishlisted: placeholders?.Cart?.RemoveFromWishlist?.label,
-              removeProdFromCart: Cart.updateProductsFromCart,
-            })($wishlistToggle);
+          wishlistRender.render(WishlistToggle, {
+            product: ctx.item,
+            size: 'medium',
+            labelToWishlist: placeholders?.Cart?.MoveToWishlist?.label,
+            labelWishlisted: placeholders?.Cart?.RemoveFromWishlist?.label,
+            removeProdFromCart: Cart.updateProductsFromCart,
+          })($wishlistToggle);
 
-            ctx.appendChild($wishlistToggle);
-          }
+          ctx.appendChild($wishlistToggle);
 
           // Gift Options
           const giftOptions = document.createElement('div');

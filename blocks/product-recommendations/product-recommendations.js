@@ -58,11 +58,7 @@ function getPurchaseHistory(storeViewCode) {
 
 export default async function decorate(block) {
   // Configuration
-  const { typeid: typeId } = readBlockConfig(block);
-  const filters = {};
-  if (typeId) {
-    filters.typeId = typeId;
-  }
+  const { currentsku, recid } = readBlockConfig(block);
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`
@@ -120,8 +116,8 @@ export default async function decorate(block) {
       await Promise.all([
         provider.render(ProductList, {
           routeProduct: getProductLink,
-          pageType: context.pageType,
-          currentSku: context.currentSku,
+          recId: recid,
+          currentSku: currentsku || context.currentSku,
           userViewHistory: context.userViewHistory,
           userPurchaseHistory: context.userPurchaseHistory,
           slots: {

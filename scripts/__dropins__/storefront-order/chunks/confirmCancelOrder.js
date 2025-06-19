@@ -53,4 +53,4 @@ import{h as f}from"./network-error.js";import{f as u,h as _}from"./fetch-graphql
     }
   }
   ${O}
-`,y=async(E,t)=>u(h,{variables:{orderId:E,confirmationKey:t}}).then(async({errors:e,data:r})=>{var i,c,m,R;const n=[...(i=r==null?void 0:r.confirmCancelOrder)!=null&&i.errorV2?[(c=r==null?void 0:r.confirmCancelOrder)==null?void 0:c.errorV2]:[],...e??[]];let o=null;return(m=r==null?void 0:r.confirmCancelOrder)!=null&&m.order&&(o=a((R=r==null?void 0:r.confirmCancelOrder)==null?void 0:R.order),T.emit("order/data",o)),n.length>0?_(n):o});export{y as a,G as c,$ as r};
+`,y=async(E,t)=>u(h,{variables:{orderId:E,confirmationKey:t}}).then(async({errors:e,data:r})=>{var i,c,m,R;const n=[...(i=r==null?void 0:r.confirmCancelOrder)!=null&&i.errorV2?[(c=r==null?void 0:r.confirmCancelOrder)==null?void 0:c.errorV2]:[],...e??[]];let o=null;return(m=r==null?void 0:r.confirmCancelOrder)!=null&&m.order&&(o=a((R=r==null?void 0:r.confirmCancelOrder)==null?void 0:R.order),T.emit("order/data",o)),n.length>0?_(n):o});export{G as a,y as c,$ as r};

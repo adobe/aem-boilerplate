@@ -24,7 +24,7 @@ export interface RecommendationUnitModel {
     unitId: string;
     unitName: string;
 }
-export type PageType = 'CMS' | 'Cart' | 'Category' | 'Checkout' | 'Product';
+export type PageType = 'Product';
 export interface Item {
     uid: string;
     sku: string;

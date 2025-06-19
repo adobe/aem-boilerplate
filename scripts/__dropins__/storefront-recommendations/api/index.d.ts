@@ -17,4 +17,5 @@
 export * from './initialize';
 export * from './fetch-graphql';
 export * from './getRecommendations';
+export * from './publishRecsItemAddToCartClick';
 //# sourceMappingURL=index.d.ts.map

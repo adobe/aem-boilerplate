@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './transform-recommendations';
-//# sourceMappingURL=index.d.ts.map
+export declare const SET_PAYMENT_METHOD_AND_PLACE_ORDER_MUTATION: string;
+//# sourceMappingURL=setPaymentMethodAndPlaceOrderMutation.d.ts.map

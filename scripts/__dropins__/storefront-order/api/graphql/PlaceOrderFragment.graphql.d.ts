@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './transform-recommendations';
-//# sourceMappingURL=index.d.ts.map
+export declare const PLACE_ORDER_FRAGMENT: string;
+//# sourceMappingURL=PlaceOrderFragment.graphql.d.ts.map

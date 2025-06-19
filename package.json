@@ -47,6 +47,6 @@
     "@dropins/storefront-wishlist": "^1.0.0-beta3",
     "@dropins/tools": "1.3.0-beta6",
     "@dropins/storefront-personalization": "~1.0.0-beta1",
-    "@dropins/storefront-product-discovery": "^1.0.0-beta5"
+    "@dropins/storefront-product-discovery": "^1.0.0-beta6"
   }
 }

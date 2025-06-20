@@ -469,24 +469,20 @@ export default async function decorate(block) {
           if (!success) scrollToElement($login);
         }
 
-        const selectedShippingForm = forms[SHIPPING_FORM_NAME];
+        const isFormVisible = (form) => form && form.offsetParent !== null;
 
         if (
           success
-          && shippingFormRef.current
-          && selectedShippingForm
-          && selectedShippingForm.checkVisibility()
+        && shippingFormRef.current
+        && isFormVisible(forms[SHIPPING_FORM_NAME])
         ) {
           success = shippingFormRef.current.handleValidationSubmit(false);
         }
 
-        const selectedBillingForm = forms[BILLING_FORM_NAME];
-
         if (
           success
-          && billingFormRef.current
-          && selectedBillingForm
-          && selectedBillingForm.checkVisibility()
+        && billingFormRef.current
+        && isFormVisible(forms[BILLING_FORM_NAME])
         ) {
           success = billingFormRef.current.handleValidationSubmit(false);
         }

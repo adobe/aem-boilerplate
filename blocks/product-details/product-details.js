@@ -59,8 +59,8 @@ export default async function decorate(block) {
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`
+    <div class="product-details__alert"></div>
     <div class="product-details__wrapper">
-      <div class="product-details__alert"></div>
       <div class="product-details__left-column">
         <div class="product-details__gallery"></div>
       </div>
@@ -317,6 +317,13 @@ export default async function decorate(block) {
     setTimeout(() => {
       $alert.innerHTML = '';
     }, 5000);
+
+    setTimeout(() => {
+      $alert.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }, 0);
   });
 
   // --- Add new event listener for cart/data ---

@@ -46,6 +46,15 @@ const showAuthModal = (event) => {
   });
 };
 
+events.on('wishlist/alert', () => {
+  setTimeout(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, 0);
+});
+
 export default async function decorate(block) {
   const {
     'start-shopping-url': startShoppingURL = '',

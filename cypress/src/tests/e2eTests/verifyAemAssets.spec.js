@@ -7,7 +7,7 @@ const ASSETS_ENABLED_KEY = 'public.default.commerce-assets-enabled';
 const COMMERCE_CORE_ENDPOINT_KEY = 'public.default.commerce-core-endpoint';
 const COMMERCE_ENDPOINT_KEY = 'public.default.commerce-endpoint';
 
-describe('AEM Assets enabled', () => {
+describe('AEM Assets enabled', { tags: '@skipSaas' }, () => {
   let aemAssetsEnvironment;
   let envConfig;
 
@@ -360,7 +360,7 @@ describe('AEM Assets enabled', () => {
     })
   });
 
-  it('[Recommendations Dropin]: should load and show AEM Assets optimized images', () => {
+  it('[Recommendations Dropin]: should load and show AEM Assets optimized images', { tags: '@skipPaas' }, () => {
     // Visit products to populate "Recently Viewed" recommendations.
     // Wait a bit to ensure data is collected by Adobe Analytics.
     visitWithEagerImages('/products/gift-packaging/ADB102');

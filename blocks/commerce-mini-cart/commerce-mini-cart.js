@@ -22,8 +22,8 @@ export default async function decorate(block) {
   const placeholders = await fetchPlaceholders();
 
   const MESSAGES = {
-    ADDED: placeholders?.Cart?.MiniCart?.Message?.added,
-    UPDATED: placeholders?.Cart?.MiniCart?.Message?.updated,
+    ADDED: placeholders?.Global?.MiniCartAddedMessage,
+    UPDATED: placeholders?.Global?.MiniCartUpdatedMessage,
   };
 
   // Create a container for the update message

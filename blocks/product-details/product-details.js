@@ -36,8 +36,8 @@ import { rootLink } from '../../scripts/scripts.js';
 // Function to update the Add to Cart button text
 function updateAddToCartButtonText(addToCartInstance, inCart, labels) {
   const buttonText = inCart
-    ? labels.PDP?.Product?.UpdateInCart?.label
-    : labels.PDP?.Product?.AddToCart?.label;
+    ? labels.Global?.UpdateProductInCart
+    : labels.Global?.AddProductToCart;
   if (addToCartInstance) {
     addToCartInstance.setProps((prev) => ({
       ...prev,
@@ -196,12 +196,12 @@ export default async function decorate(block) {
 
   // Configuration – Button - Add to Cart
   const addToCart = await UI.render(Button, {
-    children: labels.PDP?.Product?.AddToCart?.label,
+    children: labels.Global?.AddProductToCart,
     icon: h(Icon, { source: 'Cart' }),
     onClick: async () => {
       const buttonActionText = isUpdateMode
-        ? labels.Custom?.UpdatingInCart?.label
-        : labels.Custom?.AddingToCart?.label;
+        ? labels.Global?.UpdatingInCart
+        : labels.Global?.AddingToCart;
       try {
         addToCart.setProps((prev) => ({
           ...prev,

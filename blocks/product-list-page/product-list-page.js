@@ -10,12 +10,15 @@ import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js
 import * as cartApi from '@dropins/storefront-cart/api.js';
 import { rootLink } from '../../scripts/scripts.js';
 import { readBlockConfig } from '../../scripts/aem.js';
+import { fetchPlaceholders } from '../../scripts/commerce.js';
 
 // Initializers
 import '../../scripts/initializers/search.js';
 import '../../scripts/initializers/wishlist.js';
 
 export default async function decorate(block) {
+  const labels = await fetchPlaceholders();
+
   const config = readBlockConfig(block);
 
   const fragment = document.createRange().createContextualFragment(`
@@ -44,7 +47,7 @@ export default async function decorate(block) {
     if (product.typename === 'ComplexProductView') {
       const button = document.createElement('div');
       UI.render(Button, {
-        children: 'Add to Cart',
+        children: labels.Global?.AddProductToCart,
         icon: Icon({ source: 'Cart' }),
         onClick: () => {
           window.location.href = rootLink(`/products/${product.urlKey}/${product.sku}`);
@@ -55,7 +58,7 @@ export default async function decorate(block) {
     }
     const button = document.createElement('div');
     UI.render(Button, {
-      children: 'Add to Cart',
+      children: labels.Global?.AddProductToCart,
       icon: Icon({ source: 'Cart' }),
       onClick: () => cartApi.addProductsToCart([{ sku: product.sku, quantity: 1 }]),
       variant: 'primary',

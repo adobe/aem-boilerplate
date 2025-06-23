@@ -17,6 +17,7 @@ import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { readBlockConfig } from '../../scripts/aem.js';
 import { rootLink } from '../../scripts/scripts.js';
+import { fetchPlaceholders } from '../../scripts/commerce.js';
 
 // Initializers
 import '../../scripts/initializers/recommendations.js';
@@ -57,6 +58,8 @@ function getPurchaseHistory(storeViewCode) {
 }
 
 export default async function decorate(block) {
+  const labels = await fetchPlaceholders();
+
   // Configuration
   const { currentsku, recid } = readBlockConfig(block);
 
@@ -132,8 +135,7 @@ export default async function decorate(block) {
               if (ctx.item.itemType === 'SimpleProductView') {
                 // Add to Cart Button
                 UI.render(Button, {
-                  children:
-                    ctx.dictionary.Recommendations.ProductList.addToCart,
+                  children: labels.Global?.AddProductToCart,
                   icon: Icon({ source: 'Cart' }),
                   onClick: () => cartApi.addProductsToCart([{ sku: ctx.item.sku, quantity: 1 }]),
                   variant: 'primary',
@@ -142,7 +144,7 @@ export default async function decorate(block) {
                 // Select Options Button
                 UI.render(Button, {
                   children:
-                    ctx.dictionary.Recommendations.ProductList.selectOptions,
+                    labels.Global?.SelectProductOptions,
                   href: rootLink(`/products/${ctx.item.urlKey}/${ctx.item.sku}`),
                   variant: 'tertiary',
                 })(addToCart);

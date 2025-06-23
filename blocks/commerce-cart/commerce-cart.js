@@ -148,7 +148,7 @@ export default async function decorate(block) {
             params.append('itemUid', ctx.item.uid);
 
             UI.render(Button, {
-              children: placeholders?.Cart?.EditButton?.label,
+              children: placeholders?.Global?.CartEditButton,
               variant: 'tertiary',
               size: 'medium',
               icon: h(Icon, { source: 'Edit' }),
@@ -165,8 +165,8 @@ export default async function decorate(block) {
           wishlistRender.render(WishlistToggle, {
             product: ctx.item,
             size: 'medium',
-            labelToWishlist: placeholders?.Cart?.MoveToWishlist?.label,
-            labelWishlisted: placeholders?.Cart?.RemoveFromWishlist?.label,
+            labelToWishlist: placeholders?.Global?.CartMoveToWishlist,
+            labelWishlisted: placeholders?.Global?.CartRemoveFromWishlist,
             removeProdFromCart: Cart.updateProductsFromCart,
           })($wishlistToggle);
 
@@ -250,8 +250,8 @@ export default async function decorate(block) {
           const updatedItem = cartData.items.find((item) => item.uid === itemUid);
           const productName = updatedItem.name
             || updatedItem.product?.name
-            || placeholders?.Cart?.UpdatedProductName;
-          const message = placeholders?.Cart?.UpdatedProductMessage?.replace('{product}', productName);
+            || placeholders?.Global?.CartUpdatedProductName;
+          const message = placeholders?.Global?.CartUpdatedProductMessage?.replace('{product}', productName);
 
           UI.render(InLineAlert, {
             heading: message,

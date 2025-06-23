@@ -8,6 +8,7 @@ import {
   setFetchGraphQlHeader,
 } from '@dropins/tools/fetch-graphql.js';
 import * as authApi from '@dropins/storefront-auth/api.js';
+import { fetchPlaceholders } from '../commerce.js';
 
 export const getUserTokenCookie = () => getCookie('auth_dropin_user_token');
 
@@ -47,6 +48,9 @@ export default async function initializeDropins() {
     events.enableLogger(true);
     // Set Fetch Endpoint (Global)
     setEndpoint(getConfigValue('commerce-core-endpoint'));
+
+    // Fetch global placeholders
+    await fetchPlaceholders('placeholders/global.json');
 
     // Initialize Global Drop-ins
     await import('./auth.js');

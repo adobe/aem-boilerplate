@@ -14,7 +14,7 @@ export default async function decorate(block) {
 
     const link = document.createElement('a');
 
-    link.innerText = placeholders?.Custom?.CommerceOrderHeader?.backToAllOrders;
+    link.innerText = placeholders?.Global?.CommerceOrderHeader?.backToAllOrders;
     link.href = rootLink(CUSTOMER_ORDERS_PATH);
     link.classList.add('orders-list-link');
 

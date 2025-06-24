@@ -16,8 +16,7 @@ import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js
 // Block-level
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { readBlockConfig } from '../../scripts/aem.js';
-import { rootLink } from '../../scripts/scripts.js';
-import { fetchPlaceholders } from '../../scripts/commerce.js';
+import { fetchPlaceholders, rootLink } from '../../scripts/commerce.js';
 
 // Initializers
 import '../../scripts/initializers/recommendations.js';

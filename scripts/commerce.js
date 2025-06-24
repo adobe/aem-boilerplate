@@ -3,9 +3,12 @@ import {
   getHeaders,
   getConfigValue,
   getRootPath,
+  initializeConfig,
+  getListOfRootPaths,
 } from '@dropins/tools/lib/aem/configs.js';
-import { getMetadata } from './aem.js';
-import { getConsent } from './scripts.js';
+import { events } from '@dropins/tools/event-bus.js';
+import { getMetadata, readBlockConfig } from './aem.js';
+import initializeDropins from './initializers/index.js';
 
 // PATH CONSTANTS
 export const SUPPORT_PATH = '/support';
@@ -59,6 +62,287 @@ export const authPrivacyPolicyConsentSlot = {
     ctx.appendChild(wrapper);
   },
 };
+
+/**
+ * Preloads a file with specified attributes
+ * @param {string} href - The URL to preload
+ * @param {string} as - The type of resource being preloaded
+ */
+export function preloadFile(href, as) {
+  const link = document.createElement('link');
+  link.rel = 'preload';
+  link.as = as;
+  link.crossOrigin = 'anonymous';
+  link.href = href;
+  document.head.appendChild(link);
+}
+
+/**
+ * Notifies dropins about the current loading state.
+ * @param {string} event The loading state to notify
+ */
+function notifyUI(event) {
+  // skip if the event was already sent
+  if (events.lastPayload(`aem/${event}`) === event) return;
+  // notify dropins about the current loading state
+  const handleEmit = () => events.emit(`aem/${event}`);
+  // listen for prerender event
+  document.addEventListener('prerenderingchange', handleEmit, { once: true });
+  // emit the event immediately
+  handleEmit();
+}
+
+/**
+ * Detects the page type based on DOM elements
+ * @returns {string} The detected page type
+ */
+function detectPageType() {
+  if (document.body.querySelector('main .product-details')) {
+    return 'Product';
+  } if (document.body.querySelector('main .product-list-page')) {
+    return 'Category';
+  } if (document.body.querySelector('main .product-list-page-custom')) {
+    return 'Category';
+  } if (document.body.querySelector('main .commerce-cart')) {
+    return 'Cart';
+  } if (document.body.querySelector('main .commerce-checkout')) {
+    return 'Checkout';
+  }
+  return 'CMS';
+}
+
+/**
+ * Handles commerce-specific page type initialization
+ * @param {string} pageType - The detected page type
+ */
+async function handleCommercePageType(pageType) {
+  if (pageType === 'Product') {
+    // initialize pdp
+    await import('./initializers/pdp.js');
+  } else if (pageType === 'Category') {
+    if (document.body.querySelector('main .product-list-page')) {
+      preloadFile('/scripts/widgets/search.js', 'script');
+    } else if (document.body.querySelector('main .product-list-page-custom')) {
+      // TODO Remove this bracket if not using custom PLP
+      const plpBlock = document.body.querySelector('main .product-list-page-custom');
+      const { category, urlpath } = readBlockConfig(plpBlock);
+
+      if (category && urlpath) {
+        try {
+          const module = await import('../blocks/product-list-page-custom/product-list-page-custom.js');
+          if (module.preloadCategory && typeof module.preloadCategory === 'function') {
+            module.preloadCategory({ id: category, urlPath: urlpath });
+          } else {
+            console.warn('preloadCategory function not found in product-list-page-custom module');
+          }
+        } catch (error) {
+          console.error('Failed to import or execute preloadCategory:', error);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Initializes Adobe Data Layer for commerce
+ * @param {string} pageType - The detected page type
+ */
+function initializeAdobeDataLayer(pageType) {
+  window.adobeDataLayer = window.adobeDataLayer || [];
+
+  window.adobeDataLayer.push(
+    {
+      pageContext: {
+        pageType,
+        pageName: document.title,
+        eventType: 'visibilityHidden',
+        maxXOffset: 0,
+        maxYOffset: 0,
+        minXOffset: 0,
+        minYOffset: 0,
+      },
+    },
+    {
+      shoppingCartContext: {
+        totalQuantity: 0,
+      },
+    },
+  );
+  window.adobeDataLayer.push((dl) => {
+    dl.push({ event: 'page-view', eventInfo: { ...dl.getState() } });
+  });
+}
+
+/**
+ * Fetches and merges index data from multiple sources with intelligent caching.
+ * @param {string} indexFile - The index file to fetch
+ * @param {number} pageSize - The page size for pagination
+ * @returns {Promise<Object>} A promise that resolves the index object
+ */
+export async function fetchIndex(indexFile, pageSize = 500) {
+  const handleIndex = async (offset) => {
+    const resp = await fetch(`/${indexFile}.json?limit=${pageSize}&offset=${offset}`);
+    const json = await resp.json();
+
+    const newIndex = {
+      complete: (json.limit + json.offset) === json.total,
+      offset: json.offset + pageSize,
+      promise: null,
+      data: [...window.index[indexFile].data, ...json.data],
+    };
+
+    return newIndex;
+  };
+
+  window.index = window.index || {};
+  window.index[indexFile] = window.index[indexFile] || {
+    data: [],
+    offset: 0,
+    complete: false,
+    promise: null,
+  };
+
+  // Return index if already loaded
+  if (window.index[indexFile].complete) {
+    return window.index[indexFile];
+  }
+
+  // Return promise if index is currently loading
+  if (window.index[indexFile].promise) {
+    return window.index[indexFile].promise;
+  }
+
+  window.index[indexFile].promise = handleIndex(window.index[indexFile].offset);
+  const newIndex = await (window.index[indexFile].promise);
+  window.index[indexFile] = newIndex;
+
+  return newIndex;
+}
+
+/**
+ * Loads commerce-specific eager content
+ */
+export async function loadCommerceEager() {
+  const pageType = detectPageType();
+  initializeAdobeDataLayer(pageType);
+  await handleCommercePageType(pageType);
+
+  // notify that the page is ready for eager loading
+  notifyUI('lcp');
+}
+
+/**
+ * Decorates links in the main element.
+ * @param {Element} main - The main element
+ */
+export function decorateLinks(main) {
+  const root = getRootPath();
+  const roots = getListOfRootPaths();
+
+  main.querySelectorAll('a').forEach((a) => {
+    // If we are in the root, do nothing
+    if (roots.length === 0) return;
+
+    try {
+      const url = new URL(a.href);
+      const {
+        origin,
+        pathname,
+        search,
+        hash,
+      } = url;
+
+      // Skip localization if #nolocal flag is present
+      if (hash === '#nolocal') {
+        url.hash = '';
+        a.href = url.toString();
+        return;
+      }
+
+      // if the links belongs to another store, do nothing
+      if (roots.some((r) => r !== root && pathname.startsWith(r))) return;
+
+      // If the link is already localized, do nothing
+      if (origin !== window.location.origin || pathname.startsWith(root)) return;
+      a.href = new URL(`${origin}${root}${pathname.replace(/^\//, '')}${search}${hash}`);
+    } catch {
+      console.warn('Could not make localized link');
+    }
+  });
+}
+
+/**
+ * Loads commerce-specific lazy content
+ */
+export async function loadCommerceLazy() {
+  // Initialize modal functionality
+  autolinkModals(document);
+
+  // Initialize Adobe Client Data Layer
+  await import('./acdl/adobe-client-data-layer.min.js');
+
+  // Initialize Adobe Client Data Layer validation
+  if (sessionStorage.getItem('acdl:debug')) {
+    import('./acdl/validate.js');
+  }
+
+  // Track history
+  trackHistory();
+}
+
+/**
+ * Initializes commerce configuration
+ */
+export async function initializeCommerce() {
+  initializeConfig(await getConfigFromSession());
+  return initializeDropins();
+}
+
+/**
+ * Decorates links.
+ * @param {string} [link] url to be localized
+ * @returns {string} - The localized link
+ */
+export function rootLink(link) {
+  const root = getRootPath().replace(/\/$/, '');
+
+  // If the link is already localized, do nothing
+  if (link.startsWith(root)) return link;
+  return `${root}${link}`;
+}
+
+/**
+ * Decorates Columns Template to the main element.
+ * @param {Element} doc The document element
+ */
+function buildTemplateColumns(doc) {
+  const columns = doc.querySelectorAll('main > div.section[data-column-width]');
+
+  columns.forEach((column) => {
+    const columnWidth = column.getAttribute('data-column-width');
+    const gap = column.getAttribute('data-gap');
+
+    if (columnWidth) {
+      column.style.setProperty('--column-width', columnWidth);
+      column.removeAttribute('data-column-width');
+    }
+
+    if (gap) {
+      column.style.setProperty('--gap', `var(--spacing-${gap.toLocaleLowerCase()})`);
+      column.removeAttribute('data-gap');
+    }
+  });
+}
+
+/**
+ * Applies templates to the document.
+ * @param {Element} doc The document element
+ */
+export function applyTemplates(doc) {
+  if (doc.body.classList.contains('columns')) {
+    buildTemplateColumns(doc);
+  }
+}
 
 /**
  * Fetches and merges placeholder data from multiple sources with intelligent caching.
@@ -517,4 +801,30 @@ export function mapProductAcdl(product) {
  */
 export function checkIsAuthenticated() {
   return !!getCookie('auth_dropin_user_token') ?? false;
+}
+
+/**
+ * Check if consent was given for a specific topic.
+ * @param {*} topic Topic identifier
+ * @returns {boolean} True if consent was given
+ */
+export function getConsent(_topic) {
+  console.warn('getConsent not implemented');
+  return true;
+}
+
+/**
+ * Automatically links modal functionality to elements
+ * @param {Element} element - The element to attach modal functionality to
+ */
+function autolinkModals(element) {
+  element.addEventListener('click', async (e) => {
+    const origin = e.target.closest('a');
+
+    if (origin && origin.href && origin.href.includes('/modals/')) {
+      e.preventDefault();
+      const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
+      openModal(origin.href);
+    }
+  });
 }

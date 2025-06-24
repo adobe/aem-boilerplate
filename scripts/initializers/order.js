@@ -1,6 +1,6 @@
-import { getHeaders } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { initializers } from '@dropins/tools/initializer.js';
+import { getHeaders } from '@dropins/tools/lib/aem/configs.js';
 import { initialize, setFetchGraphQlHeaders } from '@dropins/storefront-order/api.js';
 import { initializeDropin } from './index.js';
 import {
@@ -14,9 +14,11 @@ import {
   CREATE_RETURN_PATH,
   CUSTOMER_ORDERS_PATH,
   ORDER_STATUS_PATH,
-  CUSTOMER_PATH, SALES_GUEST_VIEW_PATH, SALES_ORDER_VIEW_PATH,
+  CUSTOMER_PATH,
+  SALES_GUEST_VIEW_PATH,
+  SALES_ORDER_VIEW_PATH,
+  rootLink,
 } from '../commerce.js';
-import { rootLink } from '../scripts.js';
 
 await initializeDropin(async () => {
   const { pathname, searchParams } = new URL(window.location.href);

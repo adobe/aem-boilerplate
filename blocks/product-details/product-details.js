@@ -25,13 +25,16 @@ import ProductAttributes from '@dropins/storefront-pdp/containers/ProductAttribu
 import ProductGallery from '@dropins/storefront-pdp/containers/ProductGallery.js';
 
 // Libs
-import { fetchPlaceholders, setJsonLd } from '../../scripts/commerce.js';
+import {
+  rootLink,
+  setJsonLd,
+  fetchPlaceholders,
+} from '../../scripts/commerce.js';
 
 // Initializers
 import { IMAGES_SIZES } from '../../scripts/initializers/pdp.js';
 import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
-import { rootLink } from '../../scripts/scripts.js';
 
 // Function to update the Add to Cart button text
 function updateAddToCartButtonText(addToCartInstance, inCart, labels) {

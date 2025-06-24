@@ -1,4 +1,3 @@
-/* eslint-disable import/no-unresolved */
 import { TargetedBlock } from '@dropins/storefront-personalization/containers/TargetedBlock.js';
 import { render } from '@dropins/storefront-personalization/render.js';
 import { readBlockConfig } from '../../scripts/aem.js';

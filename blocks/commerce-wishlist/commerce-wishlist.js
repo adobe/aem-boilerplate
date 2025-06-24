@@ -4,7 +4,7 @@ import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { AuthCombine } from '@dropins/storefront-auth/containers/AuthCombine.js';
 import { events } from '@dropins/tools/event-bus.js';
 import Wishlist from '@dropins/storefront-wishlist/containers/Wishlist.js';
-import { rootLink } from '../../scripts/scripts.js';
+import { rootLink } from '../../scripts/commerce.js';
 
 // Initialize
 import '../../scripts/initializers/wishlist.js';

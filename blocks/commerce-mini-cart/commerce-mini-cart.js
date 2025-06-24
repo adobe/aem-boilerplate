@@ -7,8 +7,7 @@ import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import '../../scripts/initializers/cart.js';
 
 import { readBlockConfig } from '../../scripts/aem.js';
-import { fetchPlaceholders } from '../../scripts/commerce.js';
-import { rootLink } from '../../scripts/scripts.js';
+import { fetchPlaceholders, rootLink } from '../../scripts/commerce.js';
 
 export default async function decorate(block) {
   const {

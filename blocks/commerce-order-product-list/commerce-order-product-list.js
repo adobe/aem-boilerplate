@@ -6,7 +6,7 @@ import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 
 // Initialize
 import '../../scripts/initializers/order.js';
-import { rootLink } from '../../scripts/scripts.js';
+import { rootLink } from '../../scripts/commerce.js';
 
 export default async function decorate(block) {
   const getProductLink = (product) => rootLink(`/products/${product.productUrlKey}/${product.productSku}`);

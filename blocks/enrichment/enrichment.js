@@ -1,6 +1,5 @@
 import { readBlockConfig } from '../../scripts/aem.js';
-import { fetchIndex } from '../../scripts/scripts.js';
-import { getSkuFromUrl } from '../../scripts/commerce.js';
+import { getSkuFromUrl, fetchIndex } from '../../scripts/commerce.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 export default async function decorate(block) {

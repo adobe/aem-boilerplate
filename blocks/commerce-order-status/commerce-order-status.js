@@ -1,10 +1,14 @@
 import { render as orderRenderer } from '@dropins/storefront-order/render.js';
 import { OrderStatus } from '@dropins/storefront-order/containers/OrderStatus.js';
-import { CREATE_RETURN_PATH, CUSTOMER_CREATE_RETURN_PATH, checkIsAuthenticated } from '../../scripts/commerce.js';
+import {
+  CREATE_RETURN_PATH,
+  CUSTOMER_CREATE_RETURN_PATH,
+  checkIsAuthenticated,
+  rootLink,
+} from '../../scripts/commerce.js';
 
 // Initialize
 import '../../scripts/initializers/order.js';
-import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   await orderRenderer.render(OrderStatus, {

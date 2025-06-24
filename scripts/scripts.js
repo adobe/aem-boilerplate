@@ -1,22 +1,24 @@
-import { initializeConfig, getRootPath, getListOfRootPaths } from '@dropins/tools/lib/aem/configs.js';
-import { events } from '@dropins/tools/event-bus.js';
 import {
   buildBlock,
-  decorateBlocks,
+  loadHeader,
+  loadFooter,
   decorateButtons,
   decorateIcons,
   decorateSections,
+  decorateBlocks,
   decorateTemplateAndTheme,
-  loadFooter,
-  loadHeader,
-  readBlockConfig,
   waitForFirstImage,
   loadSection,
   loadSections,
   loadCSS,
 } from './aem.js';
-import { getConfigFromSession, trackHistory } from './commerce.js';
-import initializeDropins from './initializers/index.js';
+import {
+  loadCommerceEager,
+  loadCommerceLazy,
+  initializeCommerce,
+  applyTemplates,
+  decorateLinks,
+} from './commerce.js';
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -45,18 +47,6 @@ async function loadFonts() {
   }
 }
 
-function autolinkModals(element) {
-  element.addEventListener('click', async (e) => {
-    const origin = e.target.closest('a');
-
-    if (origin && origin.href && origin.href.includes('/modals/')) {
-      e.preventDefault();
-      const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
-      openModal(origin.href);
-    }
-  });
-}
-
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
@@ -67,50 +57,6 @@ function buildAutoBlocks(main) {
   } catch (error) {
     console.error('Auto Blocking failed', error);
   }
-}
-
-/**
- * Decorate Columns Template to the main element.
- * @param {Element} main The container element
- */
-function buildTemplateColumns(doc) {
-  const columns = doc.querySelectorAll('main > div.section[data-column-width]');
-
-  columns.forEach((column) => {
-    const columnWidth = column.getAttribute('data-column-width');
-    const gap = column.getAttribute('data-gap');
-
-    if (columnWidth) {
-      column.style.setProperty('--column-width', columnWidth);
-      column.removeAttribute('data-column-width');
-    }
-
-    if (gap) {
-      column.style.setProperty('--gap', `var(--spacing-${gap.toLocaleLowerCase()})`);
-      column.removeAttribute('data-gap');
-    }
-  });
-}
-
-async function applyTemplates(doc) {
-  if (doc.body.classList.contains('columns')) {
-    buildTemplateColumns(doc);
-  }
-}
-
-/**
- * Notifies dropins about the current loading state.
- * @param {string} state The loading state to notify
- */
-function notifyUI(event) {
-  // skip if the event was already sent
-  if (events.lastPayload(`aem/${event}`) === event) return;
-  // notify dropins about the current loading state
-  const handleEmit = () => events.emit(`aem/${event}`);
-  // listen for prerender event
-  document.addEventListener('prerenderingchange', handleEmit, { once: true });
-  // emit the event immediately
-  handleEmit();
 }
 
 /**
@@ -127,56 +73,6 @@ export function decorateMain(main) {
 }
 
 /**
- * Decorates all links in scope of element
- *
- * @param {HTMLElement} main
- */
-function decorateLinks(main) {
-  const root = getRootPath();
-  const roots = getListOfRootPaths();
-
-  main.querySelectorAll('a').forEach((a) => {
-    // If we are in the root, do nothing
-    if (roots.length === 0) return;
-
-    try {
-      const url = new URL(a.href);
-      const {
-        origin,
-        pathname,
-        search,
-        hash,
-      } = url;
-
-      // Skip localization if #nolocal flag is present
-      if (hash === '#nolocal') {
-        url.hash = '';
-        a.href = url.toString();
-        return;
-      }
-
-      // if the links belongs to another store, do nothing
-      if (roots.some((r) => r !== root && pathname.startsWith(r))) return;
-
-      // If the link is already localized, do nothing
-      if (origin !== window.location.origin || pathname.startsWith(root)) return;
-      a.href = new URL(`${origin}${root}${pathname.replace(/^\//, '')}${search}${hash}`);
-    } catch {
-      console.warn('Could not make localized link');
-    }
-  });
-}
-
-function preloadFile(href, as) {
-  const link = document.createElement('link');
-  link.rel = 'preload';
-  link.as = as;
-  link.crossOrigin = 'anonymous';
-  link.href = href;
-  document.head.appendChild(link);
-}
-
-/**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
@@ -184,92 +80,15 @@ async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
 
-  await initializeDropins();
-
-  window.adobeDataLayer = window.adobeDataLayer || [];
-
-  let pageType = 'CMS';
-  if (document.body.querySelector('main .product-details')) {
-    pageType = 'Product';
-
-    // initialize pdp
-    await import('./initializers/pdp.js');
-
-    // Preload PDP Dropins assets
-    preloadFile('/scripts/__dropins__/storefront-pdp/api.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/render.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductHeader.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductPrice.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductShortDescription.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductOptions.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductQuantity.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductDescription.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductAttributes.js', 'script');
-    preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductGallery.js', 'script');
-  } else if (document.body.querySelector('main .product-list-page')) {
-    pageType = 'Category';
-    preloadFile('/scripts/widgets/search.js', 'script');
-  } else if (document.body.querySelector('main .product-list-page-custom')) {
-    // TODO Remove this bracket if not using custom PLP
-    pageType = 'Category';
-    const plpBlock = document.body.querySelector('main .product-list-page-custom');
-    const { category, urlpath } = readBlockConfig(plpBlock);
-
-    if (category && urlpath) {
-      try {
-        const module = await import('../blocks/product-list-page-custom/product-list-page-custom.js');
-        if (module.preloadCategory && typeof module.preloadCategory === 'function') {
-          module.preloadCategory({ id: category, urlPath: urlpath });
-        } else {
-          console.warn('preloadCategory function not found in product-list-page-custom module');
-        }
-      } catch (error) {
-        console.error('Failed to import or execute preloadCategory:', error);
-      }
-    }
-  } else if (document.body.querySelector('main .commerce-cart')) {
-    pageType = 'Cart';
-  } else if (document.body.querySelector('main .commerce-checkout')) {
-    pageType = 'Checkout';
-  }
-
-  window.adobeDataLayer.push(
-    {
-      pageContext: {
-        pageType,
-        pageName: document.title,
-        eventType: 'visibilityHidden',
-        maxXOffset: 0,
-        maxYOffset: 0,
-        minXOffset: 0,
-        minYOffset: 0,
-      },
-    },
-    {
-      shoppingCartContext: {
-        totalQuantity: 0,
-      },
-    },
-  );
-  window.adobeDataLayer.push((dl) => {
-    dl.push({ event: 'page-view', eventInfo: { ...dl.getState() } });
-  });
-
   const main = doc.querySelector('main');
   if (main) {
-    // Main Decorations
     decorateMain(main);
-
-    // Template Decorations
-    await applyTemplates(doc);
-
-    // Load LCP blocks
-    await loadSection(main.querySelector('.section'), waitForFirstImage);
+    applyTemplates(doc);
+    await initializeCommerce();
+    await loadCommerceEager();
     document.body.classList.add('appear');
+    await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
-
-  // notify that the page is ready for eager loading
-  notifyUI('lcp');
 
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
@@ -286,8 +105,6 @@ async function loadEager(doc) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
-  autolinkModals(doc);
-
   const main = doc.querySelector('main');
   await loadSections(main);
 
@@ -295,19 +112,10 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  await Promise.all([
-    loadHeader(doc.querySelector('header')),
-    loadFooter(doc.querySelector('footer')),
-    loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`),
-    loadFonts(),
-    import('./acdl/adobe-client-data-layer.min.js'),
-  ]);
+  loadHeader(doc.querySelector('header'));
+  loadFooter(doc.querySelector('footer'));
 
-  if (sessionStorage.getItem('acdl:debug')) {
-    import('./acdl/validate.js');
-  }
-
-  trackHistory();
+  loadCommerceLazy();
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
@@ -322,72 +130,7 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
-export async function fetchIndex(indexFile, pageSize = 500) {
-  const handleIndex = async (offset) => {
-    const resp = await fetch(`/${indexFile}.json?limit=${pageSize}&offset=${offset}`);
-    const json = await resp.json();
-
-    const newIndex = {
-      complete: (json.limit + json.offset) === json.total,
-      offset: json.offset + pageSize,
-      promise: null,
-      data: [...window.index[indexFile].data, ...json.data],
-    };
-
-    return newIndex;
-  };
-
-  window.index = window.index || {};
-  window.index[indexFile] = window.index[indexFile] || {
-    data: [],
-    offset: 0,
-    complete: false,
-    promise: null,
-  };
-
-  // Return index if already loaded
-  if (window.index[indexFile].complete) {
-    return window.index[indexFile];
-  }
-
-  // Return promise if index is currently loading
-  if (window.index[indexFile].promise) {
-    return window.index[indexFile].promise;
-  }
-
-  window.index[indexFile].promise = handleIndex(window.index[indexFile].offset);
-  const newIndex = await (window.index[indexFile].promise);
-  window.index[indexFile] = newIndex;
-
-  return newIndex;
-}
-
-/**
- * Decorates links.
- * @param {string} [link] url to be localized
- * @returns {string} - The localized link
- */
-export function rootLink(link) {
-  const root = getRootPath().replace(/\/$/, '');
-
-  // If the link is already localized, do nothing
-  if (link.startsWith(root)) return link;
-  return `${root}${link}`;
-}
-
-/**
- * Check if consent was given for a specific topic.
- * @param {*} topic Topic identifier
- * @returns {boolean} True if consent was given
- */
-// eslint-disable-next-line no-unused-vars
-export function getConsent(topic) {
-  console.warn('getConsent not implemented');
-  return true;
-}
-
 async function loadPage() {
-  await initializeConfig(await getConfigFromSession());
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();

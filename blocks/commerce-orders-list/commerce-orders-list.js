@@ -9,11 +9,11 @@ import {
   CUSTOMER_ORDERS_PATH,
   CUSTOMER_RETURN_DETAILS_PATH,
   UPS_TRACKING_URL,
+  rootLink,
 } from '../../scripts/commerce.js';
 
 // Initialize
 import '../../scripts/initializers/account.js';
-import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const { 'minified-view': minifiedViewConfig = 'false' } = readBlockConfig(block);

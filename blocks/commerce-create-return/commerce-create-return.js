@@ -1,8 +1,12 @@
 import { render as orderRenderer } from '@dropins/storefront-order/render.js';
 import { CreateReturn } from '@dropins/storefront-order/containers/CreateReturn.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
-import { ORDER_DETAILS_PATH, CUSTOMER_ORDER_DETAILS_PATH, checkIsAuthenticated } from '../../scripts/commerce.js';
-import { rootLink } from '../../scripts/scripts.js';
+import {
+  ORDER_DETAILS_PATH,
+  CUSTOMER_ORDER_DETAILS_PATH,
+  checkIsAuthenticated,
+  rootLink,
+} from '../../scripts/commerce.js';
 
 // Initialize
 import '../../scripts/initializers/order.js';

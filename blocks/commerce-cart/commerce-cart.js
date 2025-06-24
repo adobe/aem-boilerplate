@@ -30,8 +30,7 @@ import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
 
 import { readBlockConfig } from '../../scripts/aem.js';
-import { rootLink } from '../../scripts/scripts.js';
-import { fetchPlaceholders } from '../../scripts/commerce.js';
+import { rootLink, fetchPlaceholders } from '../../scripts/commerce.js';
 
 export default async function decorate(block) {
   // Configuration

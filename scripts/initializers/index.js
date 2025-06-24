@@ -60,8 +60,10 @@ export default async function initializeDropins() {
 
     events.on('aem/lcp', async () => {
       // Recaptcha
-      await import('@dropins/tools/recaptcha.js').then(({ setConfig }) => {
-        setConfig();
+      await import('@dropins/tools/recaptcha.js').then((recaptcha) => {
+        recaptcha.enableLogger(true);
+        recaptcha.setEndpoint(getConfigValue('commerce-core-endpoint'));
+        return recaptcha.setConfig();
       });
     });
   };

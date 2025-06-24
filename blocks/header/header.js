@@ -384,7 +384,7 @@ export default async function decorate(block) {
           })(searchInput),
           // Render the SearchBarResult component
           render.render(SearchBarResults, {
-            productRouteSearch: ({ urlKey, sku }) => rootLink(`products/${urlKey}/${sku}`),
+            productRouteSearch: ({ urlKey, sku }) => rootLink(`/products/${urlKey}/${sku}`),
             routeSearch: (searchQuery) => {
               const url = `${rootLink('/search')}?q=${encodeURIComponent(
                 searchQuery,

@@ -17,7 +17,6 @@ export type FormRef = {
     isDataValid: boolean;
 };
 export interface FormProps {
-    isWaitingForResponse?: boolean;
     showSaveCheckBox?: boolean;
     saveCheckBoxAddress?: boolean;
     handleSaveCheckBoxAddress?: (event: Event) => void;

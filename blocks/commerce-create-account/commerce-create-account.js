@@ -5,8 +5,8 @@ import {
   CUSTOMER_LOGIN_PATH,
   checkIsAuthenticated,
   authPrivacyPolicyConsentSlot,
+  rootLink,
 } from '../../scripts/commerce.js';
-import { rootLink } from '../../scripts/scripts.js';
 
 // Initialize
 import '../../scripts/initializers/auth.js';

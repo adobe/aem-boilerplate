@@ -6,11 +6,11 @@ import {
   RETURN_DETAILS_PATH,
   UPS_TRACKING_URL,
   checkIsAuthenticated,
+  rootLink,
 } from '../../scripts/commerce.js';
 
 // Initialize
 import '../../scripts/initializers/order.js';
-import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const isAuthenticated = checkIsAuthenticated();
@@ -25,6 +25,11 @@ export default async function decorate(block) {
         tryRenderAemAssetsImage(ctx, {
           alias: data.product.sku,
           imageProps: defaultImageProps,
+
+          params: {
+            width: defaultImageProps.width,
+            height: defaultImageProps.height,
+          },
         });
       },
     },

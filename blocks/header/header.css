@@ -735,3 +735,23 @@ li
     display: none;
   }
 }
+
+.product-discovery--search-bar-results__grid {
+    padding: var(--spacing-xsmall);
+}
+
+.product-discovery--search-bar-results__outer-container .product-discovery--search-bar-results__grid {
+    box-shadow: 2px 2px 2px lightgray;
+    border: 1px solid lightgray;
+}
+
+.product-discovery--product-item {
+    gap: unset;
+}
+
+.product-discovery--product-item__image .dropin-image {
+    width: 15rem;
+    height: 15rem;
+    max-width: 15rem;
+    max-height: 15rem;
+}

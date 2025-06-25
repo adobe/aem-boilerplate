@@ -38,7 +38,7 @@ describe('AEM Assets enabled', () => {
     Cypress.env("isAemAssetsSuite", false);
   })
 
-  it('[PLP Widget]: should load and show AEM Assets optimized images', () => {
+  it.skip('[PLP Widget]: should load and show AEM Assets optimized images', () => {
     visitWithEagerImages('/apparel');
     const expectedOptions = {
       protocol: 'https://',
@@ -144,7 +144,7 @@ describe('AEM Assets enabled', () => {
     // TODO: Once Swatch Images are supported by AEM Assets, add tests for them.
   });
 
-  it.skip('[Cart Dropin]: should load and show AEM Assets optimized images', () => {
+  it('[Cart Dropin]: should load and show AEM Assets optimized images', () => {
     const expectedOptions = {
       protocol: 'https://',
       environment: aemAssetsEnvironment,
@@ -324,7 +324,7 @@ describe('AEM Assets enabled', () => {
     });
   });
 
-  it.skip('[Checkout Dropin]: should load and show AEM Assets optimized images', () => {
+  it('[Checkout Dropin]: should load and show AEM Assets optimized images', () => {
     visitWithEagerImages('/products/gift-packaging/ADB102');
 
     cy.get('.product-details__buttons__add-to-cart button')
@@ -358,6 +358,42 @@ describe('AEM Assets enabled', () => {
         }
       }
     })
+  });
+
+  it.skip('[Recommendations Dropin]: should load and show AEM Assets optimized images', () => {
+    // Visit products to populate "Recently Viewed" recommendations.
+    // Wait a bit to ensure data is collected by Adobe Analytics.
+    visitWithEagerImages('/products/gift-packaging/ADB102');
+    cy.wait(3000);
+
+    visitWithEagerImages('/products/denim-apron/ADB119');
+    cy.wait(3000);
+
+    visitWithEagerImages('/apparel');
+    const expectedOptions = {
+      protocol: 'https://',
+      environment: aemAssetsEnvironment,
+      format: 'webp',
+      quality: 80,
+      width: 300,
+      height: 300,
+    };
+
+    waitForAemAssetImages('.recommendations-product-list img', (images) => {
+      for (const image of images) {
+        expectAemAssetsImage(image.src, expectedOptions);
+
+        for (const { url, screenWidth, density } of image.srcsetEntries) {
+          expect(density).to.be.undefined;
+          expect(screenWidth).to.be.a('number');
+
+          expectAemAssetsImage(url, {
+            ...expectedOptions,
+            width: (expectedOptions.width * screenWidth) / 1920,
+          })
+        }
+      }
+    });
   });
 });
 

@@ -7,8 +7,7 @@ import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import '../../scripts/initializers/cart.js';
 
 import { readBlockConfig } from '../../scripts/aem.js';
-import { fetchPlaceholders } from '../../scripts/commerce.js';
-import { rootLink } from '../../scripts/scripts.js';
+import { fetchPlaceholders, rootLink } from '../../scripts/commerce.js';
 
 export default async function decorate(block) {
   const {
@@ -22,8 +21,8 @@ export default async function decorate(block) {
   const placeholders = await fetchPlaceholders();
 
   const MESSAGES = {
-    ADDED: placeholders?.Cart?.MiniCart?.Message?.added,
-    UPDATED: placeholders?.Cart?.MiniCart?.Message?.updated,
+    ADDED: placeholders?.Global?.MiniCartAddedMessage,
+    UPDATED: placeholders?.Global?.MiniCartUpdatedMessage,
   };
 
   // Create a container for the update message
@@ -60,23 +59,28 @@ export default async function decorate(block) {
   block.innerHTML = '';
 
   // Render MiniCart
-  const productLink = (product) => rootLink(`/products/${product.url.urlKey}/${product.topLevelSku}`);
+  const getProductLink = (product) => rootLink(`/products/${product.url.urlKey}/${product.topLevelSku}`);
   await provider.render(MiniCart, {
     routeEmptyCartCTA: startShoppingURL ? () => rootLink(startShoppingURL) : undefined,
     routeCart: cartURL ? () => rootLink(cartURL) : undefined,
     routeCheckout: checkoutURL ? () => rootLink(checkoutURL) : undefined,
-    routeProduct: productLink,
+    routeProduct: getProductLink,
 
     slots: {
       Thumbnail: (ctx) => {
         const { item, defaultImageProps } = ctx;
         const anchorWrapper = document.createElement('a');
-        anchorWrapper.href = productLink(item);
+        anchorWrapper.href = getProductLink(item);
 
         tryRenderAemAssetsImage(ctx, {
           alias: item.sku,
           imageProps: defaultImageProps,
           wrapper: anchorWrapper,
+
+          params: {
+            width: defaultImageProps.width,
+            height: defaultImageProps.height,
+          },
         });
 
         if (item?.itemType === 'ConfigurableCartItem' && enableUpdatingProduct === 'true') {
@@ -88,7 +92,7 @@ export default async function decorate(block) {
           editButton.textContent = 'Edit';
 
           editButton.addEventListener('click', () => {
-            const productUrl = productLink(item);
+            const productUrl = getProductLink(item);
             const params = new URLSearchParams();
 
             if (item.selectedOptionsUIDs) {

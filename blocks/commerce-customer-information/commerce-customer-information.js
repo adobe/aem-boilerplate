@@ -1,7 +1,10 @@
 import CustomerInformation from '@dropins/storefront-account/containers/CustomerInformation.js';
 import { render as accountRenderer } from '@dropins/storefront-account/render.js';
-import { CUSTOMER_LOGIN_PATH, checkIsAuthenticated } from '../../scripts/commerce.js';
-import { rootLink } from '../../scripts/scripts.js';
+import {
+  CUSTOMER_LOGIN_PATH,
+  checkIsAuthenticated,
+  rootLink,
+} from '../../scripts/commerce.js';
 
 // Initialize
 import '../../scripts/initializers/account.js';

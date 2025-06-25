@@ -35,8 +35,11 @@ describe("Verify auth user can place order", () => {
     // TODO: replace with single "test" product shared between all tests (not this vs products.configurable.urlPathWithOptions).
     cy.visit(products.configurable.urlPathWithOptions);
     cy.wait(5000);
+    cy.get(".minicart-panel").should("be.empty");
     cy.contains("Add to Cart").click();
     cy.get(".minicart-wrapper").click();
+    cy.get('.minicart-panel[data-loaded="true"]').should('exist');
+    cy.get(".minicart-panel").should("not.be.empty");
     assertCartSummaryProduct(
       'Configurable product',
       'CYPRESS456',

@@ -19,6 +19,7 @@ import GiftCards from '@dropins/storefront-cart/containers/GiftCards.js';
 import GiftOptions from '@dropins/storefront-cart/containers/GiftOptions.js';
 import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
+import { WishlistAlert } from '@dropins/storefront-wishlist/containers/WishlistAlert.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 
 // API
@@ -29,8 +30,7 @@ import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
 
 import { readBlockConfig } from '../../scripts/aem.js';
-import { rootLink } from '../../scripts/scripts.js';
-import { fetchPlaceholders } from '../../scripts/commerce.js';
+import { rootLink, fetchPlaceholders } from '../../scripts/commerce.js';
 
 export default async function decorate(block) {
   // Configuration
@@ -78,6 +78,9 @@ export default async function decorate(block) {
   block.innerHTML = '';
   block.appendChild(fragment);
 
+  // Wishlist variables
+  const routeToWishlist = '/wishlist';
+
   // Toggle Empty Cart
   function toggleEmptyCart(state) {
     if (state) {
@@ -92,12 +95,12 @@ export default async function decorate(block) {
   toggleEmptyCart(isEmptyCart);
 
   // Render Containers
-  const productLink = (product) => rootLink(`/products/${product.url.urlKey}/${product.topLevelSku}`);
+  const getProductLink = (product) => rootLink(`/products/${product.url.urlKey}/${product.topLevelSku}`);
   await Promise.all([
     // Cart List
     provider.render(CartSummaryList, {
       hideHeading: hideHeading === 'true',
-      routeProduct: productLink,
+      routeProduct: getProductLink,
       routeEmptyCartCTA: startShoppingURL ? () => rootLink(startShoppingURL) : undefined,
       maxItems: parseInt(maxItems, 10) || undefined,
       attributesToHide: hideAttributes
@@ -109,12 +112,17 @@ export default async function decorate(block) {
         Thumbnail: (ctx) => {
           const { item, defaultImageProps } = ctx;
           const anchorWrapper = document.createElement('a');
-          anchorWrapper.href = productLink(item);
+          anchorWrapper.href = getProductLink(item);
 
           tryRenderAemAssetsImage(ctx, {
             alias: item.sku,
             imageProps: defaultImageProps,
             wrapper: anchorWrapper,
+
+            params: {
+              width: defaultImageProps.width,
+              height: defaultImageProps.height,
+            },
           });
         },
 
@@ -139,7 +147,7 @@ export default async function decorate(block) {
             params.append('itemUid', ctx.item.uid);
 
             UI.render(Button, {
-              children: placeholders?.Cart?.EditButton?.label,
+              children: placeholders?.Global?.CartEditButton,
               variant: 'tertiary',
               size: 'medium',
               icon: h(Icon, { source: 'Edit' }),
@@ -150,19 +158,18 @@ export default async function decorate(block) {
           }
 
           // Wishlist Button (if product is not configurable)
-          if (ctx.item.itemType === 'SimpleCartItem') {
-            const $wishlistToggle = document.createElement('div');
-            $wishlistToggle.classList.add('cart__action--wishlist-toggle');
+          const $wishlistToggle = document.createElement('div');
+          $wishlistToggle.classList.add('cart__action--wishlist-toggle');
 
-            wishlistRender.render(WishlistToggle, {
-              product: ctx.item,
-              size: 'medium',
-              labelToWishlist: placeholders?.Cart?.MoveToWishlist?.label,
-              labelWishlisted: placeholders?.Cart?.RemoveFromWishlist?.label,
-            })($wishlistToggle);
+          wishlistRender.render(WishlistToggle, {
+            product: ctx.item,
+            size: 'medium',
+            labelToWishlist: placeholders?.Global?.CartMoveToWishlist,
+            labelWishlisted: placeholders?.Global?.CartRemoveFromWishlist,
+            removeProdFromCart: Cart.updateProductsFromCart,
+          })($wishlistToggle);
 
-            ctx.appendChild($wishlistToggle);
-          }
+          ctx.appendChild($wishlistToggle);
 
           // Gift Options
           const giftOptions = document.createElement('div');
@@ -186,7 +193,7 @@ export default async function decorate(block) {
 
     // Order Summary
     provider.render(OrderSummary, {
-      routeProduct: productLink,
+      routeProduct: getProductLink,
       routeCheckout: checkoutURL ? () => rootLink(checkoutURL) : undefined,
       slots: {
         EstimateShipping: async (ctx) => {
@@ -242,8 +249,8 @@ export default async function decorate(block) {
           const updatedItem = cartData.items.find((item) => item.uid === itemUid);
           const productName = updatedItem.name
             || updatedItem.product?.name
-            || placeholders?.Cart?.UpdatedProductName;
-          const message = placeholders?.Cart?.UpdatedProductMessage?.replace('{product}', productName);
+            || placeholders?.Global?.CartUpdatedProductName;
+          const message = placeholders?.Global?.CartUpdatedProductMessage?.replace('{product}', productName);
 
           UI.render(InLineAlert, {
             heading: message,
@@ -273,6 +280,18 @@ export default async function decorate(block) {
     { eager: true },
   );
 
+  events.on('wishlist/alert', ({ action, item }) => {
+    wishlistRender.render(WishlistAlert, {
+      action,
+      item,
+      routeToWishlist,
+    })($notification);
+
+    setTimeout(() => {
+      $notification.innerHTML = '';
+    }, 5000);
+  });
+
   return Promise.resolve();
 }
 
@@ -286,5 +305,10 @@ function swatchImageSlot(ctx) {
     alias: imageSwatchContext.label,
     imageProps: defaultImageProps,
     wrapper: document.createElement('span'),
+
+    params: {
+      width: defaultImageProps.width,
+      height: defaultImageProps.height,
+    },
   });
 }

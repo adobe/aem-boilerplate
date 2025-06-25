@@ -24,7 +24,9 @@ export interface CountriesFormResponse {
             two_letter_abbreviation: string;
             full_name_locale: string;
             available_regions: {
+                id: number;
                 code: string;
+                name: string;
             }[] | null;
         }[];
     };

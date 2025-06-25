@@ -1,6 +1,6 @@
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { loadScript } from '../../scripts/aem.js';
-import { rootLink } from '../../scripts/scripts.js';
+import { rootLink } from '../../scripts/commerce.js';
 
 (async () => {
   const widgetProd = '/scripts/widgets/SearchAsYouType.js';

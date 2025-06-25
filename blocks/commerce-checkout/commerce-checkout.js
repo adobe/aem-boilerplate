@@ -76,8 +76,12 @@ import {
   setAddressOnCart,
 } from './utils.js';
 
-import { authPrivacyPolicyConsentSlot, SUPPORT_PATH, fetchPlaceholders } from '../../scripts/commerce.js';
-import { rootLink } from '../../scripts/scripts.js';
+import {
+  authPrivacyPolicyConsentSlot,
+  SUPPORT_PATH,
+  fetchPlaceholders,
+  rootLink,
+} from '../../scripts/commerce.js';
 
 // Initializers
 import '../../scripts/initializers/account.js';
@@ -299,7 +303,6 @@ export default async function decorate(block) {
 
     CheckoutProvider.render(BillToShippingAddress, {
       onChange: (checked) => {
-        $billingForm.style.display = checked ? 'none' : 'block';
         if (!checked && billingFormRef?.current) {
           const { formData, isDataValid } = billingFormRef.current;
 
@@ -417,6 +420,11 @@ export default async function decorate(block) {
           tryRenderAemAssetsImage(ctx, {
             alias: item.sku,
             imageProps: defaultImageProps,
+
+            params: {
+              width: defaultImageProps.width,
+              height: defaultImageProps.height,
+            },
           });
         },
         Footer: (ctx) => {
@@ -464,24 +472,20 @@ export default async function decorate(block) {
           if (!success) scrollToElement($login);
         }
 
-        const selectedShippingForm = forms[SHIPPING_FORM_NAME];
+        const isFormVisible = (form) => form && form.offsetParent !== null;
 
         if (
           success
-          && shippingFormRef.current
-          && selectedShippingForm
-          && selectedShippingForm.checkVisibility()
+        && shippingFormRef.current
+        && isFormVisible(forms[SHIPPING_FORM_NAME])
         ) {
           success = shippingFormRef.current.handleValidationSubmit(false);
         }
 
-        const selectedBillingForm = forms[BILLING_FORM_NAME];
-
         if (
           success
-          && billingFormRef.current
-          && selectedBillingForm
-          && selectedBillingForm.checkVisibility()
+        && billingFormRef.current
+        && isFormVisible(forms[BILLING_FORM_NAME])
         ) {
           success = billingFormRef.current.handleValidationSubmit(false);
         }
@@ -670,9 +674,6 @@ export default async function decorate(block) {
 
       const storeConfig = checkoutApi.getStoreConfigCache();
 
-      if (!data.isVirtual) {
-        $billingForm.style.display = 'none';
-      }
       billingForm = await AccountProvider.render(AddressForm, {
         addressesFormTitle: 'Billing address',
         className: 'checkout-billing-form__address-form',
@@ -938,10 +939,14 @@ export default async function decorate(block) {
         },
         CartSummaryItemImage: (ctx) => {
           const { data, defaultImageProps } = ctx;
-
           tryRenderAemAssetsImage(ctx, {
             alias: data.product.sku,
             imageProps: defaultImageProps,
+
+            params: {
+              width: defaultImageProps.width,
+              height: defaultImageProps.height,
+            },
           });
         },
       },
@@ -1003,6 +1008,11 @@ export default async function decorate(block) {
     removeModal();
   }
 
+  function handleCheckoutValues(payload) {
+    const { isBillToShipping } = payload;
+    $billingForm.style.display = isBillToShipping ? 'none' : 'block';
+  }
+
   async function handleOrderPlaced(orderData) {
     // Clear address form data
     sessionStorage.removeItem(SHIPPING_ADDRESS_DATA_KEY);
@@ -1028,6 +1038,7 @@ export default async function decorate(block) {
   events.on('cart/initialized', handleCartInitialized, { eager: true });
   events.on('checkout/initialized', handleCheckoutInitialized, { eager: true });
   events.on('checkout/updated', handleCheckoutUpdated);
+  events.on('checkout/values', handleCheckoutValues);
   events.on('order/placed', handleOrderPlaced);
 }
 
@@ -1037,5 +1048,10 @@ function swatchImageSlot(ctx) {
     alias: imageSwatchContext.label,
     imageProps: defaultImageProps,
     wrapper: document.createElement('span'),
+
+    params: {
+      width: defaultImageProps.width,
+      height: defaultImageProps.height,
+    },
   });
 }

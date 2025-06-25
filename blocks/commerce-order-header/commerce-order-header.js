@@ -1,7 +1,11 @@
 import { events } from '@dropins/tools/event-bus.js';
 import { Header, provider as UI } from '@dropins/tools/components.js';
-import { CUSTOMER_ORDER_DETAILS_PATH, CUSTOMER_ORDERS_PATH, fetchPlaceholders } from '../../scripts/commerce.js';
-import { rootLink } from '../../scripts/scripts.js';
+import {
+  CUSTOMER_ORDER_DETAILS_PATH,
+  CUSTOMER_ORDERS_PATH,
+  fetchPlaceholders,
+  rootLink,
+} from '../../scripts/commerce.js';
 
 export default async function decorate(block) {
   block.innerHTML = '';
@@ -14,7 +18,7 @@ export default async function decorate(block) {
 
     const link = document.createElement('a');
 
-    link.innerText = placeholders?.Custom?.CommerceOrderHeader?.backToAllOrders;
+    link.innerText = placeholders?.Global?.CommerceOrderHeader?.backToAllOrders;
     link.href = rootLink(CUSTOMER_ORDERS_PATH);
     link.classList.add('orders-list-link');
 

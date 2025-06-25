@@ -6,11 +6,11 @@ import * as authApi from '@dropins/storefront-auth/api.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { Button, provider as UI } from '@dropins/tools/components.js';
 import {
+  CUSTOMER_LOGIN_PATH,
   CUSTOMER_ACCOUNT_PATH,
   CUSTOMER_FORGOTPASSWORD_PATH,
-  CUSTOMER_LOGIN_PATH,
+  rootLink,
 } from '../../scripts/commerce.js';
-import { rootLink } from '../../scripts/scripts.js';
 
 const signInFormConfig = {
   renderSignUpLink: true,

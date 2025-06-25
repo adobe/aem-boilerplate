@@ -2,9 +2,9 @@ const { defineConfig } = require("cypress");
 const baseConfig = require("./cypress.base.config");
 
 // A private user used with AEM Assets testing suite.
-/* const AEM_ASSETS_PRIVATE_USER = JSON.parse(
+const AEM_ASSETS_PRIVATE_USER = JSON.parse(
   process.env.AEM_ASSETS_PRIVATE_USER ?? "{}"
-); */
+);
 
 module.exports = defineConfig({
   ...baseConfig,
@@ -33,10 +33,11 @@ module.exports = defineConfig({
 
       credentials: {
         xPublicApiKey: "35b6d08f7354475788201cad1762dc86",
-        magentoEnvironmentId: "c1e8ca0b-994b-4e06-b107-539b5abade9f",
+        magentoEnvironmentId: "b3e6be41-a1ba-42b1-89c6-bda102752ba0",
       },
 
       user: {
+        ...AEM_ASSETS_PRIVATE_USER,
         order: "000000010",
         returnedOrder: "000000011",
       },

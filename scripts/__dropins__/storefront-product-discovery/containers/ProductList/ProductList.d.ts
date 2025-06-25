@@ -14,6 +14,7 @@ export interface ProductListProps extends HTMLAttributes<HTMLDivElement> {
     };
     pageSize?: number;
     routeProduct?: (product: Product) => string;
+    categoryPath?: string;
 }
 export declare const ProductList: Container<ProductListProps>;
 //# sourceMappingURL=ProductList.d.ts.map

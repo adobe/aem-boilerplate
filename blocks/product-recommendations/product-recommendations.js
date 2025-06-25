@@ -1,5 +1,6 @@
 // Dropin Components
 import { Button, Icon, provider as UI } from '@dropins/tools/components.js';
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 
 // Cart Dropin
 import * as cartApi from '@dropins/storefront-cart/api.js';
@@ -15,7 +16,7 @@ import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js
 // Block-level
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { readBlockConfig } from '../../scripts/aem.js';
-import { rootLink } from '../../scripts/scripts.js';
+import { fetchPlaceholders, rootLink } from '../../scripts/commerce.js';
 
 // Initializers
 import '../../scripts/initializers/recommendations.js';
@@ -56,12 +57,10 @@ function getPurchaseHistory(storeViewCode) {
 }
 
 export default async function decorate(block) {
+  const labels = await fetchPlaceholders();
+
   // Configuration
-  const { typeid: typeId } = readBlockConfig(block);
-  const filters = {};
-  if (typeId) {
-    filters.typeId = typeId;
-  }
+  const { currentsku, recid } = readBlockConfig(block);
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`
@@ -107,6 +106,7 @@ export default async function decorate(block) {
     }
 
     const storeViewCode = getConfigValue('headers.cs.Magento-Store-View-Code');
+    const getProductLink = (item) => rootLink(`/products/${item.urlKey}/${item.sku}`);
 
     // Get product view history
     context.userViewHistory = getProductViewHistory(storeViewCode);
@@ -117,9 +117,9 @@ export default async function decorate(block) {
     try {
       await Promise.all([
         provider.render(ProductList, {
-          routeProduct: (item) => rootLink(`/products/${item.urlKey}/${item.sku}`),
-          pageType: context.pageType,
-          currentSku: context.currentSku,
+          routeProduct: getProductLink,
+          recId: recid,
+          currentSku: currentsku || context.currentSku,
           userViewHistory: context.userViewHistory,
           userPurchaseHistory: context.userPurchaseHistory,
           slots: {
@@ -134,8 +134,7 @@ export default async function decorate(block) {
               if (ctx.item.itemType === 'SimpleProductView') {
                 // Add to Cart Button
                 UI.render(Button, {
-                  children:
-                    ctx.dictionary.Recommendations.ProductList.addToCart,
+                  children: labels.Global?.AddProductToCart,
                   icon: Icon({ source: 'Cart' }),
                   onClick: () => cartApi.addProductsToCart([{ sku: ctx.item.sku, quantity: 1 }]),
                   variant: 'primary',
@@ -144,7 +143,7 @@ export default async function decorate(block) {
                 // Select Options Button
                 UI.render(Button, {
                   children:
-                    ctx.dictionary.Recommendations.ProductList.selectOptions,
+                    labels.Global?.SelectProductOptions,
                   href: rootLink(`/products/${ctx.item.urlKey}/${ctx.item.sku}`),
                   variant: 'tertiary',
                 })(addToCart);
@@ -163,6 +162,23 @@ export default async function decorate(block) {
               wrapper.appendChild($wishlistToggle);
 
               ctx.replaceWith(wrapper);
+            },
+
+            Thumbnail: (ctx) => {
+              const { item, defaultImageProps } = ctx;
+              const wrapper = document.createElement('a');
+              wrapper.href = getProductLink(item);
+
+              tryRenderAemAssetsImage(ctx, {
+                alias: item.sku,
+                imageProps: defaultImageProps,
+                wrapper,
+
+                params: {
+                  width: defaultImageProps.width,
+                  height: defaultImageProps.height,
+                },
+              });
             },
           },
         })(block),

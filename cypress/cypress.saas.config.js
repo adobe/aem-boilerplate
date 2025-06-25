@@ -2,9 +2,9 @@ const { defineConfig } = require("cypress");
 const baseConfig = require("./cypress.base.config");
 
 // A private user used with AEM Assets testing suite.
-/* const AEM_ASSETS_PRIVATE_USER = JSON.parse(
+const AEM_ASSETS_PRIVATE_USER = JSON.parse(
   process.env.AEM_ASSETS_PRIVATE_USER ?? "{}"
-); */
+);
 
 module.exports = defineConfig({
   ...baseConfig,
@@ -21,8 +21,8 @@ module.exports = defineConfig({
 
     aemAssetsConfig: {
       commerceConfig: {
-        coreEndpoint: "https://na1-qa.api.commerce.adobe.com/Dva3D9VhDoBGAwMbUHxZXe/graphql",
-        endpoint: "https://na1-qa.api.commerce.adobe.com/Dva3D9VhDoBGAwMbUHxZXe/graphql",
+        coreEndpoint: "https://edge-sandbox-graph.adobe.io/api/a6ff161c-9ccf-4c31-a220-be236213ed0f/graphql",
+        endpoint: "https://edge-sandbox-graph.adobe.io/api/a6ff161c-9ccf-4c31-a220-be236213ed0f/graphql",
       },
 
       author: {
@@ -37,6 +37,7 @@ module.exports = defineConfig({
       },
 
       user: {
+        ...AEM_ASSETS_PRIVATE_USER,
         order: "000000008",
         returnedOrder: "000000009",
       },

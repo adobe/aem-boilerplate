@@ -4,11 +4,7 @@ import {
 } from '@dropins/tools/preact.js';
 import { tryGenerateAemAssetsOptimizedUrl } from '@dropins/tools/lib/aem/assets.js';
 import htm from './htm.js';
-import {
-  renderPrice,
-} from '../../scripts/commerce.js';
-
-import { rootLink } from '../../scripts/scripts.js';
+import { renderPrice, rootLink } from '../../scripts/commerce.js';
 
 const html = htm.bind(h);
 const searchUnitId = 'livesearch-plp';

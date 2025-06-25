@@ -1,7 +1,11 @@
 import { events } from '@dropins/tools/event-bus.js';
 import { Header, provider as UI } from '@dropins/tools/components.js';
-import { CUSTOMER_RETURN_DETAILS_PATH, CUSTOMER_RETURNS_PATH, fetchPlaceholders } from '../../scripts/commerce.js';
-import { rootLink } from '../../scripts/scripts.js';
+import {
+  CUSTOMER_RETURN_DETAILS_PATH,
+  CUSTOMER_RETURNS_PATH,
+  fetchPlaceholders,
+  rootLink,
+} from '../../scripts/commerce.js';
 
 export default async function decorate(block) {
   block.innerHTML = '';
@@ -14,7 +18,7 @@ export default async function decorate(block) {
 
     const link = document.createElement('a');
 
-    link.innerText = placeholders?.Custom?.CommerceReturnHeader?.backToAllReturns;
+    link.innerText = placeholders?.Global?.CommerceReturnHeader?.backToAllReturns;
     link.href = rootLink(CUSTOMER_RETURNS_PATH);
     link.classList.add('returns-list-header');
 

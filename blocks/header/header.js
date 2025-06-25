@@ -1,23 +1,12 @@
 // Drop-in Tools
 import { events } from '@dropins/tools/event-bus.js';
 
-// Cart dropin
-import { publishShoppingCartViewEvent } from '@dropins/storefront-cart/api.js';
-
-import { render as provider } from '@dropins/storefront-product-discovery/render.js';
-import { SearchBarInput } from '@dropins/storefront-product-discovery/containers/SearchBarInput.js';
-import { SearchBarResults } from '@dropins/storefront-product-discovery/containers/SearchBarResults.js';
-
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 import renderAuthCombine from './renderAuthCombine.js';
 import { renderAuthDropdown } from './renderAuthDropdown.js';
-import { rootLink } from '../../scripts/scripts.js';
-
-// Required on all pages to track state updates that may affect personalization
-import '../../scripts/initializers/personalization.js';
-import '../../scripts/initializers/search.js';
+import { rootLink } from '../../scripts/commerce.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -257,37 +246,88 @@ export default async function decorate(block) {
     cartButton.style.display = 'none';
   }
 
-  // load nav as fragment
-  const miniCartMeta = getMetadata('mini-cart');
-  const miniCartPath = miniCartMeta ? new URL(miniCartMeta, window.location).pathname : '/mini-cart';
-  loadFragment(miniCartPath).then((miniCartFragment) => {
-    minicartPanel.append(miniCartFragment.firstElementChild);
-  });
+  /**
+   * Handles loading states for navigation panels with state management
+   *
+   * @param {HTMLElement} panel - The panel element to manage loading state for
+   * @param {HTMLElement} button - The button that triggers the panel
+   * @param {Function} loader - Async function to execute during loading
+   */
+  async function withLoadingState(panel, button, loader) {
+    if (panel.dataset.loaded === 'true' || panel.dataset.loading === 'true') return;
 
-  async function toggleMiniCart(state) {
-    const show = state ?? !minicartPanel.classList.contains('nav-tools-panel--show');
-    const stateChanged = show !== minicartPanel.classList.contains('nav-tools-panel--show');
-    minicartPanel.classList.toggle('nav-tools-panel--show', show);
+    button.setAttribute('aria-busy', 'true');
+    panel.dataset.loading = 'true';
 
-    if (stateChanged && show) {
-      publishShoppingCartViewEvent();
+    try {
+      await loader();
+      panel.dataset.loaded = 'true';
+    } finally {
+      panel.dataset.loading = 'false';
+      button.removeAttribute('aria-busy');
+
+      // Execute pending toggle if exists
+      if (panel.dataset.pendingToggle === 'true') {
+        // eslint-disable-next-line no-nested-ternary
+        const pendingState = panel.dataset.pendingState === 'true' ? true : (panel.dataset.pendingState === 'false' ? false : undefined);
+
+        // Clear pending flags
+        panel.removeAttribute('data-pending-toggle');
+        panel.removeAttribute('data-pending-state');
+
+        // Execute the pending toggle
+        const show = pendingState ?? !panel.classList.contains('nav-tools-panel--show');
+        panel.classList.toggle('nav-tools-panel--show', show);
+      }
     }
   }
 
-  cartButton.addEventListener('click', () => toggleMiniCart());
+  function togglePanel(panel, state) {
+    // If loading is in progress, queue the toggle action
+    if (panel.dataset.loading === 'true') {
+      // Store the pending toggle action
+      panel.dataset.pendingToggle = 'true';
+      panel.dataset.pendingState = state !== undefined ? state.toString() : '';
+      return;
+    }
+
+    const show = state ?? !panel.classList.contains('nav-tools-panel--show');
+    panel.classList.toggle('nav-tools-panel--show', show);
+  }
+
+  // Lazy loading for mini cart fragment
+  async function loadMiniCartFragment() {
+    await withLoadingState(minicartPanel, cartButton, async () => {
+      const miniCartMeta = getMetadata('mini-cart');
+      const miniCartPath = miniCartMeta ? new URL(miniCartMeta, window.location).pathname : '/mini-cart';
+      const miniCartFragment = await loadFragment(miniCartPath);
+      minicartPanel.append(miniCartFragment.firstElementChild);
+    });
+  }
+
+  async function toggleMiniCart(state) {
+    if (state) {
+      await loadMiniCartFragment();
+      const { publishShoppingCartViewEvent } = await import('@dropins/storefront-cart/api.js');
+      publishShoppingCartViewEvent();
+    }
+
+    togglePanel(minicartPanel, state);
+  }
+
+  cartButton.addEventListener('click', () => toggleMiniCart(!minicartPanel.classList.contains('nav-tools-panel--show')));
 
   // Cart Item Counter
-  events.on(
-    'cart/data',
-    (data) => {
-      if (data?.totalQuantity) {
-        cartButton.setAttribute('data-count', data.totalQuantity);
-      } else {
-        cartButton.removeAttribute('data-count');
-      }
-    },
-    { eager: true },
-  );
+  events.on('cart/data', (data) => {
+    // preload mini cart fragment if user has a cart
+    if (data) loadMiniCartFragment();
+
+    if (data?.totalQuantity) {
+      cartButton.setAttribute('data-count', data.totalQuantity);
+    } else {
+      cartButton.removeAttribute('data-count');
+    }
+  }, { eager: true });
 
   /** Search */
   const search = document.createRange().createContextualFragment(`
@@ -307,55 +347,66 @@ export default async function decorate(block) {
   const searchInput = searchPanel.querySelector('#search-bar-input');
   const searchResult = searchPanel.querySelector('.search-bar-result');
 
-  // Render the SearchBarInput component
-  provider.render(SearchBarInput, {
-    routeSearch: (searchQuery) => {
-      const url = `${rootLink('/search')}?q=${encodeURIComponent(
-        searchQuery,
-      )}`;
-      window.location.href = url;
-    },
-    slots: {
-      SearchIcon: (ctx) => {
-        // replace the search icon in the dropin input since theres already one in the header
-        const searchIcon = document.createElement('span');
-        searchIcon.className = 'search-icon';
-        searchIcon.innerHTML = '';
-        ctx.replaceWith(searchIcon);
-      },
-    },
-  })(searchInput);
-
-  // Render the SearchBarResult component
-  provider.render(SearchBarResults, {
-    routeSearch: (searchQuery) => {
-      const url = `${rootLink('/search')}?q=${encodeURIComponent(
-        searchQuery,
-      )}`;
-      window.location.href = url;
-    },
-  })(searchResult);
-
   async function toggleSearch(state) {
-    const show = state ?? !searchPanel.classList.contains('nav-tools-panel--show');
+    if (state) {
+      await withLoadingState(searchPanel, searchButton, async () => {
+        await import('../../scripts/initializers/search.js');
 
-    searchPanel.classList.toggle('nav-tools-panel--show', show);
+        // Load search components in parallel
+        const [
+          { render },
+          { SearchBarInput },
+          { SearchBarResults },
+        ] = await Promise.all([
+          import('@dropins/storefront-product-discovery/render.js'),
+          import('@dropins/storefront-product-discovery/containers/SearchBarInput.js'),
+          import('@dropins/storefront-product-discovery/containers/SearchBarResults.js'),
+        ]);
 
-    if (show) {
-      // Focus on the SearchBarInput component if it has a focusable element
-      const inputElement = searchInput.querySelector('input');
-      if (inputElement) {
-        inputElement.focus();
-      }
+        await Promise.all([
+        // Render the SearchBarInput component
+          render.render(SearchBarInput, {
+            routeSearch: (searchQuery) => {
+              const url = `${rootLink('/search')}?q=${encodeURIComponent(
+                searchQuery,
+              )}`;
+              window.location.href = url;
+            },
+            slots: {
+              SearchIcon: (ctx) => {
+              // replace the search icon in the dropin input since theres already one in the header
+                const searchIcon = document.createElement('span');
+                searchIcon.className = 'search-icon';
+                searchIcon.innerHTML = '';
+                ctx.replaceWith(searchIcon);
+              },
+            },
+          })(searchInput),
+          // Render the SearchBarResult component
+          render.render(SearchBarResults, {
+            productRouteSearch: ({ urlKey, sku }) => rootLink(`/products/${urlKey}/${sku}`),
+            routeSearch: (searchQuery) => {
+              const url = `${rootLink('/search')}?q=${encodeURIComponent(
+                searchQuery,
+              )}`;
+              window.location.href = url;
+            },
+          })(searchResult),
+        ]);
+      });
     }
+
+    togglePanel(searchPanel, state);
+    if (state) searchInput?.querySelector('#search-bar-input-form')?.focus();
   }
+
+  searchButton.addEventListener('click', () => toggleSearch(!searchPanel.classList.contains('nav-tools-panel--show')));
 
   navTools.querySelector('.nav-search-button').addEventListener('click', () => {
     if (isDesktop.matches) {
       toggleAllNavSections(navSections);
       overlay.classList.remove('show');
     }
-    toggleSearch();
   });
 
   // Close panels when clicking outside

@@ -4,6 +4,7 @@ import { Product } from '../../data/models/product';
 
 export interface SearchBarResultsProps extends HTMLAttributes<HTMLDivElement> {
     products?: Product[];
+    productRouteSearch?: (product: Product) => string;
     routeSearch?: (searchQuery: string) => void;
     slots?: {
         ProductImage?: SlotProps;

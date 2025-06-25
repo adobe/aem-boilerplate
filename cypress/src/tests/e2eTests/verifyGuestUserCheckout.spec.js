@@ -35,8 +35,11 @@ describe("Verify guest user can place order", () => {
     cy.get(".dropin-incrementer__input").should("have.value", "2");
     // cypress fails intermittently as it takes old value 1, this is needed for tests to be stable
     cy.wait(1000);
+    cy.get(".minicart-panel").should("be.empty");
     cy.contains("Add to Cart").click();
     cy.get(".minicart-wrapper").click();
+    cy.get(".minicart-panel[data-loaded='true']").should('exist');
+    cy.get(".minicart-panel").should("not.be.empty");
     assertCartSummaryProduct(
       "Youth tee",
       "ADB150",

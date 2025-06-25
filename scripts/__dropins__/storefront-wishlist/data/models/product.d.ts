@@ -18,6 +18,7 @@ export interface Product {
     type: string;
     name: string;
     sku: string;
+    topLevelSku?: string;
     uid: string;
     image: Image;
     stockStatus?: string;
@@ -65,6 +66,7 @@ interface Option {
     required: boolean;
     values: [{
         uid: string;
+        label: string;
     }];
 }
 export {};

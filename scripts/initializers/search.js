@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { initializers } from '@dropins/tools/initializer.js';
 import {
   initialize,
@@ -13,7 +12,7 @@ await initializeDropin(async () => {
   setEndpoint(await commerceEndpointWithQueryParams());
   setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('cs') }));
 
-  const labels = await fetchPlaceholders();
+  const labels = await fetchPlaceholders('placeholders/search.json');
   const langDefinitions = {
     default: {
       ...labels,

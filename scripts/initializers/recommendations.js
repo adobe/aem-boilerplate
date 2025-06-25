@@ -10,7 +10,7 @@ await initializeDropin(async () => {
   // Set Fetch Headers (Service)
   setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('cs') }));
 
-  const labels = await fetchPlaceholders();
+  const labels = await fetchPlaceholders('placeholders/recommendations.json');
   const langDefinitions = {
     default: {
       ...labels,

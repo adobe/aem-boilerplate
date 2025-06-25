@@ -4,7 +4,7 @@ import { ImageProps } from '@dropins/tools/types/elsie/src/components';
 import { Item, RecommendationUnitModel } from '../../data/models';
 
 export interface ProductListProps extends HTMLAttributes<HTMLDivElement> {
-    footer?: any;
+    recId: string;
     initialData?: {
         recommendations?: {
             results: RecommendationUnitModel[];
@@ -13,8 +13,7 @@ export interface ProductListProps extends HTMLAttributes<HTMLDivElement> {
     };
     hideHeading?: boolean;
     routeProduct?: (item: Item) => string;
-    currentSku?: string;
-    pageType: string;
+    currentSku: string;
     cartSkus?: string[];
     userPurchaseHistory?: any[];
     userViewHistory?: any[];

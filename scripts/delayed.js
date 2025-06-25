@@ -1,6 +1,6 @@
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { getUserTokenCookie } from './initializers/index.js';
-import { getConsent } from './scripts.js';
+import { getConsent } from './commerce.js';
 
 async function initAnalytics() {
   try {

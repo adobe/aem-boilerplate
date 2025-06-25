@@ -34,9 +34,12 @@ import { products, customerShippingAddress } from "../../fixtures/index";
 describe("Verify price summary on cart", () => {
   it("Verify applied gift code", () => {
     cy.visit(products.configurable.urlPathWithOptions);
+    cy.get(".minicart-panel").should("be.empty");
     cy.get(".product-details__buttons__add-to-cart button")
       .should("be.visible")
       .click();
+    cy.get(".minicart-panel[data-loaded='true']").should('exist');
+    cy.get(".minicart-panel").should("not.be.empty");
     cy.get(".minicart-wrapper").click();
     assertCartSummaryProduct(
       'Configurable product',

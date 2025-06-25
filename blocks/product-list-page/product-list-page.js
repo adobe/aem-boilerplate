@@ -40,6 +40,11 @@ export default async function decorate(block) {
   block.innerHTML = '';
   block.appendChild(fragment);
 
+  // Add category url path to block for enrichment
+  if (config.urlpath) {
+    block.dataset.category = config.urlpath;
+  }
+
   const categoryPathConfig = config.urlpath ? { categoryPath: config.urlpath } : {};
 
   const getAddToCartButton = (product) => {

@@ -1,17 +1,16 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-extraneous-dependencies */
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { render as orderRenderer } from '@dropins/storefront-order/render.js';
 import { OrderReturns } from '@dropins/storefront-order/containers/OrderReturns.js';
-import { checkIsAuthenticated } from '../../scripts/configs.js';
 import {
   CUSTOMER_RETURN_DETAILS_PATH,
   RETURN_DETAILS_PATH,
   UPS_TRACKING_URL,
-} from '../../scripts/constants.js';
+  checkIsAuthenticated,
+  rootLink,
+} from '../../scripts/commerce.js';
 
 // Initialize
 import '../../scripts/initializers/order.js';
-import { rootLink } from '../../scripts/scripts.js';
 
 export default async function decorate(block) {
   const isAuthenticated = checkIsAuthenticated();
@@ -20,6 +19,20 @@ export default async function decorate(block) {
     : RETURN_DETAILS_PATH;
 
   await orderRenderer.render(OrderReturns, {
+    slots: {
+      ReturnListImage: (ctx) => {
+        const { data, defaultImageProps } = ctx;
+        tryRenderAemAssetsImage(ctx, {
+          alias: data.product.sku,
+          imageProps: defaultImageProps,
+
+          params: {
+            width: defaultImageProps.width,
+            height: defaultImageProps.height,
+          },
+        });
+      },
+    },
     routeTracking: ({ carrier, number }) => {
       if (carrier?.toLowerCase() === 'ups') {
         return `${UPS_TRACKING_URL}?tracknum=${number}`;

@@ -1,6 +1,6 @@
 import { useFormProps } from '../../types';
 
-export declare const useForm: ({ fieldsConfig, onSubmit, onChange, setInputChange, formName, isWaitingForResponse, }: useFormProps) => {
+export declare const useForm: ({ fieldsConfig, onSubmit, onChange, setInputChange, formName, }: useFormProps) => {
     isDataValid: boolean;
     formData: Record<string, string | number>;
     errors: Record<string, string>;

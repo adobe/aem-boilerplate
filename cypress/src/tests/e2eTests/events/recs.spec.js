@@ -11,116 +11,159 @@ import { expectsEventWithContext } from "../../../assertions";
  *  required contexts: page, storefront, recommendations
  *
  */
-
-const RECS_URL = '/products/play-create-repeat-crewneck/ADB388';
-it('api-request-sent, api-response-received, unit-impression-render', { tags: '@skipSaas' }, () => {
-  cy.visit(RECS_URL);
-  cy.waitForResource('commerce-events-collector.js').then(() => {
-    cy.window().its('adobeDataLayer').then((adobeDataLayer) => {
-      expectsEventWithContext(
-        'recs-api-request-sent',
-        ['pageContext', 'storefrontInstanceContext'],
-        adobeDataLayer,
-      );
-      expectsEventWithContext(
-        'recs-api-response-received',
-        ['pageContext', 'storefrontInstanceContext', 'recommendationsContext'],
-        adobeDataLayer,
-      );
-      expectsEventWithContext(
-        'recs-unit-impression-render',
-        ['pageContext', 'storefrontInstanceContext', 'recommendationsContext'],
-        adobeDataLayer,
-      );
-    });
-  });
-});
-
-it('recs-unit-view', { tags: '@skipSaas' }, () => {
-  cy.viewport(1440, 600)
-  cy.visit(RECS_URL);
-  cy.waitForResource('commerce-events-collector.js').then(() => {
-    cy.get('.product-recommendations-wrapper').scrollIntoView({ duration: 1000 });
-    cy.window().its('adobeDataLayer').then((adobeDataLayer) => {
-      expectsEventWithContext(
-        'recs-unit-view',
-        ['pageContext', 'storefrontInstanceContext', 'recommendationsContext'],
-        adobeDataLayer,
-      );
-
-      return adobeDataLayer;
-    }).then(adobeDataLayer => {
-      // triggers a second view when scrolled again
-      cy.get('.pdp-header__title').scrollIntoView({ duration: 50 }).then(() => {
-        cy.get('.product-recommendations-wrapper').scrollIntoView({ duration: 50 }).then(() => {
-          const eventCount = adobeDataLayer.filter(data => data?.event === 'recs-unit-view');
-          expect(eventCount).to.have.lengthOf(2);
+// Skipping until events are updated with ticket https://jira.corp.adobe.com/browse/COMOPT-421
+const RECS_URL = "/products/play-create-repeat-crewneck/ADB388";
+it(
+  "api-request-sent, api-response-received, unit-impression-render",
+  { tags: ["@skipSaas", "@skipPaas"] },
+  () => {
+    cy.visit(RECS_URL);
+    cy.waitForResource("commerce-events-collector.js").then(() => {
+      cy.window()
+        .its("adobeDataLayer")
+        .then((adobeDataLayer) => {
+          expectsEventWithContext(
+            "recs-api-request-sent",
+            ["pageContext", "storefrontInstanceContext"],
+            adobeDataLayer,
+          );
+          expectsEventWithContext(
+            "recs-api-response-received",
+            [
+              "pageContext",
+              "storefrontInstanceContext",
+              "recommendationsContext",
+            ],
+            adobeDataLayer,
+          );
+          expectsEventWithContext(
+            "recs-unit-impression-render",
+            [
+              "pageContext",
+              "storefrontInstanceContext",
+              "recommendationsContext",
+            ],
+            adobeDataLayer,
+          );
         });
-      });
     });
+  },
+);
+// Skipping until events are updated with ticket https://jira.corp.adobe.com/browse/COMOPT-421
+it("recs-unit-view", { tags: ["@skipSaas", "@skipPaas"] }, () => {
+  cy.viewport(1440, 600);
+  cy.visit(RECS_URL);
+  cy.waitForResource("commerce-events-collector.js").then(() => {
+    cy.get(".product-recommendations-wrapper").scrollIntoView({
+      duration: 1000,
+    });
+    cy.window()
+      .its("adobeDataLayer")
+      .then((adobeDataLayer) => {
+        expectsEventWithContext(
+          "recs-unit-view",
+          [
+            "pageContext",
+            "storefrontInstanceContext",
+            "recommendationsContext",
+          ],
+          adobeDataLayer,
+        );
+
+        return adobeDataLayer;
+      })
+      .then((adobeDataLayer) => {
+        // triggers a second view when scrolled again
+        cy.get(".pdp-header__title")
+          .scrollIntoView({ duration: 50 })
+          .then(() => {
+            cy.get(".product-recommendations-wrapper")
+              .scrollIntoView({ duration: 50 })
+              .then(() => {
+                const eventCount = adobeDataLayer.filter(
+                  (data) => data?.event === "recs-unit-view",
+                );
+                expect(eventCount).to.have.lengthOf(2);
+              });
+          });
+      });
   });
 });
-
-it('recs-item-click',  { tags: '@skipSaas' }, () => {
-   
+// Skipping until events are updated with ticket https://jira.corp.adobe.com/browse/COMOPT-421
+it("recs-item-click", { tags: ["@skipSaas", "@skipPaas"] }, () => {
   cy.visit(RECS_URL);
   cy.waitForResource("commerce-events-collector.js").then(() => {
     cy.window().then((win) => {
       cy.spy(win.adobeDataLayer, "push").as("adl");
-      cy.get('.product-grid-item')
+      cy.get(".product-grid-item")
         .first()
         .click()
         .then(() => {
           cy.get("@adl", { timeout: 2000 }).should((adobeDataLayerPush) => {
             const targetEventIndex = adobeDataLayerPush.args.findIndex(
-              (event) => event[0]?.event === "recs-item-click"
+              (event) => event[0]?.event === "recs-item-click",
             );
             const pageContextIndex = adobeDataLayerPush.args.findIndex(
-              (event) => !!event[0]?.eventInfo?.pageContext
+              (event) => !!event[0]?.eventInfo?.pageContext,
             );
-            const storefrontInstanceContextIndex = adobeDataLayerPush.args.findIndex(
-              (event) => !!event[0]?.eventInfo?.storefrontInstanceContext
-            );
-            const recommendationsContextIndex = adobeDataLayerPush.args.findIndex(
-              (event) => !!event[0]?.eventInfo?.recommendationsContext
-            );
-            expect(targetEventIndex, 'recs-item-click').to.be.greaterThan(-1);
-            expect(pageContextIndex, 'pageContext').to.be.greaterThan(-1);
-            expect(storefrontInstanceContextIndex, 'storefrontInstanceContext').to.be.greaterThan(-1);
-            expect(recommendationsContextIndex, 'recommendationsContext').to.be.greaterThan(-1);
+            const storefrontInstanceContextIndex =
+              adobeDataLayerPush.args.findIndex(
+                (event) => !!event[0]?.eventInfo?.storefrontInstanceContext,
+              );
+            const recommendationsContextIndex =
+              adobeDataLayerPush.args.findIndex(
+                (event) => !!event[0]?.eventInfo?.recommendationsContext,
+              );
+            expect(targetEventIndex, "recs-item-click").to.be.greaterThan(-1);
+            expect(pageContextIndex, "pageContext").to.be.greaterThan(-1);
+            expect(
+              storefrontInstanceContextIndex,
+              "storefrontInstanceContext",
+            ).to.be.greaterThan(-1);
+            expect(
+              recommendationsContextIndex,
+              "recommendationsContext",
+            ).to.be.greaterThan(-1);
           });
         });
     });
   });
 });
-
-it('reqs-item-add-to-cart',  { tags: '@skipSaas' }, () => {
-   
+// Skipping until events are updated with ticket https://jira.corp.adobe.com/browse/COMOPT-421
+it("reqs-item-add-to-cart", { tags: ["@skipSaas", "@skipPaas"] }, () => {
   cy.visit(RECS_URL);
   cy.waitForResource("commerce-events-collector.js").then(() => {
     cy.window().then((win) => {
       cy.spy(win.adobeDataLayer, "push").as("adl");
-      cy.get('.product-grid-item button')
+      cy.get(".product-grid-item button")
         .first()
         .click()
         .then(() => {
           cy.get("@adl", { timeout: 2000 }).should((adobeDataLayerPush) => {
             const targetEventIndex = adobeDataLayerPush.args.findIndex(
-              (event) => event[0]?.event === "recs-item-add-to-cart"
+              (event) => event[0]?.event === "recs-item-add-to-cart",
             );
             const pageContextIndex = adobeDataLayerPush.args.findIndex(
-              (event) => !!event[0]?.eventInfo?.pageContext
+              (event) => !!event[0]?.eventInfo?.pageContext,
             );
-            const storefrontInstanceContextIndex = adobeDataLayerPush.args.findIndex(
-              (event) => !!event[0]?.eventInfo?.storefrontInstanceContext
-            );
-            const recommendationsContextIndex = adobeDataLayerPush.args.findIndex(
-              (event) => !!event[0]?.eventInfo?.recommendationsContext
-            );
-            expect(targetEventIndex, 'recs-item-click').to.be.greaterThan(-1);
-            expect(pageContextIndex, 'pageContext').to.be.greaterThan(-1);
-            expect(storefrontInstanceContextIndex, 'storefrontInstanceContext').to.be.greaterThan(-1);
-            expect(recommendationsContextIndex, 'recommendationsContext').to.be.greaterThan(-1);
+            const storefrontInstanceContextIndex =
+              adobeDataLayerPush.args.findIndex(
+                (event) => !!event[0]?.eventInfo?.storefrontInstanceContext,
+              );
+            const recommendationsContextIndex =
+              adobeDataLayerPush.args.findIndex(
+                (event) => !!event[0]?.eventInfo?.recommendationsContext,
+              );
+            expect(targetEventIndex, "recs-item-click").to.be.greaterThan(-1);
+            expect(pageContextIndex, "pageContext").to.be.greaterThan(-1);
+            expect(
+              storefrontInstanceContextIndex,
+              "storefrontInstanceContext",
+            ).to.be.greaterThan(-1);
+            expect(
+              recommendationsContextIndex,
+              "recommendationsContext",
+            ).to.be.greaterThan(-1);
           });
         });
     });

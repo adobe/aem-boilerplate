@@ -1,6 +1,6 @@
-import { Price } from './price';
+import { Price, ShippingMethod } from '.';
 
-export interface ShippingEstimatePartialAddress {
+export interface PartialShippingAddress {
     countryCode: string;
     postCode?: string;
     region?: string;
@@ -13,5 +13,11 @@ export interface ShippingEstimateShippingMethod {
     methodCode: string;
     amountExclTax?: Price;
     amountInclTax?: Price;
+}
+export interface ShippingEstimate {
+    address: PartialShippingAddress;
+    availableShippingMethods?: ShippingMethod[];
+    shippingMethod: ShippingEstimateShippingMethod | null;
+    success?: boolean;
 }
 //# sourceMappingURL=shipping-estimate.d.ts.map

@@ -1,7 +1,7 @@
 {
   "name": "@adobe/aem-boilerplate-commerce",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Starter project for Adobe Commerce on Edge Delivery Services",
   "scripts": {
     "lint:js": "eslint .",
@@ -26,7 +26,7 @@
   "devDependencies": {
     "@adobe/aem-cli": "^16.5.8",
     "@babel/eslint-parser": "7.25.9",
-    "@dropins/build-tools": "0.2.0",
+    "@dropins/build-tools": "1.0.1",
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.31.0",
@@ -36,13 +36,17 @@
   "dependencies": {
     "@adobe/magento-storefront-event-collector": "^1.8.0",
     "@adobe/magento-storefront-events-sdk": "^1.8.0",
-    "@dropins/storefront-account": "~1.0.4",
+    "@dropins/storefront-account": "~1.0.7",
     "@dropins/storefront-auth": "~2.0.3",
-    "@dropins/storefront-cart": "~1.3.0",
-    "@dropins/storefront-checkout": "~1.3.0",
-    "@dropins/storefront-order": "~1.1.0",
+    "@dropins/storefront-cart": "~1.4.0",
+    "@dropins/storefront-checkout": "~2.0.0",
+    "@dropins/storefront-order": "~1.2.0",
     "@dropins/storefront-payment-services": "~1.0.1",
-    "@dropins/storefront-pdp": "^1.1.0",
-    "@dropins/tools": "1.2.1"
+    "@dropins/storefront-pdp": "1.2.0",
+    "@dropins/storefront-recommendations": "~1.0.0",
+    "@dropins/storefront-wishlist": "~1.0.0",
+    "@dropins/tools": "1.3.0",
+    "@dropins/storefront-personalization": "~1.0.0",
+    "@dropins/storefront-product-discovery": "~1.0.1"
   }
 }

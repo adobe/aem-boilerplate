@@ -31,4 +31,5 @@ export * from './requestReturn';
 export * from './requestGuestReturn';
 export * from './confirmGuestReturn';
 export * from './confirmCancelOrder';
+export * from './setPaymentMethodAndPlaceOrder';
 //# sourceMappingURL=index.d.ts.map

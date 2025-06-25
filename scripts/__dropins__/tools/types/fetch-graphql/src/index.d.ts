@@ -23,11 +23,21 @@ export type FetchQueryError = Array<{
         category: string;
     };
 }>;
+export type BeforeHook = (requestInit: RequestInit) => RequestInit;
+export type AfterHook<T = any> = (requestInit: RequestInit, response: {
+    errors?: FetchQueryError;
+    data: T;
+}) => {
+    errors?: FetchQueryError;
+    data: T;
+};
 declare class FetchGraphQLMesh {
     _endpoint?: string;
     get endpoint(): string | undefined;
     get fetchGraphQlHeaders(): Header;
     _fetchGraphQlHeaders: Header;
+    _beforeHooks: BeforeHook[];
+    _afterHooks: AfterHook[];
     /**
      * Sets the GraphQL endpoint.
      * @param endpoint - The GraphQL endpoint.
@@ -63,6 +73,34 @@ declare class FetchGraphQLMesh {
      */
     setFetchGraphQlHeaders(header: Header | ((prev: Header) => Header)): void;
     /**
+     * Adds a hook executed before the GraphQL call.
+     * @param hook - The hook function.
+     * @example
+     * ```js
+     * // add before hook
+     * addBeforeHook((requestInit) => console.log('About to execute ' + requestInit.method + ' call.'));
+     *
+     * // modify the requestInit before executing the request
+     * addBeforeHook((requestInit) => {method: requestInit.method, body: 'new body'});
+     * ```
+     */
+    addBeforeHook(hook: BeforeHook): void;
+    /**
+     * Adds a hook executed before the GraphQL call.
+     * @param hook - The hook function.
+     * @example
+     * ```js
+     * // add before hook
+     * addAfterHook((requestInit, response) => console.log(
+     *     'The result of ' + requestInit.method + ' call is ' + response.json().body
+     * ));
+     *
+     * // modify the response
+     * addAfterHook((requestInit, response) => new Response(JSON.stringify({ ...response, modified: true }));
+     * ```
+     */
+    addAfterHook(hook: AfterHook): void;
+    /**
      * Fetches GraphQL data.
      * @param query - The GraphQL query.
      * @param options - Optional configuration for the fetch request.
@@ -92,6 +130,8 @@ declare class FetchGraphQLMesh {
             endpoint: string | undefined;
             fetchGraphQlHeaders: Header;
         };
+        addBeforeHook: (hook: BeforeHook) => void;
+        addAfterHook: (hook: AfterHook<any>) => void;
     };
 }
 /**
@@ -121,6 +161,6 @@ export declare const setEndpoint: (endpoint: string) => void, setFetchGraphQlHea
 }>, getConfig: () => {
     endpoint: string | undefined;
     fetchGraphQlHeaders: Header;
-};
+}, addBeforeHook: (hook: BeforeHook) => void, addAfterHook: (hook: AfterHook) => void;
 export {};
 //# sourceMappingURL=index.d.ts.map

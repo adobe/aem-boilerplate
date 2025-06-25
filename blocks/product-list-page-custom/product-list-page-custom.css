@@ -1,4 +1,3 @@
-/* stylelint-disable comment-empty-line-before */
 /* stylelint-disable no-descending-specificity, property-no-vendor-prefix */
 
 main .section.product-list-page-custom-container > .default-content-wrapper h1:first-child {
@@ -382,10 +381,9 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
   align-items: last baseline;
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   .product-list-page-custom .products .title {
     display: flex;
-    /* gap: 2rem; */
     align-items: last baseline;
   }
 }
@@ -550,7 +548,7 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
   margin-left: 6.4px;
 }
 
-@media (width >= 600px) {
+@media (min-width: 600px) {
   .product-list-page-custom .products .list > ol > li .price .price-range .price-regular {
     margin-left: 9.6rem;
   }
@@ -567,7 +565,7 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
   padding-bottom: 3rem;
 }
 
-@media (width >= 1024px) {
+@media (min-width: 1024px) {
   .product-list-page-custom .products .pagination {
     padding-top: 3rem;
   }
@@ -613,7 +611,7 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
   margin-left: 8px;
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   .product-list-page-custom {
     display: flex;
   }
@@ -757,7 +755,7 @@ main .section.product-list-page-custom-container > .default-content-wrapper h1:f
 }
 
 /* Mobile styles */
-@media (width <= 900px) {
+@media (max-width: 900px) {
   .facets {
     position: fixed;
     top: 0;

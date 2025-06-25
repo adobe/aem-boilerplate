@@ -1,4 +1,4 @@
-import { SlotProps } from '@dropins/tools/types/elsie/src/src/lib';
+import { SlotProps } from '../../@adobe-commerce/elsie/src/src/lib';
 import { AttributesFormModel, Country, FieldEnumList, RegionTransform } from '../data/models';
 
 export interface FieldsProps extends Omit<AttributesFormModel, 'options' | 'className'> {
@@ -17,11 +17,11 @@ export type FormRef = {
     isDataValid: boolean;
 };
 export interface FormProps {
-    isWaitingForResponse?: boolean;
     showSaveCheckBox?: boolean;
     saveCheckBoxAddress?: boolean;
     handleSaveCheckBoxAddress?: (event: Event) => void;
     regionOptions?: RegionTransform[] | [];
+    fieldIdPrefix?: string;
     slots?: {
         AddressFormInputs?: SlotProps<AddressFormInputsContext>;
     };
@@ -48,6 +48,7 @@ export interface FormInputsProps {
     onChange?: (event: Event) => void;
     onBlur?: (event: Event) => void;
     onFocus?: (event: Event) => void;
+    fieldIdPrefix?: string;
     slots?: {
         [key: string]: SlotProps;
     };

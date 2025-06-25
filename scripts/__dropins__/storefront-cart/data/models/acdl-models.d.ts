@@ -75,13 +75,31 @@ export type ShoppingCartItem = {
     id: string;
     prices: {
         price: Price;
+        discount?: Price;
     };
     product: Product;
     configurableOptions?: Array<ConfigurableOption>;
+    bundleOptions?: Array<BundleOption>;
+    customizableOptions?: Array<CustomizableOption>;
     quantity: number;
+    selectedOptions?: {
+        [key: string]: any;
+    };
 };
 export type ConfigurableOption = {
     id: number;
+    optionLabel: string;
+    valueId: number;
+    valueLabel: string;
+};
+export type BundleOption = {
+    id: string;
+    optionLabel: string;
+    valueId: number;
+    valueLabel: string;
+};
+export type CustomizableOption = {
+    id: string;
     optionLabel: string;
     valueId: number;
     valueLabel: string;

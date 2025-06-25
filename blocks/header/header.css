@@ -1,5 +1,3 @@
-/* stylelint-disable selector-class-pattern */
-
 :root {
   --desktop-item-panel-max-width: 300px;
   --desktop-item-panel-min-width: 200px;
@@ -41,7 +39,7 @@ header nav[aria-expanded='true'] {
   min-height: 100dvh;
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   header nav {
     display: flex;
     justify-content: space-between;
@@ -136,7 +134,7 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
   transform: rotate(-45deg);
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   header nav .nav-hamburger {
     display: none;
     visibility: hidden;
@@ -211,7 +209,7 @@ header nav .nav-sections ul > li:empty {
   display: none;
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   header nav .nav-sections {
     display: block;
     visibility: visible;
@@ -373,6 +371,13 @@ header nav .nav-tools button.nav-cart-button[data-count]::after {
   justify-content: center;
 }
 
+header nav .nav-tools button.nav-wishlist-button {
+    background-image: url('../../icons/heart.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+}
+
 header nav .nav-tools button.nav-search-button {
   font-size: 0;
   background-image: url('../../icons/search.svg');
@@ -394,6 +399,15 @@ header .nav-search-panel input {
   appearance: none;
 }
 
+header .nav-search-panel .dropin-input-container {
+    width: 100%;
+}
+
+header .nav-search-panel .search-bar__result {
+    width: 100%;
+    position: relative;
+}
+
 /* Mini Cart  */
 
 .cart-mini-cart:not(:has(.cart-empty-cart)) {
@@ -402,7 +416,7 @@ header .nav-search-panel input {
 }
 
 /* If viewport height is below max, set max height to 90% of viewport */
-@media (height < 820px) {
+@media (max-height: 819px) {
   .cart-mini-cart:not(:has(.cart-empty-cart)) {
     max-height: calc(100vh - var(--nav-height));
   }
@@ -412,7 +426,7 @@ header .nav-search-input .search_autocomplete .popover-container {
   width: 100%;
 }
 
-@media (width >= 1024px) {
+@media (min-width: 1024px) {
   header nav .nav-tools-wrapper {
     position: relative;
   }
@@ -485,7 +499,7 @@ header .nav-search-input .search_autocomplete .popover-container {
   width: 100%;
 }
 
-@media (width >= 1024px) {
+@media (min-width: 1024px) {
   .dropdown-wrapper.nav-tools-wrapper .nav-auth-menu-panel {
     width: 398px;
   }
@@ -560,7 +574,7 @@ li
   display: block;
 }
 
-@media (width < 900px) {
+@media (max-width: 899px) {
   header {
     position: relative;
   }
@@ -720,4 +734,24 @@ li
   header nav .nav-sections ul li:empty {
     display: none;
   }
+}
+
+.product-discovery--search-bar-results__grid {
+    padding: var(--spacing-xsmall);
+}
+
+.product-discovery--search-bar-results__outer-container .product-discovery--search-bar-results__grid {
+    box-shadow: 2px 2px 2px lightgray;
+    border: 1px solid lightgray;
+}
+
+.product-discovery--product-item {
+    gap: unset;
+}
+
+.product-discovery--product-item__image .dropin-image {
+    width: 15rem;
+    height: 15rem;
+    max-width: 15rem;
+    max-height: 15rem;
 }

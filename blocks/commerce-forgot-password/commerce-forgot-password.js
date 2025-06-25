@@ -1,11 +1,12 @@
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-extraneous-dependencies */
 import { ResetPassword } from '@dropins/storefront-auth/containers/ResetPassword.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { events } from '@dropins/tools/event-bus.js';
-import { checkIsAuthenticated } from '../../scripts/configs.js';
-import { CUSTOMER_LOGIN_PATH, CUSTOMER_ACCOUNT_PATH } from '../../scripts/constants.js';
-import { rootLink } from '../../scripts/scripts.js';
+import {
+  CUSTOMER_ACCOUNT_PATH,
+  CUSTOMER_LOGIN_PATH,
+  checkIsAuthenticated,
+  rootLink,
+} from '../../scripts/commerce.js';
 
 // Initialize
 import '../../scripts/initializers/auth.js';

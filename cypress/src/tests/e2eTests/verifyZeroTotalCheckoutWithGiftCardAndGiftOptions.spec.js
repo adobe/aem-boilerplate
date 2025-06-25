@@ -15,33 +15,32 @@
  * from Adobe.
  *******************************************************************/
 
-import * as fields from '../../fields/index';
+import * as fields from "../../fields/index";
 import {
   assertGiftOptionsSummary,
   assertCartSummaryProduct,
   assertCartSummaryProductsOnCheckout,
   assertCartSummaryMisc,
-} from '../../assertions';
+} from "../../assertions";
 import {
   fillGiftOptiosForm,
   setGuestEmail,
   setGuestShippingAddress,
   placeOrder,
   checkTermsAndConditions,
-} from '../../actions';
-import {
-  products,
-  customerShippingAddress
-} from '../../fixtures/index';
+} from "../../actions";
+import { products, customerShippingAddress } from "../../fixtures/index";
 
-describe('Verify price summary on cart',() => {
-
-  it('Verify applied gift code', () => {
+describe("Verify price summary on cart", () => {
+  it("Verify applied gift code", () => {
     cy.visit(products.configurable.urlPathWithOptions);
-    cy.get('.product-details__buttons__add-to-cart button')
-      .should('be.visible')
+    cy.get(".minicart-panel").should("be.empty");
+    cy.get(".product-details__buttons__add-to-cart button")
+      .should("be.visible")
       .click();
-    cy.get('.minicart-wrapper').click();
+    cy.get(".minicart-panel[data-loaded='true']").should('exist');
+    cy.get(".minicart-panel").should("not.be.empty");
+    cy.get(".minicart-wrapper").click();
     assertCartSummaryProduct(
       'Configurable product',
       'CYPRESS456',
@@ -53,45 +52,39 @@ describe('Verify price summary on cart',() => {
     cy.visit('/cart');
     cy.get(fields.orderSummary).contains('Order Summary').should('be.visible');
     cy.get(`.cart-coupons.cart-gift-cards`)
-      .contains('Gift Card')
-      .should('be.visible')
+      .contains("Gift Card")
+      .should("be.visible")
       .click({ multiple: true });
 
     cy.wait(2000);
 
     cy.get(`.cart-coupons.cart-gift-cards ${fields.giftCardField}`)
-      .should('be.visible')
-      .type(Cypress.env('giftCardA'));
+      .should("be.visible")
+      .type(Cypress.env("giftCardA"));
 
     cy.wait(2000);
 
     cy.get(`.cart-coupons.cart-gift-cards button`)
-      .contains('Apply')
-      .should('be.visible')
+      .contains("Apply")
+      .should("be.visible")
       .click({ multiple: true });
-    cy.get(fields.orderSummary).contains('Order Summary').should('be.visible');
-    const orderClassName = '.cart-gift-options-view--order';
-    cy.get(orderClassName).should('exist').should('be.visible');
+    cy.get(fields.orderSummary).contains("Order Summary").should("be.visible");
+    const orderClassName = ".cart-gift-options-view--order";
+    cy.get(orderClassName).should("exist").should("be.visible");
     fillGiftOptiosForm(orderClassName);
 
     cy.wait(3000);
 
     const itemsClassName =
-      '.cart-gift-options-view.cart-gift-options-view--product';
-    cy.get(itemsClassName).should('exist').should('be.visible');
-    fillGiftOptiosForm(itemsClassName, 'product');
+      ".cart-gift-options-view.cart-gift-options-view--product";
+    cy.get(itemsClassName).should("exist").should("be.visible");
+    fillGiftOptiosForm(itemsClassName, "product");
 
-    assertGiftOptionsSummary('Printed card', '$100.00');
-    assertGiftOptionsSummary(
-      'Item gift wrapping',
-      '$100.00'
-    );
-    assertGiftOptionsSummary(
-      'Order gift wrapping',
-      '$30.00'
-    );
-    cy.get('.dropin-button--primary')
-      .contains('Checkout')
+    assertGiftOptionsSummary("Printed card", "$100.00");
+    assertGiftOptionsSummary("Item gift wrapping", "$100.00");
+    assertGiftOptionsSummary("Order gift wrapping", "$30.00");
+    cy.get(".dropin-button--primary")
+      .contains("Checkout")
       .click({ force: true });
     assertCartSummaryMisc(1);
     assertCartSummaryProductsOnCheckout(
@@ -102,30 +95,24 @@ describe('Verify price summary on cart',() => {
       '$60.00',
       '1'
     );
-    assertGiftOptionsSummary('Printed card', '$100.00');
-    assertGiftOptionsSummary(
-      'Item gift wrapping',
-      '$100.00'
-    );
-    assertGiftOptionsSummary(
-      'Order gift wrapping',
-      '$30.00'
-    );
-    const apiMethod = 'setGuestEmailOnCart';
-    const urlTest = Cypress.env('graphqlEndPoint');
-    cy.intercept('POST', urlTest, (req) => {
+    assertGiftOptionsSummary("Printed card", "$100.00");
+    assertGiftOptionsSummary("Item gift wrapping", "$100.00");
+    assertGiftOptionsSummary("Order gift wrapping", "$30.00");
+    const apiMethod = "setGuestEmailOnCart";
+    const urlTest = Cypress.env("graphqlEndPoint");
+    cy.intercept("POST", urlTest, (req) => {
       let data = req.body.query;
-      if (data && typeof data == 'string') {
+      if (data && typeof data == "string") {
         if (data.includes(apiMethod)) {
-          req.alias = 'setEmailOnCart';
+          req.alias = "setEmailOnCart";
         }
       }
     });
     setGuestEmail(customerShippingAddress.email);
-    cy.wait('@setEmailOnCart');
+    cy.wait("@setEmailOnCart");
     setGuestShippingAddress(customerShippingAddress, true);
     cy.contains("No Payment Information Required");
-    cy.contains(Cypress.env('giftCardA'));
+    cy.contains(Cypress.env("giftCardA"));
     checkTermsAndConditions();
     cy.wait(5000);
     placeOrder();

@@ -8,6 +8,7 @@ export type UpdateProductsFromCart = Array<{
 export interface OutOfStockProps extends Omit<HTMLAttributes<HTMLDivElement>, 'icon'> {
     onCartProductsUpdate?: (items: UpdateProductsFromCart) => void;
     routeCart?: () => string;
+    active?: boolean;
 }
 export declare const OutOfStock: Container<OutOfStockProps>;
 //# sourceMappingURL=OutOfStock.d.ts.map

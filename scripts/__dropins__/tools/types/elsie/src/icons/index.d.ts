@@ -40,4 +40,5 @@ export { default as EmptyBox } from './EmptyBox.svg';
 export { default as Coupon } from './Coupon.svg';
 export { default as Gift } from './Gift.svg';
 export { default as GiftCard } from './GiftCard.svg';
+export { default as Edit } from './Edit.svg';
 //# sourceMappingURL=index.d.ts.map

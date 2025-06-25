@@ -1,6 +1,6 @@
 import { CustomerAddressesModel } from '../data/models';
 import { FieldsProps } from './form.types';
-import { SlotProps } from '@dropins/tools/types/elsie/src/src/lib';
+import { SlotProps } from '../../@adobe-commerce/elsie/src/src/lib';
 
 export interface DefaultCheckBox extends Omit<FieldsProps, 'options'> {
 }

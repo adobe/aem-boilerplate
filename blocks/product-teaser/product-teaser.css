@@ -74,7 +74,7 @@
     letter-spacing: var(--type-headline-2-strong-letter-spacing);
 }
 
-@media (width >= 600px) {
+@media (min-width: 600px) {
     .product-teaser {
         flex-direction: row;
     }

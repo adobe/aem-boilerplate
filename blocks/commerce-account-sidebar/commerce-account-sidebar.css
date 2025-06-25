@@ -1,4 +1,4 @@
-@media (width >= 900px) {
+@media (min-width: 900px) {
     body.columns main > .section.commerce-account-sidebar-container {
         max-width: var(--column-width);
     }

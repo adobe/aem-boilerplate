@@ -145,13 +145,14 @@ export const fillGiftOptiosForm = (className, type = 'order') => {
       .should('be.checked');
   }
 
-  cy.wait(3000);
+  cy.wait(2000);
   cy.get(`${className} ${fields.giftOptionWrapCheckBox}`)
     .click({
       force: true,
     })
     .should('be.checked');
 
+  cy.wait(2000);
   cy.get(`${className} ${fields.giftOptionRecipientName}`)
     .type('giftOptionRecipientName')
     .should('have.value', 'giftOptionRecipientName')
@@ -169,7 +170,7 @@ export const fillGiftOptiosForm = (className, type = 'order') => {
   cy.wait(4000);
 
   cy.get(className).contains('Customize').click();
-  cy.get(`${className} .cart-gift-options-view__modal-grid-item img`)
+  cy.get(`.cart-gift-options-view__modal-grid-item img`)
     .eq(1)
     .click();
   cy.contains('.dropin-button--primary', 'Apply').click();

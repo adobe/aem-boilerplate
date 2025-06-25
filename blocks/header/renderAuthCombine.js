@@ -1,19 +1,16 @@
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable import/no-unresolved */
-/* eslint-disable import/no-extraneous-dependencies */
+import { getCookie } from '@dropins/tools/lib.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { AuthCombine } from '@dropins/storefront-auth/containers/AuthCombine.js';
 import { SuccessNotification } from '@dropins/storefront-auth/containers/SuccessNotification.js';
 import * as authApi from '@dropins/storefront-auth/api.js';
 import { events } from '@dropins/tools/event-bus.js';
-import { Button } from '@dropins/tools/components.js';
-import { getCookie } from '../../scripts/configs.js';
+import { Button, provider as UI } from '@dropins/tools/components.js';
 import {
+  CUSTOMER_LOGIN_PATH,
   CUSTOMER_ACCOUNT_PATH,
   CUSTOMER_FORGOTPASSWORD_PATH,
-  CUSTOMER_LOGIN_PATH,
-} from '../../scripts/constants.js';
-import { rootLink } from '../../scripts/scripts.js';
+  rootLink,
+} from '../../scripts/commerce.js';
 
 const signInFormConfig = {
   renderSignUpLink: true,
@@ -33,7 +30,7 @@ const signInFormConfig = {
           SuccessNotificationActions: (innerCtx) => {
             const primaryBtn = document.createElement('div');
 
-            authRenderer.render(Button, {
+            UI.render(Button, {
               children: 'My Account',
 
               onClick: () => {
@@ -48,7 +45,7 @@ const signInFormConfig = {
             secondaryButton.style.justifyContent = 'center';
             secondaryButton.style.marginTop = 'var(--spacing-xsmall)';
 
-            authRenderer.render(Button, {
+            UI.render(Button, {
               children: 'Logout',
               variant: 'tertiary',
               onClick: async () => {
@@ -84,7 +81,7 @@ const signUpFormConfig = {
           SuccessNotificationActions: (innerCtx) => {
             const primaryBtn = document.createElement('div');
 
-            authRenderer.render(Button, {
+            UI.render(Button, {
               children: 'Sign in',
 
               onClick: () => {
@@ -99,7 +96,7 @@ const signUpFormConfig = {
             secondaryButton.style.justifyContent = 'center';
             secondaryButton.style.marginTop = 'var(--spacing-xsmall)';
 
-            authRenderer.render(Button, {
+            UI.render(Button, {
               children: 'Home',
               variant: 'tertiary',
               onClick: () => {
@@ -216,8 +213,7 @@ const renderAuthCombine = (navSections, toggleMenu) => {
     '.default-content-wrapper > ul > li',
   );
 
-  const accountLi = Array.from(listItems).find((li) =>
-    li.textContent.includes('Account'));
+  const accountLi = Array.from(listItems).find((li) => li.textContent.includes('Account'));
 
   if (accountLi) {
     const accountLiItems = accountLi.querySelectorAll('ul > li');

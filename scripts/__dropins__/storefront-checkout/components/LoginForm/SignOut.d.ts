@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'preact';
 
 interface SignOutProps {
-    onClick?: (event: Event) => void;
+    onClick: (event: Event) => void;
 }
 export declare const SignOut: FunctionComponent<SignOutProps>;
 export {};

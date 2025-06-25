@@ -1,6 +1,6 @@
 import { JSX } from 'preact';
 
-export declare function setupCheckout({ clearLocalStorage, registerCheckoutListeners, checkout, }: {
+export declare function setupCheckout({ clearLocalStorage, checkout, }: {
     clearLocalStorage?: boolean;
     registerCheckoutListeners?: boolean;
     checkout: JSX.Element;

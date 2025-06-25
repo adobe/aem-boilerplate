@@ -1,6 +1,5 @@
 import { readBlockConfig } from '../../scripts/aem.js';
-import { fetchIndex } from '../../scripts/scripts.js';
-import { getSkuFromUrl } from '../../scripts/commerce.js';
+import { getSkuFromUrl, fetchIndex } from '../../scripts/commerce.js';
 import { loadFragment } from '../fragment/fragment.js';
 
 export default async function decorate(block) {
@@ -17,7 +16,8 @@ export default async function decorate(block) {
     }
 
     if (type === 'category') {
-      const plpBlock = document.querySelector('.block.product-list-page');
+      const plpBlock = document.querySelector('.block.product-list-page')
+        || document.querySelector('.block.product-list-page-custom');
       if (!plpBlock) {
         throw new Error('No product list page block found');
       }

@@ -172,7 +172,7 @@ export declare const mockOrdersListResponse: {
                 items: ({
                     status: string;
                     quantityOrdered: number;
-                    product_name: string;
+                    product_name: undefined;
                     id: string;
                     product: {
                         small_image: {
@@ -191,6 +191,17 @@ export declare const mockOrdersListResponse: {
                             url: string;
                         };
                     };
+                } | {
+                    status: string;
+                    quantityOrdered: number;
+                    product_name: string;
+                    id: string;
+                    product: {
+                        small_image: {
+                            url: string;
+                        };
+                    };
+                    quantityInvoiced?: undefined;
                 })[];
                 total: {
                     grand_total: {

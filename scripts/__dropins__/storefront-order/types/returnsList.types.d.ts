@@ -68,6 +68,10 @@ export interface OrderReturnsProps {
         DetailsActionParams?: SlotProps<{
             returnOrderItem: OrdersReturnPropsModel;
         }>;
+        ReturnListImage?: SlotProps<{
+            data: OrdersReturnItemsPropsModel;
+            defaultImageProps: ImageProps;
+        }>;
     };
     withThumbnails?: boolean;
     withHeader?: boolean;

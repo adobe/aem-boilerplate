@@ -1,6 +1,6 @@
+import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { loadScript } from '../../scripts/aem.js';
-import { rootLink } from '../../scripts/scripts.js';
-import { getConfigValue } from '../../scripts/configs.js';
+import { rootLink } from '../../scripts/commerce.js';
 
 (async () => {
   const widgetProd = '/scripts/widgets/SearchAsYouType.js';
@@ -45,6 +45,5 @@ import { getConfigValue } from '../../scripts/configs.js';
     }, 200);
   });
 
-  // eslint-disable-next-line no-new
-  new window.LiveSearchAutocomplete(storeDetails);
+  return new window.LiveSearchAutocomplete(storeDetails);
 })();

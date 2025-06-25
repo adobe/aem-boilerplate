@@ -1,4 +1,4 @@
-import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
+import { SlotProps } from '../../@adobe-commerce/elsie/src/lib';
 import { AttributesFormModel } from '../data/models';
 import { InLineAlertProps } from './notification.types';
 import { KeysSortOrderProps } from './addresses.types';

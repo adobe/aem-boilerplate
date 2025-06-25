@@ -1,9 +1,3 @@
-.product-recommendations {
-    overflow: hidden;
-    min-height: 512px;
-    margin-top: 30px;
-}
-
 .product-recommendations .scrollable {
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
@@ -62,8 +56,8 @@
     scroll-snap-align: start;
 }
 
-@media (width >=900px) {
-    .product-recommendations {
-        min-height: 534px;
-    }
+.footer__wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }

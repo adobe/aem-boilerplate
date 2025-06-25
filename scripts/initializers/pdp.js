@@ -1,6 +1,4 @@
-/* eslint-disable import/no-cycle */
-/* eslint-disable import/prefer-default-export */
-
+import { getHeaders } from '@dropins/tools/lib/aem/configs.js';
 import { initializers } from '@dropins/tools/initializer.js';
 import { Image, provider as UI } from '@dropins/tools/components.js';
 import {
@@ -16,15 +14,35 @@ import {
   getOptionsUIDsFromUrl,
   getSkuFromUrl,
   loadErrorPage,
+  preloadFile,
 } from '../commerce.js';
-import { getHeaders } from '../configs.js';
 
 export const IMAGES_SIZES = {
   width: 960,
   height: 1191,
 };
 
+/**
+ * Preloads PDP Dropins assets for optimal performance
+ */
+function preloadPDPAssets() {
+  // Preload PDP Dropins assets
+  preloadFile('/scripts/__dropins__/storefront-pdp/api.js', 'script');
+  preloadFile('/scripts/__dropins__/storefront-pdp/render.js', 'script');
+  preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductHeader.js', 'script');
+  preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductPrice.js', 'script');
+  preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductShortDescription.js', 'script');
+  preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductOptions.js', 'script');
+  preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductQuantity.js', 'script');
+  preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductDescription.js', 'script');
+  preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductAttributes.js', 'script');
+  preloadFile('/scripts/__dropins__/storefront-pdp/containers/ProductGallery.js', 'script');
+}
+
 await initializeDropin(async () => {
+  // Preload PDP assets immediately when this module is imported
+  preloadPDPAssets();
+
   // Set Fetch Endpoint (Service)
   setEndpoint(await commerceEndpointWithQueryParams());
 
@@ -36,7 +54,7 @@ await initializeDropin(async () => {
 
   const [product, labels] = await Promise.all([
     fetchProductData(sku, { optionsUIDs, skipTransform: true }).then(preloadImageMiddleware),
-    fetchPlaceholders(),
+    fetchPlaceholders('placeholders/pdp.json'),
   ]);
 
   if (!product?.sku) {

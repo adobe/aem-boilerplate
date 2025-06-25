@@ -1,1 +1,18 @@
-/* stylelint-disable no-empty-source */
+.commerce-mini-cart__update-message {
+    display: none;
+    font: var(--type-body-2-default-font);
+    letter-spacing: var(--type-body-2-default-letter-spacing);
+}
+
+.commerce-mini-cart__message-wrapper {
+    background-color: var(--color-positive-200);
+    border-radius: var(--shape-border-radius-1);
+    padding: var(--spacing-xsmall);
+    display: none;
+    margin-bottom: var(--spacing-small);
+}
+
+.commerce-mini-cart__message-wrapper--visible,
+.commerce-mini-cart__update-message--visible {
+    display: block;
+}

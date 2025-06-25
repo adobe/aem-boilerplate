@@ -13,6 +13,8 @@ export declare const recaptchaFetchApi: {
         endpoint: string | undefined;
         fetchGraphQlHeaders: import('@adobe-commerce/fetch-graphql').Header;
     };
+    addBeforeHook: (hook: import('@adobe-commerce/fetch-graphql').BeforeHook) => void;
+    addAfterHook: (hook: import('@adobe-commerce/fetch-graphql').AfterHook<any>) => void;
 };
 export declare class RecaptchaModule {
     _enableReCAPTCHA: boolean;

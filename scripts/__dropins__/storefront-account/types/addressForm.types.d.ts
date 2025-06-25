@@ -1,4 +1,4 @@
-import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
+import { SlotProps } from '../../@adobe-commerce/elsie/src/lib';
 import { CustomerAddressesModel } from '../data/models';
 
 interface AddressFormActionsContext {
@@ -27,6 +27,7 @@ export interface AddressFormProps {
     showShippingCheckBox?: boolean;
     showBillingCheckBox?: boolean;
     isOpen?: boolean;
+    fieldIdPrefix?: string;
     onSubmit?: () => Promise<void>;
     slots?: {
         AddressFormActions?: SlotProps<AddressFormActionsContext>;

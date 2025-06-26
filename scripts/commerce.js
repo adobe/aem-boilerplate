@@ -10,18 +10,22 @@ import { events } from '@dropins/tools/event-bus.js';
 import { getMetadata } from './aem.js';
 import initializeDropins from './initializers/index.js';
 
-// PATH CONSTANTS
+/**
+ * Constants
+ */
+
+// PATHS
 export const SUPPORT_PATH = '/support';
 export const PRIVACY_POLICY_PATH = '/privacy-policy';
 
-// GUEST
+// GUEST PATHS
 export const ORDER_STATUS_PATH = '/order-status';
 export const ORDER_DETAILS_PATH = '/order-details';
 export const RETURN_DETAILS_PATH = '/return-details';
 export const CREATE_RETURN_PATH = '/create-return';
 export const SALES_GUEST_VIEW_PATH = '/sales/guest/view/';
 
-// CUSTOMER
+// CUSTOMER PATHS
 export const CUSTOMER_PATH = '/customer';
 export const CUSTOMER_ORDER_DETAILS_PATH = `${CUSTOMER_PATH}${ORDER_DETAILS_PATH}`;
 export const CUSTOMER_RETURN_DETAILS_PATH = `${CUSTOMER_PATH}${RETURN_DETAILS_PATH}`;
@@ -34,10 +38,15 @@ export const CUSTOMER_ACCOUNT_PATH = `${CUSTOMER_PATH}/account`;
 export const CUSTOMER_FORGOTPASSWORD_PATH = `${CUSTOMER_PATH}/forgotpassword`;
 export const SALES_ORDER_VIEW_PATH = '/sales/order/view/';
 
-// TRACKING
+// TRACKING URL
 export const UPS_TRACKING_URL = 'https://www.ups.com/track';
 
-// REUSABLE SLOTS
+/**
+ * Auth Privacy Policy Consent Slot
+ * @param {Object} ctx - The context object
+ * @param {Object} ctx.appendChild - The appendChild function
+ * @returns {void}
+ */
 export const authPrivacyPolicyConsentSlot = {
   PrivacyPolicyConsent: async (ctx) => {
     const wrapper = document.createElement('span');
@@ -530,7 +539,7 @@ export async function getConfigFromSession() {
 /**
  * Creates a short hash from an object by sorting its entries and hashing them.
  * @param {Object} obj - The object to hash
-  @param {number} [length=5] - Length of the resulting hash
+ * @param {number} [length=5] - Length of the resulting hash
  * @returns {string} A short hash string
  */
 function createHashFromObject(obj, length = 5) {
@@ -548,6 +557,10 @@ function createHashFromObject(obj, length = 5) {
     .slice(0, length);
 }
 
+/**
+ * Creates a commerce endpoint URL with query parameters including a cache-busting hash.
+ * @returns {Promise<URL>} A promise that resolves to the endpoint URL with query parameters
+ */
 export async function commerceEndpointWithQueryParams() {
   const urlWithQueryParams = new URL(getConfigValue('commerce-endpoint'));
   const headers = getHeaders('cs');
@@ -556,16 +569,28 @@ export async function commerceEndpointWithQueryParams() {
   return urlWithQueryParams;
 }
 
+/**
+ * Extracts the SKU from the current URL path.
+ * @returns {string|null} The SKU extracted from the URL, or null if not found
+ */
 export function getSkuFromUrl() {
   const path = window.location.pathname;
   const result = path.match(/\/products\/[\w|-]+\/([\w|-]+)$/);
   return result?.[1];
 }
 
+/**
+ * Extracts option UIDs from the URL search parameters.
+ * @returns {string[]|undefined} Array of option UIDs, or undefined if not found
+ */
 export function getOptionsUIDsFromUrl() {
   return new URLSearchParams(window.location.search).get('optionsUIDs')?.split(',');
 }
 
+/**
+ * Tracks user browsing and purchase history for recommendations.
+ * Stores product view history and purchase history in localStorage.
+ */
 function trackHistory() {
   if (!getConsent('commerce-recommendations')) {
     return;
@@ -597,6 +622,11 @@ function trackHistory() {
   });
 }
 
+/**
+ * Sets JSON-LD structured data in the document head.
+ * @param {Object} data - The JSON-LD data object
+ * @param {string} name - The name identifier for the script element
+ */
 export function setJsonLd(data, name) {
   const existingScript = document.head.querySelector(`script[data-name="${name}"]`);
   if (existingScript) {
@@ -612,6 +642,10 @@ export function setJsonLd(data, name) {
   document.head.appendChild(script);
 }
 
+/**
+ * Loads and displays an error page (e.g., 404) by replacing the current page content.
+ * @param {number} [code=404] - The HTTP error code for the error page
+ */
 export async function loadErrorPage(code = 404) {
   const htmlText = await fetch(`/${code}.html`).then((response) => {
     if (response.ok) {

@@ -1,0 +1,58 @@
+# AEMY PR Readiness Status Check
+#
+# This workflow manages the draft state of pull requests and provides a status check based on AEMY processing labels.
+#
+# - If the 'aemy-running' label is present, the PR is converted to draft and a failing status check is set, indicating AEMY processing is in progress.
+# - If the 'aemy-failed' label is present, a failing status check is set, indicating AEMY processing failed.
+# - If the 'aemy-merge' label is present (and neither 'aemy-running' nor 'aemy-failed' are present), the PR is marked as ready for review and a passing status check is set, signaling AEMY processing succeeded.
+#
+# This workflow does not hard-block merging, but acts as a status check to inform reviewers and automation about the readiness of the PR based on AEMY processing state.
+
+name: aemy-pr-readiness-check
+
+on:
+  pull_request:
+    types: [labeled, unlabeled, opened, reopened, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  BLOCKING_LABELS: "aemy-running,aemy-failed"
+  MERGE_LABEL: "aemy-merge"
+
+jobs:
+  manage-pr-state:
+    name: Manage PR Draft State
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Convert PR to draft while AEMY is running
+        if: contains(github.event.pull_request.labels.*.name, 'aemy-running')
+        run: |
+          gh pr ready --undo ${{ github.event.pull_request.number }} || exit 1
+          echo "✅ PR converted to draft"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prevent merge - PR not ready due to AEMY processing
+        if: |
+          contains(github.event.pull_request.labels.*.name, 'aemy-running') ||
+          contains(github.event.pull_request.labels.*.name, 'aemy-failed')
+        run: |
+          echo "❌ Cannot merge: AEMY processing in progress or failed"
+          exit 1
+
+      - name: Mark PR ready for review after AEMY completion
+        if: |
+          contains(github.event.pull_request.labels.*.name, 'aemy-merge') && 
+          !contains(github.event.pull_request.labels.*.name, 'aemy-running') &&
+          !contains(github.event.pull_request.labels.*.name, 'aemy-failed')
+        run: |
+          gh pr ready ${{ github.event.pull_request.number }} || exit 1
+          echo "✅ PR ready for review"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

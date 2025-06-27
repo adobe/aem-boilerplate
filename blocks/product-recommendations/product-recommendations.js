@@ -60,7 +60,7 @@ export default async function decorate(block) {
   const labels = await fetchPlaceholders();
 
   // Configuration
-  const { currentsku, recid } = readBlockConfig(block);
+  const { currentsku, recid, pageplacement } = readBlockConfig(block);
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`
@@ -120,6 +120,7 @@ export default async function decorate(block) {
           routeProduct: getProductLink,
           recId: recid,
           currentSku: currentsku || context.currentSku,
+          pagePlacement: pageplacement || '',
           userViewHistory: context.userViewHistory,
           userPurchaseHistory: context.userPurchaseHistory,
           slots: {

@@ -17,6 +17,7 @@ export interface ProductListProps extends HTMLAttributes<HTMLDivElement> {
     cartSkus?: string[];
     userPurchaseHistory?: any[];
     userViewHistory?: any[];
+    pagePlacement?: string | '';
     slots?: {
         Heading?: SlotProps;
         Footer?: SlotProps;

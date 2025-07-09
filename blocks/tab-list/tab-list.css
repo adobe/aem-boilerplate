@@ -1,0 +1,28 @@
+.tab-list ul {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tab-list ul li {
+    display: flex;
+}
+
+.tab-list ul li button {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    border: 1px solid var(--dark-color);
+    border-radius: 0;
+    background-color: var(--light-color);
+    color: var(--color-text-primary);
+}
+
+.tab-list ul li button:hover,
+.tab-list ul li button:focus {
+    background-color: var(--dark-color);
+    color: var(--light-color);
+}

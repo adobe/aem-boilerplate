@@ -32,7 +32,25 @@
       "id": "blocks",
       "components": [
         {
-          "...": "../blocks/*/_*.json#/definitions"
+          "...": "../blocks/cards/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/columns/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/fragment/_*.json#/definitions"
+        },
+        {
+          "...": "../blocks/hero/_*.json#/definitions"
+        }
+      ]
+    },
+    {
+      "title": "Tabs",
+      "id": "tabs",
+      "components": [
+        {
+          "...": "../blocks/tab-list/_*.json#/definitions"
         }
       ]
     }

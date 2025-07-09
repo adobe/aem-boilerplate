@@ -220,7 +220,7 @@
     "fields": [
       {
         "component": "text",
-        "name": "label",
+        "name": "tab-label",
         "label": "Label"
       }
     ]

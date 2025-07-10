@@ -21,14 +21,14 @@ module.exports = defineConfig({
 
     aemAssetsConfig: {
       commerceConfig: {
-        coreEndpoint: "https://edge-sandbox-graph.adobe.io/api/a6ff161c-9ccf-4c31-a220-be236213ed0f/graphql",
-        endpoint: "https://edge-sandbox-graph.adobe.io/api/a6ff161c-9ccf-4c31-a220-be236213ed0f/graphql",
+        coreEndpoint: "https://na1-sandbox.api.commerce.adobe.com/QhUjcEq9dMrdCF7h8a4e5g/graphql",
+        endpoint: "https://na1-sandbox.api.commerce.adobe.com/QhUjcEq9dMrdCF7h8a4e5g/graphql",
       },
 
       author: {
-        programId: "p122355",
-        environmentId: "e286962",
-        isStage: true,
+        programId: "p150710",
+        environmentId: "e1553109",
+        isStage: false,
       },
 
       credentials: {
@@ -38,9 +38,15 @@ module.exports = defineConfig({
 
       user: {
         ...AEM_ASSETS_PRIVATE_USER,
-        order: "000000008",
-        returnedOrder: "000000009",
+        order: "000000001",
+        returnedOrder: "000000002",
       },
+
+      // For PREX we need a custom recommendation unit id.
+      // Because AEM Assets uses a different Commerce instance
+      // the hardcoded one in the default content source will not work.
+      // To test PREX, we will render a custom draft page with our own recommendation unit id.
+      prexDraft: "/drafts/decepticons/prex-discovery",
     },
   },
 });

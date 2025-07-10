@@ -1,7 +1,7 @@
 export function changeTabs(e) {
   const targetTab = e.target;
-  const targetTabPanelId = targetTab.getAttribute('aria-controls');
-  const [tabGroupPrefix] = targetTabPanelId.split('-panel-');
+  const targetTabPanelIds = targetTab.getAttribute('aria-controls').split(' ');
+  const [tabGroupPrefix] = targetTabPanelIds[0].split('-panel-');
   const tabList = targetTab.parentNode;
 
   // Remove all current selected tabs
@@ -18,9 +18,9 @@ export function changeTabs(e) {
     .forEach((p) => p.setAttribute('hidden', true));
 
   // Show the selected panel
-  document
-    .querySelector(`#${targetTabPanelId}`)
-    .removeAttribute('hidden');
+  targetTabPanelIds.forEach((id) => {
+    document.querySelector(`#${id}`).removeAttribute('hidden');
+  });
 }
 
 export default async function decorate(block) {
@@ -34,9 +34,33 @@ export default async function decorate(block) {
   // see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/tab_role#example
   // Only handle one particular tablist; if you have multiple tab
   // lists (might even be nested), you have to apply this code for each one
-  const tabs = tabList.querySelectorAll('[role="tab"]');
 
-  // Add a click event handler to each tab
+  const tabs = [...tabList.querySelectorAll('[role="tab"]')];
+  const [tabsPrefix] = tabList.id.split('-tablist');
+
+  if (block.classList.contains('showall')) {
+    const tabId = `${tabsPrefix}-tab-all`;
+    const tabPanels = [...tabs].map((t) => t.getAttribute('aria-controls')).join(' ');
+
+    // build the tabs as buttons and append them to the tab list
+    const tabItem = document.createElement('button');
+    tabItem.id = tabId;
+    tabItem.role = 'tab';
+    tabItem.tabIndex = 0;
+    tabItem.setAttribute('aria-controls', tabPanels);
+    tabItem.textContent = 'All';
+
+    const li = document.createElement('li');
+    li.appendChild(tabItem);
+    tabList.prepend(li);
+    tabs.unshift(tabItem);
+
+    // set tabIndex for the now second tab to -1
+    tabs[1].tabIndex = -1;
+
+    changeTabs({ target: tabItem });
+  }
+
   tabs.forEach((tab) => {
     tab.addEventListener('click', changeTabs);
   });

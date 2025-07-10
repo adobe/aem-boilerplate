@@ -87,12 +87,14 @@ function buildTabs(main) {
 
     const [, firstTabPanel] = tabPanels[0];
 
+    const tabsPrefix = `tabs-${tabsIdx}`;
     const tabList = document.createElement('ul');
     tabList.role = 'tablist';
+    tabList.id = `${tabsPrefix}-tablist`;
 
     tabPanels.forEach(([tabLabel, tabPanel], i) => {
-      const tabId = `tabs-${tabsIdx}-tab-${toClassName(tabLabel)}`;
-      const tabPanelId = `tabs-${tabsIdx}-panel-${toClassName(tabLabel)}`;
+      const tabId = `${tabsPrefix}-tab-${toClassName(tabLabel)}`;
+      const tabPanelId = `${tabsPrefix}-panel-${toClassName(tabLabel)}`;
 
       // build the tabs as buttons and append them to the tab list
       const tabItem = document.createElement('button');

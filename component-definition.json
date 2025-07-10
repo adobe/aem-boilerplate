@@ -173,7 +173,8 @@
                 "template": {
                   "name": "Tab Panel",
                   "model": "tab-panel",
-                  "filter": "section"
+                  "filter": "section",
+                  "tab-label": "Tab"
                 }
               }
             }

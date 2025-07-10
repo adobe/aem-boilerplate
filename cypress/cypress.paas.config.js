@@ -41,6 +41,12 @@ module.exports = defineConfig({
         order: "000000010",
         returnedOrder: "000000011",
       },
+
+      // For PREX we need a custom recommendation unit id.
+      // Because AEM Assets uses a different Commerce instance
+      // the hardcoded one in the default content source will not work.
+      // To test PREX, we will render a custom draft page with our own recommendation unit id.
+      prexDraft: "/drafts/decepticons/prex-discovery-paas",
     },
   },
 });

@@ -82,9 +82,9 @@ async function loadEager(doc) {
 
   const main = doc.querySelector('main');
   if (main) {
+    await initializeCommerce();
     decorateMain(main);
     applyTemplates(doc);
-    await initializeCommerce();
     await loadCommerceEager();
     document.body.classList.add('appear');
     await loadSection(main.querySelector('.section'), waitForFirstImage);

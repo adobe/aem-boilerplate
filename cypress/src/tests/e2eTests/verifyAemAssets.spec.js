@@ -369,7 +369,7 @@ describe('AEM Assets enabled', () => {
     visitWithEagerImages('/products/denim-apron/ADB119');
     cy.wait(3000);
 
-    visitWithEagerImages('/apparel');
+    visitWithEagerImages(`${envConfig.prexDraft}?q=adb&product_list_order=relevance_DESC`);
     const expectedOptions = {
       protocol: 'https://',
       environment: aemAssetsEnvironment,

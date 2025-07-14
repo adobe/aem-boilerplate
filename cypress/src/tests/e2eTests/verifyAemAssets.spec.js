@@ -38,43 +38,59 @@ describe('AEM Assets enabled', () => {
     Cypress.env("isAemAssetsSuite", false);
   })
 
-  it.skip('[PLP Widget]: should load and show AEM Assets optimized images', () => {
-    visitWithEagerImages('/apparel');
+  it('[Product Discovery Dropin]: should load and show AEM Assets optimized images', () => {
+    visitWithEagerImages('/');
+    cy.get('.nav-search-button').click();
+    cy.get('.nav-search-panel').should('be.visible');
+    cy.get('#search-bar-input input[type="text"]').type('gift');
+    cy.wait(2000);
     const expectedOptions = {
       protocol: 'https://',
       environment: aemAssetsEnvironment,
       format: 'webp',
       quality: 80,
-      width: 330,
     }
 
-    function getPictureExpectedOptions(media) {
-      switch (media) {
-        case '(max-width: 900px)': {
-          return {
-            ...expectedOptions,
-            width: 163,
-          }
-        }
-
-        default: {
-          return expectedOptions
-        }
-      }
-    }
-
-    waitForAemAssetImages('.product-list-page-custom picture', (images) => {
+    waitForAemAssetImages('.search-bar-result img', (images) => {
       for (const image of images) {
-        expectAemAssetsImage(image.src, expectedOptions);
+        expectAemAssetsImage(image.src, {
+          ...expectedOptions,
+          width: 165,
+          height: 165,
+        });
 
-        for (const { url, screenWidth, density, media } of image.srcsetEntries) {
-          const srcSetExpectedOptions = getPictureExpectedOptions(media);
-          expect(density).to.be.a('number');
-          expect(screenWidth).to.be.undefined;
+        for (const { url, screenWidth, density } of image.srcsetEntries) {
+          expect(density).to.be.undefined;
+          expect(screenWidth).to.be.a('number');
 
           expectAemAssetsImage(url, {
-            ...srcSetExpectedOptions,
-            width: srcSetExpectedOptions.width * density,
+            ...expectedOptions,
+            width: (165 * screenWidth) / 1920,
+            height: 165,
+          });
+        }
+      }
+    });
+
+    visitWithEagerImages('/apparel');
+    cy.wait(2000);
+
+    waitForAemAssetImages('.search__product-list img', (images) => {
+      for (const image of images) {
+        expectAemAssetsImage(image.src, {
+          ...expectedOptions,
+          width: 200,
+          height: 250,
+        });
+
+        for (const { url, screenWidth, density } of image.srcsetEntries) {
+          expect(density).to.be.undefined;
+          expect(screenWidth).to.be.a('number');
+
+          expectAemAssetsImage(url, {
+            ...expectedOptions,
+            width: (200 * screenWidth) / 1920,
+            height: 250,
           });
         }
       }
@@ -236,7 +252,7 @@ describe('AEM Assets enabled', () => {
       cy.log('No email or password provided, skipping test');
       return;
     }
-    
+
     cy.visit("/customer/login");
     cy.get('input[name="email"]').clear().type(envConfig.user.email);
     cy.get('input[name="password"]').eq(1).clear().type(envConfig.user.password);

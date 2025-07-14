@@ -1,6 +1,7 @@
 // Drop-in Tools
 import { events } from '@dropins/tools/event-bus.js';
 
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
@@ -390,6 +391,23 @@ export default async function decorate(block) {
                 searchQuery,
               )}`;
               window.location.href = url;
+            },
+            slots: {
+              ProductImage: (ctx) => {
+                const { productItem, defaultImageProps } = ctx;
+                const anchorWrapper = document.createElement('a');
+                anchorWrapper.href = rootLink(`/products/${productItem.urlKey}/${productItem.sku}`);
+
+                tryRenderAemAssetsImage(ctx, {
+                  alias: productItem.sku,
+                  imageProps: defaultImageProps,
+                  wrapper: anchorWrapper,
+                  params: {
+                    width: defaultImageProps.width,
+                    height: defaultImageProps.height,
+                  },
+                });
+              },
             },
           })(searchResult),
         ]);

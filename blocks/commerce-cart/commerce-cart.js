@@ -25,6 +25,10 @@ import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 // API
 import { publishShoppingCartViewEvent } from '@dropins/storefront-cart/api.js';
 
+// Modal and Mini PDP
+import createModal from '../modal/modal.js';
+import createMiniPDP from '../commerce-mini-pdp/commerce-mini-pdp.js';
+
 // Initializers
 import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
@@ -51,6 +55,10 @@ export default async function decorate(block) {
   const cart = Cart.getCartDataFromCache();
 
   const isEmptyCart = isCartEmpty(cart);
+
+  // Modal state
+  let currentModal = null;
+  let currentNotification = null;
 
   // Layout
   const fragment = document.createRange().createContextualFragment(`
@@ -94,6 +102,79 @@ export default async function decorate(block) {
 
   toggleEmptyCart(isEmptyCart);
 
+  // Handle Edit Button Click
+  async function handleEditButtonClick(cartItem) {
+    try {
+      // Create mini PDP content
+      const miniPDPContent = await createMiniPDP(
+        cartItem,
+        async (_updateData) => {
+          // Show success message when mini-PDP updates item
+          const productName = cartItem.name
+            || cartItem.product?.name
+            || placeholders?.Global?.CartUpdatedProductName;
+          const message = placeholders?.Global?.CartUpdatedProductMessage?.replace(
+            '{product}',
+            productName,
+          );
+
+          // Clear any existing notifications
+          currentNotification?.remove();
+
+          currentNotification = await UI.render(InLineAlert, {
+            heading: message,
+            type: 'success',
+            variant: 'primary',
+            icon: h(Icon, { source: 'CheckWithCircle' }),
+            'aria-live': 'assertive',
+            role: 'alert',
+            onDismiss: () => {
+              currentNotification?.remove();
+            },
+          })($notification);
+
+          // Auto-dismiss after 5 seconds
+          setTimeout(() => {
+            currentNotification?.remove();
+          }, 5000);
+        },
+        () => {
+          if (currentModal) {
+            currentModal.removeModal();
+            currentModal = null;
+          }
+        },
+      );
+
+      // Create and show modal
+      currentModal = await createModal([miniPDPContent]);
+
+      if (currentModal.block) {
+        currentModal.block.setAttribute('id', 'mini-pdp-modal');
+      }
+
+      currentModal.showModal();
+    } catch (error) {
+      console.error('Error opening mini PDP modal:', error);
+
+      // Clear any existing notifications
+      currentNotification?.remove();
+
+      // Show error notification
+      currentNotification = await UI.render(InLineAlert, {
+        heading: placeholders?.Global?.ProductLoadError,
+        type: 'error',
+        variant: 'primary',
+        icon: h(Icon, { source: 'AlertWithCircle' }),
+        'aria-live': 'assertive',
+        role: 'alert',
+        onDismiss: () => {
+          currentNotification?.remove();
+        },
+      })($notification);
+    }
+  }
+
   // Render Containers
   const getProductLink = (product) => rootLink(`/products/${product.url.urlKey}/${product.topLevelSku}`);
   await Promise.all([
@@ -132,26 +213,12 @@ export default async function decorate(block) {
             const editLink = document.createElement('div');
             editLink.className = 'cart-item-edit-link';
 
-            const productUrl = rootLink(`/products/${ctx.item.url.urlKey}/${ctx.item.topLevelSku}`);
-            const params = new URLSearchParams();
-
-            if (ctx.item.selectedOptionsUIDs) {
-              const optionsValues = Object.values(ctx.item.selectedOptionsUIDs);
-              if (optionsValues.length > 0) {
-                const joinedValues = optionsValues.join(',');
-                params.append('optionsUIDs', joinedValues);
-              }
-            }
-
-            params.append('quantity', ctx.item.quantity);
-            params.append('itemUid', ctx.item.uid);
-
             UI.render(Button, {
               children: placeholders?.Global?.CartEditButton,
               variant: 'tertiary',
               size: 'medium',
               icon: h(Icon, { source: 'Edit' }),
-              href: `${productUrl}?${params.toString()}`,
+              onClick: () => handleEditButtonClick(ctx.item),
             })(editLink);
 
             ctx.appendChild(editLink);
@@ -240,36 +307,6 @@ export default async function decorate(block) {
   events.on(
     'cart/data',
     (cartData) => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const itemUid = urlParams.get('itemUid');
-
-      if (itemUid && cartData?.items) {
-        const itemExists = cartData.items.some((item) => item.uid === itemUid);
-        if (itemExists) {
-          const updatedItem = cartData.items.find((item) => item.uid === itemUid);
-          const productName = updatedItem.name
-            || updatedItem.product?.name
-            || placeholders?.Global?.CartUpdatedProductName;
-          const message = placeholders?.Global?.CartUpdatedProductMessage?.replace('{product}', productName);
-
-          UI.render(InLineAlert, {
-            heading: message,
-            type: 'success',
-            variant: 'primary',
-            icon: h(Icon, { source: 'CheckWithCircle' }),
-            'aria-live': 'assertive',
-            role: 'alert',
-            onDismiss: () => {
-              $notification.innerHTML = '';
-            },
-          })($notification);
-        }
-
-        if (window.location.search) {
-          window.history.replaceState({}, document.title, window.location.pathname);
-        }
-      }
-
       toggleEmptyCart(isCartEmpty(cartData));
 
       if (!cartViewEventPublished) {

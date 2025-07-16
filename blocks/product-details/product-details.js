@@ -99,7 +99,7 @@ export default async function decorate(block) {
   const $description = fragment.querySelector('.product-details__description');
   const $attributes = fragment.querySelector('.product-details__attributes');
 
-  block.appendChild(fragment);
+  block.replaceChildren(fragment);
 
   const gallerySlots = {
     CarouselThumbnail: (ctx) => {

@@ -347,7 +347,7 @@ export const assertProductDetailPage = (productName, productSku, urlPath) => {
   cy.url().should('include', urlPath);
 
   // Verify product header is displayed correctly
-  cy.get('.product-details__header', { timeout: 10000 }).should('be.visible');
+  cy.get('.product-details__header').should('be.visible');
   cy.get('.pdp-header__title').should('be.visible').and('contain', productName);
   cy.get('.pdp-header__sku').should('be.visible').and('contain', productSku);
 };

@@ -376,7 +376,7 @@ describe('AEM Assets enabled', () => {
     })
   });
 
-  it.skip('[Recommendations Dropin]: should load and show AEM Assets optimized images', () => {
+  it('[Recommendations Dropin]: should load and show AEM Assets optimized images',  () => {
     // Visit products to populate "Recently Viewed" recommendations.
     // Wait a bit to ensure data is collected by Adobe Analytics.
     visitWithEagerImages('/products/gift-packaging/ADB102');
@@ -385,7 +385,7 @@ describe('AEM Assets enabled', () => {
     visitWithEagerImages('/products/denim-apron/ADB119');
     cy.wait(3000);
 
-    visitWithEagerImages(`${envConfig.prexDraft}?q=adb&product_list_order=relevance_DESC`);
+    visitWithEagerImages(envConfig.prexDraft);
     const expectedOptions = {
       protocol: 'https://',
       environment: aemAssetsEnvironment,

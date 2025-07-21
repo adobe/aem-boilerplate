@@ -3,6 +3,7 @@ import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { initializers } from '@dropins/tools/initializer.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
+import { initReCaptcha } from '@dropins/tools/recaptcha.js';
 
 // Dropin Components
 import {
@@ -586,6 +587,7 @@ export default async function decorate(block) {
 
   async function initializeCheckout(data) {
     removeEmptyCart();
+    await initReCaptcha(0);
     if (data.isGuest) await displayGuestAddressForms(data);
     else {
       removeOverlaySpinner();

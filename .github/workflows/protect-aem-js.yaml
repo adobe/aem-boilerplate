@@ -1,0 +1,27 @@
+name: Block Unauthorized AEM Edits
+
+on: [pull_request]
+
+jobs:
+  check-aem-js:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR code
+        uses: actions/checkout@v4
+
+      - name: Download upstream scripts/aem.js
+        run: |
+          curl -sSL https://raw.githubusercontent.com/adobe/aem-boilerplate/main/scripts/aem.js -o upstream_aem.js
+
+      - name: Compare with upstream version
+        run: |
+          if [ -f scripts/aem.js ]; then
+            if ! diff -q scripts/aem.js upstream_aem.js; then
+              echo "❌ scripts/aem.js differs from upstream version. Changes not allowed. Please make sure to use the latest version of the AEM script. https://raw.githubusercontent.com/adobe/aem-boilerplate/main/scripts/aem.js"
+              exit 1
+            else
+              echo "✅ scripts/aem.js matches upstream. Allowing."
+            fi
+          else
+            echo "✅ scripts/aem.js not changed in this PR."
+          fi

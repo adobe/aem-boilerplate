@@ -429,7 +429,22 @@ export default async function decorate(block) {
 
   // Close panels when clicking outside
   document.addEventListener('click', (e) => {
-    if (!minicartPanel.contains(e.target) && !cartButton.contains(e.target)) {
+    // Check if undo is enabled for mini cart
+    const miniCartElement = document.querySelector(
+      '[data-block-name="commerce-mini-cart"]',
+    );
+    const undoEnabled = miniCartElement
+      && (miniCartElement.textContent?.includes('undo-remove-item')
+        || miniCartElement.innerHTML?.includes('undo-remove-item'));
+
+    // For mini cart: if undo is enabled, be more restrictive about when to close
+    const shouldCloseMiniCart = undoEnabled
+      ? !minicartPanel.contains(e.target)
+        && !cartButton.contains(e.target)
+        && !e.target.closest('header')
+      : !minicartPanel.contains(e.target) && !cartButton.contains(e.target);
+
+    if (shouldCloseMiniCart) {
       toggleMiniCart(false);
     }
 

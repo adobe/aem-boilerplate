@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{s as i,f as n,h as _}from"./resetCart.js";import{C as d,t as T}from"./refreshCart.js";import{events as C}from"@dropins/tools/event-bus.js";import{a as f}from"./acdl.js";import{CART_FRAGMENT as A}from"../fragments.js";const m=`
+import{s as i,f as n,h as _}from"./resetCart.js";import{C as d,t as T}from"./refreshCart.js";import{events as C}from"@dropins/tools/event-bus.js";import{b as f}from"./acdl.js";import{CART_FRAGMENT as A}from"../fragments.js";const m=`
   mutation APPLY_GIFT_CARD_ON_CART_MUTATION($cartId: String!, $giftCardCode: String!, ${d}) {
  applyGiftCardToCart(
     input: {

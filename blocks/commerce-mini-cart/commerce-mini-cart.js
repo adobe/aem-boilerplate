@@ -25,6 +25,7 @@ export default async function decorate(block) {
     'cart-url': cartURL = '',
     'checkout-url': checkoutURL = '',
     'enable-updating-product': enableUpdatingProduct = 'false',
+    'undo-remove-item': undo = 'false',
   } = readBlockConfig(block);
 
   // Get translations for custom messages
@@ -139,6 +140,23 @@ export default async function decorate(block) {
     eager: true,
   });
 
+  // Prevent mini cart from closing when undo is enabled
+  if (undo === 'true') {
+    // Add event listener to prevent event bubbling from remove buttons
+    block.addEventListener('click', (e) => {
+      // Check if click is on a remove button or within an undo-related element
+      const isRemoveButton = e.target.closest('[class*="remove"]')
+        || e.target.closest('[data-testid*="remove"]')
+        || e.target.closest('[class*="undo"]')
+        || e.target.closest('[data-testid*="undo"]');
+
+      if (isRemoveButton) {
+        // Stop the event from bubbling up to document level
+        e.stopPropagation();
+      }
+    });
+  }
+
   block.innerHTML = '';
 
   // Render MiniCart
@@ -148,6 +166,7 @@ export default async function decorate(block) {
     routeCart: cartURL ? () => rootLink(cartURL) : undefined,
     routeCheckout: checkoutURL ? () => rootLink(checkoutURL) : undefined,
     routeProduct: getProductLink,
+    undo: undo === 'true',
 
     slots: {
       Thumbnail: (ctx) => {

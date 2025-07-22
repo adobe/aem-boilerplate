@@ -129,6 +129,7 @@ export interface Item {
     bundleOptions?: {
         [key: string]: any;
     };
+    bundleOptionsUIDs?: string[];
     selectedOptions?: {
         [key: string]: any;
     };

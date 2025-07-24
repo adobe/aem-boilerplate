@@ -24,4 +24,6 @@ export declare const RECS_UNIT_RENDER = "recs-unit-impression-render";
 export declare const RECS_ITEM_ADD_TO_CART_CLICK = "recs-item-add-to-cart-click";
 export declare const RECS_ITEM_CLICK = "recs-item-click";
 export declare const RECS_UNIT_VIEW = "recs-unit-view";
+export declare const RECS_REQUEST_SENT = "recs-api-request-sent";
+export declare const RECS_RESPONSE_RECEIVED = "recs-api-response-received";
 //# sourceMappingURL=events.d.ts.map

@@ -4,12 +4,18 @@ import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { AuthCombine } from '@dropins/storefront-auth/containers/AuthCombine.js';
 import { events } from '@dropins/tools/event-bus.js';
 import Wishlist from '@dropins/storefront-wishlist/containers/Wishlist.js';
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { rootLink } from '../../scripts/commerce.js';
 
 // Initialize
 import '../../scripts/initializers/wishlist.js';
 
 import { readBlockConfig } from '../../scripts/aem.js';
+
+const WISHLIST_IMAGE_DIMENSIONS = {
+  width: 288,
+  height: 288,
+};
 
 const showAuthModal = (event) => {
   if (event) {
@@ -65,5 +71,18 @@ export default async function decorate(block) {
     moveProdToCart: cartApi.addProductsToCart,
     routeProdDetailPage: (product) => rootLink(`/products/${product.urlKey}/${product.sku}`),
     onLoginClick: showAuthModal,
+    slots: {
+      image: (ctx) => {
+        const { item, defaultImageProps } = ctx;
+        tryRenderAemAssetsImage(ctx, {
+          alias: item.product.sku,
+          imageProps: defaultImageProps,
+          params: {
+            width: defaultImageProps.width || WISHLIST_IMAGE_DIMENSIONS.width,
+            height: defaultImageProps.height || WISHLIST_IMAGE_DIMENSIONS.height,
+          },
+        });
+      },
+    },
   })(block);
 }

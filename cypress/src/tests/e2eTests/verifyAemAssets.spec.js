@@ -411,6 +411,42 @@ describe('AEM Assets enabled', () => {
       }
     });
   });
+
+  it('[Wishlist Dropin]: should load and show AEM Assets optimized images', { tags: "@skipSaas" }, () => {
+    visitWithEagerImages('/products/denim-apron/ADB119');
+    cy.get('.product-details__buttons__add-to-wishlist button')
+      .should('be.visible')
+      .click();
+    cy.wait(2000);
+
+    visitWithEagerImages('/wishlist');
+    cy.wait(3000);
+
+    const expectedOptions = {
+      protocol: 'https://',
+      environment: aemAssetsEnvironment,
+      format: 'webp',
+      quality: 80,
+      width: 288,
+      height: 288,
+    };
+
+    waitForAemAssetImages('.wishlist-wishlist img', (images) => {
+      for (const image of images) {
+        expectAemAssetsImage(image.src, expectedOptions);
+
+        for (const { url, screenWidth, density } of image.srcsetEntries) {
+          expect(density).to.be.undefined;
+          expect(screenWidth).to.be.a('number');
+
+          expectAemAssetsImage(url, {
+            ...expectedOptions,
+            width: (expectedOptions.width * screenWidth) / 1920,
+          })
+        }
+      }
+    });
+  });
 });
 
 /**

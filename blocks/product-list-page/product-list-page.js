@@ -73,7 +73,18 @@ export default async function decorate(block) {
 
   return Promise.all([
     provider.render(ResultsInfo, { })($resultInfo),
-    provider.render(Facets, { })($facets),
+    provider.render(Facets, {
+      slots: {
+        Facet: (ctx) => {
+          // On Category pages (not search), remove categories facet as you
+          // cannot filter with category and categoryPath. MSRCH-5143 for more.
+          const isSearch = !categoryPathConfig.categoryPath;
+          if (!isSearch && ctx.data.attribute === 'categories') {
+            ctx.replaceWith(document.createElement('div'));
+          }
+        },
+      },
+    })($facets),
     provider.render(ProductList, {
       routeProduct: (product) => rootLink(`/products/${product.urlKey}/${product.sku}`),
       ...categoryPathConfig,

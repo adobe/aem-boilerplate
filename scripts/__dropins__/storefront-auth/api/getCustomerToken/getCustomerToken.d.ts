@@ -10,6 +10,7 @@ interface getCustomerTokenProps {
 export declare const getCustomerToken: ({ email, password, translations, onErrorCallback, handleSetInLineAlertProps, }: getCustomerTokenProps) => Promise<{
     errorMessage: string;
     userName: string;
+    userEmail: string;
 }>;
 export {};
 //# sourceMappingURL=getCustomerToken.d.ts.map

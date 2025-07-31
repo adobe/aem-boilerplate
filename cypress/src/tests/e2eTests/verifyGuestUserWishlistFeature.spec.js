@@ -148,7 +148,7 @@ describe("Verify guest user can manage products across wishlist and cart", { tag
 
     assertWishlistTitleHasLink(
       "Configurable product",
-      "/products/cypress-configurable-product-latest/CYPRESS456"
+      "/products/cypress-configurable-product-latest-red/CYPRESS456"
     )(".commerce-wishlist-wrapper");
 
     assertWishlistProductImage("/adb192.jpg")(".commerce-wishlist-wrapper");

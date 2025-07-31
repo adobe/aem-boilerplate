@@ -1,5 +1,5 @@
-import { FunctionComponent, JSX } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
+import { FunctionComponent, JSX } from 'preact';
 import { ImageNodeRenderProps } from '../../../@adobe-commerce/elsie/src/components';
 import { Item, Product } from '../../data/models';
 
@@ -8,11 +8,6 @@ export interface ProductItemProps extends HTMLAttributes<HTMLDivElement> {
     item?: Item;
     onCartActionButtonClick?: () => boolean;
     onTrashButtonClick?: () => boolean;
-    fixedProductTaxesEnabled: boolean;
-    fixedProductTaxesApply: boolean;
-    fixedProductTaxesEnabledDisplayInProductLists?: string;
-    fixedProductTaxesEnabledDisplayInSalesModules?: string;
-    fixedProductTaxesEnabledDisplayInProductView?: string;
     routeProdDetailPage: (product: Product) => string;
     imageNode?: (props: {
         defaultImageProps: ImageNodeRenderProps;

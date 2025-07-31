@@ -423,12 +423,17 @@ describe('AEM Assets enabled', () => {
     cy.wait(3000);
 
     const expectedOptions = {
-      protocol: 'https://',
+      protocol: 'http://',
       environment: aemAssetsEnvironment,
       format: 'webp',
       quality: 80,
       width: 288,
       height: 288,
+    };
+
+    const srcSetExpectedOptions = {
+      ...expectedOptions,
+      protocol: '//',
     };
 
     waitForAemAssetImages('.wishlist-wishlist img', (images) => {
@@ -440,7 +445,7 @@ describe('AEM Assets enabled', () => {
           expect(screenWidth).to.be.a('number');
 
           expectAemAssetsImage(url, {
-            ...expectedOptions,
+            ...srcSetExpectedOptions,
             width: (expectedOptions.width * screenWidth) / 1920,
           })
         }

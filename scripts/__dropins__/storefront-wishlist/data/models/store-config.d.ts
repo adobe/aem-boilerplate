@@ -18,10 +18,5 @@ export interface StoreConfigModel {
     wishlistIsEnabled: boolean;
     wishlistMaxNumber: number;
     wishlistMultipleListIsEnabled: boolean;
-    fixedProductTaxesEnabled: boolean;
-    fixedProductTaxesApply: boolean;
-    fixedProductTaxesEnabledDisplayInProductLists: string;
-    fixedProductTaxesEnabledDisplayInSalesModules: string;
-    fixedProductTaxesEnabledDisplayInProductView: string;
 }
 //# sourceMappingURL=store-config.d.ts.map

@@ -5,7 +5,9 @@ import { ImageNodeRenderProps } from '../../../@adobe-commerce/elsie/src/compone
 import { JSX } from 'preact';
 
 export interface WishlistItemProps extends HTMLAttributes<HTMLDivElement> {
-    initialData: Item | null;
+    item: Item;
+    getProductData?: (sku: string) => Promise<Product | null>;
+    getRefinedProduct?: (sku: string, optionUIDs: string[], anchorOptions?: string[], raw?: boolean) => Promise<Product | null>;
     moveProdToCart: (products: {
         sku: string;
         quantity: number;

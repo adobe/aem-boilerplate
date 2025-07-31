@@ -11,6 +11,8 @@ export interface WishlistProps extends HTMLAttributes<HTMLDivElement> {
         quantity: number;
     }[]) => Promise<any>;
     routeProdDetailPage: (product: Product) => string;
+    getProductData?: (sku: string) => Promise<Product | null>;
+    getRefinedProduct?: (sku: string, optionUIDs: string[], anchorOptions?: string[], raw?: boolean) => Promise<Product | null>;
     slots?: {
         image?: SlotProps<{
             defaultImageProps: ImageProps;

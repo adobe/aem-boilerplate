@@ -1,191 +1,14 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{Initializer as D}from"@dropins/tools/lib.js";import{events as c}from"@dropins/tools/event-bus.js";import{j as v,s as l,f as T,h as b,g as E,i as C,k as G}from"./removeProductsFromWishlist.js";const R=new D({init:async e=>{const t={isGuestWishlistEnabled:!1,...e};R.config.setConfig(t),S().catch(console.error)},listeners:()=>[c.on("wishlist/data",e=>{v(e)},{eager:!0}),c.on("authenticated",async e=>{if(l.authenticated&&!e&&c.emit("wishlist/reset",void 0),e&&!l.authenticated){l.authenticated=e;const t=await S().catch(console.error);t&&ce(t)}},{eager:!0}),c.on("wishlist/reset",()=>{ae().catch(console.error),c.emit("wishlist/data",null)})]}),pe=R.config;function O(e){if(!e)return null;const t=i=>{switch(i){case 1:return"INCLUDING_FPT_AND_DESCRIPTION";case 2:return"EXCLUDING_FPT_INCLUDING_DESCRIPTION_FINAL_PRICE";case 3:return"EXCLUDING_FPT";default:return"INCLUDING_FPT_ONLY"}};return{wishlistIsEnabled:e.storeConfig.magento_wishlist_general_is_enabled,wishlistMultipleListIsEnabled:e.storeConfig.enable_multiple_wishlists,wishlistMaxNumber:e.storeConfig.maximum_number_of_wishlists,fixedProductTaxesEnabled:e.storeConfig.fixed_product_taxes_enable,fixedProductTaxesApply:e.storeConfig.fixed_product_taxes_apply_tax_to_fpt,fixedProductTaxesEnabledDisplayInProductLists:t(e.storeConfig.fixed_product_taxes_display_prices_in_product_lists),fixedProductTaxesEnabledDisplayInSalesModules:t(e.storeConfig.fixed_product_taxes_display_prices_in_sales_modules),fixedProductTaxesEnabledDisplayInProductView:t(e.storeConfig.fixed_product_taxes_display_prices_on_product_view_page)}}function w(e,t=[]){var i;return e?{type:e.__typename,name:e.name,sku:e.sku,uid:e.uid,image:M(e,t),stockStatus:e.stock_status,canonicalUrl:e.canonical_url,urlKey:e.url_key,categories:(i=e.categories)==null?void 0:i.map(s=>s.name),prices:W(e),productAttributes:F(e),options:U(e)}:null}function U(e){var t,i;return e.__typename==="ConfigurableProduct"?e.configurable_options?(t=e.configurable_options)==null?void 0:t.map(s=>{var n;return{uid:s.uid,attributeUid:s.attribute_uid,attributeCode:s.attribute_code,values:(n=s.values)==null?void 0:n.map(r=>({uid:r.uid,label:r.label})),required:!0}}):[]:e.__typename==="GiftCardProduct"?e.gift_card_options?(i=e.gift_card_options)==null?void 0:i.map(s=>({uid:s.uid,required:s.required,title:s.title})):[]:[]}function M(e,t=[]){var s;let i=e.thumbnail;if(e.__typename==="ConfigurableProduct"&&e.variants&&(t==null?void 0:t.length)>0){const n=t.map(u=>u.uid);let r=e.variants.find(u=>{var o;const _=((o=u.attributes)==null?void 0:o.map(a=>a.uid))||[];return n.every(a=>_.includes(a))});r||(r=e.variants.find(u=>{var _;return(_=u.attributes)==null?void 0:_.some(o=>t.some(a=>a.uid===o.uid))})),(s=r==null?void 0:r.product)!=null&&s.image&&(i=r.product.image)}return{src:i==null?void 0:i.url,alt:i==null?void 0:i.label}}function W(e){var t,i,s,n,r,u,_,o,a,d,m,f,p,I,g,h,y,P;return{regularPrice:{currency:((s=(i=(t=e.price_range)==null?void 0:t.minimum_price)==null?void 0:i.regular_price)==null?void 0:s.currency)??"USD",value:((u=(r=(n=e.price_range)==null?void 0:n.minimum_price)==null?void 0:r.regular_price)==null?void 0:u.value)??0},finalPrice:{currency:((a=(o=(_=e.price_range)==null?void 0:_.minimum_price)==null?void 0:o.final_price)==null?void 0:a.currency)??"USD",value:((f=(m=(d=e.price_range)==null?void 0:d.minimum_price)==null?void 0:m.final_price)==null?void 0:f.value)??0},discount:{amountOff:((g=(I=(p=e.price_range)==null?void 0:p.minimum_price)==null?void 0:I.discount)==null?void 0:g.amount_off)??0,percentOff:((P=(y=(h=e.price_range)==null?void 0:h.minimum_price)==null?void 0:y.discount)==null?void 0:P.percent_off)??0},fixedProductTaxes:L(e)}}function F(e){var t,i;return(i=(t=e.custom_attributesV2)==null?void 0:t.items)==null?void 0:i.map(s=>{const n=s.code.split("_").map(r=>r.charAt(0).toUpperCase()+r.slice(1)).join(" ");return{...s,code:n}})}function L(e){var t,i,s,n,r;return(i=(t=e.price_range)==null?void 0:t.minimum_price)!=null&&i.fixed_product_taxes?(r=(n=(s=e.price_range)==null?void 0:s.minimum_price)==null?void 0:n.fixed_product_taxes)==null?void 0:r.map(u=>({money:{value:u.amount.value,currency:u.amount.currency},label:u.label})):[]}function N(e,t){return e?{id:e.id,updated_at:e.updated_at,sharing_code:e.sharing_code,items_count:e.items_count,items:k(e,t??[])}:null}function k(e,t){var i,s;return(s=(i=e==null?void 0:e.items_v2)==null?void 0:i.items)!=null&&s.length?e.items_v2.items.map(n=>{const r=$(n);return{id:n.id,quantity:n.quantity,description:n.description,added_at:n.added_at,enteredOptions:t,selectedOptions:r,product:w(n.product,r)}}):[]}function $(e){return e.product.__typename==="ConfigurableProduct"?e.configurable_options?e.configurable_options.map(t=>({value:t.value_label,label:t.option_label,uid:t.configurable_product_option_value_uid})):[]:[]}const q=`
+import{Initializer as y}from"@dropins/tools/lib.js";import{events as r}from"@dropins/tools/event-bus.js";import{j as R,s as e,f as I,h as f,P as A,g as h,i as T,k as G}from"./removeProductsFromWishlist.js";const g=new y({init:async t=>{const s={isGuestWishlistEnabled:!1,...t};g.config.setConfig(s),p().catch(console.error)},listeners:()=>[r.on("wishlist/data",t=>{R(t)},{eager:!0}),r.on("authenticated",async t=>{if(e.authenticated&&!t&&r.emit("wishlist/reset",void 0),t&&!e.authenticated){e.authenticated=t;const s=await p().catch(console.error);s&&j(s)}},{eager:!0}),r.on("wishlist/reset",()=>{Q().catch(console.error),r.emit("wishlist/data",null)})]}),X=g.config;function N(t){return t?{wishlistIsEnabled:t.storeConfig.magento_wishlist_general_is_enabled,wishlistMultipleListIsEnabled:t.storeConfig.enable_multiple_wishlists,wishlistMaxNumber:t.storeConfig.maximum_number_of_wishlists}:null}function w(t,s){return t?{id:t.id,updated_at:t.updated_at,sharing_code:t.sharing_code,items_count:t.items_count,items:D(t,s??[])}:null}function D(t,s){var i,a;return(a=(i=t==null?void 0:t.items_v2)==null?void 0:i.items)!=null&&a.length?t.items_v2.items.map(n=>{const l=L(n);return{id:n.id,quantity:n.quantity,description:n.description,added_at:n.added_at,enteredOptions:s,selectedOptions:l,product:{sku:n.product.sku}}}):[]}function L(t){return t.product.__typename==="ConfigurableProduct"?t.configurable_options?t.configurable_options.map(s=>({uid:s.configurable_product_option_value_uid})):[]:[]}const C=`
 query STORE_CONFIG_QUERY {
   storeConfig {
     magento_wishlist_general_is_enabled
     enable_multiple_wishlists
     maximum_number_of_wishlists
-    fixed_product_taxes_enable
-    fixed_product_taxes_apply_tax_to_fpt
-    fixed_product_taxes_display_prices_in_product_lists
-    fixed_product_taxes_display_prices_in_sales_modules
-    fixed_product_taxes_display_prices_on_product_view_page    
   }
 }
-`,H=async()=>T(q,{method:"GET",cache:"force-cache"}).then(({errors:e,data:t})=>e?b(e):O(t)),B=`
-  fragment PRICE_RANGE_FRAGMENT on PriceRange {
-    minimum_price {
-      regular_price {
-        value
-        currency
-      }
-      final_price {
-        value
-        currency
-      }
-      discount {
-        percent_off
-        amount_off
-      }
-      fixed_product_taxes {
-        amount {
-          currency
-          value
-        }
-        label
-      }      
-    }
-    maximum_price {
-      regular_price {
-        value
-        currency
-      }
-      final_price {
-        value
-        currency
-      }
-      discount {
-        percent_off
-        amount_off
-      }
-      fixed_product_taxes {
-        amount {
-          currency
-          value
-        }
-        label
-      }      
-    }
-  }
-`,z=`
-  ... on SimpleProduct {
-    options {
-      uid
-    }
-  }
-`,Y=`
-  ... on ConfigurableProduct {
-    configurable_options {
-      uid
-      attribute_uid
-      attribute_code
-      values {
-        uid
-        label
-      }
-    }
-    variants {
-      attributes {
-        code
-        uid
-        label
-      }
-      product {
-        sku
-        stock_status
-        image {
-          label
-          url
-        }
-      }
-    }
-  }
-`,Q=`
-  ... on DownloadableProduct {
-    image {
-      label
-      url
-    }
-  }
- `,K=`
-  ... on GiftCardProduct {
-    giftcard_type
-    giftcard_amounts {
-      uid
-      website_id
-      value
-      attribute_id
-      website_value
-    }
-    gift_card_options {
-      title
-      required
-      uid
-      ... on CustomizableFieldOption {
-        value: value {
-          uid
-        }
-      }
-    }
-  }
-`,j=`
-  ... on BundleProduct {
-    items {
-      uid
-      required
-      title
-      options {
-        uid
-        label
-        quantity
-      }
-    }
-  }
-`,x=`
-  fragment PRODUCT_FRAGMENT on ProductInterface {
-    __typename
-    uid
-    sku
-    name
-    thumbnail {
-      url
-      label
-    }
-    url_key
-    categories {
-      url_path
-      url_key
-      name
-    }
-    stock_status
-    canonical_url
-    custom_attributesV2(filters: {is_visible_on_front: true}){
-      items {
-        code
-        ...on AttributeValue {
-          value
-        }
-        ...on AttributeSelectedOptions {
-          selected_options {
-            value
-            label
-          }
-        }
-      }
-    }
-    price_range {
-        ...PRICE_RANGE_FRAGMENT
-    }
-    ${z}
-    ${Y}
-    ${Q}
-    ${K}
-    ${j}
-  }
-
-${B}
-`,V=`
-  query GET_PRODUCT_BY_SKU($sku: String!) {
-    products(filter: { sku: { eq: $sku } }) {
-      items {
-        ...PRODUCT_FRAGMENT
-      }
-    }
-  }
-
-${x}
-`,Z=async(e,t)=>{if(!e)throw Error("Product SKU is not set");return T(V,{variables:{sku:e}}).then(({errors:i,data:s})=>{var n;return i?b(i):(n=s==null?void 0:s.products)!=null&&n.items?w(s.products.items[0],t??[]):null})},X=`
+`,U=async()=>I(C,{method:"GET",cache:"force-cache"}).then(({errors:t,data:s})=>t?f(t):N(s)),F=`
   fragment CUSTOMIZABLE_OPTIONS_FRAGMENT on SelectedCustomizableOption {
     type
     customizable_option_uid
@@ -201,7 +24,7 @@ ${x}
       }
     }
   }
-`,J=`
+`,v=`
   ... on ConfigurableWishlistItem {
     configurable_options {
       option_label
@@ -213,7 +36,7 @@ ${x}
       canonical_url
     }
   }
-`,ee=`
+`,P=`
   ... on DownloadableWishlistItem {
     added_at
     description
@@ -225,7 +48,7 @@ ${x}
     }
     quantity
   }
-`,te=`
+`,H=`
   ... on GiftCardWishlistItem {
     added_at
     description
@@ -245,7 +68,7 @@ ${x}
       sender_name
     }
   }
-`,ie=`
+`,k=`
   ... on BundleWishlistItem {
     bundle_options {
       label
@@ -258,7 +81,7 @@ ${x}
       }
     }
   }
-`,se=`
+`,$=`
 fragment WISHLIST_ITEM_FRAGMENT on WishlistItemInterface {
     __typename
     id
@@ -268,18 +91,18 @@ fragment WISHLIST_ITEM_FRAGMENT on WishlistItemInterface {
     product {
       ...PRODUCT_FRAGMENT
     }
-    ${J}
-    ${ee}
-    ${te}
-    ${ie}
+    ${v}
+    ${P}
+    ${H}
+    ${k}
     customizable_options {
       ...CUSTOMIZABLE_OPTIONS_FRAGMENT
     }
   }
   
-  ${x}
-  ${X}
-`,A=`
+  ${A}
+  ${F}
+`,S=`
 fragment WISHLIST_FRAGMENT on Wishlist {
     id
     updated_at
@@ -292,8 +115,8 @@ fragment WISHLIST_FRAGMENT on Wishlist {
     }
   }
 
-${se}
-`,re=`
+${$}
+`,q=`
   query GET_WISHLISTS_QUERY {
     customer {
       wishlists {
@@ -302,8 +125,8 @@ ${se}
     }
   }
 
-  ${A}
-`,ne=async()=>l.authenticated?T(re).then(({errors:e,data:t})=>{var i;return e?b(e):(i=t==null?void 0:t.customer)!=null&&i.wishlists?t.customer.wishlists.map(s=>N(s)):null}):E(),oe=`
+  ${S}
+`,z=async()=>e.authenticated?I(q).then(({errors:t,data:s})=>{var i;return t?f(t):(i=s==null?void 0:s.customer)!=null&&i.wishlists?s.customer.wishlists.map(a=>w(a)):null}):h(),x=`
   mutation ADD_PRODUCTS_TO_WISHLIST_MUTATION(
       $wishlistId: ID!, 
       $wishlistItems: [WishlistItemInput!]!,
@@ -321,5 +144,5 @@ ${se}
       }
     }
   }
-${A}
-`,ue=async e=>{var s,n,r,u,_;if(!e)return null;const t=E();let i={id:(t==null?void 0:t.id)??"",updated_at:"",sharing_code:"",items_count:0,items:(t==null?void 0:t.items)??[]};for(const o of e){if((s=i.items)==null?void 0:s.some(f=>C(f,{sku:o.sku,optionUIDs:o.optionsUIDs})))continue;const d=o.optionsUIDs?(n=o.optionsUIDs)==null?void 0:n.map(f=>({uid:f})):[],m=await Z(o.sku,d);if(!m)throw Error("Product not found");i.items=[...i.items,{quantity:o.quantity,selectedOptions:d,enteredOptions:[],product:m}]}if(i.items_count=(r=i.items)==null?void 0:r.length,c.emit("wishlist/data",i),l.authenticated){if(!l.wishlistId)throw c.emit("wishlist/data",t),Error("Wishlist ID is not set");const o={wishlistId:l.wishlistId,wishlistItems:e.map(({sku:p,quantity:I,optionsUIDs:g,enteredOptions:h})=>({sku:p,quantity:I,selected_options:g,entered_options:h}))},{errors:a,data:d}=await T(oe,{variables:o}),m=[...((u=d==null?void 0:d.addProductsToWishlist)==null?void 0:u.user_errors)??[],...a??[]];if(m.length>0)return c.emit("wishlist/data",t),b(m);const f=N(d.addProductsToWishlist.wishlist,((_=e[0])==null?void 0:_.enteredOptions)??[]);c.emit("wishlist/data",f)}return null},ae=()=>(l.wishlistId=null,l.authenticated=!1,Promise.resolve(null)),S=async()=>{if(l.initializing)return null;l.initializing=!0,l.config||(l.config=await H());const e=l.authenticated?await le():await _e();return c.emit("wishlist/initialized",e),c.emit("wishlist/data",e),l.initializing=!1,e};async function le(){const e=await ne(),t=e?e[0]:null;return t?(l.wishlistId=t.id,t):null}async function _e(){try{return await E()}catch(e){throw console.error(e),e}}const ce=async e=>{var n;if(!e)return null;const t=E(!0),i=[];if((n=t==null?void 0:t.items)==null||n.forEach(r=>{var o;const u=((o=r.selectedOptions)==null?void 0:o.map(a=>a.uid))||[];if(!e.items.some(a=>C(a,{sku:r.product.sku,optionUIDs:u}))){const a={sku:r.product.sku,quantity:1,optionsUIDs:u,enteredOptions:r.enteredOptions||void 0};i.push(a)}}),i.length===0)return null;const s=await ue(i);return G(),s};export{se as W,ue as a,A as b,pe as c,Z as d,ne as e,S as f,H as g,le as h,R as i,_e as j,ce as m,ae as r,N as t};
+${S}
+`,B=async t=>{var a,n,l,d,m;if(!t)return null;const s=h();let i={id:(s==null?void 0:s.id)??"",updated_at:"",sharing_code:"",items_count:0,items:(s==null?void 0:s.items)??[]};for(const o of t){if((a=i.items)==null?void 0:a.some(_=>T(_,{sku:o.sku,optionUIDs:o.optionsUIDs})))continue;const c=o.optionsUIDs?(n=o.optionsUIDs)==null?void 0:n.map(_=>({uid:_})):[];i.items=[...i.items,{id:crypto.randomUUID(),quantity:o.quantity,selectedOptions:c,enteredOptions:o.enteredOptions??[],product:{sku:o.sku}}]}if(i.items_count=(l=i.items)==null?void 0:l.length,r.emit("wishlist/data",i),e.authenticated){if(!e.wishlistId)throw r.emit("wishlist/data",s),Error("Wishlist ID is not set");const o={wishlistId:e.wishlistId,wishlistItems:t.map(({sku:W,quantity:O,optionsUIDs:M,enteredOptions:b})=>({sku:W,quantity:O,selected_options:M,entered_options:b}))},{errors:u,data:c}=await I(x,{variables:o}),_=[...((d=c==null?void 0:c.addProductsToWishlist)==null?void 0:d.user_errors)??[],...u??[]];if(_.length>0)return r.emit("wishlist/data",s),f(_);const E=w(c.addProductsToWishlist.wishlist,((m=t[0])==null?void 0:m.enteredOptions)??[]);r.emit("wishlist/data",E)}return null},Q=()=>(e.wishlistId=null,e.authenticated=!1,Promise.resolve(null)),p=async()=>{if(e.initializing)return null;e.initializing=!0,e.config||(e.config=await U());const t=e.authenticated?await Y():await Z();return r.emit("wishlist/initialized",t),r.emit("wishlist/data",t),e.initializing=!1,t};async function Y(){const t=await z(),s=t?t[0]:null;return s?(e.wishlistId=s.id,s):null}async function Z(){try{return await h()}catch(t){throw console.error(t),t}}const j=async t=>{var n;if(!t)return null;const s=h(!0),i=[];if((n=s==null?void 0:s.items)==null||n.forEach(l=>{var o;const d=((o=l.selectedOptions)==null?void 0:o.map(u=>u.uid))||[];if(!t.items.some(u=>T(u,{sku:l.product.sku,optionUIDs:d}))){const u={sku:l.product.sku,quantity:1,optionsUIDs:d,enteredOptions:l.enteredOptions||void 0};i.push(u)}}),i.length===0)return null;const a=await B(i);return G(),a};export{$ as W,B as a,S as b,X as c,z as d,p as e,Y as f,U as g,Z as h,g as i,j as m,Q as r,w as t};

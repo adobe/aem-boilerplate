@@ -3,22 +3,28 @@
 
 <head>
   <title>Page not found</title>
-  <script type="importmap">
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="script-src 'nonce-aem' 'strict-dynamic' 'unsafe-inline' http: https:; base-uri 'self'; object-src 'none';"
+    move-to-http-header="true"
+  >
+  <script nonce="aem" type="importmap">
     {
         "imports": {
             "@dropins/tools/": "/scripts/__dropins__/tools/",
             "@dropins/storefront-cart/": "/scripts/__dropins__/storefront-cart/",
-            "@dropins/storefront-auth/": "/scripts/__dropins__/storefront-auth/"
+            "@dropins/storefront-auth/": "/scripts/__dropins__/storefront-auth/",
+            "@dropins/storefront-personalization/": "/scripts/__dropins__/storefront-personalization/"
         }
     }
   </script>
-  <script type="text/javascript">
+  <script nonce="aem" type="text/javascript">
     window.isErrorPage = true;
     window.errorCode = '404';
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta property="og:title" content="Page not found">
-  <script type="module">
+  <script nonce="aem" type="module">
     await fetch('/metadata.json')
       .then((res) => res.json())
       .then(({ data = [] }) => {
@@ -54,8 +60,8 @@
         console.error(err);
       });
   </script>
-  <script src="/scripts/scripts.js" type="module"></script>
-  <script type="module">
+  <script nonce="aem" src="/scripts/scripts.js" type="module"></script>
+  <script nonce="aem" type="module">
     window.addEventListener('load', () => {
       if (document.referrer) {
         const { origin, pathname } = new URL(document.referrer);
@@ -71,7 +77,7 @@
       }
     });
   </script>
-  <script type="module">
+  <script nonce="aem" type="module">
     import { sampleRUM } from '/scripts/aem.js';
     sampleRUM('404', { source: document.referrer });
   </script>

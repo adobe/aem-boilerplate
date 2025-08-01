@@ -1,6 +1,6 @@
 import { HTMLAttributes } from 'preact/compat';
 import { FunctionComponent, JSX } from 'preact';
-import { ImageNodeRenderProps } from '../../../@adobe-commerce/elsie/src/components';
+import { ImageNodeRenderProps } from '@dropins/tools/types/elsie/src/components';
 import { Item, Product } from '../../data/models';
 
 export interface ProductItemProps extends HTMLAttributes<HTMLDivElement> {

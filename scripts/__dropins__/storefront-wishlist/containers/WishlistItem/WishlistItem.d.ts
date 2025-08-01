@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
-import { Container } from '../../../@adobe-commerce/elsie/src/lib';
+import { Container } from '@dropins/tools/types/elsie/src/lib';
 import { Item, Product } from '../../data/models';
-import { ImageNodeRenderProps } from '../../../@adobe-commerce/elsie/src/components';
+import { ImageNodeRenderProps } from '@dropins/tools/types/elsie/src/components';
 import { JSX } from 'preact';
 
 export interface WishlistItemProps extends HTMLAttributes<HTMLDivElement> {

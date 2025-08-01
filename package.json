@@ -44,7 +44,7 @@
     "@dropins/storefront-payment-services": "~1.0.1",
     "@dropins/storefront-pdp": "1.2.1",
     "@dropins/storefront-recommendations": "1.0.1-alpha005",
-    "@dropins/storefront-wishlist": "~2.0.0-alpha1",
+    "@dropins/storefront-wishlist": "~2.0.0-beta1",
     "@dropins/tools": "1.4.0-beta1",
     "@dropins/storefront-personalization": "~1.0.0",
     "@dropins/storefront-product-discovery": "~1.0.1"

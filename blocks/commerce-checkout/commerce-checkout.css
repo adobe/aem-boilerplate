@@ -4,6 +4,13 @@
     gap: var(--spacing-big) 0;
 }
 
+.checkout__merged-cart-banner {
+    display: grid;
+    grid-column: 1 / -1;
+    align-items: start;
+    grid-template-columns: auto;
+}
+
 .checkout__main {
     display: grid;
     row-gap: var(--spacing-xbig);
@@ -42,6 +49,7 @@
 }
 
 /* Hide main containers when the cart is empty or there is a server error */
+.checkout__content--error .checkout__merged-cart-banner,
 .checkout__content--error .checkout__out-of-stock,
 .checkout__content--error .checkout__login,
 .checkout__content--error .checkout__shipping-form,
@@ -50,6 +58,7 @@
 .checkout__content--error .checkout__payment-methods,
 .checkout__content--error .checkout__billing-form,
 .checkout__content--error .checkout__terms-and-conditions,
+.checkout__content--empty .checkout__merged-cart-banner,
 .checkout__content--empty .checkout__server-error,
 .checkout__content--empty .checkout__out-of-stock,
 .checkout__content--empty .checkout__login,
@@ -65,6 +74,7 @@
 /* Hide blocks with empty divs */
 .checkout__server-error:has(> :empty),
 .checkout__out-of-stock:has(> :empty),
+.checkout__merged-cart-banner:has(> :empty),
 .checkout__delivery:has(> div:first-child:empty),
 .checkout__bill-to-shipping:has(> :empty) {
     display: none;

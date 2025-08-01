@@ -16,3 +16,4 @@ import{CHECKOUT_DATA_FRAGMENT as e}from"../fragments.js";import{b as r}from"./sy
 
   ${e}
 `,u=async t=>{const a=n.cartId;if(!a)throw new o;if(!t)throw new s;return await m({options:{variables:{cartId:a,paymentMethod:t}},path:"setPaymentMethodOnCart.cart",query:d,queueName:i.CartUpdate,transformer:r,type:"mutation"})};export{u as s};
+//# sourceMappingURL=setPaymentMethod.js.map

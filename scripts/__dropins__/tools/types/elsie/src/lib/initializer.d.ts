@@ -51,6 +51,7 @@ export declare class initializers {
     static _imageParamsKeyMap: {
         [key: string]: string;
     } | undefined;
+    static _globalLocale: string | undefined;
     /**
      * Registers a new initializer. If the initializers have already been mounted,it immediately binds the event listeners and initializes the API for the new initializer.
      * @param initializer - The initializer to register.
@@ -76,6 +77,11 @@ export declare class initializers {
     static setImageParamKeys(params: {
         [key: string]: any;
     }): void;
+    /**
+     * Sets the global locale. This locale is used by components that need consistent formatting regardless of the user's browser locale.
+     * @param locale - The locale string (e.g., 'en-US', 'es-MX', 'fr-FR').
+     */
+    static setGlobalLocale(locale: string): void;
 }
 export {};
 //# sourceMappingURL=initializer.d.ts.map

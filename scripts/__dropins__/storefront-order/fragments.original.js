@@ -190,6 +190,10 @@ const o=`
       value
       currency
     }
+    grand_total_excl_tax {
+      value
+      currency
+    }
     total_giftcard {
       currency
       value
@@ -297,20 +301,6 @@ const o=`
     }
   }
 `,d=`
-  fragment AVAILABLE_GIFT_WRAPPING_FRAGMENT on GiftWrapping {
-   __typename
-   uid
-   design
-   image {
-     url
-     label
-   }
-   price {
-     currency
-     value
-   }
-  }
-`,s=`
   fragment GUEST_ORDER_FRAGMENT on CustomerOrder {
     printed_card_included
     gift_receipt_included
@@ -403,4 +393,5 @@ const o=`
   ${A}
   ${u}
   ${T}
-`;export{e as ADDRESS_FRAGMENT,T as APPLIED_GIFT_CARDS_FRAGMENT,d as AVAILABLE_GIFT_WRAPPING_FRAGMENT,a as BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT,E as DOWNLOADABLE_ORDER_ITEMS_FRAGMENT,t as GIFT_CARD_DETAILS_FRAGMENT,u as GIFT_MESSAGE_FRAGMENT,A as GIFT_WRAPPING_FRAGMENT,s as GUEST_ORDER_FRAGMENT,n as ORDER_ITEM_DETAILS_FRAGMENT,i as ORDER_ITEM_FRAGMENT,R as ORDER_SUMMARY_FRAGMENT,r as PRICE_DETAILS_FRAGMENT,_ as PRODUCT_DETAILS_FRAGMENT,o as REQUEST_RETURN_ORDER_FRAGMENT,c as RETURNS_FRAGMENT};
+`;export{e as ADDRESS_FRAGMENT,T as APPLIED_GIFT_CARDS_FRAGMENT,a as BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT,E as DOWNLOADABLE_ORDER_ITEMS_FRAGMENT,t as GIFT_CARD_DETAILS_FRAGMENT,u as GIFT_MESSAGE_FRAGMENT,A as GIFT_WRAPPING_FRAGMENT,d as GUEST_ORDER_FRAGMENT,n as ORDER_ITEM_DETAILS_FRAGMENT,i as ORDER_ITEM_FRAGMENT,R as ORDER_SUMMARY_FRAGMENT,r as PRICE_DETAILS_FRAGMENT,_ as PRODUCT_DETAILS_FRAGMENT,o as REQUEST_RETURN_ORDER_FRAGMENT,c as RETURNS_FRAGMENT};
+//# sourceMappingURL=fragments.js.map

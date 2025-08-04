@@ -59,6 +59,8 @@ export interface MoneyProps {
 }
 interface GrandTotalProps extends MoneyProps {
 }
+interface GrandTotalExclTaxProps extends MoneyProps {
+}
 interface SubtotalProps extends MoneyProps {
 }
 interface TotalTaxProps extends MoneyProps {
@@ -87,6 +89,7 @@ export interface TotalGiftOptionsProps {
 export interface TotalProps {
     total_giftcard?: MoneyProps;
     grand_total?: GrandTotalProps;
+    grand_total_excl_tax?: GrandTotalExclTaxProps;
     subtotal?: SubtotalProps;
     taxes?: TaxDetailProps[];
     total_tax?: TotalTaxProps;

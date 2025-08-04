@@ -19,3 +19,4 @@ import{f as s,h as i}from"./fetch-graphql.js";function _(e){return e?{baseMediaU
     }
   }
 `,a=async()=>s(o,{method:"GET",cache:"force-cache"}).then(({errors:e,data:r})=>e?i(e):_(r.storeConfig));export{a as g};
+//# sourceMappingURL=getStoreConfig.js.map

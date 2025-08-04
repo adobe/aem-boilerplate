@@ -16,3 +16,4 @@ import{h as i}from"./network-error.js";import{f as h,h as o}from"./fetch-graphql
   }
   ${E}
 `,g=async t=>await h(l,{method:"GET",cache:"no-cache",variables:{input:t}}).then(r=>{var a;return(a=r.errors)!=null&&a.length&&r.errors[0].message==="Please login to view the order."?o(r.errors):n(r)}).catch(i);export{g as a,_ as g};
+//# sourceMappingURL=getGuestOrder.js.map

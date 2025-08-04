@@ -11,3 +11,4 @@ import{Initializer as d}from"@dropins/tools/lib.js";import{f as h,h as g,a as m}
     }
   }
 `,b=async()=>await h(l,{method:"GET",cache:"force-cache"}).then(t=>{var a;return(a=t.errors)!=null&&a.length?g(t.errors):u(t)}).catch(m);export{G as c,b as g,_ as i};
+//# sourceMappingURL=getStoreConfig.js.map

@@ -44,6 +44,7 @@ export declare const useCreateReturn: ({ onSuccess, onError, handleSetInLineAler
         items?: OrderItemModel[] | undefined;
         totalGiftCard?: import('../../types').MoneyProps | undefined;
         grandTotal?: import('../../types').MoneyProps | undefined;
+        grandTotalExclTax?: import('../../types').MoneyProps | undefined;
         totalShipping?: import('../../types').MoneyProps | undefined;
         subtotalExclTax?: import('../../types').MoneyProps | undefined;
         subtotalInclTax?: import('../../types').MoneyProps | undefined;

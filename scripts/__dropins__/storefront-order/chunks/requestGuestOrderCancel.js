@@ -87,3 +87,4 @@ import{PRODUCT_DETAILS_FRAGMENT as s,PRICE_DETAILS_FRAGMENT as i,GIFT_CARD_DETAI
   }
   ${O}
 `,f=async(r,e,n,t)=>{if(!r)throw new Error("No order token found");if(!e)throw new Error("No reason found");return R(I,{variables:{token:r,reason:e}}).then(({errors:E,data:_})=>{if(E)return a(E);_.requestGuestOrderCancel.error!=null&&t();const o=T(_.requestGuestOrderCancel.order);n(o)}).catch(()=>t())};export{p as c,f as r};
+//# sourceMappingURL=requestGuestOrderCancel.js.map

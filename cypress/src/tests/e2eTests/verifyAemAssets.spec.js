@@ -45,16 +45,21 @@ describe('AEM Assets enabled', () => {
     cy.get('#search-bar-input input[type="text"]').type('gift');
     cy.wait(2000);
     const expectedOptions = {
-      protocol: 'https://',
+      protocol: 'http://',
       environment: aemAssetsEnvironment,
       format: 'webp',
       quality: 80,
     }
 
+    const srcSetExpectedOptions = {
+      ...expectedOptions,
+      protocol: '//',
+    };
+
     waitForAemAssetImages('.search-bar-result img', (images) => {
       for (const image of images) {
         expectAemAssetsImage(image.src, {
-          ...expectedOptions,
+          ...srcSetExpectedOptions,
           width: 165,
           height: 165,
         });
@@ -64,7 +69,7 @@ describe('AEM Assets enabled', () => {
           expect(screenWidth).to.be.a('number');
 
           expectAemAssetsImage(url, {
-            ...expectedOptions,
+            ...srcSetExpectedOptions,
             width: (165 * screenWidth) / 1920,
             height: 165,
           });
@@ -78,7 +83,7 @@ describe('AEM Assets enabled', () => {
     waitForAemAssetImages('.search__product-list img', (images) => {
       for (const image of images) {
         expectAemAssetsImage(image.src, {
-          ...expectedOptions,
+          ...srcSetExpectedOptions,
           width: 200,
           height: 250,
         });
@@ -88,7 +93,7 @@ describe('AEM Assets enabled', () => {
           expect(screenWidth).to.be.a('number');
 
           expectAemAssetsImage(url, {
-            ...expectedOptions,
+            ...srcSetExpectedOptions,
             width: (200 * screenWidth) / 1920,
             height: 250,
           });

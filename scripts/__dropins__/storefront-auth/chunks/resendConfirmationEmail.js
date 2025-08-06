@@ -5,3 +5,4 @@ import{f as r,h as e}from"./network-error.js";const i=`
     resendConfirmationEmail(email: $email)
   }
 `,n=async a=>await r(i,{method:"POST",variables:{email:a}}).catch(e);export{n as r};
+//# sourceMappingURL=resendConfirmationEmail.js.map

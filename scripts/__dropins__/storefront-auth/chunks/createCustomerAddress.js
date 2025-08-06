@@ -57,3 +57,4 @@ import{CUSTOMER_INFORMATION_FRAGMENT as O}from"../fragments.js";import{f as s,h 
     }
   }
 `,z=async r=>await s(y,{method:"POST",variables:{input:r}}).then(e=>{var o;return(o=e.errors)!=null&&o.length?S(e.errors):e.data.createCustomerAddress.firstname||""}).catch(u);export{z as a,Q as c,j as g};
+//# sourceMappingURL=createCustomerAddress.js.map

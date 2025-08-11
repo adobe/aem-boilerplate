@@ -45,7 +45,7 @@
     "@dropins/storefront-pdp": "~1.3.0-beta1",
     "@dropins/storefront-recommendations": "1.1.0-beta1",
     "@dropins/storefront-wishlist": "~2.0.0-beta1",
-    "@dropins/tools": "1.4.0-beta4",
+    "@dropins/tools": "1.4.0-beta5",
     "@dropins/storefront-personalization": "1.0.1-beta1",
     "@dropins/storefront-product-discovery": "1.1.0-beta2"
   }

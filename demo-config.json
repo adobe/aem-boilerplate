@@ -18,7 +18,7 @@
       },
       "analytics": {
         "base-currency-code": "USD",
-        "environment": "Production",
+        "environment": "Testing",
         "environment-id": "f38a0de0-764b-41fa-bd2c-5bc2f3c7b39a",
         "store-code": "main_website_store",
         "store-id": 1,

@@ -38,14 +38,14 @@ describe('AEM Assets enabled', () => {
     Cypress.env("isAemAssetsSuite", false);
   })
 
-  it('[Product Discovery Dropin]: should load and show AEM Assets optimized images', { tags: "@skipPaas" }, () => {
+  it('[Product Discovery Dropin]: should load and show AEM Assets optimized images', () => {
     visitWithEagerImages('/');
     cy.get('.nav-search-button').click();
     cy.get('.nav-search-panel').should('be.visible');
     cy.get('#search-bar-input input[type="text"]').type('gift');
     cy.wait(2000);
     const expectedOptions = {
-      protocol: 'http://',
+      protocol: '//',
       environment: aemAssetsEnvironment,
       format: 'webp',
       quality: 80,
@@ -59,7 +59,7 @@ describe('AEM Assets enabled', () => {
     waitForAemAssetImages('.search-bar-result img', (images) => {
       for (const image of images) {
         expectAemAssetsImage(image.src, {
-          ...srcSetExpectedOptions,
+          ...expectedOptions,
           width: 165,
           height: 165,
         });
@@ -83,7 +83,7 @@ describe('AEM Assets enabled', () => {
     waitForAemAssetImages('.search__product-list img', (images) => {
       for (const image of images) {
         expectAemAssetsImage(image.src, {
-          ...srcSetExpectedOptions,
+          ...expectedOptions,
           width: 200,
           height: 250,
         });
@@ -102,7 +102,7 @@ describe('AEM Assets enabled', () => {
     });
   });
 
-  it('[PDP Dropin]: should load and show AEM Assets optimized images', { tags: "@skipPaas" }, () => {
+  it('[PDP Dropin]: should load and show AEM Assets optimized images', () => {
     visitWithEagerImages('/products/gift-packaging/ADB102');
     const expectedOptions = {
       protocol: 'http://',
@@ -138,7 +138,6 @@ describe('AEM Assets enabled', () => {
       }
     });
 
-    // TODO: Visit a product with more than one image, otherwise gallery won't be used.
     visitWithEagerImages('products/denim-apron/ADB119');
     waitForAemAssetImages('.pdp-carousel__wrapper ~ div img', (images) => {
       for (const image of images) {
@@ -165,7 +164,7 @@ describe('AEM Assets enabled', () => {
     // TODO: Once Swatch Images are supported by AEM Assets, add tests for them.
   });
 
-  it('[Cart Dropin]: should load and show AEM Assets optimized images', { tags: "@skipPaas" }, () => {
+  it('[Cart Dropin]: should load and show AEM Assets optimized images', () => {
     const expectedOptions = {
       protocol: 'https://',
       environment: aemAssetsEnvironment,
@@ -218,7 +217,7 @@ describe('AEM Assets enabled', () => {
     // TODO: Once gift options are supported by AEM Assets, add tests for them.
   });
 
-  it('[My Account Dropin]: should load and show AEM Assets optimized images', { tags: "@skipPaas" }, () => {
+  it('[My Account Dropin]: should load and show AEM Assets optimized images', () => {
     if (!envConfig.user.email || !envConfig.user.password) {
       cy.log('No email or password provided, skipping test');
       return;
@@ -252,7 +251,7 @@ describe('AEM Assets enabled', () => {
     });
   });
 
-  it('[Order Dropin]: should load and show AEM Assets optimized images', { tags: "@skipPaas" }, () => {
+  it('[Order Dropin]: should load and show AEM Assets optimized images', () => {
     if (!envConfig.user.email || !envConfig.user.password) {
       cy.log('No email or password provided, skipping test');
       return;
@@ -326,7 +325,7 @@ describe('AEM Assets enabled', () => {
     visitWithEagerImages(`/customer/order-details?orderRef=${envConfig.user.order}`);
     cy.get('.order-order-actions__wrapper button').contains('Return').click();
 
-    waitForAemAssetImages('.order-return-order-product-list img', (images) => {
+    waitForAemAssetImages('.order-return-order-product-list img', () => {
       cy.get(".dropin-checkbox__checkbox").each(($checkbox) => {
         cy.wrap($checkbox).click({ force: true });
       });
@@ -345,7 +344,7 @@ describe('AEM Assets enabled', () => {
     });
   });
 
-  it('[Checkout Dropin]: should load and show AEM Assets optimized images', { tags: "@skipPaas" }, () => {
+  it('[Checkout Dropin]: should load and show AEM Assets optimized images', () => {
     visitWithEagerImages('/products/gift-packaging/ADB102');
 
     cy.get('.product-details__buttons__add-to-cart button')
@@ -381,7 +380,7 @@ describe('AEM Assets enabled', () => {
     })
   });
 
-  it('[Recommendations Dropin]: should load and show AEM Assets optimized images', { tags: "@skipPaas" }, () => {
+  it('[Recommendations Dropin]: should load and show AEM Assets optimized images', () => {
     // Visit products to populate "Recently Viewed" recommendations.
     // Wait a bit to ensure data is collected by Adobe Analytics.
     visitWithEagerImages('/products/gift-packaging/ADB102');
@@ -417,7 +416,7 @@ describe('AEM Assets enabled', () => {
     });
   });
 
-  it('[Wishlist Dropin]: should load and show AEM Assets optimized images', { tags: ["@skipSaas", "@skipPaas"] }, () => {
+  it('[Wishlist Dropin]: should load and show AEM Assets optimized images', { tags: "@skipSaas" }, () => {
     visitWithEagerImages('/products/denim-apron/ADB119');
     cy.get('.product-details__buttons__add-to-wishlist button')
       .should('be.visible')

@@ -18,6 +18,7 @@ module.exports = defineConfig({
     stateBillingId: "NY,129",
     productImageName: "/ADB150.jpg",
     productImageNameConfigurable: "/adb124.jpg",
+    productWithOptionImageNameConfigurable: "/adb192.jpg",
 
     aemAssetsConfig: {
       commerceConfig: {

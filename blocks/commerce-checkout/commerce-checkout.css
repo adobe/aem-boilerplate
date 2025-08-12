@@ -43,6 +43,27 @@
     border-bottom: var(--shape-border-width-3) solid var(--color-neutral-400);
 }
 
+/* Server error visibility */
+.checkout__server-error {
+    display: none;
+}
+
+/* Show when it contains actual error content */
+.checkout__server-error:has(.dropin-illustrated-message) {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Safari fallback: show when not empty, but this may show empty divs briefly */
+@supports not selector(:has(*)) {
+    .checkout__server-error:not(:empty) {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
 /* Hide empty blocks */
 .checkout__block:empty {
     display: none;
@@ -72,7 +93,6 @@
 }
 
 /* Hide blocks with empty divs */
-.checkout__server-error:has(> :empty),
 .checkout__out-of-stock:has(> :empty),
 .checkout__merged-cart-banner:has(> :empty),
 .checkout__delivery:has(> div:first-child:empty),

@@ -22,11 +22,20 @@ export declare class events {
         };
     };
     /**
+     * Returns a scoped event key.
+     * @param scope - The scope to get the event from.
+     * @returns - The scoped event key.
+     */
+    static _getScopedEvent(scope?: string): <K extends keyof Events>(event: K) => K;
+    /**
      * Returns the last payload of the event.
      * @param event – The event to get the last payload from.
+     * @param options - Optional configuration for the event.
      * @returns – The last payload of the event.
      */
-    static lastPayload(event: string): any;
+    static lastPayload<K extends keyof Events>(event: K, options?: {
+        scope?: string;
+    }): any;
     /**
      * Subscribes to an event.
      * @param event - The event to subscribe to.
@@ -35,6 +44,7 @@ export declare class events {
      */
     static on<K extends keyof Events>(event: K, handler: (payload: Events[K]) => void, options?: {
         eager?: boolean;
+        scope?: string;
     }): {
         off(): void;
     } | undefined;
@@ -42,8 +52,11 @@ export declare class events {
      * Emits an event.
      * @param event - The event to emit.
      * @param payload - The event payload.
+     * @param options - Optional configuration for the event.
      */
-    static emit<K extends keyof Events>(event: K, payload: Events[K]): void;
+    static emit<K extends keyof Events>(event: K, payload: Events[K], options?: {
+        scope?: string;
+    }): void;
     /**
      * Enables or disables event logging.
      * @param enabled - Whether to enable or disable event logging.

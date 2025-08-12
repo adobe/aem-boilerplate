@@ -36,6 +36,40 @@ export interface CartSummaryListProps extends HTMLAttributes<HTMLDivElement> {
             onUndo: () => void;
             onDismiss: () => void;
         }>;
+        ItemTitle?: SlotProps<{
+            item: CartModel['items'][number];
+        }>;
+        ItemPrice?: SlotProps<{
+            item: CartModel['items'][number];
+        }>;
+        ItemQuantity?: SlotProps<{
+            item: CartModel['items'][number];
+            enableUpdateItemQuantity: boolean;
+            handleItemQuantityUpdate: (item: CartModel['items'][number], quantity: number) => void;
+            itemsLoading: Set<string>;
+            handleItemsError: (uid: string, message?: string) => void;
+            handleItemsLoading: (uid: string, state: boolean) => void;
+            onItemUpdate?: ({ item }: {
+                item: CartModel['items'][number];
+            }) => void;
+        }>;
+        ItemTotal?: SlotProps<{
+            item: CartModel['items'][number];
+        }>;
+        ItemSku?: SlotProps<{
+            item: CartModel['items'][number];
+        }>;
+        ItemRemoveAction?: SlotProps<{
+            item: CartModel['items'][number];
+            enableRemoveItem: boolean;
+            handleItemQuantityUpdate: (item: CartModel['items'][number], quantity: number) => void;
+            handleItemsError: (uid: string, message?: string) => void;
+            handleItemsLoading: (uid: string, state: boolean) => void;
+            onItemUpdate?: ({ item }: {
+                item: CartModel['items'][number];
+            }) => void;
+            itemsLoading: Set<string>;
+        }>;
     };
     enableRemoveItem?: boolean;
     enableUpdateItemQuantity?: boolean;

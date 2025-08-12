@@ -8,3 +8,4 @@ import{f as n,h as s}from"./network-error.js";import{C as m,d as i,v as u}from".
   }
 `,v=async()=>await n(f,{method:"POST"}).then(t=>{const e=h(t);if(e!=null&&e.success)[m.auth_dropin_user_token,m.auth_dropin_firstname].forEach(r=>{i(r)}),c.emit("authenticated",!1),E(k.SIGN_OUT,{});else{const r=`
           ERROR revokeCustomerToken: ${e.message}`;console.error(r),u()}return e}).catch(s);export{v as r};
+//# sourceMappingURL=revokeCustomerToken.js.map

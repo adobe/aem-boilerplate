@@ -17,7 +17,7 @@ import { customerShippingAddress, products } from "../../../fixtures";
  * - order -> https://github.com/adobe/commerce-events/blob/main/packages/storefront-events-sdk/src/types/schemas/order.ts
  */
 
-it("is sent on place order button click", () => {
+it("is sent on place order button click", { tags: "@skipSaas" }, () => {
   // add item to cart
   cy.visit(products.configurable.urlPathWithOptions);
   // add to cart

@@ -21,3 +21,4 @@ import{events as f}from"@dropins/tools/event-bus.js";import"@dropins/tools/recap
     }
   }
 `,q=async(t="Authorization",o="Bearer")=>{const e=T(h.auth_dropin_user_token);if(f.emit("authenticated",!!e),!!e)return l(t,`${o} ${e}`),d(I).then(r=>{var a;(a=r.errors)!=null&&a.find(i=>{var n;return((n=i.extensions)==null?void 0:n.category)==="graphql-authentication"})&&(O(h.auth_dropin_user_token),C(t),f.emit("authenticated",!1))})};export{h as C,N as a,O as d,A as g,E as h,q as v};
+//# sourceMappingURL=verifyToken.js.map

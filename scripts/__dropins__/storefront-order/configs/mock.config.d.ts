@@ -550,6 +550,10 @@ export declare const transformMockOrderInput: {
                             value: number;
                             currency: string;
                         };
+                        grand_total_excl_tax: {
+                            value: number;
+                            currency: string;
+                        };
                         subtotal: {
                             currency: string;
                             value: number;

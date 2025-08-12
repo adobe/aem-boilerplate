@@ -1,114 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{FetchGraphQL as a}from"@dropins/tools/fetch-graphql.js";const{setEndpoint:l,setFetchGraphQlHeader:s,removeFetchGraphQlHeader:p,setFetchGraphQlHeaders:m,fetchGraphQl:n,getConfig:g}=new a().getMethods(),o=`
-  fragment Facet on Aggregation {
-    title
-    attribute
-    buckets {
-      title
-      __typename
-      ... on CategoryView {
-        name
-        count
-        path
-      }
-      ... on ScalarBucket {
-        count
-      }
-      ... on RangeBucket {
-        from
-        to
-        count
-      }
-      ... on StatsBucket {
-        min
-        max
-      }
-    }
-  }
-`,c=`
-  fragment ProductView on ProductSearchItem {
-    productView {
-      __typename
-      sku
-      name
-      inStock
-      url
-      urlKey
-      images {
-        label
-        url
-        roles
-      }
-      ... on ComplexProductView {
-        priceRange {
-          maximum {
-            final {
-              amount {
-                value
-                currency
-              }
-            }
-            regular {
-              amount {
-                value
-                currency
-              }
-            }
-          }
-          minimum {
-            final {
-              amount {
-                value
-                currency
-              }
-            }
-            regular {
-              amount {
-                value
-                currency
-              }
-            }
-          }
-        }
-        options {
-          id
-          title
-          values {
-            title
-            ... on ProductViewOptionValueSwatch {
-              id
-              inStock
-              type
-              value
-            }
-          }
-        }
-      }
-      ... on SimpleProductView {
-        price {
-          final {
-            amount {
-              value
-              currency
-            }
-          }
-          regular {
-            amount {
-              value
-              currency
-            }
-          }
-        }
-      }
-    }
-    highlights {
-      attribute
-      value
-      matched_words
-    }
-  }
-`,u=`
+import{Initializer as o}from"@dropins/tools/lib.js";import{ProductView as n,Facet as c}from"../fragments.js";import{FetchGraphQL as s}from"@dropins/tools/fetch-graphql.js";const a=new o({init:async t=>{const e={};a.config.setConfig({...e,...t})},listeners:()=>[]}),l=a.config,{setEndpoint:f,setFetchGraphQlHeader:d,removeFetchGraphQlHeader:$,setFetchGraphQlHeaders:m,fetchGraphQl:i,getConfig:S}=new s().getMethods(),p=`
   query productSearch(
     $phrase: String!
     $pageSize: Int
@@ -146,7 +38,7 @@ import{FetchGraphQL as a}from"@dropins/tools/fetch-graphql.js";const{setEndpoint
       }
     }
   }
+  ${n}
   ${c}
-  ${o}
-`,h=async r=>n(u,{method:"GET",variables:r}).then(({errors:e,data:t})=>{if(e&&!t)throw console.log("error",e),new Error("Error fetching product search");return t});export{s as a,m as b,n as f,g,h as p,p as r,l as s};
+`,_=async t=>i(p,{method:"GET",variables:t}).then(({errors:e,data:r})=>{if(e&&!r)throw console.log("error",e),new Error("Error fetching product search");return r});export{d as a,m as b,l as c,i as f,S as g,a as i,_ as p,$ as r,f as s};
 //# sourceMappingURL=productSearch.js.map

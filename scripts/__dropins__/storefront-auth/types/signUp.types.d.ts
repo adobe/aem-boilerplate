@@ -32,6 +32,7 @@ export interface SignUpProps {
     onErrorCallback?: (value?: unknown) => void;
     onSuccessCallback?: (value?: {
         userName: string;
+        userEmail: string;
         status: boolean;
     }) => Promise<void>;
 }

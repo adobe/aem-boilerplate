@@ -16,3 +16,4 @@ import{s as r,M as i,d as n,Q as e}from"./errors.js";import{b as s}from"./synchr
 
   ${p}
 `,M=async t=>{const o=r.cartId;if(!o)throw new i;return await n({type:"mutation",query:a,queueName:e.CartUpdate,options:{variables:{cartId:o,shippingMethods:t}},path:"setShippingMethodsOnCart.cart",transformer:s})};export{g as a,M as s,C as t};
+//# sourceMappingURL=setShippingMethods.js.map

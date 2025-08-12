@@ -1,8 +1,10 @@
 // Dropin Tools
+import { debounce } from '@dropins/tools/lib.js';
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { initializers } from '@dropins/tools/initializer.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
+import { initReCaptcha } from '@dropins/tools/recaptcha.js';
 
 // Dropin Components
 import {
@@ -131,6 +133,7 @@ export default async function decorate(block) {
   });
 
   const DEBOUNCE_TIME = 1000;
+  const ADDRESS_INPUT_DEBOUNCE_TIME = 500;
   const LOGIN_FORM_NAME = 'login-form';
   const SHIPPING_FORM_NAME = 'selectedShippingAddress';
   const BILLING_FORM_NAME = 'selectedBillingAddress';
@@ -142,8 +145,8 @@ export default async function decorate(block) {
   const checkoutFragment = document.createRange().createContextualFragment(`
     <div class="checkout__wrapper">
       <div class="checkout__loader"></div>
-      <div class="checkout__merged-cart-banner"></div>
       <div class="checkout__content">
+        <div class="checkout__merged-cart-banner"></div>
         <div class="checkout__main">
           <div class="checkout__block checkout__heading"></div>
           <div class="checkout__block checkout__empty-cart"></div>
@@ -303,14 +306,13 @@ export default async function decorate(block) {
 
     CheckoutProvider.render(BillToShippingAddress, {
       onChange: (checked) => {
-        if (!checked && billingFormRef?.current) {
-          const { formData, isDataValid } = billingFormRef.current;
-
+        const billingFormValues = events.lastPayload('checkout/addresses/billing');
+        if (!checked && billingFormValues) {
           setAddressOnCart({
             api: checkoutApi.setBillingAddress,
             debounceMs: DEBOUNCE_TIME,
             placeOrderBtn: placeOrder,
-          })({ data: formData, isDataValid });
+          })(billingFormValues);
         }
       },
     })($billToShipping),
@@ -476,16 +478,16 @@ export default async function decorate(block) {
 
         if (
           success
-        && shippingFormRef.current
-        && isFormVisible(forms[SHIPPING_FORM_NAME])
+          && shippingFormRef.current
+          && isFormVisible(forms[SHIPPING_FORM_NAME])
         ) {
           success = shippingFormRef.current.handleValidationSubmit(false);
         }
 
         if (
           success
-        && billingFormRef.current
-        && isFormVisible(forms[BILLING_FORM_NAME])
+          && billingFormRef.current
+          && isFormVisible(forms[BILLING_FORM_NAME])
         ) {
           success = billingFormRef.current.handleValidationSubmit(false);
         }
@@ -586,6 +588,7 @@ export default async function decorate(block) {
 
   async function initializeCheckout(data) {
     removeEmptyCart();
+    await initReCaptcha(0);
     if (data.isGuest) await displayGuestAddressForms(data);
     else {
       removeOverlaySpinner();
@@ -625,6 +628,10 @@ export default async function decorate(block) {
         debounceMs: DEBOUNCE_TIME,
       });
 
+      const notifyShippingValues = debounce((values) => {
+        events.emit('checkout/addresses/shipping', values);
+      }, ADDRESS_INPUT_DEBOUNCE_TIME);
+
       const storeConfig = checkoutApi.getStoreConfigCache();
 
       shippingForm = await AccountProvider.render(AddressForm, {
@@ -643,6 +650,7 @@ export default async function decorate(block) {
           if (canSetShippingAddressOnCart) setShippingAddressOnCart(values);
           if (!hasCartShippingAddress) estimateShippingCostOnCart(values);
           if (isFirstRenderShipping) isFirstRenderShipping = false;
+          notifyShippingValues(values);
         },
         showBillingCheckBox: false,
         showFormLoader: false,
@@ -674,6 +682,10 @@ export default async function decorate(block) {
 
       const storeConfig = checkoutApi.getStoreConfigCache();
 
+      const notifyBillingValues = debounce((values) => {
+        events.emit('checkout/addresses/billing', values);
+      }, ADDRESS_INPUT_DEBOUNCE_TIME);
+
       billingForm = await AccountProvider.render(AddressForm, {
         addressesFormTitle: 'Billing address',
         className: 'checkout-billing-form__address-form',
@@ -689,6 +701,7 @@ export default async function decorate(block) {
           const canSetBillingAddressOnCart = !isFirstRenderBilling || !hasCartBillingAddress;
           if (canSetBillingAddressOnCart) setBillingAddressOnCart(values);
           if (isFirstRenderBilling) isFirstRenderBilling = false;
+          notifyBillingValues(values);
         },
         showBillingCheckBox: false,
         showFormLoader: false,
@@ -742,6 +755,10 @@ export default async function decorate(block) {
         debounceMs: DEBOUNCE_TIME,
       });
 
+      const notifyShippingValues = debounce((values) => {
+        events.emit('checkout/addresses/shipping', values);
+      }, ADDRESS_INPUT_DEBOUNCE_TIME);
+
       shippingAddresses = await AccountProvider.render(Addresses, {
         addressFormTitle: 'Deliver to new address',
         defaultSelectAddressId: shippingAddressId,
@@ -755,6 +772,7 @@ export default async function decorate(block) {
           if (canSetShippingAddressOnCart) setShippingAddressOnCart(values);
           if (!hasCartShippingAddress) estimateShippingCostOnCart(values);
           if (isFirstRenderShipping) isFirstRenderShipping = false;
+          notifyShippingValues(values);
         },
         selectable: true,
         selectShipping: true,
@@ -800,6 +818,10 @@ export default async function decorate(block) {
         placeOrderBtn: placeOrder,
       });
 
+      const notifyBillingValues = debounce((values) => {
+        events.emit('checkout/addresses/billing', values);
+      }, ADDRESS_INPUT_DEBOUNCE_TIME);
+
       billingAddresses = await AccountProvider.render(Addresses, {
         addressFormTitle: 'Bill to new address',
         defaultSelectAddressId: billingAddressId,
@@ -811,6 +833,7 @@ export default async function decorate(block) {
           const canSetBillingAddressOnCart = !isFirstRenderBilling || !hasCartBillingAddress;
           if (canSetBillingAddressOnCart) setBillingAddressOnCart(values);
           if (isFirstRenderBilling) isFirstRenderBilling = false;
+          notifyBillingValues(values);
         },
         selectable: true,
         selectBilling: true,

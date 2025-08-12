@@ -16,6 +16,53 @@ export interface MiniCartProps extends HTMLAttributes<HTMLDivElement> {
             item: CartModel['items'][number];
             defaultImageProps: ImageProps;
         }>;
+        Heading?: SlotProps;
+        EmptyCart?: SlotProps;
+        Footer?: SlotProps;
+        ProductAttributes?: SlotProps;
+        CartSummaryFooter?: SlotProps;
+        CartItem?: SlotProps;
+        UndoBanner?: SlotProps<{
+            item: CartModel['items'][0];
+            loading: boolean;
+            error?: string;
+            onUndo: () => void;
+            onDismiss: () => void;
+        }>;
+        ItemTitle?: SlotProps<{
+            item: CartModel['items'][number];
+        }>;
+        ItemPrice?: SlotProps<{
+            item: CartModel['items'][number];
+        }>;
+        ItemQuantity?: SlotProps<{
+            item: CartModel['items'][number];
+            enableUpdateItemQuantity: boolean;
+            handleItemQuantityUpdate: (item: CartModel['items'][number], quantity: number) => void;
+            itemsLoading: Set<string>;
+            handleItemsError: (uid: string, message?: string) => void;
+            handleItemsLoading: (uid: string, state: boolean) => void;
+            onItemUpdate?: ({ item }: {
+                item: CartModel['items'][number];
+            }) => void;
+        }>;
+        ItemTotal?: SlotProps<{
+            item: CartModel['items'][number];
+        }>;
+        ItemSku?: SlotProps<{
+            item: CartModel['items'][number];
+        }>;
+        ItemRemoveAction?: SlotProps<{
+            item: CartModel['items'][number];
+            enableRemoveItem: boolean;
+            handleItemQuantityUpdate: (item: CartModel['items'][number], quantity: number) => void;
+            handleItemsError: (uid: string, message?: string) => void;
+            handleItemsLoading: (uid: string, state: boolean) => void;
+            onItemUpdate?: ({ item }: {
+                item: CartModel['items'][number];
+            }) => void;
+            itemsLoading: Set<string>;
+        }>;
     };
     hideFooter?: boolean;
     displayAllItems?: boolean;
@@ -24,6 +71,7 @@ export interface MiniCartProps extends HTMLAttributes<HTMLDivElement> {
     enableItemRemoval?: boolean;
     enableQuantityUpdate?: boolean;
     hideHeading?: boolean;
+    undo?: boolean;
 }
 export declare const MiniCart: Container<MiniCartProps, CartModel | null>;
 //# sourceMappingURL=MiniCart.d.ts.map

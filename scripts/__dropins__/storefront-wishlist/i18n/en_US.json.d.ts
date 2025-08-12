@@ -7,7 +7,9 @@ declare const _default: {
     },
     "Wishlist": {
       "heading": "Wishlist {count}",
-      "loading": "Loading..."
+      "loading": "Loading...",
+      "ariaLabelAddToWishlist": "add {PRODUCT_NAME} to wishlist",
+      "ariaLabelRemoveFromWishlist": "remove {PRODUCT_NAME} from wishlist"
     },
     "Alert": {
       "addProduct": {
@@ -21,6 +23,14 @@ declare const _default: {
       "moveToCart": {
         "heading": "Moved to cart",
         "message": "{product} has been moved to your cart"
+      },
+      "addError": {
+        "heading": "Error",
+        "message": "Failed to add product to wishlist"
+      },
+      "removeError": {
+        "heading": "Error",
+        "message": "Failed to remove {product} from wishlist"
       },
       "viewWishlist": "View wishlist"
     },

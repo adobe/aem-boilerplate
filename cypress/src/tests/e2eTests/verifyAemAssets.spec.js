@@ -38,43 +38,64 @@ describe('AEM Assets enabled', () => {
     Cypress.env("isAemAssetsSuite", false);
   })
 
-  it.skip('[PLP Widget]: should load and show AEM Assets optimized images', () => {
-    visitWithEagerImages('/apparel');
+  it('[Product Discovery Dropin]: should load and show AEM Assets optimized images', () => {
+    visitWithEagerImages('/');
+    cy.get('.nav-search-button').click();
+    cy.get('.nav-search-panel').should('be.visible');
+    cy.get('#search-bar-input input[type="text"]').type('gift');
+    cy.wait(2000);
     const expectedOptions = {
-      protocol: 'https://',
+      protocol: '//',
       environment: aemAssetsEnvironment,
       format: 'webp',
       quality: 80,
-      width: 330,
     }
 
-    function getPictureExpectedOptions(media) {
-      switch (media) {
-        case '(max-width: 900px)': {
-          return {
-            ...expectedOptions,
-            width: 163,
-          }
-        }
+    const srcSetExpectedOptions = {
+      ...expectedOptions,
+      protocol: '//',
+    };
 
-        default: {
-          return expectedOptions
-        }
-      }
-    }
-
-    waitForAemAssetImages('.product-list-page-custom picture', (images) => {
+    waitForAemAssetImages('.search-bar-result img', (images) => {
       for (const image of images) {
-        expectAemAssetsImage(image.src, expectedOptions);
+        expectAemAssetsImage(image.src, {
+          ...expectedOptions,
+          width: 165,
+          height: 165,
+        });
 
-        for (const { url, screenWidth, density, media } of image.srcsetEntries) {
-          const srcSetExpectedOptions = getPictureExpectedOptions(media);
-          expect(density).to.be.a('number');
-          expect(screenWidth).to.be.undefined;
+        for (const { url, screenWidth, density } of image.srcsetEntries) {
+          expect(density).to.be.undefined;
+          expect(screenWidth).to.be.a('number');
 
           expectAemAssetsImage(url, {
             ...srcSetExpectedOptions,
-            width: srcSetExpectedOptions.width * density,
+            width: (165 * screenWidth) / 1920,
+            height: 165,
+          });
+        }
+      }
+    });
+
+    visitWithEagerImages('/apparel');
+    cy.wait(2000);
+
+    waitForAemAssetImages('.search__product-list img', (images) => {
+      for (const image of images) {
+        expectAemAssetsImage(image.src, {
+          ...expectedOptions,
+          width: 200,
+          height: 250,
+        });
+
+        for (const { url, screenWidth, density } of image.srcsetEntries) {
+          expect(density).to.be.undefined;
+          expect(screenWidth).to.be.a('number');
+
+          expectAemAssetsImage(url, {
+            ...srcSetExpectedOptions,
+            width: (200 * screenWidth) / 1920,
+            height: 250,
           });
         }
       }
@@ -117,7 +138,6 @@ describe('AEM Assets enabled', () => {
       }
     });
 
-    // TODO: Visit a product with more than one image, otherwise gallery won't be used.
     visitWithEagerImages('products/denim-apron/ADB119');
     waitForAemAssetImages('.pdp-carousel__wrapper ~ div img', (images) => {
       for (const image of images) {
@@ -236,7 +256,7 @@ describe('AEM Assets enabled', () => {
       cy.log('No email or password provided, skipping test');
       return;
     }
-    
+
     cy.visit("/customer/login");
     cy.get('input[name="email"]').clear().type(envConfig.user.email);
     cy.get('input[name="password"]').eq(1).clear().type(envConfig.user.password);
@@ -305,7 +325,7 @@ describe('AEM Assets enabled', () => {
     visitWithEagerImages(`/customer/order-details?orderRef=${envConfig.user.order}`);
     cy.get('.order-order-actions__wrapper button').contains('Return').click();
 
-    waitForAemAssetImages('.order-return-order-product-list img', (images) => {
+    waitForAemAssetImages('.order-return-order-product-list img', () => {
       cy.get(".dropin-checkbox__checkbox").each(($checkbox) => {
         cy.wrap($checkbox).click({ force: true });
       });
@@ -360,7 +380,7 @@ describe('AEM Assets enabled', () => {
     })
   });
 
-  it.skip('[Recommendations Dropin]: should load and show AEM Assets optimized images', () => {
+  it('[Recommendations Dropin]: should load and show AEM Assets optimized images', () => {
     // Visit products to populate "Recently Viewed" recommendations.
     // Wait a bit to ensure data is collected by Adobe Analytics.
     visitWithEagerImages('/products/gift-packaging/ADB102');
@@ -369,7 +389,7 @@ describe('AEM Assets enabled', () => {
     visitWithEagerImages('/products/denim-apron/ADB119');
     cy.wait(3000);
 
-    visitWithEagerImages(`${envConfig.prexDraft}?q=adb&product_list_order=relevance_DESC`);
+    visitWithEagerImages(envConfig.prexDraft);
     const expectedOptions = {
       protocol: 'https://',
       environment: aemAssetsEnvironment,
@@ -389,6 +409,47 @@ describe('AEM Assets enabled', () => {
 
           expectAemAssetsImage(url, {
             ...expectedOptions,
+            width: (expectedOptions.width * screenWidth) / 1920,
+          })
+        }
+      }
+    });
+  });
+
+  it('[Wishlist Dropin]: should load and show AEM Assets optimized images', { tags: "@skipSaas" }, () => {
+    visitWithEagerImages('/products/denim-apron/ADB119');
+    cy.get('.product-details__buttons__add-to-wishlist button')
+      .should('be.visible')
+      .click();
+    cy.wait(2000);
+
+    visitWithEagerImages('/wishlist');
+    cy.wait(3000);
+
+    const expectedOptions = {
+      protocol: 'http://',
+      environment: aemAssetsEnvironment,
+      format: 'webp',
+      quality: 80,
+      width: 288,
+      height: 288,
+    };
+
+    const srcSetExpectedOptions = {
+      ...expectedOptions,
+      protocol: '//',
+    };
+
+    waitForAemAssetImages('.wishlist-wishlist img', (images) => {
+      for (const image of images) {
+        expectAemAssetsImage(image.src, expectedOptions);
+
+        for (const { url, screenWidth, density } of image.srcsetEntries) {
+          expect(density).to.be.undefined;
+          expect(screenWidth).to.be.a('number');
+
+          expectAemAssetsImage(url, {
+            ...srcSetExpectedOptions,
             width: (expectedOptions.width * screenWidth) / 1920,
           })
         }

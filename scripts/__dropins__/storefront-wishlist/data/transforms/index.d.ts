@@ -16,5 +16,4 @@
  *******************************************************************/
 export * from './transform-store-config';
 export * from './transform-wishlist';
-export * from './transform-product';
 //# sourceMappingURL=index.d.ts.map

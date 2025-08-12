@@ -36,6 +36,7 @@ export interface DiscountProps {
 }
 export interface TotalProps {
     grand_total: AmountProps;
+    grand_total_excl_tax: AmountProps;
     subtotal: AmountProps;
     taxes: TaxProps[];
     total_tax: AmountProps;

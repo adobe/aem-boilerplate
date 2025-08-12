@@ -15,7 +15,7 @@ import {
 } from "../../actions";
 import { products } from "../../fixtures";
 
-describe("Verify auth user can manage products across wishlist and cart", { tags: "@skipSaas" }, () => {
+describe("Verify auth user can manage products across wishlist and cart", () => {
   it("Successfully add simple product to wishlist, move it to cart, return this to wishlist and remove it", () => {
     cy.visit("/customer/create");
     cy.fixture("userInfo").then(({ sign_up }) => {
@@ -167,10 +167,10 @@ describe("Verify auth user can manage products across wishlist and cart", { tags
 
     assertWishlistTitleHasLink(
       "Configurable product",
-      "/products/cypress-configurable-product-latest/CYPRESS456"
+      "/products/cypress-configurable-product-latest-red/CYPRESS456"
     )(".commerce-wishlist-wrapper");
 
-    assertWishlistProductImage("/adb192.jpg")(".commerce-wishlist-wrapper");
+    assertWishlistProductImage(Cypress.env('productWithOptionImageNameConfigurable'))(".commerce-wishlist-wrapper");
 
     assertWishlistItemHasOptions('color', 'red')(".wishlist-wishlist__content");
 

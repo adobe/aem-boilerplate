@@ -4,6 +4,13 @@
     gap: var(--spacing-big) 0;
 }
 
+.checkout__merged-cart-banner {
+    display: grid;
+    grid-column: 1 / -1;
+    align-items: start;
+    grid-template-columns: auto;
+}
+
 .checkout__main {
     display: grid;
     row-gap: var(--spacing-xbig);
@@ -36,12 +43,34 @@
     border-bottom: var(--shape-border-width-3) solid var(--color-neutral-400);
 }
 
+/* Server error visibility */
+.checkout__server-error {
+    display: none;
+}
+
+/* Show when it contains actual error content */
+.checkout__server-error:has(.dropin-illustrated-message) {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Safari fallback: show when not empty, but this may show empty divs briefly */
+@supports not selector(:has(*)) {
+    .checkout__server-error:not(:empty) {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
 /* Hide empty blocks */
 .checkout__block:empty {
     display: none;
 }
 
 /* Hide main containers when the cart is empty or there is a server error */
+.checkout__content--error .checkout__merged-cart-banner,
 .checkout__content--error .checkout__out-of-stock,
 .checkout__content--error .checkout__login,
 .checkout__content--error .checkout__shipping-form,
@@ -50,6 +79,7 @@
 .checkout__content--error .checkout__payment-methods,
 .checkout__content--error .checkout__billing-form,
 .checkout__content--error .checkout__terms-and-conditions,
+.checkout__content--empty .checkout__merged-cart-banner,
 .checkout__content--empty .checkout__server-error,
 .checkout__content--empty .checkout__out-of-stock,
 .checkout__content--empty .checkout__login,
@@ -63,8 +93,8 @@
 }
 
 /* Hide blocks with empty divs */
-.checkout__server-error:has(> :empty),
 .checkout__out-of-stock:has(> :empty),
+.checkout__merged-cart-banner:has(> :empty),
 .checkout__delivery:has(> div:first-child:empty),
 .checkout__bill-to-shipping:has(> :empty) {
     display: none;

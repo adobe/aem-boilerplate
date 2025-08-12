@@ -36,6 +36,10 @@ const e=`
       value
       currency
     }
+    grand_total_excl_tax {
+      value
+      currency
+    }
     total_giftcard {
       currency
       value
@@ -73,3 +77,4 @@ const e=`
     }
   }
 `;export{t as ADDRESS_FRAGMENT,e as BASIC_CUSTOMER_INFO_FRAGMENT,a as ORDER_SUMMARY_FRAGMENT};
+//# sourceMappingURL=fragments.js.map

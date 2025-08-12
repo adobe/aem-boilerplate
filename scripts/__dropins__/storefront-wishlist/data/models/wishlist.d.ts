@@ -1,5 +1,4 @@
 import { SelectedCustomizableOption } from './selected-customizable-option';
-import { Product } from './product';
 
 export interface Wishlist {
     id: string;
@@ -13,17 +12,16 @@ export interface Item {
     quantity: number;
     description: string;
     added_at: string;
-    selectedOptions: ConfigurableOption[];
+    selectedOptions: {
+        uid: string;
+    }[];
     enteredOptions?: {
         uid: string;
         value: string;
     }[];
-    product: Product;
+    product: {
+        sku: string;
+    };
     customizableOptions: SelectedCustomizableOption[];
-}
-export interface ConfigurableOption {
-    uid: string;
-    label: string;
-    value: string;
 }
 //# sourceMappingURL=wishlist.d.ts.map

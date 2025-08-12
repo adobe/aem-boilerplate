@@ -8,6 +8,7 @@ import { WishlistToggle } from '@dropins/storefront-wishlist/containers/Wishlist
 import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 // Cart Dropin
 import * as cartApi from '@dropins/storefront-cart/api.js';
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { readBlockConfig } from '../../scripts/aem.js';
 import { fetchPlaceholders, rootLink } from '../../scripts/commerce.js';
 
@@ -72,11 +73,37 @@ export default async function decorate(block) {
 
   return Promise.all([
     provider.render(ResultsInfo, { })($resultInfo),
-    provider.render(Facets, { })($facets),
+    provider.render(Facets, {
+      slots: {
+        Facet: (ctx) => {
+          // On Category pages (not search), remove categories facet as you
+          // cannot filter with category and categoryPath. MSRCH-5143 for more.
+          const isSearch = !categoryPathConfig.categoryPath;
+          if (!isSearch && ctx.data.attribute === 'categories') {
+            ctx.replaceWith(document.createElement('div'));
+          }
+        },
+      },
+    })($facets),
     provider.render(ProductList, {
       routeProduct: (product) => rootLink(`/products/${product.urlKey}/${product.sku}`),
       ...categoryPathConfig,
       slots: {
+        ProductImage: (ctx) => {
+          const { product, defaultImageProps } = ctx;
+          const anchorWrapper = document.createElement('a');
+          anchorWrapper.href = rootLink(`/products/${product.urlKey}/${product.sku}`);
+
+          tryRenderAemAssetsImage(ctx, {
+            alias: product.sku,
+            imageProps: defaultImageProps,
+            wrapper: anchorWrapper,
+            params: {
+              width: defaultImageProps.width,
+              height: defaultImageProps.height,
+            },
+          });
+        },
         ProductActions: (ctx) => {
           const actionsWrapper = document.createElement('div');
           actionsWrapper.className = 'product-discovery-product-actions';

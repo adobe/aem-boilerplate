@@ -21,3 +21,4 @@ import{h as E}from"./network-error.js";import{RETURNS_FRAGMENT as a,PRODUCT_DETA
   ${G}
   ${n}
 `,I=async(e=10,R=1)=>await A(S,{method:"GET",cache:"force-cache",variables:{pageSize:e,currentPage:R}}).then(r=>{var t;return u((t=r==null?void 0:r.data)==null?void 0:t.customer.returns)}).catch(E);export{I as g};
+//# sourceMappingURL=getCustomerOrdersReturn.js.map

@@ -1,0 +1,59 @@
+name: Block Unauthorized AEM Edits
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/aem.js'
+
+jobs:
+  check-aem-js:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+
+      - name: Download upstream scripts/aem.js
+        run: |
+          curl -sSL https://raw.githubusercontent.com/adobe/aem-boilerplate/main/scripts/aem.js -o upstream_aem.js
+
+      - name: Compare with upstream version
+        id: check_diff
+        run: |
+          if ! diff -q scripts/aem.js upstream_aem.js; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment on PR if file differs
+        if: steps.check_diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PR_NUMBER=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          
+          COMMENT_BODY="❌ **\`scripts/aem.js\` must match the upstream version exactly.**
+
+          This file is protected and cannot be modified unless its content is identical to the upstream reference:
+          🔗 https://github.com/adobe/aem-boilerplate/blob/main/scripts/aem.js
+
+          If you believe the change is necessary, please coordinate with the maintainers.
+
+          🛠️ To fix:
+          - Revert local changes to \`scripts/aem.js\`, or
+          - Copy the exact contents from the upstream link above."
+
+          # Try GitHub CLI first, fallback to API if it fails
+          if ! gh pr comment $PR_NUMBER --body "$COMMENT_BODY"; then
+            echo "GitHub CLI failed, trying API directly..."
+            # Properly escape the JSON for the API call
+            ESCAPED_BODY=$(echo "$COMMENT_BODY" | jq -Rs .)
+            curl -s -H "Authorization: token ${{ github.token }}" \
+              -H "Content-Type: application/json" \
+              -X POST \
+              -d "{\"body\": $ESCAPED_BODY}" \
+              "https://api.github.com/repos/${{ github.repository }}/issues/$PR_NUMBER/comments"
+          fi
+
+          echo "❌ Failing due to unauthorized modification to scripts/aem.js"
+          exit 1

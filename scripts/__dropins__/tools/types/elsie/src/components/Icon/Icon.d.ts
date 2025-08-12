@@ -3,9 +3,9 @@ import { SVGProps } from 'preact/compat';
 
 export type IconType = keyof typeof import('@adobe-commerce/elsie/icons');
 export interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'size'> {
-    source: FunctionComponent<SVGProps<SVGSVGElement> & {
+    source?: FunctionComponent<SVGProps<SVGSVGElement> & {
         title?: string;
-    }> | IconType;
+    }> | IconType | string;
     size?: '12' | '16' | '24' | '32' | '64' | '80';
     stroke?: '1' | '2' | '3' | '4';
     className?: string;

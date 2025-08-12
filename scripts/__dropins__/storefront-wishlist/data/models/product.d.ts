@@ -14,60 +14,77 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
+/**
+ * Product data model is based on PDP. For further details see:
+ *
+ * https://github.com/adobe-commerce/storefront-pdp/blob/develop/src/data/models/product-model.ts
+ * https://github.com/adobe-commerce/storefront-pdp/blob/develop/src/data/models/acdl-models.ts
+ */
 export interface Product {
-    type: string;
     name: string;
     sku: string;
-    topLevelSku?: string;
-    uid: string;
-    image: Image;
-    stockStatus?: string;
-    canonicalUrl?: string;
-    urlKey: string;
-    categories: string[];
-    prices: PriceDetails;
-    productAttributes?: Attribute[];
-    options: Option[];
+    isBundle: boolean;
+    addToCartAllowed: boolean;
+    inStock: boolean | null;
+    shortDescription?: string;
+    metaDescription?: string;
+    metaKeyword?: string;
+    metaTitle?: string;
+    description?: string;
+    images?: Image[];
+    prices: Prices;
+    attributes?: Attribute[];
+    options?: Option[];
+    optionUIDs?: string[];
+    url?: string;
+    urlKey?: string;
+    externalId?: string;
+    externalParentId?: string;
+    variantSku?: string;
+    productType?: ProductType | undefined;
 }
-export interface PriceDetails {
-    regularPrice: MoneyProps;
-    finalPrice: MoneyProps;
-    discount?: {
-        amountOff: number;
-        percentOff: number;
-    };
-    fixedProductTaxes: FixedProductTaxesProps[];
-}
-export interface MoneyProps {
-    value: number;
-    currency: string;
-}
-interface FixedProductTaxesProps {
-    money: MoneyProps;
+export interface Image {
+    url: string;
     label: string;
+    width?: number;
+    height?: number;
 }
-interface Image {
-    alt: string;
-    src: string;
+interface Price {
+    amount?: number;
+    currency?: string;
+    maximumAmount?: number;
+    minimumAmount?: number;
+    variant?: 'default' | 'strikethrough';
 }
-interface AttributeOption {
+export interface Prices {
+    regular: Price;
+    final: Price;
+    visible: boolean;
+}
+export interface Option {
+    id: string;
+    type: 'text' | 'image' | 'color' | 'dropdown';
+    typename: 'ProductViewOptionValueProduct' | 'ProductViewOptionValueSwatch' | 'ProductViewOptionValueConfiguration';
+    label: string;
+    required: boolean;
+    multiple: boolean;
+    items: OptionValue[];
+}
+interface OptionValue {
+    id: string;
+    label: string;
+    inStock: boolean;
     value: string;
-    label: string;
+    selected: boolean;
+    product?: any;
 }
 interface Attribute {
-    code: string;
-    value?: string;
-    selected_options?: AttributeOption[];
+    label: string;
+    value: string;
 }
-interface Option {
-    uid: string;
-    attributeCode?: string;
-    attributeUid?: string;
-    required: boolean;
-    values: [{
-        uid: string;
-        label: string;
-    }];
+export declare enum ProductType {
+    ComplexProduct = "complex",
+    SimpleProduct = "simple"
 }
 export {};
 //# sourceMappingURL=product.d.ts.map

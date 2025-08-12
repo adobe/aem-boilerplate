@@ -113,3 +113,4 @@ import{events as E}from"@dropins/tools/event-bus.js";import{FetchGraphQL as C}fr
     deleteCustomerAddress(id: $id)
   }
 `,d=async t=>await s(B,{method:"POST",variables:{id:t}}).then(r=>{var n;return(n=r.errors)!=null&&n.length?f(r.errors):r.data.deleteCustomerAddress}).catch(_);export{_ as a,k as b,P as c,K as d,z as e,s as f,J as g,f as h,Z as i,W as j,d as k,b as l,g as m,S as n,L as r,j as s,$ as t,Y as u};
+//# sourceMappingURL=removeCustomerAddress.js.map

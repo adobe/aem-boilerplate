@@ -1,7 +1,13 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{s as i,f as n,h as _}from"./resetCart.js";import{C as d,t as T}from"./refreshCart.js";import{events as C}from"@dropins/tools/event-bus.js";import{a as f}from"./acdl.js";import{CART_FRAGMENT as A}from"../fragments.js";const m=`
-  mutation APPLY_GIFT_CARD_ON_CART_MUTATION($cartId: String!, $giftCardCode: String!, ${d}) {
+import{s as i,f as c,h as d}from"./resetCart.js";import{t as _}from"./refreshCart.js";import{events as n}from"@dropins/tools/event-bus.js";import{b as T}from"./acdl.js";import{CART_FRAGMENT as f}from"../fragments.js";const p=`
+  mutation APPLY_GIFT_CARD_ON_CART_MUTATION(
+      $cartId: String!, 
+      $giftCardCode: String!,
+      $pageSize: Int! = 100,
+      $currentPage: Int! = 1,
+      $itemsSortInput: QuoteItemsSortInput! = {field: CREATED_AT, order: DESC}
+  ) {
  applyGiftCardToCart(
     input: {
      cart_id: $cartId
@@ -13,20 +19,26 @@ import{s as i,f as n,h as _}from"./resetCart.js";import{C as d,t as T}from"./ref
     }
   }
 }
-${A}
-`,N=async c=>{const a=i.cartId;if(!a)throw Error("Cart ID is not set");return n(m,{variables:{cartId:a,giftCardCode:c}}).then(({errors:s,data:t})=>{var e;const o=[...((e=t==null?void 0:t.applyGiftCardToCart)==null?void 0:e.user_errors)??[],...s??[]];if(o.length>0)return _(o);const r=T(t.applyGiftCardToCart.cart);return C.emit("cart/updated",r),C.emit("cart/data",r),r&&f(r,[],i.locale??"en-US"),r})},p=`
-  mutation REMOVE_GIFT_CARD_ON_CART_MUTATION($cartId: String!, $giftCardCode: String!, ${d}) {
- removeGiftCardFromCart(
-    input: {
-     cart_id: $cartId
-     gift_card_code: $giftCardCode
-    }
+${f}
+`,E=async s=>{const e=i.cartId;if(!e)throw Error("Cart ID is not set");return c(p,{variables:{cartId:e,giftCardCode:s}}).then(({errors:C,data:t})=>{var o;const a=[...((o=t==null?void 0:t.applyGiftCardToCart)==null?void 0:o.user_errors)??[],...C??[]];if(a.length>0)return d(a);const r=_(t.applyGiftCardToCart.cart);return n.emit("cart/updated",r),n.emit("cart/data",r),r&&T(r,[],i.locale??"en-US"),r})},I=`
+  mutation REMOVE_GIFT_CARD_ON_CART_MUTATION(
+  $cartId: String!, 
+  $giftCardCode: String!,   
+  $pageSize: Int! = 100,
+  $currentPage: Int! = 1,
+  $itemsSortInput: QuoteItemsSortInput! = {field: CREATED_AT, order: DESC}
   ) {
-    cart {
-      ...CART_FRAGMENT
-    }
-  }
+     removeGiftCardFromCart(
+        input: {
+         cart_id: $cartId
+         gift_card_code: $giftCardCode
+        }
+      ) {
+        cart {
+          ...CART_FRAGMENT
+        }
+      }
 }
-${A}
-`,E=async c=>{const a=i.cartId;if(!a)throw Error("Cart ID is not set");return n(p,{variables:{cartId:a,giftCardCode:c}}).then(({errors:s,data:t})=>{var e;const o=[...((e=t==null?void 0:t.addProductsToCart)==null?void 0:e.user_errors)??[],...s??[]];if(o.length>0)return _(o);const r=T(t.removeGiftCardFromCart.cart);return C.emit("cart/updated",r),C.emit("cart/data",r),r&&f(r,[],i.locale??"en-US"),r})};export{N as a,E as r};
+${f}
+`,g=async s=>{const e=i.cartId;if(!e)throw Error("Cart ID is not set");return c(I,{variables:{cartId:e,giftCardCode:s}}).then(({errors:C,data:t})=>{var o;const a=[...((o=t==null?void 0:t.addProductsToCart)==null?void 0:o.user_errors)??[],...C??[]];if(a.length>0)return d(a);const r=_(t.removeGiftCardFromCart.cart);return n.emit("cart/updated",r),n.emit("cart/data",r),r&&T(r,[],i.locale??"en-US"),r})};export{E as a,g as r};
 //# sourceMappingURL=removeGiftCardFromCart.js.map

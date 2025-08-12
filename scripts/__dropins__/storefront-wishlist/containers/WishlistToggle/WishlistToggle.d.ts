@@ -1,5 +1,5 @@
 import { HTMLAttributes } from 'preact/compat';
-import { Container } from '../../../@adobe-commerce/elsie/src/lib';
+import { Container } from '@dropins/tools/types/elsie/src/lib';
 import { Product } from '../../data/models';
 import { VNode } from 'preact';
 

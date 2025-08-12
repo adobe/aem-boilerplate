@@ -1,11 +1,11 @@
-import { Initializer } from '../../../@adobe-commerce/elsie/src/lib';
-import { Lang } from '../../../@adobe-commerce/elsie/src/i18n';
+import { Initializer } from '@dropins/tools/types/elsie/src/lib';
+import { Lang } from '@dropins/tools/types/elsie/src/i18n';
 
 type ConfigProps = {
     langDefinitions?: Lang;
     isGuestWishlistEnabled?: boolean;
 };
 export declare const initialize: Initializer<ConfigProps>;
-export declare const config: import('../../../@adobe-commerce/elsie/src/lib').Config<ConfigProps>;
+export declare const config: import('@dropins/tools/types/elsie/src/lib').Config<ConfigProps>;
 export {};
 //# sourceMappingURL=initialize.d.ts.map

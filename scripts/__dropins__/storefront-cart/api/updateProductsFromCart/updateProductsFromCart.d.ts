@@ -18,6 +18,7 @@ type UpdateProductsFromCart = Array<{
             message: string;
         };
     };
+    customFields?: Record<string, any>;
 }>;
 export declare const updateProductsFromCart: (items: UpdateProductsFromCart) => Promise<CartModel | null>;
 export {};

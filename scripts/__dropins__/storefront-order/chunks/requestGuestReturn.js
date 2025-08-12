@@ -52,3 +52,4 @@ import{h as i}from"./network-error.js";import{f as o,h as s}from"./fetch-graphql
   }
   ${m}
 `,v=async r=>{const e=_(r,"snakeCase",{});return await o(S,{method:"POST",variables:{input:e}}).then(t=>{var n;if((n=t.errors)!=null&&n.length)return s(t.errors);const{created_at:u,...a}=t.data.requestGuestReturn.return;return{...a,createdAt:u}}).catch(i)};export{v as a,g,O as r};
+//# sourceMappingURL=requestGuestReturn.js.map

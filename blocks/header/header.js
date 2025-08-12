@@ -1,6 +1,7 @@
 // Drop-in Tools
 import { events } from '@dropins/tools/event-bus.js';
 
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
@@ -391,6 +392,23 @@ export default async function decorate(block) {
               )}`;
               window.location.href = url;
             },
+            slots: {
+              ProductImage: (ctx) => {
+                const { productItem, defaultImageProps } = ctx;
+                const anchorWrapper = document.createElement('a');
+                anchorWrapper.href = rootLink(`/products/${productItem.urlKey}/${productItem.sku}`);
+
+                tryRenderAemAssetsImage(ctx, {
+                  alias: productItem.sku,
+                  imageProps: defaultImageProps,
+                  wrapper: anchorWrapper,
+                  params: {
+                    width: defaultImageProps.width,
+                    height: defaultImageProps.height,
+                  },
+                });
+              },
+            },
           })(searchResult),
         ]);
       });
@@ -411,7 +429,22 @@ export default async function decorate(block) {
 
   // Close panels when clicking outside
   document.addEventListener('click', (e) => {
-    if (!minicartPanel.contains(e.target) && !cartButton.contains(e.target)) {
+    // Check if undo is enabled for mini cart
+    const miniCartElement = document.querySelector(
+      '[data-block-name="commerce-mini-cart"]',
+    );
+    const undoEnabled = miniCartElement
+      && (miniCartElement.textContent?.includes('undo-remove-item')
+        || miniCartElement.innerHTML?.includes('undo-remove-item'));
+
+    // For mini cart: if undo is enabled, be more restrictive about when to close
+    const shouldCloseMiniCart = undoEnabled
+      ? !minicartPanel.contains(e.target)
+        && !cartButton.contains(e.target)
+        && !e.target.closest('header')
+      : !minicartPanel.contains(e.target) && !cartButton.contains(e.target);
+
+    if (shouldCloseMiniCart) {
       toggleMiniCart(false);
     }
 

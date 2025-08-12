@@ -7,6 +7,7 @@ export declare const contexts: {
     SHOPPING_CART_CONTEXT: string;
     PRODUCT_CONTEXT: string;
     CHANGED_PRODUCTS_CONTEXT: string;
+    CHANNEL_CONTEXT: string;
 };
 /**
  * See: https://github.com/adobe/commerce-events/blob/main/packages/storefront-events-sdk/src/events.ts

@@ -230,10 +230,6 @@ header nav .nav-sections ul > li:empty {
     padding: 0 var(--spacing-small);
   }
 
-  header nav .nav-sections .nav-drop {
-    cursor: pointer;
-  }
-
   header nav .nav-sections .default-content-wrapper > ul > li a {
     text-decoration: none;
   }

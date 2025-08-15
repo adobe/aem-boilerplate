@@ -7,7 +7,7 @@ const ASSETS_ENABLED_KEY = 'public.default.commerce-assets-enabled';
 const COMMERCE_CORE_ENDPOINT_KEY = 'public.default.commerce-core-endpoint';
 const COMMERCE_ENDPOINT_KEY = 'public.default.commerce-endpoint';
 
-describe('AEM Assets enabled', () => {
+describe('AEM Assets enabled', { tags: ["@skipSaas", "@skipPaas"] }, () => {
   let aemAssetsEnvironment;
   let envConfig;
 

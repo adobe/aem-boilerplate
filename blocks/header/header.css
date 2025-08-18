@@ -19,8 +19,8 @@ header nav {
   box-sizing: border-box;
   display: grid;
   grid-template:
-    'hamburger brand tools wrapperPopUpButton' var(--nav-height)
-    'sections sections sections ...' 1fr / auto 1fr auto auto;
+  'hamburger brand tools wrapperPopUpButton' var(--nav-height)
+  'sections sections sections ...' 1fr / auto 1fr auto auto;  
   align-items: center;
   gap: 0 16px;
   margin: auto;
@@ -32,7 +32,7 @@ header nav {
 
 header nav[aria-expanded='true'] {
   grid-template:
-    'hamburger brand' var(--nav-height)
+    'hamburger brand' var(--nav-height) 
     'sections sections' 1fr
     'tools tools' var(--nav-height) / auto 1fr;
   overflow-y: auto;
@@ -372,10 +372,10 @@ header nav .nav-tools button.nav-cart-button[data-count]::after {
 }
 
 header nav .nav-tools button.nav-wishlist-button {
-    background-image: url('../../icons/heart.svg');
-    background-repeat: no-repeat;
-    background-position: center;
-    position: relative;
+  background-image: url('../../icons/heart.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
 }
 
 header nav .nav-tools button.nav-search-button {
@@ -400,12 +400,31 @@ header .nav-search-panel input {
 }
 
 header .nav-search-panel .dropin-input-container {
-    width: 100%;
+  width: 100%;
 }
 
-header .nav-search-panel .search-bar__result {
-    width: 100%;
-    position: relative;
+header .nav-search-panel .search-bar-result {
+  width: 100%;
+  position: relative;
+}
+
+header .nav-search-panel .search-bar-result .product-discovery-product-list__grid {
+  margin-block: var(--spacing-small);
+}
+
+/* Popover List */
+header .nav-search-panel .search-bar-result .dropin-product-item-card {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+}
+
+/* Product Item Skeleton */
+header .nav-search-panel .search-bar-result .dropin-product-item-card__content .dropin-skeleton-row {
+  height: 1em;
+}
+
+header .nav-search-panel .search-bar-result .product-discovery-product-list__footer button {
+  width: 100%;
 }
 
 /* Mini Cart  */
@@ -580,12 +599,12 @@ li
   }
 
   header .nav-wrapper.active,
-  header .nav-wrapper:has( nav[aria-expanded='true']) {
+  header .nav-wrapper:has(nav[aria-expanded='true']) {
     width: 320px;
   }
 
   header .nav-wrapper.active nav .nav-hamburger button,
-  header .nav-wrapper:has( nav[aria-expanded='true']) nav .nav-hamburger button {
+  header .nav-wrapper:has(nav[aria-expanded='true']) nav .nav-hamburger button {
     position: fixed;
     left: 275px;
     z-index: 5;
@@ -737,21 +756,21 @@ li
 }
 
 .product-discovery--search-bar-results__grid {
-    padding: var(--spacing-xsmall);
+  padding: var(--spacing-xsmall);
 }
 
 .product-discovery--search-bar-results__outer-container .product-discovery--search-bar-results__grid {
-    box-shadow: 2px 2px 2px lightgray;
-    border: 1px solid lightgray;
+  box-shadow: 2px 2px 2px lightgray;
+  border: 1px solid lightgray;
 }
 
 .product-discovery--product-item {
-    gap: unset;
+  gap: unset;
 }
 
 .product-discovery--product-item__image .dropin-image {
-    width: 15rem;
-    height: 15rem;
-    max-width: 15rem;
-    max-height: 15rem;
+  width: 15rem;
+  height: 15rem;
+  max-width: 15rem;
+  max-height: 15rem;
 }

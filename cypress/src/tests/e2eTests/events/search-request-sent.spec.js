@@ -8,7 +8,7 @@ it("is sent on search bar view/render", { tags: "@skipSaas" }, () => {
   cy.visit("/");
   cy.get(".nav-search-button").should("be.visible").click();
   cy.wait(2000);
-  cy.get("#search-bar-input-form").type("cypress");
+  cy.get("#search").type("cypress");
   cy.waitForResource("commerce-events-collector.js").then(() => {
     cy.window()
       .its("adobeDataLayer")

@@ -1,8 +1,9 @@
 import { HTMLAttributes } from 'preact/compat';
 import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
-import { SearchFacet, FacetBucket } from '../../data/models/api';
+import { SearchFacet, FacetBucket, Scope } from '../../data/models/api';
 
 export interface FacetsProps extends HTMLAttributes<HTMLDivElement> {
+    scope?: Scope;
     slots?: {
         Facet?: SlotProps<{
             data: SearchFacet;

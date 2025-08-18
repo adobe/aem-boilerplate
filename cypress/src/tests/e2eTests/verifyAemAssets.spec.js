@@ -42,7 +42,7 @@ describe('AEM Assets enabled', { tags: ["@skipSaas", "@skipPaas"] }, () => {
     visitWithEagerImages('/');
     cy.get('.nav-search-button').click();
     cy.get('.nav-search-panel').should('be.visible');
-    cy.get('#search-bar-input input[type="text"]').type('gift');
+    cy.get('#search').type('gift');
     cy.wait(2000);
     const expectedOptions = {
       protocol: '//',
@@ -60,8 +60,8 @@ describe('AEM Assets enabled', { tags: ["@skipSaas", "@skipPaas"] }, () => {
       for (const image of images) {
         expectAemAssetsImage(image.src, {
           ...expectedOptions,
-          width: 165,
-          height: 165,
+          width: 400,
+          height: 450,
         });
 
         for (const { url, screenWidth, density } of image.srcsetEntries) {
@@ -69,9 +69,9 @@ describe('AEM Assets enabled', { tags: ["@skipSaas", "@skipPaas"] }, () => {
           expect(screenWidth).to.be.a('number');
 
           expectAemAssetsImage(url, {
-            ...srcSetExpectedOptions,
-            width: (165 * screenWidth) / 1920,
-            height: 165,
+            ...expectedOptions,
+            width: (400 * screenWidth) / 1920,
+            height: 450,
           });
         }
       }
@@ -84,8 +84,8 @@ describe('AEM Assets enabled', { tags: ["@skipSaas", "@skipPaas"] }, () => {
       for (const image of images) {
         expectAemAssetsImage(image.src, {
           ...expectedOptions,
-          width: 200,
-          height: 250,
+          width: 400,
+          height: 450,
         });
 
         for (const { url, screenWidth, density } of image.srcsetEntries) {
@@ -93,9 +93,9 @@ describe('AEM Assets enabled', { tags: ["@skipSaas", "@skipPaas"] }, () => {
           expect(screenWidth).to.be.a('number');
 
           expectAemAssetsImage(url, {
-            ...srcSetExpectedOptions,
-            width: (200 * screenWidth) / 1920,
-            height: 250,
+            ...expectedOptions,
+            width: (400 * screenWidth) / 1920,
+            height: 450,
           });
         }
       }

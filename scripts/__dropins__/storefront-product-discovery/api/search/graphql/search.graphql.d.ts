@@ -6,8 +6,6 @@
  * file in accordance with the terms of the Adobe license agreement
  * accompanying it.
  *******************************************************************/
-export * from './Facets';
-export * from './Pagination';
-export * from './SearchResults';
-export * from './SortBy';
-//# sourceMappingURL=index.d.ts.map
+declare const PRODUCT_SEARCH_QUERY: string;
+export { PRODUCT_SEARCH_QUERY };
+//# sourceMappingURL=search.graphql.d.ts.map

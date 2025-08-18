@@ -82,7 +82,7 @@ function getJsonLd(product, { variants }) {
   if (brand?.value) {
     product.brand = {
       '@type': 'Brand',
-        name: brand?.value,
+      name: brand?.value,
     };
   }
 
@@ -226,6 +226,7 @@ async function addVariantsToProducts(products, config) {
       'title',
       'description',
       'keywords',
+      'sku',
       'og:type',
       'og:title',
       'og:description',
@@ -239,14 +240,15 @@ async function addVariantsToProducts(products, config) {
   products.forEach(({ productView: metaData, variants }) => {
     data.push(
       [
-        metaData.path, // URL
+        metaData.path.toLowerCase(), // URL
         metaData.meta_title, // title
         metaData.meta_description, // description
         metaData.meta_keyword, // keywords
+        metaData.sku, //sku
         'product', // og:type
         metaData.meta_title, // og:title
         metaData.meta_description, // og:description
-        `${basePath}${metaData.path}`, // og:url
+        `${basePath}${metaData.path.toLowerCase()}`, // og:url
         metaData['og:image'], // og:image
         metaData['og:image:secure_url'], // og:image:secure_url
         metaData['last-modified'], // last-modified header
@@ -260,4 +262,36 @@ async function addVariantsToProducts(products, config) {
   const workbook = { Sheets: { Sheet1: worksheet }, SheetNames: ['Sheet1'] };
   const xlsx = XLSX.write(workbook, { bookType: 'xlsx', type: 'buffer' });
   await fs.promises.writeFile('metadata.xlsx', xlsx);
+
+  // Generate JSON data in the expected format
+  const jsonData = {
+    data: {
+      total: products.length,
+      limit: products.length,
+      offset: 0,
+      data: products.map(({ productView: metaData, variants }) => ({
+        URL: metaData.path.toLowerCase(),
+        title: metaData.meta_title,
+        description: metaData.meta_description,
+        keywords: metaData.meta_keyword,
+        sku: metaData.sku,
+        'og:type': 'product',
+        'og:title': metaData.meta_title,
+        'og:description': metaData.meta_description,
+        'og:url': `${basePath}${metaData.path.toLowerCase()}`,
+        'og:image': metaData['og:image'],
+        'og:image:secure_url': metaData['og:image:secure_url'],
+        'last-modified': metaData['last-modified'],
+        'json-ld': getJsonLd(metaData, variants)
+      })),
+      ':colWidths': [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+    },
+    ':names': ['data'],
+    ':version': 3,
+    ':type': 'multi-sheet',
+  };
+
+  // Write JSON file
+  await fs.promises.writeFile('metadata.json', JSON.stringify(jsonData, null, 2));
+  console.log(`Generated metadata.xlsx and metadata.json with ${products.length} products`);
 })();

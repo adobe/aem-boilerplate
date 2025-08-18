@@ -10,7 +10,7 @@ import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js
 import * as cartApi from '@dropins/storefront-cart/api.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { readBlockConfig } from '../../scripts/aem.js';
-import { fetchPlaceholders, rootLink } from '../../scripts/commerce.js';
+import { fetchPlaceholders, getProductLink } from '../../scripts/commerce.js';
 
 // Initializers
 import '../../scripts/initializers/search.js';
@@ -55,7 +55,7 @@ export default async function decorate(block) {
         children: labels.Global?.AddProductToCart,
         icon: Icon({ source: 'Cart' }),
         onClick: () => {
-          window.location.href = rootLink(`/products/${product.urlKey}/${product.sku}`);
+          window.location.href = getProductLink(product.urlKey, product.sku);
         },
         variant: 'primary',
       })(button);
@@ -86,13 +86,13 @@ export default async function decorate(block) {
       },
     })($facets),
     provider.render(ProductList, {
-      routeProduct: (product) => rootLink(`/products/${product.urlKey}/${product.sku}`),
+      routeProduct: (product) => getProductLink(product.urlKey, product.sku),
       ...categoryPathConfig,
       slots: {
         ProductImage: (ctx) => {
           const { product, defaultImageProps } = ctx;
           const anchorWrapper = document.createElement('a');
-          anchorWrapper.href = rootLink(`/products/${product.urlKey}/${product.sku}`);
+          anchorWrapper.href = getProductLink(product.urlKey, product.sku);
 
           tryRenderAemAssetsImage(ctx, {
             alias: product.sku,

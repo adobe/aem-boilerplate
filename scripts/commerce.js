@@ -579,6 +579,14 @@ export function getSkuFromUrl() {
   return result?.[1];
 }
 
+export function getProductSku() {
+  return getMetadata('sku') || getSkuFromUrl();
+}
+
+export function getProductLink(urlKey, sku) {
+  return rootLink(`/products/${urlKey}/${sku}`.toLowerCase());
+}
+
 /**
  * Extracts option UIDs from the URL search parameters.
  * @returns {string[]|undefined} Array of option UIDs, or undefined if not found

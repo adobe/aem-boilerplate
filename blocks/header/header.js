@@ -4,10 +4,10 @@ import { events } from '@dropins/tools/event-bus.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { rootLink, getProductLink } from '../../scripts/commerce.js';
 
 import renderAuthCombine from './renderAuthCombine.js';
 import { renderAuthDropdown } from './renderAuthDropdown.js';
-import { rootLink } from '../../scripts/commerce.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -385,7 +385,7 @@ export default async function decorate(block) {
           })(searchInput),
           // Render the SearchBarResult component
           render.render(SearchBarResults, {
-            productRouteSearch: ({ urlKey, sku }) => rootLink(`/products/${urlKey}/${sku}`),
+            productRouteSearch: ({ urlKey, sku }) => getProductLink(urlKey, sku),
             routeSearch: (searchQuery) => {
               const url = `${rootLink('/search')}?q=${encodeURIComponent(
                 searchQuery,
@@ -396,7 +396,7 @@ export default async function decorate(block) {
               ProductImage: (ctx) => {
                 const { productItem, defaultImageProps } = ctx;
                 const anchorWrapper = document.createElement('a');
-                anchorWrapper.href = rootLink(`/products/${productItem.urlKey}/${productItem.sku}`);
+                anchorWrapper.href = getProductLink(productItem.urlKey, productItem.sku);
 
                 tryRenderAemAssetsImage(ctx, {
                   alias: productItem.sku,

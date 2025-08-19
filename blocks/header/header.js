@@ -8,6 +8,7 @@ import { loadFragment } from '../fragment/fragment.js';
 import renderAuthCombine from './renderAuthCombine.js';
 import { renderAuthDropdown } from './renderAuthDropdown.js';
 import { rootLink } from '../../scripts/commerce.js';
+import { b2bNavigation } from '../../scripts/commerce-b2b.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -205,6 +206,9 @@ export default async function decorate(block) {
         });
       });
   }
+
+  // B2B Conditional Navigation
+  await b2bNavigation(nav);
 
   const navTools = nav.querySelector('.nav-tools');
 

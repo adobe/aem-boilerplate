@@ -1,6 +1,6 @@
-// TODO: Update imports when company signup dropin is ready
-import { render as companyRenderer } from '@dropins/company-signup/render.js';
-import { CompanySignUp } from '@dropins/company-signup/containers/CompanySignUp.js';
+// TODO: Update/remove commented code when company signup dropin is ready
+//import { render as companyRenderer } from '@dropins/company-signup/render.js';
+//import { CompanySignUp } from '@dropins/company-signup/containers/CompanySignUp.js';
 import {
   CUSTOMER_ACCOUNT_PATH,
   CUSTOMER_LOGIN_PATH,
@@ -8,22 +8,49 @@ import {
   authPrivacyPolicyConsentSlot,
   rootLink,
 } from '../../scripts/commerce.js';
+import { 
+  shouldShowCompanySignUpLink,
+  COMPANY_CREATE_PATH 
+} from '../../scripts/commerce-b2b.js';
 
 // Initialize
-// TODO: Uncomment this when the company signup is ready
 //import '../../scripts/initializers/company-signup.js';
 
 export default async function decorate(block) {
+  try {
+    const canShowSignUp = await shouldShowCompanySignUpLink();
+    
+    if (!canShowSignUp) {
+      window.location.replace(rootLink('/'));
+      return;
+    }
+  } catch (error) {
+    console.error('⚠️ Error checking B2B status, redirecting to homepage:', error);
+    window.location.replace(rootLink('/'));
+    return;
+  }
+
   if (checkIsAuthenticated()) {
     window.location.href = rootLink(CUSTOMER_ACCOUNT_PATH);
-  } else {
-    await companyRenderer.render(CompanySignUp, {
-      hideCloseBtnOnEmailConfirmation: true,
-      routeSignIn: () => rootLink(CUSTOMER_LOGIN_PATH),
-      routeRedirectOnSignIn: () => rootLink(CUSTOMER_ACCOUNT_PATH),
-      slots: {
-        ...authPrivacyPolicyConsentSlot,
-      },
-    })(block);
+    return;
   }
+
+  // Placeholder for actual company signup dropin
+  block.innerHTML = `
+    <div style="padding: 20px; text-align: center;">
+      <h2>Company Registration</h2>
+    </div>
+  `;
+  
+  // Render the company signup dropin
+  /*
+  await companyRenderer.render(CompanySignUp, {
+    hideCloseBtnOnEmailConfirmation: true,
+    routeSignIn: () => rootLink(CUSTOMER_LOGIN_PATH),
+    routeRedirectOnSignIn: () => rootLink(CUSTOMER_ACCOUNT_PATH),
+    slots: {
+      ...authPrivacyPolicyConsentSlot,
+    },
+  })(block);
+  */
 }

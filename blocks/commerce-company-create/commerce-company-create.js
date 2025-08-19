@@ -1,5 +1,7 @@
 // TODO: Update/remove commented code when company signup dropin is ready
+// eslint-disable-next-line import/no-unresolved
 import { render as companyRenderer } from '@dropins/company-signup/render.js';
+// eslint-disable-next-line import/no-unresolved
 import { CompanySignUp } from '@dropins/company-signup/containers/CompanySignUp.js';
 import {
   CUSTOMER_ACCOUNT_PATH,

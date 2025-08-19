@@ -162,7 +162,8 @@ export async function b2bNavigation(navElement) {
     // Process each B2B link configuration
     const configPromises = b2bLinkConfigs.map(async (config) => {
       const shouldShow = await config.validator();
-      
+
+      // Find links matching this configuration
       const matchingLinks = Array.from(allLinks).filter((link) => {
         const href = link.getAttribute('href');
         return config.paths.some((path) => href.includes(path));

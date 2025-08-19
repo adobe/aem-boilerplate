@@ -1,6 +1,6 @@
 // TODO: Update/remove commented code when company signup dropin is ready
-//import { render as companyRenderer } from '@dropins/company-signup/render.js';
-//import { CompanySignUp } from '@dropins/company-signup/containers/CompanySignUp.js';
+import { render as companyRenderer } from '@dropins/company-signup/render.js';
+import { CompanySignUp } from '@dropins/company-signup/containers/CompanySignUp.js';
 import {
   CUSTOMER_ACCOUNT_PATH,
   CUSTOMER_LOGIN_PATH,
@@ -8,18 +8,17 @@ import {
   authPrivacyPolicyConsentSlot,
   rootLink,
 } from '../../scripts/commerce.js';
-import { 
+import {
   shouldShowCompanySignUpLink,
-  COMPANY_CREATE_PATH 
 } from '../../scripts/commerce-b2b.js';
 
 // Initialize
-//import '../../scripts/initializers/company-signup.js';
+// import '../../scripts/initializers/company-signup.js';
 
 export default async function decorate(block) {
   try {
     const canShowSignUp = await shouldShowCompanySignUpLink();
-    
+
     if (!canShowSignUp) {
       window.location.replace(rootLink('/'));
       return;
@@ -41,9 +40,8 @@ export default async function decorate(block) {
       <h2>Company Registration</h2>
     </div>
   `;
-  
+
   // Render the company signup dropin
-  /*
   await companyRenderer.render(CompanySignUp, {
     hideCloseBtnOnEmailConfirmation: true,
     routeSignIn: () => rootLink(CUSTOMER_LOGIN_PATH),
@@ -52,5 +50,4 @@ export default async function decorate(block) {
       ...authPrivacyPolicyConsentSlot,
     },
   })(block);
-  */
 }

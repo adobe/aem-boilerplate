@@ -24,16 +24,16 @@ export async function checkB2BCompanyModuleEnabled() {
         }
       }
     `;
-    
+
     const response = await fetchGraphQl(storeConfigQuery, {
       method: 'GET',
-      cache: 'no-cache'
+      cache: 'no-cache',
     });
-    
+
     if (response?.data?.storeConfig?.company_enabled === true) {
       return true;
     }
-    
+
     return false;
   } catch (error) {
     console.warn('⚠️ Could not check B2B company module status:', error.message);
@@ -43,19 +43,18 @@ export async function checkB2BCompanyModuleEnabled() {
 
 /**
  * Check frontend configuration for B2B override
- * @returns {boolean} 
+ * @returns {boolean}
  *   - true: Frontend enables B2B (explicit true OR no config)
  *   - false: Frontend explicitly disables B2B
  */
 export function checkB2BFrontendConfig() {
   try {
     const frontendOverride = getConfigValue('b2b.enable-company');
-    
+
     if (frontendOverride === false) {
       return false;
-    } else {
-      return true;
     }
+    return true;
   } catch (error) {
     console.warn('⚠️ Could not check frontend B2B override:', error);
     return true; // Default to enabled on error
@@ -77,19 +76,19 @@ export async function checkCompanyRegistrationEnabled() {
         }
       }
     `;
-    
+
     const response = await fetchGraphQl(storeConfigQuery, {
       method: 'GET',
-      cache: 'no-cache'
+      cache: 'no-cache',
     });
-    
+
     const companyEnabled = response?.data?.storeConfig?.company_enabled === true;
     const registrationEnabled = response?.data?.storeConfig?.allow_company_registration === true;
-    
+
     if (companyEnabled && registrationEnabled) {
       return true;
     }
-    
+
     return false;
   } catch (error) {
     console.warn('⚠️ Could not check company registration config:', error.message);
@@ -104,34 +103,34 @@ export async function checkCompanyRegistrationEnabled() {
  */
 export async function shouldShowCompanySignUpLink() {
   const frontendConfig = checkB2BFrontendConfig();
-  
+
   if (frontendConfig === false) {
     // Emit B2B configuration status event
     const b2bStatus = {
       companyEnabled: false,
       frontendConfig,
       registrationEnabled: false,
-      canShowSignUp: false
+      canShowSignUp: false,
     };
-    
+
     events.emit('b2b/config', b2bStatus);
-    
+
     return false;
   }
-  
+
   const backendEnabled = await checkCompanyRegistrationEnabled();
-  
+
   const shouldShow = frontendConfig && backendEnabled;
-  
+
   // Emit B2B configuration status event
   const b2bStatus = {
     frontendConfig,
     backendEnabled,
-    canShowSignUp: shouldShow
+    canShowSignUp: shouldShow,
   };
-  
+
   events.emit('b2b/config', b2bStatus);
-  
+
   return shouldShow;
 }
 
@@ -153,24 +152,24 @@ export async function b2bNavigation(navElement) {
         name: 'companyRegistration',
         paths: [COMPANY_CREATE_PATH],
         validator: shouldShowCompanySignUpLink,
-        cssClass: 'company-registration'
-      }
+        cssClass: 'company-registration',
+      },
     ];
 
     const results = {};
     const allLinks = navElement.querySelectorAll('a[href]');
 
     // Process each B2B link configuration
-    for (const config of b2bLinkConfigs) {
+    const configPromises = b2bLinkConfigs.map(async (config) => {
       const shouldShow = await config.validator();
       
-      const matchingLinks = Array.from(allLinks).filter(link => {
+      const matchingLinks = Array.from(allLinks).filter((link) => {
         const href = link.getAttribute('href');
-        return config.paths.some(path => href.includes(path));
+        return config.paths.some((path) => href.includes(path));
       });
 
       // Apply show/hide logic
-      matchingLinks.forEach(link => {
+      matchingLinks.forEach((link) => {
         const parentLi = link.closest('li');
         if (parentLi) {
           if (shouldShow) {
@@ -185,19 +184,28 @@ export async function b2bNavigation(navElement) {
         }
       });
 
-      results[config.name] = {
+      return {
+        name: config.name,
         shouldShow,
-        linkCount: matchingLinks.length
+        linkCount: matchingLinks.length,
       };
-    }
-    
+    });
+
+    const configResults = await Promise.all(configPromises);
+    configResults.forEach((result) => {
+      results[result.name] = {
+        shouldShow: result.shouldShow,
+        linkCount: result.linkCount,
+      };
+    });
+
     // Emit navigation update event
     events.emit('b2b/navigation', {
       action: 'applied',
       results,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
-    
+
     return results;
   } catch (error) {
     console.warn('⚠️ B2B navigation logic failed:', error);

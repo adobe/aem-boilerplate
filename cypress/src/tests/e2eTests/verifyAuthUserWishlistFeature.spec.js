@@ -28,9 +28,8 @@ describe("Verify auth user can manage products across wishlist and cart", () => 
     // Wait for wishlist page to load and assert empty state
     assertWishlistEmptyWithWait();
 
-    // Navigate to product with proper hover and wait
-    cy.get(".nav-drop").first().should('be.visible').trigger("mouseenter");
-    cy.contains("Youth Tee").should('be.visible').click();
+    // Navigate to PDP
+    cy.visit(products.simple.urlPath);
 
     // Wait for container to exist
     cy.get('.product-details__buttons__add-to-wishlist').should('exist');

@@ -22,9 +22,8 @@ describe("Verify guest user can manage products across wishlist and cart", () =>
   });
 
   it("Successfully add simple product to wishlist, move it to cart, return this to wishlist and remove it", () => {
-    // Navigate to product with proper hover and wait
-    cy.get(".nav-drop").first().should('be.visible').trigger("mouseenter");
-    cy.contains("Youth Tee").should('be.visible').click();
+    // Navigate to PDP
+    cy.visit(products.simple.urlPath);
 
     // Wait for container to exist
     cy.get('.product-details__buttons__add-to-wishlist').should('exist');
@@ -280,9 +279,8 @@ describe("Verify guest user can manage products across wishlist and cart", () =>
   });
 
   it("Successfully merge wishlist", () => {
-    // Navigate to product with proper hover and wait
-    cy.get(".nav-drop").first().should('be.visible').trigger("mouseenter");
-    cy.contains("Youth Tee").should('be.visible').click();
+    // Navigate to PDP
+    cy.visit(products.simple.urlPath);
 
     // Wait for container to exist
     cy.get('.product-details__buttons__add-to-wishlist').should('exist');

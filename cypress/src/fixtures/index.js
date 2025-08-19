@@ -54,4 +54,8 @@ export const products = {
     urlPath: "/products/virtual-product/virtual123",
     sku: 'VIRTUAL123',
   },
+  simple: {
+    urlPath: "/products/youth-tee/ADB150",
+    sku: 'ADB150',
+  },
 };

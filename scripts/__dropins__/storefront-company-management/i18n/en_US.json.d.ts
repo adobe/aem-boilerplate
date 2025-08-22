@@ -64,6 +64,10 @@ declare const _default: {
         "salesRepresentative": "Sales Representative",
         "paymentInformation": "Payment Information",
         "availablePaymentMethods": "Available Payment Methods",
+        "shippingInformation": "Shipping Information",
+        "availableShippingMethods": "Available Shipping Methods",
+        "noPaymentMethods": "This company has no payment methods. Please contact store administrator.",
+        "noShippingMethods": "This company has no shipping methods. Please contact store administrator.",
         "companyDetails": "Company Details",
         "addressInformation": "Address Information"
       },

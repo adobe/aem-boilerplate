@@ -47,8 +47,11 @@ export interface getCompanyResponse {
                 lastname: string;
                 email: string;
             };
-            payment_methods?: string[];
             available_payment_methods?: {
+                code: string;
+                title: string;
+            }[];
+            available_shipping_methods?: {
                 code: string;
                 title: string;
             }[];
@@ -60,6 +63,14 @@ export interface getCompanyResponse {
                 permissions: {
                     id: string;
                     text: string;
+                    children?: {
+                        id: string;
+                        text: string;
+                        children?: {
+                            id: string;
+                            text: string;
+                        }[];
+                    }[];
                 }[];
             };
             status?: string;

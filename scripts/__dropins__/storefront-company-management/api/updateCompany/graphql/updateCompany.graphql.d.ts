@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const UPDATE_COMPANY: string;
+export declare const UPDATE_COMPANY = "\n  mutation UPDATE_COMPANY($input: CompanyUpdateInput!) {\n    updateCompany(input: $input) {\n      company { __typename }\n    }\n  }\n";
 //# sourceMappingURL=updateCompany.graphql.d.ts.map

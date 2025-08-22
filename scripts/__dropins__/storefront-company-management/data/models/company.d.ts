@@ -6,6 +6,14 @@ export interface CompanyRole {
     permissions?: {
         id: string;
         text: string;
+        children?: {
+            id: string;
+            text: string;
+            children?: {
+                id: string;
+                text: string;
+            }[];
+        }[];
     }[];
 }
 export interface CompanyContact {
@@ -30,8 +38,11 @@ export interface Company {
     legal_address?: CompanyLegalAddressModel;
     company_admin?: CompanyContact;
     sales_representative?: CompanySalesRepresentative;
-    payment_methods?: string[];
     available_payment_methods?: {
+        code: string;
+        title: string;
+    }[];
+    available_shipping_methods?: {
         code: string;
         title: string;
     }[];
@@ -40,5 +51,14 @@ export interface CompanyModel extends Company {
     canEdit?: boolean;
     customerRole?: CompanyRole;
     customerStatus?: string;
+    permissionsFlags?: {
+        canViewAccount: boolean;
+        canEditAccount: boolean;
+        canViewAddress: boolean;
+        canEditAddress: boolean;
+        canViewContacts: boolean;
+        canViewPaymentInformation: boolean;
+        canViewShippingInformation: boolean;
+    };
 }
 //# sourceMappingURL=company.d.ts.map

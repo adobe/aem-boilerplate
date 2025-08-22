@@ -18,6 +18,5 @@ export declare const COMPANY_LEGAL_ADDRESS_FRAGMENT = "\n  fragment COMPANY_LEGA
 export declare const COMPANY_BASIC_INFO_FRAGMENT = "\n  fragment COMPANY_BASIC_INFO_FRAGMENT on Company {\n    id\n    name\n    email\n    legal_name\n    vat_tax_id\n    reseller_id\n  }\n";
 export declare const COMPANY_SALES_REPRESENTATIVE_FRAGMENT = "\n  fragment COMPANY_SALES_REPRESENTATIVE_FRAGMENT on CompanySalesRepresentative {\n    firstname\n    lastname\n    email\n  }\n";
 export declare const COMPANY_ADMIN_FRAGMENT = "\n  fragment COMPANY_ADMIN_FRAGMENT on Customer {\n    id\n    firstname\n    lastname\n    email\n    job_title\n  }\n";
-export declare const COMPANY_ROLE_FRAGMENT = "\n  fragment COMPANY_ROLE_FRAGMENT on CompanyRole {\n    id\n    name\n    permissions {\n      id\n      text\n    }\n  }\n";
 export declare const COMPANY_FULL_FRAGMENT: string;
 //# sourceMappingURL=CompanyFragment.graphql.d.ts.map

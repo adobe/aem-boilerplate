@@ -224,7 +224,7 @@ export default async function decorate(block) {
   const creditCardFormRef = { current: null };
 
   // Adobe Commerce GraphQL endpoint
-  const commerceCoreEndpoint = await getConfigValue('commerce-core-endpoint');
+  const commerceCoreEndpoint = getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint');
 
   // Render the initial containers
   const [

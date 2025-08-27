@@ -89,6 +89,7 @@ import {
 import '../../scripts/initializers/account.js';
 import '../../scripts/initializers/checkout.js';
 import '../../scripts/initializers/order.js';
+import '../../scripts/initializers/payment-services.js';
 
 function createMetaTag(property, content, type) {
   if (!property || !type) {

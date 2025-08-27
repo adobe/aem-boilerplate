@@ -45,48 +45,44 @@ export default async function createMiniPDP(cartItem, onUpdate, onClose) {
     default: placeholders,
   };
 
-  const models = {
-    ProductDetails: {
-      fallbackData: (parent, refinedData) => ({
-        ...parent,
-        ...refinedData,
-        images:
-          refinedData.images?.length > 0 ? refinedData.images : parent.images,
-        description:
-          refinedData.description && refinedData.description !== ''
-            ? refinedData.description
-            : parent.description,
-      }),
-    },
-  };
-
   try {
     // Configure PDP API endpoint and headers (same as main PDP initializer)
     pdpApi.setEndpoint(await commerceEndpointWithQueryParams());
     pdpApi.setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('cs') }));
 
-    const productData = await pdpApi.fetchProductData(sku, {
+    const product = await pdpApi.fetchProductData(sku, {
       optionsUIDs,
       skipTransform: true,
     });
 
-    if (!productData?.sku) {
+    if (!product?.sku) {
       throw new Error('Product data not available');
     }
 
-    models.ProductDetails.initialData = { ...productData };
-
     // Initialize PDP API with pre-selected options
     await initializers.mountImmediately(pdpApi.initialize, {
+      scope: 'modal',
       sku,
       optionsUIDs,
       langDefinitions,
-      models,
+      models: {
+        ProductDetails: {
+          initialData: { ...product },
+          fallbackData: (parent, refinedData) => ({
+            ...parent,
+            ...refinedData,
+            images:
+              refinedData.images?.length > 0 ? refinedData.images : parent.images,
+            description:
+              refinedData.description && refinedData.description !== ''
+                ? refinedData.description
+                : parent.description,
+          }),
+        },
+      },
       acdl: false,
       persistURLParams: false,
     });
-
-    const product = events.lastPayload('pdp/data');
 
     if (!product) {
       throw new Error('Product data not available');
@@ -96,7 +92,7 @@ export default async function createMiniPDP(cartItem, onUpdate, onClose) {
     pdpApi.setProductConfigurationValues((prev) => ({
       ...prev,
       quantity: cartItem.quantity || 1,
-    }));
+    }), { scope: 'modal' });
 
     // Create the mini PDP container
     const miniPDPContainer = document.createElement('div');
@@ -183,13 +179,11 @@ export default async function createMiniPDP(cartItem, onUpdate, onClose) {
       // Header - just set the content, no special rendering needed
       Promise.resolve($header),
 
-      pdpRender.render(ProductPrice, {})($price),
+      pdpRender.render(ProductPrice, { scope: 'modal' })($price),
 
-      pdpRender.render(ProductOptions, {
-        hideSelectedValue: false,
-      })($options),
+      pdpRender.render(ProductOptions, { hideSelectedValue: false, scope: 'modal' })($options),
 
-      pdpRender.render(ProductQuantity, {})($quantity),
+      pdpRender.render(ProductQuantity, { scope: 'modal' })($quantity),
 
       // Update button
       UI.render(Button, {
@@ -208,8 +202,8 @@ export default async function createMiniPDP(cartItem, onUpdate, onClose) {
             }));
 
             // Get current product configuration
-            const values = pdpApi.getProductConfigurationValues();
-            const valid = pdpApi.isProductConfigurationValid();
+            const values = pdpApi.getProductConfigurationValues({ scope: 'modal' });
+            const valid = pdpApi.isProductConfigurationValid({ scope: 'modal' });
 
             if (!valid) {
               throw new Error('Please select all required options');
@@ -300,7 +294,7 @@ export default async function createMiniPDP(cartItem, onUpdate, onClose) {
           disabled: !valid || isLoading,
         }));
       },
-      { eager: true },
+      { eager: true, scope: 'modal' },
     );
 
     return miniPDPContainer;

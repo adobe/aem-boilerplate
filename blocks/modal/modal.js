@@ -1,3 +1,4 @@
+import { Render } from '@dropins/tools/lib.js';
 import { loadCSS, buildBlock } from '../../scripts/aem.js';
 
 export default async function createModal(contentNodes) {
@@ -20,6 +21,13 @@ export default async function createModal(contentNodes) {
   closeButton.addEventListener('click', () => dialog.close());
   dialog.append(closeButton);
 
+  const closeModal = () => {
+    // close the dialog
+    dialog.close();
+    // unmount any dropin containers rendered in the modal
+    dialog.querySelectorAll('[data-dropin-container]').forEach(Render.unmount);
+  };
+
   // close dialog on clicks outside the dialog. https://stackoverflow.com/a/70593278/79461
   dialog.addEventListener('click', (event) => {
     if (event.pointerType !== 'mouse') return;
@@ -31,7 +39,7 @@ export default async function createModal(contentNodes) {
       || event.clientY < dialogDimensions.top
       || event.clientY > dialogDimensions.bottom
     ) {
-      dialog.close();
+      closeModal();
     }
   });
 
@@ -47,7 +55,7 @@ export default async function createModal(contentNodes) {
 
   return {
     block,
-    removeModal: () => dialog.close(),
+    removeModal: () => closeModal(),
     showModal: () => {
       dialog.showModal();
       // Google Chrome restores the scroll position when the dialog is reopened,

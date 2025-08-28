@@ -6,6 +6,7 @@ type DefaultSlotContext = {
     data: ProductModel | null;
 };
 export interface ProductAttributesProps extends HTMLAttributes<HTMLDivElement> {
+    scope?: string;
     slots?: {
         Attributes?: SlotProps<DefaultSlotContext>;
     };

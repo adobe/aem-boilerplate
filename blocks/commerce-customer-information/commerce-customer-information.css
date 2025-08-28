@@ -1,1 +1,21 @@
-/* stylelint-disable no-empty-source */
+.account-customer-information-card__content .account-company-user-info-group {
+    margin: 0;
+    display: block;
+    width: 100%;
+    flex: 0 0 100%;
+  }
+  .account-customer-information-card__content .account-company-user-info-label,
+  .account-customer-information-card__content .account-company-user-info-value {
+    display: block;
+    width: 100%;
+    flex: 0 0 100%;
+    margin: 0;
+    font-size: inherit;
+    line-height: inherit;
+  }
+  .account-customer-information-card__content .account-company-user-info-label { font-weight: 700; }
+  .account-customer-information-card__content .account-company-user-info-value { margin: 6px 0 24px; }
+  .account-customer-information-card__content .account-company-user-info-group:first-of-type {
+    margin-top: 24px;
+  }
+  

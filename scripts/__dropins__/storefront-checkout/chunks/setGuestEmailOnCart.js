@@ -25,3 +25,4 @@ import{CUSTOMER_FRAGMENT as o,CHECKOUT_DATA_FRAGMENT as n}from"../fragments.js";
 
   ${n}
 `,N=async t=>{const a=m.cartId;if(!a)throw new u;return await r({options:{variables:{cartId:a,email:t}},path:"setGuestEmailOnCart.cart",query:h,queueName:c.CartUpdate,transformer:p,type:"mutation"})};export{v as g,q as i,N as s};
+//# sourceMappingURL=setGuestEmailOnCart.js.map

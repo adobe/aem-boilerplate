@@ -4,6 +4,7 @@ import { ProductModel } from '../../data/models';
 import { ImageNodeRenderProps, ImageProps } from '@dropins/tools/types/elsie/src/components';
 
 export interface ProductOptionsProps extends HTMLAttributes<HTMLDivElement> {
+    scope?: string;
     hideSelectedValue?: boolean;
     onValues?: (optionsUIDs: string[]) => void;
     onErrors?: (errors: {

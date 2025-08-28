@@ -1,3 +1,4 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{jsxs as a,jsx as o}from"@dropins/tools/preact-jsx-runtime.js";function l(r,t){return function(e){const{initialized:i=!0,visible:n=!0,...s}=e;return a("div",{className:"conditional-wrapper",children:[n&&!i&&o(t,{}),n&&i&&o(r,{...s})]})}}export{l as W};
+import{events as r}from"@dropins/tools/event-bus.js";import{jsxs as l,jsx as a}from"@dropins/tools/preact-jsx-runtime.js";function c(){return r.lastPayload("checkout/initialized")??null}function d(){return r.lastPayload("checkout/updated")??null}function i(){return d()??c()}function g(){var n;const t=i();return!!((n=t==null?void 0:t.shippingAddresses)!=null&&n.length)}function m(){const t=i();return!!(t!=null&&t.isVirtual)}function C(){const t=i();return(t==null?void 0:t.email)??null}function k(t,n){return function(s){const{initialized:e=!0,visible:o=!0,...u}=s;return l("div",{className:"conditional-wrapper",children:[o&&!e&&a(n,{}),o&&e&&a(t,{...u})]})}}export{k as W,C as a,d as g,g as h,m as i};
+//# sourceMappingURL=ConditionalWrapper.js.map

@@ -319,12 +319,9 @@ export const assertWishlistProductImage =
     };
 
 export const assertCartEmpty = () => {
-  cy.get(".dropin-illustrated-message__heading")
-    .should("be.visible")
-    .and("contain", "Your cart is empty");
-  cy.get(".dropin-illustrated-message__action")
-    .should("be.visible")
-    .and("contain", "Start shopping");
+  cy.get('.commerce-cart', { timeout: 10000 }).should('exist');
+  cy.get('.cart__list .dropin-cart-item', { timeout: 10000 }).should('not.exist');
+  cy.get('.cart__wrapper .dropin-cart-item').should('not.exist');
 };
 
 export const assertWishlistCount = (count) => {

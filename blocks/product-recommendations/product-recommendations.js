@@ -1,3 +1,7 @@
+// Dropin Tools
+import { events } from '@dropins/tools/event-bus.js';
+import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
+
 // Dropin Components
 import { Button, Icon, provider as UI } from '@dropins/tools/components.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
@@ -8,15 +12,15 @@ import * as cartApi from '@dropins/storefront-cart/api.js';
 // Recommendations Dropin
 import ProductList from '@dropins/storefront-recommendations/containers/ProductList.js';
 import { render as provider } from '@dropins/storefront-recommendations/render.js';
+import { publishRecsItemAddToCartClick } from '@dropins/storefront-recommendations/api.js';
 
 // Wishlist Dropin
 import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
 import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
 
 // Block-level
-import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { readBlockConfig } from '../../scripts/aem.js';
-import { fetchPlaceholders, rootLink } from '../../scripts/commerce.js';
+import { fetchPlaceholders, getProductLink } from '../../scripts/commerce.js';
 
 // Initializers
 import '../../scripts/initializers/recommendations.js';
@@ -106,7 +110,7 @@ export default async function decorate(block) {
     }
 
     const storeViewCode = getConfigValue('headers.cs.Magento-Store-View-Code');
-    const getProductLink = (item) => rootLink(`/products/${item.urlKey}/${item.sku}`);
+    const createProductLink = (item) => getProductLink(item.urlKey, item.sku);
 
     // Get product view history
     context.userViewHistory = getProductViewHistory(storeViewCode);
@@ -114,10 +118,24 @@ export default async function decorate(block) {
     // Get purchase history
     context.userPurchaseHistory = getPurchaseHistory(storeViewCode);
 
+    let recommendationsData = null;
+
+    // Get data from the event bus to set publish events
+    events.on(
+      'recommendations/data',
+      (data) => {
+        recommendationsData = data;
+        if (data?.items?.length) {
+          recommendationsData = data;
+        }
+      },
+      { eager: true },
+    );
+
     try {
       await Promise.all([
         provider.render(ProductList, {
-          routeProduct: getProductLink,
+          routeProduct: createProductLink,
           recId: recid,
           currentSku: currentsku || context.currentSku,
           userViewHistory: context.userViewHistory,
@@ -136,7 +154,28 @@ export default async function decorate(block) {
                 UI.render(Button, {
                   children: labels.Global?.AddProductToCart,
                   icon: Icon({ source: 'Cart' }),
-                  onClick: () => cartApi.addProductsToCart([{ sku: ctx.item.sku, quantity: 1 }]),
+                  onClick: (event) => {
+                    cartApi.addProductsToCart([
+                      { sku: ctx.item.sku, quantity: 1 },
+                    ]);
+                    // Prevent the click event from bubbling up to the parent span
+                    // to avoid triggering the recs-item-click event
+                    event.stopPropagation();
+                    // Publish ACDL event for add to cart click
+                    const recommendationUnit = recommendationsData?.find(
+                      (unit) => unit.items?.some(
+                        (unitItem) => unitItem.sku === ctx.item.sku,
+                      ),
+                    );
+                    publishRecsItemAddToCartClick({
+                      recommendationUnit,
+                      pagePlacement: 'product-list',
+                      yOffsetTop: addToCart.getBoundingClientRect().top ?? 0,
+                      yOffsetBottom:
+                        addToCart.getBoundingClientRect().bottom ?? 0,
+                      productId: ctx.index,
+                    });
+                  },
                   variant: 'primary',
                 })(addToCart);
               } else {
@@ -144,7 +183,7 @@ export default async function decorate(block) {
                 UI.render(Button, {
                   children:
                     labels.Global?.SelectProductOptions,
-                  href: rootLink(`/products/${ctx.item.urlKey}/${ctx.item.sku}`),
+                  href: createProductLink(ctx.item),
                   variant: 'tertiary',
                 })(addToCart);
               }
@@ -167,7 +206,7 @@ export default async function decorate(block) {
             Thumbnail: (ctx) => {
               const { item, defaultImageProps } = ctx;
               const wrapper = document.createElement('a');
-              wrapper.href = getProductLink(item);
+              wrapper.href = createProductLink(item);
 
               tryRenderAemAssetsImage(ctx, {
                 alias: item.sku,

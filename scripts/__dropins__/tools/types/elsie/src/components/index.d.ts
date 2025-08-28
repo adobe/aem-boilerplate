@@ -47,4 +47,5 @@ export * from './Tag';
 export * from './ContentGrid';
 export * from './Pagination';
 export * from './ProductItemCard';
+export * from './InputFile';
 //# sourceMappingURL=index.d.ts.map

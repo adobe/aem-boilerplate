@@ -22,15 +22,15 @@ import {
   customerShippingAddress,
   paymentServicesCreditCard,
   checkMoneyOrder,
+  products
 } from "../../fixtures/index";
 import * as fields from "../../fields";
 
 describe("Verify guest user can place order", () => {
   it("Verify guest user can place order", () => {
     cy.visit("");
-    cy.get(".nav-drop").first().trigger("mouseenter");
-    cy.wait(1000);
-    cy.contains("Youth Tee").click();
+    // Navigate to PDP
+    cy.visit(products.simple.urlPath);
     cy.get(".dropin-incrementer__increase-button").click();
     cy.get(".dropin-incrementer__input").should("have.value", "2");
     // cypress fails intermittently as it takes old value 1, this is needed for tests to be stable
@@ -50,7 +50,7 @@ describe("Verify guest user can place order", () => {
     )(".cart-mini-cart");
     assertTitleHasLink(
       "Youth tee",
-      "/products/youth-tee/ADB150",
+      "/products/youth-tee/adb150",
     )(".cart-mini-cart");
     assertProductImage(Cypress.env("productImageName"))(".cart-mini-cart");
     cy.contains("View Cart").click();
@@ -64,7 +64,7 @@ describe("Verify guest user can place order", () => {
     )(".commerce-cart-wrapper");
     assertTitleHasLink(
       "Youth tee",
-      "/products/youth-tee/ADB150",
+      "/products/youth-tee/adb150",
     )(".commerce-cart-wrapper");
     assertProductImage(Cypress.env("productImageName"))(
       ".commerce-cart-wrapper",

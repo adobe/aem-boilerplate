@@ -47,7 +47,7 @@ export default async function initializeDropins() {
     // Event Bus Logger
     events.enableLogger(true);
     // Set Fetch Endpoint (Global)
-    setEndpoint(getConfigValue('commerce-core-endpoint'));
+    setEndpoint(getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint'));
 
     // Fetch global placeholders
     await fetchPlaceholders('placeholders/global.json');
@@ -62,7 +62,7 @@ export default async function initializeDropins() {
       // Recaptcha
       await import('@dropins/tools/recaptcha.js').then((recaptcha) => {
         recaptcha.enableLogger(true);
-        recaptcha.setEndpoint(getConfigValue('commerce-core-endpoint'));
+        recaptcha.setEndpoint(getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint'));
         return recaptcha.setConfig();
       });
     });

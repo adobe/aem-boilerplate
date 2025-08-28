@@ -13,11 +13,12 @@ module.exports = defineConfig({
     graphqlEndPoint: "https://na1-sandbox.api.commerce.adobe.com/LwndYQs37CvkUQk9WEmNkz/graphql",
     giftCardA: "00419VQ5C341",
     productUrlWithOptions:
-      "/products/cypress-configurable-product-latest/CYPRESS456?optionsUIDs=Y29uZmlndXJhYmxlLzkzLzEz",
+      "/products/cypress-configurable-product-latest/cypress456?optionsUIDs=Y29uZmlndXJhYmxlLzkzLzEz",
     stateShippingId: "TX,57",
     stateBillingId: "NY,43",
     productImageName: "/adb150.jpg",
     productImageNameConfigurable: "/adb124_1.jpg",
+    productWithOptionImageNameConfigurable: "/adb192_1.jpg",
 
     aemAssetsConfig: {
       commerceConfig: {
@@ -46,7 +47,7 @@ module.exports = defineConfig({
       // Because AEM Assets uses a different Commerce instance
       // the hardcoded one in the default content source will not work.
       // To test PREX, we will render a custom draft page with our own recommendation unit id.
-      prexDraft: "/drafts/decepticons/prex-discovery",
+      prexDraft: "/drafts/decepticons/products/saas/adb125",
     },
   },
 });

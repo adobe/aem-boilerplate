@@ -12,3 +12,4 @@ import{c as b,g as v,i as _}from"./chunks/getStoreConfig.js";import{f as d,h as 
     }
   }
 `,E=async t=>{const a=`_account_regions_${t}`,o=sessionStorage.getItem(a);return o?JSON.parse(o):await d(l,{method:"GET",cache:"no-cache",variables:{countryCode:t}}).then(r=>{var e;if((e=r.errors)!=null&&e.length)return u(r.errors);const s=g(r);return sessionStorage.setItem(a,JSON.stringify(s)),s}).catch(m)};export{b as config,A as createCustomerAddress,d as fetchGraphQl,F as getAttributesForm,N as getConfig,O as getCountries,J as getCustomer,R as getCustomerAddress,D as getOrderHistoryList,E as getRegions,v as getStoreConfig,_ as initialize,$ as removeCustomerAddress,H as removeFetchGraphQlHeader,I as setEndpoint,Q as setFetchGraphQlHeader,w as setFetchGraphQlHeaders,j as updateCustomer,T as updateCustomerAddress,q as updateCustomerEmail,z as updateCustomerPassword};
+//# sourceMappingURL=api.js.map

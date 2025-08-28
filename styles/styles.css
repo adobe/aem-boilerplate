@@ -458,6 +458,10 @@ body.columns main > .section:empty {
   }
 }
 
+.dropin-product-item-card {
+  border: unset;
+}
+
 @media (min-width: 900px) {
   body.columns main {
     flex-direction: row;

@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{CUSTOMER_INFORMATION_FRAGMENT as O}from"../fragments.js";import{f as s,h as u}from"./network-error.js";import{s as b}from"./setReCaptchaToken.js";import"@dropins/tools/event-bus.js";import"@dropins/tools/recaptcha.js";import{merge as p}from"@dropins/tools/lib.js";import{c as N}from"./verifyToken.js";import{t as F}from"./transform-attributes-form.js";import{h as S}from"./getStoreConfig.js";const I=`
+import{CUSTOMER_INFORMATION_FRAGMENT as O}from"../fragments.js";import{f as s,h as u}from"./network-error.js";import{s as b}from"./setReCaptchaToken.js";import"@dropins/tools/event-bus.js";import"@dropins/tools/recaptcha.js";import{merge as p}from"@dropins/tools/lib.js";import{c as N}from"./initialize.js";import{t as F}from"./transform-attributes-form.js";import{h as S}from"./verifyToken.js";const I=`
   mutation CREATE_CUSTOMER($input: CustomerInput!) {
     createCustomer(input: $input) {
       customer {
@@ -57,3 +57,4 @@ import{CUSTOMER_INFORMATION_FRAGMENT as O}from"../fragments.js";import{f as s,h 
     }
   }
 `,z=async r=>await s(y,{method:"POST",variables:{input:r}}).then(e=>{var o;return(o=e.errors)!=null&&o.length?S(e.errors):e.data.createCustomerAddress.firstname||""}).catch(u);export{z as a,Q as c,j as g};
+//# sourceMappingURL=createCustomerAddress.js.map

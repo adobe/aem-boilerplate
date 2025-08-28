@@ -5,3 +5,4 @@ import{f as E,h as l}from"./network-error.js";import{s as e}from"./setReCaptchaT
     requestPasswordResetEmail(email: $email)
   }
 `,o=async a=>(await e(),await E(c,{method:"POST",variables:{email:a}}).then(t=>R(t)).catch(l));export{o as r};
+//# sourceMappingURL=requestPasswordResetEmail.js.map

@@ -43,3 +43,4 @@ import{l as n,f as C,h as o,a as h,m as x}from"./removeCustomerAddress.js";impor
     }
   }
 `,s=async t=>await C(q,{method:"POST",variables:{input:x(t,"snakeCase",{firstName:"firstname",lastName:"lastname",middleName:"middlename",dob:"date_of_birth",custom_attributesV2:"custom_attributes"})}}).then(m=>{var a,r,u,i;return(a=m.errors)!=null&&a.length?o(m.errors):((i=(u=(r=m==null?void 0:m.data)==null?void 0:r.updateCustomerV2)==null?void 0:u.customer)==null?void 0:i.email)||""}).catch(h);export{Z as a,s as b,X as g,Y as u};
+//# sourceMappingURL=updateCustomer.js.map

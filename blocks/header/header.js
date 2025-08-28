@@ -1,15 +1,18 @@
 // Drop-in Tools
 import { events } from '@dropins/tools/event-bus.js';
 
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
+import { fetchPlaceholders, getProductLink, rootLink } from '../../scripts/commerce.js';
 
 import renderAuthCombine from './renderAuthCombine.js';
 import { renderAuthDropdown } from './renderAuthDropdown.js';
-import { rootLink } from '../../scripts/commerce.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
+
+const labels = await fetchPlaceholders();
 
 const overlay = document.createElement('div');
 overlay.classList.add('overlay');
@@ -330,74 +333,121 @@ export default async function decorate(block) {
   }, { eager: true });
 
   /** Search */
-  const search = document.createRange().createContextualFragment(`
+  const searchFragment = document.createRange().createContextualFragment(`
   <div class="search-wrapper nav-tools-wrapper">
     <button type="button" class="nav-search-button">Search</button>
     <div class="nav-search-input nav-search-panel nav-tools-panel">
-      <div id="search-bar-input"></div>
-      <div class="search-bar-result"></div>
+      <form id="search-bar-form"></form>
+      <div class="search-bar-result" style="display: none;"></div>
     </div>
   </div>
   `);
 
-  navTools.append(search);
+  navTools.append(searchFragment);
 
   const searchPanel = navTools.querySelector('.nav-search-panel');
   const searchButton = navTools.querySelector('.nav-search-button');
-  const searchInput = searchPanel.querySelector('#search-bar-input');
+  const searchForm = searchPanel.querySelector('#search-bar-form');
   const searchResult = searchPanel.querySelector('.search-bar-result');
 
   async function toggleSearch(state) {
+    const pageSize = 4;
+
     if (state) {
       await withLoadingState(searchPanel, searchButton, async () => {
         await import('../../scripts/initializers/search.js');
 
         // Load search components in parallel
         const [
+          { search },
           { render },
-          { SearchBarInput },
-          { SearchBarResults },
+          { SearchResults },
+          { provider: UI, Input, Button },
         ] = await Promise.all([
+          import('@dropins/storefront-product-discovery/api.js'),
           import('@dropins/storefront-product-discovery/render.js'),
-          import('@dropins/storefront-product-discovery/containers/SearchBarInput.js'),
-          import('@dropins/storefront-product-discovery/containers/SearchBarResults.js'),
+          import('@dropins/storefront-product-discovery/containers/SearchResults.js'),
+          import('@dropins/tools/components.js'),
+          import('@dropins/tools/lib.js'),
         ]);
 
-        await Promise.all([
-        // Render the SearchBarInput component
-          render.render(SearchBarInput, {
-            routeSearch: (searchQuery) => {
-              const url = `${rootLink('/search')}?q=${encodeURIComponent(
-                searchQuery,
-              )}`;
-              window.location.href = url;
+        render.render(SearchResults, {
+          skeletonCount: pageSize,
+          scope: 'popover',
+          routeProduct: ({ urlKey, sku }) => getProductLink(urlKey, sku),
+          onSearchResult: (results) => {
+            searchResult.style.display = results.length > 0 ? 'block' : 'none';
+          },
+          slots: {
+            ProductImage: (ctx) => {
+              const { product, defaultImageProps } = ctx;
+              const anchorWrapper = document.createElement('a');
+              anchorWrapper.href = getProductLink(product.urlKey, product.sku);
+
+              tryRenderAemAssetsImage(ctx, {
+                alias: product.sku,
+                imageProps: defaultImageProps,
+                wrapper: anchorWrapper,
+                params: {
+                  width: defaultImageProps.width,
+                  height: defaultImageProps.height,
+                },
+              });
             },
-            slots: {
-              SearchIcon: (ctx) => {
-              // replace the search icon in the dropin input since theres already one in the header
-                const searchIcon = document.createElement('span');
-                searchIcon.className = 'search-icon';
-                searchIcon.innerHTML = '';
-                ctx.replaceWith(searchIcon);
-              },
+            Footer: async (ctx) => {
+              // View all results button
+              const viewAllResultsWrapper = document.createElement('div');
+
+              const viewAllResultsButton = await UI.render(Button, {
+                children: labels.Global?.SearchViewAll,
+                variant: 'secondary',
+                href: rootLink('/search'),
+              })(viewAllResultsWrapper);
+
+              ctx.appendChild(viewAllResultsWrapper);
+
+              ctx.onChange((next) => {
+                viewAllResultsButton?.setProps((prev) => ({
+                  ...prev,
+                  href: `${rootLink('/search')}?q=${encodeURIComponent(next.variables?.phrase || '')}`,
+                }));
+              });
             },
-          })(searchInput),
-          // Render the SearchBarResult component
-          render.render(SearchBarResults, {
-            productRouteSearch: ({ urlKey, sku }) => rootLink(`/products/${urlKey}/${sku}`),
-            routeSearch: (searchQuery) => {
-              const url = `${rootLink('/search')}?q=${encodeURIComponent(
-                searchQuery,
-              )}`;
-              window.location.href = url;
-            },
-          })(searchResult),
-        ]);
+          },
+        })(searchResult);
+
+        searchForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const query = e.target.search.value;
+          if (query.length) {
+            window.location.href = `${rootLink('/search')}?q=${encodeURIComponent(query)}`;
+          }
+        });
+
+        UI.render(Input, {
+          name: 'search',
+          placeholder: labels.Global?.Search,
+          onValue: (phrase) => {
+            if (!phrase) {
+              search(null, { scope: 'popover' });
+              return;
+            }
+
+            if (phrase.length < 3) {
+              return;
+            }
+
+            search({
+              phrase,
+              pageSize,
+            }, { scope: 'popover' });
+          },
+        })(searchForm);
       });
     }
 
     togglePanel(searchPanel, state);
-    if (state) searchInput?.querySelector('#search-bar-input-form')?.focus();
+    if (state) searchForm?.querySelector('input')?.focus();
   }
 
   searchButton.addEventListener('click', () => toggleSearch(!searchPanel.classList.contains('nav-tools-panel--show')));
@@ -411,7 +461,22 @@ export default async function decorate(block) {
 
   // Close panels when clicking outside
   document.addEventListener('click', (e) => {
-    if (!minicartPanel.contains(e.target) && !cartButton.contains(e.target)) {
+    // Check if undo is enabled for mini cart
+    const miniCartElement = document.querySelector(
+      '[data-block-name="commerce-mini-cart"]',
+    );
+    const undoEnabled = miniCartElement
+      && (miniCartElement.textContent?.includes('undo-remove-item')
+        || miniCartElement.innerHTML?.includes('undo-remove-item'));
+
+    // For mini cart: if undo is enabled, be more restrictive about when to close
+    const shouldCloseMiniCart = undoEnabled
+      ? !minicartPanel.contains(e.target)
+      && !cartButton.contains(e.target)
+      && !e.target.closest('header')
+      : !minicartPanel.contains(e.target) && !cartButton.contains(e.target);
+
+    if (shouldCloseMiniCart) {
       toggleMiniCart(false);
     }
 

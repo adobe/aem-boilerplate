@@ -48,7 +48,7 @@ describe("Verify guest user can place order with virtual product", () => {
 
     assertTitleHasLink(
       "Virtual Product",
-      "/products/virtual-product/VIRTUAL123",
+      "/products/virtual-product/virtual123",
     )(".cart-mini-cart");
     cy.contains("View Cart").click();
     assertCartSummaryProduct(
@@ -61,7 +61,7 @@ describe("Verify guest user can place order with virtual product", () => {
     )(".commerce-cart-wrapper");
     assertTitleHasLink(
       "Virtual Product",
-      "/products/virtual-product/VIRTUAL123",
+      "/products/virtual-product/virtual123",
     )(".commerce-cart-wrapper");
 
     cy.get(".dropin-button--primary").contains("Checkout").click();

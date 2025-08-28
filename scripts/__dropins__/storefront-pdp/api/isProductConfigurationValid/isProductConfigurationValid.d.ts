@@ -13,5 +13,7 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  */
-export declare const isProductConfigurationValid: () => boolean | null;
+export declare const isProductConfigurationValid: ({ scope, }?: {
+    scope?: string | undefined;
+}) => boolean | null;
 //# sourceMappingURL=isProductConfigurationValid.d.ts.map

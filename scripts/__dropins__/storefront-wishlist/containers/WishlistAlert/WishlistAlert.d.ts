@@ -2,8 +2,8 @@ import { FunctionComponent } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
 
 export interface WishlistAlertProps extends HTMLAttributes<HTMLDivElement> {
-    action: 'add' | 'remove' | 'move';
-    item: {
+    action: 'add' | 'remove' | 'move' | 'addError' | 'removeError';
+    item?: {
         product: {
             name: string;
         };

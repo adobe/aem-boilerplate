@@ -1,0 +1,187 @@
+/* Mini PDP Alert positioning - base styles for non-modal usage */
+.commerce-mini-pdp .mini-pdp__alert {
+    margin-bottom: var(--spacing-small);
+    margin-top: var(--spacing-small);
+}
+
+.commerce-mini-pdp .mini-pdp__alert:empty {
+    display: none;
+}
+
+/* Error state - used for fallback error display */
+.commerce-mini-pdp--error {
+    padding: var(--spacing-medium);
+    text-align: center;
+}
+
+.mini-pdp__error h3 {
+    color: var(--color-alert-content);
+    margin-bottom: var(--spacing-small);
+}
+
+.mini-pdp__close-button {
+    background: var(--color-button-active);
+    color: var(--color-button-content);
+    border: none;
+    padding: var(--spacing-small) var(--spacing-medium);
+    border-radius: var(--shape-border-radius-1);
+    cursor: pointer;
+    margin-top: var(--spacing-small);
+}
+
+/* Mini PDP Modal Styling */
+#mini-pdp-modal .mini-pdp__wrapper {
+    font-family: var(--type-base-font-family);
+    display: grid;
+    grid-template-columns: repeat(var(--grid-1-columns), 1fr);
+    grid-column-gap: var(--grid-1-gutters);
+    margin-top: var(--spacing-medium);
+}
+
+#mini-pdp-modal .mini-pdp__alert {
+    margin-top: var(--spacing-medium);
+    margin-right: var(--spacing-xxlarge);
+    margin-bottom: var(--spacing-small);
+}
+
+#mini-pdp-modal .mini-pdp__alert:empty {
+    display: none;
+}
+
+#mini-pdp-modal .mini-pdp__left-column {
+    grid-column: 1 / span 4;
+}
+
+#mini-pdp-modal .mini-pdp__right-column {
+    grid-column: 1 / span 4;
+    color: var(--color-neutral-800);
+    margin-top: var(--spacing-small);
+}
+
+#mini-pdp-modal .mini-pdp__quantity-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xsmall);
+    margin-bottom: var(--spacing-medium);
+}
+
+#mini-pdp-modal .mini-pdp__quantity {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-1-columns), 1fr);
+}
+
+#mini-pdp-modal .mini-pdp__quantity .dropin-quantity-picker {
+    grid-column: 1 / span 2;
+}
+
+#mini-pdp-modal .mini-pdp__configuration {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-medium);
+}
+
+#mini-pdp-modal .mini-pdp__header {
+    grid-column: 1 / span 4;
+    font: var(--type-headline-2-default-font);
+    letter-spacing: var(--type-headline-2-default-letter-spacing);
+    color: var(--color-neutral-900);
+    margin-bottom: 0;
+}
+
+#mini-pdp-modal .mini-pdp__header a {
+    font: var(--type-headline-2-default-font);
+    letter-spacing: var(--type-headline-2-default-letter-spacing);
+    color: inherit;
+    text-decoration: none;
+}
+
+#mini-pdp-modal .mini-pdp__price {
+    grid-column: 1 / span 4;
+    font: var(--type-body-1-default-font);
+    letter-spacing: var(--type-body-1-default-letter-spacing);
+    color: var(--color-neutral-900);
+    margin-top: var(--spacing-xsmall);
+    margin-bottom: var(--spacing-small);
+}
+
+#mini-pdp-modal .mini-pdp__price .pdp-price {
+    margin: 0;
+}
+
+#mini-pdp-modal .mini-pdp__price .dropin-price {
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+}
+
+#mini-pdp-modal .mini-pdp__quantity-label {
+    font: var(--type-details-caption-1-font);
+    letter-spacing: var(--type-details-caption-1-letter-spacing);
+    color: var(--color-neutral-800);
+}
+
+#mini-pdp-modal .mini-pdp__options .dropin-product-option__label {
+    font: var(--type-body-1-strong-font);
+    letter-spacing: var(--type-body-1-strong-letter-spacing);
+    color: var(--color-neutral-800);
+}
+
+#mini-pdp-modal .mini-pdp__buttons {
+    grid-column: 1 / span 4;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-small);
+    margin-top: var(--spacing-xsmall);
+}
+
+#mini-pdp-modal .mini-pdp__buttons .dropin-button {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    #mini-pdp-modal .mini-pdp__wrapper {
+        grid-template-columns: repeat(var(--grid-2-columns), 1fr);
+        grid-gap: var(--grid-2-gutters) var(--grid-2-gutters);
+    }
+
+    #mini-pdp-modal .mini-pdp__header {
+        grid-column: 1 / -1;
+        grid-row: 1;
+    }
+
+    #mini-pdp-modal .mini-pdp__price {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        margin-top: calc(var(--spacing-xsmall) * -1);
+    }
+
+    #mini-pdp-modal .mini-pdp__left-column {
+        grid-column: 1 / span 6;
+        grid-row: 3;
+    }
+
+    #mini-pdp-modal .mini-pdp__right-column {
+        grid-column: 7 / span 6;
+        grid-row: 3;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-medium);
+        padding-left: var(--spacing-medium);
+        margin-top: 0;
+    }
+
+    #mini-pdp-modal .mini-pdp__buttons {
+        grid-column: 1 / -1;
+        grid-row: 4;
+        margin-top: var(--spacing-small);
+    }
+
+    #mini-pdp-modal .mini-pdp__quantity {
+        grid-template-columns: repeat(var(--grid-2-columns), 1fr);
+    }
+
+    #mini-pdp-modal .mini-pdp__quantity .dropin-quantity-picker {
+        grid-column: 1 / span 4;
+    }
+}

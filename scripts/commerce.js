@@ -481,9 +481,9 @@ export async function fetchPlaceholders(path) {
         });
 
         // Merge the new placeholders into the global merged object
-        Object.assign(window.placeholders._merged, placeholders);
+        const merged = Object.assign(window.placeholders._merged, placeholders);
 
-        resolve(placeholders);
+        resolve(merged);
       })
       .catch((error) => {
         console.error(`Error loading placeholders for path: ${path}${fallback ? ` and fallback: ${fallback}` : ''}`, error);
@@ -577,6 +577,14 @@ export function getSkuFromUrl() {
   const path = window.location.pathname;
   const result = path.match(/\/products\/[\w|-]+\/([\w|-]+)$/);
   return result?.[1];
+}
+
+export function getProductSku() {
+  return getMetadata('sku') || getSkuFromUrl();
+}
+
+export function getProductLink(urlKey, sku) {
+  return rootLink(`/products/${urlKey}/${sku}`.toLowerCase());
 }
 
 /**

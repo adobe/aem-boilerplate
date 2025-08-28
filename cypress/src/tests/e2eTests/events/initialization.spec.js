@@ -21,7 +21,7 @@ it("has baseline contexts on homepage", () => {
 });
 
 it("has baseline contexts on PDP", () => {
-  cy.visit("/products/frankie-sweatshirt/MH04");
+  cy.visit("/products/frankie-sweatshirt/mh04");
   cy.waitForResource("commerce-events-collector.js").then(() => {
     cy.window().its("adobeDataLayer").then(baselineContexts);
   });

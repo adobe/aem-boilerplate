@@ -8,7 +8,7 @@
     "lint:css": "stylelint \"blocks/**/*.css\" \"styles/*.css\"",
     "lint": "npm run lint:js && npm run lint:css",
     "lint:fix": "npm run lint:js -- --fix && npm run lint:css -- --fix",
-    "start": "aem up --url https://main--boilerplate-b2b-accs--adobe-commerce.aem.page/",
+    "start": "aem up",
     "install:dropins": "node build.mjs && node postinstall.js",
     "postinstall": "npm run install:dropins",
     "postupdate": "npm run install:dropins"

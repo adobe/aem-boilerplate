@@ -3,6 +3,7 @@ coverage/*
 logs/*
 node_modules
 .parcel-cache
+config.json
 
 helix-importer-ui
 .DS_Store

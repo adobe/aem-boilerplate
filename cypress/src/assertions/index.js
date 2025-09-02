@@ -9,25 +9,25 @@ export const assertCartSummaryProduct =
     totalPrice,
     productPosition,
   ) =>
-  (elem = ".commerce-cart-wrapper") => {
-    cy.get(`${elem} .dropin-cart-item__title`)
-      .eq(productPosition)
-      .should("contain", productName);
-    cy.get(`${elem} .dropin-cart-item__sku`)
-      .eq(productPosition)
-      .should("contain", productSku);
-
-    if (elem === ".commerce-cart-wrapper") {
-      cy.get(`${elem} .dropin-incrementer__input`)
+    (elem = ".commerce-cart-wrapper") => {
+      cy.get(`${elem} .dropin-cart-item__title`)
         .eq(productPosition)
-        .should("have.value", productQty);
-    }
+        .should("contain", productName);
+      cy.get(`${elem} .dropin-cart-item__sku`)
+        .eq(productPosition)
+        .should("contain", productSku);
 
-    cy.get(`${elem} .dropin-cart-item__price`).should("contain", productPrice);
-    cy.get(`${elem} .dropin-cart-item__total`)
-      .eq(productPosition)
-      .should("contain", totalPrice);
-  };
+      if (elem === ".commerce-cart-wrapper") {
+        cy.get(`${elem} .dropin-incrementer__input`)
+          .eq(productPosition)
+          .should("have.value", productQty);
+      }
+
+      cy.get(`${elem} .dropin-cart-item__price`).should("contain", productPrice);
+      cy.get(`${elem} .dropin-cart-item__total`)
+        .eq(productPosition)
+        .should("contain", totalPrice);
+    };
 
 export const assertCartSummaryProductsOnCheckout = (
   productName,
@@ -85,19 +85,19 @@ export const assertOrderSummaryMisc = (subtotal, shipping, total) => {
 
 export const assertTitleHasLink =
   (productName, productHref) =>
-  (elem = ".cart-cart") => {
-    cy.get(`${elem} .dropin-cart-item`)
-      .contains(productName)
-      .should("have.attr", "href", productHref);
-  };
+    (elem = ".cart-cart") => {
+      cy.get(`${elem} .dropin-cart-item`)
+        .contains(productName)
+        .should("have.attr", "href", productHref);
+    };
 
 export const assertProductImage =
   (productImageSrc) =>
-  (elem = ".cart-cart") => {
-    cy.get(`${elem} img[src*="${productImageSrc}"]`, { matchCase: false })
-      .should("be.visible")
-      .and(($img) => expect($img[0].naturalWidth).to.be.gt(0));
-  };
+    (elem = ".cart-cart") => {
+      cy.get(`${elem} img[src*="${productImageSrc}"]`, { matchCase: false })
+        .should("be.visible")
+        .and(($img) => expect($img[0].naturalWidth).to.be.gt(0));
+    };
 
 export const assertSelectedPaymentMethod = (
   selected_payment_method,
@@ -167,9 +167,8 @@ export const assertOrderConfirmationShippingMethod = (
 export const assertAuthUser = (sign_up) => {
   cy.url().should("include", "/customer/account");
   cy.contains(sign_up.firstName).should("be.visible");
-  // TODO - Uncomment when https://jira.corp.adobe.com/browse/USF-1254 will be delivered to boilerplate
-  // cy.contains(sign_up.lastName).should("be.visible");
-  // cy.contains(sign_up.email).should("be.visible");
+  cy.contains(sign_up.lastName).should("be.visible");
+  cy.contains(sign_up.email).should("be.visible");
 };
 
 // imports and re-exports the functions from ./adobeDataLayer.js
@@ -313,7 +312,7 @@ export const assertWishlistTitleHasLink =
 export const assertWishlistProductImage =
   (productImageSrc) =>
     (elem = ".commerce-wishlist-wrapper") => {
-      cy.get(`${elem} img[src*="${productImageSrc}"]`, {matchCase: false})
+      cy.get(`${elem} img[src*="${productImageSrc}"]`, { matchCase: false })
         .should("be.visible")
         .and(($img) => expect($img[0].naturalWidth).to.be.gt(0));
     };
@@ -358,4 +357,65 @@ export const assertWishlistEmptyWithWait = () => {
 export const assertWishlistCountWithWait = (count) => {
   cy.waitForWishlistPageLoaded();
   assertWishlistCount(count);
+};
+
+export const assertOrderImageDisplay = () => {
+  cy.get(".dropin-image--loaded")
+    .should('be.visible')
+}
+
+
+export const assertImageListDisplay = (selector, limit = null) => {
+  let imageQuery = cy.get(selector).find('img');
+
+  if (limit !== null) {
+    imageQuery = imageQuery.filter(`:lt(${limit})`);
+  }
+
+  imageQuery.each(($img) => {
+    cy.wrap($img)
+      .should('be.visible')
+      .and(($el) => {
+        expect($el[0].naturalWidth).to.be.greaterThan(0);
+      });
+  });
+};
+
+
+export const assertSearchResults = () => {
+  // Check if search results are displayed
+  cy.get(fields.productListGrid)
+    .should("be.visible");
+
+  // Verify that product items are shown
+  cy.get(fields.productCard)
+    .should("have.length.at.least", 1);
+
+  // Check that each result has product name
+  cy.get(fields.productName)
+    .should("have.length.at.least", 1)
+    .each(($name) => {
+      cy.wrap($name).should("not.be.empty");
+    });
+
+  // Check that each result has price information
+  cy.get(fields.productPrice)
+    .should("have.length.at.least", 1)
+    .each(($price) => {
+      cy.wrap($price).should("not.be.empty");
+    });
+};
+
+export const assertSearchResultClick = () => {
+  // Click on first search result
+  cy.get(fields.productImage)
+    .first()
+    .click();
+
+  // Verify navigation to product page
+  cy.url().should("include", "/products/");
+
+  // Verify product page elements are loaded
+  cy.get(".product-details", { timeout: 10000 })
+    .should("be.visible");
 };

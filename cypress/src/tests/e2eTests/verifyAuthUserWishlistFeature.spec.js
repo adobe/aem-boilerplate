@@ -122,7 +122,7 @@ describe("Verify auth user can manage products across wishlist and cart", () => 
     assertWishlistEmptyWithWait();
   });
 
-  it("Successfully add configurable product with all required options to wishlist, move it to cart and return this to wishlist", () => {
+  it("Successfully add configurable product with all required options to wishlist, move it to cart and return this to wishlist", { tags: "@snapPercy" }, () => {
     cy.visit("/customer/create");
     cy.fixture("userInfo").then(({ sign_up }) => {
       signUpUser(sign_up);
@@ -172,6 +172,8 @@ describe("Verify auth user can manage products across wishlist and cart", () => 
     assertWishlistProductImage(Cypress.env('productWithOptionImageNameConfigurable'))(".commerce-wishlist-wrapper");
 
     assertWishlistItemHasOptions('color', 'red')(".wishlist-wishlist__content");
+    
+    cy.percyTakeSnapshot('Wishlist page with products');
 
     // Move item to cart with proper waiting
     cy.contains("Move To Cart").should('be.visible').and('not.be.disabled').click();

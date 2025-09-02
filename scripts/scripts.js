@@ -14,21 +14,6 @@ import {
 } from './aem.js';
 
 /**
- * Builds hero block and prepends to main in a new section.
- * @param {Element} main The container element
- */
-function buildHeroBlock(main) {
-  const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
-  // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
-    const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
-    main.prepend(section);
-  }
-}
-
-/**
  * load fonts.css and set a session storage flag
  */
 async function loadFonts() {
@@ -41,12 +26,31 @@ async function loadFonts() {
 }
 
 /**
+ * Builds fragment blocks in a container element.
+ * @param {Element} container The container element
+ */
+
+function buildFragmentBlocks(container) {
+  container.querySelectorAll('a[href*="/fragments/"]:only-child').forEach((a) => {
+    const parent = a.parentNode;
+    const fragment = buildBlock('fragment', [[a.cloneNode(true)]]);
+    if (parent.tagName === 'P') {
+      parent.before(fragment);
+      parent.remove();
+    } else {
+      a.before(fragment);
+      a.remove();
+    }
+  });
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
   try {
-    buildHeroBlock(main);
+    buildFragmentBlocks(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

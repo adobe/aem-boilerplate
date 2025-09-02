@@ -24,7 +24,7 @@ import {
 import * as fields from "../../fields";
 
 describe("Verify guest user can place order with virtual product", () => {
-  it("Verify guest user can place order with virtual product", () => {
+  it("Verify guest user can place order with virtual product", { tags: "@snapPercy" }, () => {
     cy.visit(products.virtual.urlPath);
 
     cy.get(".dropin-incrementer__input").should("have.value", "1");
@@ -102,6 +102,7 @@ describe("Verify guest user can place order with virtual product", () => {
 
     checkTermsAndConditions();
     cy.wait(5000);
+    cy.percyTakeSnapshot('Checkout with virtual product');
     placeOrder();
 
     assertOrderConfirmationCommonDetails(

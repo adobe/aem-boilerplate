@@ -1,0 +1,20 @@
+{
+    "add_new_address": {
+        "email": "test_cypresstest@mail.com",
+        "firstName": "firstname",
+        "lastName": "lastname",
+        "street": "street one",
+        "streetMultiline_2": "street second",
+        "countryCode": "AD",
+        "region": "Test",
+        "city": "Country",
+        "postcode": "12345",
+        "telephone": "123456789",
+        "vatId": "000000",
+        "defaultShipping": false,
+        "defaultBilling": false
+    },
+    "edit_address": {
+        "vatId": "000000"
+    }
+}

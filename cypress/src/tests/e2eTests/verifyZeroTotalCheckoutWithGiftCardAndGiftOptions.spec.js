@@ -32,7 +32,7 @@ import {
 import { products, customerShippingAddress } from "../../fixtures/index";
 
 describe("Verify price summary on cart", () => {
-  it("Verify applied gift code", () => {
+  it("Verify applied gift code", { tags: "@snapPercy" }, () => {
     cy.visit(products.configurable.urlPathWithOptions);
     cy.get(".minicart-panel").should("be.empty");
     cy.get(".product-details__buttons__add-to-cart button")
@@ -115,6 +115,7 @@ describe("Verify price summary on cart", () => {
     cy.contains(Cypress.env("giftCardA"));
     checkTermsAndConditions();
     cy.wait(5000);
+    cy.percyTakeSnapshot('Checkout page no payment');
     placeOrder();
     // Uncomment following once https://jira.corp.adobe.com/browse/USF-2241 is fixed
     // assertOrderConfirmationShippingDetails(customerShippingAddress);

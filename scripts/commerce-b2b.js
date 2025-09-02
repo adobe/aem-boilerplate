@@ -12,13 +12,13 @@ import { events } from '@dropins/tools/event-bus.js';
 export const COMPANY_CREATE_PATH = '/customer/company/create';
 
 /**
- * Check if B2B Company module is enabled via GraphQL StoreConfig
- * @returns {Promise<boolean>} True if B2B Company module is enabled
+ * Check if B2B Company is enabled via GraphQL StoreConfig
+ * @returns {Promise<boolean>} True if B2B Company is enabled
  */
-export async function checkB2BCompanyModuleEnabled() {
+export async function checkB2BCompanyEnabled() {
   try {
     const storeConfigQuery = `
-      query GET_COMPANY_MODULE_STATUS {
+      query GET_B2B_COMPANY_STATUS {
         storeConfig {
           company_enabled
         }
@@ -30,13 +30,10 @@ export async function checkB2BCompanyModuleEnabled() {
       cache: 'no-cache',
     });
 
-    if (response?.data?.storeConfig?.company_enabled === true) {
-      return true;
-    }
-
-    return false;
+    const companyEnabled = response?.data?.storeConfig?.company_enabled === true;
+    return companyEnabled;
   } catch (error) {
-    console.warn('⚠️ Could not check B2B company module status:', error.message);
+    console.warn('⚠️ Could not check B2B company status:', error.message);
     return false;
   }
 }
@@ -63,15 +60,14 @@ export function checkB2BFrontendConfig() {
 
 /**
  * Check if company registration is enabled via GraphQL StoreConfig
- * Checks both company_enabled AND allow_company_registration
- * @returns {Promise<boolean>} True if both B2B module and registration are enabled
+ * Backend guarantees that companyEnabled is true if allowCompanyRegistration is true
+ * @returns {Promise<boolean>} True if both B2B company and registration are enabled
  */
 export async function checkCompanyRegistrationEnabled() {
   try {
     const storeConfigQuery = `
       query GET_COMPANY_REGISTRATION_CONFIG {
         storeConfig {
-          company_enabled
           allow_company_registration
         }
       }
@@ -82,14 +78,8 @@ export async function checkCompanyRegistrationEnabled() {
       cache: 'no-cache',
     });
 
-    const companyEnabled = response?.data?.storeConfig?.company_enabled === true;
     const registrationEnabled = response?.data?.storeConfig?.allow_company_registration === true;
-
-    if (companyEnabled && registrationEnabled) {
-      return true;
-    }
-
-    return false;
+    return registrationEnabled;
   } catch (error) {
     console.warn('⚠️ Could not check company registration config:', error.message);
     return false;
@@ -97,11 +87,11 @@ export async function checkCompanyRegistrationEnabled() {
 }
 
 /**
- * Check if company sign-up navigation link should be shown
+ * Check if company registration navigation link should be shown
  * Frontend and backend configs must be evaluated to true
- * @returns {Promise<boolean>} True if company sign-up link should be displayed
+ * @returns {Promise<boolean>} True if company registration link should be displayed
  */
-export async function shouldShowCompanySignUpLink() {
+export async function shouldShowCompanyRegistrationLink() {
   const frontendConfig = checkB2BFrontendConfig();
 
   if (frontendConfig === false) {
@@ -151,7 +141,7 @@ export async function b2bNavigation(navElement) {
       {
         name: 'companyRegistration',
         paths: [COMPANY_CREATE_PATH],
-        validator: shouldShowCompanySignUpLink,
+        validator: shouldShowCompanyRegistrationLink,
         cssClass: 'company-registration',
       },
     ];

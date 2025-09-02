@@ -8,7 +8,6 @@ import { fetchPlaceholders, getProductLink, rootLink } from '../../scripts/comme
 
 import renderAuthCombine from './renderAuthCombine.js';
 import { renderAuthDropdown } from './renderAuthDropdown.js';
-import { rootLink } from '../../scripts/commerce.js';
 import { b2bNavigation } from '../../scripts/commerce-b2b.js';
 
 // media query match that indicates mobile/tablet width

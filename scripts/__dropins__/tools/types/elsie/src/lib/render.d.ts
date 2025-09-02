@@ -25,9 +25,14 @@ export declare class Render {
      */
     render<T>(Component: Container<T>, props: T): (rootElement: HTMLElement) => Promise<RenderAPI>;
     /**
+     * Unmounts a container from a root element.
+     * @param rootElement - The root element to unmount the container from.
+     */
+    static unmount(rootElement: HTMLElement): void;
+    /**
      * UnRenders a component from a root element.
      * @param rootElement - The root element to unmount the component from.
-     * @deprecated Use `remove` method from the returned object of the `mount` method instead.
+     * @deprecated Use `remove` method from the returned object of the `mount` method instead or `unmount` method from the `Render` class.
      */
     unmount(rootElement: HTMLElement): void;
     /**

@@ -89,6 +89,7 @@ import {
 import '../../scripts/initializers/account.js';
 import '../../scripts/initializers/checkout.js';
 import '../../scripts/initializers/order.js';
+import '../../scripts/initializers/payment-services.js';
 
 function createMetaTag(property, content, type) {
   if (!property || !type) {
@@ -224,7 +225,7 @@ export default async function decorate(block) {
   const creditCardFormRef = { current: null };
 
   // Adobe Commerce GraphQL endpoint
-  const commerceCoreEndpoint = await getConfigValue('commerce-core-endpoint');
+  const commerceCoreEndpoint = getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint');
 
   // Render the initial containers
   const [

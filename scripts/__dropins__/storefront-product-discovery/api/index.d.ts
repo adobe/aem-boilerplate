@@ -8,6 +8,5 @@
  *******************************************************************/
 export * from './initialize';
 export * from './fetch-graphql';
-export * from './attributeMetadata';
-export * from './productSearch';
+export * from './search';
 //# sourceMappingURL=index.d.ts.map

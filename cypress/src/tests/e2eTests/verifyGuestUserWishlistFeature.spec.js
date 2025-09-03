@@ -152,7 +152,7 @@ describe("Verify guest user can manage products across wishlist and cart", () =>
 
     assertWishlistProductImage(Cypress.env('productWithOptionImageNameConfigurable'))(".commerce-wishlist-wrapper");
 
-    assertWishlistItemHasOptions('color', 'red')(".wishlist-wishlist__content");
+    assertWishlistItemHasOptions('Color', 'red')(".wishlist-wishlist__content");
 
     // Move item to cart with proper waiting
     cy.contains("Move To Cart").should('be.visible').and('not.be.disabled').click();

@@ -171,8 +171,8 @@ describe("Verify auth user can manage products across wishlist and cart", () => 
 
     assertWishlistProductImage(Cypress.env('productWithOptionImageNameConfigurable'))(".commerce-wishlist-wrapper");
 
-    assertWishlistItemHasOptions('color', 'red')(".wishlist-wishlist__content");
-    
+    assertWishlistItemHasOptions('Color', 'red')(".wishlist-wishlist__content");
+
     cy.percyTakeSnapshot('Wishlist page with products');
 
     // Move item to cart with proper waiting

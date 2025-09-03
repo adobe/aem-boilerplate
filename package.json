@@ -34,6 +34,7 @@
     "stylelint-config-standard": "38.0.0"
   },
   "dependencies": {
+    "@adobe/adobe-client-data-layer": "^3.0.1",
     "@adobe/magento-storefront-event-collector": "^1.8.0",
     "@adobe/magento-storefront-events-sdk": "^1.8.0",
     "@dropins/storefront-account": "~1.0.9",

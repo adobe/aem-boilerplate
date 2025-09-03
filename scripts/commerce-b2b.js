@@ -26,7 +26,7 @@ export async function checkB2BCompanyEnabled() {
     `;
 
     const response = await fetchGraphQl(storeConfigQuery, {
-      method: 'GET',
+      method: 'POST',
       cache: 'no-cache',
     });
 
@@ -74,7 +74,7 @@ export async function checkCompanyRegistrationEnabled() {
     `;
 
     const response = await fetchGraphQl(storeConfigQuery, {
-      method: 'GET',
+      method: 'POST',
       cache: 'no-cache',
     });
 

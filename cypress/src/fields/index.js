@@ -140,6 +140,19 @@ export const giftOptionMessage = 'textarea[name="message"]';
 export const giftOptionGiftReceiptIncluded =
   'input[name="giftReceiptIncluded"]';
 
+ // Navigation Fields
+export const navAccountDropdown = '.nav-dropdown-button';
+export const navAccountMenu = '.nav-auth-menu-panel';
+export const navAccountMenuVisible = '.nav-tools-panel--show';
+export const navAccountLink = 'a[href*="/customer/account"]';
+export const navCompanyRegistrationLink = 'a[href*="/customer/company/create"]';
+export const navLogoutButton = 'button:contains("Logout")';
+
+// Main Navigation Fields
+export const navAccountSection = 'li.nav-drop:contains("Account")';
+export const navAccountSubmenu = 'li.nav-drop:contains("Account") .submenu-wrapper';
+export const navCompanyRegistrationLinkMain = 'li.company-registration-enabled a[href*="/customer/company/create"]';
+ 
   // Company Registration Form Fields
 export const companyFormCompanyName = 'input[name="companyName"]';
 export const companyFormLegalName = 'input[name="legalName"]';
@@ -160,3 +173,9 @@ export const companyFormJobTitle = 'input[name="adminJobTitle"]';
 export const companyFormWorkTelephone = 'input[name="adminWorkTelephone"]';
 export const companyFormAdminGender = 'select[name="adminGender"]';
 export const companyFormSubmitButton = 'button';
+
+// Company Profile Fields
+export const companyProfileCard = '.company-profile-card';
+export const companyProfileEditButton = '.company-profile-card .edit-button';
+export const editCompanyProfileForm = '.edit-company-profile-form';
+export const editCompanyProfileCancelButton = '.edit-company-profile-form .cancel-button';

@@ -430,23 +430,39 @@ export const assertCompanyRegistrationSuccess = (companyData) => {
   
   // Company Administrator Section
   cy.get('.company-registration-success').should('contain', 'Company Administrator');
-  // TBD: should contain first name and last name?
-  //cy.get('.company-registration-success').should('contain', companyData.companyAdmin.firstName);
-  //cy.get('.company-registration-success').should('contain', companyData.companyAdmin.lastName);
   const adminEmail = Cypress.env('currentTestAdminEmail');
   if (adminEmail) {
     cy.get('.company-registration-success').should('contain', adminEmail);
   }
-  
   if (companyData.companyAdmin.jobTitle) {
     cy.get('.company-registration-success').should('contain', companyData.companyAdmin.jobTitle);
   }
   if (companyData.companyAdmin.workTelephone) {
     cy.get('.company-registration-success').should('contain', companyData.companyAdmin.workTelephone);
   }
-  if (companyData.companyAdmin.gender) {
-    // TBD: should contain gender?
-    //cy.get('.company-registration-success').should('contain', companyData.companyAdmin.gender);
-  }
 };
 
+// Navigation Assertions
+export const assertHomePageLoaded = () => {
+  cy.get('header').should('exist');
+  cy.get('nav').should('exist');
+  cy.url().should('eq', Cypress.config().baseUrl);
+};
+
+export const assertAccountDropdownAccessible = () => {
+  cy.get(fields.navAccountDropdown).should('exist');
+  cy.get(fields.navAccountDropdown).should('be.visible');
+};
+
+export const assertAccountMenuOpened = () => {
+  cy.get(fields.navAccountMenu).should('have.class', 'nav-tools-panel--show');
+};
+
+export const assertAccountSectionAccessible = () => {
+  cy.get(fields.navAccountSection).should('exist');
+  cy.get(fields.navAccountSection).should('be.visible');
+};
+
+export const assertAccountSubmenuOpened = () => {
+  cy.get(fields.navAccountSubmenu).should('be.visible');
+};

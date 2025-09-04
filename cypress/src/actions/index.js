@@ -290,3 +290,32 @@ export const fillCompanyRegistrationForm = (companyData) => {
 export const submitCompanyRegistrationForm = () => {
   cy.get('button').contains('Register Company').click();
 };
+
+// Navigation Actions
+export const openAccountDropdown = () => {
+  cy.get('body').then(($body) => {
+    if ($body.find(fields.navAccountDropdown).length > 0) {
+      cy.get(fields.navAccountDropdown).click();
+      cy.get(fields.navAccountMenu).should('have.class', 'nav-tools-panel--show');
+    } else {
+      cy.log('Account dropdown button not found, skipping dropdown interaction');
+    }
+  });
+};
+
+export const openAccountSection = () => {
+  // Open the Account section in main navigation
+  cy.get(fields.navAccountSection).click();
+  cy.get(fields.navAccountSubmenu).should('be.visible');
+};
+
+export const navigateToCompanyRegistration = () => {
+  openAccountSection();
+  
+  // Look for company registration link and click it
+  cy.get('body').then(($body) => {
+    if ($body.find(fields.navCompanyRegistrationLinkMain).length > 0) {
+      cy.get(fields.navCompanyRegistrationLinkMain).click();
+    }
+  });
+};

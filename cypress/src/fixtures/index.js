@@ -59,3 +59,6 @@ export const products = {
     sku: 'ADB150',
   },
 };
+
+// Export company data fixtures
+export * from './companyData';

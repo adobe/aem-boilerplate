@@ -359,3 +359,94 @@ export const assertWishlistCountWithWait = (count) => {
   cy.waitForWishlistPageLoaded();
   assertWishlistCount(count);
 };
+
+// Company Registration Assertions
+export const assertCompanyRegistrationForm = () => {
+  cy.get('.company-registration-container').should('exist');
+  cy.get('.company-form').should('exist');
+  
+  // Company Information Fields
+  cy.get(fields.companyFormCompanyName).should('exist');
+  cy.get(fields.companyFormLegalName).should('exist');
+  cy.get(fields.companyFormCompanyEmail).should('exist');
+  cy.get(fields.companyFormVatTaxId).should('exist');
+  cy.get(fields.companyFormResellerId).should('exist');
+  
+  // Legal Address Fields
+  cy.get(fields.companyFormStreet).should('exist');
+  cy.get(fields.companyFormStreetLine2).should('exist');
+  cy.get(fields.companyFormCity).should('exist');
+  cy.get(fields.companyFormPostcode).should('exist');
+  cy.get(fields.companyFormTelephone).should('exist');
+  cy.get(fields.companyFormCountryCode).should('exist');
+  cy.get(fields.companyFormRegion).should('exist');
+  
+  // Company Administrator Fields
+  cy.get(fields.companyFormFirstName).should('exist');
+  cy.get(fields.companyFormLastName).should('exist');
+  cy.get(fields.companyFormAdminEmail).should('exist');
+  cy.get(fields.companyFormJobTitle).should('exist');
+  cy.get(fields.companyFormWorkTelephone).should('exist');
+  cy.get(fields.companyFormAdminGender).should('exist');
+  
+  // Submit Button
+  cy.get(fields.companyFormSubmitButton).should('exist');
+};
+
+export const assertCompanyRegistrationSuccess = (companyData) => {
+  cy.get('.company-registration-success').should('exist');
+  
+  // Check success message
+  cy.contains("Your company registration is now pending approval").should('be.visible');
+  cy.contains("You will receive an email notification once your company has been approved").should('be.visible');
+  
+  // Company Details Section
+  cy.get('.company-registration-success').should('contain', 'Company Details');
+  cy.get('.company-registration-success').should('contain', companyData.company.companyName);
+  if (companyData.company.legalName) {
+    cy.get('.company-registration-success').should('contain', companyData.company.legalName);
+  }
+  const companyEmail = Cypress.env('currentTestCompanyEmail');
+  if (companyEmail) {
+    cy.get('.company-registration-success').should('contain', companyEmail);
+  }
+  if (companyData.company.vatTaxId) {
+    cy.get('.company-registration-success').should('contain', companyData.company.vatTaxId);
+  }
+  if (companyData.company.resellerId) {
+    cy.get('.company-registration-success').should('contain', companyData.company.resellerId);
+  }
+  
+  // Legal Address Section
+  cy.get('.company-registration-success').should('contain', 'Legal Address');
+  cy.get('.company-registration-success').should('contain', companyData.legalAddress.street);
+  if (companyData.legalAddress.streetLine2) {
+    cy.get('.company-registration-success').should('contain', companyData.legalAddress.streetLine2);
+  }
+  cy.get('.company-registration-success').should('contain', companyData.legalAddress.city);
+  cy.get('.company-registration-success').should('contain', companyData.legalAddress.region);
+  cy.get('.company-registration-success').should('contain', companyData.legalAddress.postcode);
+  cy.get('.company-registration-success').should('contain', companyData.legalAddress.telephone);
+  
+  // Company Administrator Section
+  cy.get('.company-registration-success').should('contain', 'Company Administrator');
+  // TBD: should contain first name and last name?
+  //cy.get('.company-registration-success').should('contain', companyData.companyAdmin.firstName);
+  //cy.get('.company-registration-success').should('contain', companyData.companyAdmin.lastName);
+  const adminEmail = Cypress.env('currentTestAdminEmail');
+  if (adminEmail) {
+    cy.get('.company-registration-success').should('contain', adminEmail);
+  }
+  
+  if (companyData.companyAdmin.jobTitle) {
+    cy.get('.company-registration-success').should('contain', companyData.companyAdmin.jobTitle);
+  }
+  if (companyData.companyAdmin.workTelephone) {
+    cy.get('.company-registration-success').should('contain', companyData.companyAdmin.workTelephone);
+  }
+  if (companyData.companyAdmin.gender) {
+    // TBD: should contain gender?
+    //cy.get('.company-registration-success').should('contain', companyData.companyAdmin.gender);
+  }
+};
+

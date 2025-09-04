@@ -222,3 +222,71 @@ export const fillGiftOptiosFormEmpty = (className) => {
     .should('have.value', '')
     .blur();
 };
+
+// Company Registration Actions
+export const fillCompanyRegistrationForm = (companyData) => {
+  // Company Information
+  cy.get(fields.companyFormCompanyName).clear().type(companyData.company.companyName).blur();
+  if (companyData.company.legalName) {
+    cy.get(fields.companyFormLegalName).clear().type(companyData.company.legalName).blur();
+  }
+  
+  // Generate dynamic company email
+  const companyTimestamp = Date.now();
+  const companyRandom = Math.random().toString(36).substring(2, 8);
+  const dynamicCompanyEmail = `company.${companyTimestamp}.${companyRandom}@example.com`;
+  Cypress.env('currentTestCompanyEmail', dynamicCompanyEmail);
+  cy.get(fields.companyFormCompanyEmail).clear().type(dynamicCompanyEmail).blur();
+  
+  if (companyData.company.vatTaxId) {
+    cy.get(fields.companyFormVatTaxId).clear().type(companyData.company.vatTaxId).blur();
+  }
+  if (companyData.company.resellerId) {
+    cy.get(fields.companyFormResellerId).clear().type(companyData.company.resellerId).blur();
+  }
+
+  // Legal Address
+  cy.get(fields.companyFormStreet).clear().type(companyData.legalAddress.street).blur();
+  if (companyData.legalAddress.streetLine2) {
+    cy.get('body').then(($body) => {
+      if ($body.find(fields.companyFormStreetLine2).length > 0) {
+        cy.get(fields.companyFormStreetLine2).clear().type(companyData.legalAddress.streetLine2).blur();
+      }
+    });
+  }
+  cy.get(fields.companyFormCity).clear().type(companyData.legalAddress.city).blur();
+  cy.get(fields.companyFormPostcode).clear().type(companyData.legalAddress.postcode).blur();
+  cy.get(fields.companyFormTelephone).clear().type(companyData.legalAddress.telephone).blur();
+  
+  // Country and Region
+  cy.get(fields.companyFormCountryCode).select(companyData.legalAddress.countryCode);
+  cy.wait(1000);
+  cy.get(fields.companyFormRegion).select(companyData.legalAddress.region);
+
+  // Company Administrator
+  cy.get(fields.companyFormFirstName).clear().type(companyData.companyAdmin.firstName).blur();
+  cy.get(fields.companyFormLastName).clear().type(companyData.companyAdmin.lastName).blur();
+  
+  // Generate dynamic admin email
+  const adminTimestamp = Date.now();
+  const adminRandom = Math.random().toString(36).substring(2, 8);
+  const dynamicAdminEmail = `admin.${adminTimestamp}.${adminRandom}@example.com`;
+  const adminName = `${companyData.companyAdmin.firstName} ${companyData.companyAdmin.lastName}`;
+  Cypress.env('currentTestAdminEmail', dynamicAdminEmail);
+  Cypress.env('currentTestAdminName', adminName);
+  cy.get(fields.companyFormAdminEmail).clear().type(dynamicAdminEmail).blur();
+  
+  if (companyData.companyAdmin.jobTitle) {
+    cy.get(fields.companyFormJobTitle).clear().type(companyData.companyAdmin.jobTitle).blur();
+  }
+  if (companyData.companyAdmin.workTelephone) {
+    cy.get(fields.companyFormWorkTelephone).clear().type(companyData.companyAdmin.workTelephone).blur();
+  }
+  if (companyData.companyAdmin.gender) {
+    cy.get(fields.companyFormAdminGender).select(companyData.companyAdmin.gender);
+  }
+};
+
+export const submitCompanyRegistrationForm = () => {
+  cy.get('button').contains('Register Company').click();
+};

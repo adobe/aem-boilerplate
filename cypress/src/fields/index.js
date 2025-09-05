@@ -173,9 +173,3 @@ export const companyFormJobTitle = 'input[name="adminJobTitle"]';
 export const companyFormWorkTelephone = 'input[name="adminWorkTelephone"]';
 export const companyFormAdminGender = 'select[name="adminGender"]';
 export const companyFormSubmitButton = 'button';
-
-// Company Profile Fields
-export const companyProfileCard = '.company-profile-card';
-export const companyProfileEditButton = '.company-profile-card .edit-button';
-export const editCompanyProfileForm = '.edit-company-profile-form';
-export const editCompanyProfileCancelButton = '.edit-company-profile-form .cancel-button';

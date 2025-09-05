@@ -14,7 +14,7 @@ import {
   companyRegistrationSuccessMessages
 } from "../../fixtures/companyData";
 
-describe("Company Registration Tests", () => {
+describe("USF-2528: Company Registration Tests", () => {
 
   beforeEach(() => {
     cy.clearCookies();
@@ -24,7 +24,7 @@ describe("Company Registration Tests", () => {
     cy.intercept('**/graphql').as('defaultGraphQL');
   });
 
-  describe("Create Company from Home Page Navigation", () => {
+  describe("USF-2789: Create Company from Home Page Navigation", () => {
     it("should create company by navigating through Account menu", () => {
       cy.visit("/");
       
@@ -38,7 +38,7 @@ describe("Company Registration Tests", () => {
     });
   });
 
-  describe("Create Company via Direct Link", () => {
+  describe("USF-2789: Create Company via Direct Link", () => {
     it("should create company by accessing registration link directly", () => {
       // Navigate directly to company registration link
       cy.visit("/customer/company/create");
@@ -48,7 +48,7 @@ describe("Company Registration Tests", () => {
     });
   });
 
-  describe("Company Registration Link Visible when B2B is Enabled", () => {
+  describe("USF-2790: Company Registration Link Visible when B2B is Enabled", () => {
     it("should show company registration link when B2B is enabled", () => {
       // Mock GraphQL to return allow_company_registration: true
       cy.intercept('POST', '**/graphql', (req) => {
@@ -73,7 +73,7 @@ describe("Company Registration Tests", () => {
     });
   });
 
-  describe("Company Registration Link Not Visible when B2B is Disabled", () => {
+  describe("USF-2790: Company Registration Link Not Visible when B2B is Disabled", () => {
     it("should not show company registration link when B2B is disabled", () => {
       // Mock GraphQL to return allow_company_registration: false
       cy.intercept('POST', '**/graphql', (req) => {
@@ -98,7 +98,7 @@ describe("Company Registration Tests", () => {
     });
   });
 
-  describe("Company Registration Link Redirect When B2B Disabled", () => {
+  describe("USF-2790: Company Registration Link Redirect When B2B Disabled", () => {
     it("should redirect to home page when accessing company registration directly with B2B disabled", () => {
       // Mock GraphQL to return allow_company_registration: false
       cy.intercept('POST', '**/graphql', (req) => {

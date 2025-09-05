@@ -27,7 +27,7 @@ This is a boilerplate project for Adobe AEM Edge Delivery Services that serves a
 ├── blocks/          # Reusable content blocks
     └── {blockName}/   - Individual block directory
         ├── {blockName}.js      # Block's JavaScript
-        ├── {blockName}.css     # Block's styles
+        └── {blockName}.css     # Block's styles
 ├── styles/          # Global styles and CSS
 ├── scripts/         # JavaScript libraries and utilities
     ├── aem.js           # Core AEM Library for Edge Delivery page decoration logic
@@ -179,6 +179,7 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 - Check [AEM Edge Delivery documentation](https://www.aem.live/docs/)
 - Review [Developer Tutorial](https://www.aem.live/developer/tutorial)
 - Consult [The Anatomy of a Project](https://www.aem.live/developer/anatomy-of-a-project)
+- Consider the rules in [David's Model](https://www.aem.live/docs/davidsmodel)
 
 ## Security Considerations
 

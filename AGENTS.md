@@ -29,6 +29,8 @@ This is a boilerplate project for Adobe AEM Edge Delivery Services that serves a
         ├── {blockName}.js      # Block's JavaScript
         └── {blockName}.css     # Block's styles
 ├── styles/          # Global styles and CSS
+    ├── styles.css          # Minimal global styling and layout for your website required for LCP
+    └── lazy-styles.css     # Additional global styling and layout for below the fold/post LCP content
 ├── scripts/         # JavaScript libraries and utilities
     ├── aem.js           # Core AEM Library for Edge Delivery page decoration logic
     ├── scripts.js       # Global JavaScript utilities, main entry point for page decoration

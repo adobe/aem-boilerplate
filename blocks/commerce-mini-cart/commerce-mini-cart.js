@@ -11,7 +11,7 @@ import {
 import { h } from '@dropins/tools/preact.js';
 
 import createModal from '../modal/modal.js';
-import createMiniPDP from '../commerce-mini-pdp/commerce-mini-pdp.js';
+import createMiniPDP from '../../scripts/components/commerce-mini-pdp/commerce-mini-pdp.js';
 
 // Initializers
 import '../../scripts/initializers/cart.js';

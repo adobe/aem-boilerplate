@@ -19,14 +19,14 @@ import ProductOptions from '@dropins/storefront-pdp/containers/ProductOptions.js
 import ProductQuantity from '@dropins/storefront-pdp/containers/ProductQuantity.js';
 
 // Initializers
-import '../../scripts/initializers/cart.js';
+import '../../initializers/cart.js';
 
 import {
   fetchPlaceholders,
   commerceEndpointWithQueryParams,
-} from '../../scripts/commerce.js';
+} from '../../commerce.js';
 
-import { loadCSS } from '../../scripts/aem.js';
+import { loadCSS } from '../../aem.js';
 
 // Function to get fresh cart item data by UID
 async function getFreshCartItem(cartItemUid) {
@@ -44,7 +44,7 @@ async function getFreshCartItem(cartItemUid) {
 
 export default async function createMiniPDP(cartItem, onUpdate, onClose) {
   await loadCSS(
-    `${window.hlx.codeBasePath}/blocks/commerce-mini-pdp/commerce-mini-pdp.css`,
+    `${window.hlx.codeBasePath}/scripts/components/commerce-mini-pdp/commerce-mini-pdp.css`,
   );
 
   const placeholders = await fetchPlaceholders();

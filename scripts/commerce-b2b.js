@@ -2,7 +2,6 @@
  * B2B Commerce Configuration Utilities
  */
 
-import { fetchGraphQl } from '@dropins/tools/fetch-graphql.js';
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
 
@@ -11,80 +10,27 @@ import { events } from '@dropins/tools/event-bus.js';
  */
 export const COMPANY_CREATE_PATH = '/customer/company/create';
 
-/**
- * Check if B2B Company is enabled via GraphQL StoreConfig
- * @returns {Promise<boolean>} True if B2B Company is enabled
- */
-export async function checkB2BCompanyEnabled() {
-  try {
-    const storeConfigQuery = `
-      query GET_B2B_COMPANY_STATUS {
-        storeConfig {
-          company_enabled
-        }
-      }
-    `;
-
-    const response = await fetchGraphQl(storeConfigQuery, {
-      method: 'POST',
-      cache: 'no-cache',
-    });
-
-    const companyEnabled = response?.data?.storeConfig?.company_enabled === true;
-    return companyEnabled;
-  } catch (error) {
-    console.warn('⚠️ Could not check B2B company status:', error.message);
-    return false;
-  }
-}
 
 /**
- * Check frontend configuration for B2B override
+ * Check frontend configuration (commerce-companies-enabled) for B2B override
  * @returns {boolean}
  *   - true: Frontend enables B2B (explicit true OR no config)
  *   - false: Frontend explicitly disables B2B
  */
 export function checkB2BFrontendConfig() {
   try {
-    const frontendOverride = getConfigValue('b2b.enable-company');
+    const frontendOverride = getConfigValue('commerce-companies-enabled');
 
     if (frontendOverride === false) {
       return false;
     }
     return true;
   } catch (error) {
-    console.warn('⚠️ Could not check frontend B2B override:', error);
+    console.warn('Could not check frontend B2B override:', error);
     return true; // Default to enabled on error
   }
 }
 
-/**
- * Check if company registration is enabled via GraphQL StoreConfig
- * Backend guarantees that companyEnabled is true if allowCompanyRegistration is true
- * @returns {Promise<boolean>} True if both B2B company and registration are enabled
- */
-export async function checkCompanyRegistrationEnabled() {
-  try {
-    const storeConfigQuery = `
-      query GET_COMPANY_REGISTRATION_CONFIG {
-        storeConfig {
-          allow_company_registration
-        }
-      }
-    `;
-
-    const response = await fetchGraphQl(storeConfigQuery, {
-      method: 'POST',
-      cache: 'no-cache',
-    });
-
-    const registrationEnabled = response?.data?.storeConfig?.allow_company_registration === true;
-    return registrationEnabled;
-  } catch (error) {
-    console.warn('⚠️ Could not check company registration config:', error.message);
-    return false;
-  }
-}
 
 /**
  * Check if company registration navigation link should be shown
@@ -108,7 +54,19 @@ export async function shouldShowCompanyRegistrationLink() {
     return false;
   }
 
-  const backendEnabled = await checkCompanyRegistrationEnabled();
+  let backendEnabled = false;
+  try {
+    const { allowCompanyRegistration } = await import('@dropins/storefront-company-management/api.js');
+    backendEnabled = await allowCompanyRegistration();
+  } catch (error) {
+    // Handle missing dropin or other errors
+    if (error.message?.includes('Failed to resolve module') || error.message?.includes('404')) {
+      console.info('Company management dropin not available, company registration disabled');
+    } else {
+      console.warn('Could not check company registration config:', error.message);
+    }
+    backendEnabled = false;
+  }
 
   const shouldShow = frontendConfig && backendEnabled;
 
@@ -199,7 +157,28 @@ export async function b2bNavigation(navElement) {
 
     return results;
   } catch (error) {
-    console.warn('⚠️ B2B navigation logic failed:', error);
+    // Handle missing dropin or other errors
+    if (error.message?.includes('Failed to resolve module') || error.message?.includes('404')) {
+      console.info('B2B dropin not available, navigation links hidden');
+    } else {
+      console.warn('B2B navigation logic failed:', error.message);
+    }
+    
+    // Hide all B2B links on error
+    const allLinks = navElement.querySelectorAll('a[href]');
+    const b2bPaths = [COMPANY_CREATE_PATH];
+    
+    Array.from(allLinks).forEach((link) => {
+      const href = link.getAttribute('href');
+      if (b2bPaths.some((path) => href.includes(path))) {
+        const parentLi = link.closest('li');
+        if (parentLi) {
+          parentLi.style.display = 'none';
+          parentLi.classList.add('b2b-hidden');
+        }
+      }
+    });
+    
     return null;
   }
 }

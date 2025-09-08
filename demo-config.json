@@ -35,7 +35,8 @@
         "picker": {
            "rootCategory": "2"
          }
-      }
+      },
+      "commerce-companies-enabled": true
     }
   }
 }

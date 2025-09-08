@@ -24,8 +24,8 @@ describe("USF-2528: Company Registration Tests", () => {
     cy.intercept('**/graphql').as('defaultGraphQL');
   });
 
-  describe("USF-2789: Create Company from Home Page Navigation", () => {
-    it("should create company by navigating through Account menu", () => {
+  describe("Create Company from Home Page Navigation", () => {
+    it("USF-2789: should create company by navigating through Account menu", () => {
       cy.visit("/");
       
       assertHomePageLoaded();
@@ -38,8 +38,8 @@ describe("USF-2528: Company Registration Tests", () => {
     });
   });
 
-  describe("USF-2789: Create Company via Direct Link", () => {
-    it("should create company by accessing registration link directly", () => {
+  describe("Create Company via Direct Link", () => {
+    it("USF-2789: should create company by accessing registration link directly", () => {
       // Navigate directly to company registration link
       cy.visit("/customer/company/create");
       
@@ -48,8 +48,8 @@ describe("USF-2528: Company Registration Tests", () => {
     });
   });
 
-  describe("USF-2790: Company Registration Link Visible when B2B is Enabled", () => {
-    it("should show company registration link when B2B is enabled", () => {
+  describe("Company Registration Configuration Tests", () => {
+    it("USF-2790: should show company registration link when configuration is enabled", () => {
       // Mock GraphQL to return allow_company_registration: true
       cy.intercept('POST', '**/graphql', (req) => {
         if (req.body.query.includes('allow_company_registration')) {
@@ -71,10 +71,8 @@ describe("USF-2528: Company Registration Tests", () => {
       // Test that company registration link is available
       testCompanyRegistrationLinkVisibility(true);
     });
-  });
 
-  describe("USF-2790: Company Registration Link Not Visible when B2B is Disabled", () => {
-    it("should not show company registration link when B2B is disabled", () => {
+    it("USF-2790: should not show company registration link when configuration is disabled", () => {
       // Mock GraphQL to return allow_company_registration: false
       cy.intercept('POST', '**/graphql', (req) => {
         if (req.body.query.includes('allow_company_registration')) {
@@ -96,10 +94,8 @@ describe("USF-2528: Company Registration Tests", () => {
       // Test that company registration link is not available
       testCompanyRegistrationLinkVisibility(false);
     });
-  });
 
-  describe("USF-2790: Company Registration Link Redirect When B2B Disabled", () => {
-    it("should redirect to home page when accessing company registration directly with B2B disabled", () => {
+    it("USF-2790: should redirect to login page when accessing company registration directly with configuration disabled", () => {
       // Mock GraphQL to return allow_company_registration: false
       cy.intercept('POST', '**/graphql', (req) => {
         if (req.body.query.includes('allow_company_registration')) {
@@ -119,11 +115,11 @@ describe("USF-2528: Company Registration Tests", () => {
       // Try to access company registration page directly
       cy.visit("/customer/company/create");
       
-      // Should redirect to home page
-      cy.url().should('eq', Cypress.config().baseUrl);
-      assertHomePageLoaded();
+      // Should redirect to login page
+      cy.url().should('include', '/customer/login');
     });
   });
+
 });
 
 // Company registration form and submission

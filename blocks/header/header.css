@@ -209,6 +209,11 @@ header nav .nav-sections ul > li:empty {
   display: none;
 }
 
+/* B2B conditional navigation styling */
+header nav .nav-sections ul > li.b2b-hidden {
+  display: none !important;
+}
+
 @media (min-width: 900px) {
   header nav .nav-sections {
     display: block;

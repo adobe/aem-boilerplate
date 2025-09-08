@@ -167,3 +167,39 @@ export const authFormUserCheckBoxBilling = 'input[name="defaultBilling"]';
 export const fieldUserEmail = 'input[name="email"]';
 export const fieldUserNumber = 'input[name="number"]';
 export const submitButton = 'button[type="submit"]';
+
+export const COMPANY_CREATE_PATH = '/customer/company/create';
+
+// Navigation Fields
+export const navAccountDropdown = '.nav-dropdown-button';
+export const navAccountMenu = '.nav-auth-menu-panel';
+export const navAccountMenuVisible = '.nav-tools-panel--show';
+export const navAccountLink = 'a[href*="/customer/account"]';
+export const navCompanyRegistrationLink = 'a[href*="' + COMPANY_CREATE_PATH + '"]';
+export const navLogoutButton = 'button:contains("Logout")';
+
+// Main Navigation Fields
+export const navAccountSection = 'li.nav-drop:contains("Account")';
+export const navAccountSubmenu = 'li.nav-drop:contains("Account") .submenu-wrapper';
+export const navCompanyRegistrationLinkMain = 'li.company-registration-enabled a[href*="' + COMPANY_CREATE_PATH + '"]';
+ 
+// Company Registration Form Fields
+export const companyFormCompanyName = 'input[name="companyName"]';
+export const companyFormLegalName = 'input[name="legalName"]';
+export const companyFormCompanyEmail = 'input[name="companyEmail"]';
+export const companyFormVatTaxId = 'input[name="vatTaxId"]';
+export const companyFormResellerId = 'input[name="resellerId"]';
+export const companyFormStreet = 'input[name="street"]';
+export const companyFormStreetLine2 = 'input[name="streetLine2"]';
+export const companyFormCity = 'input[name="city"]';
+export const companyFormPostcode = 'input[name="postcode"]';
+export const companyFormTelephone = 'input[name="addressTelephone"]';
+export const companyFormCountryCode = 'select[name="countryCode"]';
+export const companyFormRegion = 'select[name="region"]';
+export const companyFormFirstName = 'input[name="adminFirstname"]';
+export const companyFormLastName = 'input[name="adminLastname"]';
+export const companyFormAdminEmail = 'input[name="adminEmail"]';
+export const companyFormJobTitle = 'input[name="adminJobTitle"]';
+export const companyFormWorkTelephone = 'input[name="adminWorkTelephone"]';
+export const companyFormAdminGender = 'select[name="adminGender"]';
+export const companyFormSubmitButton = 'button';

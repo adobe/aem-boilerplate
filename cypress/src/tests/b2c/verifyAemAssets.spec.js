@@ -461,7 +461,7 @@ describe('AEM Assets enabled', { tags: ["@skipSaas", "@skipPaas"] }, () => {
 /**
  * Wait for an AEM Asset image to be loaded.
  * @param {string} selector - The selector of the images to wait for.
- * @param {(images: import('../../support/index.d.ts').ImageData[]) => void} callback - The callback to call with the images.
+ * @param {(images: import('../../support/index').ImageData[]) => void} callback - The callback to call with the images.
  */
 function waitForAemAssetImages(selector, callback) {
   cy.waitForImages(selector, (images) => {

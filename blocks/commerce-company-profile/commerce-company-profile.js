@@ -16,8 +16,13 @@
  *******************************************************************/
 import { CompanyProfile } from '@dropins/storefront-company-management/containers/CompanyProfile.js';
 import { render as companyRenderer } from '@dropins/storefront-company-management/render.js';
-import { checkIsAuthenticated, checkIsCompanyEnabled, getCompany } from '@dropins/storefront-company-management/api.js';
-import { CUSTOMER_LOGIN_PATH, CUSTOMER_ACCOUNT_PATH, rootLink } from '../../scripts/commerce.js';
+import { checkIsCompanyEnabled, getCompany } from '@dropins/storefront-company-management/api.js';
+import {
+  CUSTOMER_LOGIN_PATH,
+  CUSTOMER_ACCOUNT_PATH,
+  checkIsAuthenticated,
+  rootLink,
+} from '../../scripts/commerce.js';
 
 export default async function decorate(block) {
   // Check authentication

@@ -41,6 +41,7 @@ export interface updateCompanyResponse {
                     firstname: string;
                     lastname: string;
                     email: string;
+                    job_title?: string;
                 };
             };
         };
@@ -49,4 +50,24 @@ export interface updateCompanyResponse {
         message: string;
     }[];
 }
+export type UpdateCompanyDto = Partial<{
+    name: string;
+    email: string;
+    legalName: string;
+    vatTaxId: string;
+    resellerId: string;
+    legalAddress: {
+        street: string[] | string;
+        street2?: string;
+        city: string;
+        region?: {
+            region: string;
+            regionCode: string;
+        } | string;
+        regionCode?: string;
+        countryCode: string;
+        postcode: string;
+        telephone?: string;
+    };
+}>;
 //# sourceMappingURL=updateCompany.types.d.ts.map

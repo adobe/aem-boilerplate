@@ -21,7 +21,7 @@ export interface CompanyContact {
     firstname: string;
     lastname: string;
     email: string;
-    job_title?: string;
+    jobTitle?: string;
 }
 export interface CompanySalesRepresentative {
     firstname: string;
@@ -32,26 +32,27 @@ export interface Company {
     id: string;
     name: string;
     email: string;
-    legal_name?: string;
-    vat_tax_id?: string;
-    reseller_id?: string;
-    legal_address?: CompanyLegalAddressModel;
-    company_admin?: CompanyContact;
-    sales_representative?: CompanySalesRepresentative;
-    available_payment_methods?: {
+    legalName?: string;
+    vatTaxId?: string;
+    resellerId?: string;
+    legalAddress?: CompanyLegalAddressModel;
+    companyAdmin?: CompanyContact;
+    salesRepresentative?: CompanySalesRepresentative;
+    availablePaymentMethods?: {
         code: string;
         title: string;
     }[];
-    available_shipping_methods?: {
+    availableShippingMethods?: {
         code: string;
         title: string;
     }[];
 }
 export interface CompanyModel extends Company {
-    canEdit?: boolean;
+    canEditAccount: boolean;
+    canEditAddress: boolean;
     customerRole?: CompanyRole;
     customerStatus?: string;
-    permissionsFlags?: {
+    permissionsFlags: {
         canViewAccount: boolean;
         canEditAccount: boolean;
         canViewAddress: boolean;

@@ -5,8 +5,13 @@
   "scripts": {
     "cypress:open": "cypress open --browser chrome --config-file cypress.paas.config.js",
     "cypress:run": "cypress run --config-file cypress.paas.config.js --env grepTags=-@skipPaas",
+    "cypress:percy": "percy exec -- cypress run --config-file cypress.paas.config.js --env grepTags=-@skipPaas+@snapPercy",
     "cypress:saas:open": "cypress open --browser chrome --config-file cypress.saas.config.js",
-    "cypress:saas:run": "cypress run --config-file cypress.saas.config.js --env grepTags=-@skipSaas"
+    "cypress:saas:run": "cypress run --config-file cypress.saas.config.js --env grepTags=-@skipSaas",
+    "cypress:b2b:open": "cypress open --browser chrome --config-file cypress.b2b.paas.config.js",
+    "cypress:b2b:run": "cypress run --config-file cypress.b2b.paas.config.js --env grepTags=@B2BPaas",
+     "cypress:b2b:saas:open": "cypress open --browser chrome --config-file cypress.b2b.saas.config.js",
+    "cypress:b2b:saas:run": "cypress run --config-file cypress.b2b.saas.config.js --env grepTags=@B2BSaas"
   },
   "author": "Adobe Commerce",
   "license": "Apache License 2.0",
@@ -14,6 +19,8 @@
     "@cypress/browserify-preprocessor": "^3.0.0",
     "@cypress/code-coverage": "^3.9.12",
     "@cypress/grep": "^4.1.0",
+    "@percy/cli": "^1.31.0",
+    "@percy/cypress": "^3.1.6",
     "cross-env": "^7.0.0",
     "cypress": "^13.0.0",
     "cypress-dotenv": "2.0.0",

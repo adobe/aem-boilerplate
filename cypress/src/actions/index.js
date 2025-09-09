@@ -222,3 +222,26 @@ export const fillGiftOptiosFormEmpty = (className) => {
     .should('have.value', '')
     .blur();
 };
+
+export const createAddress = (address, isValid = true) => {
+  cy.get(fields.fieldUserFirstName).clear().type(address.firstName);
+  cy.get(fields.fieldUserLastName).clear().type(address.lastName);
+  cy.get(fields.fieldUserStreet).clear().type(address.street);
+  cy.get(fields.fieldUserStreet2).clear().type(address.streetMultiline_2);
+  cy.get(fields.fieldUserSelectCountry).select(address.countryCode);
+  cy.get(fields.fieldUserTextRegion).clear().type(address.region);
+  cy.get(fields.fieldUserCity).clear().type(address.city);
+  cy.get(fields.fieldUserPhone).clear().type(address.telephone);
+  cy.get(fields.fieldUserPostCode).clear().type(address.postcode);
+  cy.get(fields.fieldUserVatId).clear().type(address.vatId);
+  cy.get(fields.authFormUserCheckBoxShipping).then(($checkbox) => {
+    $checkbox.prop('checked', address.defaultShipping);
+  });
+};
+
+export const inputSearchString = (searchString) => {
+  cy.get(fields.searchIcon).click();
+  cy.get(fields.searchField)
+    .should("be.visible")
+    .type(searchString);
+};

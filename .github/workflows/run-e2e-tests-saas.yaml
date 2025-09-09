@@ -1,4 +1,4 @@
-name: Cypress E2E SaaS Tests
+name: Cypress E2E B2C SaaS Tests
 on: push
 jobs:
   cypress-saas-run:

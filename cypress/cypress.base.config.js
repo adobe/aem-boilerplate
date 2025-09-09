@@ -21,7 +21,7 @@ module.exports = {
     },
     baseUrl: 'http://localhost:3000/',
     supportFile: 'src/support/index.js',
-    specPattern: 'src/tests/**/*.spec.js',
+    specPattern: 'src/tests/b2c/**/*.spec.js',
   },
   reporter: 'cypress-multi-reporters',
   reporterOptions: {

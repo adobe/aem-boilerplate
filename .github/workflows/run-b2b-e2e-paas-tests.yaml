@@ -1,7 +1,13 @@
-name: Cypress E2E B2C PaaS Tests
-on: push
+name: Cypress E2E B2B PaaS Tests
+on:
+  push:
+    branches:
+      - b2b
+  pull_request:
+    branches:
+      - b2b
 jobs:
-  cypress-paas-run:
+  cypress-b2b-paas-run:
     # If you want this job to run on your fork, remove the below "if" line.
     # You will need to "fix" the tests as they are specific to Adobe Commmerce's
     # demo backend.
@@ -9,18 +15,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
       - name: Install root dependencies
         run: npm ci
       - name: Install adobe aem cli dependencies
         run: npm install -g @adobe/aem-cli
       - name: Start server in the background
-        run: aem up --url https://main--boilerplate-paas--adobe-commerce.aem.live &
+        run: aem up --url https://main--boilerplate-b2b-paas--adobe-commerce.aem.live &
       - name: Install Cypress and run tests
         uses: cypress-io/github-action@v6
         with:
           working-directory: cypress
           wait-on: 'http://localhost:3000'
-          command: npm run cypress:run
+          command: npm run cypress:b2b:run
         env:
           AEM_ASSETS_PRIVATE_USER: ${{ secrets.AEM_ASSETS_PRIVATE_USER }}
       - uses: actions/upload-artifact@v4

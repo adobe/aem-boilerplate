@@ -1,4 +1,4 @@
-/********************************************************************
+/** ******************************************************************
  * ADOBE CONFIDENTIAL
  * __________________
  *
@@ -13,7 +13,7 @@
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
- *******************************************************************/
+ ****************************************************************** */
 import { getHeaders } from '@dropins/tools/lib/aem/configs.js';
 import { initializers } from '@dropins/tools/initializer.js';
 import { initialize, setFetchGraphQlHeaders } from '@dropins/storefront-company-management/api.js';

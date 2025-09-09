@@ -1,4 +1,4 @@
-/********************************************************************
+/** ******************************************************************
  * ADOBE CONFIDENTIAL
  * __________________
  *
@@ -13,7 +13,7 @@
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
- *******************************************************************/
+ ****************************************************************** */
 import { CompanyProfile } from '@dropins/storefront-company-management/containers/CompanyProfile.js';
 import { render as companyRenderer } from '@dropins/storefront-company-management/render.js';
 import { checkIsCompanyEnabled, getCompany } from '@dropins/storefront-company-management/api.js';

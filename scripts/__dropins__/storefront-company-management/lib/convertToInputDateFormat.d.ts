@@ -14,4 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-/* stylelint-disable no-empty-source */
+export declare const convertToInputDateFormat: (dateTimeString: string) => string;
+//# sourceMappingURL=convertToInputDateFormat.d.ts.map

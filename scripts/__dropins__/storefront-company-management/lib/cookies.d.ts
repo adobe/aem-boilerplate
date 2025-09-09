@@ -14,4 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-/* stylelint-disable no-empty-source */
+export declare function getCookie(cookieName: string): string | null;
+//# sourceMappingURL=cookies.d.ts.map

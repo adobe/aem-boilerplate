@@ -14,4 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-/* stylelint-disable no-empty-source */
+export declare const convertToBoolean: (element: string | number) => boolean;
+//# sourceMappingURL=convertToBoolean.d.ts.map

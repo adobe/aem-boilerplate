@@ -5,8 +5,10 @@ import {
   initialize,
   setEndpoint,
   setFetchGraphQlHeaders,
+  getFetchGraphQlHeader,
   fetchProductData,
 } from '@dropins/storefront-pdp/api.js';
+import { events } from '@dropins/tools/event-bus.js';
 import { initializeDropin } from './index.js';
 import {
   fetchPlaceholders,
@@ -80,17 +82,29 @@ await initializeDropin(async () => {
   // Preload PDP assets immediately when this module is imported
   preloadPDPAssets();
 
-  // Set Fetch Endpoint (Service)
-  setEndpoint(await commerceEndpointWithQueryParams());
-
   // Set Fetch Headers (Service)
-  setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('cs') }));
+  const customerGroupHeaderValue = getFetchGraphQlHeader('Magento-Customer-Group');
+  const customerGroupHeader = customerGroupHeaderValue ? {
+    'Magento-Customer-Group': customerGroupHeaderValue,
+  } : {};
+  setEndpoint(await commerceEndpointWithQueryParams(customerGroupHeader));
+  setFetchGraphQlHeaders((prev) => ({
+    ...prev,
+    ...getHeaders('cs'),
+    ...customerGroupHeader,
+  }));
 
   const sku = getProductSku();
   const optionsUIDs = getOptionsUIDsFromUrl();
 
+  const getProductData = async (skipTransform) => {
+    const data = await fetchProductData(sku, { optionsUIDs, skipTransform })
+      .then(preloadImageMiddleware);
+    return data;
+  };
+
   const [product, labels] = await Promise.all([
-    fetchProductData(sku, { optionsUIDs, skipTransform: true }).then(preloadImageMiddleware),
+    getProductData(true),
     fetchPlaceholders('placeholders/pdp.json'),
   ]);
 
@@ -109,6 +123,12 @@ await initializeDropin(async () => {
       initialData: { ...product },
     },
   };
+
+  events.on('companyContext/changed', async () => {
+    // Reload PDP when company context changes
+    const loadedProduct = await getProductData(false);
+    events.emit('pdp/data', loadedProduct);
+  });
 
   // Initialize Dropins
   return initializers.mountImmediately(initialize, {

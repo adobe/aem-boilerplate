@@ -14,12 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './initialize';
-export * from './fetch-graphql';
-export * from './fetchUserPermissions';
-export * from './checkIsCompanyEnabled';
-export * from './getCompany';
-export * from './updateCompany';
-export * from './getCountries';
-export * from './validateCompanyEmail';
+export { fetchUserPermissions } from './fetchUserPermissions';
 //# sourceMappingURL=index.d.ts.map

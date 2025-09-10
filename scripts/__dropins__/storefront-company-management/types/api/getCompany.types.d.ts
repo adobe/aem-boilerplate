@@ -36,7 +36,7 @@ export interface getCompanyResponse {
                 telephone?: string;
             };
             company_admin?: {
-                id: string;
+                id?: string;
                 firstname: string;
                 lastname: string;
                 email: string;

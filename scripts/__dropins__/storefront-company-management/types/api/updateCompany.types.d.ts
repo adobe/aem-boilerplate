@@ -37,7 +37,7 @@ export interface updateCompanyResponse {
                     telephone?: string;
                 };
                 company_admin?: {
-                    id: string;
+                    id?: string;
                     firstname: string;
                     lastname: string;
                     email: string;

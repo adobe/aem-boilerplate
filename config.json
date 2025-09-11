@@ -2,7 +2,7 @@
   "public": {
     "default": {
       "commerce-companies-enabled": true,
-      "commerce-core-endpoint": "https://na1-sandbox.api.commerce.adobe.com/LwndYQs37CvkUQk9WEmNkz/graphql",
+      "commerce-core-endpoint": "https://mage2.local/graphql",
       "commerce-endpoint": "https://mage2.local/cs-graphql",
       "headers": {
         "all": {

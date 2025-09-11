@@ -50,16 +50,34 @@ The block itself doesn't use localStorage, but the underlying CompanyProfile con
 
 ### Events
 #### Event Listeners
-No direct event listeners are implemented in this block.
+The block listens to company context change events:
+
+- **companyContext/changed**: Listens for company switching events (e.g., when user switches companies via Company Switcher)
+  - Event data: New company ID or null/undefined
+  - Behavior: Automatically refetches company data and resets UI state when company context changes
+  - Purpose: Ensures company profile displays correct data after company switches
 
 #### Event Emitters
-The block emits analytics events through the Adobe Client Data Layer (ACDL):
+The block emits multiple types of events:
 
+**Adobe Client Data Layer (ACDL) Events:**
 - **EDIT_COMPANY_EVENT** (`edit-company`): Emitted when a company profile is successfully updated
   - Event type: `company`
   - Event action: `edit`
   - Event data: Contains the updated company data and company ID
   - Purpose: Analytics tracking for company profile modifications
+
+**Event Bus Events:**
+- **company/updated**: Emitted when a company profile is successfully updated
+  - Event data: `{ company: updatedCompany }` - Contains the complete updated company data
+  - Purpose: Notifies other components that company data has been updated
+  - Usage: Other components can listen to this event to refresh their data or UI
+
+**Error Events:**
+- **error**: Emitted when network or other errors occur during company operations
+  - Event data: `{ source: 'company', type: 'network', error: errorObject }`
+  - Purpose: Global error handling and logging
+  - Behavior: Only emitted for non-abort errors (abort errors are silently handled)
 
 ## Behavior Patterns
 

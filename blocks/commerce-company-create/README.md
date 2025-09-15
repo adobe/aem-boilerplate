@@ -6,30 +6,28 @@ The Commerce Company Create block provides a company registration form for B2B c
 
 ## Integration
 
-### Block Configuration
+<!-- ### Block Configuration
 
-This block does not use `readBlockConfig()` - all configuration is handled through global commerce configuration and dropin initialization.
+No block configuration is read via `readBlockConfig()`. -->
 
-### URL Parameters
+<!-- ### URL Parameters
 
-- No URL query parameters are used by this block
+No URL parameters affect this block's behavior. -->
 
-### Local Storage
+<!-- ### Local Storage
 
-- No localStorage keys are directly used by this block (authentication state is managed by commerce framework)
+No localStorage keys are used by this block. -->
 
 ### Events
 
 #### Event Listeners
 
-- `events.on('b2b/config', callback)` - Listens for B2B configuration status updates from commerce-b2b.js
+- `events.on('b2b/config', callback)` - Listens for B2B configuration status updates from scripts/commerce-b2b.js
 - Authentication state changes are handled through the commerce framework
 
-#### Event Emitters
+<!-- #### Event Emitters
 
-- `events.emit('company/registration-started', data)` - Emitted when company registration process begins
-- `events.emit('company/registration-success', company)` - Emitted when company registration succeeds
-- `events.emit('company/registration-failed', errors)` - Emitted when registration fails with validation errors
+No events are emitted by this block. -->
 
 ## Behavior Patterns
 

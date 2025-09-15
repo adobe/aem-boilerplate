@@ -4,31 +4,29 @@
 
 The Commerce Company Structure block displays company organizational structure and management interface for B2B customers. It integrates with the Adobe Commerce Company Management dropin to show company hierarchy, manage company users, and provide administrative controls for company structure.
 
-## Integration
+<!-- ## Integration -->
 
-### Block Configuration
+<!-- ### Block Configuration
 
-This block does not use `readBlockConfig()` - all configuration is handled through global commerce configuration and dropin initialization.
+No block configuration is read via `readBlockConfig()`. -->
 
-### URL Parameters
+<!-- ### URL Parameters
 
-- No URL query parameters are used by this block
+No URL parameters affect this block's behavior. -->
 
-### Local Storage
+<!-- ### Local Storage
 
-- No localStorage keys are directly used by this block (authentication state is managed by commerce framework)
+No localStorage keys are used by this block. -->
 
-### Events
+<!-- ### Events -->
 
-#### Event Listeners
+<!-- #### Event Listeners
 
-- Authentication state changes are handled through the commerce framework
-- Company data updates are managed by the dropin
+No direct event listeners are implemented in this block. -->
 
-#### Event Emitters
+<!-- #### Event Emitters
 
-- `events.emit('company/structure-loaded', data)` - Emitted when company structure data is loaded
-- `events.emit('company/user-updated', user)` - Emitted when company user information is updated
+No events are emitted by this block. -->
 
 ## Behavior Patterns
 

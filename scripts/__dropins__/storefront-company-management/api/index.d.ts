@@ -16,6 +16,7 @@
  *******************************************************************/
 export * from './initialize';
 export * from './fetch-graphql';
+export * from './fetchUserPermissions';
 export * from './checkIsCompanyEnabled';
 export * from './getCompany';
 export * from './updateCompany';

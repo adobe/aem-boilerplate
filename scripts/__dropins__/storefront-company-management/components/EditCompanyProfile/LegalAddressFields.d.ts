@@ -5,11 +5,11 @@ interface LegalAddressFieldsProps {
     loadingCountries: boolean;
     value: {
         street: string;
-        street_2: string;
+        street2: string;
         city: string;
         region: string;
-        region_code: string;
-        country_code: string;
+        regionCode: string;
+        countryCode: string;
         postcode: string;
         telephone: string;
     };

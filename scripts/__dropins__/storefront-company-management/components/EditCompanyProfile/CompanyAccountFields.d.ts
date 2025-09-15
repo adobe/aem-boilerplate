@@ -5,9 +5,9 @@ interface CompanyAccountFieldsProps {
     value: {
         name: string;
         email: string;
-        legal_name: string;
-        vat_tax_id: string;
-        reseller_id: string;
+        legalName: string;
+        vatTaxId: string;
+        resellerId: string;
     };
     errors: Record<string, string>;
     touched: Record<string, boolean>;

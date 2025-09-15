@@ -13,7 +13,7 @@
  * Dissemination of this information or reproduction of this material
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
- **************************************************************************/
+ *******************************************************************/
 export interface ValidateCompanyEmailQuery {
     isCompanyEmailAvailable: {
         is_email_available: boolean;

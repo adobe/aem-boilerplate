@@ -29,6 +29,38 @@ declare const _default: {
       },
       "Image": {
         "label": "{product} Image {key} of {total}"
+      },
+      "GiftCardOptions": {
+        "ChooseAmount": {
+          "label": "Choose amount"
+        },
+        "OtherAmount": {
+          "label": "Other amount"
+        },
+        "RequiredFieldError": {
+          "label": "This field is required"
+        },
+        "NumberError": {
+          "label": "Please enter a valid number"
+        },
+        "MinError": {
+          "label": "Minimum value is {min}"
+        },
+        "MaxError": {
+          "label": "Maximum value is {max}"
+        },
+        "MinLengthError": {
+          "label": "Minimum length is {min_length} characters"
+        },
+        "MaxLengthError": {
+          "label": "Maximum length is {max_length} characters"
+        },
+        "EmailError": {
+          "label": "Please enter a valid email address"
+        },
+        "InvalidValueError": {
+          "label": "Please select one of the allowed values: {values}"
+        }
       }
     },
     "Swatches": {

@@ -1,7 +1,7 @@
-import { ComponentChildren, RefObject, VNode } from 'preact';
-import { StateUpdater } from 'preact/hooks';
 import { Lang } from '../i18n';
+import { ComponentChildren, RefObject, VNode } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
+import { StateUpdater } from 'preact/hooks';
 
 type MutateElement = (elem: HTMLElement) => void;
 interface State {
@@ -36,6 +36,7 @@ export type SlotMethod<P = any> = (callback: (next: unknown, state: State) => P)
 export declare function useSlot<K, V extends HTMLElement>(name: string, context?: Context<K>, callback?: SlotProps<K>, children?: ComponentChildren, render?: Function, contentTag?: keyof HTMLElementTagNameMap): [RefObject<V>, Record<string, any>];
 interface SlotPropsComponent<T> extends Omit<HTMLAttributes<HTMLElement>, 'slot'> {
     name: string;
+    lazy?: boolean;
     slot?: SlotProps<T>;
     context?: Context<T>;
     render?: (props: Record<string, any>) => VNode | VNode[];
@@ -43,7 +44,7 @@ interface SlotPropsComponent<T> extends Omit<HTMLAttributes<HTMLElement>, 'slot'
     contentTag?: keyof HTMLElementTagNameMap;
     children?: ComponentChildren;
 }
-export declare function Slot<T>({ name, context, slot, children, render, slotTag, contentTag, ...props }: Readonly<SlotPropsComponent<T>>): VNode<{
+export declare function Slot<T>({ name, lazy, context, slot, children, render, slotTag, contentTag, ...props }: Readonly<SlotPropsComponent<T>>): VNode<{
     ref: RefObject<HTMLElement>;
     'data-slot': string;
     [key: string]: any;

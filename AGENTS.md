@@ -167,8 +167,8 @@ With this information, you can construct URLs for the preview environment (same 
 2. AEM Code Sync automatically processes changes making them available on feature preview environment for that branch
 3. Open a pull request to merge changes to `main` – in the PR description, include a link to https://{branch}--{repo}--{owner}.aem.page/{path}` with a path to a file that illustrates the change you've made. This is the same path you have been testing with locally. WITHOUT THIS YOUR PR WILL BE REJECTED
 4. use `gh checks` to verify the status of code synchronization, linting, and performance tests
-4. A human reviewer will review the code, inspect the provided URL and merge the PR
-5. AEM Code Sync updates the main branch for production
+5. A human reviewer will review the code, inspect the provided URL and merge the PR
+6. AEM Code Sync updates the main branch for production
 
 ## Common Tasks
 

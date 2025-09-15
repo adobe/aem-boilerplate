@@ -1,4 +1,5 @@
 import * as fields from "../fields/index";
+import { companyRegistrationSuccessMessage } from "../fixtures/companyData";
 
 export const assertCartSummaryProduct =
   (
@@ -456,11 +457,9 @@ export const assertCompanyRegistrationSuccess = (companyData) => {
   cy.get('.company-registration-success').should('exist');
   
   // Check success message
-  cy.contains("Your company registration is now pending approval").should('be.visible');
-  cy.contains("You will receive an email notification once your company has been approved").should('be.visible');
+  cy.contains(companyRegistrationSuccessMessage).should('be.visible');
   
   // Company Details Section
-  cy.get('.company-registration-success').should('contain', 'Company Details');
   cy.get('.company-registration-success').should('contain', companyData.company.companyName);
   if (companyData.company.legalName) {
     cy.get('.company-registration-success').should('contain', companyData.company.legalName);

@@ -12,7 +12,7 @@ import {
 } from "../../actions";
 import {
   companyRegistrationData,
-  companyRegistrationSuccessMessages
+  companyRegistrationSuccessMessage
 } from "../../fixtures/companyData";
 
 describe("USF-2528: Company Registration Tests", () => {
@@ -136,8 +136,7 @@ const testCompanyRegistrationFlow = () => {
 
   cy.wait(3000);
 
-  cy.contains(companyRegistrationSuccessMessages.message).should('be.visible');
-  cy.contains(companyRegistrationSuccessMessages.message2).should('be.visible');
+  cy.contains(companyRegistrationSuccessMessage).should('be.visible');
 
   assertCompanyRegistrationSuccess(companyRegistrationData);
 };

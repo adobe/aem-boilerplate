@@ -25,7 +25,4 @@ export const companyRegistrationData = {
   }
 };
 
-export const companyRegistrationSuccessMessages = {
-  message: "Your company registration is now pending approval",
-  message2: "You will receive an email notification once your company has been approved"
-};
+export const companyRegistrationSuccessMessage = "Thank you! We're reviewing your request and will contact you soon.";

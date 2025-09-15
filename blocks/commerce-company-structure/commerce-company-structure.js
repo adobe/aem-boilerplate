@@ -1,6 +1,11 @@
 import { render as provider } from '@dropins/storefront-company-management/render.js';
 import { CompanyStructure } from '@dropins/storefront-company-management/containers/CompanyStructure.js';
-import { checkIsAuthenticated, rootLink, CUSTOMER_LOGIN_PATH, CUSTOMER_ACCOUNT_PATH } from '../../scripts/commerce.js';
+import {
+  checkIsAuthenticated,
+  rootLink,
+  CUSTOMER_LOGIN_PATH,
+  CUSTOMER_ACCOUNT_PATH,
+} from '../../scripts/commerce.js';
 import '../../scripts/initializers/company.js';
 
 export default async function decorate(block) {

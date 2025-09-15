@@ -10,7 +10,6 @@ import { events } from '@dropins/tools/event-bus.js';
  */
 export const COMPANY_CREATE_PATH = '/customer/company/create';
 
-
 /**
  * Check frontend configuration (commerce-companies-enabled) for B2B override
  * @returns {boolean}
@@ -30,7 +29,6 @@ export function checkB2BFrontendConfig() {
     return true; // Default to enabled on error
   }
 }
-
 
 /**
  * Check if company registration navigation link should be shown
@@ -163,11 +161,11 @@ export async function b2bNavigation(navElement) {
     } else {
       console.warn('B2B navigation logic failed:', error.message);
     }
-    
+
     // Hide all B2B links on error
     const allLinks = navElement.querySelectorAll('a[href]');
     const b2bPaths = [COMPANY_CREATE_PATH];
-    
+
     Array.from(allLinks).forEach((link) => {
       const href = link.getAttribute('href');
       if (b2bPaths.some((path) => href.includes(path))) {
@@ -178,7 +176,7 @@ export async function b2bNavigation(navElement) {
         }
       }
     });
-    
+
     return null;
   }
 }

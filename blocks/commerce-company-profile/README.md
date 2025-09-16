@@ -40,26 +40,23 @@ const config = readBlockConfig(block);
 // }
 ```
 
-### URL Parameters
-No URL parameters are used by this block. The block's behavior is determined solely by authentication status, company functionality availability, and user permissions.
+<!-- ### URL Parameters
 
-### Local Storage
-The block itself doesn't use localStorage, but the underlying CompanyProfile container uses sessionStorage for caching:
+No URL parameters affect this block's behavior. -->
 
-- **_company_countries**: Caches country data in sessionStorage to avoid repeated API calls for country information used in company profile forms
+<!-- ### Local Storage
 
-### Events
+No localStorage keys are used by this block. -->
+
+<!-- ### Events
+
 #### Event Listeners
-No direct event listeners are implemented in this block.
+
+No event listeners are implemented in this block.
 
 #### Event Emitters
-The block emits analytics events through the Adobe Client Data Layer (ACDL):
 
-- **EDIT_COMPANY_EVENT** (`edit-company`): Emitted when a company profile is successfully updated
-  - Event type: `company`
-  - Event action: `edit`
-  - Event data: Contains the updated company data and company ID
-  - Purpose: Analytics tracking for company profile modifications
+No events are emitted by this block. -->
 
 ## Behavior Patterns
 

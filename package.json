@@ -11,7 +11,8 @@
     "start": "aem up",
     "install:dropins": "node build.mjs && node postinstall.js",
     "postinstall": "npm run install:dropins",
-    "postupdate": "npm run install:dropins"
+    "postupdate": "npm run install:dropins",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.31.0",
+    "husky": "^9.1.7",
     "stylelint": "16.20.0",
     "stylelint-config-standard": "38.0.0"
   },

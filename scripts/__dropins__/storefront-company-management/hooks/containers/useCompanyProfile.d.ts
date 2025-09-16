@@ -10,7 +10,6 @@ export interface UseCompanyProfileProps {
 export declare const useCompanyProfile: ({ handleSetInLineAlert }: UseCompanyProfileProps) => {
     company: CompanyModel | null;
     countries: Country[];
-    createdAt: string;
     loading: boolean;
     submitLoading: boolean;
     showEditForm: boolean;

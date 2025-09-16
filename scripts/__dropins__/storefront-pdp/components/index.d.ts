@@ -22,4 +22,5 @@ export * from './Swatches';
 export * from './Zoom';
 export * from './Header';
 export * from './Price';
+export * from './GiftCardOptions';
 //# sourceMappingURL=index.d.ts.map

@@ -13,14 +13,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  */
-export * from './ProductDetails';
-export * from './ProductPrice';
-export * from './ProductOptions';
-export * from './ProductQuantity';
-export * from './ProductShortDescription';
-export * from './ProductDescription';
-export * from './ProductAttributes';
 export * from './ProductGiftCardOptions';
-export * from './ProductGallery';
-export * from './ProductHeader';
+export { ProductGiftCardOptions as default } from './ProductGiftCardOptions';
 //# sourceMappingURL=index.d.ts.map

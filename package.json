@@ -42,12 +42,12 @@
     "@dropins/storefront-checkout": "~2.0.1",
     "@dropins/storefront-company-switcher": "~1.0.0",
     "@dropins/storefront-order": "~1.3.0",
-    "@dropins/storefront-payment-services": "~1.0.1",
-    "@dropins/storefront-pdp": "1.4.0-alpha001",
+    "@dropins/storefront-payment-services": "~1.0.2",
+    "@dropins/storefront-pdp": "~1.3.4",
     "@dropins/storefront-personalization": "~1.0.1",
     "@dropins/storefront-product-discovery": "2.1.0-alpha001",
-    "@dropins/storefront-recommendations": "~1.1.0",
-    "@dropins/storefront-wishlist": "~2.0.0",
-    "@dropins/tools": "1.6.0-alpha999"
+    "@dropins/storefront-recommendations": "1.1.1-beta1",
+    "@dropins/storefront-wishlist": "~2.0.1-beta1",
+    "@dropins/tools": "1.5.0-beta3"
   }
 }

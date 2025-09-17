@@ -349,6 +349,9 @@ export default async function decorate(block) {
           [PaymentMethodCode.VAULT]: {
             enabled: false,
           },
+          [PaymentMethodCode.FASTLANE]: {
+            enabled: false,
+          },
         },
       },
     })($paymentMethods),

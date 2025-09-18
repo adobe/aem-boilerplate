@@ -245,3 +245,25 @@ export const inputSearchString = (searchString) => {
     .should("be.visible")
     .type(searchString);
 };
+
+export const editProductOptions = (selectedOption, updateProductOptionTo) => {
+  cy.contains('Edit').click();
+  cy.get('.modal-content').should('be.visible');
+  cy.get('select').eq(1)
+    .find('option:selected')
+    .should('have.text', selectedOption);
+  cy.get(".dropin-incrementer__increase-button").eq(1).click();
+  cy.get(".dropin-incrementer__input").eq(1).should("have.value", "2");
+  cy.get('select').eq(1).select(updateProductOptionTo);
+  cy.get('select').eq(1)
+    .find('option:selected')
+    .should('have.text', updateProductOptionTo);
+  cy.contains('Update in Cart').should('be.visible').click();
+}
+
+export const typeInFieldBasedOnText = (textToSearch, enterInput) => {
+  cy.contains(textToSearch)
+    .parent()
+    .find('input')
+    .type(enterInput);
+}

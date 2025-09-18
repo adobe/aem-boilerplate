@@ -48,7 +48,7 @@ export const checkMoneyOrder = {
 export const products = {
   configurable: {
     urlPath: "/products/cypress-configurable-product-latest/cypress456",
-    urlPathWithOptions:  Cypress.env('productUrlWithOptions'),
+    urlPathWithOptions: Cypress.env('productUrlWithOptions'),
   },
   virtual: {
     urlPath: "/products/virtual-product/virtual123",
@@ -58,6 +58,10 @@ export const products = {
     urlPath: "/products/youth-tee/ADB150",
     sku: 'ADB150',
   },
+  virtualGiftCard: {
+    urlPath: "/products/gift-card-virtual/gift-card-virtual",
+    sku: 'gift-card-virtual',
+  }
 };
 
 // Export company data fixtures

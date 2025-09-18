@@ -34,10 +34,8 @@ No events are emitted by this block. -->
 
 - **Unauthenticated Users**: Block redirects to login page
 - **Authenticated Non-Company Users**: Block shows empty state with company registration option
-- **Authenticated Company Users**: Block displays company structure interface
-- **Company Admins**: Block provides full administrative controls
-- **Company Members**: Block shows read-only structure view
-- **Registration Disabled**: Block redirects to login when backend doesn't allow company registration
+- **Authenticated Company Users**: Not yet implemented - currently redirects company users to account
+- **Registration Disabled**: Block redirects authenticated users to account when backend doesn't allow company registration
 
 ### User Interaction Flows
 
@@ -52,17 +50,13 @@ No events are emitted by this block. -->
    - Provide link to company registration form
    - Explain benefits of company membership
 
-3. **Administrative Flow** (Company users):
-   - Display company organizational chart
-   - Show user management interface
-   - Provide role and permission controls
+3. **Company Structure Flow** (Company users):
+   - Not yet implemented - currently redirects company users to account
 
 ### Error Handling
 
-- **Authentication Required**: Redirects to login page for unauthenticated users
-- **API Errors**: Graceful fallback to empty state with registration option
-- **Permission Errors**: Show appropriate message based on user role
-- **Network Errors**: Display retry option with error messaging
+- **Authentication & API Errors**: Redirects to login page for unauthenticated users or API failures
+- **Registration Disabled**: Redirects authenticated users to account when backend disallows company registration
 
 ## Technical Details
 
@@ -86,5 +80,5 @@ No events are emitted by this block. -->
 
 - **Loading State**: Shows while checking user authentication and company status
 - **Empty State**: Displayed for non-company users with registration CTA
-- **Structure State**: Shows company organizational structure for company members
 - **Redirect States**: Handles navigation to login or account pages as needed
+- **Structure State**: Not yet implemented - currently redirects company users to account

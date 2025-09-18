@@ -7,10 +7,29 @@ import {
   CUSTOMER_ACCOUNT_PATH,
   authPrivacyPolicyConsentSlot,
 } from '../../scripts/commerce.js';
-import {
-  checkB2BFrontendConfig,
-} from '../../scripts/commerce-b2b.js';
+import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import '../../scripts/initializers/company.js';
+
+/**
+ * Check frontend configuration (commerce-companies-enabled) for B2B override
+ * @returns {boolean}
+ *   - true: Frontend enables B2B (explicit true OR no config)
+ *   - false: Frontend explicitly disables B2B
+ */
+export function checkB2BFrontendConfig() {
+  try {
+    const frontendOverride = getConfigValue('commerce-companies-enabled');
+
+    if (frontendOverride === false) {
+      console.log('B2B company is disabled in frontend configuration');
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.warn('Could not check frontend B2B override:', error);
+    return true; // Default to enabled on error
+  }
+}
 
 export default async function decorate(block) {
   block.classList.add('commerce-company-create-container');

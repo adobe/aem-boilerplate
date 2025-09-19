@@ -333,13 +333,7 @@ export const openAccountSection = () => {
 
 export const navigateToCompanyRegistration = () => {
   openAccountSection();
-  
-  // Look for company registration link and click it
-  cy.get('body').then(($body) => {
-    if ($body.find(fields.navCompanyRegistrationLinkMain).length > 0) {
-      cy.get(fields.navCompanyRegistrationLinkMain).click();
-    }
-  });
+  cy.get(fields.navAccountSubmenu).find(fields.navCompanyRegistrationLinkMain).click();
 };
 
 export const editProductOptions = (selectedOption, updateProductOptionTo) => {

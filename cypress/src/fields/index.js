@@ -181,7 +181,7 @@ export const navLogoutButton = 'button:contains("Logout")';
 // Main Navigation Fields
 export const navAccountSection = 'li.nav-drop:contains("Account")';
 export const navAccountSubmenu = 'li.nav-drop:contains("Account") .submenu-wrapper';
-export const navCompanyRegistrationLinkMain = 'li.company-registration-enabled a[href*="' + COMPANY_CREATE_PATH + '"]';
+export const navCompanyRegistrationLinkMain = `a[href*="${COMPANY_CREATE_PATH}"]`;
  
 // Company Registration Form Fields
 export const companyFormCompanyName = 'input[name="companyName"]';

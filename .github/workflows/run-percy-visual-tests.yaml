@@ -1,31 +1,24 @@
 name: Cypress Percy Visual Tests
 
 on:
-  # Manual trigger with branch selection
-  workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Branch to run tests on'
-        required: true
-        default: 'integration'
-        type: string
-
-  # Automatic trigger every evening at 6 PM CST (midnight UTC)
-  schedule:
-    - cron: '0 0 * * *'  # 6 PM CST = midnight UTC (next day)
+  # Trigger when PR is merged to integration branch
+  pull_request:
+    types: [closed]
+    branches:
+      - integration
 
 jobs:
   cypress-percy-visual-tests-run:
     # If you want this job to run on your fork, remove the below "if" line.
     # You will need to "fix" the tests as they are specific to Adobe Commmerce's
     # demo backend.
-    if: github.repository == 'hlxsites/aem-boilerplate-commerce'
+    if: github.repository == 'hlxsites/aem-boilerplate-commerce' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          # Use input branch if manual trigger, otherwise use the triggered branch
-          ref: ${{ github.event.inputs.branch || github.ref }}
+          # Checkout the integration branch after PR merge
+          ref: integration
       - name: Install root dependencies
         run: npm ci
       - name: Install adobe aem cli dependencies
@@ -40,7 +33,7 @@ jobs:
           command: npm run cypress:percy
         env:
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
-          PERCY_BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
+          PERCY_BRANCH: integration
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

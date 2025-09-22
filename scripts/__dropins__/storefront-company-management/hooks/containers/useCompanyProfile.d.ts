@@ -6,8 +6,11 @@ export interface UseCompanyProfileProps {
         type: 'success' | 'error';
         text: string;
     }) => void;
+    editFormRef?: {
+        current: HTMLDivElement | null;
+    };
 }
-export declare const useCompanyProfile: ({ handleSetInLineAlert }: UseCompanyProfileProps) => {
+export declare const useCompanyProfile: ({ handleSetInLineAlert, editFormRef }: UseCompanyProfileProps) => {
     company: CompanyModel | null;
     countries: Country[];
     loading: boolean;

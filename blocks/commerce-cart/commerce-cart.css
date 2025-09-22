@@ -22,7 +22,7 @@
   display: none;
 }
 
-.cart__gift-options{
+.cart__gift-options {
   margin-top: var(--spacing-medium);
 }
 
@@ -59,7 +59,21 @@
 }
 
 .dropin-cart-item__quantity {
-    width: fit-content;
+  width: fit-content;
+}
+
+/* Request Quote */
+.cart__request-quote-button {
+  width: 100%;
+}
+
+#cart-request-quote-modal-dialog > .close-button {
+  top: 0 !important;
+  right: 0 !important;
+}
+
+.cart__request-quote-content {
+  padding-top: var(--spacing-medium);
 }
 
 @media (min-width: 768px) {

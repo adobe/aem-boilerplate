@@ -1,0 +1,2 @@
+export declare const CUSTOMER_FRAGMENT = "\n    fragment CUSTOMER_FRAGMENT on Customer {\n        role {\n            permissions {\n                text\n                children {\n                    text\n                    children {\n                        text\n                        children {\n                            text\n                        }\n                    }\n                }\n            }\n        }\n    }\n";
+//# sourceMappingURL=CustomerFragment.d.ts.map

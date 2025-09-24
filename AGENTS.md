@@ -18,7 +18,7 @@ The repository provides the basic structure, blocks, and configuration needed to
 ## Setup Commands
 
 - Install dependencies: `npm install`
-- Start local development: `npx -y @adobe/aem-cli up --no-open` (run in background, if possible)
+- Start local development: `npx -y @adobe/aem-cli up --no-open --forward-browser-logs` (run in background, if possible)
   - Install the AEM CLI globally by running `npm install -g @adobe/aem-cli` then `aem up` is equivalent to the command above
 - Run linting: `npm run lint`
 - Fix linting issues: `npm run lint:fix`

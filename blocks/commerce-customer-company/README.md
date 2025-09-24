@@ -18,7 +18,7 @@
 
 ## Overview
 
-The Commerce Customer Company block displays company-related information for B2B customers on the Account Information page. It shows the customer's company name, job title, and work phone number in a clean, card-based layout.
+The Commerce Customer Company block displays company-related information for B2B customers on the Account Information page. It shows the customer's company name, job title, work phone number, and user role in a clean, card-based layout.
 
 ## Integration
 
@@ -34,11 +34,12 @@ The block automatically handles authentication and company feature checks. No ad
 - **Company Name**: The name of the customer's company
 - **Job Title**: The customer's job title within the company (if available)
 - **Work Phone Number**: The customer's work phone number (if available)
+- **User Role**: The customer's role within the company (e.g., "Company Administrator", "Regular User")
 
 ### Behavior
 - Block is hidden if user is not authenticated
 - Block is hidden if no company information is available
-- Only displays fields that have values (job title and work phone are optional)
+- Only displays fields that have values (job title, work phone, and user role are optional)
 
 ## Usage
 

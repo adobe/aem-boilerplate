@@ -22,4 +22,16 @@ export * from './getCompany';
 export * from './updateCompany';
 export * from './getCountries';
 export * from './validateCompanyEmail';
+export * from './getCompanyStructure/getCompanyStructure';
+export * from './updateCompanyStructure/updateCompanyStructure';
+export * from './createCompanyTeam/createCompanyTeam';
+export * from './updateCompanyTeam/updateCompanyTeam';
+export * from './createCompanyUser/createCompanyUser';
+export * from './updateCompanyUser/updateCompanyUser';
+export * from './deleteCompanyTeam/deleteCompanyTeam';
+export * from './deleteCompanyUser/deleteCompanyUser';
+export * from './getCompanyTeam/getCompanyTeam';
+export * from './getCompanyUser/getCompanyUser';
+export * from './getCompanyRoles/getCompanyRoles';
+export * from './isCompanyUserEmailAvailable/isCompanyUserEmailAvailable';
 //# sourceMappingURL=index.d.ts.map

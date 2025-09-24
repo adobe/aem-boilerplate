@@ -20,7 +20,8 @@ declare global {
     }
 }
 declare enum EventsList {
-    EDIT_COMPANY_EVENT = "edit-company"
+    EDIT_COMPANY_EVENT = "edit-company",
+    EDIT_COMPANY_STRUCTURE_EVENT = "edit-company-structure"
 }
 /**
  * Sets a context in the Adobe Client Data Layer (ACDL)

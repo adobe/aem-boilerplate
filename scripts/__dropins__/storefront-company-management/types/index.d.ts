@@ -15,9 +15,26 @@
  * from Adobe.
  *******************************************************************/
 export * from './companyProfile.types';
+export * from './companyStructure.types';
+export * from './companyForm.types';
+export * from './companyPermission.types';
+export * from './hook.types';
+export * from './events';
 export * from './api/checkIsCompanyEnabled.types';
+export * from './api/createCompanyTeam.types';
+export * from './api/createCompanyUser.types';
+export * from './api/deleteCompanyTeam.types';
+export * from './api/deleteCompanyUser.types';
 export * from './api/getCompany.types';
-export * from './api/updateCompany.types';
+export * from './api/getCompanyStructure.types';
+export * from './api/getCompanyTeam.types';
+export * from './api/getCompanyUser.types';
 export * from './api/getCountries.types';
+export * from './api/initialize.types';
+export * from './api/isCompanyUserEmailAvailable.types';
+export * from './api/updateCompany.types';
+export * from './api/updateCompanyStructure.types';
+export * from './api/updateCompanyTeam.types';
+export * from './api/updateCompanyUser.types';
 export * from './api/validateCompanyEmail.types';
 //# sourceMappingURL=index.d.ts.map

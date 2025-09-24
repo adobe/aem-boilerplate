@@ -14,8 +14,9 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './company';
-export * from './company-address';
-export * from './country';
-export * from './customer-company-info';
-//# sourceMappingURL=index.d.ts.map
+export interface CustomerCompanyInfo {
+    companyName: string;
+    jobTitle?: string;
+    workPhoneNumber?: string;
+}
+//# sourceMappingURL=customer-company-info.d.ts.map

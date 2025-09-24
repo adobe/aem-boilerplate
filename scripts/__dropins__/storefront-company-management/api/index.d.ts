@@ -22,4 +22,5 @@ export * from './getCompany';
 export * from './updateCompany';
 export * from './getCountries';
 export * from './validateCompanyEmail';
+export * from './getCustomerCompany';
 //# sourceMappingURL=index.d.ts.map

@@ -16,4 +16,5 @@
  *******************************************************************/
 export * from './transform-company';
 export * from './transform-countries';
+export * from './transform-customer-company-info';
 //# sourceMappingURL=index.d.ts.map

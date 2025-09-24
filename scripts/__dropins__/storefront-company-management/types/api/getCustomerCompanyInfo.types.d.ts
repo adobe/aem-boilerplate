@@ -20,6 +20,10 @@ export interface GetCustomerCompanyInfoResponse {
             id: string;
             job_title?: string;
             telephone?: string;
+            role?: {
+                id: string;
+                name: string;
+            };
         };
         company?: {
             id: string;

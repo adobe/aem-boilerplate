@@ -18,7 +18,8 @@ declare const _default: {
         "region": "Region",
         "postalCode": "Postal Code",
         "jobTitle": "Job Title",
-        "workPhoneNumber": "Work Phone Number"
+        "workPhoneNumber": "Work Phone Number",
+        "userRole": "User Role"
       },
       "buttons": {
         "edit": "Edit",

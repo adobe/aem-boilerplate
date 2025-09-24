@@ -33,7 +33,11 @@ declare const _default: {
         "emailRequired": "Email is required",
         "emailNotAvailable": "This email is already used by another company",
         "phoneInvalid": "Please enter a valid phone number",
-        "postalCodeInvalid": "Please enter a valid postal code"
+        "postalCodeInvalid": "Please enter a valid postal code",
+        "companyNameLengthError": "Company name must not exceed 40 characters",
+        "legalNameLengthError": "Legal name must not exceed 80 characters",
+        "vatTaxIdLengthError": "VAT/Tax ID must not exceed 40 characters",
+        "resellerIdLengthError": "Reseller ID must not exceed 40 characters"
       },
       "messages": {
         "loading": "Loading...",

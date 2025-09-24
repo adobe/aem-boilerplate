@@ -16,7 +16,7 @@ interface LegalAddressFieldsProps {
     errors: Record<string, string>;
     touched: Record<string, boolean>;
     onChange: (field: string) => (value: string) => void;
-    onBlur: (field: string) => void;
+    onBlur: (field: string, value?: string) => void;
     countryOptions: {
         text: string;
         value: string;

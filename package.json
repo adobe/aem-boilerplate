@@ -43,7 +43,7 @@
     "@dropins/storefront-auth": "~2.1.0",
     "@dropins/storefront-cart": "1.5.1-beta2",
     "@dropins/storefront-checkout": "~2.0.1",
-    "@dropins/storefront-company-management": "^1.0.0-beta5",
+    "@dropins/storefront-company-management": "^1.0.0-beta6",
     "@dropins/storefront-company-switcher": "~1.0.0",
     "@dropins/storefront-order": "~1.3.0",
     "@dropins/storefront-payment-services": "~1.0.2",

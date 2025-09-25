@@ -1,5 +1,6 @@
 import { render as provider } from '@dropins/storefront-company-management/render.js';
 import { CompanyRegistration } from '@dropins/storefront-company-management/containers/CompanyRegistration.js';
+import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import {
   checkIsAuthenticated,
   rootLink,
@@ -7,7 +8,6 @@ import {
   CUSTOMER_ACCOUNT_PATH,
   authPrivacyPolicyConsentSlot,
 } from '../../scripts/commerce.js';
-import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import '../../scripts/initializers/company.js';
 
 /**
@@ -21,6 +21,7 @@ export function checkB2BFrontendConfig() {
     const frontendOverride = getConfigValue('commerce-companies-enabled');
 
     if (frontendOverride === false) {
+      // eslint-disable-next-line no-console
       console.log('B2B company is disabled in frontend configuration');
       return false;
     }

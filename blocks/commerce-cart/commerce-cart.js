@@ -20,6 +20,8 @@ import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js
 import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
 import { WishlistAlert } from '@dropins/storefront-wishlist/containers/WishlistAlert.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
+import { render as quoteManagementRender } from '@dropins/storefront-quote-management/render.js';
+import { RequestNegotiableQuoteForm } from '@dropins/storefront-quote-management/containers/RequestNegotiableQuoteForm.js';
 
 // API
 import { publishShoppingCartViewEvent } from '@dropins/storefront-cart/api.js';
@@ -31,6 +33,7 @@ import createModal from '../modal/modal.js';
 // Initializers
 import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
+import '../../scripts/initializers/quote-management.js';
 
 import { readBlockConfig } from '../../scripts/aem.js';
 import { fetchPlaceholders, rootLink, getProductLink } from '../../scripts/commerce.js';
@@ -167,6 +170,55 @@ export default async function decorate(block) {
     }
   }
 
+  // Handle Request Quote Button Click
+  async function handleRequestQuoteButtonClick(cartId) {
+    if (!cartId) {
+      return;
+    }
+
+    const content = document.createElement('div');
+    content.classList.add('cart__request-quote-content');
+
+    quoteManagementRender.render(RequestNegotiableQuoteForm, {
+      cartId,
+    })(content);
+
+    currentModal = await createModal([content]);
+    const modalDialog = currentModal.block.querySelector('dialog');
+    modalDialog.classList.add('cart__request-quote-modal-dialog');
+    modalDialog.id = 'cart-request-quote-modal-dialog';
+    currentModal.showModal();
+  }
+
+  // Render (or re-render) request quote button into an element
+  const renderRequestQuoteButton = (element) => {
+    const { dataset: { cartId, canRequestQuote } } = element;
+
+    if (!canRequestQuote) {
+      element.setAttribute('hidden', '');
+      return;
+    }
+
+    element.removeAttribute('hidden');
+
+    UI.render(Button, {
+      children: placeholders?.Global?.CartRequestQuote || 'Request a Quote',
+      variant: 'secondary',
+      size: 'medium',
+      onClick: () => {
+        handleRequestQuoteButtonClick(cartId);
+      },
+      disabled: !cartId,
+      className: 'cart__request-quote-button',
+    })(element);
+  };
+
+  // Request Quote Button container
+  const requestQuoteButtonContainer = document.createElement('div');
+  requestQuoteButtonContainer.setAttribute('data-cart-id', _cart?.id);
+  requestQuoteButtonContainer.setAttribute('hidden', '');
+  renderRequestQuoteButton(requestQuoteButtonContainer);
+
   // Render Containers
   const createProductLink = (product) => getProductLink(product.url.urlKey, product.topLevelSku);
   await Promise.all([
@@ -269,6 +321,9 @@ export default async function decorate(block) {
           provider.render(Coupons)(coupons);
 
           ctx.appendChild(coupons);
+
+          // Prepend request quote button
+          ctx.prependSibling(requestQuoteButtonContainer);
         },
         GiftCards: (ctx) => {
           const giftCards = document.createElement('div');
@@ -295,6 +350,9 @@ export default async function decorate(block) {
   events.on(
     'cart/data',
     (cartData) => {
+      requestQuoteButtonContainer.dataset.cartId = cartData?.id;
+      renderRequestQuoteButton(requestQuoteButtonContainer);
+
       toggleEmptyCart(isCartEmpty(cartData));
 
       const isEmpty = !cartData || cartData.totalQuantity < 1;
@@ -308,6 +366,27 @@ export default async function decorate(block) {
     },
     { eager: true },
   );
+
+  // Listen for quote management permissions event to show/hide request quote button
+  events.on('quote-management/permissions', (permissions) => {
+    if (permissions?.requestQuote) {
+      requestQuoteButtonContainer.dataset.canRequestQuote = true;
+    } else {
+      requestQuoteButtonContainer.removeAttribute('data-can-request-quote');
+    }
+    renderRequestQuoteButton(requestQuoteButtonContainer);
+  });
+
+  // Refresh cart and close modal when quote is requested and successfully created
+  events.on('quote-management/negotiable-quote-requested', () => {
+    Cart.refreshCart();
+
+    // Close modal after 3 seconds
+    setTimeout(() => {
+      currentModal?.removeModal();
+      currentModal = null;
+    }, 3000);
+  });
 
   events.on('wishlist/alert', ({ action, item }) => {
     wishlistRender.render(WishlistAlert, {

@@ -14,7 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './CompanyProfile';
-export * from './CompanyStructure';
-export * from './CompanyRegistration';
-//# sourceMappingURL=index.d.ts.map
+export declare const companyEnabled: () => Promise<boolean>;
+//# sourceMappingURL=companyEnabled.d.ts.map

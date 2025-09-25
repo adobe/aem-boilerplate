@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './checkIsCompanyEnabled';
-//# sourceMappingURL=index.d.ts.map
+export declare const CREATE_COMPANY_MUTATION = "\n  mutation CreateCompany($input: CompanyCreateInput!) {\n    createCompany(input: $input) {\n      company {\n        id\n        name\n        email\n        legal_name\n        vat_tax_id\n        reseller_id\n        legal_address {\n          street\n          city\n          region {\n            region_code\n            region\n            region_id\n          }\n          postcode\n          country_code\n          telephone\n        }\n        company_admin {\n          id\n          firstname\n          lastname\n          email\n          job_title\n          telephone\n        }\n      }\n    }\n  }\n";
+//# sourceMappingURL=createCompany.graphql.d.ts.map

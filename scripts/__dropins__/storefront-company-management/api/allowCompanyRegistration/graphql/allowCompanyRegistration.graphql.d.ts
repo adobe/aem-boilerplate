@@ -14,8 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export interface CheckIsCompanyEnabledResponse {
-    companyEnabled: boolean;
-    error?: string;
-}
-//# sourceMappingURL=checkIsCompanyEnabled.types.d.ts.map
+export declare const GET_ALLOW_COMPANY_REGISTRATION = "\n  query GET_ALLOW_COMPANY_REGISTRATION {\n    storeConfig {\n      allow_company_registration\n    }\n  }\n";
+//# sourceMappingURL=allowCompanyRegistration.graphql.d.ts.map

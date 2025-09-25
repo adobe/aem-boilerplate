@@ -14,7 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './CompanyProfile';
-export * from './CompanyStructure';
-export * from './CompanyRegistration';
+export { getStoreConfig, STORE_CONFIG_DEFAULTS, DEFAULT_COUNTRY } from './getStoreConfig';
 //# sourceMappingURL=index.d.ts.map

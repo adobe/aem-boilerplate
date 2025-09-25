@@ -17,9 +17,14 @@
 export * from './initialize';
 export * from './fetch-graphql';
 export * from './fetchUserPermissions';
-export * from './checkIsCompanyEnabled';
 export * from './getCompany';
 export * from './updateCompany';
 export * from './getCountries';
+export * from './getStoreConfig';
 export * from './validateCompanyEmail';
+export * from './companyEnabled';
+export * from './allowCompanyRegistration';
+export * from './createCompany';
+export * from './isCompanyUser';
+export * from './isCompanyAdmin';
 //# sourceMappingURL=index.d.ts.map

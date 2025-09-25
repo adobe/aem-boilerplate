@@ -14,7 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './CompanyProfile';
-export * from './CompanyStructure';
-export * from './CompanyRegistration';
-//# sourceMappingURL=index.d.ts.map
+export declare const GET_CUSTOMER_COMPANIES_WITH_ROLES = "\n  query GET_CUSTOMER_COMPANIES_WITH_ROLES {\n    customer {\n      companies(input: {}) {\n        items {\n          id\n          name\n        }\n      }\n      role {\n        id\n        name\n      }\n    }\n  }\n";
+//# sourceMappingURL=isCompanyAdmin.graphql.d.ts.map

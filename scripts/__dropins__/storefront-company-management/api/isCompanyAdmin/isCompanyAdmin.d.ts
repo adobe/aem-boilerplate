@@ -14,7 +14,9 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './CompanyProfile';
-export * from './CompanyStructure';
-export * from './CompanyRegistration';
-//# sourceMappingURL=index.d.ts.map
+/**
+ * Check if the current authenticated customer is a company administrator in any company
+ * @returns Promise<boolean> - true if customer is a company admin in at least one company, false otherwise
+ */
+export declare const isCompanyAdmin: () => Promise<boolean>;
+//# sourceMappingURL=isCompanyAdmin.d.ts.map

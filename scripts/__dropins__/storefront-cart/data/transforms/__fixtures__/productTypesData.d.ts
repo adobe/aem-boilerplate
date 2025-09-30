@@ -654,6 +654,178 @@ declare const configurableCustomizable: {
         };
     };
 };
+declare const configurableWithPriceTiers: {
+    __typename: string;
+    uid: string;
+    quantity: number;
+    is_available: boolean;
+    product: {
+        sku: string;
+        name: string;
+        url_key: string;
+        canonical_url: string;
+        categories: {
+            url_key: string;
+            name: string;
+        }[];
+        thumbnail: {
+            url: string;
+            label: string;
+        };
+        stock_status: string;
+        only_x_left_in_stock: null;
+    };
+    configured_variant: {
+        sku: string;
+        stock_status: string;
+        only_x_left_in_stock: null;
+        price_range: {
+            maximum_price: {
+                regular_price: {
+                    value: number;
+                    currency: string;
+                };
+                final_price: {
+                    value: number;
+                    currency: string;
+                };
+                discount: {
+                    amount_off: number;
+                    percent_off: number;
+                };
+            };
+        };
+        price_tiers: {
+            quantity: number;
+            final_price: {
+                value: number;
+                currency: string;
+            };
+            discount: {
+                amount_off: number;
+                percent_off: number;
+            };
+        }[];
+    };
+    configurable_options: {
+        configurable_product_option_uid: string;
+        option_label: string;
+        value_label: string;
+    }[];
+    prices: {
+        price: {
+            value: number;
+            currency: string;
+        };
+        row_total: {
+            value: number;
+            currency: string;
+        };
+        total_item_discount: {
+            value: number;
+            currency: string;
+        };
+        row_total_including_tax: {
+            value: number;
+            currency: string;
+        };
+        price_including_tax: {
+            value: number;
+            currency: string;
+        };
+        original_row_total: {
+            value: number;
+            currency: string;
+        };
+        original_item_price: {
+            value: number;
+            currency: string;
+        };
+        discounts: never[];
+        fixed_product_taxes: never[];
+    };
+};
+declare const configurableWithoutPriceTiers: {
+    __typename: string;
+    uid: string;
+    quantity: number;
+    is_available: boolean;
+    product: {
+        sku: string;
+        name: string;
+        url_key: string;
+        canonical_url: string;
+        categories: {
+            url_key: string;
+            name: string;
+        }[];
+        thumbnail: {
+            url: string;
+            label: string;
+        };
+        stock_status: string;
+        only_x_left_in_stock: null;
+    };
+    configured_variant: {
+        sku: string;
+        stock_status: string;
+        only_x_left_in_stock: null;
+        price_range: {
+            maximum_price: {
+                regular_price: {
+                    value: number;
+                    currency: string;
+                };
+                final_price: {
+                    value: number;
+                    currency: string;
+                };
+                discount: {
+                    amount_off: number;
+                    percent_off: number;
+                };
+            };
+        };
+        price_tiers: never[];
+    };
+    configurable_options: {
+        configurable_product_option_uid: string;
+        option_label: string;
+        value_label: string;
+    }[];
+    prices: {
+        price: {
+            value: number;
+            currency: string;
+        };
+        row_total: {
+            value: number;
+            currency: string;
+        };
+        total_item_discount: {
+            value: number;
+            currency: string;
+        };
+        row_total_including_tax: {
+            value: number;
+            currency: string;
+        };
+        price_including_tax: {
+            value: number;
+            currency: string;
+        };
+        original_row_total: {
+            value: number;
+            currency: string;
+        };
+        original_item_price: {
+            value: number;
+            currency: string;
+        };
+        discounts: never[];
+        fixed_product_taxes: never[];
+    };
+};
 declare const giftCard: {
     __typename: string;
     uid: string;
@@ -1156,5 +1328,226 @@ declare const simpleWithNoDiscount: {
     gift_message_available: string;
     errors: null;
 };
-export { bundleOptions, bundleOptionsEmpty, giftCardPhysical, giftCardVirtual, simple, simpleCustomizable, configurable, configurableCustomizable, giftCard, downloadbleWithMultipleLinks, simpleLowInventory, complexInsufficientQuantity, complexInsufficientQuantityGeneralMessage, complexWithProductAttributes, simpleWithNoDiscount, };
+declare const simpleWithPriceTiers: {
+    __typename: string;
+    quantity: number;
+    product: {
+        price_tiers: {
+            quantity: number;
+            final_price: {
+                value: number;
+                currency: string;
+            };
+            discount: {
+                amount_off: number;
+                percent_off: number;
+            };
+        }[];
+        name: string;
+        sku: string;
+        quantity: number;
+        thumbnail: {
+            url: string;
+            label: string;
+        };
+        url_key: string;
+        categories: {
+            url_path: string;
+            url_key: string;
+        }[];
+        price_range: {
+            maximum_price: {
+                regular_price: {
+                    value: number;
+                    currency: string;
+                };
+                final_price: {
+                    value: number;
+                    currency: string;
+                };
+                discount: {
+                    amount_off: number;
+                    percent_off: number;
+                };
+            };
+        };
+    };
+    uid: string;
+    gift_message_available: string;
+    errors: null;
+    prices: {
+        price: {
+            value: number;
+            currency: string;
+        };
+        total_item_discount: {
+            value: number;
+            currency: string;
+        };
+        row_total: {
+            value: number;
+            currency: string;
+        };
+        price_including_tax: {
+            value: number;
+            currency: string;
+        };
+        row_total_including_tax: {
+            value: number;
+        };
+        original_row_total: {
+            value: number;
+            currency: string;
+        };
+        original_item_price: {
+            value: number;
+            currency: string;
+        };
+    };
+};
+declare const simpleWithPriceTiersNoMatch: {
+    quantity: number;
+    __typename: string;
+    product: {
+        price_tiers: {
+            quantity: number;
+            final_price: {
+                value: number;
+                currency: string;
+            };
+            discount: {
+                amount_off: number;
+                percent_off: number;
+            };
+        }[];
+        name: string;
+        sku: string;
+        quantity: number;
+        thumbnail: {
+            url: string;
+            label: string;
+        };
+        url_key: string;
+        categories: {
+            url_path: string;
+            url_key: string;
+        }[];
+        price_range: {
+            maximum_price: {
+                regular_price: {
+                    value: number;
+                    currency: string;
+                };
+                final_price: {
+                    value: number;
+                    currency: string;
+                };
+                discount: {
+                    amount_off: number;
+                    percent_off: number;
+                };
+            };
+        };
+    };
+    uid: string;
+    gift_message_available: string;
+    errors: null;
+    prices: {
+        price: {
+            value: number;
+            currency: string;
+        };
+        total_item_discount: {
+            value: number;
+            currency: string;
+        };
+        row_total: {
+            value: number;
+            currency: string;
+        };
+        price_including_tax: {
+            value: number;
+            currency: string;
+        };
+        row_total_including_tax: {
+            value: number;
+        };
+        original_row_total: {
+            value: number;
+            currency: string;
+        };
+        original_item_price: {
+            value: number;
+            currency: string;
+        };
+    };
+};
+declare const simpleWithEmptyPriceTiers: {
+    __typename: string;
+    product: {
+        price_tiers: never[];
+        name: string;
+        sku: string;
+        quantity: number;
+        thumbnail: {
+            url: string;
+            label: string;
+        };
+        url_key: string;
+        categories: {
+            url_path: string;
+            url_key: string;
+        }[];
+        price_range: {
+            maximum_price: {
+                regular_price: {
+                    value: number;
+                    currency: string;
+                };
+                final_price: {
+                    value: number;
+                    currency: string;
+                };
+                discount: {
+                    amount_off: number;
+                    percent_off: number;
+                };
+            };
+        };
+    };
+    uid: string;
+    quantity: number;
+    gift_message_available: string;
+    errors: null;
+    prices: {
+        price: {
+            value: number;
+            currency: string;
+        };
+        total_item_discount: {
+            value: number;
+            currency: string;
+        };
+        row_total: {
+            value: number;
+            currency: string;
+        };
+        price_including_tax: {
+            value: number;
+            currency: string;
+        };
+        row_total_including_tax: {
+            value: number;
+        };
+        original_row_total: {
+            value: number;
+            currency: string;
+        };
+        original_item_price: {
+            value: number;
+            currency: string;
+        };
+    };
+};
+export { bundleOptions, bundleOptionsEmpty, giftCardPhysical, giftCardVirtual, simple, simpleCustomizable, configurable, configurableCustomizable, giftCard, downloadbleWithMultipleLinks, simpleLowInventory, complexInsufficientQuantity, complexInsufficientQuantityGeneralMessage, complexWithProductAttributes, simpleWithNoDiscount, simpleWithPriceTiers, simpleWithPriceTiersNoMatch, simpleWithEmptyPriceTiers, configurableWithPriceTiers, configurableWithoutPriceTiers, };
 //# sourceMappingURL=productTypesData.d.ts.map

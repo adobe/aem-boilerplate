@@ -3,6 +3,7 @@
     "default": {
       "commerce-core-endpoint": "https://www.aemshop.net/graphql",
       "commerce-endpoint": "https://www.aemshop.net/cs-graphql",
+      "commerce-assets-enabled": false,
       "headers": {
         "all": {
           "Store": "default"

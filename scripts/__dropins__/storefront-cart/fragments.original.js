@@ -71,14 +71,14 @@ const e=`
     }
     expiration_date
   }
-`,r=`
+`,i=`
   fragment GIFT_MESSAGE_FRAGMENT on GiftMessage {
     __typename
     from
     to
     message
   }
-`,i=`
+`,r=`
   fragment GIFT_WRAPPING_FRAGMENT on GiftWrapping {
     __typename
     uid
@@ -105,7 +105,7 @@ const e=`
      value
    }
   }
-`,l=`
+`,u=`
   fragment CART_ITEM_FRAGMENT on CartItemInterface {
     __typename
     uid
@@ -165,6 +165,16 @@ const e=`
     product {
       name
       sku
+      price_tiers {
+        quantity
+        final_price {
+          value
+        }
+        discount {
+          amount_off
+          percent_off
+        }
+      }
       quantity
       gift_message_available
       gift_wrapping_available
@@ -245,6 +255,16 @@ const e=`
         price_range {
           ...PRICE_RANGE_FRAGMENT
         }
+        price_tiers {
+          quantity
+          final_price {
+            value
+          }
+          discount {
+            amount_off
+            percent_off
+          }
+        }
       }
       customizable_options {
         ...CUSTOMIZABLE_OPTIONS_FRAGMENT
@@ -287,10 +307,10 @@ const e=`
   ${e}
   ${_}
   ${a}
-  ${i}
   ${r}
+  ${i}
   ${n}
-`,u=`
+`,c=`
   fragment CART_FRAGMENT on Cart {
     id
     total_quantity
@@ -398,7 +418,7 @@ const e=`
     }
   }
 
-  ${l}
+  ${u}
   ${t}
-`;export{t as APPLIED_GIFT_CARDS_FRAGMENT,n as AVAILABLE_GIFT_WRAPPING_FRAGMENT,u as CART_FRAGMENT,l as CART_ITEM_FRAGMENT,a as DOWNLOADABLE_CART_ITEMS_FRAGMENT,r as GIFT_MESSAGE_FRAGMENT,i as GIFT_WRAPPING_FRAGMENT};
+`;export{t as APPLIED_GIFT_CARDS_FRAGMENT,n as AVAILABLE_GIFT_WRAPPING_FRAGMENT,c as CART_FRAGMENT,u as CART_ITEM_FRAGMENT,a as DOWNLOADABLE_CART_ITEMS_FRAGMENT,i as GIFT_MESSAGE_FRAGMENT,r as GIFT_WRAPPING_FRAGMENT};
 //# sourceMappingURL=fragments.js.map

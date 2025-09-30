@@ -14,8 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './company';
-export * from './company-address';
-export * from './country';
-export * from './customer-company-info';
+export { CustomerCompanyInfoCard } from './CustomerCompanyInfoCard';
 //# sourceMappingURL=index.d.ts.map

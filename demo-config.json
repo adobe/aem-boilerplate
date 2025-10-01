@@ -34,7 +34,7 @@
       },
       "plugins": {
         "picker": {
-           "rootCategory": "2"
+           "rootCategory": "YOUR_ROOT_CATEGORY_ID"
          }
       }
     }

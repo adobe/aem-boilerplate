@@ -69,6 +69,7 @@ The repository provides the basic structure, blocks, and configuration needed to
 
 CMS authored content is a key part of every AEM Website. The content of a page is broken into sections. Sections can have default content (text, headings, links, etc.) as well as content in blocks.
 
+You can create static content for testing in a dedicated drafts folder. If you do this, be sure to specify the folder location when starting the development server by running `npx -y @adobe/aem-cli up --no-open --forward-browser-logs --html-folder drafts`
 Background on content structure https://www.aem.live/developer/markup-sections-blocks
 You can inspect the contents of any page with `curl http://localhost:3000/path/to/page` and `curl http://localhost:3000/path/to/page.md`
 

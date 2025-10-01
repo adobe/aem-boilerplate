@@ -573,10 +573,18 @@ export async function commerceEndpointWithQueryParams() {
  * Extracts the SKU from the current URL path.
  * @returns {string|null} The SKU extracted from the URL, or null if not found
  */
-export function getSkuFromUrl() {
+function getSkuFromUrl() {
   const path = window.location.pathname;
   const result = path.match(/\/products\/[\w|-]+\/([\w|-]+)$/);
   return result?.[1];
+}
+
+/**
+ * Gets the product SKU from metadata or URL fallback.
+ * @returns {string|null} The SKU from metadata or URL, or null if not found
+ */
+export function getProductSku() {
+  return getMetadata('sku') || getSkuFromUrl();
 }
 
 /**

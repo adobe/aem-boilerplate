@@ -146,6 +146,39 @@ declare const _default: {
       "sortedAscending": "Sort {label} ascending",
       "sortedDescending": "Sort {label} descending",
       "sortBy": "Sort by {label}"
+    },
+    "MultiSelect": {
+      "selectAll": "Select All",
+      "deselectAll": "Deselect All",
+      "placeholder": "Select options",
+      "noResultsText": "No options available",
+      "ariaLabel":{
+        "removed": "removed",
+        "added": "added",
+        "itemsSelected": "items selected",
+        "itemsAdded": "items added",
+        "itemsRemoved": "items removed",
+        "selectedTotal": "selected total",
+        "noResultsFor": "No results found for",
+        "optionsAvailable": "options available",
+        "dropdownExpanded": "Dropdown expanded",
+        "useArrowKeys": "Use arrow keys to navigate",
+        "removeFromSelection": "Remove",
+        "fromSelection": "from selection",
+        "selectedItem": "Selected item:",
+        "inField": " in {floatingLabel}",
+        "selectedItems": "Selected items",
+        "scrollableOptionsList": "Scrollable options list",
+        "selectOptions": "Select options",
+        "itemAction": "{label} {action}. {count} items selected.",
+        "bulkAdded": "{count} items added. {total} items selected total.",
+        "bulkRemoved": "{count} items removed. {total} items selected total.",
+        "dropdownExpandedWithOptions": "Dropdown expanded. {count} option{s} available. Use arrow keys to navigate.",
+        "selectedItemInField": "Selected item: {label} in {field}",
+        "removeFromSelectionWithText": "Remove {label} from selection. {text}",
+        "itemsSelectedDescription": "{count} item{s} selected: {labels}",
+        "noItemsSelected": "No items selected"
+      }
     }
   }
 }

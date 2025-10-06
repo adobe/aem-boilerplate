@@ -33,5 +33,6 @@ export interface CustomerAddressesModel {
     streetMultiline_2?: string;
     defaultShipping?: boolean;
     defaultBilling?: boolean;
+    uid?: string;
 }
 //# sourceMappingURL=customer-address.d.ts.map

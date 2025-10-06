@@ -30,5 +30,19 @@ export interface CheckoutAgreement {
     name: string;
     text: string;
 }
+export interface CheckoutError {
+    /**
+     * The primary, user-friendly error message. This should be safe to display
+     * directly in the UI.
+     * @example "Your card was declined."
+     */
+    message: string;
+    /**
+     * An optional, unique error code for programmatic handling. This allows the
+     * ServerError component to show specific icons, links, or actions.
+     * @example "payment_intent_declined"
+     */
+    code?: string;
+}
 export {};
 //# sourceMappingURL=checkout.d.ts.map

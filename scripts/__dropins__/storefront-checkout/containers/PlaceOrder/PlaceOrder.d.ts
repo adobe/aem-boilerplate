@@ -6,7 +6,8 @@ export interface ContentSlotContext {
 }
 export interface HandlePlaceOrderContext {
     code: string;
-    cartId: string;
+    cartId?: string | null;
+    quoteId?: string | null;
 }
 export interface PlaceOrderProps extends HTMLAttributes<HTMLDivElement> {
     disabled?: boolean;

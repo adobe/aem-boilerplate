@@ -1,4 +1,4 @@
-import { Cart } from '@adobe-commerce/event-bus';
+import { InitializeInput } from '../../types';
 
-export declare const initializeCheckout: (cart: Cart | null) => Promise<void>;
+export declare const initializeCheckout: (input: InitializeInput) => Promise<void>;
 //# sourceMappingURL=initializeCheckout.d.ts.map

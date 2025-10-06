@@ -14,11 +14,18 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './transform-address';
+export * from './transform-api';
+export * from './transform-custom-attributes';
 export * from './transform-cart';
+export * from './transform-cart-address';
+export * from './transform-quote-address';
 export * from './transform-checkout-agreements';
+export * from './transform-country';
 export * from './transform-customer';
 export * from './transform-email-availability';
+export * from './transform-negotiable-quote';
+export * from './transform-payment-methods';
+export * from './transform-region';
 export * from './transform-shipping-estimate';
 export * from './transform-shipping-methods';
 export * from './transform-store-config';

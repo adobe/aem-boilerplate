@@ -415,6 +415,9 @@ export const renderPaymentMethods = async (container, creditCardFormRef) => rend
           [PaymentMethodCode.VAULT]: {
             enabled: false,
           },
+          [PaymentMethodCode.FASTLANE]: {
+            enabled: false,
+          },
         },
       },
     })(container);

@@ -21,6 +21,7 @@ export * from './api/getGuestOrder.types';
 export * from './api/getOrderDetails.types';
 export * from './api/guestOrderByToken.types';
 export * from './api/placeOrder.types';
+export * from './api/placeNegotiableQuoteOrder.types';
 export * from './api/reorderItems.types';
 export * from './api/requestReturn.types';
 export * from './api/confirmGuestReturn.types';

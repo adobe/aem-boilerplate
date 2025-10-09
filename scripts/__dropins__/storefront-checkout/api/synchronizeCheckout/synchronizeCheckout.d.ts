@@ -1,4 +1,4 @@
-import { Cart } from '@adobe-commerce/event-bus';
+import { SynchronizeInput } from '../../types';
 
-export declare const synchronizeCheckout: (cart: Cart | null) => Promise<void>;
+export declare const synchronizeCheckout: (data: SynchronizeInput) => Promise<void>;
 //# sourceMappingURL=synchronizeCheckout.d.ts.map

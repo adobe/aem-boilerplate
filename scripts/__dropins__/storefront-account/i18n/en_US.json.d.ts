@@ -193,6 +193,12 @@ declare const _default: {
       "dateLengthError": "Date must be between {min} and {max}.",
       "urlError": "Please enter a valid URL, e.g., http://www.adobe.com.",
       "lengthTextError": "Text length must be between {min} and {max} characters."
+    },
+    "AddressValidation": {
+      "title": "Verify your address",
+      "subtitle": "To ensure accurate delivery, we suggest the changes highlighted below. Please choose which address you would like to use. If neither option is correct, edit your address.",
+      "suggestedAddress": "Suggested Address",
+      "originalAddress": "Original Address"
     }
   }
 }

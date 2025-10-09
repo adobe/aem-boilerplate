@@ -14,11 +14,11 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
+export * from './utils';
 export * from './dispatchApiCall';
-export * from './dom';
 export * from './enqueueRequest';
+export * from './errors/mapErrorToCode';
 export * from './events';
-export * from './network-error';
 export * from './preact';
 export * from './state';
 export * from './validation';

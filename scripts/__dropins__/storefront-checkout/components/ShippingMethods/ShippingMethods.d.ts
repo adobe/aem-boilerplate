@@ -1,5 +1,5 @@
 import { ShippingMethod } from '../../data/models';
-import { UIComponentType } from '../../types/ComponentTypes';
+import { UIComponentType } from '../../types';
 import { FunctionComponent, VNode } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
 

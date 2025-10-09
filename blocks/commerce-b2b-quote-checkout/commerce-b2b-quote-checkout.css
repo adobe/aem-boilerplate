@@ -1,0 +1,351 @@
+.checkout__content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-big) 0;
+}
+
+.checkout__main {
+    display: grid;
+    row-gap: var(--spacing-xbig);
+    margin-top: var(--spacing-medium);
+}
+
+.checkout__aside {
+    display: grid;
+    gap: var(--spacing-xbig);
+}
+
+.checkout-header h1 {
+    margin: 0;
+}
+
+/* Block dividers */
+.checkout__block.checkout__heading .dropin-header-container {
+    gap: var(--spacing-xsmall);
+}
+
+.checkout__shipping-form {
+    padding-top: var(--spacing-xbig);
+    border-top: var(--shape-border-width-3) solid var(--color-neutral-400);
+}
+
+.checkout__payment-methods {
+    padding-top: var(--spacing-xbig);
+    border-top: var(--shape-border-width-3) solid var(--color-neutral-400);
+    padding-bottom: var(--spacing-xbig);
+    border-bottom: var(--shape-border-width-3) solid var(--color-neutral-400);
+}
+
+/* Server error visibility */
+.checkout__server-error {
+    display: none;
+}
+
+/* Show when it contains actual error content */
+.checkout__server-error:has(.dropin-illustrated-message) {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Safari fallback: show when not empty, but this may show empty divs briefly */
+@supports not selector(:has(*)) {
+    .checkout__server-error:not(:empty) {
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+}
+
+/* Hide empty blocks */
+.checkout__block:empty {
+    display: none;
+}
+
+/* Hide main containers when there is a server error */
+.checkout__content--error .checkout__out-of-stock,
+.checkout__content--error .checkout__login,
+.checkout__content--error .checkout__shipping-form,
+.checkout__content--error .checkout__bill-to-shipping,
+.checkout__content--error .checkout__delivery,
+.checkout__content--error .checkout__payment-methods,
+.checkout__content--error .checkout__billing-form,
+.checkout__content--error .checkout__terms-and-conditions {
+    display: none !important;
+}
+
+/* Hide blocks with empty divs */
+.checkout__out-of-stock:has(> :empty),
+.checkout__delivery:has(> div:first-child:empty),
+.checkout__bill-to-shipping:has(> :empty) {
+    display: none;
+}
+
+/* Hide aside containers when there is a server error */
+.checkout__content--error .checkout__aside {
+    display: none;
+}
+
+/* Integrate place order button into Order Summary - mobile */
+.checkout__place-order {
+    grid-column: unset;
+    justify-items: unset;
+    margin-top: calc(var(--spacing-big) * -1);
+}
+
+/* Hide the place order button when there is a server error */
+.checkout__content--error .checkout__place-order {
+    display: none;
+}
+
+.checkout__loader {
+    align-items: center;
+    background: var(--color-neutral-50);
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    left: 0;
+    opacity: 0.5;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+.checkout__loader:empty {
+    display: none;
+}
+
+/* remove margin from the heading divider */
+.checkout__heading .dropin-divider {
+    margin: 0;
+}
+
+/* Cart Summary */
+.checkout__block .cart-cart-summary-list {
+    padding: var(--spacing-medium);
+}
+
+/* Order Summary Coupon */
+.dropin-accordion-section__heading {
+    margin: var(--spacing-medium) auto;
+}
+
+.cart-coupons__accordion {
+    margin-top: var(--spacing-xsmall);
+}
+
+/* temporary fix to hide the default cart heading */
+[data-testid="default-cart-heading"] {
+    display: none;
+}
+
+.cart-summary-list__heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.cart-summary-list__heading-text {
+    font: var(--type-headline-2-strong-font);
+    letter-spacing: var(--type-headline-2-strong-letter-spacing);
+    color: var(--color-neutral-800);
+}
+
+.cart-cart-summary-list__heading {
+    row-gap: var(--spacing-small);
+    padding-top: 0;
+}
+
+.cart-cart-summary-list__heading-text {
+    font: var(--type-headline-2-strong-font);
+    letter-spacing: var(--type-headline-2-strong-letter-spacing);
+    color: var(--color-neutral-800);
+}
+
+.cart-summary-list__edit {
+    font: var(--type-body-2-strong-font);
+    letter-spacing: var(--type-body-2-strong-letter-spacing);
+}
+
+.checkout__block
+.cart-cart-summary-list
+.cart-cart-summary-list__footer-divider {
+    margin: var(--spacing-small) 0;
+}
+
+/* Address form */
+.checkout__shipping-form .account-address-form-wrapper__title,
+.checkout__shipping-form .dropin-header-container__title,
+.checkout__billing-form .account-address-form-wrapper__title,
+.checkout__billing-form .dropin-header-container__title {
+    font: var(--type-headline-2-default-font);
+    letter-spacing: var(--type-headline-2-default-letter-spacing);
+    color: var(--color-neutral-800);
+    margin: 0 0 var(--spacing-medium) 0;
+}
+
+.checkout__shipping-form .dropin-header-container .dropin-divider,
+.checkout__billing-form .dropin-header-container .dropin-divider {
+    display: none;
+}
+
+/* Order confirmation */
+.order-confirmation {
+    display: grid;
+    align-items: start;
+    grid-template-columns: repeat(var(--grid-4-columns), 1fr);
+    grid-template-areas: "main aside";
+    grid-column-gap: var(--grid-4-gutters);
+    margin-bottom: var(--spacing-xbig);
+    padding-top: var(--spacing-xxlarge);
+}
+
+.order-confirmation__main {
+    display: grid;
+    grid-row-gap: var(--spacing-xbig);
+    grid-column: 1 / span 7;
+}
+
+.order-confirmation__aside {
+    display: grid;
+    grid-row-gap: var(--spacing-xbig);
+    grid-column: 9 / span 4;
+}
+
+.order-confirmation__footer {
+    display: grid;
+    gap: var(--spacing-small);
+    text-align: center;
+}
+
+.order-confirmation__footer p {
+    margin: 0;
+}
+
+.order-confirmation__footer .order-confirmation-footer__continue-button {
+    margin: 0 auto;
+    text-align: center;
+    display: inline-block;
+}
+
+.order-confirmation-footer__contact-support {
+    font: var(--type-body-2-default-font);
+    letter-spacing: var(--type-body-2-default-letter-spacing);
+    color: var(--color-neutral-700);
+}
+
+.order-confirmation-footer__contact-support a {
+    font: var(--type-body-2-strong-font);
+    letter-spacing: var(--type-body-2-strong-letter-spacing);
+    color: var(--color-brand-500);
+    cursor: pointer;
+}
+
+/* Hide empty blocks */
+.order-confirmation__block:empty {
+    display: none;
+}
+
+/* Read-only Address Summary Styles */
+.checkout__summary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xsmall);
+}
+
+.checkout__summary--inline {
+    align-items: flex-start;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.checkout__summary-content {
+    flex: 1;
+}
+
+.checkout__address-summary-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xsmall);
+}
+
+.checkout__address-summary-details * {
+    font: var(--type-body-1-default-font);
+    letter-spacing: var(--type-body-1-default-letter-spacing);
+}
+
+.checkout__address-summary-note {
+    font: var(--type-body-2-default-font);
+    letter-spacing: var(--type-body-2-default-letter-spacing);
+    color: var(--color-neutral-700);
+}
+
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+    .checkout__main,
+    .checkout__aside {
+        display: contents;
+    }
+
+    .checkout__block {
+        order: 3;
+    }
+
+    .checkout__heading {
+        order: 1;
+    }
+
+    .checkout__cart-summary {
+        order: 2;
+    }
+
+    .checkout__place-order {
+        order: 4;
+    }
+
+    .order-confirmation {
+        grid-template-columns: repeat(var(--grid-1-columns), 1fr);
+        padding-top: 0;
+    }
+
+    .order-confirmation__main,
+    .order-confirmation__aside {
+        grid-row-gap: var(--spacing-medium);
+    }
+
+    .order-confirmation > div {
+        grid-column: 1 / span 4;
+    }
+
+    .order-confirmation__block .dropin-card {
+        border: 0;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .checkout__content {
+        display: grid;
+        align-items: start;
+        grid-template-columns: repeat(var(--grid-4-columns), 1fr);
+        gap: var(--spacing-big) var(--grid-4-gutters);
+    }
+
+    .checkout__content--error {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .checkout__main {
+        grid-column: 1 / span 7;
+        row-gap: var(--spacing-xbig);
+    }
+
+    .checkout__aside {
+        grid-column: 9 / span 4;
+        gap: var(--spacing-xbig);
+    }
+
+    .checkout__place-order {
+        margin-top: 0;
+    }
+}

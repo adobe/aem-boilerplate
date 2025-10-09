@@ -1,7 +1,10 @@
 export interface NegotiableQuoteModel {
     uid: string;
+    name: string;
     createdAt: string;
-    status: string;
+    status: "SUBMITTED" | "PENDING" | "UPDATED" | "OPEN" | "ORDERED" | "CLOSED" | "DECLINED" | "EXPIRED" | "DRAFT";
+    salesRepName: string;
+    expirationDate: string;
     buyer: {
         firstname: string;
         lastname: string;
@@ -19,29 +22,36 @@ export interface NegotiableQuoteModel {
             uid: string;
             sku: string;
             name: string;
-            priceRange: {
-                maximumPrice: {
-                    regularPrice: {
-                        value: number;
-                    };
-                };
-            };
         };
+        catalogDiscount: {
+            amountOff: number;
+            percentOff: number;
+        };
+        discounts: {
+            label: string;
+            value: string;
+            amount: Currency;
+        }[];
+        stockStatus: string;
         quantity: number;
         prices: {
-            subtotalExcludingTax: {
-                value: number;
-            };
-            subtotalIncludingTax: {
-                value: number;
-            };
-            subtotalWithDiscountExcludingTax: {
-                value: number;
-            };
-            grandTotal: {
-                value: number;
-            };
+            originalItemPrice: Currency;
+            rowTotal: Currency;
         };
     }[];
+    prices: {
+        grandTotal: Currency;
+        subtotalExcludingTax: Currency;
+        appliedTaxes: {
+            amount: Currency;
+            label: string;
+        }[];
+    };
+    canCheckout: boolean;
+    canSendForReview: boolean;
+}
+export interface Currency {
+    value: number;
+    currency: string;
 }
 //# sourceMappingURL=negotiable-quote-model.d.ts.map

@@ -1,4 +1,4 @@
-import { TitleProps } from '../../types/TitleProps';
+import { TitleProps } from '../../types';
 import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { HTMLAttributes } from 'preact/compat';
 

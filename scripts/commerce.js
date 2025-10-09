@@ -105,7 +105,7 @@ function notifyUI(event) {
  * Detects the page type based on DOM elements
  * @returns {string} The detected page type
  */
-function detectPageType() {
+export function detectPageType() {
   if (document.body.querySelector('main .product-details')) {
     return 'Product';
   } if (document.body.querySelector('main .product-list-page')) {
@@ -114,6 +114,8 @@ function detectPageType() {
     return 'Cart';
   } if (document.body.querySelector('main .commerce-checkout')) {
     return 'Checkout';
+  } if (document.body.querySelector('main .commerce-b2b-quote-checkout')) {
+    return 'B2B Checkout';
   }
   return 'CMS';
 }

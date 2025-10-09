@@ -79,6 +79,7 @@
     display: flex;
     flex-direction: row;
     gap: var(--spacing-xxsmall);
+    position: relative;
 }
 
 /* Empty State */
@@ -95,6 +96,21 @@
 .block.product-list-page.product-list-page--empty .search__product-sort,
 .block.product-list-page.product-list-page--empty .search__pagination {
     display: none;
+}
+
+.product-discovery-product-actions .requisition-list-names {
+    position: static;
+}
+
+.product-discovery-product-actions .requisition-list-names .requisition-list-names__picker {
+    width: var(--spacing-xlarge);
+}
+
+.product-discovery-product-actions .requisition-list-names .dropin-card {
+    left: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 2;
 }
 
 /* Media Queries */

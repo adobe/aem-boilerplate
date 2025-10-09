@@ -9,6 +9,10 @@ import { search } from '@dropins/storefront-product-discovery/api.js';
 // Wishlist Dropin
 import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
 import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
+// Requisition List Dropin
+import * as rlApi from '@dropins/storefront-requisition-list/api.js';
+import { render as rlRenderer } from '@dropins/storefront-requisition-list/render.js';
+import { RequisitionListNames } from '@dropins/storefront-requisition-list/containers/RequisitionListNames.js';
 // Cart Dropin
 import * as cartApi from '@dropins/storefront-cart/api.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
@@ -16,7 +20,7 @@ import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { events } from '@dropins/tools/event-bus.js';
 // AEM
 import { readBlockConfig } from '../../scripts/aem.js';
-import { fetchPlaceholders, getProductLink } from '../../scripts/commerce.js';
+import { fetchPlaceholders, getProductLink, checkIsAuthenticated } from '../../scripts/commerce.js';
 
 // Initializers
 import '../../scripts/initializers/search.js';
@@ -88,6 +92,24 @@ export default async function decorate(block) {
     return button;
   };
 
+  async function renderRequisitionListNamesIfEnabled($container, product) {
+    const isAuthenticated = checkIsAuthenticated();
+    if (!isAuthenticated) {
+      $container.innerHTML = '';
+      return;
+    }
+    const isEnabled = await rlApi.isRequisitionListEnabled();
+    if (isEnabled) {
+      rlRenderer.render(RequisitionListNames, {
+        items: [],
+        sku: product.sku,
+        quantity: 1,
+      })($container);
+    } else {
+      $container.innerHTML = '';
+    }
+  }
+
   await Promise.all([
     // Sort By
     provider.render(SortBy, {})($productSort),
@@ -131,7 +153,7 @@ export default async function decorate(block) {
             },
           });
         },
-        ProductActions: (ctx) => {
+        ProductActions: async (ctx) => {
           const actionsWrapper = document.createElement('div');
           actionsWrapper.className = 'product-discovery-product-actions';
           // Add to Cart Button
@@ -146,7 +168,16 @@ export default async function decorate(block) {
           })($wishlistToggle);
           actionsWrapper.appendChild(addToCartBtn);
           actionsWrapper.appendChild($wishlistToggle);
+          // Requisition List Button
+          const $reqListNames = document.createElement('div');
+          $reqListNames.classList.add('product-discovery-product-actions__requisition-list-names');
+          await renderRequisitionListNamesIfEnabled($reqListNames, ctx.product);
+          actionsWrapper.appendChild($reqListNames);
           ctx.replaceWith(actionsWrapper);
+
+          events.on('authenticated', async () => {
+            await renderRequisitionListNamesIfEnabled($reqListNames, ctx.product);
+          });
         },
       },
     })($productList),

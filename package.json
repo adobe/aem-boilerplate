@@ -53,6 +53,7 @@
     "@dropins/storefront-quote-management": "0.0.1-alpha4",
     "@dropins/storefront-recommendations": "1.1.1-beta2",
     "@dropins/storefront-wishlist": "~2.0.1-beta1",
-    "@dropins/tools": "1.5.0-beta4"
+    "@dropins/tools": "1.5.0-beta4",
+    "@dropins/storefront-requisition-list": "0.4.0-beta"
   }
 }

@@ -470,6 +470,7 @@ body.columns main > .section:empty {
   body.columns main > .section {
     flex: 1;
     flex-basis: var(--column-width, auto);
+    max-width: var(--column-width, auto);
   }
 }
 

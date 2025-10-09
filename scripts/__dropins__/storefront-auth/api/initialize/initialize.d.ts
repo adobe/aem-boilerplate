@@ -1,4 +1,4 @@
-import { Initializer, Model } from '@dropins/tools/types/elsie/src/lib';
+import { Initializer, Model, Config } from '@dropins/tools/types/elsie/src/lib';
 import { Lang } from '@dropins/tools/types/elsie/src/i18n';
 import { CustomerModel } from '../../data/models';
 
@@ -13,6 +13,6 @@ type ConfigProps = {
     };
 };
 export declare const initialize: Initializer<ConfigProps>;
-export declare const config: import('@dropins/tools/types/elsie/src/lib').Config<ConfigProps>;
+export declare const config: Config<ConfigProps>;
 export {};
 //# sourceMappingURL=initialize.d.ts.map

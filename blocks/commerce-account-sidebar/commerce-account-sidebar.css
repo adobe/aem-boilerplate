@@ -1,9 +1,3 @@
-@media (min-width: 900px) {
-    body.columns main > .section.commerce-account-sidebar-container {
-        max-width: var(--column-width);
-    }
-}
-
 .commerce-account-sidebar-wrapper .commerce-account-sidebar .commerce-account-sidebar-item {
     display: flex;
     align-items: center;

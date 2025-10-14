@@ -26,14 +26,14 @@
   "homepage": "https://github.com/hlxsites/aem-boilerplate-commerce#readme",
   "devDependencies": {
     "@adobe/aem-cli": "^16.5.8",
-    "@babel/eslint-parser": "7.28.5",
+    "@babel/eslint-parser": "7.25.9",
     "@dropins/build-tools": "1.0.1",
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.32.0",
+    "eslint-plugin-import": "2.31.0",
     "husky": "^9.1.7",
-    "stylelint": "16.25.0",
-    "stylelint-config-standard": "39.0.1"
+    "stylelint": "16.20.0",
+    "stylelint-config-standard": "38.0.0"
   },
   "dependencies": {
     "@adobe/adobe-client-data-layer": "^3.0.1",
@@ -50,6 +50,6 @@
     "@dropins/storefront-product-discovery": "~2.1.0",
     "@dropins/storefront-recommendations": "~1.1.1",
     "@dropins/storefront-wishlist": "~2.0.1",
-    "@dropins/tools": "~1.5.1"
+    "@dropins/tools": "1.6.0-alpha1"
   }
 }

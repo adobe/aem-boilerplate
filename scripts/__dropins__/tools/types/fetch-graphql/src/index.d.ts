@@ -33,6 +33,7 @@ export type AfterHook<T = any> = (requestInit: RequestInit, response: {
 };
 declare class FetchGraphQLMesh {
     _endpoint?: string;
+    _inheritHeaders?: boolean;
     get endpoint(): string | undefined;
     get fetchGraphQlHeaders(): Header;
     _fetchGraphQlHeaders: Header;
@@ -41,8 +42,12 @@ declare class FetchGraphQLMesh {
     /**
      * Sets the GraphQL endpoint.
      * @param endpoint - The GraphQL endpoint.
+     * @param options - Optional configuration.
+     * @param options.inheritHeaders - If true, headers from the global mesh will be inherited.
      */
-    setEndpoint(endpoint: string): void;
+    setEndpoint(endpoint: string, options?: {
+        inheritHeaders?: boolean;
+    }): void;
     /**
      * Sets the GraphQL headers.
      * @param key - The key of the header.
@@ -124,7 +129,9 @@ declare class FetchGraphQLMesh {
         fetchGraphQlHeaders: Header;
     };
     getMethods(): {
-        setEndpoint: (endpoint: string) => void;
+        setEndpoint: (endpoint: string, options?: {
+            inheritHeaders?: boolean | undefined;
+        } | undefined) => void;
         setFetchGraphQlHeader: (key: string, value: string | null) => void;
         getFetchGraphQlHeader: (key: string) => string | null | undefined;
         removeFetchGraphQlHeader: (key: string) => void;
@@ -163,7 +170,9 @@ export declare class FetchGraphQL extends FetchGraphQLMesh {
  * @property {Function} fetchGraphQl - Fetches GraphQL data.
  * @property {Function} getConfig - Gets the configuration.
  */
-export declare const setEndpoint: (endpoint: string) => void, setFetchGraphQlHeaders: (header: Header | ((prev: Header) => Header)) => void, setFetchGraphQlHeader: (key: string, value: string | null) => void, getFetchGraphQlHeader: (key: string) => string | null | undefined, removeFetchGraphQlHeader: (key: string) => void, fetchGraphQl: <T = any>(query: string, options?: FetchOptions) => Promise<{
+export declare const setEndpoint: (endpoint: string, options?: {
+    inheritHeaders?: boolean;
+}) => void, setFetchGraphQlHeaders: (header: Header | ((prev: Header) => Header)) => void, setFetchGraphQlHeader: (key: string, value: string | null) => void, getFetchGraphQlHeader: (key: string) => string | null | undefined, removeFetchGraphQlHeader: (key: string) => void, fetchGraphQl: <T = any>(query: string, options?: FetchOptions) => Promise<{
     errors?: FetchQueryError | undefined;
     data: T;
 }>, getConfig: () => {

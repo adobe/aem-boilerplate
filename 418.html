@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Invalid Site Configuration</title>
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="script-src 'nonce-aem' 'strict-dynamic' 'unsafe-inline' http: https:; base-uri 'self'; object-src 'none';"
+    move-to-http-header="true"
+  >
+  <script nonce="aem" type="text/javascript">
+    window.isErrorPage = true;
+    window.errorCode = '418';
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="Invalid Site Configuration">
+  <script nonce="aem" src="/scripts/scripts.js" type="module"></script>
+  <link rel="stylesheet" href="/styles/styles.css">
+  <style>
+    main.error {
+      align-items: center;
+      display: flex;
+      margin: 0 auto;
+      max-width: 1264px;
+      min-height: calc(100vh - var(--nav-height));
+      padding: 0 32px;
+      width: 100%;
+    }
+
+    main.error .error-number {
+      width: 100%;
+    }
+
+    main.error .error-number text {
+      font-family: monospace;
+    }
+  </style>
+  <link rel="stylesheet" href="/styles/lazy-styles.css">
+</head>
+
+<body>
+  <header></header>
+  <main class="error">
+    <div class="section">
+      <h2 class="error-message">Configuration Error</h2>
+      <p class="error-message">Your site configuration is either missing or invalid. Please see the <a href="https://experienceleague.adobe.com/developer/commerce/storefront/setup/configuration/commerce-configuration/" target="_blank">Commerce Configuration Guide</a> for more information.</p>
+    </div>
+  </main>
+  <footer></footer>
+</body>
+
+</html>

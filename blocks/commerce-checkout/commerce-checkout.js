@@ -1,219 +1,98 @@
+/* eslint-disable import/no-unresolved */
+
 // Dropin Tools
-import { debounce } from '@dropins/tools/lib.js';
-import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { initializers } from '@dropins/tools/initializer.js';
-import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { initReCaptcha } from '@dropins/tools/recaptcha.js';
-
-// Dropin Components
-import {
-  Button,
-  Header,
-  ProgressSpinner,
-  provider as UI,
-} from '@dropins/tools/components.js';
-
-// Auth Dropin
-import * as authApi from '@dropins/storefront-auth/api.js';
-import AuthCombine from '@dropins/storefront-auth/containers/AuthCombine.js';
-import SignUp from '@dropins/storefront-auth/containers/SignUp.js';
-import { render as AuthProvider } from '@dropins/storefront-auth/render.js';
-
-// Account Dropin
-import Addresses from '@dropins/storefront-account/containers/Addresses.js';
-import AddressForm from '@dropins/storefront-account/containers/AddressForm.js';
-import { render as AccountProvider } from '@dropins/storefront-account/render.js';
-
-// Cart Dropin
-import * as cartApi from '@dropins/storefront-cart/api.js';
-import CartSummaryList from '@dropins/storefront-cart/containers/CartSummaryList.js';
-import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
-import EmptyCart from '@dropins/storefront-cart/containers/EmptyCart.js';
-import GiftCards from '@dropins/storefront-cart/containers/GiftCards.js';
-import GiftOptions from '@dropins/storefront-cart/containers/GiftOptions.js';
-import OrderSummary from '@dropins/storefront-cart/containers/OrderSummary.js';
-import { render as CartProvider } from '@dropins/storefront-cart/render.js';
-
-// Checkout Dropin
-import * as checkoutApi from '@dropins/storefront-checkout/api.js';
-import BillToShippingAddress from '@dropins/storefront-checkout/containers/BillToShippingAddress.js';
-import EstimateShipping from '@dropins/storefront-checkout/containers/EstimateShipping.js';
-import LoginForm from '@dropins/storefront-checkout/containers/LoginForm.js';
-import MergedCartBanner from '@dropins/storefront-checkout/containers/MergedCartBanner.js';
-import OutOfStock from '@dropins/storefront-checkout/containers/OutOfStock.js';
-import PaymentMethods from '@dropins/storefront-checkout/containers/PaymentMethods.js';
-import PlaceOrder from '@dropins/storefront-checkout/containers/PlaceOrder.js';
-import ServerError from '@dropins/storefront-checkout/containers/ServerError.js';
-import ShippingMethods from '@dropins/storefront-checkout/containers/ShippingMethods.js';
-import TermsAndConditions from '@dropins/storefront-checkout/containers/TermsAndConditions.js';
-
-import { render as CheckoutProvider } from '@dropins/storefront-checkout/render.js';
 
 // Order Dropin Modules
 import * as orderApi from '@dropins/storefront-order/api.js';
-import CustomerDetails from '@dropins/storefront-order/containers/CustomerDetails.js';
-import OrderCostSummary from '@dropins/storefront-order/containers/OrderCostSummary.js';
-import OrderHeader from '@dropins/storefront-order/containers/OrderHeader.js';
-import OrderProductList from '@dropins/storefront-order/containers/OrderProductList.js';
-import OrderStatus from '@dropins/storefront-order/containers/OrderStatus.js';
-import ShippingStatus from '@dropins/storefront-order/containers/ShippingStatus.js';
-import { render as OrderProvider } from '@dropins/storefront-order/render.js';
+
+// Checkout Dropin Libraries
+import {
+  createScopedSelector,
+  isEmptyCart,
+  isVirtualCart,
+  scrollToElement,
+  setMetaTags,
+  validateForm,
+} from '@dropins/storefront-checkout/lib/utils.js';
 
 // Payment Services Dropin
 import { PaymentMethodCode } from '@dropins/storefront-payment-services/api.js';
-import CreditCard from '@dropins/storefront-payment-services/containers/CreditCard.js';
-import { render as PaymentServices } from '@dropins/storefront-payment-services/render.js';
 import { getUserTokenCookie } from '../../scripts/initializers/index.js';
 
-// Block-level
-import createModal from '../modal/modal.js';
-
+// Block Utilities
 import {
-  estimateShippingCost,
-  getCartAddress,
-  isCartEmpty,
-  isCheckoutEmpty,
-  scrollToElement,
-  setAddressOnCart,
+  displayOverlaySpinner,
+  removeModal,
+  removeOverlaySpinner,
 } from './utils.js';
 
+// Fragment functions
 import {
-  authPrivacyPolicyConsentSlot,
-  SUPPORT_PATH,
+  createCheckoutFragment,
+  createOrderConfirmationFooter,
+  createOrderConfirmationFragment,
+  selectors,
+} from './fragments.js';
+
+// Container functions
+import {
+  renderAddressForm,
+  renderBillingAddressFormSkeleton,
+  renderBillToShippingAddress,
+  renderCartSummaryList,
+  renderCheckoutHeader,
+  renderCustomerBillingAddresses,
+  renderCustomerDetails,
+  renderCustomerShippingAddresses,
+  renderEmptyCart,
+  renderGiftOptions,
+  renderLoginForm,
+  renderMergedCartBanner,
+  renderOrderConfirmationFooterButton,
+  renderOrderCostSummary,
+  renderOrderGiftOptions,
+  renderOrderHeader,
+  renderOrderProductList,
+  renderOrderStatus,
+  renderOrderSummary,
+  renderOutOfStock,
+  renderPaymentMethods,
+  renderPlaceOrder,
+  renderServerError,
+  renderShippingAddressFormSkeleton,
+  renderShippingMethods,
+  renderShippingStatus,
+  renderTermsAndConditions,
+  unmountEmptyCart,
+} from './containers.js';
+
+// Constants
+import {
+  BILLING_ADDRESS_DATA_KEY,
+  BILLING_FORM_NAME,
+  CHECKOUT_EMPTY_CLASS,
+  LOGIN_FORM_NAME,
+  SHIPPING_ADDRESS_DATA_KEY,
+  SHIPPING_FORM_NAME,
+  TERMS_AND_CONDITIONS_FORM_NAME,
+} from './constants.js';
+
+import {
   fetchPlaceholders,
   rootLink,
+  SUPPORT_PATH,
 } from '../../scripts/commerce.js';
 
 // Initializers
 import '../../scripts/initializers/account.js';
 import '../../scripts/initializers/checkout.js';
 import '../../scripts/initializers/order.js';
-import '../../scripts/initializers/payment-services.js';
-
-function createMetaTag(property, content, type) {
-  if (!property || !type) {
-    return;
-  }
-  let meta = document.head.querySelector(`meta[${type}="${property}"]`);
-  if (meta) {
-    if (!content) {
-      meta.remove();
-      return;
-    }
-    meta.setAttribute(type, property);
-    meta.setAttribute('content', content);
-    return;
-  }
-  if (!content) {
-    return;
-  }
-  meta = document.createElement('meta');
-  meta.setAttribute(type, property);
-  meta.setAttribute('content', content);
-  document.head.appendChild(meta);
-}
-
-function setMetaTags(dropin) {
-  createMetaTag('title', dropin);
-  createMetaTag('description', dropin);
-  createMetaTag('keywords', dropin);
-
-  createMetaTag('og:description', dropin);
-  createMetaTag('og:title', dropin);
-  createMetaTag('og:url', window.location.href, 'property');
-}
 
 export default async function decorate(block) {
-  setMetaTags('Checkout');
-  document.title = 'Checkout';
-
-  events.on('order/placed', () => {
-    setMetaTags('Order Confirmation');
-    document.title = 'Order Confirmation';
-  });
-
-  const DEBOUNCE_TIME = 1000;
-  const ADDRESS_INPUT_DEBOUNCE_TIME = 500;
-  const LOGIN_FORM_NAME = 'login-form';
-  const SHIPPING_FORM_NAME = 'selectedShippingAddress';
-  const BILLING_FORM_NAME = 'selectedBillingAddress';
-  const SHIPPING_ADDRESS_DATA_KEY = `${SHIPPING_FORM_NAME}_addressData`;
-  const BILLING_ADDRESS_DATA_KEY = `${BILLING_FORM_NAME}_addressData`;
-  const TERMS_AND_CONDITIONS_FORM_NAME = 'checkout-terms-and-conditions__form';
-
-  // Define the Layout for the Checkout
-  const checkoutFragment = document.createRange().createContextualFragment(`
-    <div class="checkout__wrapper">
-      <div class="checkout__loader"></div>
-      <div class="checkout__content">
-        <div class="checkout__merged-cart-banner"></div>
-        <div class="checkout__main">
-          <div class="checkout__block checkout__heading"></div>
-          <div class="checkout__block checkout__empty-cart"></div>
-          <div class="checkout__block checkout__server-error"></div>
-          <div class="checkout__block checkout__out-of-stock"></div>
-          <div class="checkout__block checkout__login"></div>
-          <div class="checkout__block checkout__shipping-form"></div>
-          <div class="checkout__block checkout__bill-to-shipping"></div>
-          <div class="checkout__block checkout__delivery"></div>
-          <div class="checkout__block checkout__payment-methods"></div>
-          <div class="checkout__block checkout__billing-form"></div>
-          <div class="checkout__block checkout__terms-and-conditions"></div>
-          <div class="checkout__block checkout__place-order"></div>
-        </div>
-        <div class="checkout__aside">
-          <div class="checkout__block checkout__order-summary"></div>
-          <div class="checkout__block checkout__gift-options"></div>
-          <div class="checkout__block checkout__cart-summary"></div>
-        </div>
-      </div>
-    </div>
-  `);
-
-  const $content = checkoutFragment.querySelector('.checkout__content');
-  const $loader = checkoutFragment.querySelector('.checkout__loader');
-  const $mergedCartBanner = checkoutFragment.querySelector(
-    '.checkout__merged-cart-banner',
-  );
-
-  const $heading = checkoutFragment.querySelector('.checkout__heading');
-  const $emptyCart = checkoutFragment.querySelector('.checkout__empty-cart');
-  const $serverError = checkoutFragment.querySelector(
-    '.checkout__server-error',
-  );
-  const $outOfStock = checkoutFragment.querySelector('.checkout__out-of-stock');
-  const $login = checkoutFragment.querySelector('.checkout__login');
-  const $shippingForm = checkoutFragment.querySelector(
-    '.checkout__shipping-form',
-  );
-  const $billToShipping = checkoutFragment.querySelector(
-    '.checkout__bill-to-shipping',
-  );
-  const $delivery = checkoutFragment.querySelector('.checkout__delivery');
-  const $paymentMethods = checkoutFragment.querySelector(
-    '.checkout__payment-methods',
-  );
-  const $billingForm = checkoutFragment.querySelector(
-    '.checkout__billing-form',
-  );
-  const $orderSummary = checkoutFragment.querySelector(
-    '.checkout__order-summary',
-  );
-  const $cartSummary = checkoutFragment.querySelector(
-    '.checkout__cart-summary',
-  );
-  const $placeOrder = checkoutFragment.querySelector('.checkout__place-order');
-  const $giftOptions = checkoutFragment.querySelector(
-    '.checkout__gift-options',
-  );
-  const $termsAndConditions = checkoutFragment.querySelector('.checkout__terms-and-conditions');
-
-  block.appendChild(checkoutFragment);
-
   // Container and component references
-  let loader;
-  let modal;
   let emptyCart;
   let shippingForm;
   let billingForm;
@@ -223,11 +102,108 @@ export default async function decorate(block) {
   const shippingFormRef = { current: null };
   const billingFormRef = { current: null };
   const creditCardFormRef = { current: null };
+  const loaderRef = { current: null };
 
-  // Adobe Commerce GraphQL endpoint
-  const commerceCoreEndpoint = getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint');
+  setMetaTags('Checkout');
+  document.title = 'Checkout';
 
-  // Render the initial containers
+  events.on('order/placed', () => {
+    setMetaTags('Order Confirmation');
+    document.title = 'Order Confirmation';
+  });
+
+  // Create the checkout layout using fragments
+  const checkoutFragment = createCheckoutFragment();
+
+  // Create scoped selector for the checkout fragment
+  const getElement = createScopedSelector(checkoutFragment);
+
+  // Get all checkout elements using centralized selectors
+  const $content = getElement(selectors.checkout.content);
+  const $loader = getElement(selectors.checkout.loader);
+  const $mergedCartBanner = getElement(selectors.checkout.mergedCartBanner);
+  const $heading = getElement(selectors.checkout.heading);
+  const $emptyCart = getElement(selectors.checkout.emptyCart);
+  const $serverError = getElement(selectors.checkout.serverError);
+  const $outOfStock = getElement(selectors.checkout.outOfStock);
+  const $login = getElement(selectors.checkout.login);
+  const $shippingForm = getElement(selectors.checkout.shippingForm);
+  const $billToShipping = getElement(selectors.checkout.billToShipping);
+  const $delivery = getElement(selectors.checkout.delivery);
+  const $paymentMethods = getElement(selectors.checkout.paymentMethods);
+  const $billingForm = getElement(selectors.checkout.billingForm);
+  const $orderSummary = getElement(selectors.checkout.orderSummary);
+  const $cartSummary = getElement(selectors.checkout.cartSummary);
+  const $placeOrder = getElement(selectors.checkout.placeOrder);
+  const $giftOptions = getElement(selectors.checkout.giftOptions);
+  const $termsAndConditions = getElement(selectors.checkout.termsAndConditions);
+
+  block.appendChild(checkoutFragment);
+
+  // Create validation and place order handlers
+  const handleValidation = () => {
+    let success = true;
+
+    // Login form validation - skip for authenticated users
+    const loginForm = document.forms[LOGIN_FORM_NAME];
+    const isLoginFormVisible = loginForm && loginForm.offsetParent !== null;
+
+    if (loginForm && isLoginFormVisible) {
+      success = validateForm(LOGIN_FORM_NAME);
+      if (!success) scrollToElement($login);
+    }
+
+    // Shipping form validation
+    if (success && shippingFormRef.current) {
+      success = validateForm(SHIPPING_FORM_NAME, shippingFormRef);
+      if (!success) scrollToElement($shippingForm);
+    }
+
+    // Billing form validation
+    if (success && billingFormRef.current) {
+      success = validateForm(BILLING_FORM_NAME, billingFormRef);
+      if (!success) scrollToElement($billingForm);
+    }
+
+    // Terms and conditions validation
+    if (success) {
+      success = validateForm(TERMS_AND_CONDITIONS_FORM_NAME);
+      if (!success) scrollToElement($termsAndConditions);
+    }
+
+    return success;
+  };
+
+  const handlePlaceOrder = async ({ cartId, code }) => {
+    await displayOverlaySpinner(loaderRef, $loader);
+    try {
+      // Payment Services credit card
+      if (code === PaymentMethodCode.CREDIT_CARD) {
+        if (!creditCardFormRef.current) {
+          console.error('Credit card form not rendered.');
+          return;
+        }
+        if (!creditCardFormRef.current.validate()) {
+          // Credit card form invalid; abort order placement
+          return;
+        }
+        // Submit Payment Services credit card form
+        await creditCardFormRef.current.submit();
+      }
+      // Place order
+      await orderApi.placeOrder(cartId);
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      removeOverlaySpinner(loaderRef, $loader);
+    }
+  };
+
+  // First, render the place order component
+  const placeOrder = await renderPlaceOrder($placeOrder, { handleValidation, handlePlaceOrder });
+
+  // Render the remaining containers
   const [
     _mergedCartBanner,
     _header,
@@ -242,352 +218,52 @@ export default async function decorate(block) {
     _orderSummary,
     _cartSummary,
     _termsAndConditions,
-    placeOrder,
+    _giftOptions,
   ] = await Promise.all([
-    CheckoutProvider.render(MergedCartBanner)($mergedCartBanner),
+    renderMergedCartBanner($mergedCartBanner),
 
-    UI.render(Header, {
-      className: 'checkout-header',
-      title: 'Checkout',
-      size: 'large',
-      divider: true,
-      level: 1,
-    })($heading),
+    renderCheckoutHeader($heading, 'Checkout'),
 
-    CheckoutProvider.render(ServerError, {
-      autoScroll: true,
-      onRetry: () => {
-        $content.classList.remove('checkout__content--error');
-      },
-      onServerError: () => {
-        $content.classList.add('checkout__content--error');
-      },
-    })($serverError),
+    renderServerError($serverError, $content),
 
-    CheckoutProvider.render(OutOfStock, {
-      routeCart: () => rootLink('/cart'),
-      onCartProductsUpdate: (items) => {
-        cartApi.updateProductsFromCart(items).catch(console.error);
-      },
-    })($outOfStock),
+    renderOutOfStock($outOfStock),
 
-    CheckoutProvider.render(LoginForm, {
-      name: LOGIN_FORM_NAME,
-      onSignInClick: async (initialEmailValue) => {
-        const signInForm = document.createElement('div');
+    renderLoginForm($login),
 
-        AuthProvider.render(AuthCombine, {
-          signInFormConfig: {
-            renderSignUpLink: true,
-            initialEmailValue,
-            onSuccessCallback: () => {
-              displayOverlaySpinner();
-            },
-          },
-          signUpFormConfig: {
-            slots: {
-              ...authPrivacyPolicyConsentSlot,
-            },
-          },
-          resetPasswordFormConfig: {},
-        })(signInForm);
+    renderShippingAddressFormSkeleton($shippingForm),
 
-        showModal(signInForm);
-      },
-      onSignOutClick: () => {
-        authApi.revokeCustomerToken();
-      },
-    })($login),
+    renderBillToShippingAddress($billToShipping, placeOrder),
 
-    AccountProvider.render(AddressForm, {
-      fieldIdPrefix: 'shipping',
-      isOpen: true,
-      showFormLoader: true,
-    })($shippingForm),
+    renderShippingMethods($delivery),
 
-    CheckoutProvider.render(BillToShippingAddress, {
-      onChange: (checked) => {
-        const billingFormValues = events.lastPayload('checkout/addresses/billing');
-        if (!checked && billingFormValues) {
-          setAddressOnCart({
-            api: checkoutApi.setBillingAddress,
-            debounceMs: DEBOUNCE_TIME,
-            placeOrderBtn: placeOrder,
-          })(billingFormValues);
-        }
-      },
-    })($billToShipping),
+    renderPaymentMethods($paymentMethods, creditCardFormRef),
 
-    CheckoutProvider.render(ShippingMethods)($delivery),
+    renderBillingAddressFormSkeleton($billingForm),
 
-    CheckoutProvider.render(PaymentMethods, {
-      slots: {
-        Methods: {
-          [PaymentMethodCode.CREDIT_CARD]: {
-            render: (ctx) => {
-              const $creditCard = document.createElement('div');
+    renderOrderSummary($orderSummary),
 
-              PaymentServices.render(CreditCard, {
-                apiUrl: commerceCoreEndpoint,
-                getCustomerToken: getUserTokenCookie,
-                getCartId: () => ctx.cartId,
-                creditCardFormRef,
-              })($creditCard);
+    renderCartSummaryList($cartSummary),
 
-              ctx.replaceHTML($creditCard);
-            },
-          },
-          [PaymentMethodCode.SMART_BUTTONS]: {
-            enabled: false,
-          },
-          [PaymentMethodCode.APPLE_PAY]: {
-            enabled: false,
-          },
-          [PaymentMethodCode.GOOGLE_PAY]: {
-            enabled: false,
-          },
-          [PaymentMethodCode.VAULT]: {
-            enabled: false,
-          },
-          [PaymentMethodCode.FASTLANE]: {
-            enabled: false,
-          },
-        },
-      },
-    })($paymentMethods),
+    renderTermsAndConditions($termsAndConditions),
 
-    AccountProvider.render(AddressForm, {
-      fieldIdPrefix: 'billing',
-      isOpen: true,
-      showFormLoader: true,
-    })($billingForm),
-
-    CartProvider.render(OrderSummary, {
-      slots: {
-        EstimateShipping: (esCtx) => {
-          const estimateShippingForm = document.createElement('div');
-          CheckoutProvider.render(EstimateShipping)(estimateShippingForm);
-          esCtx.appendChild(estimateShippingForm);
-        },
-        Coupons: (ctx) => {
-          const coupons = document.createElement('div');
-
-          CartProvider.render(Coupons)(coupons);
-
-          ctx.appendChild(coupons);
-        },
-        GiftCards: (ctx) => {
-          const giftCards = document.createElement('div');
-
-          CartProvider.render(GiftCards)(giftCards);
-
-          ctx.appendChild(giftCards);
-        },
-      },
-    })($orderSummary),
-
-    CartProvider.render(CartSummaryList, {
-      variant: 'secondary',
-      slots: {
-        Heading: (headingCtx) => {
-          const title = 'Your Cart ({count})';
-
-          const cartSummaryListHeading = document.createElement('div');
-          cartSummaryListHeading.classList.add('cart-summary-list__heading');
-
-          const cartSummaryListHeadingText = document.createElement('div');
-          cartSummaryListHeadingText.classList.add(
-            'cart-summary-list__heading-text',
-          );
-
-          cartSummaryListHeadingText.innerText = title.replace(
-            '({count})',
-            headingCtx.count ? `(${headingCtx.count})` : '',
-          );
-          const editCartLink = document.createElement('a');
-          editCartLink.classList.add('cart-summary-list__edit');
-          editCartLink.href = rootLink('/cart');
-          editCartLink.rel = 'noreferrer';
-          editCartLink.innerText = 'Edit';
-
-          cartSummaryListHeading.appendChild(cartSummaryListHeadingText);
-          cartSummaryListHeading.appendChild(editCartLink);
-          headingCtx.appendChild(cartSummaryListHeading);
-
-          headingCtx.onChange((nextHeadingCtx) => {
-            cartSummaryListHeadingText.innerText = title.replace(
-              '({count})',
-              nextHeadingCtx.count ? `(${nextHeadingCtx.count})` : '',
-            );
-          });
-        },
-        Thumbnail: (ctx) => {
-          const { item, defaultImageProps } = ctx;
-          tryRenderAemAssetsImage(ctx, {
-            alias: item.sku,
-            imageProps: defaultImageProps,
-
-            params: {
-              width: defaultImageProps.width,
-              height: defaultImageProps.height,
-            },
-          });
-        },
-        Footer: (ctx) => {
-          const giftOptions = document.createElement('div');
-
-          CartProvider.render(GiftOptions, {
-            item: ctx.item,
-            view: 'product',
-            dataSource: 'cart',
-            isEditable: false,
-            handleItemsLoading: ctx.handleItemsLoading,
-            handleItemsError: ctx.handleItemsError,
-            onItemUpdate: ctx.onItemUpdate,
-            slots: {
-              SwatchImage: swatchImageSlot,
-            },
-          })(giftOptions);
-
-          ctx.appendChild(giftOptions);
-        },
-      },
-    })($cartSummary),
-
-    CheckoutProvider.render(TermsAndConditions, {
-      slots: {
-        Agreements: (ctx) => {
-          ctx.appendAgreement(() => ({
-            name: 'default',
-            mode: 'manual',
-            translationId: 'Checkout.TermsAndConditions.label',
-          }));
-        },
-      },
-    })($termsAndConditions),
-
-    CheckoutProvider.render(PlaceOrder, {
-      handleValidation: () => {
-        let success = true;
-        const { forms } = document;
-
-        const loginForm = forms[LOGIN_FORM_NAME];
-
-        if (loginForm) {
-          success = loginForm.checkValidity();
-          if (!success) scrollToElement($login);
-        }
-
-        const isFormVisible = (form) => form && form.offsetParent !== null;
-
-        if (
-          success
-          && shippingFormRef.current
-          && isFormVisible(forms[SHIPPING_FORM_NAME])
-        ) {
-          success = shippingFormRef.current.handleValidationSubmit(false);
-        }
-
-        if (
-          success
-          && billingFormRef.current
-          && isFormVisible(forms[BILLING_FORM_NAME])
-        ) {
-          success = billingFormRef.current.handleValidationSubmit(false);
-        }
-
-        const termsAndConditionsForm = forms[TERMS_AND_CONDITIONS_FORM_NAME];
-
-        if (success && termsAndConditionsForm) {
-          success = termsAndConditionsForm.checkValidity();
-          if (!success) scrollToElement($termsAndConditions);
-        }
-
-        return success;
-      },
-      handlePlaceOrder: async ({ cartId, code }) => {
-        await displayOverlaySpinner();
-        try {
-          // Payment Services credit card
-          if (code === PaymentMethodCode.CREDIT_CARD) {
-            if (!creditCardFormRef.current) {
-              console.error('Credit card form not rendered.');
-              return;
-            }
-            if (!creditCardFormRef.current.validate()) {
-              // Credit card form invalid; abort order placement
-              return;
-            }
-            // Submit Payment Services credit card form
-            await creditCardFormRef.current.submit();
-          }
-          // Place order
-          await orderApi.placeOrder(cartId);
-        } catch (error) {
-          console.error(error);
-          throw error;
-        } finally {
-          await removeOverlaySpinner();
-        }
-      },
-    })($placeOrder),
-
-    CartProvider.render(GiftOptions, {
-      view: 'order',
-      dataSource: 'cart',
-      isEditable: false,
-      slots: {
-        SwatchImage: swatchImageSlot,
-      },
-    })($giftOptions),
+    renderGiftOptions($giftOptions),
   ]);
-
-  // Dynamic containers and components
-  async function showModal(content) {
-    modal = await createModal([content]);
-    modal.showModal();
-  }
-
-  function removeModal() {
-    if (!modal) return;
-    modal.removeModal();
-    modal = null;
-  }
 
   async function displayEmptyCart() {
     if (emptyCart) return;
 
-    emptyCart = await CartProvider.render(EmptyCart, {
-      routeCTA: () => rootLink('/'),
-    })($emptyCart);
+    emptyCart = await renderEmptyCart($emptyCart);
 
-    $content.classList.add('checkout__content--empty');
+    $content.classList.add(CHECKOUT_EMPTY_CLASS);
   }
 
   function removeEmptyCart() {
     if (!emptyCart) return;
 
-    emptyCart.remove();
+    unmountEmptyCart();
     emptyCart = null;
-    $emptyCart.innerHTML = '';
 
-    $content.classList.remove('checkout__content--empty');
-  }
-
-  async function displayOverlaySpinner() {
-    if (loader) return;
-
-    loader = await UI.render(ProgressSpinner, {
-      className: '.checkout__overlay-spinner',
-    })($loader);
-  }
-
-  function removeOverlaySpinner() {
-    if (!loader) return;
-
-    loader.remove();
-    loader = null;
-    $loader.innerHTML = '';
+    $content.classList.remove(CHECKOUT_EMPTY_CLASS);
   }
 
   async function initializeCheckout(data) {
@@ -595,127 +271,31 @@ export default async function decorate(block) {
     await initReCaptcha(0);
     if (data.isGuest) await displayGuestAddressForms(data);
     else {
-      removeOverlaySpinner();
+      removeOverlaySpinner(loaderRef, $loader);
       await displayCustomerAddressForms(data);
     }
   }
 
   async function displayGuestAddressForms(data) {
-    if (data.isVirtual) {
+    if (isVirtualCart(data)) {
       shippingForm?.remove();
       shippingForm = null;
       $shippingForm.innerHTML = '';
     } else if (!shippingForm) {
-      const cartShippingAddress = getCartAddress(data, 'shipping');
-
-      const shippingAddressCache = sessionStorage.getItem(
-        SHIPPING_ADDRESS_DATA_KEY,
-      );
-
-      if (cartShippingAddress && shippingAddressCache) {
-        sessionStorage.removeItem(SHIPPING_ADDRESS_DATA_KEY);
-      }
-
       shippingFormSkeleton.remove();
 
-      let isFirstRenderShipping = true;
-      const hasCartShippingAddress = Boolean(data.shippingAddresses?.[0]);
-
-      const setShippingAddressOnCart = setAddressOnCart({
-        api: checkoutApi.setShippingAddress,
-        debounceMs: DEBOUNCE_TIME,
-        placeOrderBtn: placeOrder,
-      });
-
-      const estimateShippingCostOnCart = estimateShippingCost({
-        api: checkoutApi.estimateShippingMethods,
-        debounceMs: DEBOUNCE_TIME,
-      });
-
-      const notifyShippingValues = debounce((values) => {
-        events.emit('checkout/addresses/shipping', values);
-      }, ADDRESS_INPUT_DEBOUNCE_TIME);
-
-      const storeConfig = checkoutApi.getStoreConfigCache();
-
-      shippingForm = await AccountProvider.render(AddressForm, {
-        addressesFormTitle: 'Shipping address',
-        className: 'checkout-shipping-form__address-form',
-        fieldIdPrefix: 'shipping',
-        formName: SHIPPING_FORM_NAME,
-        forwardFormRef: shippingFormRef,
-        hideActionFormButtons: true,
-        inputsDefaultValueSet: cartShippingAddress ?? {
-          countryCode: storeConfig.defaultCountry,
-        },
-        isOpen: true,
-        onChange: (values) => {
-          const canSetShippingAddressOnCart = !isFirstRenderShipping || !hasCartShippingAddress;
-          if (canSetShippingAddressOnCart) setShippingAddressOnCart(values);
-          if (!hasCartShippingAddress) estimateShippingCostOnCart(values);
-          if (isFirstRenderShipping) isFirstRenderShipping = false;
-          notifyShippingValues(values);
-        },
-        showBillingCheckBox: false,
-        showFormLoader: false,
-        showShippingCheckBox: false,
-      })($shippingForm);
+      shippingForm = await renderAddressForm($shippingForm, shippingFormRef, data, placeOrder, 'shipping');
     }
 
     if (!billingForm) {
-      const cartBillingAddress = getCartAddress(data, 'billing');
-
-      const billingAddressCache = sessionStorage.getItem(
-        BILLING_ADDRESS_DATA_KEY,
-      );
-
-      if (cartBillingAddress && billingAddressCache) {
-        sessionStorage.removeItem(BILLING_ADDRESS_DATA_KEY);
-      }
-
       billingFormSkeleton.remove();
 
-      let isFirstRenderBilling = true;
-      const hasCartBillingAddress = Boolean(data.billingAddress);
-
-      const setBillingAddressOnCart = setAddressOnCart({
-        api: checkoutApi.setBillingAddress,
-        debounceMs: DEBOUNCE_TIME,
-        placeOrderBtn: placeOrder,
-      });
-
-      const storeConfig = checkoutApi.getStoreConfigCache();
-
-      const notifyBillingValues = debounce((values) => {
-        events.emit('checkout/addresses/billing', values);
-      }, ADDRESS_INPUT_DEBOUNCE_TIME);
-
-      billingForm = await AccountProvider.render(AddressForm, {
-        addressesFormTitle: 'Billing address',
-        className: 'checkout-billing-form__address-form',
-        fieldIdPrefix: 'billing',
-        formName: BILLING_FORM_NAME,
-        forwardFormRef: billingFormRef,
-        hideActionFormButtons: true,
-        inputsDefaultValueSet: cartBillingAddress ?? {
-          countryCode: storeConfig.defaultCountry,
-        },
-        isOpen: true,
-        onChange: (values) => {
-          const canSetBillingAddressOnCart = !isFirstRenderBilling || !hasCartBillingAddress;
-          if (canSetBillingAddressOnCart) setBillingAddressOnCart(values);
-          if (isFirstRenderBilling) isFirstRenderBilling = false;
-          notifyBillingValues(values);
-        },
-        showBillingCheckBox: false,
-        showFormLoader: false,
-        showShippingCheckBox: false,
-      })($billingForm);
+      billingForm = await renderAddressForm($billingForm, billingFormRef, data, placeOrder, 'billing');
     }
   }
 
   async function displayCustomerAddressForms(data) {
-    if (data.isVirtual) {
+    if (isVirtualCart(data)) {
       shippingAddresses?.remove();
       shippingAddresses = null;
       $shippingForm.innerHTML = '';
@@ -724,67 +304,12 @@ export default async function decorate(block) {
       shippingForm = null;
       shippingFormRef.current = null;
 
-      const cartShippingAddress = getCartAddress(data, 'shipping');
-
-      const shippingAddressId = cartShippingAddress
-        ? cartShippingAddress?.id ?? 0
-        : undefined;
-
-      const shippingAddressCache = sessionStorage.getItem(
-        SHIPPING_ADDRESS_DATA_KEY,
+      shippingAddresses = await renderCustomerShippingAddresses(
+        $shippingForm,
+        shippingFormRef,
+        data,
+        placeOrder,
       );
-
-      // clear persisted shipping address if cart has a shipping address
-      if (cartShippingAddress && shippingAddressCache) {
-        sessionStorage.removeItem(SHIPPING_ADDRESS_DATA_KEY);
-      }
-
-      const storeConfig = checkoutApi.getStoreConfigCache();
-
-      const inputsDefaultValueSet = cartShippingAddress && cartShippingAddress.id === undefined
-        ? cartShippingAddress
-        : { countryCode: storeConfig.defaultCountry };
-
-      const hasCartShippingAddress = Boolean(data.shippingAddresses?.[0]);
-      let isFirstRenderShipping = true;
-
-      const setShippingAddressOnCart = setAddressOnCart({
-        api: checkoutApi.setShippingAddress,
-        debounceMs: DEBOUNCE_TIME,
-        placeOrderBtn: placeOrder,
-      });
-
-      const estimateShippingCostOnCart = estimateShippingCost({
-        api: checkoutApi.estimateShippingMethods,
-        debounceMs: DEBOUNCE_TIME,
-      });
-
-      const notifyShippingValues = debounce((values) => {
-        events.emit('checkout/addresses/shipping', values);
-      }, ADDRESS_INPUT_DEBOUNCE_TIME);
-
-      shippingAddresses = await AccountProvider.render(Addresses, {
-        addressFormTitle: 'Deliver to new address',
-        defaultSelectAddressId: shippingAddressId,
-        fieldIdPrefix: 'shipping',
-        formName: SHIPPING_FORM_NAME,
-        forwardFormRef: shippingFormRef,
-        inputsDefaultValueSet,
-        minifiedView: false,
-        onAddressData: (values) => {
-          const canSetShippingAddressOnCart = !isFirstRenderShipping || !hasCartShippingAddress;
-          if (canSetShippingAddressOnCart) setShippingAddressOnCart(values);
-          if (!hasCartShippingAddress) estimateShippingCostOnCart(values);
-          if (isFirstRenderShipping) isFirstRenderShipping = false;
-          notifyShippingValues(values);
-        },
-        selectable: true,
-        selectShipping: true,
-        showBillingCheckBox: false,
-        showSaveCheckBox: true,
-        showShippingCheckBox: false,
-        title: 'Shipping address',
-      })($shippingForm);
     }
 
     if (!billingAddresses) {
@@ -792,60 +317,12 @@ export default async function decorate(block) {
       billingForm = null;
       billingFormRef.current = null;
 
-      const cartBillingAddress = getCartAddress(data, 'billing');
-
-      const billingAddressId = cartBillingAddress
-        ? cartBillingAddress?.id ?? 0
-        : undefined;
-
-      const billingAddressCache = sessionStorage.getItem(
-        BILLING_ADDRESS_DATA_KEY,
+      billingAddresses = await renderCustomerBillingAddresses(
+        $billingForm,
+        billingFormRef,
+        data,
+        placeOrder,
       );
-
-      // clear persisted billing address if cart has a billing address
-      if (cartBillingAddress && billingAddressCache) {
-        sessionStorage.removeItem(BILLING_ADDRESS_DATA_KEY);
-      }
-
-      const storeConfig = checkoutApi.getStoreConfigCache();
-
-      const inputsDefaultValueSet = cartBillingAddress && cartBillingAddress.id === undefined
-        ? cartBillingAddress
-        : { countryCode: storeConfig.defaultCountry };
-
-      const hasCartBillingAddress = Boolean(data.billingAddress);
-      let isFirstRenderBilling = true;
-
-      const setBillingAddressOnCart = setAddressOnCart({
-        api: checkoutApi.setBillingAddress,
-        debounceMs: DEBOUNCE_TIME,
-        placeOrderBtn: placeOrder,
-      });
-
-      const notifyBillingValues = debounce((values) => {
-        events.emit('checkout/addresses/billing', values);
-      }, ADDRESS_INPUT_DEBOUNCE_TIME);
-
-      billingAddresses = await AccountProvider.render(Addresses, {
-        addressFormTitle: 'Bill to new address',
-        defaultSelectAddressId: billingAddressId,
-        formName: BILLING_FORM_NAME,
-        forwardFormRef: billingFormRef,
-        inputsDefaultValueSet,
-        minifiedView: false,
-        onAddressData: (values) => {
-          const canSetBillingAddressOnCart = !isFirstRenderBilling || !hasCartBillingAddress;
-          if (canSetBillingAddressOnCart) setBillingAddressOnCart(values);
-          if (isFirstRenderBilling) isFirstRenderBilling = false;
-          notifyBillingValues(values);
-        },
-        selectable: true,
-        selectBilling: true,
-        showBillingCheckBox: false,
-        showSaveCheckBox: true,
-        showShippingCheckBox: false,
-        title: 'Billing address',
-      })($billingForm);
     }
   }
 
@@ -854,49 +331,21 @@ export default async function decorate(block) {
     // Scroll to the top of the page
     window.scrollTo(0, 0);
 
-    const orderConfirmationFragment = document.createRange()
-      .createContextualFragment(`
-      <div class="order-confirmation">
-        <div class="order-confirmation__main">
-          <div class="order-confirmation__block order-confirmation__header"></div>
-          <div class="order-confirmation__block order-confirmation__order-status"></div>
-          <div class="order-confirmation__block order-confirmation__shipping-status"></div>
-          <div class="order-confirmation__block order-confirmation__customer-details"></div>
-        </div>
-        <div class="order-confirmation__aside">
-          <div class="order-confirmation__block order-confirmation__order-cost-summary"></div>
-          <div class="order-confirmation__block order-confirmation__gift-options"></div>
-          <div class="order-confirmation__block order-confirmation__order-product-list"></div>
-          <div class="order-confirmation__block order-confirmation__footer"></div>
-        </div>
-      </div>
-  `);
+    // Create order confirmation layout using fragments
+    const orderConfirmationFragment = createOrderConfirmationFragment();
 
-    // Order confirmation elements
-    const $orderConfirmationHeader = orderConfirmationFragment.querySelector(
-      '.order-confirmation__header',
-    );
-    const $orderStatus = orderConfirmationFragment.querySelector(
-      '.order-confirmation__order-status',
-    );
-    const $shippingStatus = orderConfirmationFragment.querySelector(
-      '.order-confirmation__shipping-status',
-    );
-    const $customerDetails = orderConfirmationFragment.querySelector(
-      '.order-confirmation__customer-details',
-    );
-    const $orderCostSummary = orderConfirmationFragment.querySelector(
-      '.order-confirmation__order-cost-summary',
-    );
-    const $orderGiftOptions = orderConfirmationFragment.querySelector(
-      '.order-confirmation__gift-options',
-    );
-    const $orderProductList = orderConfirmationFragment.querySelector(
-      '.order-confirmation__order-product-list',
-    );
-    const $orderConfirmationFooter = orderConfirmationFragment.querySelector(
-      '.order-confirmation__footer',
-    );
+    // Create scoped selector for order confirmation fragment (following multi-step pattern)
+    const getOrderElement = createScopedSelector(orderConfirmationFragment);
+
+    // Get all order confirmation elements using centralized selectors
+    const $orderConfirmationHeader = getOrderElement(selectors.orderConfirmation.header);
+    const $orderStatus = getOrderElement(selectors.orderConfirmation.orderStatus);
+    const $shippingStatus = getOrderElement(selectors.orderConfirmation.shippingStatus);
+    const $customerDetails = getOrderElement(selectors.orderConfirmation.customerDetails);
+    const $orderCostSummary = getOrderElement(selectors.orderConfirmation.orderCostSummary);
+    const $orderGiftOptions = getOrderElement(selectors.orderConfirmation.giftOptions);
+    const $orderProductList = getOrderElement(selectors.orderConfirmation.orderProductList);
+    const $orderConfirmationFooter = getOrderElement(selectors.orderConfirmation.footer);
 
     const labels = await fetchPlaceholders();
     const langDefinitions = {
@@ -908,121 +357,35 @@ export default async function decorate(block) {
 
     block.replaceChildren(orderConfirmationFragment);
 
-    const handleSignUpClick = async ({
-      inputsDefaultValueSet,
-      addressesData,
-    }) => {
-      const signUpForm = document.createElement('div');
-      AuthProvider.render(SignUp, {
-        routeSignIn: () => rootLink('/customer/login'),
-        routeRedirectOnEmailConfirmationClose: () => rootLink('/customer/account'),
-        inputsDefaultValueSet,
-        addressesData,
-        slots: {
-          ...authPrivacyPolicyConsentSlot,
-        },
-      })(signUpForm);
+    await Promise.all([
+      renderOrderHeader($orderConfirmationHeader, { orderData }),
+      renderOrderStatus($orderStatus),
+      renderShippingStatus($shippingStatus),
+      renderCustomerDetails($customerDetails),
+      renderOrderCostSummary($orderCostSummary),
+      renderOrderProductList($orderProductList),
+      renderOrderGiftOptions($orderGiftOptions),
+    ]);
 
-      await showModal(signUpForm);
-    };
+    // Create footer content using fragments
+    $orderConfirmationFooter.innerHTML = createOrderConfirmationFooter(rootLink(SUPPORT_PATH));
 
-    OrderProvider.render(OrderHeader, {
-      handleEmailAvailability: checkoutApi.isEmailAvailable,
-      handleSignUpClick,
-      orderData,
-    })($orderConfirmationHeader);
+    const $continueButton = selectors.orderConfirmation.continueButton;
+    const $orderConfirmationFooterBtn = $orderConfirmationFooter.querySelector($continueButton);
 
-    OrderProvider.render(OrderStatus, { slots: { OrderActions: () => null } })(
-      $orderStatus,
-    );
-    OrderProvider.render(ShippingStatus)($shippingStatus);
-    OrderProvider.render(CustomerDetails)($customerDetails);
-    OrderProvider.render(OrderCostSummary)($orderCostSummary);
-    CartProvider.render(GiftOptions, {
-      view: 'order',
-      dataSource: 'order',
-      isEditable: false,
-      readOnlyFormOrderView: 'secondary',
-      slots: {
-        SwatchImage: swatchImageSlot,
-      },
-    })($orderGiftOptions);
-    OrderProvider.render(OrderProductList, {
-      slots: {
-        Footer: (ctx) => {
-          const giftOptions = document.createElement('div');
-
-          CartProvider.render(GiftOptions, {
-            item: ctx.item,
-            view: 'product',
-            dataSource: 'order',
-            isEditable: false,
-            slots: {
-              SwatchImage: swatchImageSlot,
-            },
-          })(giftOptions);
-
-          ctx.appendChild(giftOptions);
-        },
-        CartSummaryItemImage: (ctx) => {
-          const { data, defaultImageProps } = ctx;
-          tryRenderAemAssetsImage(ctx, {
-            alias: data.product.sku,
-            imageProps: defaultImageProps,
-
-            params: {
-              width: defaultImageProps.width,
-              height: defaultImageProps.height,
-            },
-          });
-        },
-      },
-    })($orderProductList);
-
-    $orderConfirmationFooter.innerHTML = `
-      <div class="order-confirmation-footer__continue-button"></div>
-      <div class="order-confirmation-footer__contact-support">
-        <p>
-          Need help?
-          <a
-            href="${rootLink(SUPPORT_PATH)}"
-            rel="noreferrer"
-            class="order-confirmation-footer__contact-support-link"
-            data-testid="order-confirmation-footer__contact-support-link"
-          >
-            Contact us
-          </a>
-        </p>
-      </div>
-    `;
-
-    const $orderConfirmationFooterContinueBtn = $orderConfirmationFooter.querySelector(
-      '.order-confirmation-footer__continue-button',
-    );
-
-    UI.render(Button, {
-      children: 'Continue shopping',
-      'data-testid': 'order-confirmation-footer__continue-button',
-      className: 'order-confirmation-footer__continue-button',
-      size: 'medium',
-      variant: 'primary',
-      type: 'submit',
-      href: rootLink('/'),
-    })($orderConfirmationFooterContinueBtn);
-  }
-
-  // Define the event handlers
-  async function handleCartInitialized(data) {
-    if (isCartEmpty(data)) await displayEmptyCart();
+    await renderOrderConfirmationFooterButton($orderConfirmationFooterBtn);
   }
 
   async function handleCheckoutInitialized(data) {
-    if (isCheckoutEmpty(data)) return;
-    initializeCheckout(data);
+    if (isEmptyCart(data)) {
+      await displayEmptyCart();
+    } else {
+      await initializeCheckout(data);
+    }
   }
 
   async function handleCheckoutUpdated(data) {
-    if (isCheckoutEmpty(data)) {
+    if (isEmptyCart(data)) {
       await displayEmptyCart();
       return;
     }
@@ -1033,6 +396,7 @@ export default async function decorate(block) {
   function handleAuthenticated(authenticated) {
     if (!authenticated) return;
     removeModal();
+    displayOverlaySpinner(loaderRef, $loader);
   }
 
   function handleCheckoutValues(payload) {
@@ -1057,28 +421,12 @@ export default async function decorate(block) {
 
     window.history.pushState({}, '', url);
 
-    // TODO cleanup checkout containers
     await displayOrderConfirmation(orderData);
   }
 
   events.on('authenticated', handleAuthenticated);
-  events.on('cart/initialized', handleCartInitialized, { eager: true });
   events.on('checkout/initialized', handleCheckoutInitialized, { eager: true });
   events.on('checkout/updated', handleCheckoutUpdated);
   events.on('checkout/values', handleCheckoutValues);
   events.on('order/placed', handleOrderPlaced);
-}
-
-function swatchImageSlot(ctx) {
-  const { imageSwatchContext, defaultImageProps } = ctx;
-  tryRenderAemAssetsImage(ctx, {
-    alias: imageSwatchContext.label,
-    imageProps: defaultImageProps,
-    wrapper: document.createElement('span'),
-
-    params: {
-      width: defaultImageProps.width,
-      height: defaultImageProps.height,
-    },
-  });
 }

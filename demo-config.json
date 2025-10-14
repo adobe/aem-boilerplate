@@ -9,7 +9,6 @@
           "Store": "default"
         },
         "cs": {
-          "Magento-Customer-Group": "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c",
           "Magento-Store-Code": "main_website_store",
           "Magento-Store-View-Code": "default",
           "Magento-Website-Code": "base",
@@ -34,7 +33,7 @@
       },
       "plugins": {
         "picker": {
-           "rootCategory": "2"
+           "rootCategory": "YOUR_ROOT_CATEGORY_ID"
          }
       }
     }

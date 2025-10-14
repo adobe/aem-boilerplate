@@ -1,117 +1,129 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
 const e=`
-  fragment BILLING_CART_ADDRESS_FRAGMENT on BillingCartAddress {
-    id
-    city
-    country {
-      code
-      label
+  fragment AVAILABLE_SHIPPING_METHOD_FRAGMENT on AvailableShippingMethod {
+    amount {
+      currency
+      value
     }
-    firstname
-    lastname
-    company
-    postcode
-    vat_id
-    region {
-      region_id
-      code
-      label
+    carrier_code
+    carrier_title
+    error_message
+    method_code
+    method_title
+    price_excl_tax {
+      value
+      currency
     }
-    street
-    telephone
-    custom_attributes {
-      ... on AttributeValue {
-        code
-        value
-      }
+    price_incl_tax {
+      value
+      currency
     }
-    prefix
-    suffix
-    middlename
-    fax
   }
 `,t=`
-  fragment SHIPPING_CART_ADDRESS_FRAGMENT on ShippingCartAddress {
-    id
-    firstname
-    lastname
-    company
-    street
-    city
-    postcode
-    vat_id
-    region {
-      region_id
-      code
-      label
+  fragment SELECTED_SHIPPING_METHOD_FRAGMENT on SelectedShippingMethod {
+    amount {
+      currency
+      value
     }
+    carrier_code
+    carrier_title
+    method_code
+    method_title
+    price_excl_tax {
+      value
+      currency
+    }
+    price_incl_tax {
+      value
+      currency
+    }
+  }
+`,a=`
+  fragment BILLING_CART_ADDRESS_FRAGMENT on BillingCartAddress {
+    city
+    company
     country {
       code
       label
     }
-    telephone
     custom_attributes {
       ... on AttributeValue {
         code
         value
       }
     }
+    fax
+    firstname
+    id
+    lastname
+    middlename
+    postcode
+    prefix
+    region {
+      region_id
+      code
+      label
+    }
+    street
+    suffix
+    telephone
+    uid
+    vat_id
+  }
+`,i=`
+  fragment SHIPPING_CART_ADDRESS_FRAGMENT on ShippingCartAddress {
     available_shipping_methods {
-      amount {
-        currency
+      ...AVAILABLE_SHIPPING_METHOD_FRAGMENT
+    }
+    city
+    company
+    country {
+      code
+      label
+    }
+    custom_attributes {
+      ... on AttributeValue {
+        code
         value
-      }
-      available
-      carrier_code
-      carrier_title
-      error_message
-      method_code
-      method_title
-      price_excl_tax {
-        value
-        currency
-      }
-      price_incl_tax {
-        value
-        currency
       }
     }
-    selected_shipping_method {
-      amount {
-        value
-        currency
-      }
-      carrier_code
-      carrier_title
-      method_code
-      method_title
-      price_excl_tax {
-        value
-        currency
-      }
-      price_incl_tax {
-        value
-        currency
-      }
+    fax
+    firstname
+    id
+    lastname
+    middlename
+    postcode
+    prefix
+    region {
+      region_id
+      code
+      label
     }
     same_as_billing
-    prefix
+    selected_shipping_method {
+      ...SELECTED_SHIPPING_METHOD_FRAGMENT
+    }
+    street
     suffix
-    middlename
-    fax
+    telephone
+    uid
+    vat_id
   }
+
+  ${e}
+  ${t}
 `,_=`
   fragment AVAILABLE_PAYMENT_METHOD_FRAGMENT on AvailablePaymentMethod {
     code
     title
   }
-`,a=`
+`,E=`
   fragment SELECTED_PAYMENT_METHOD_FRAGMENT on SelectedPaymentMethod {
     code
     title
   }
-`,i=`
+`,o=`
   fragment CHECKOUT_DATA_FRAGMENT on Cart {
     id
     is_virtual
@@ -131,15 +143,112 @@ const e=`
     }
   }
 
-  ${e}
-  ${t}
-  ${_}
   ${a}
-`,r=`
+  ${i}
+  ${_}
+  ${E}
+`,T=`
   fragment CUSTOMER_FRAGMENT on Customer {
     firstname
     lastname
     email
   }
-`;export{_ as AVAILABLE_PAYMENT_METHOD_FRAGMENT,e as BILLING_CART_ADDRESS_FRAGMENT,i as CHECKOUT_DATA_FRAGMENT,r as CUSTOMER_FRAGMENT,a as SELECTED_PAYMENT_METHOD_FRAGMENT,t as SHIPPING_CART_ADDRESS_FRAGMENT};
+`,A=`
+  fragment NEGOTIABLE_QUOTE_BILLING_ADDRESS_FRAGMENT on NegotiableQuoteBillingAddress {
+    city
+    company
+    country {
+      code
+      label
+    }
+    custom_attributes {
+      ... on AttributeValue {
+        code
+        value
+      }
+    }
+    fax
+    firstname
+    lastname
+    middlename
+    postcode
+    prefix
+    region {
+      region_id
+      code
+      label
+    }
+    street
+    suffix
+    telephone
+    uid
+    vat_id
+  }
+`,n=`
+  fragment NEGOTIABLE_QUOTE_SHIPPING_ADDRESS_FRAGMENT on NegotiableQuoteShippingAddress {
+    available_shipping_methods {
+      ...AVAILABLE_SHIPPING_METHOD_FRAGMENT
+    }
+    city
+    company
+    country {
+      code
+      label
+    }
+    custom_attributes {
+      ... on AttributeValue {
+        code
+        value
+      }
+    }
+    fax
+    firstname
+    lastname
+    middlename
+    postcode
+    prefix
+    region {
+      region_id
+      code
+      label
+    }
+    selected_shipping_method {
+      ...SELECTED_SHIPPING_METHOD_FRAGMENT
+    }
+    street
+    suffix
+    telephone
+    uid
+    vat_id
+  }
+
+  ${e}
+  ${t}
+`,l=`
+  fragment NEGOTIABLE_QUOTE_FRAGMENT on NegotiableQuote {
+    available_payment_methods {
+      ...AVAILABLE_PAYMENT_METHOD_FRAGMENT
+    }
+    billing_address {
+      ...NEGOTIABLE_QUOTE_BILLING_ADDRESS_FRAGMENT
+    }
+    email
+    is_virtual
+    name
+    selected_payment_method {
+      ...SELECTED_PAYMENT_METHOD_FRAGMENT
+    }
+    shipping_addresses {
+      ...NEGOTIABLE_QUOTE_SHIPPING_ADDRESS_FRAGMENT
+    }
+    status
+    total_quantity
+    uid
+  }
+
+  ${A}
+  ${n}
+  ${_}
+  ${E}
+`;export{_ as AVAILABLE_PAYMENT_METHOD_FRAGMENT,e as AVAILABLE_SHIPPING_METHOD_FRAGMENT,a as BILLING_CART_ADDRESS_FRAGMENT,o as CHECKOUT_DATA_FRAGMENT,T as CUSTOMER_FRAGMENT,A as NEGOTIABLE_QUOTE_BILLING_ADDRESS_FRAGMENT,l as NEGOTIABLE_QUOTE_FRAGMENT,n as NEGOTIABLE_QUOTE_SHIPPING_ADDRESS_FRAGMENT,E as SELECTED_PAYMENT_METHOD_FRAGMENT,t as SELECTED_SHIPPING_METHOD_FRAGMENT,i as SHIPPING_CART_ADDRESS_FRAGMENT};
 //# sourceMappingURL=fragments.js.map

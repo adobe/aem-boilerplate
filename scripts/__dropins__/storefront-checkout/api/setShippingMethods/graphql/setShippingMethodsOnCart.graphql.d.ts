@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const setShippingMethodsMutation: string;
+export declare const setShippingMethodsOnCartMutation: string;
 //# sourceMappingURL=setShippingMethodsOnCart.graphql.d.ts.map

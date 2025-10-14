@@ -22,30 +22,25 @@ export declare const cartFixture: {
     total_quantity: number;
     billing_address?: {
         __typename?: "BillingCartAddress" | undefined;
-        id?: number | null | undefined;
         city: string;
-        firstname: string;
-        lastname: string;
         company?: string | null | undefined;
-        postcode?: string | null | undefined;
-        vat_id?: string | null | undefined;
-        street: (string | null)[];
-        telephone?: string | null | undefined;
-        prefix?: string | null | undefined;
-        suffix?: string | null | undefined;
-        middlename?: string | null | undefined;
         fax?: string | null | undefined;
+        firstname: string;
+        id?: number | null | undefined;
+        lastname: string;
+        middlename?: string | null | undefined;
+        postcode?: string | null | undefined;
+        prefix?: string | null | undefined;
+        street: (string | null)[];
+        suffix?: string | null | undefined;
+        telephone?: string | null | undefined;
+        uid: string;
+        vat_id?: string | null | undefined;
         country: {
             __typename?: "CartAddressCountry" | undefined;
             code: string;
             label: string;
         };
-        region?: {
-            __typename?: "CartAddressRegion" | undefined;
-            region_id?: number | null | undefined;
-            code?: string | null | undefined;
-            label?: string | null | undefined;
-        } | null | undefined;
         custom_attributes: ({
             __typename?: "AttributeSelectedOptions" | undefined;
         } | {
@@ -53,44 +48,32 @@ export declare const cartFixture: {
             code: string;
             value: string;
         } | null)[];
+        region?: {
+            __typename?: "CartAddressRegion" | undefined;
+            region_id?: number | null | undefined;
+            code?: string | null | undefined;
+            label?: string | null | undefined;
+        } | null | undefined;
     } | null | undefined;
     shipping_addresses: ({
         __typename?: "ShippingCartAddress" | undefined;
-        id?: number | null | undefined;
-        firstname: string;
-        lastname: string;
-        company?: string | null | undefined;
-        street: (string | null)[];
         city: string;
-        postcode?: string | null | undefined;
-        vat_id?: string | null | undefined;
-        telephone?: string | null | undefined;
-        same_as_billing: boolean;
-        prefix?: string | null | undefined;
-        suffix?: string | null | undefined;
-        middlename?: string | null | undefined;
+        company?: string | null | undefined;
         fax?: string | null | undefined;
-        region?: {
-            __typename?: "CartAddressRegion" | undefined;
-            region_id?: number | null | undefined;
-            code?: string | null | undefined;
-            label?: string | null | undefined;
-        } | null | undefined;
-        country: {
-            __typename?: "CartAddressCountry" | undefined;
-            code: string;
-            label: string;
-        };
-        custom_attributes: ({
-            __typename?: "AttributeSelectedOptions" | undefined;
-        } | {
-            __typename?: "AttributeValue" | undefined;
-            code: string;
-            value: string;
-        } | null)[];
+        firstname: string;
+        id?: number | null | undefined;
+        lastname: string;
+        middlename?: string | null | undefined;
+        postcode?: string | null | undefined;
+        prefix?: string | null | undefined;
+        same_as_billing: boolean;
+        street: (string | null)[];
+        suffix?: string | null | undefined;
+        telephone?: string | null | undefined;
+        uid: string;
+        vat_id?: string | null | undefined;
         available_shipping_methods?: ({
             __typename?: "AvailableShippingMethod" | undefined;
-            available: boolean;
             carrier_code: string;
             carrier_title: string;
             error_message?: string | null | undefined;
@@ -112,6 +95,24 @@ export declare const cartFixture: {
                 currency?: import('../../../__generated__/types').CurrencyEnum | null | undefined;
             };
         } | null)[] | null | undefined;
+        country: {
+            __typename?: "CartAddressCountry" | undefined;
+            code: string;
+            label: string;
+        };
+        custom_attributes: ({
+            __typename?: "AttributeSelectedOptions" | undefined;
+        } | {
+            __typename?: "AttributeValue" | undefined;
+            code: string;
+            value: string;
+        } | null)[];
+        region?: {
+            __typename?: "CartAddressRegion" | undefined;
+            region_id?: number | null | undefined;
+            code?: string | null | undefined;
+            label?: string | null | undefined;
+        } | null | undefined;
         selected_shipping_method?: {
             __typename?: "SelectedShippingMethod" | undefined;
             carrier_code: string;
@@ -120,8 +121,8 @@ export declare const cartFixture: {
             method_title: string;
             amount: {
                 __typename?: "Money" | undefined;
-                value?: number | null | undefined;
                 currency?: import('../../../__generated__/types').CurrencyEnum | null | undefined;
+                value?: number | null | undefined;
             };
             price_excl_tax: {
                 __typename?: "Money" | undefined;

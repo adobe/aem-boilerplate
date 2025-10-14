@@ -1,0 +1,42 @@
+name: Cypress Percy Visual Tests
+
+on:
+  # Trigger when PR is merged to integration branch
+  pull_request:
+    types: [closed]
+    branches:
+      - integration
+
+jobs:
+  cypress-percy-visual-tests-run:
+    # If you want this job to run on your fork, remove the below "if" line.
+    # You will need to "fix" the tests as they are specific to Adobe Commmerce's
+    # demo backend.
+    if: github.repository == 'hlxsites/aem-boilerplate-commerce' && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Checkout the integration branch after PR merge
+          ref: integration
+      - name: Install root dependencies
+        run: npm ci
+      - name: Install adobe aem cli dependencies
+        run: npm install -g @adobe/aem-cli
+      - name: Start server in the background
+        run: aem up --url https://main--boilerplate-paas--adobe-commerce.aem.live &
+      - name: Install Cypress and run tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: cypress
+          wait-on: 'http://localhost:3000'
+          command: npm run cypress:percy
+        env:
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+          PERCY_BRANCH: integration
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore

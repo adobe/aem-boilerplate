@@ -29,4 +29,5 @@ export * from './AddressFormWrapper';
 export * from './ChangePassword';
 export * from './EditCustomerInformation';
 export * from './CustomerInformationCard';
+export * from './AddressValidation';
 //# sourceMappingURL=index.d.ts.map

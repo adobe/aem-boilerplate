@@ -10,6 +10,7 @@ import {
   CUSTOMER_RETURN_DETAILS_PATH,
   UPS_TRACKING_URL,
   rootLink,
+  getProductLink,
 } from '../../scripts/commerce.js';
 
 // Initialize
@@ -17,7 +18,7 @@ import '../../scripts/initializers/account.js';
 
 export default async function decorate(block) {
   const { 'minified-view': minifiedViewConfig = 'false' } = readBlockConfig(block);
-  const getProductLink = (productData) => (productData?.product ? rootLink(`/products/${productData.product.urlKey}/${productData.product.sku}`) : rootLink('#'));
+  const createProductLink = (productData) => (productData?.product ? getProductLink(productData.product.urlKey, productData.product.sku) : rootLink('#'));
 
   if (!checkIsAuthenticated()) {
     window.location.href = rootLink(CUSTOMER_LOGIN_PATH);
@@ -33,12 +34,12 @@ export default async function decorate(block) {
       routeOrdersList: () => rootLink(CUSTOMER_ORDERS_PATH),
       routeOrderDetails: (orderNumber) => rootLink(`${CUSTOMER_ORDER_DETAILS_PATH}?orderRef=${orderNumber}`),
       routeReturnDetails: ({ orderNumber, returnNumber }) => rootLink(`${CUSTOMER_RETURN_DETAILS_PATH}?orderRef=${orderNumber}&returnRef=${returnNumber}`),
-      routeOrderProduct: getProductLink,
+      routeOrderProduct: createProductLink,
       slots: {
         OrderItemImage: (ctx) => {
           const { data, defaultImageProps } = ctx;
           const anchor = document.createElement('a');
-          anchor.href = getProductLink(ctx.data);
+          anchor.href = createProductLink(ctx.data);
 
           tryRenderAemAssetsImage(ctx, {
             alias: data.product.sku,

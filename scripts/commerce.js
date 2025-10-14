@@ -267,11 +267,6 @@ export async function loadCommerceLazy() {
   // Initialize Adobe Client Data Layer
   await import('./acdl/adobe-client-data-layer.min.js');
 
-  // Initialize Adobe Client Data Layer validation
-  if (sessionStorage.getItem('acdl:debug')) {
-    import('./acdl/validate.js');
-  }
-
   // Track history
   trackHistory();
 }
@@ -577,6 +572,10 @@ function getSkuFromUrl() {
   const path = window.location.pathname;
   const result = path.match(/\/products\/[\w|-]+\/([\w|-]+)$/);
   return result?.[1];
+}
+
+export function getProductLink(urlKey, sku) {
+  return rootLink(`/products/${urlKey}/${sku}`.toLowerCase());
 }
 
 /**

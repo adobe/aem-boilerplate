@@ -1,5 +1,11 @@
 declare const _default: {
   "Checkout": {
+    "AddressValidation": {
+      "title": "Verify your address",
+      "subtitle": "To ensure accurate delivery, we suggest the changes highlighted below. Please choose which address you would like to use. If neither option is correct, edit your address.",
+      "suggestedAddress": "Suggested Address",
+      "originalAddress": "Original Address"
+    },
     "BillToShippingAddress": {
       "cartSyncError": "We were unable to save your changes. Please try again later.",
       "title": "Bill to shipping address"

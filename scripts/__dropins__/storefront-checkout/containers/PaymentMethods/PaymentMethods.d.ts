@@ -1,6 +1,5 @@
 import { PaymentMethod } from '../../data/models/payment-method';
-import { UIComponentType } from '../../types/ComponentTypes';
-import { TitleProps } from '../../types/TitleProps';
+import { TitleProps, UIComponentType } from '../../types';
 import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { HTMLAttributes } from 'preact/compat';
 

@@ -4,6 +4,7 @@ import {
   placeOrder,
   checkTermsAndConditions,
   setGuestBillingAddress,
+  typeInFieldBasedOnText
 } from "../../actions";
 import {
   assertCartSummaryProduct,
@@ -24,19 +25,54 @@ import {
 import * as fields from "../../fields";
 
 describe("Verify guest user can place order with virtual product", () => {
-  it("Verify guest user can place order with virtual product", () => {
+  it("Verify guest user can place order with virtual product", { tags: "@snapPercy" }, () => {
+    cy.visit(products.virtualGiftCard.urlPath);
+    cy.get('select')
+      .find('option:selected')
+      .should('have.text', 'Choose amount');
+    cy.get('select').select('150');
+    cy.get('select')
+      .find('option:selected')
+      .should('have.text', '150');
+    typeInFieldBasedOnText('Sender Name', 'John Doe');
+    typeInFieldBasedOnText('Sender Email', 'test@example.com');
+    typeInFieldBasedOnText('Recipient Name', 'Jane Smith');
+    typeInFieldBasedOnText('Recipient Email', 'jane20@example.com');
+    cy.get('.dropin-textarea').clear().type('Lorem ipsum dolor sit amet, consectetur adipiscing elit :)');
+    cy.contains("Add to Cart").click();
+    cy.get(".minicart-wrapper").click();
+    cy.get(".minicart-panel[data-loaded='true']").should('exist');
+    cy.get(".minicart-panel").should("not.be.empty");
+    assertCartSummaryProduct(
+      "Gift Card (Virtual)",
+      "gift-card-virtual",
+      "1",
+      "$150.00",
+      "$150.00",
+      "0",
+    )(".cart-mini-cart");
+
+    assertTitleHasLink(
+      "Gift Card (Virtual)",
+      "/products/gift-card-virtual/gift-card-virtual",
+    )(".cart-mini-cart");
+    cy.get('.dropin-cart-list__item').within(() => {
+      cy.contains('Jane Smith (jane20@example.com)').should('be.visible');
+      cy.contains('John Doe (test@example.com)').should('be.visible');
+      cy.contains('Lorem ipsum dolor sit amet, consectetur adipiscing elit :)').should('be.visible');
+    });
     cy.visit(products.virtual.urlPath);
 
     cy.get(".dropin-incrementer__input").should("have.value", "1");
     // cypress fails intermittently as it takes old value 1, this is needed for tests to be stable
     cy.wait(1000);
-    cy.get(".minicart-panel").should("be.empty");
+    cy.get(".minicart-panel").should("not.be.empty");
     cy.contains("Add to Cart").click();
     cy.get(".minicart-wrapper").click();
     cy.get(".minicart-panel[data-loaded='true']").should('exist');
     cy.get(".minicart-panel").should("not.be.empty");
     cy.wait(2000);
-
+    
     assertCartSummaryProduct(
       "Virtual Product",
       "VIRTUAL123",
@@ -48,9 +84,10 @@ describe("Verify guest user can place order with virtual product", () => {
 
     assertTitleHasLink(
       "Virtual Product",
-      "/products/virtual-product/VIRTUAL123",
+      "/products/virtual-product/virtual123",
     )(".cart-mini-cart");
     cy.contains("View Cart").click();
+
     assertCartSummaryProduct(
       "Virtual Product",
       "VIRTUAL123",
@@ -59,14 +96,34 @@ describe("Verify guest user can place order with virtual product", () => {
       "$100.00",
       "0",
     )(".commerce-cart-wrapper");
+
     assertTitleHasLink(
       "Virtual Product",
-      "/products/virtual-product/VIRTUAL123",
+      "/products/virtual-product/virtual123",
     )(".commerce-cart-wrapper");
+
+    assertCartSummaryProduct(
+      "Gift Card (Virtual)",
+      "gift-card-virtual",
+      "1",
+      "$150.00",
+      "$150.00",
+      "1",
+    )(".commerce-cart-wrapper");
+
+    assertTitleHasLink(
+      "Gift Card (Virtual)",
+      "/products/gift-card-virtual/gift-card-virtual",
+    )(".commerce-cart-wrapper");
+    cy.get('.cart-cart-summary-list__content').within(() => {
+      cy.contains('Jane Smith (jane20@example.com)').should('be.visible');
+      cy.contains('John Doe (test@example.com)').should('be.visible');
+      cy.contains('Lorem ipsum dolor sit amet, consectetur adipiscing elit :)').should('be.visible');
+    });
 
     cy.get(".dropin-button--primary").contains("Checkout").click();
 
-    assertCartSummaryMisc(1);
+    assertCartSummaryMisc(2);
     assertCartSummaryProductsOnCheckout(
       "Virtual Product",
       "VIRTUAL123",
@@ -92,7 +149,7 @@ describe("Verify guest user can place order with virtual product", () => {
     // Assert that shipping form is not present for Virtual Products
     cy.get(".checkout__shipping-form").should("not.be.visible");
 
-    assertOrderSummaryMisc("$100.00", null, "$100.00");
+    assertOrderSummaryMisc("$250.00", null, "$250.00");
 
     assertSelectedPaymentMethod(checkMoneyOrder.code, 0);
     setPaymentMethod(paymentServicesCreditCard);
@@ -102,6 +159,7 @@ describe("Verify guest user can place order with virtual product", () => {
 
     checkTermsAndConditions();
     cy.wait(5000);
+    cy.percyTakeSnapshot('Checkout with virtual product');
     placeOrder();
 
     assertOrderConfirmationCommonDetails(

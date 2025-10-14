@@ -1,7 +1,7 @@
-import { ComponentChildren, RefObject, VNode } from 'preact';
-import { StateUpdater } from 'preact/hooks';
 import { Lang } from '../i18n';
+import { ComponentChildren, RefObject, VNode } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
+import { StateUpdater } from 'preact/hooks';
 
 type MutateElement = (elem: HTMLElement) => void;
 interface State {
@@ -13,6 +13,7 @@ interface SlotElement {
     prependChild: MutateElement;
     appendSibling: MutateElement;
     prependSibling: MutateElement;
+    remove: () => void;
 }
 interface PrivateContext<T> {
     _setProps: (s: StateUpdater<{}>) => void;
@@ -27,15 +28,17 @@ interface DefaultSlotContext<T> extends PrivateContext<T> {
     prependChild: MutateElement;
     appendSibling: MutateElement;
     prependSibling: MutateElement;
+    remove: () => void;
     onRender: (cb: (next: T & DefaultSlotContext<T>) => void) => void;
     onChange: (cb: (next: T & DefaultSlotContext<T>) => void) => void;
 }
 type Context<T> = T & ThisType<DefaultSlotContext<T>>;
 export type SlotProps<T = any> = (ctx: T & DefaultSlotContext<T>, element: HTMLDivElement | null) => Promise<void> | void;
 export type SlotMethod<P = any> = (callback: (next: unknown, state: State) => P) => void;
-export declare function useSlot<K, V extends HTMLElement>(name: string, context?: Context<K>, callback?: SlotProps<K>, children?: ComponentChildren, render?: Function, contentTag?: keyof HTMLElementTagNameMap): [RefObject<V>, Record<string, any>];
+export declare function useSlot<K, V extends HTMLElement>(name: string, context?: Context<K>, callback?: SlotProps<K>, children?: ComponentChildren, render?: Function, contentTag?: keyof HTMLElementTagNameMap): [RefObject<V>, Record<string, any>, 'loading' | 'pending' | 'ready'];
 interface SlotPropsComponent<T> extends Omit<HTMLAttributes<HTMLElement>, 'slot'> {
     name: string;
+    lazy?: boolean;
     slot?: SlotProps<T>;
     context?: Context<T>;
     render?: (props: Record<string, any>) => VNode | VNode[];
@@ -43,7 +46,7 @@ interface SlotPropsComponent<T> extends Omit<HTMLAttributes<HTMLElement>, 'slot'
     contentTag?: keyof HTMLElementTagNameMap;
     children?: ComponentChildren;
 }
-export declare function Slot<T>({ name, context, slot, children, render, slotTag, contentTag, ...props }: Readonly<SlotPropsComponent<T>>): VNode<{
+export declare function Slot<T>({ name, lazy, context, slot, children, render, slotTag, contentTag, ...props }: Readonly<SlotPropsComponent<T>>): VNode<{
     ref: RefObject<HTMLElement>;
     'data-slot': string;
     [key: string]: any;

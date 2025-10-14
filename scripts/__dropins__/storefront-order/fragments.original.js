@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-const o=`
+const s=`
   fragment REQUEST_RETURN_ORDER_FRAGMENT on Return {
     __typename
     uid
@@ -8,7 +8,7 @@ const o=`
     number
     created_at
   }
-`,e=`
+`,_=`
   fragment ADDRESS_FRAGMENT on OrderAddress {
     city
     company
@@ -26,7 +26,7 @@ const o=`
     telephone
     vat_id
   }
-`,_=`
+`,r=`
   fragment PRODUCT_DETAILS_FRAGMENT on ProductInterface {
     __typename
     canonical_url
@@ -53,7 +53,7 @@ const o=`
       }
     }
   }
-`,r=`
+`,t=`
   fragment PRICE_DETAILS_FRAGMENT on OrderItemInterface {
     prices {
       price_including_tax {
@@ -74,7 +74,7 @@ const o=`
       }
     }
   }
-`,t=`
+`,n=`
   fragment GIFT_CARD_DETAILS_FRAGMENT on GiftCardOrderItem {
     ...PRICE_DETAILS_FRAGMENT
     gift_message {
@@ -88,7 +88,7 @@ const o=`
       message
     }
   }
-`,n=`
+`,a=`
   fragment ORDER_ITEM_DETAILS_FRAGMENT on OrderItemInterface {
     gift_wrapping {
       ...GIFT_WRAPPING_FRAGMENT
@@ -122,7 +122,7 @@ const o=`
     }
     ...PRICE_DETAILS_FRAGMENT
   }
-`,a=`
+`,E=`
   fragment BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT on BundleOrderItem {
     ...PRICE_DETAILS_FRAGMENT
     bundle_options {
@@ -134,7 +134,7 @@ const o=`
       }
     }
   }
-`,E=`
+`,R=`
   fragment DOWNLOADABLE_ORDER_ITEMS_FRAGMENT on DownloadableOrderItem {
     product_name
     downloadable_links {
@@ -157,8 +157,8 @@ const o=`
     ...DOWNLOADABLE_ORDER_ITEMS_FRAGMENT
   }
 
-  ${E}
-`,R=`
+  ${R}
+`,c=`
   fragment ORDER_SUMMARY_FRAGMENT on OrderTotal {
     gift_options {
       gift_wrapping_for_items {
@@ -230,7 +230,7 @@ const o=`
       label
     }
   }
-`,c=`
+`,T=`
   fragment RETURNS_FRAGMENT on Returns {
     __typename
     items {
@@ -271,7 +271,7 @@ const o=`
       }
     }
   }
-`,T=`
+`,u=`
   fragment APPLIED_GIFT_CARDS_FRAGMENT on ApplyGiftCardToOrder {
     __typename
     code
@@ -280,7 +280,7 @@ const o=`
       currency
     }
   }
-`,u=`
+`,o=`
   fragment GIFT_MESSAGE_FRAGMENT on GiftMessage {
     __typename
     from
@@ -300,7 +300,7 @@ const o=`
       currency
     }
   }
-`,d=`
+`,e=`
   fragment GUEST_ORDER_FRAGMENT on CustomerOrder {
     printed_card_included
     gift_receipt_included
@@ -339,6 +339,7 @@ const o=`
     }
     shipments {
       id
+      number
       tracking {
         title
         number
@@ -382,16 +383,41 @@ const o=`
     }
   }
   ${_}
-  ${r}
-  ${t}
-  ${n}
-  ${a}
-  ${R}
-  ${e}
-  ${c}
-  ${i}
-  ${A}
   ${u}
+  ${E}
+  ${n}
+  ${o}
+  ${A}
+  ${a}
+  ${i}
+  ${c}
+  ${t}
+  ${r}
   ${T}
-`;export{e as ADDRESS_FRAGMENT,T as APPLIED_GIFT_CARDS_FRAGMENT,a as BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT,E as DOWNLOADABLE_ORDER_ITEMS_FRAGMENT,t as GIFT_CARD_DETAILS_FRAGMENT,u as GIFT_MESSAGE_FRAGMENT,A as GIFT_WRAPPING_FRAGMENT,d as GUEST_ORDER_FRAGMENT,n as ORDER_ITEM_DETAILS_FRAGMENT,i as ORDER_ITEM_FRAGMENT,R as ORDER_SUMMARY_FRAGMENT,r as PRICE_DETAILS_FRAGMENT,_ as PRODUCT_DETAILS_FRAGMENT,o as REQUEST_RETURN_ORDER_FRAGMENT,c as RETURNS_FRAGMENT};
+`,d=`
+  fragment PLACE_ORDER_FRAGMENT on PlaceOrderOutput {
+    errors {
+      code
+      message
+    }
+    orderV2 {
+      ...GUEST_ORDER_FRAGMENT
+    }
+  }
+
+  ${e}
+`,l=`
+  fragment PLACE_NEGOTIABLE_QUOTE_ORDER_FRAGMENT on PlaceNegotiableQuoteOrderOutput {
+    # TODO: When errors prop is available in the response, use it to handle errors
+    # errors {
+    #   code
+    #   message
+    # }
+    orderV2 {
+      ...GUEST_ORDER_FRAGMENT
+    }
+  }
+
+  ${e}
+`;export{_ as ADDRESS_FRAGMENT,u as APPLIED_GIFT_CARDS_FRAGMENT,E as BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT,R as DOWNLOADABLE_ORDER_ITEMS_FRAGMENT,n as GIFT_CARD_DETAILS_FRAGMENT,o as GIFT_MESSAGE_FRAGMENT,A as GIFT_WRAPPING_FRAGMENT,e as GUEST_ORDER_FRAGMENT,a as ORDER_ITEM_DETAILS_FRAGMENT,i as ORDER_ITEM_FRAGMENT,c as ORDER_SUMMARY_FRAGMENT,l as PLACE_NEGOTIABLE_QUOTE_ORDER_FRAGMENT,d as PLACE_ORDER_FRAGMENT,t as PRICE_DETAILS_FRAGMENT,r as PRODUCT_DETAILS_FRAGMENT,s as REQUEST_RETURN_ORDER_FRAGMENT,T as RETURNS_FRAGMENT};
 //# sourceMappingURL=fragments.js.map

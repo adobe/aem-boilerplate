@@ -8,6 +8,8 @@ import {
   setFetchGraphQlHeader,
 } from '@dropins/tools/fetch-graphql.js';
 import * as authApi from '@dropins/storefront-auth/api.js';
+import { initializers } from '@dropins/tools/initializer.js';
+import { isAemAssetsEnabled } from '@dropins/tools/lib/aem/assets.js';
 import { fetchPlaceholders } from '../commerce.js';
 
 export const getUserTokenCookie = () => getCookie('auth_dropin_user_token');
@@ -31,6 +33,20 @@ const persistCartDataInSession = (data) => {
   }
 };
 
+const setupAemAssetsImageParams = () => {
+  if (isAemAssetsEnabled()) {
+    // Convert decimal values to integers for AEM Assets compatibility
+    initializers.setImageParamKeys({
+      width: (value) => ['width', Math.floor(value)],
+      height: (value) => ['height', Math.floor(value)],
+      quality: 'quality',
+      auto: 'auto',
+      crop: 'crop',
+      fit: 'fit',
+    });
+  }
+};
+
 export default async function initializeDropins() {
   const init = async () => {
     // Set auth headers on authenticated event
@@ -47,7 +63,10 @@ export default async function initializeDropins() {
     // Event Bus Logger
     events.enableLogger(true);
     // Set Fetch Endpoint (Global)
-    setEndpoint(getConfigValue('commerce-core-endpoint'));
+    setEndpoint(getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint'));
+
+    // Set up AEM Assets image parameter conversion
+    setupAemAssetsImageParams();
 
     // Fetch global placeholders
     await fetchPlaceholders('placeholders/global.json');
@@ -62,7 +81,7 @@ export default async function initializeDropins() {
       // Recaptcha
       await import('@dropins/tools/recaptcha.js').then((recaptcha) => {
         recaptcha.enableLogger(true);
-        recaptcha.setEndpoint(getConfigValue('commerce-core-endpoint'));
+        recaptcha.setEndpoint(getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint'));
         return recaptcha.setConfig();
       });
     });

@@ -7,7 +7,7 @@ import { AuthCombine } from '@dropins/storefront-auth/containers/AuthCombine.js'
 import { events } from '@dropins/tools/event-bus.js';
 import Wishlist from '@dropins/storefront-wishlist/containers/Wishlist.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
-import { commerceEndpointWithQueryParams, rootLink } from '../../scripts/commerce.js';
+import { commerceEndpointWithQueryParams, rootLink, getProductLink } from '../../scripts/commerce.js';
 import '../../scripts/initializers/wishlist.js';
 import { readBlockConfig } from '../../scripts/aem.js';
 
@@ -76,7 +76,7 @@ export default async function decorate(block) {
   await wishlistRenderer.render(Wishlist, {
     routeEmptyWishlistCTA: startShoppingURL ? () => rootLink(startShoppingURL) : undefined,
     moveProdToCart: cartApi.addProductsToCart,
-    routeProdDetailPage: (product) => rootLink(`/products/${product.urlKey}/${product.sku}`),
+    routeProdDetailPage: (product) => getProductLink(product.urlKey, product.sku),
     onLoginClick: showAuthModal,
     getProductData: pdpApi.getProductData,
     getRefinedProduct: pdpApi.getRefinedProduct,

@@ -15,6 +15,7 @@
  * from Adobe.
  *******************************************************************/
 export declare const shippingAddressFixture: {
+    uid: string;
     firstname: string;
     lastname: string;
     company: null;
@@ -33,7 +34,7 @@ export declare const shippingAddressFixture: {
         label: string;
     };
     telephone: string;
-    custom_attributes: {}[];
+    custom_attributes: never[];
     available_shipping_methods: {
         amount: {
             currency: import('../../../__generated__/types').CurrencyEnum;

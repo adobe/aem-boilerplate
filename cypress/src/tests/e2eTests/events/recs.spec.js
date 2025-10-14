@@ -12,7 +12,7 @@ import { expectsEventWithContext } from "../../../assertions";
  *
  */
 // Skipping until events are updated with ticket https://jira.corp.adobe.com/browse/COMOPT-421
-const RECS_URL = "/products/play-create-repeat-crewneck/ADB388";
+const RECS_URL = "/products/play-create-repeat-crewneck/adb388";
 it(
   "api-request-sent, api-response-received, unit-impression-render",
   { tags: ["@skipSaas", "@skipPaas"] },

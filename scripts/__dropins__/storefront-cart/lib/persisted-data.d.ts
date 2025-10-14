@@ -8,4 +8,6 @@ export declare function setEstimatedShippingLocation(data: {
 export declare function getEstimatedShippingLocation(): {
     [key: string]: string;
 } | null;
+export declare function setAuthenticatedCart(isAuthenticated: boolean): void;
+export declare function getAuthenticatedCart(): boolean;
 //# sourceMappingURL=persisted-data.d.ts.map

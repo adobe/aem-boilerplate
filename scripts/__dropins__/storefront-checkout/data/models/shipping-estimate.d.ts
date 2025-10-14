@@ -1,4 +1,4 @@
-import { Price, ShippingMethod } from '.';
+import { Money, ShippingMethod } from '.';
 
 export interface PartialShippingAddress {
     countryCode: string;
@@ -8,11 +8,11 @@ export interface PartialShippingAddress {
     regionId?: number;
 }
 export interface ShippingEstimateShippingMethod {
-    amount: Price;
+    amount: Money;
     carrierCode: string;
     methodCode: string;
-    amountExclTax?: Price;
-    amountInclTax?: Price;
+    amountExclTax?: Money;
+    amountInclTax?: Money;
 }
 export interface ShippingEstimate {
     address: PartialShippingAddress;

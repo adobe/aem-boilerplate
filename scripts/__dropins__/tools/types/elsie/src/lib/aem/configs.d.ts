@@ -23,7 +23,9 @@ declare function resetConfig(): void;
  * @param {Object} [configObj=config] - The config object.
  * @returns {string} - The root path.
  */
-declare function getRootPath(configObj?: Config | null): string;
+declare function getRootPath(configObj?: Config | null, options?: {
+    match?: (key: string) => boolean;
+}): string;
 /**
  * Get list of root paths from public config
  * @returns {Array} - The list of root paths.
@@ -43,9 +45,14 @@ declare function isMultistore(): boolean;
 declare function getHeaders(scope: string): Record<string, string>;
 /**
  * Initializes the configuration system.
+ * @param {Object} configObj - The config object.
+ * @param {Object} [options] - The options object.
+ * @param {Function} [options.match] - The function to match the path to the config.
  * @returns {Object} The initialized root configuration
  */
-declare function initializeConfig(configObj: Config): ConfigRoot;
+declare function initializeConfig(configObj: Config, options?: {
+    match?: (key: string) => boolean;
+}): ConfigRoot;
 /**
  * Retrieves a configuration value.
  *

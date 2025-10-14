@@ -1,5 +1,5 @@
-import { GetCartQuery } from '../../__generated__/types';
 import { PaymentMethod } from '../models/payment-method';
+import { GetCartQuery } from '../../__generated__/types';
 
 type SelectedPaymentMethod = NonNullable<GetCartQuery['cart']>['selected_payment_method'];
 type AvailablePaymentMethods = NonNullable<GetCartQuery['cart']>['available_payment_methods'];

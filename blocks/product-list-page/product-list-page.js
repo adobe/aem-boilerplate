@@ -16,7 +16,7 @@ import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { events } from '@dropins/tools/event-bus.js';
 // AEM
 import { readBlockConfig } from '../../scripts/aem.js';
-import { fetchPlaceholders, rootLink } from '../../scripts/commerce.js';
+import { fetchPlaceholders, getProductLink } from '../../scripts/commerce.js';
 
 // Initializers
 import '../../scripts/initializers/search.js';
@@ -97,7 +97,7 @@ export default async function decorate(block) {
       UI.render(Button, {
         children: labels.Global?.AddProductToCart,
         icon: Icon({ source: 'Cart' }),
-        href: rootLink(`/products/${product.urlKey}/${product.sku}`),
+        href: getProductLink(product.urlKey, product.sku),
         variant: 'primary',
       })(button);
       return button;
@@ -138,12 +138,12 @@ export default async function decorate(block) {
     provider.render(Facets, {})($facets),
     // Product List
     provider.render(SearchResults, {
-      routeProduct: (product) => rootLink(`/products/${product.urlKey}/${product.sku}`),
+      routeProduct: (product) => getProductLink(product.urlKey, product.sku),
       slots: {
         ProductImage: (ctx) => {
           const { product, defaultImageProps } = ctx;
           const anchorWrapper = document.createElement('a');
-          anchorWrapper.href = rootLink(`/products/${product.urlKey}/${product.sku}`);
+          anchorWrapper.href = getProductLink(product.urlKey, product.sku);
 
           tryRenderAemAssetsImage(ctx, {
             alias: product.sku,

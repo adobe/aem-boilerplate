@@ -222,3 +222,48 @@ export const fillGiftOptiosFormEmpty = (className) => {
     .should('have.value', '')
     .blur();
 };
+
+export const createAddress = (address, isValid = true) => {
+  cy.get(fields.fieldUserFirstName).clear().type(address.firstName);
+  cy.get(fields.fieldUserLastName).clear().type(address.lastName);
+  cy.get(fields.fieldUserStreet).clear().type(address.street);
+  cy.get(fields.fieldUserStreet2).clear().type(address.streetMultiline_2);
+  cy.get(fields.fieldUserSelectCountry).select(address.countryCode);
+  cy.get(fields.fieldUserTextRegion).clear().type(address.region);
+  cy.get(fields.fieldUserCity).clear().type(address.city);
+  cy.get(fields.fieldUserPhone).clear().type(address.telephone);
+  cy.get(fields.fieldUserPostCode).clear().type(address.postcode);
+  cy.get(fields.fieldUserVatId).clear().type(address.vatId);
+  cy.get(fields.authFormUserCheckBoxShipping).then(($checkbox) => {
+    $checkbox.prop('checked', address.defaultShipping);
+  });
+};
+
+export const inputSearchString = (searchString) => {
+  cy.get(fields.searchIcon).click();
+  cy.get(fields.searchField)
+    .should("be.visible")
+    .type(searchString);
+};
+
+export const editProductOptions = (selectedOption, updateProductOptionTo) => {
+  cy.contains('Edit').click();
+  cy.get('.modal-content').should('be.visible');
+  cy.get('select').eq(1)
+    .find('option:selected')
+    .should('have.text', selectedOption);
+  cy.get(".dropin-incrementer__increase-button").eq(1).click();
+  cy.get(".dropin-incrementer__input").eq(1).should("have.value", "2");
+  cy.get('select').eq(1).select(updateProductOptionTo);
+  cy.get('select').eq(1)
+    .find('option:selected')
+    .should('have.text', updateProductOptionTo);
+  cy.contains('Update in Cart').should('be.visible').click();
+}
+
+export const typeInFieldBasedOnText = (textToSearch, enterInput) => {
+  cy.contains(textToSearch)
+    .parent()
+    .find('input')
+    .type(enterInput);
+}

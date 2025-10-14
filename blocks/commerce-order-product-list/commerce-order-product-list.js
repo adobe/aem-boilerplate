@@ -6,16 +6,16 @@ import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 
 // Initialize
 import '../../scripts/initializers/order.js';
-import { rootLink } from '../../scripts/commerce.js';
+import { getProductLink } from '../../scripts/commerce.js';
 
 export default async function decorate(block) {
-  const getProductLink = (product) => rootLink(`/products/${product.productUrlKey}/${product.productSku}`);
+  const createProductLink = (product) => getProductLink(product.productUrlKey, product.productSku);
   await orderRenderer.render(OrderProductList, {
     slots: {
       CartSummaryItemImage: (ctx) => {
         const { data, defaultImageProps } = ctx;
         const anchor = document.createElement('a');
-        anchor.href = getProductLink(data);
+        anchor.href = createProductLink(data);
 
         tryRenderAemAssetsImage(ctx, {
           alias: data.product.sku,
@@ -56,6 +56,6 @@ export default async function decorate(block) {
         ctx.appendChild(giftOptions);
       },
     },
-    routeProductDetails: getProductLink,
+    routeProductDetails: createProductLink,
   })(block);
 }

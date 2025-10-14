@@ -119,6 +119,8 @@ export type OrderContext = {
     subtotalIncludingTax: number;
     discountAmount?: number;
     taxAmount?: number;
+    paymentAmount?: number;
+    priceTotal?: number;
 };
 export {};
 //# sourceMappingURL=acdl.d.ts.map

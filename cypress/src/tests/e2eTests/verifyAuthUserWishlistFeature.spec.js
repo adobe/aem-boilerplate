@@ -61,7 +61,7 @@ describe("Verify auth user can manage products across wishlist and cart", () => 
 
     assertWishlistTitleHasLink(
       "Youth tee",
-      "/products/youth-tee/ADB150"
+      "/products/youth-tee/adb150"
     )(".commerce-wishlist-wrapper");
 
     assertWishlistProductImage(Cypress.env("productImageName"))(".commerce-wishlist-wrapper");
@@ -122,7 +122,7 @@ describe("Verify auth user can manage products across wishlist and cart", () => 
     assertWishlistEmptyWithWait();
   });
 
-  it("Successfully add configurable product with all required options to wishlist, move it to cart and return this to wishlist", () => {
+  it("Successfully add configurable product with all required options to wishlist, move it to cart and return this to wishlist", { tags: "@snapPercy" }, () => {
     cy.visit("/customer/create");
     cy.fixture("userInfo").then(({ sign_up }) => {
       signUpUser(sign_up);
@@ -166,12 +166,14 @@ describe("Verify auth user can manage products across wishlist and cart", () => 
 
     assertWishlistTitleHasLink(
       "Configurable product",
-      "/products/cypress-configurable-product-latest-red/CYPRESS456"
+      "/products/cypress-configurable-product-latest-red/cypress456"
     )(".commerce-wishlist-wrapper");
 
     assertWishlistProductImage(Cypress.env('productWithOptionImageNameConfigurable'))(".commerce-wishlist-wrapper");
 
-    assertWishlistItemHasOptions('color', 'red')(".wishlist-wishlist__content");
+    assertWishlistItemHasOptions('Color', 'red')(".wishlist-wishlist__content");
+
+    cy.percyTakeSnapshot('Wishlist page with products');
 
     // Move item to cart with proper waiting
     cy.contains("Move To Cart").should('be.visible').and('not.be.disabled').click();
@@ -273,7 +275,7 @@ describe("Verify auth user can manage products across wishlist and cart", () => 
 
     assertWishlistTitleHasLink(
       "Configurable product",
-      "/products/cypress-configurable-product-latest/CYPRESS456"
+      "/products/cypress-configurable-product-latest/cypress456"
     )(".commerce-wishlist-wrapper");
 
     assertWishlistProductImage(Cypress.env('productImageNameConfigurable'))(".commerce-wishlist-wrapper");
@@ -285,7 +287,7 @@ describe("Verify auth user can manage products across wishlist and cart", () => 
     assertProductDetailPage(
       'Configurable product',
       'CYPRESS456',
-      '/products/cypress-configurable-product-latest/CYPRESS456'
+      '/products/cypress-configurable-product-latest/cypress456'
     );
 
     // Verify item is back in wishlist

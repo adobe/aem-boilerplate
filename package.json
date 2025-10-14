@@ -40,16 +40,16 @@
     "@adobe/magento-storefront-event-collector": "^1.8.0",
     "@adobe/magento-storefront-events-sdk": "^1.8.0",
     "@dropins/storefront-account": "~1.2.0",
-    "@dropins/storefront-auth": "~2.1.1-beta1",
-    "@dropins/storefront-cart": "1.5.1-beta4",
-    "@dropins/storefront-checkout": "~2.1.0-beta3",
+    "@dropins/storefront-auth": "~2.1.1",
+    "@dropins/storefront-cart": "~1.5.1",
+    "@dropins/storefront-checkout": "~2.1.0",
     "@dropins/storefront-order": "~1.4.0",
     "@dropins/storefront-payment-services": "~1.0.2",
-    "@dropins/storefront-pdp": "~1.3.4",
+    "@dropins/storefront-pdp": "~1.3.5",
     "@dropins/storefront-personalization": "~1.0.1",
-    "@dropins/storefront-product-discovery": "~2.0.0",
-    "@dropins/storefront-recommendations": "1.1.1-beta2",
-    "@dropins/storefront-wishlist": "~2.0.1-beta1",
-    "@dropins/tools": "1.5.0-alpha7010"
+    "@dropins/storefront-product-discovery": "~2.1.0",
+    "@dropins/storefront-recommendations": "~1.1.1",
+    "@dropins/storefront-wishlist": "~2.0.1",
+    "@dropins/tools": "~1.5.0"
   }
 }

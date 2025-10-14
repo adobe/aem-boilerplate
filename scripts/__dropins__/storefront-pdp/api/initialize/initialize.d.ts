@@ -6,6 +6,7 @@ type ConfigProps = {
     scope?: string;
     langDefinitions?: Lang;
     defaultLocale?: string;
+    globalLocale?: string;
     sku?: string;
     acdl?: boolean;
     anchors?: string[];

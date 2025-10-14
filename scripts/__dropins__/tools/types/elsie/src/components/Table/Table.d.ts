@@ -3,8 +3,14 @@ import { HTMLAttributes } from 'preact/compat';
 
 type Sortable = 'asc' | 'desc' | true;
 type Column = {
-    key: string;
     label: string;
+    key: string;
+    ariaLabel?: string;
+    sortBy?: Sortable;
+} | {
+    label: VNode<HTMLAttributes<HTMLElement>>;
+    key: string;
+    ariaLabel: string;
     sortBy?: Sortable;
 };
 type RowData = {

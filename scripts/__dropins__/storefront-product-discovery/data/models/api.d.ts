@@ -20,12 +20,14 @@ export interface ViewHistoryRecord {
 }
 export interface SearchFilter {
     attribute: string;
+    contains?: string;
     in?: string[];
     eq?: string;
     range?: {
         from: number;
         to: number;
     };
+    startsWith?: string;
 }
 export interface SortOrder {
     attribute: string;

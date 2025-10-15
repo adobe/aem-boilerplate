@@ -57,6 +57,10 @@ The repository provides the basic structure, blocks, and configuration needed to
 - Maintain responsive design principles
 - Declare styles mobile first, use media queries for tablet and desktop specific styles
 - Use 600px/900px/1200px as breakpoints
+- Ensure all selectors are scoped to the block.
+  - Bad: `.item-list`
+  - Good: `.{blockName} .item-list`   
+- Avoid classes `{blockName}-container` and `{blockName}-wrapper}` as those are used on sections and could be confusing.
 
 ### HTML
 - Use semantic HTML5 elements

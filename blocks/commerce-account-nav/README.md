@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Commerce Account Navigation block renders a navigation menu for customer account pages. It processes tabular data to create multiple navigation items with icons, titles, descriptions, and permission-based visibility. Each item includes active state detection and a collapsible menu toggle. The block integrates with the storefront-auth API to fetch user role permissions for dynamic access control, including special handling for company administrators.
+The Commerce Account Navigation block renders a navigation menu for customer account pages. It processes tabular data to create multiple navigation items with icons, titles, descriptions, and permission-based visibility. Each item includes active state detection and a collapsible menu toggle. The block integrates with the event bus to check user role permissions event emitted by auth dropin for dynamic access control, including special handling for company administrators.
 
 ## Integration
 
@@ -36,27 +36,50 @@ The block processes:
 - **Link**: From the `href` attribute of the `<a>` element
 - **Description**: From the second `<p>` element in the label column
 - **Icon**: From the icon column
-- **Permission**: From the permission column (controls visibility)
+- **Permission**: From the permission column (controls visibility, supports multiple permissions separated by newlines)
 
-### API Integration
+### Permission System
 
-The block uses the `getCustomerRolePermissions()` function from `@dropins/storefront-auth/api.js` to fetch user role permissions. This API handles all caching, error handling, and permission processing internally.
+The block uses the event bus to retrieve user permissions via `'auth/permissions'` event (emitted by auth dropin). The permission system implements a three-state permission model to handle enabled, disabled, and missing permissions.
 
 #### Permission Logic
 
-The block implements a two-tier permission system:
+The block implements a three-state permission system:
 
-1. **Admin Access**: If user has `admin: true` permission, they can access all navigation items regardless of specific permissions
-2. **Standard Access**: If user is not an admin, they can only access items where they have the specific required permission
-3. **Default Permission**: If no specific permission is defined for an item, it defaults to "all" (accessible to everyone)
+1. **Explicitly Disabled Permissions (`false`)**: Navigation items with permissions explicitly set to `false` are hidden for ALL users, including admins. This handles cases like disabled features (e.g., purchase orders disabled at system level).
+
+2. **Granted Permissions (`true`)**: Navigation items are shown if:
+   - User has `admin: true` permission (bypasses specific permission checks), OR
+   - User has the specific permission set to `true`
+
+3. **Missing/Undefined Permissions**: Navigation items are hidden for non-admin users if the permission is not defined (undefined)
+
+4. **Default Permission**: If no specific permission is defined for an item, it defaults to "all" (accessible to everyone)
 
 **Permission Check Flow:**
+
 ```javascript
-// Show item if user is admin OR has specific permission
-if (!permissions.admin && !permissions[permission]) {
-  return; // Hide item
+const permission = "..."; // e.g., "Magento_PurchaseOrder::view_purchase_orders"
+
+// Step 1: Hide if explicitly disabled (applies to everyone, including admins)
+if (permissions[permission] === false) {
+  return; // Skip rendering
 }
+
+// Step 2: Hide if user is not admin AND permission is not granted
+if (!permissions.admin && !permissions[permission]) {
+  return; // Skip rendering
+}
+
+// Otherwise: Show the navigation item
 ```
+
+**Permission States:**
+
+- `permission: true` → Show (if user is admin or has this permission)
+- `permission: false` → Hide (explicitly disabled, even for admins)
+- `permission: undefined` → Hide for non-admins, show for admins
+- `permission: 'all'` (default) → Show for everyone
 
 <!-- ### URL Parameters
 
@@ -87,25 +110,22 @@ No events are emitted by this block. -->
 ### User Interaction Flows
 
 1. **Page Load**: Block initializes, parses header row to determine column structure
-2. **Permission Fetching**: Calls `getCustomerRolePermissions()` API which handles all caching and processing internally
-3. **Permission Filtering**: Each item checks permission column against available permissions using enhanced logic:
-   - Shows item if user has `admin` permission (overrides all other checks)
-   - Shows item if user has the specific required permission
-   - Default permission is 'all' (granted to all users)
+2. **Permission Retrieval**: Retrieves user permissions from auth event bus via `events.lastPayload('auth/permissions')`
+3. **Permission Filtering**: Each item checks its permission requirements using three-state logic:
+   - **Explicitly Disabled (`false`)**: Hides item for ALL users (including admins) when permission is set to `false`
+   - **Admin Override**: Shows item if user has `admin` permission and permission is not explicitly disabled
+   - **Specific Permission**: Shows item if user has the specific permission set to `true`
+   - **Default Permission**: Uses 'all' permission if no specific permission is defined (granted to all users)
 4. **Navigation Item Creation**: For each permitted item, creates a clickable link with:
    - Icon (24px size, only rendered if icon is provided)
    - Title text from link element
    - Description text from second paragraph
    - Active state detection based on URL pathname matching
-5. **Collapsible Menu**: If container has `.commerce-account-nav-container` class, adds toggle button:
-   - Initial state: "Hide Menu" with Minus icon
-   - Toggles container's `--collapsed` modifier class
-   - Button text and icon update dynamically ("Show Menu"/"Hide Menu", "Add"/"Minus")
-6. **Navigation**: Clicking any navigation item navigates to the extracted link URL
+5. **Navigation**: Clicking any navigation item navigates to the extracted link URL
 
 ### Error Handling
 
 - **Missing Column Headers**: Uses `Math.max(0, indexOf() + 1)` to prevent invalid column indexes
 - **Missing Content Elements**: Provides empty string fallbacks for title and description
-- **API Failures**: Handled internally by `getCustomerRolePermissions()` API - may throw errors or return fallback permissions
-- **Permission Processing**: If permissions are unavailable, falls back to default `all: true` behavior
+- **Missing Permissions**: If permissions payload is unavailable from event bus, may cause runtime errors when checking permissions
+- **Permission Processing**: Handles empty or malformed permission text gracefully with default 'all' fallback

@@ -26,11 +26,21 @@ export default async function decorate(block) {
 
   /** Create items */
   $items.forEach(($item) => {
-    /** Permission
-     * Do not render if the user does not have the permission for this item
-     * Default permission is 'all'
-    */
+    /**
+     * Permissions
+     * Skip rendering if the user lacks permission for this item.
+     * Default permission is 'all'.
+     * Note: permissions can be explicitly set to false (disabled feature),
+     * which should hide the item even for admins.
+     */
     const permission = $item.querySelector(`:scope > div:nth-child(${rows.permission})`)?.textContent?.trim() || 'all';
+
+    // Skip if permission is explicitly disabled (false)
+    if (permissions[permission] === false) {
+      return;
+    }
+
+    // Skip if the user is not an admin and permission is not granted
     if (!permissions.admin && !permissions[permission]) {
       return;
     }

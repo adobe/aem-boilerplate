@@ -616,6 +616,78 @@ Don't assume perfect compliance. Authors will vary the structure - design for it
 
 ---
 
+### 6. Use Placeholders for Site-Wide Strings
+
+**The Problem:**
+Blocks often need strings like button labels, error messages, search placeholders, or other UI text. Hardcoding these in JavaScript prevents:
+- Internationalization (supporting multiple languages)
+- Author control over messaging
+- Consistency across the site
+
+**The Solution: Placeholders**
+
+AEM EDS provides a [placeholders pattern](https://www.aem.live/developer/placeholders) for centrally managing site-wide strings.
+
+**How it works:**
+
+1. **Authors create a `placeholders` sheet** with two columns:
+   - Key: Identifier for the string (e.g., `faq-search-placeholder`)
+   - Text: The actual string (e.g., `Search frequently asked questions...`)
+
+2. **System converts to JSON** at `/placeholders.json` (or `/en/placeholders.json` for language-specific)
+
+3. **Blocks fetch placeholders** using `fetchPlaceholders()` from `scripts/placeholders.js`
+
+**Example - FAQ Block:**
+
+Instead of hardcoding:
+```javascript
+// ❌ BAD - Hardcoded strings
+searchInput.placeholder = 'Search FAQs...';
+noResults.textContent = 'No results found';
+```
+
+Use placeholders:
+```javascript
+// ✅ GOOD - Author-controllable strings
+import { fetchPlaceholders } from '../../scripts/placeholders.js';
+
+const placeholders = await fetchPlaceholders();
+searchInput.placeholder = placeholders.faqSearchPlaceholder || 'Search FAQs...';
+noResults.textContent = placeholders.faqNoResults || 'No results found';
+```
+
+**Placeholder Keys:**
+- Keys with spaces/dashes are automatically camelCased: `faq-search-placeholder` → `faqSearchPlaceholder`
+- Use descriptive, namespaced keys: `blockname-purpose` (e.g., `faq-no-results`, `cart-add-button`)
+
+**When to use placeholders:**
+- ✅ UI strings (labels, buttons, messages, placeholders)
+- ✅ Error messages and validation text
+- ✅ Accessibility labels (aria-label)
+- ✅ Any string that might need translation
+- ❌ Content that belongs in the block itself (questions, answers, etc.)
+
+**Setup:**
+
+1. Add `scripts/placeholders.js` (from AEM Block Collection)
+2. Have authors Create `/placeholders.json` in the CMS
+3. Import and use in blocks
+
+**Benefits:**
+- Centralized string management
+- Easy internationalization (separate placeholders per language)
+- Authors control messaging without code changes
+- Consistent terminology across blocks
+
+**Fallbacks:**
+Always provide default values in code for graceful degradation if placeholders don't load:
+```javascript
+const config = placeholders.faqSearchLabel || 'Search FAQs';
+```
+
+---
+
 ## Quick Reference
 
 | Step | Action | Time | Skip? |
@@ -646,6 +718,7 @@ Authors create content using various authoring surfaces (Word, Google Docs, DA, 
 6. **Ask authors what's easier** - don't assume, validate your design
 7. **Use references for proven patterns** - David's Model, Block Collection, existing blocks
 8. **Document the structure** - author guide + developer notes
+9. **Use placeholders for UI strings** - don't hardcode labels, messages, or any text that might need translation
 
 **Why this matters:**
 - Semantic structures work better with AI agents

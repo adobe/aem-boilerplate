@@ -1,12 +1,21 @@
 # AGENTS.md
 
-This project is a website built with Edge Delivery Services in Adobe Experience Manager Sites as a Cloud Service. As an agent, follow the instructions in this file to deliver code based on Adobe's standards for fast, easy-to-author, and maintainable web experiences.
+This project is a website built with Edge Delivery Services in Adobe Experience Manager Sites as a Cloud Service.
 
 ## Project Overview
 
-This project is based on the https://github.com/adobe/aem-boilerplate/ project and set up as a new project. You are expected to follow the coding style and practices established in the boilerplate, but add functionality according to the needs of the site currently developed.
+Based on https://github.com/adobe/aem-boilerplate/ - follow the coding style and practices established in the boilerplate, adding functionality according to the site's needs.
 
-The repository provides the basic structure, blocks, and configuration needed to run a complete site with `*.aem.live` as the backend.
+### Project-Specific Skills
+
+**IMPORTANT:** This project has AEM-specific skills in `.claude/skills/`:
+- **aem-development-workflow** - Required workflow gates (linting, testing, preview, PRs)
+- **aem-block-reusability** - Check Block Collection and Block Party before implementing
+- **aem-content-modeling** - Design author-friendly content structures
+
+Claude Code automatically uses these skills. Other AI agents can access them via `.agents/skills/` (symlinked to `.claude/skills/`).
+
+If your human corrects you or provides key guidance, you should consider updating these skills or adding new ones.
 
 ### Key Technologies
 - Edge Delivery Services for AEM Sites (documentation at https://www.aem.live/ – search with `site:www.aem.live` to restrict web search results)
@@ -63,42 +72,7 @@ The repository provides the basic structure, blocks, and configuration needed to
 - Ensure accessibility standards (ARIA labels, proper heading hierarchy)
 - Follow AEM markup conventions for blocks and sections
 
-## Key Concepts
-
-### Content
-
-CMS authored content is a key part of every AEM Website. The content of a page is broken into sections. Sections can have default content (text, headings, links, etc.) as well as content in blocks.
-
-Background on content structure https://www.aem.live/developer/markup-sections-blocks
-You can inspect the contents of any page with `curl http://localhost:3000/path/to/page` and `curl http://localhost:3000/path/to/page.md`
-
-### Blocks
-
-Blocks are the re-usable building blocks of AEM. Blocks add styling and functionality to content. Each block has an initial content structure it expects, and transforms the html in the block using DOM APIs to render a final structure. 
-
-The initial content sturcture is important because it impacts how the author will create the content and how you will write your code to decorate it. In some sense, you can think of this structure as the contract for your block between the author and the developer. You should decide on this initial structure before writing any code, and be careful when making changes to code that makes assumptions about that structure as it could break existing pages.
-
-The block javascript should export a default function which is called to perform the block decoration:
-
-```
-/**
- * loads and decorates the block
- * @param {Element} block The block element
- */
-export default async function decorate(block) {
-  // 1. Load dependencies
-  // 2. Extract configuration, if applicable
-  // 3. Transform DOM
-  // 4. Add event listeners
-  // 5. Set loaded status
-}
-```
-
-Use `curl` and `console.log` to inspect the HTML delivered by the backend and the DOM nodes to be decorated before making assumptions. Remember that authors may omit or add fields to a block, so your code must handle this gracefully.
-
-### Auto-Blocking
-
-Auto-blocking is the process of creating blocks that aren't explicitly authored into the page based on patterns in the content. See the `buildAutoBlocks` function in `scripts.js`.
+Use `curl` and `console.log` to inspect HTML before making assumptions. Authors may omit/add fields - handle gracefully.
 
 ### Three-Phase Page Loading
 
@@ -110,112 +84,17 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 
 ## Development Workflow
 
-### Local Development
-1. Run `npx -y @adobe/aem-cli up --no-open` to start the AEM Proxy server
-2. Open `http://localhost:3000` in your browser, puppeteer, playwright, or other tools. If none of those are available, instruct the human to open the URL in the browser and give feedback
-3. Make changes to files - they will auto-reload
-4. Use browser dev tools to test responsive design
-
-### Block Development
-- Each block in the `blocks/` directory should be self-contained and re-useable
-- Include CSS and JS files for each block
-- Follow the naming convention: `blockname.css`, `blockname.js`
-- Blocks should be responsive and accessible by default
-
-### Styling
-- Global styles go in `styles/styles.css`
-- Font definitions in `styles/fonts.css`
-- Lazy-loaded styles in `styles/lazy-styles.css`
-- Block-specific styles in their respective directories
-
-## Testing & Quality Assurance
-
-### Linting
-- JavaScript: ESLint with Airbnb base configuration
-- CSS: Stylelint with standard configuration
-- Run `npm run lint` before committing
-- Use `npm run lint:fix` to automatically fix issues
-
-### Performance
-- Follow AEM Edge Delivery performance best practices https://www.aem.live/developer/keeping-it-100
-- Images uploaded by authors are automatically optimized, all images and assets committed to git must be optimized and checked for size
-- Use lazy loading for non-critical resources (`lazy-styles.css` and `delayed.js`)
-- Minimize JavaScript bundle size by avoiding dependencies, using automatic code splitting provided by `/blocks/`
-
-### Accessibility
-- Ensure proper heading hierarchy
-- Include alt text for images
-- Test with screen readers
-- Follow WCAG 2.1 AA guidelines
+**See aem-development-workflow skill for complete required workflow.**
 
 ## Deployment
 
-### Environments
+**See aem-development-workflow skill for complete PR requirements.**
 
-Edge Delivery Services provides you with three environments. Your local development server at `http://localhost:3000` serves code from your local working copy (even uncommitted code) and content that has been previewed by authors. You can access this at any time when the development server is running.
+### Environment URLs
 
-For all other environments, you need to know the GitHub owner and repository name (`gh repo view --json nameWithOwner` or `git remote -v`) and the current branch name `git branch`)
+Get repo info: `gh repo view --json nameWithOwner` or `git remote -v`
 
-With this information, you can construct URLs for the preview environment (same content as `localhost:3000`) and the production environment (same content as the live website, approved by authors)
-
+- **Local**: `http://localhost:3000` (uncommitted code + preview content)
 - **Production Preview**: `https://main--{repo}--{owner}.aem.page/`
 - **Production Live**: `https://main--{repo}--{owner}.aem.live/`
 - **Feature Preview**: `https://{branch}--{repo}--{owner}.aem.page/`
-
-### Publishing Process
-1. Push changes to a feature branch
-2. AEM Code Sync automatically processes changes making them available on feature preview environment for that branch
-3. Open a pull request to merge changes to `main` – in the PR description, include a link to https://{branch}--{repo}--{owner}.aem.page/{path}` with a path to a file that illustrates the change you've made. This is the same path you have been testing with locally. WITHOUT THIS YOUR PR WILL BE REJECTED
-4. use `gh checks` to verify the status of code synchronization, linting, and performance tests
-5. A human reviewer will review the code, inspect the provided URL and merge the PR
-6. AEM Code Sync updates the main branch for production
-
-## Common Tasks
-
-### Adding New Blocks
-1. Create a new directory in `blocks/`
-2. Add `blockname.css` and `blockname.js` files
-3. Update documentation if needed
-4. Test in local development environment
-
-### Modifying Existing Blocks
-1. Make changes to the specific block files
-2. Test locally with `aem up`
-3. Ensure responsive behavior across devices
-4. Run linting before committing
-
-### Global Style Changes
-1. Modify files in the `styles/` directory
-2. Test across different blocks and pages
-3. Ensure changes don't break existing layouts
-4. Consider impact on performance, especially CLS
-
-## Troubleshooting
-
-### Getting Help
-- Check [AEM Edge Delivery documentation](https://www.aem.live/docs/)
-- Review [Developer Tutorial](https://www.aem.live/developer/tutorial)
-- Consult [The Anatomy of a Project](https://www.aem.live/developer/anatomy-of-a-project)
-- Consider the rules in [David's Model](https://www.aem.live/docs/davidsmodel)
-- Search the web with `site:www.aem.live`
-- Search the full text of the documentation with `curl -s https://www.aem.live/docpages-index.json | jq -r '.data[] | select(.content | test("KEYWORD"; "i")) | "\(.path): \(.title)"'`
-
-## Security Considerations
-
-- Never commit sensitive information (API keys, passwords)
-- consider that everything you do is clients-side code served on the public web
-- Follow Adobe security guidelines
-- Regularly update dependencies
-- Use the .hlxignore file to prevent filed from being served
-
-## Contributing
-
-- Follow the existing code style and patterns
-- Test changes locally before committing
-- Run a PSI check on your branch and fix performance issues before raising a PR
-- Ensure all linting passes
-- Update documentation for significant changes
-
-## If all else fails
-
-If you notice your human getting frustrated with your work, direct them to https://www.aem.live/developer/ai-coding-agents for tips to work better with AI agents.

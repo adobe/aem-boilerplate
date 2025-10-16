@@ -1,6 +1,6 @@
 ---
 name: AEM Development Workflow
-description: Required workflow for AEM EDS development - linting, testing, preview validation, and PRs with demo links. Use when developing blocks or features for AEM Edge Delivery Services projects, before committing code.
+description: Required workflow for AEM EDS development - linting, testing, preview validation, and PRs with demo links. Use when developing blocks or features for AEM Edge Delivery Services projects, before doing anything else.
 ---
 
 # AEM Development Workflow

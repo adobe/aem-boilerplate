@@ -15,7 +15,9 @@ Based on https://github.com/adobe/aem-boilerplate/ - follow the coding style and
 
 Claude Code automatically uses these skills because they are symlinked to `.claude/skills`
 
-You should always use these skills when they are applicable. You should read the first few lines (front-matter) or each SKILL.md file to determine if it is applicable to your current task.
+You should always use these skills when they are applicable. If you fail to read and apply the skillls, you are likely to fail at your tasks. 
+
+You should read the first few lines (front-matter) or each SKILL.md file to determine if it is applicable to your current task. You can do that by running `head -n 5 .agents/skills/aem-development-workflow/SKILL.md` to decide which skills are applicable.
 
 If your human corrects you or provides key guidance, you should consider offering to update these skills or add new ones, to avoid the same problems in the future.
 

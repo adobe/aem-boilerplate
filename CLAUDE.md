@@ -1,0 +1,1 @@
+/Users/ssteimer/dev/projects/aem-boilerplate/AGENTS.md

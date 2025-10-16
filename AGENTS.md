@@ -8,14 +8,16 @@ Based on https://github.com/adobe/aem-boilerplate/ - follow the coding style and
 
 ### Project-Specific Skills
 
-**IMPORTANT:** This project has AEM-specific skills in `.claude/skills/`:
+**IMPORTANT:** This project has AEM-specific skills in `.agents/skills/`:
 - **aem-development-workflow** - Required workflow gates (linting, testing, preview, PRs)
 - **aem-block-reusability** - Check Block Collection and Block Party before implementing
 - **aem-content-modeling** - Design author-friendly content structures
 
-Claude Code automatically uses these skills. Other AI agents can access them via `.agents/skills/` (symlinked to `.claude/skills/`).
+Claude Code automatically uses these skills because they are symlinked to `.claude/skills`
 
-If your human corrects you or provides key guidance, you should consider updating these skills or adding new ones.
+You should always use these skills when they are applicable. You should read the first few lines (front-matter) or each SKILL.md file to determine if it is applicable to your current task.
+
+If your human corrects you or provides key guidance, you should consider offering to update these skills or add new ones, to avoid the same problems in the future.
 
 ### Key Technologies
 - Edge Delivery Services for AEM Sites (documentation at https://www.aem.live/ – search with `site:www.aem.live` to restrict web search results)

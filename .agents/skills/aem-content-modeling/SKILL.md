@@ -628,6 +628,8 @@ Blocks often need strings like button labels, error messages, search placeholder
 
 AEM EDS provides a [placeholders pattern](https://www.aem.live/developer/placeholders) for centrally managing site-wide strings.
 
+**Important:** Do not introduce "config" rows or columns in block tables just to house UI strings. Those labels belong in placeholders so authors keep a clean, predictable content structure.
+
 **How it works:**
 
 1. **Authors create a `placeholders` sheet** with two columns:

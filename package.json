@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@adobe/adobe-client-data-layer": "^3.0.1",
+    "@adobe/helix-shared-string": "^2.1.0",
     "@adobe/magento-storefront-event-collector": "^1.8.0",
     "@adobe/magento-storefront-events-sdk": "^1.8.0",
     "@dropins/storefront-account": "~1.2.0",

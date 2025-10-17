@@ -7,6 +7,7 @@ import {
   getListOfRootPaths,
 } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
+import { sanitizeName } from '@adobe/helix-shared-string';
 import { getMetadata } from './aem.js';
 import initializeDropins from './initializers/index.js';
 
@@ -574,8 +575,15 @@ function getSkuFromUrl() {
   return result?.[1];
 }
 
+/**
+ * Sanitizes the product link to allowable characters for EDS.
+ *
+ * @param {string} urlKey - The URL key of the product
+ * @param {string} sku - The SKU of the product
+ * @returns {string} The sanitized product link
+ */
 export function getProductLink(urlKey, sku) {
-  return rootLink(`/products/${urlKey}/${sku}`.toLowerCase());
+  return rootLink(`/products/${sanitizeName(urlKey)}/${sanitizeName(sku)}`);
 }
 
 /**

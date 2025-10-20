@@ -1,159 +1,68 @@
 /* eslint-disable import/no-unresolved */
-import { debounce } from '@dropins/tools/lib.js';
+import { ProgressSpinner, provider as UI } from '@dropins/tools/components.js';
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
+import createModal from '../modal/modal.js';
 
-export function scrollToElement(element) {
-  element.scrollIntoView({ behavior: 'smooth' });
-  element.focus();
-}
+/**
+ * Displays an overlay spinner in the specified container
+ * @param {Object} loaderRef - Ref object to store the spinner component
+ * @param {HTMLElement} $loader - DOM element to render the spinner in
+ */
+export const displayOverlaySpinner = async (loaderRef, $loader) => {
+  if (loaderRef.current) return;
 
-export function isCartEmpty(cart) {
-  return cart ? cart.totalQuantity < 1 : true;
-}
-
-export function isCheckoutEmpty(data) {
-  return data ? data.isEmpty : true;
-}
-
-export function getCartAddress(checkoutData, type) {
-  if (!checkoutData) return null;
-
-  const address = type === 'shipping'
-    ? checkoutData.shippingAddresses?.[0]
-    : checkoutData.billingAddress;
-
-  if (!address) return null;
-
-  return {
-    id: address?.id,
-    city: address.city,
-    company: address?.company,
-    countryCode: address.country?.value,
-    customAttributes: address.customAttributes,
-    fax: address.fax,
-    firstName: address.firstName,
-    lastName: address.lastName,
-    middleName: address.middleName,
-    postcode: address.postCode,
-    prefix: address.prefix,
-    region: {
-      regionCode: address.region?.code,
-      regionId: address.region?.id,
-    },
-    street: address.street,
-    suffix: address.suffix,
-    telephone: address.telephone,
-    vatId: address.vatId,
-  };
-}
-
-export function getCartDeliveryMethod(data) {
-  if (!data) return null;
-  const shippingAddresses = data.shippingAddresses || [];
-  if (shippingAddresses.length === 0) return null;
-  return shippingAddresses[0]?.selectedShippingMethod;
-}
-
-export function getCartPaymentMethod(data) {
-  if (!data) return null;
-  const { selectedPaymentMethod } = data;
-  if (!selectedPaymentMethod || !selectedPaymentMethod?.code) return null;
-
-  return data.selectedPaymentMethod;
-}
-
-export const transformAddressFormValues = (data) => {
-  const isNewAddress = !data?.id;
-
-  const customAttributes = data.customAttributes?.map(({ code, value }) => ({
-    code,
-    value: String(value),
-  }));
-
-  // TODO: implement new address creation
-  return !isNewAddress
-    ? { customerAddressId: data.id }
-    : {
-      address: {
-        city: data.city,
-        company: data?.company,
-        countryCode: data.countryCode,
-        customAttributes,
-        fax: data.fax,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        middleName: data.middleName,
-        postcode: data.postcode,
-        prefix: data.prefix,
-        region: data?.region?.regionCode,
-        regionId: data?.region?.regionId,
-        street: data.street,
-        suffix: data.suffix,
-        telephone: data.telephone,
-        vatId: data.vatId,
-        saveInAddressBook: data.saveAddressBook,
-      },
-    };
+  loaderRef.current = await UI.render(ProgressSpinner, {
+    className: '.checkout__overlay-spinner',
+  })($loader);
 };
 
-let ongoingSetAddressCalls = 0;
-export function setAddressOnCart({ api, debounceMs = 0, placeOrderBtn = null }) {
-  const debouncedApi = debounce((address) => {
-    ongoingSetAddressCalls += 1;
-    api(address)
-      .catch(console.error)
-      .finally(() => {
-        ongoingSetAddressCalls -= 1;
-        if (ongoingSetAddressCalls === 0) {
-          placeOrderBtn?.setProps((prev) => ({ ...prev, disabled: false }));
-        }
-      });
-  }, debounceMs);
+/**
+ * Removes the overlay spinner and cleans up references
+ * @param {Object} loaderRef - Ref object containing the spinner component
+ * @param {HTMLElement} $loader - DOM element containing the spinner
+ */
+export const removeOverlaySpinner = (loaderRef, $loader) => {
+  if (!loaderRef.current) return;
 
-  return ({ data, isDataValid }) => {
-    if (!isDataValid) return;
-    placeOrderBtn?.setProps((prev) => ({ ...prev, disabled: true }));
-    const address = transformAddressFormValues(data);
-    debouncedApi(address);
-  };
-}
+  loaderRef.current.remove();
+  loaderRef.current = null;
+  $loader.innerHTML = '';
+};
 
-export function estimateShippingCost({ api, debounceMs = 0 }) {
-  let prevEstimateShippingData = {};
-  let shouldCancelDebounce = false;
+// Modal state management
+let modal;
 
-  const debouncedApi = debounce((data) => {
-    if (shouldCancelDebounce) return;
+/**
+ * Shows a modal with the specified content
+ * @param {HTMLElement} content - DOM element to display in the modal
+ */
+export const showModal = async (content) => {
+  modal = await createModal([content]);
+  modal.showModal();
+};
 
-    const estimateShippingInputCriteria = {
-      country_code: data.countryCode,
-      region_name: String(data.region.regionCode || ''),
-      region_id: String(data.region.regionId || ''),
-      zip: data.postcode,
-    };
+/**
+ * Removes the currently displayed modal and cleans up references
+ */
+export const removeModal = () => {
+  if (!modal) return;
+  modal.removeModal();
+  modal = null;
+};
 
-    api({ criteria: estimateShippingInputCriteria });
-
-    prevEstimateShippingData = {
-      countryCode: data.countryCode,
-      regionCode: data.region.regionCode,
-      regionId: data.region.regionId,
-      postcode: data.postcode,
-    };
-  }, debounceMs);
-
-  return ({ data, isDataValid }) => {
-    if (isDataValid) {
-      shouldCancelDebounce = true;
-      return;
-    }
-
-    if (
-      prevEstimateShippingData.countryCode === data.countryCode
-      && prevEstimateShippingData.regionCode === data.region.regionCode
-      && prevEstimateShippingData.regionId === data.region.regionId
-      && prevEstimateShippingData.postcode === data.postcode
-    ) return;
-
-    debouncedApi(data);
-  };
+/**
+ * Renders AEM asset images for gift option swatches
+ * @param {Object} ctx - The context object containing imageSwatchContext and defaultImageProps
+ */
+export function swatchImageSlot(ctx) {
+  const { imageSwatchContext, defaultImageProps } = ctx;
+  tryRenderAemAssetsImage(ctx, {
+    alias: imageSwatchContext.label,
+    imageProps: defaultImageProps,
+    wrapper: document.createElement('span'),
+    params: {
+      width: defaultImageProps.width,
+      height: defaultImageProps.height,
+    },
+  });
 }

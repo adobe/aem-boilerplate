@@ -37,6 +37,8 @@ export const CUSTOMER_LOGIN_PATH = `${CUSTOMER_PATH}/login`;
 export const CUSTOMER_ACCOUNT_PATH = `${CUSTOMER_PATH}/account`;
 export const CUSTOMER_FORGOTPASSWORD_PATH = `${CUSTOMER_PATH}/forgotpassword`;
 export const SALES_ORDER_VIEW_PATH = '/sales/order/view/';
+export const CUSTOMER_REQUISITION_LISTS_PATH = `${CUSTOMER_PATH}/requisition-lists`;
+export const CUSTOMER_REQUISITION_LIST_DETAILS_PATH = `${CUSTOMER_PATH}/requisition-list-view`;
 
 // TRACKING URL
 export const UPS_TRACKING_URL = 'https://www.ups.com/track';

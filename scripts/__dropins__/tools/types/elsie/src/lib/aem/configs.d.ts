@@ -23,9 +23,9 @@ declare function resetConfig(): void;
  * @param {Object} [configObj=config] - The config object.
  * @returns {string} - The root path.
  */
-declare function getRootPath(configObj?: Config | null, optionsObj?: {
+declare function getRootPath(configObj?: Config | null, options?: {
     match?: (key: string) => boolean;
-} | null): string;
+}): string;
 /**
  * Get list of root paths from public config
  * @returns {Array} - The list of root paths.
@@ -50,7 +50,7 @@ declare function getHeaders(scope: string): Record<string, string>;
  * @param {Function} [options.match] - The function to match the path to the config.
  * @returns {Object} The initialized root configuration
  */
-declare function initializeConfig(configObj: Config, optionsObj?: {
+declare function initializeConfig(configObj: Config, options?: {
     match?: (key: string) => boolean;
 }): ConfigRoot;
 /**

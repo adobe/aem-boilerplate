@@ -16,7 +16,6 @@ export const selectors = Object.freeze({
     loader: '.checkout__loader',
     heading: '.checkout__heading',
     serverError: '.checkout__server-error',
-    outOfStock: '.checkout__out-of-stock',
     login: '.checkout__login',
     shippingForm: '.checkout__shipping-form',
     billToShipping: '.checkout__bill-to-shipping',
@@ -61,7 +60,6 @@ export function createCheckoutFragment() {
         <div class="checkout__main">
           <div class="checkout__heading ${CHECKOUT_BLOCK}"></div>
           <div class="checkout__server-error ${CHECKOUT_BLOCK}"></div>
-          <div class="checkout__out-of-stock ${CHECKOUT_BLOCK}"></div>
           <div class="checkout__login ${CHECKOUT_BLOCK}"></div>
           <div class="checkout__shipping-form ${CHECKOUT_BLOCK}"></div>
           <div class="checkout__bill-to-shipping ${CHECKOUT_BLOCK}"></div>

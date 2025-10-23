@@ -9,6 +9,7 @@ declare const transformQuoteShippingAddress: (data: ({
     __typename?: "NegotiableQuoteShippingAddress" | undefined;
     city: string;
     company?: string | null | undefined;
+    customer_address_uid?: string | null | undefined;
     fax?: string | null | undefined;
     firstname: string;
     lastname: string;
@@ -49,8 +50,6 @@ declare const transformQuoteShippingAddress: (data: ({
         label: string;
     };
     custom_attributes?: ({
-        __typename?: "AttributeFile" | undefined;
-    } | {
         __typename?: "AttributeSelectedOptions" | undefined;
     } | {
         __typename?: "AttributeValue" | undefined;

@@ -53,7 +53,6 @@ import {
   renderOrderProductList,
   renderOrderStatus,
   renderOrderSummary,
-  renderOutOfStock,
   renderPaymentMethods,
   renderPlaceOrder,
   renderServerError,
@@ -112,7 +111,6 @@ export default async function decorate(block) {
   const $loader = getElement(selectors.checkout.loader);
   const $heading = getElement(selectors.checkout.heading);
   const $serverError = getElement(selectors.checkout.serverError);
-  const $outOfStock = getElement(selectors.checkout.outOfStock);
   const $login = getElement(selectors.checkout.login);
   const $shippingForm = getElement(selectors.checkout.shippingForm);
   const $billToShipping = getElement(selectors.checkout.billToShipping);
@@ -188,7 +186,6 @@ export default async function decorate(block) {
   const [
     _header,
     _serverError,
-    _outOfStock,
     _loginForm,
     _shippingFormSkeleton,
     _billToShipping,
@@ -203,8 +200,6 @@ export default async function decorate(block) {
     renderCheckoutHeader($heading, 'B2B Checkout'),
 
     renderServerError($serverError, $content),
-
-    renderOutOfStock($outOfStock),
 
     renderLoginForm($login),
 

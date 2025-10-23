@@ -42,8 +42,6 @@ export declare const cartFixture: {
             label: string;
         };
         custom_attributes: ({
-            __typename?: "AttributeFile" | undefined;
-        } | {
             __typename?: "AttributeSelectedOptions" | undefined;
         } | {
             __typename?: "AttributeValue" | undefined;
@@ -103,8 +101,6 @@ export declare const cartFixture: {
             label: string;
         };
         custom_attributes: ({
-            __typename?: "AttributeFile" | undefined;
-        } | {
             __typename?: "AttributeSelectedOptions" | undefined;
         } | {
             __typename?: "AttributeValue" | undefined;
@@ -149,6 +145,7 @@ export declare const cartFixture: {
         __typename?: "SelectedPaymentMethod" | undefined;
         code: string;
         title: string;
+        purchase_order_number?: string | null | undefined;
     } | null | undefined;
 } | null | undefined;
 //# sourceMappingURL=cart.d.ts.map

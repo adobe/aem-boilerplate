@@ -63,7 +63,6 @@
 }
 
 /* Hide main containers when there is a server error */
-.checkout__content--error .checkout__out-of-stock,
 .checkout__content--error .checkout__login,
 .checkout__content--error .checkout__shipping-form,
 .checkout__content--error .checkout__bill-to-shipping,
@@ -75,7 +74,6 @@
 }
 
 /* Hide blocks with empty divs */
-.checkout__out-of-stock:has(> :empty),
 .checkout__delivery:has(> div:first-child:empty),
 .checkout__bill-to-shipping:has(> :empty) {
     display: none;

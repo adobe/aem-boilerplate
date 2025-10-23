@@ -9,7 +9,6 @@
 import * as checkoutApi from '@dropins/storefront-checkout/api.js';
 import BillToShippingAddress from '@dropins/storefront-checkout/containers/BillToShippingAddress.js';
 import LoginForm from '@dropins/storefront-checkout/containers/LoginForm.js';
-import OutOfStock from '@dropins/storefront-checkout/containers/OutOfStock.js';
 import PaymentMethods from '@dropins/storefront-checkout/containers/PaymentMethods.js';
 import PlaceOrder from '@dropins/storefront-checkout/containers/PlaceOrder.js';
 import ServerError from '@dropins/storefront-checkout/containers/ServerError.js';
@@ -19,9 +18,6 @@ import { render as CheckoutProvider } from '@dropins/storefront-checkout/render.
 
 // Auth Dropin
 import * as authApi from '@dropins/storefront-auth/api.js';
-import AuthCombine from '@dropins/storefront-auth/containers/AuthCombine.js';
-import SignUp from '@dropins/storefront-auth/containers/SignUp.js';
-import { render as AuthProvider } from '@dropins/storefront-auth/render.js';
 
 // Account Dropin
 import Addresses from '@dropins/storefront-account/containers/Addresses.js';
@@ -29,7 +25,6 @@ import AddressForm from '@dropins/storefront-account/containers/AddressForm.js';
 import { render as AccountProvider } from '@dropins/storefront-account/render.js';
 
 // Cart Dropin
-import * as cartApi from '@dropins/storefront-cart/api.js';
 import CartSummaryList from '@dropins/storefront-cart/containers/CartSummaryList.js';
 import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
 import GiftCards from '@dropins/storefront-cart/containers/GiftCards.js';
@@ -72,10 +67,7 @@ import {
 import { swatchImageSlot } from './utils.js';
 
 // External dependencies
-import {
-  authPrivacyPolicyConsentSlot,
-  rootLink,
-} from '../../scripts/commerce.js';
+import { rootLink } from '../../scripts/commerce.js';
 
 // Constants
 import {
@@ -97,7 +89,6 @@ export const CONTAINERS = Object.freeze({
   // Static containers (rendered in Promise.all)
   CHECKOUT_HEADER: 'checkoutHeader',
   SERVER_ERROR: 'serverError',
-  OUT_OF_STOCK: 'outOfStock',
   LOGIN_FORM: 'loginForm',
   SHIPPING_ADDRESS_FORM_SKELETON: 'shippingAddressFormSkeleton',
   BILL_TO_SHIPPING_ADDRESS: 'billToShippingAddress',
@@ -226,21 +217,6 @@ export const renderServerError = async (container, contentElement) => renderCont
 );
 
 /**
- * Renders out of stock handling with cart navigation and product update options
- * @param {HTMLElement} container - DOM element to render the component in
- * @returns {Promise<Object>} - The rendered out-of-stock component
- */
-export const renderOutOfStock = async (container) => renderContainer(
-  CONTAINERS.OUT_OF_STOCK,
-  async () => CheckoutProvider.render(OutOfStock, {
-    routeCart: () => rootLink('/cart'),
-    onCartProductsUpdate: (items) => {
-      cartApi.updateProductsFromCart(items).catch(console.error);
-    },
-  })(container),
-);
-
-/**
  * Renders the login form for guest checkout with authentication options
  * Uses the existing 'authenticated' event system for decoupled communication
  * @param {HTMLElement} container - DOM element to render the login form in
@@ -362,6 +338,9 @@ export const renderPaymentMethods = async (container, creditCardFormRef) => rend
             enabled: false,
           },
           [PaymentMethodCode.VAULT]: {
+            enabled: false,
+          },
+          [PaymentMethodCode.FASTLANE]: {
             enabled: false,
           },
         },
@@ -543,8 +522,8 @@ export const renderCustomerBillingAddresses = async (container, formRef, data, p
   async () => {
     const cartBillingAddress = getCartAddress(data, 'billing');
 
-    const billingAddressId = cartBillingAddress
-      ? cartBillingAddress?.uid ?? 0
+    const customerBillingAddressUid = cartBillingAddress
+      ? cartBillingAddress?.customerAddressUid ?? 0
       : undefined;
 
     const billingAddressCache = sessionStorage.getItem(BILLING_ADDRESS_DATA_KEY);
@@ -556,7 +535,7 @@ export const renderCustomerBillingAddresses = async (container, formRef, data, p
 
     const storeConfig = checkoutApi.getStoreConfigCache();
 
-    const inputsDefaultValueSet = cartBillingAddress && cartBillingAddress.uid === undefined
+    const inputsDefaultValueSet = cartBillingAddress && cartBillingAddress.customerAddressUid === undefined
       ? transformCartAddressToFormValues(cartBillingAddress)
       : { countryCode: storeConfig.defaultCountry };
 
@@ -576,7 +555,7 @@ export const renderCustomerBillingAddresses = async (container, formRef, data, p
 
     return AccountProvider.render(Addresses, {
       addressFormTitle: 'Bill to new address',
-      defaultSelectAddressId: billingAddressId,
+      defaultSelectAddressId: customerBillingAddressUid,
       formName: BILLING_FORM_NAME,
       forwardFormRef: formRef,
       inputsDefaultValueSet,

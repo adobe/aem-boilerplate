@@ -16,7 +16,7 @@
  ****************************************************************** */
 import { CustomerCompanyInfo } from '@dropins/storefront-company-management/containers/CustomerCompanyInfo.js';
 import { render as companyRenderer } from '@dropins/storefront-company-management/render.js';
-import { checkIsCompanyEnabled } from '@dropins/storefront-company-management/api.js';
+import { companyEnabled } from '@dropins/storefront-company-management/api.js';
 import {
   CUSTOMER_LOGIN_PATH,
   checkIsAuthenticated,
@@ -34,8 +34,8 @@ export default async function decorate(block) {
   }
 
   // Check if company functionality is enabled
-  const companyCheck = await checkIsCompanyEnabled();
-  if (companyCheck.companyEnabled) {
+  const isCompanyEnabled = await companyEnabled();
+  if (isCompanyEnabled) {
     await companyRenderer.render(CustomerCompanyInfo, {})(block);
   }
 }

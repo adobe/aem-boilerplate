@@ -15,5 +15,6 @@
  * from Adobe.
  *******************************************************************/
 export * from './containers';
+export * from './useCompanyContextListener';
 export * from './useInLineAlert';
 //# sourceMappingURL=index.d.ts.map

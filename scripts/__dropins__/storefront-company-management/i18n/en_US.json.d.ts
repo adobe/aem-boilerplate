@@ -3,6 +3,7 @@ declare const _default: {
     "shared": {
       "fields": {
         "companyName": "Company Name",
+        "companyEmail": "Company Email",
         "email": "Email",
         "legalName": "Legal Name",
         "vatTaxId": "VAT/Tax ID",
@@ -19,7 +20,26 @@ declare const _default: {
         "postalCode": "Postal Code",
         "jobTitle": "Job Title",
         "workPhoneNumber": "Work Phone Number",
-        "userRole": "User Role"
+        "userRole": "User Role",
+        "title": "New Company",
+        "companyInformation": "Company Information",
+        "street": "Street Address",
+        "streetLine2": "Street Address Line 2",
+        "postcode": "ZIP/Postal Code",
+        "telephone": "Phone Number",
+        "companyAdmin": "Company Administrator",
+        "adminJobTitle": "Job Title",
+        "adminWorkTelephone": "Work Phone Number",
+        "adminEmail": "Email",
+        "adminFirstname": "First Name",
+        "adminLastname": "Last Name",
+        "adminGender": "Gender",
+        "address": "Address",
+        "submit": "Register Company",
+        "submitting": "Registering...",
+        "required": "Required",
+        "createCompanyError": "Failed to create company. Please try again.",
+        "unexpectedError": "An unexpected error occurred. Please try again."
       },
       "buttons": {
         "edit": "Edit",
@@ -85,6 +105,16 @@ declare const _default: {
         "savingProfile": "Saving company profile..."
       }
     },
+    "CompanyRegistration": {
+      "success": {
+        "pendingApproval": "Thank you! We're reviewing your request and will contact you soon.",
+        "companyDetails": "Company Information"
+      }
+    },
+    "CompanyStructure": {
+      "individualUserMessage": "You don't have a company account yet.",
+      "createAccountCta": "Create a Company Account"
+    },
     "FormText": {
       "requiredFieldError": "This is a required field.",
       "numericError": "Only numeric values are allowed.",
@@ -95,9 +125,14 @@ declare const _default: {
       "phoneError": "Please enter a valid phone number.",
       "postalCodeError": "Please enter a valid postal code.",
       "lengthTextError": "Text length must be between {min} and {max} characters.",
-      "companyNameLengthError": "Company name must be between {min} and {max} characters."
+      "urlError": "Please enter a valid URL",
+      "nameError": "Please enter a valid name",
+      "selectCountry": "Please select a country",
+      "selectRegion": "Please select a region, state or province",
+      "selectCountryFirst": "Please select a country first"
     }
   }
-};
+}
+;
 
 export default _default;

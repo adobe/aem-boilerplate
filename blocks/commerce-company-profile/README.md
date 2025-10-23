@@ -63,7 +63,7 @@ No events are emitted by this block. -->
 ### Authentication and Authorization Flow
 
 - **Authentication Check**: Block first verifies user authentication status using `checkIsAuthenticated()`
-- **Company Functionality Check**: Verifies that B2B company functionality is enabled using `checkIsCompanyEnabled()`
+- **Company Functionality Check**: Verifies that B2B company functionality is enabled using `companyEnabled()`
 - **Company Association Check**: Ensures the authenticated customer has an associated company using `getCompany()`
 - **Redirect Behavior**: 
   - Unauthenticated users → redirected to login page

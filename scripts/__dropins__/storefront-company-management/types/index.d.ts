@@ -16,10 +16,11 @@
  *******************************************************************/
 export * from './companyProfile.types';
 export * from './customerCompanyInfo.types';
-export * from './api/checkIsCompanyEnabled.types';
 export * from './api/getCompany.types';
 export * from './api/updateCompany.types';
 export * from './api/getCountries.types';
 export * from './api/validateCompanyEmail.types';
 export * from './api/getCustomerCompanyInfo.types';
+export * from './api/getStoreConfig.types';
+export * from './form.types';
 //# sourceMappingURL=index.d.ts.map

@@ -23,7 +23,7 @@ import { fetchPlaceholders } from '../commerce.js';
 await initializeDropin(async () => {
   setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('company') }));
 
-  const labels = await fetchPlaceholders('placeholders/company.json');
+  const labels = await fetchPlaceholders('placeholders/company.json').catch(() => ({}));
   const langDefinitions = {
     default: {
       ...labels,

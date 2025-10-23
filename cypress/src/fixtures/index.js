@@ -63,3 +63,6 @@ export const products = {
     sku: 'gift-card-virtual',
   }
 };
+
+// Export company data fixtures
+export * from './companyData';

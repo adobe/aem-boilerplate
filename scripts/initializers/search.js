@@ -9,7 +9,7 @@ import { initializeDropin } from './index.js';
 import { fetchPlaceholders, commerceEndpointWithQueryParams } from '../commerce.js';
 
 await initializeDropin(async () => {
-  setEndpoint(await commerceEndpointWithQueryParams());
+  setEndpoint(await commerceEndpointWithQueryParams(), { inheritHeaders: true });
   setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('cs') }));
 
   const labels = await fetchPlaceholders('placeholders/search.json');

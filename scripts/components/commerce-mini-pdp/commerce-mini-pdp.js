@@ -64,7 +64,7 @@ export default async function createMiniPDP(cartItem, onUpdate, onClose) {
 
   try {
     // Configure PDP API endpoint and headers (same as main PDP initializer)
-    pdpApi.setEndpoint(await commerceEndpointWithQueryParams());
+    pdpApi.setEndpoint(await commerceEndpointWithQueryParams(), { inheritHeaders: true });
     pdpApi.setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('cs') }));
 
     const product = await pdpApi.fetchProductData(sku, {

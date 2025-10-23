@@ -2,12 +2,7 @@
 import { getCookie } from '@dropins/tools/lib.js';
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
-import {
-  removeFetchGraphQlHeader,
-  setEndpoint,
-  setFetchGraphQlHeader,
-} from '@dropins/tools/fetch-graphql.js';
-import * as authApi from '@dropins/storefront-auth/api.js';
+import * as globalFetchGraphQL from '@dropins/tools/fetch-graphql.js';
 import { initializers } from '@dropins/tools/initializer.js';
 import { isAemAssetsEnabled } from '@dropins/tools/lib/aem/assets.js';
 import { fetchPlaceholders } from '../commerce.js';
@@ -18,10 +13,9 @@ export const getUserTokenCookie = () => getCookie('auth_dropin_user_token');
 const setAuthHeaders = (state) => {
   if (state) {
     const token = getUserTokenCookie();
-    setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
+    globalFetchGraphQL.setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
   } else {
-    removeFetchGraphQlHeader('Authorization');
-    authApi.removeFetchGraphQlHeader('Authorization');
+    globalFetchGraphQL.removeFetchGraphQlHeader('Authorization');
   }
 };
 
@@ -63,7 +57,7 @@ export default async function initializeDropins() {
     // Event Bus Logger
     events.enableLogger(true);
     // Set Fetch Endpoint (Global)
-    setEndpoint(getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint'));
+    globalFetchGraphQL.setEndpoint(getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint'), { inheritHeaders: true });
 
     // Set up AEM Assets image parameter conversion
     setupAemAssetsImageParams();
@@ -81,7 +75,6 @@ export default async function initializeDropins() {
       // Recaptcha
       await import('@dropins/tools/recaptcha.js').then((recaptcha) => {
         recaptcha.enableLogger(true);
-        recaptcha.setEndpoint(getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint'));
         return recaptcha.setConfig();
       });
     });

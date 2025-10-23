@@ -14,7 +14,7 @@ import { readBlockConfig } from '../../scripts/aem.js';
 // Initialize
 
 // Set Fetch Endpoint (Service)
-pdpApi.setEndpoint(await commerceEndpointWithQueryParams());
+pdpApi.setEndpoint(await commerceEndpointWithQueryParams(), { inheritHeaders: true });
 
 // Set Fetch Headers (Service)
 pdpApi.setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('cs') }));

@@ -5,7 +5,7 @@ import { initializeDropin } from './index.js';
 import { fetchPlaceholders } from '../commerce.js';
 
 await initializeDropin(async () => {
-  setFetchGraphQlHeaders(await getHeaders('wishlist'));
+  setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('wishlist') }));
 
   const labels = await fetchPlaceholders('placeholders/wishlist.json');
   const langDefinitions = {

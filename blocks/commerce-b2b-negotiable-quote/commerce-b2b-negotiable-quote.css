@@ -1,0 +1,40 @@
+ /* stylelint-disable no-empty-source */
+
+ /* Select shipping information */
+.negotiable-quote__select-shipping-information {
+    margin-top: var(--spacing-medium);
+}
+
+/* Progress spinner container */
+.negotiable-quote__progress-spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.negotiable-quote__progress-spinner-container[hidden] {
+    display: none;
+}
+
+ /* Shipping address list */
+.negotiable-quote__shipping-information-addresses .dropin-header-container__title {
+    font: var(--type-body-2-emphasized-font);
+    letter-spacing: var(--type-body-2-emphasized-letter-spacing);
+}
+
+/* Addresses wrapper */
+.negotiable-quote__shipping-information-addresses .account-addresses-wrapper--select-view {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-small);
+}
+
+/* Address card */
+.negotiable-quote__shipping-information-addresses .dropin-card {
+    height: 100%;
+}
+
+/* Address wrapper footer - takes up an entire flex row by itself */
+.negotiable-quote__shipping-information-addresses .account-addresses-wrapper__footer-section {
+    grid-column: span 2;
+}

@@ -11,7 +11,7 @@ await initializeDropin(async () => {
   const labels = await fetchPlaceholders();
 
   const url = new URL(window.location.href);
-  const quoteId = url.searchParams.get('quoteId');
+  const quoteId = url.searchParams.get('quoteid') || url.searchParams.get('quoteId');
 
   const langDefinitions = {
     default: {

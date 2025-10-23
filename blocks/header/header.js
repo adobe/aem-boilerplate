@@ -441,6 +441,9 @@ export default async function decorate(block) {
             search({
               phrase,
               pageSize,
+              filter: [
+                { attribute: 'visibility', in: ['Search', 'Catalog, Search'] },
+              ],
             }, { scope: 'popover' });
           },
         })(searchForm);

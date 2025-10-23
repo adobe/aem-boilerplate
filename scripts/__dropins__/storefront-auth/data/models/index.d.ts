@@ -20,4 +20,5 @@ export * from './password-reset-email';
 export * from './revoke-customer-token';
 export * from './customer-data';
 export * from './attributes-form';
+export * from './permissions';
 //# sourceMappingURL=index.d.ts.map

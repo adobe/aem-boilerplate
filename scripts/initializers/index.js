@@ -67,6 +67,12 @@ export default async function initializeDropins() {
 
     // Initialize Global Drop-ins
     await import('./auth.js');
+
+    // Set Customer-Group-ID header
+    events.on('auth/customerGroup', (customerGroupId) => {
+      globalFetchGraphQL.setFetchGraphQlHeader('Magento-Customer-Group', customerGroupId);
+    }, { eager: true });
+
     await import('./personalization.js');
 
     import('./cart.js');

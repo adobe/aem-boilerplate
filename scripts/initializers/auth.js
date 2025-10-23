@@ -14,5 +14,13 @@ await initializeDropin(async () => {
     },
   };
 
-  return initializers.mountImmediately(initialize, { langDefinitions });
+  // Default customer group ID for unauthenticated users
+  const DEFAULT_CUSTOMER_GROUP_ID = 'b6589fc6ab0dc82cf12099d1c2d40ab994e8410c';
+
+  return initializers.mountImmediately(initialize, {
+    langDefinitions,
+    customerGroup: {
+      defaultCustomerGroupId: DEFAULT_CUSTOMER_GROUP_ID,
+    },
+  });
 })();

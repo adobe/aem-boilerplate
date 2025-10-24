@@ -1,5 +1,5 @@
-import * as pdpApi from '@dropins/storefront-pdp/api.js';
 import * as cartApi from '@dropins/storefront-cart/api.js';
+import * as pdpApi from '@dropins/storefront-pdp/api.js';
 import { render as wishlistRenderer } from '@dropins/storefront-wishlist/render.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { AuthCombine } from '@dropins/storefront-auth/containers/AuthCombine.js';

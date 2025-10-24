@@ -1,7 +1,7 @@
 .product-details__wrapper {
   display: grid;
   grid-template-columns: repeat(var(--grid-1-columns), 1fr);
-  grid-column-gap: var(--grid-1-gutters);
+  column-gap: var(--grid-1-gutters);
   margin-top: var(--spacing-medium);
 }
 
@@ -74,7 +74,7 @@
 @media (min-width: 900px) {
   .product-details__wrapper {
     grid-template-columns: repeat(var(--grid-3-columns), 1fr);
-    grid-column-gap: var(--grid-3-gutters);
+    column-gap: var(--grid-3-gutters);
     position: relative;
   }
 
@@ -99,7 +99,7 @@
 
   .product-details__configuration {
     grid-template-columns: repeat(var(--grid-1-columns), 1fr);
-    grid-gap: var(--grid-1-gutters);
+    gap: var(--grid-1-gutters);
     margin-top: var(--spacing-xxbig);
   }
 

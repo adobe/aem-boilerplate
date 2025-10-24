@@ -8,13 +8,12 @@ type ConfigProps = {
         header: string;
         tokenPrefix: string;
     };
-    customerGroup?: {
-        defaultCustomerGroupId: string;
-    };
+    onCustomerGroup?: (groupUid: string) => void;
     models?: {
         CustomerModel?: Model<CustomerModel>;
     };
 };
+export declare const DEFAULT_CUSTOMER_GROUP_ID = "b6589fc6ab0dc82cf12099d1c2d40ab994e8410c";
 export declare const initialize: Initializer<ConfigProps>;
 export declare const config: Config<ConfigProps>;
 export {};

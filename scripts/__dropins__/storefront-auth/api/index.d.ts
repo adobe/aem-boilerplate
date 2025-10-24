@@ -29,5 +29,4 @@ export * from './resendConfirmationEmail';
 export * from './createCustomerAddress';
 export * from './verifyToken';
 export * from './getCustomerRolePermissions';
-export * from './getCustomerGroup';
 //# sourceMappingURL=index.d.ts.map

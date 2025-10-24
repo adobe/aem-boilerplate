@@ -1,9 +1,7 @@
 import { ReCaptchaV3Response, PropsFormTypes, ReCaptchaV3Model } from './types/recaptcha.types';
 
 export declare const recaptchaFetchApi: {
-    setEndpoint: (endpoint: string, options?: {
-        inheritHeaders?: boolean | undefined;
-    } | undefined) => void;
+    setEndpoint: (endpoint: string) => void;
     setFetchGraphQlHeader: (key: string, value: string | null) => void;
     getFetchGraphQlHeader: (key: string) => string | null | undefined;
     removeFetchGraphQlHeader: (key: string) => void;

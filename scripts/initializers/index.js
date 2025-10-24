@@ -1,11 +1,9 @@
 // Drop-in Tools
 import { getCookie } from '@dropins/tools/lib.js';
-import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
-import * as globalFetchGraphQL from '@dropins/tools/fetch-graphql.js';
 import { initializers } from '@dropins/tools/initializer.js';
 import { isAemAssetsEnabled } from '@dropins/tools/lib/aem/assets.js';
-import { fetchPlaceholders } from '../commerce.js';
+import { CORE_FETCH_GRAPHQL, CS_FETCH_GRAPHQL, fetchPlaceholders } from '../commerce.js';
 
 export const getUserTokenCookie = () => getCookie('auth_dropin_user_token');
 
@@ -13,9 +11,9 @@ export const getUserTokenCookie = () => getCookie('auth_dropin_user_token');
 const setAuthHeaders = (state) => {
   if (state) {
     const token = getUserTokenCookie();
-    globalFetchGraphQL.setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
+    CORE_FETCH_GRAPHQL.setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
   } else {
-    globalFetchGraphQL.removeFetchGraphQlHeader('Authorization');
+    CORE_FETCH_GRAPHQL.removeFetchGraphQlHeader('Authorization');
   }
 };
 
@@ -56,8 +54,6 @@ export default async function initializeDropins() {
 
     // Event Bus Logger
     events.enableLogger(true);
-    // Set Fetch Endpoint (Global)
-    globalFetchGraphQL.setEndpoint(getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint'), { inheritHeaders: true });
 
     // Set up AEM Assets image parameter conversion
     setupAemAssetsImageParams();
@@ -70,7 +66,7 @@ export default async function initializeDropins() {
 
     // Set Customer-Group-ID header
     events.on('auth/customerGroup', (customerGroupId) => {
-      globalFetchGraphQL.setFetchGraphQlHeader('Magento-Customer-Group', customerGroupId);
+      CS_FETCH_GRAPHQL.setFetchGraphQlHeader('Magento-Customer-Group', customerGroupId);
     }, { eager: true });
 
     await import('./personalization.js');
@@ -80,6 +76,7 @@ export default async function initializeDropins() {
     events.on('aem/lcp', async () => {
       // Recaptcha
       await import('@dropins/tools/recaptcha.js').then((recaptcha) => {
+        recaptcha.setEndpoint(CORE_FETCH_GRAPHQL);
         recaptcha.enableLogger(true);
         return recaptcha.setConfig();
       });

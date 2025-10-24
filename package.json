@@ -50,6 +50,6 @@
     "@dropins/storefront-product-discovery": "~2.1.0",
     "@dropins/storefront-recommendations": "~1.1.1",
     "@dropins/storefront-wishlist": "~2.0.1",
-    "@dropins/tools": "1.6.0-alpha4"
+    "@dropins/tools": "1.6.0-alpha6"
   }
 }

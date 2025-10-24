@@ -1,5 +1,5 @@
-import { setEndpoint, getProductData, getRefinedProduct } from '@dropins/storefront-pdp/api.js';
-import { addProductsToCart } from '@dropins/storefront-cart/api.js';
+import * as pdpApi from '@dropins/storefront-pdp/api.js';
+import * as cartApi from '@dropins/storefront-cart/api.js';
 import { render as wishlistRenderer } from '@dropins/storefront-wishlist/render.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { AuthCombine } from '@dropins/storefront-auth/containers/AuthCombine.js';
@@ -13,7 +13,7 @@ import { readBlockConfig } from '../../scripts/aem.js';
 // Initialize
 
 // Inherit Fetch GraphQL Instance (Catalog Service)
-setEndpoint(CS_FETCH_GRAPHQL);
+pdpApi.setEndpoint(CS_FETCH_GRAPHQL);
 
 const WISHLIST_IMAGE_DIMENSIONS = {
   width: 288,
@@ -71,11 +71,11 @@ export default async function decorate(block) {
 
   await wishlistRenderer.render(Wishlist, {
     routeEmptyWishlistCTA: startShoppingURL ? () => rootLink(startShoppingURL) : undefined,
-    moveProdToCart: addProductsToCart,
+    moveProdToCart: cartApi.addProductsToCart,
     routeProdDetailPage: (product) => getProductLink(product.urlKey, product.sku),
     onLoginClick: showAuthModal,
-    getProductData,
-    getRefinedProduct,
+    getProductData: pdpApi.getProductData,
+    getRefinedProduct: pdpApi.getRefinedProduct,
     slots: {
       image: (ctx) => {
         const { item, defaultImageProps } = ctx;

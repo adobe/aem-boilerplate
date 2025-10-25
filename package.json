@@ -1,7 +1,7 @@
 {
   "name": "@adobe/aem-boilerplate-commerce",
   "private": true,
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Starter project for Adobe Commerce on Edge Delivery Services",
   "scripts": {
     "lint:js": "eslint .",
@@ -26,14 +26,14 @@
   "homepage": "https://github.com/hlxsites/aem-boilerplate-commerce#readme",
   "devDependencies": {
     "@adobe/aem-cli": "^16.5.8",
-    "@babel/eslint-parser": "7.25.9",
+    "@babel/eslint-parser": "7.28.5",
     "@dropins/build-tools": "1.0.1",
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-plugin-import": "2.31.0",
+    "eslint-plugin-import": "2.32.0",
     "husky": "^9.1.7",
-    "stylelint": "16.20.0",
-    "stylelint-config-standard": "38.0.0"
+    "stylelint": "16.25.0",
+    "stylelint-config-standard": "39.0.1"
   },
   "dependencies": {
     "@adobe/adobe-client-data-layer": "^3.0.1",
@@ -53,7 +53,7 @@
     "@dropins/storefront-quote-management": "0.0.1-alpha14",
     "@dropins/storefront-recommendations": "~1.1.1",
     "@dropins/storefront-wishlist": "~2.0.1",
-    "@dropins/tools": "1.6.0-alpha2",
+    "@dropins/tools": "1.6.0-beta1",
     "@dropins/storefront-requisition-list": "0.4.0-beta"
   }
 }

@@ -8,7 +8,6 @@ type ConfigProps = {
         header: string;
         tokenPrefix: string;
     };
-    onCustomerGroup?: (groupUid: string) => void;
     models?: {
         CustomerModel?: Model<CustomerModel>;
     };

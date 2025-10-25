@@ -8,7 +8,7 @@
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  grid-gap: var(--spacing-medium);
+  gap: var(--spacing-medium);
 }
 
 .cards > ul > li {

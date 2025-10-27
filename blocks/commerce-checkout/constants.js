@@ -21,6 +21,7 @@ const ORDER_CONFIRMATION_BLOCK = 'order-confirmation__block';
 const USER_TOKEN_COOKIE_NAME = 'auth_dropin_user_token';
 
 export {
+  // Form and address constants
   ADDRESS_INPUT_DEBOUNCE_TIME,
   BILLING_ADDRESS_DATA_KEY,
   BILLING_FORM_NAME,

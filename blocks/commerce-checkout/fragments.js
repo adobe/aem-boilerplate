@@ -1,7 +1,10 @@
 // eslint-disable-next-line import/no-unresolved
 import { createFragment } from '@dropins/storefront-checkout/lib/utils.js';
 
-import { CHECKOUT_BLOCK } from './constants.js';
+import {
+  CHECKOUT_BLOCK,
+  ORDER_CONFIRMATION_BLOCK,
+} from './constants.js';
 
 /**
  * A frozen, nested object of CSS selectors
@@ -29,6 +32,18 @@ export const selectors = Object.freeze({
     termsAndConditions: '.checkout__terms-and-conditions',
     main: '.checkout__main',
     aside: '.checkout__aside',
+  },
+  orderConfirmation: {
+    header: '.order-confirmation__header',
+    orderStatus: '.order-confirmation__order-status',
+    shippingStatus: '.order-confirmation__shipping-status',
+    customerDetails: '.order-confirmation__customer-details',
+    orderCostSummary: '.order-confirmation__order-cost-summary',
+    giftOptions: '.order-confirmation__gift-options',
+    orderProductList: '.order-confirmation__order-product-list',
+    footer: '.order-confirmation__footer',
+    continueButton: '.order-confirmation-footer__continue-button',
+    contactSupportLink: '.order-confirmation-footer__contact-support-link',
   },
 });
 
@@ -68,4 +83,55 @@ export function createCheckoutFragment() {
       </div>
     </div>
   `);
+}
+
+// =============================================================================
+// ORDER CONFIRMATION
+// =============================================================================
+
+/**
+ * Creates the order confirmation fragment.
+ * @returns {DocumentFragment} The order confirmation fragment.
+ */
+export function createOrderConfirmationFragment() {
+  return createFragment(`
+    <div class="order-confirmation">
+      <div class="order-confirmation__main">
+        <div class="order-confirmation__header ${ORDER_CONFIRMATION_BLOCK}"></div>
+        <div class="order-confirmation__order-status ${ORDER_CONFIRMATION_BLOCK}"></div>
+        <div class="order-confirmation__shipping-status ${ORDER_CONFIRMATION_BLOCK}"></div>
+        <div class="order-confirmation__customer-details ${ORDER_CONFIRMATION_BLOCK}"></div>
+      </div>
+      <div class="order-confirmation__aside">
+        <div class="order-confirmation__order-cost-summary ${ORDER_CONFIRMATION_BLOCK}"></div>
+        <div class="order-confirmation__gift-options ${ORDER_CONFIRMATION_BLOCK}"></div>
+        <div class="order-confirmation__order-product-list ${ORDER_CONFIRMATION_BLOCK}"></div>
+        <div class="order-confirmation__footer ${ORDER_CONFIRMATION_BLOCK}"></div>
+      </div>
+    </div>
+  `);
+}
+
+/**
+ * Creates the order confirmation footer content with support link.
+ * @param {string} supportPath - The support page path for the contact link
+ * @returns {string} The footer HTML content
+ */
+export function createOrderConfirmationFooter(supportPath) {
+  return `
+    <div class="order-confirmation-footer__continue-button"></div>
+    <div class="order-confirmation-footer__contact-support">
+      <p>
+        Need help?
+        <a
+          href="${supportPath}"
+          rel="noreferrer"
+          class="order-confirmation-footer__contact-support-link"
+          data-testid="order-confirmation-footer__contact-support-link"
+        >
+          Contact us
+        </a>
+      </p>
+    </div>
+  `;
 }

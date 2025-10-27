@@ -22,7 +22,7 @@ export default async function decorate(block) {
   };
 
   /** Get permissions */
-  const permissions = events.lastPayload('auth/permissions');
+  const permissions = events.lastPayload('auth/permissions') || {};
 
   /** Create items */
   $items.forEach(($item) => {

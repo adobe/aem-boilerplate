@@ -28,4 +28,5 @@ export * from './allowCompanyRegistration';
 export * from './createCompany';
 export * from './isCompanyUser';
 export * from './isCompanyAdmin';
+export * from './companyRoles';
 //# sourceMappingURL=index.d.ts.map

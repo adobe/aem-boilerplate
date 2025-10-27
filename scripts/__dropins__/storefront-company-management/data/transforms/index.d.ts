@@ -15,6 +15,7 @@
  * from Adobe.
  *******************************************************************/
 export * from './transform-company';
+export * from './transform-company-roles';
 export * from './transform-countries';
 export * from './transform-customer-company-info';
 export * from './transform-store-config';

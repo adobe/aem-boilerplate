@@ -14,9 +14,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './company';
-export * from './company-address';
-export * from './company-role';
-export * from './country';
-export * from './customer-company-info';
+export { EditRoleAndPermission } from './EditRoleAndPermission';
+export type { EditRoleAndPermissionProps } from './EditRoleAndPermission';
 //# sourceMappingURL=index.d.ts.map

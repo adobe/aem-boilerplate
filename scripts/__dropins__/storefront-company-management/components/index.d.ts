@@ -16,9 +16,12 @@
  *******************************************************************/
 export * from './CompanyLoaders';
 export * from './CompanyProfileCard';
+export * from './DeleteRoleModal';
 export * from './EditCompanyProfile';
 export * from './CustomerCompanyInfoCard';
 export * from './CompanyStructureEmpty';
 export * from './CompanyRegistrationForm';
 export * from './CompanyRegistrationSuccess';
+export * from './EditRoleAndPermission';
+export * from './RoleAndPermissionTable';
 //# sourceMappingURL=index.d.ts.map

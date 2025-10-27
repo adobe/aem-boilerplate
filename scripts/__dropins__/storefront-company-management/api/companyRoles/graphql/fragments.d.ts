@@ -14,9 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './company';
-export * from './company-address';
-export * from './company-role';
-export * from './country';
-export * from './customer-company-info';
-//# sourceMappingURL=index.d.ts.map
+export declare const COMPANY_ROLE_FRAGMENT = "\n  fragment CompanyRoleFragment on CompanyRole {\n    id\n    name\n    users_count\n    permissions {\n      id\n      text\n      sort_order\n      children {\n        id\n        text\n        sort_order\n        children {\n          id\n          text\n          sort_order\n          children {\n            id\n            text\n            sort_order\n            children {\n              id\n              text\n              sort_order\n            }\n          }\n        }\n      }\n    }\n  }\n";
+//# sourceMappingURL=fragments.d.ts.map

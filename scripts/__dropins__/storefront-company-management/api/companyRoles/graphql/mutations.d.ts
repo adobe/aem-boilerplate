@@ -14,9 +14,7 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './company';
-export * from './company-address';
-export * from './company-role';
-export * from './country';
-export * from './customer-company-info';
-//# sourceMappingURL=index.d.ts.map
+export declare const CREATE_COMPANY_ROLE: string;
+export declare const UPDATE_COMPANY_ROLE: string;
+export declare const DELETE_COMPANY_ROLE = "\n  mutation DeleteCompanyRole($id: ID!) {\n    deleteCompanyRole(id: $id) {\n      success\n    }\n  }\n";
+//# sourceMappingURL=mutations.d.ts.map

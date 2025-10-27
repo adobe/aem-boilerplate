@@ -14,9 +14,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './company';
-export * from './company-address';
-export * from './company-role';
-export * from './country';
-export * from './customer-company-info';
+export { DeleteRoleModal } from './DeleteRoleModal';
+export type { DeleteRoleModalProps } from './DeleteRoleModal';
 //# sourceMappingURL=index.d.ts.map

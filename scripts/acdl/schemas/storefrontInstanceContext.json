@@ -56,6 +56,9 @@
                 "storefrontTemplate": {
                     "type": "string",
                     "enum": ["EDS"]
+                },
+                "viewId": {
+                    "type": "string"
                 }
             },
             "required": [

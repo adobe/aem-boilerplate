@@ -10,6 +10,7 @@ import { CS_FETCH_GRAPHQL, rootLink, getProductLink } from '../../scripts/commer
 import { readBlockConfig } from '../../scripts/aem.js';
 
 import '../../scripts/initializers/wishlist.js';
+import '../../scripts/initializers/cart.js';
 
 // Initialize
 

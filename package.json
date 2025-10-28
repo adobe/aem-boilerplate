@@ -42,7 +42,7 @@
     "@dropins/storefront-account": "~1.2.0",
     "@dropins/storefront-auth": "2.2.0-alpha013",
     "@dropins/storefront-cart": "~1.5.1",
-    "@dropins/storefront-checkout": "2.2.0-alpha2",
+    "@dropins/storefront-checkout": "^2.2.0-alpha3",
     "@dropins/storefront-company-management": "^1.0.0-beta9",
     "@dropins/storefront-company-switcher": "~1.0.0",
     "@dropins/storefront-order": "~1.5.0-alpha1",
@@ -52,8 +52,8 @@
     "@dropins/storefront-product-discovery": "~2.1.0",
     "@dropins/storefront-quote-management": "0.0.1-alpha15",
     "@dropins/storefront-recommendations": "~1.1.1",
+    "@dropins/storefront-requisition-list": "0.5.0-beta",
     "@dropins/storefront-wishlist": "~2.0.1",
-    "@dropins/tools": "1.6.0-beta1",
-    "@dropins/storefront-requisition-list": "0.5.0-beta"
+    "@dropins/tools": "1.6.0-beta1"
   }
 }

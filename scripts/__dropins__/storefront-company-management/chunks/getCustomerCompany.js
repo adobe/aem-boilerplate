@@ -1,12 +1,12 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{h as i,a as m}from"./fetch-error.js";import{f as l}from"./fetch-graphql.js";const d=o=>{var t,e,c;const n=(t=o==null?void 0:o.data)==null?void 0:t.customer,r=(e=o==null?void 0:o.data)==null?void 0:e.company;if(!n||!r)return null;const a={companyName:(r==null?void 0:r.name)??"",jobTitle:(n==null?void 0:n.job_title)??"",workPhoneNumber:(n==null?void 0:n.telephone)??"",userRole:((c=n==null?void 0:n.role)==null?void 0:c.name)??""};return a.companyName?a:null},h=`
+import{f as l,h as i,a as m}from"./fetch-error.js";const d=`
   query GET_COMPANY_ENABLED {
     storeConfig {
       company_enabled
     }
   }
-`,f=async()=>{var r,a,t;const o=await l(h,{method:"POST"});if((r=o==null?void 0:o.errors)!=null&&r.length)throw new Error(((a=o.errors[0])==null?void 0:a.message)||"Failed to load store configuration");const n=(t=o==null?void 0:o.data)==null?void 0:t.storeConfig;if(!n)throw new Error("Invalid response: missing storeConfig");return!!n.company_enabled},E=`
+`,h=async()=>{var a,r,t;const n=await l(d,{method:"POST"});if((a=n==null?void 0:n.errors)!=null&&a.length)throw new Error(((r=n.errors[0])==null?void 0:r.message)||"Failed to load store configuration");const o=(t=n==null?void 0:n.data)==null?void 0:t.storeConfig;if(!o)throw new Error("Invalid response: missing storeConfig");return!!o.company_enabled},E=n=>{var t,e,c;const o=(t=n==null?void 0:n.data)==null?void 0:t.customer,a=(e=n==null?void 0:n.data)==null?void 0:e.company;if(!o||!a)return null;const r={companyName:(a==null?void 0:a.name)??"",jobTitle:(o==null?void 0:o.job_title)??"",workPhoneNumber:(o==null?void 0:o.telephone)??"",userRole:((c=o==null?void 0:o.role)==null?void 0:c.name)??""};return r.companyName?r:null},f=`
   query GET_CUSTOMER_COMPANY_INFO {
     customer {
       id
@@ -22,5 +22,5 @@ import{h as i,a as m}from"./fetch-error.js";import{f as l}from"./fetch-graphql.j
       name
     }
   }
-`,u=async()=>{var o;try{if(!await f())return null;const r=await l(E,{method:"GET",cache:"no-cache"});return(o=r.errors)!=null&&o.length?i(r.errors):d(r)}catch(n){return console.error("Failed to fetch customer company info:",n),m(n)}};export{f as c,u as g};
+`;async function u(){var n;try{if(!await h())return null;const a=await l(f,{method:"GET",cache:"no-cache"});return(n=a.errors)!=null&&n.length?i(a.errors):E(a)}catch(o){return m(o)}}export{h as c,u as g};
 //# sourceMappingURL=getCustomerCompany.js.map

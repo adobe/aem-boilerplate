@@ -46,6 +46,8 @@ export interface CompanyModel extends Company {
         canViewContacts: boolean;
         canViewPaymentInformation: boolean;
         canViewShippingInformation: boolean;
+        canViewUsers: boolean;
+        canEditUsers: boolean;
         canViewRoles: boolean;
         canManageRoles: boolean;
     };

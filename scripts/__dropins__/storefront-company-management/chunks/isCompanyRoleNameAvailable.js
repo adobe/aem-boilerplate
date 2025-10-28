@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{a,h as i}from"./fetch-error.js";import{f as n}from"./fetch-graphql.js";const s=`
+import{f as a,a as n,h as i}from"./fetch-error.js";const s=`
   fragment CompanyRoleFragment on CompanyRole {
     id
     name
@@ -48,7 +48,7 @@ import{a,h as i}from"./fetch-error.js";import{f as n}from"./fetch-graphql.js";co
     }
   }
   ${s}
-`,P=`
+`,I=`
   query GetCompanyRole($id: ID!) {
     company {
       role(id: $id) {
@@ -93,7 +93,7 @@ import{a,h as i}from"./fetch-error.js";import{f as n}from"./fetch-graphql.js";co
       is_role_name_available
     }
   }
-`,m=e=>{var r;return{id:e.id,text:e.text,sortOrder:e.sort_order,children:(r=e.children)==null?void 0:r.map(m)}},c=e=>({id:e.id,name:e.name,usersCount:e.users_count,permissions:e.permissions.map(m)}),u=e=>({currentPage:e.current_page,pageSize:e.page_size,totalPages:e.total_pages}),y=e=>({items:e.items.map(c),totalCount:e.total_count,pageInfo:u(e.page_info)}),C=e=>{var r,o,t;if((r=e.errors)!=null&&r.length)throw new Error(e.errors[0].message);if(!((t=(o=e.data)==null?void 0:o.company)!=null&&t.roles))throw new Error("Invalid response: missing company roles data");return y(e.data.company.roles)},$=e=>{var r,o,t;if((r=e.errors)!=null&&r.length)throw new Error(e.errors[0].message);if(!((t=(o=e.data)==null?void 0:o.company)!=null&&t.role))throw new Error("Invalid response: missing company role data");return c(e.data.company.role)},R=e=>{var r,o,t;if((r=e.errors)!=null&&r.length)throw new Error(e.errors[0].message);if(!((t=(o=e.data)==null?void 0:o.company)!=null&&t.acl_resources))throw new Error("Invalid response: missing ACL resources data");return e.data.company.acl_resources.map(m)},h=e=>{var r,o,t;if((r=e.errors)!=null&&r.length)throw new Error(e.errors[0].message);if(!((t=(o=e.data)==null?void 0:o.createCompanyRole)!=null&&t.role))throw new Error("Invalid response: missing created role data");return c(e.data.createCompanyRole.role)},_=e=>{var r,o,t;if((r=e.errors)!=null&&r.length)throw new Error(e.errors[0].message);if(!((t=(o=e.data)==null?void 0:o.updateCompanyRole)!=null&&t.role))throw new Error("Invalid response: missing updated role data");return c(e.data.updateCompanyRole.role)},g=e=>({name:e.name,permissions:e.permissions}),E=e=>({id:e.id,name:e.name,permissions:e.permissions}),G=async(e={})=>{try{const r=await n(l,{variables:e,method:"GET",cache:"no-cache"});return C(r)}catch(r){return a(r)}},N=async()=>{try{const e=await n(d,{method:"GET",cache:"force-cache"});return R(e)}catch(e){return a(e)}},f=`
+`,m=e=>{var r;return{id:e.id,text:e.text,sortOrder:e.sort_order,children:(r=e.children)==null?void 0:r.map(m)}},c=e=>({id:e.id,name:e.name,usersCount:e.users_count,permissions:e.permissions.map(m)}),u=e=>({currentPage:e.current_page,pageSize:e.page_size,totalPages:e.total_pages}),y=e=>({items:e.items.map(c),totalCount:e.total_count,pageInfo:u(e.page_info)}),C=e=>{var r,o,t;if((r=e.errors)!=null&&r.length)throw new Error(e.errors[0].message);if(!((t=(o=e.data)==null?void 0:o.company)!=null&&t.roles))throw new Error("Invalid response: missing company roles data");return y(e.data.company.roles)},P=e=>{var r,o,t;if((r=e.errors)!=null&&r.length)throw new Error(e.errors[0].message);if(!((t=(o=e.data)==null?void 0:o.company)!=null&&t.role))throw new Error("Invalid response: missing company role data");return c(e.data.company.role)},R=e=>{var r,o,t;if((r=e.errors)!=null&&r.length)throw new Error(e.errors[0].message);if(!((t=(o=e.data)==null?void 0:o.company)!=null&&t.acl_resources))throw new Error("Invalid response: missing ACL resources data");return e.data.company.acl_resources.map(m)},h=e=>{var r,o,t;if((r=e.errors)!=null&&r.length)throw new Error(e.errors[0].message);if(!((t=(o=e.data)==null?void 0:o.createCompanyRole)!=null&&t.role))throw new Error("Invalid response: missing created role data");return c(e.data.createCompanyRole.role)},_=e=>{var r,o,t;if((r=e.errors)!=null&&r.length)throw new Error(e.errors[0].message);if(!((t=(o=e.data)==null?void 0:o.updateCompanyRole)!=null&&t.role))throw new Error("Invalid response: missing updated role data");return c(e.data.updateCompanyRole.role)},g=e=>({name:e.name,permissions:e.permissions}),E=e=>({id:e.id,name:e.name,permissions:e.permissions}),$=async(e={})=>{try{const r=await a(l,{variables:e,method:"GET",cache:"no-cache"});return C(r)}catch(r){return n(r)}},G=async()=>{try{const e=await a(d,{method:"GET",cache:"force-cache"});return R(e)}catch(e){return n(e)}},f=`
   mutation CreateCompanyRole($input: CompanyRoleCreateInput!) {
     createCompanyRole(input: $input) {
       role {
@@ -117,5 +117,5 @@ import{a,h as i}from"./fetch-error.js";import{f as n}from"./fetch-graphql.js";co
       success
     }
   }
-`,v=async e=>{try{const r={input:g(e)},o=await n(f,{variables:r,method:"POST"});return h(o)}catch(r){return a(r)}},x=async e=>{try{const r={input:E(e)},o=await n(w,{variables:r,method:"POST"});return _(o)}catch(r){return a(r)}},T=async e=>{var r;try{const o=await n(A,{variables:e,method:"POST"});return(r=o.errors)!=null&&r.length?i(o.errors):o.data.deleteCompanyRole.success}catch(o){return a(o)}},L=async e=>{var r;try{const o=await n(p,{variables:e,method:"GET",cache:"no-cache"});return(r=o.errors)!=null&&r.length?i(o.errors):o.data.isCompanyRoleNameAvailable.is_role_name_available}catch(o){return a(o)}};export{P as G,N as a,v as c,T as d,G as g,L as i,$ as t,x as u};
+`,N=async e=>{try{const r={input:g(e)},o=await a(f,{variables:r,method:"POST"});return h(o)}catch(r){return n(r)}},v=async e=>{try{const r={input:E(e)},o=await a(w,{variables:r,method:"POST"});return _(o)}catch(r){return n(r)}},x=async e=>{var r;try{const o=await a(A,{variables:e,method:"POST"});return(r=o.errors)!=null&&r.length?i(o.errors):o.data.deleteCompanyRole.success}catch(o){return n(o)}},T=async e=>{var r;try{const o=await a(p,{variables:e,method:"GET",cache:"no-cache"});return(r=o.errors)!=null&&r.length?i(o.errors):o.data.isCompanyRoleNameAvailable.is_role_name_available}catch(o){return n(o)}};export{I as G,G as a,N as c,x as d,$ as g,T as i,P as t,v as u};
 //# sourceMappingURL=isCompanyRoleNameAvailable.js.map

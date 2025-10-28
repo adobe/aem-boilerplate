@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const GET_CUSTOMER_ROLE_PERMISSIONS = "\n  query GET_CUSTOMER_ROLE_PERMISSIONS {\n    customer {\n      role {\n        id\n        name\n        permissions {\n          id\n          children {\n            id\n            children {\n              id\n              children {\n                id\n                children { id }\n              }\n            }\n          }\n        }\n      }\n      status\n    }\n  }\n";
+export declare const GET_CUSTOMER_ROLE_PERMISSIONS = "\n  query GET_CUSTOMER_ROLE_PERMISSIONS {\n    customer {\n      role {\n        id\n        name\n        permissions {\n          id\n          text\n          children {\n            id\n            text\n            children {\n              id\n              text\n              children {\n                id\n                text\n                children { \n                  id \n                  text \n                }\n              }\n            }\n          }\n        }\n      }\n      status\n    }\n  }\n";
 //# sourceMappingURL=getCustomerRole.graphql.d.ts.map

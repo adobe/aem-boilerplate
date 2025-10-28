@@ -21,6 +21,10 @@ const e=`
         lastname
       }
       text
+      attachments {
+          name
+          url
+      }
     }
     template_id
     template_name
@@ -70,29 +74,47 @@ const e=`
         }
       }
       quantity
+      note_from_buyer {
+        created_at
+        creator_id
+        creator_type
+        negotiable_quote_item_uid
+        note
+        note_uid
+        __typename
+      }
+      note_from_seller {
+        created_at
+        creator_id
+        creator_type
+        negotiable_quote_item_uid
+        note
+        note_uid
+        __typename
+      }
       ... on ConfigurableCartItem {
-				configurable_options {
-					option_label
-					value_label
-				}
-			}
-			... on BundleCartItem {
-				bundle_options {
-					label
-					values {
-						label
-						quantity
+        configurable_options {
+          option_label
+          value_label
+        }
+      }
+      ... on BundleCartItem {
+        bundle_options {
+          label
+          values {
+            label
+            quantity
             original_price {
-							currency
-							value
-						}
-						priceV2 {
-							currency
-							value
-						}
-					}
-				}
-			}
+              currency
+              value
+            }
+            priceV2 {
+              currency
+              value
+            }
+          }
+        }
+      }
     }
     history {
       uid
@@ -106,6 +128,11 @@ const e=`
         comment_added {
           comment
         }
+        custom_changes {
+          new_value
+          old_value
+          title
+        }
         statuses {
           changes {
             new_status
@@ -115,6 +142,25 @@ const e=`
         expiration {
           new_expiration
           old_expiration
+        }
+        total {
+          new_price {
+            currency
+            value
+          }
+          old_price {
+            currency
+            value
+          }
+        }
+        products_removed {
+          products_removed_from_catalog
+          products_removed_from_quote {
+            uid
+            name
+            sku
+            quantity
+          }
         }
       }
     }

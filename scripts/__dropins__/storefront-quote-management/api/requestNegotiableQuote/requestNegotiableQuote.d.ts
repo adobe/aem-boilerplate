@@ -5,6 +5,9 @@ export interface RequestNegotiableQuoteInput {
     quoteName: string;
     comment: string;
     isDraft?: boolean;
+    attachments?: {
+        key: string;
+    }[];
 }
 export declare const requestNegotiableQuote: (input: RequestNegotiableQuoteInput) => Promise<NegotiableQuoteModel | null>;
 //# sourceMappingURL=requestNegotiableQuote.d.ts.map

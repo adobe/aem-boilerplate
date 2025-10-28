@@ -15,7 +15,7 @@
  * from Adobe.
  ****************************************************************** */
 import { getFormValues } from '@dropins/tools/lib.js';
-import { checkIsCompanyEnabled, getCompany } from '@dropins/storefront-company-management/api.js';
+import { companyEnabled, getCompany } from '@dropins/storefront-company-management/api.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { InLineAlert, Button, ProgressSpinner } from '@dropins/tools/components.js';
 import { render as negotiableQuoteRenderer } from '@dropins/storefront-quote-management/render.js';
@@ -24,7 +24,6 @@ import { render as accountRenderer } from '@dropins/storefront-account/render.js
 // Containers
 import { Addresses } from '@dropins/storefront-account/containers/Addresses.js';
 import { ManageNegotiableQuote } from '@dropins/storefront-quote-management/containers/ManageNegotiableQuote.js';
-import { ItemsQuoted } from '@dropins/storefront-quote-management/containers/ItemsQuoted.js';
 import { QuotesListTable } from '@dropins/storefront-quote-management/containers/QuotesListTable.js';
 
 // API
@@ -52,8 +51,8 @@ const checkPermissions = async () => {
   }
 
   // Check if company functionality is enabled
-  const companyCheck = await checkIsCompanyEnabled();
-  if (!companyCheck.companyEnabled) {
+  const isEnabled = await companyEnabled();
+  if (!isEnabled) {
     window.location.href = rootLink(CUSTOMER_ACCOUNT_PATH);
   }
 
@@ -88,14 +87,6 @@ export default async function decorate(block) {
     block.setAttribute('data-quote-view', 'manage');
     await negotiableQuoteRenderer.render(ManageNegotiableQuote, {
       slots: {
-        QuoteContent: (ctx) => {
-          const itemsQuoted = document.createElement('div');
-          itemsQuoted.classList.add('negotiable-quote__items-quoted');
-
-          negotiableQuoteRenderer.render(ItemsQuoted, {})(itemsQuoted);
-
-          ctx.replaceWith(itemsQuoted);
-        },
         Footer: (ctx) => {
           const checkoutButtonContainer = document.createElement('div');
           checkoutButtonContainer.classList.add('negotiable-quote__checkout-button-container');

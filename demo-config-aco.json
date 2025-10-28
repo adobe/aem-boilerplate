@@ -19,11 +19,6 @@
         "storefront-template": "Other",
         "view-id": "0d3eebf7-b5fb-4904-9ccf-f35fcc61862b",
         "locale": "en-US"
-      },
-      "plugins": {
-        "picker": {
-           "rootCategory": "2"
-         }
       }
     }
   }

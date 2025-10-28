@@ -14,7 +14,14 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export { REQUISITION_LIST_ITEMS_FRAGMENT } from './fragments/RequisitionListItemsFragment.graphql';
-export { REQUISITION_LIST_FRAGMENT } from './fragments/RequisitionListFragment.graphql';
-export { PRODUCT_FRAGMENT } from './fragments/ProductFragment.graphql';
-//# sourceMappingURL=fragments.d.ts.map
+export interface Alert {
+    type: string;
+    description: string;
+    action?: string;
+}
+export declare function useRequisitionListAlert(translationsOverride?: Record<string, string>): {
+    alert: Alert | null;
+    setAlert: import('preact/hooks').Dispatch<import('preact/hooks').StateUpdater<Alert | null>>;
+    handleRequisitionListAlert: (payload: RequisitionListActionPayload) => () => void;
+};
+//# sourceMappingURL=useRequisitionListAlert.d.ts.map

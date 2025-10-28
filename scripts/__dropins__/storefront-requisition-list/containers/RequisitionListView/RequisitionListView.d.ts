@@ -4,7 +4,6 @@ import { RequisitionList } from '../../data/models/requisitionList';
 
 export interface RequisitionListViewProps extends HTMLAttributes<HTMLDivElement> {
     requisitionList: RequisitionList;
-    routeRequisitionListGrid?: () => string | void;
     /**
      * When true, skips automatic product data fetching on component mount.
      * Used in tests to prevent API calls.
@@ -15,6 +14,9 @@ export interface RequisitionListViewProps extends HTMLAttributes<HTMLDivElement>
      * Defaults to 10.
      */
     pageSize?: number;
+    loadingProducts?: boolean;
+    selectedItems: Set<string>;
+    loadingPage?: boolean;
 }
 export declare const RequisitionListView: Container<RequisitionListViewProps>;
 //# sourceMappingURL=RequisitionListView.d.ts.map

@@ -1,4 +1,4 @@
-import { Product } from '../models/item';
+import { Product } from '../models';
 
 export interface RawProductData {
     __typename: string;

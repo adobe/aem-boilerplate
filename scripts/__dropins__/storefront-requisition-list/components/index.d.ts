@@ -18,6 +18,8 @@ export * from './RequisitionListForm/RequisitionListForm';
 export * from './RequisitionListGridWrapper/RequisitionListGridWrapper';
 export * from './RequisitionListActions/RequisitionListActions';
 export * from './RequisitionListModal/RequisitionListModal';
-export * from './RequisitionListView/RequisitionListView';
 export * from './EmptyList/EmptyList';
+export * from './ProductListTable/ProductListTable';
+export * from './BatchActions/BatchActions';
+export * from './PageSizePicker/PageSizePicker';
 //# sourceMappingURL=index.d.ts.map

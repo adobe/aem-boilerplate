@@ -48,7 +48,7 @@ export default async function initializeDropins() {
     events.on('auth/group-uid', setCustomerGroupHeader, { eager: true });
 
     // Set auth headers on authenticated event
-    events.on('authenticated', setAuthHeaders);
+    events.on('authenticated', setAuthHeaders, { eager: true });
 
     // Cache cart data in session storage
     events.on('cart/data', persistCartDataInSession, { eager: true });

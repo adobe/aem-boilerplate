@@ -1,12 +1,13 @@
-import { getHeaders } from '@dropins/tools/lib/aem/configs.js';
 import { initializers } from '@dropins/tools/initializer.js';
-import { initialize, setFetchGraphQlHeaders } from '@dropins/storefront-cart/api.js';
+import { initialize, setEndpoint } from '@dropins/storefront-cart/api.js';
 import { initializeDropin } from './index.js';
-import { fetchPlaceholders } from '../commerce.js';
+import { CORE_FETCH_GRAPHQL, fetchPlaceholders } from '../commerce.js';
 
 await initializeDropin(async () => {
-  setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('cart') }));
+  // Set Fetch GraphQL (Core)
+  setEndpoint(CORE_FETCH_GRAPHQL);
 
+  // Fetch placeholders
   const labels = await fetchPlaceholders('placeholders/cart.json');
 
   const langDefinitions = {
@@ -15,5 +16,6 @@ await initializeDropin(async () => {
     },
   };
 
+  // Initialize cart
   return initializers.mountImmediately(initialize, { langDefinitions });
 })();

@@ -18,6 +18,7 @@ export interface CustomerModel {
     firstName: string;
     lastName: string;
     email: string;
+    groupUid: string;
     customAttributes?: Record<string, string>[];
     errors?: {
         message: string;

@@ -14,19 +14,10 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export interface getCustomerDataResponse {
-    data: {
-        customer: {
-            firstname: string;
-            lastname: string;
-            email: string;
-            group: {
-                uid: string;
-            };
-        };
-    };
-    errors?: {
-        message: string;
-    }[];
-}
-//# sourceMappingURL=getCustomerData.types.d.ts.map
+/**
+ * Converts a base64 encoded string to a SHA1 hash string
+ * @param base64String - The base64 encoded string to convert
+ * @returns A promise that resolves to the SHA1 hash as a hexadecimal string, or empty string if input is undefined/null/empty or if conversion fails
+ */
+export declare const base64ToSha1: (base64String?: string | null) => Promise<string>;
+//# sourceMappingURL=base64ToSha1.d.ts.map

@@ -289,22 +289,4 @@
     .checkout__place-order {
         margin-top: 0;
     }
-
-    .order-confirmation {
-        grid-template-columns: repeat(var(--grid-1-columns), 1fr);
-        padding-top: 0;
-    }
-
-    .order-confirmation__main,
-    .order-confirmation__aside {
-        row-gap: var(--spacing-medium);
-    }
-
-    .order-confirmation > div {
-        grid-column: 1 / span 4;
-    }
-
-    .order-confirmation__block .dropin-card {
-        border: 0;
-    }
 }

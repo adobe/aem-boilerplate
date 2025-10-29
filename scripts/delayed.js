@@ -27,6 +27,7 @@ async function initAnalytics() {
             websiteCode: analyticsConfig['website-code'],
             websiteId: parseInt(analyticsConfig['website-id'], 10),
             websiteName: analyticsConfig['website-name'],
+            viewId: analyticsConfig['view-id'], // applicable for ACO storefronts
           },
         },
         { eventForwardingContext: { commerce: true, aep: false } },

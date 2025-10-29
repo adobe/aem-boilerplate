@@ -35,6 +35,22 @@ export declare const mockGraphQLResponse: {
                         };
                     };
                     quantity: number;
+                    note_from_buyer: {
+                        created_at: string;
+                        creator_id: number;
+                        creator_type: number;
+                        negotiable_quote_item_uid: string;
+                        note: string;
+                        note_uid: string;
+                    }[];
+                    note_from_seller: {
+                        created_at: string;
+                        creator_id: number;
+                        creator_type: number;
+                        negotiable_quote_item_uid: string;
+                        note: string;
+                        note_uid: string;
+                    }[];
                 }[];
                 prices: {
                     subtotal_excluding_tax: {
@@ -124,6 +140,22 @@ export declare const mockQuoteData: {
             }[];
         };
         quantity: number;
+        note_from_buyer: {
+            created_at: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
+            note: string;
+            note_uid: string;
+        }[];
+        note_from_seller: {
+            created_at: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
+            note: string;
+            note_uid: string;
+        }[];
         configurable_options?: undefined;
         bundle_options?: undefined;
     } | {
@@ -169,6 +201,15 @@ export declare const mockQuoteData: {
             option_label: string;
             value_label: string;
         }[];
+        note_from_buyer: {
+            created_at: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
+            note: string;
+            note_uid: string;
+        }[];
+        note_from_seller: never[];
         bundle_options?: undefined;
     } | {
         product: {
@@ -230,6 +271,22 @@ export declare const mockQuoteData: {
                     value: number;
                 };
             }[];
+        }[];
+        note_from_buyer: {
+            created_at: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
+            note: string;
+            note_uid: string;
+        }[];
+        note_from_seller: {
+            created_at: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
+            note: string;
+            note_uid: string;
         }[];
         configurable_options?: undefined;
     })[];
@@ -331,6 +388,15 @@ export declare const mockNegotiableQuotesResponse: {
                         };
                     };
                     quantity: number;
+                    note_from_buyer: {
+                        created_at: string;
+                        creator_id: number;
+                        creator_type: number;
+                        negotiable_quote_item_uid: string;
+                        note: string;
+                        note_uid: string;
+                    }[];
+                    note_from_seller: never[];
                 }[];
                 prices: {
                     subtotal_excluding_tax: {

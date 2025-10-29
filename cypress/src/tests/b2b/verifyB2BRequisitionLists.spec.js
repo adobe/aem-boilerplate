@@ -48,10 +48,17 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" },  () => {
     // Add product to Existing Requisition List from PDP
     cy.get(fields.requisitionListNamesOnPDP).select('Newly Created Requisition List');
 
+    cy.wait(2000);
+
     // Create a new list and add product to it from PDP
-    cy.get(fields.requisitionListNamesOnPDP).select('Create Requisition List');
+    cy.get(fields.requisitionListNamesOnPDP)
+      .should('contain', 'Create Requisition List')
+      .select('Create Requisition List');
+    cy.wait(1000);
     cy.get(fields.requisitionListFormName).type('Req list created from PDP');
+    cy.wait(1000);
     cy.get(fields.requisitionListFormDescription).type('Another dummy description');
+    cy.wait(1000);
     cy.contains('Save').should('be.visible').click();
 
     // Assert new Requisition List is created and can be selected
@@ -67,10 +74,15 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" },  () => {
     // Add product to Existing Requisition List from PLP
     cy.get(fields.requisitionListNamesOnPDP).eq(1).select('Newly Created Requisition List');
 
+    cy.wait(2000);
+
     // Create a new list and add product to it from PLP
     cy.get(fields.requisitionListNamesOnPDP).eq(1).select('Create Requisition List')
+    cy.wait(1000);
     cy.get(fields.requisitionListFormName).type('Now a Req list from PLP');
+    cy.wait(1000);
     cy.get(fields.requisitionListFormDescription).type('Yet another dummy description');
+    cy.wait(1000);
     cy.contains('Save').should('be.visible').click();
 
     // Assert new Requisition List is created and can be selected
@@ -84,10 +96,13 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" },  () => {
     cy.get(fields.requisitionListItemRow).should('have.length', 3);
 
     // Rename Requisition List
-    cy.get(fields.requisitionListItemActionsRenameButton).eq(1).click();
-    cy.contains('Rename Requisition List').should('be.visible');
+    cy.get(fields.requisitionListItemActionsUpdateButton).eq(1).click();
+    cy.contains('Update Requisition List').should('be.visible');
+    cy.wait(1000);
     cy.get(fields.requisitionListFormName).clear().type('Updated Requisition List');
+    cy.wait(1000);
     cy.get(fields.requisitionListFormDescription).clear().type('Dummy description');
+    cy.wait(1000);
     cy.contains('Save').should('be.visible').click();
     cy.contains('Updated Requisition List').should('be.visible');
 

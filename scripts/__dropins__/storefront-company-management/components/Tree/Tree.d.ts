@@ -29,6 +29,7 @@ export interface TreeProps {
     onSelectedIdsChange?: (ids: Set<string>) => void;
     renderNode: (args: RenderNodeArgs) => any;
     role?: 'tree' | 'list' | 'grid';
+    preserveOrder?: boolean;
     draggable?: (item: TreeItem) => boolean;
     canDrop?: (dragId: string, targetId: string) => boolean;
     onMove?: (args: {
@@ -38,6 +39,7 @@ export interface TreeProps {
     isCheckable?: (item: TreeItem) => boolean;
     checkedIds?: Set<string>;
     onCheckedChange?: (next: Set<string>) => void;
+    biDirectionalChecking?: boolean;
     renderExpander?: (args: {
         expanded: boolean;
         hasChildren: boolean;

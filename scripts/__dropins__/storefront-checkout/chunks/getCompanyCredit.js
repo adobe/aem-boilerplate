@@ -4,6 +4,7 @@ import{d as r}from"./fetch-graphql.js";import"@dropins/tools/lib.js";import"@dro
   query getCompanyCredit {
     company {
       credit {
+        exceed_limit
         available_credit {
           value
           currency

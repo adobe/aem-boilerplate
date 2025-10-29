@@ -151,7 +151,7 @@ export default async function decorate(block) {
   let inlineAlert = null;
   const routeToWishlist = '/wishlist';
 
-  async function renderRequisitionListNamesIfEnabled($container) {
+  async function renderRequisitionListNamesIfEnabled($container, currentOptions = null) {
     const isAuthenticated = checkIsAuthenticated();
     if (!isAuthenticated) {
       $container.innerHTML = '';
@@ -159,16 +159,21 @@ export default async function decorate(block) {
     }
     const isEnabled = await rlApi.isRequisitionListEnabled();
     if (isEnabled) {
+      const configValues = pdpApi.getProductConfigurationValues();
       return rlRenderer.render(RequisitionListNames, {
         items: [],
         canCreate: true,
         sku: product.sku,
-        quantity: pdpApi.getProductConfigurationValues().quantity || 1,
+        quantity: configValues?.quantity || 1,
+        selectedOptions: currentOptions,
       })($container);
     }
     $container.innerHTML = '';
     return null;
   }
+
+  // Declare requisitionListNames as let so we can reassign it after login
+  let requisitionListNames;
 
   const [
     _galleryMobile,
@@ -249,9 +254,6 @@ export default async function decorate(block) {
     wishlistRender.render(WishlistToggle, {
       product,
     })($wishlistToggleBtn),
-
-    // Requisition List Names (if enabled and user is authenticated)
-    renderRequisitionListNamesIfEnabled($requisitionListNames),
   ]);
 
   // Configuration – Button - Add to Cart
@@ -348,21 +350,28 @@ export default async function decorate(block) {
 
   // Handle option changes
   events.on('pdp/values', () => {
+    const configValues = pdpApi.getProductConfigurationValues();
+
+    // Check URL parameter for empty optionsUIDs
+    const urlOptionsUIDs = urlParams.get('optionsUIDs');
+
+    // If URL has empty optionsUIDs parameter, treat as base product (no options)
+    const optionUIDs = urlOptionsUIDs === '' ? undefined : (configValues?.optionsUIDs || undefined);
     if (wishlistToggleBtn) {
-      const configValues = pdpApi.getProductConfigurationValues();
-
-      // Check URL parameter for empty optionsUIDs
-      const urlOptionsUIDs = urlParams.get('optionsUIDs');
-
-      // If URL has empty optionsUIDs parameter, treat as base product (no options)
-      const optionUIDs = urlOptionsUIDs === '' ? undefined : (configValues?.optionsUIDs || undefined);
-
       wishlistToggleBtn.setProps((prev) => ({
         ...prev,
         product: {
           ...product,
           optionUIDs,
         },
+      }));
+    }
+
+    if (requisitionListNames) {
+      requisitionListNames.setProps((prev) => ({
+        ...prev,
+        selectedOptions: optionUIDs,
+        quantity: configValues?.quantity || 1,
       }));
     }
   }, { eager: true });
@@ -386,9 +395,63 @@ export default async function decorate(block) {
     }, 0);
   });
 
-  events.on('authenticated', () => {
-    renderRequisitionListNamesIfEnabled($requisitionListNames);
-  });
+  // Handle authentication state changes (login/logout)
+  // Using { eager: true } to also catch the initial state on page load
+  events.on('authenticated', async () => {
+    // Get current selected options when rendering for authenticated user
+    const configValues = pdpApi.getProductConfigurationValues();
+    const urlOptionsUIDs = urlParams.get('optionsUIDs');
+    const optionUIDs = urlOptionsUIDs === '' ? undefined : (configValues?.optionsUIDs || undefined);
+    // Render and update the reference to the new instance
+    requisitionListNames = await renderRequisitionListNamesIfEnabled(
+      $requisitionListNames,
+      optionUIDs,
+    );
+  }, { eager: true });
+
+  // Show notification if redirected from requisition list
+  let redirectNotification = null;
+
+  // Check if user was redirected from requisition list (sessionStorage)
+  const redirectData = sessionStorage.getItem('requisitionListRedirect');
+  if (redirectData) {
+    try {
+      const { timestamp, message } = JSON.parse(redirectData);
+
+      // Only show notification if redirect happened within last 5 seconds
+      // This prevents showing stale notifications
+      const isRecent = Date.now() - timestamp < 5000;
+
+      if (isRecent && message) {
+        const showRedirectNotification = async () => {
+          redirectNotification = await UI.render(InLineAlert, {
+            heading: message,
+            type: 'warning',
+            variant: 'secondary',
+            icon: h(Icon, { source: 'Warning' }),
+            'aria-live': 'polite',
+            role: 'alert',
+            onDismiss: () => {
+              redirectNotification?.remove();
+            },
+          })($alert);
+
+          // Auto-dismiss after 5 seconds
+          setTimeout(() => {
+            redirectNotification?.remove();
+          }, 5000);
+        };
+
+        // Show notification after a brief delay to ensure DOM is ready
+        setTimeout(showRedirectNotification, 100);
+      }
+    } catch (e) {
+      console.error('Failed to parse requisition list redirect data:', e);
+    } finally {
+      // Always clean up sessionStorage
+      sessionStorage.removeItem('requisitionListRedirect');
+    }
+  }
 
   // --- Add new event listener for cart/data ---
   events.on(

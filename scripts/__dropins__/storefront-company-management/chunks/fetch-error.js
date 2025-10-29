@@ -1,4 +1,4 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{events as e}from"@dropins/tools/event-bus.js";const n=r=>{throw r instanceof DOMException&&r.name==="AbortError"||e.emit("error",{source:"company",type:"network",error:r}),r},a=r=>{const o=r.map(t=>t.message).join(" ");throw Error(o)};export{n as a,a as h};
+import{FetchGraphQL as o}from"@dropins/tools/fetch-graphql.js";import{events as s}from"@dropins/tools/event-bus.js";const{setEndpoint:h,setFetchGraphQlHeader:c,removeFetchGraphQlHeader:p,setFetchGraphQlHeaders:i,fetchGraphQl:m,getConfig:E}=new o().getMethods(),d=r=>{throw r instanceof DOMException&&r.name==="AbortError"||s.emit("error",{source:"company",type:"network",error:r}),r},f=r=>{const e=r.map(t=>t.message).join(" ");throw Error(e)};export{d as a,c as b,i as c,m as f,E as g,f as h,p as r,h as s};
 //# sourceMappingURL=fetch-error.js.map

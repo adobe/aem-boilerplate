@@ -1,21 +1,6 @@
 import { CompanyLegalAddressModel } from './company-address';
+import { CompanyRoleModel } from './company-role';
 
-export interface CompanyRole {
-    id: string;
-    name: string;
-    permissions?: {
-        id: string;
-        text: string;
-        children?: {
-            id: string;
-            text: string;
-            children?: {
-                id: string;
-                text: string;
-            }[];
-        }[];
-    }[];
-}
 export interface CompanyContact {
     id: string;
     firstname: string;
@@ -51,7 +36,7 @@ export interface Company {
 export interface CompanyModel extends Company {
     canEditAccount: boolean;
     canEditAddress: boolean;
-    customerRole?: CompanyRole;
+    customerRole?: CompanyRoleModel;
     customerStatus?: string;
     permissionsFlags: {
         canViewAccount: boolean;
@@ -61,6 +46,10 @@ export interface CompanyModel extends Company {
         canViewContacts: boolean;
         canViewPaymentInformation: boolean;
         canViewShippingInformation: boolean;
+        canViewUsers: boolean;
+        canEditUsers: boolean;
+        canViewRoles: boolean;
+        canManageRoles: boolean;
     };
 }
 export interface CompanyRegistrationModel {

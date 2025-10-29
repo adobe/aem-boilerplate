@@ -12,9 +12,8 @@ import * as orderApi from '@dropins/storefront-order/api.js';
 import {
   createScopedSelector,
   isVirtualCart,
-  scrollToElement,
   setMetaTags,
-  validateForm,
+  validateForms,
 } from '@dropins/storefront-checkout/lib/utils.js';
 
 // Payment Services Dropin
@@ -40,7 +39,6 @@ import {
 import {
   renderBillingAddressFormSkeleton,
   renderBillToShippingAddress,
-  renderCartSummaryList,
   renderCheckoutHeader,
   renderCustomerBillingAddresses,
   renderCustomerDetails,
@@ -52,7 +50,6 @@ import {
   renderOrderHeader,
   renderOrderProductList,
   renderOrderStatus,
-  renderOrderSummary,
   renderPaymentMethods,
   renderPlaceOrder,
   renderServerError,
@@ -67,6 +64,7 @@ import {
   BILLING_ADDRESS_DATA_KEY,
   BILLING_FORM_NAME,
   LOGIN_FORM_NAME,
+  PURCHASE_ORDER_FORM_NAME,
   TERMS_AND_CONDITIONS_FORM_NAME,
 } from './constants.js';
 
@@ -117,8 +115,6 @@ export default async function decorate(block) {
   const $delivery = getElement(selectors.checkout.delivery);
   const $paymentMethods = getElement(selectors.checkout.paymentMethods);
   const $billingForm = getElement(selectors.checkout.billingForm);
-  const $orderSummary = getElement(selectors.checkout.orderSummary);
-  const $cartSummary = getElement(selectors.checkout.cartSummary);
   const $placeOrder = getElement(selectors.checkout.placeOrder);
   const $giftOptions = getElement(selectors.checkout.giftOptions);
   const $termsAndConditions = getElement(selectors.checkout.termsAndConditions);
@@ -126,32 +122,12 @@ export default async function decorate(block) {
   block.appendChild(checkoutFragment);
 
   // Create validation and place order handlers
-  const handleValidation = () => {
-    let success = true;
-
-    // Login form validation - skip for authenticated users
-    const loginForm = document.forms[LOGIN_FORM_NAME];
-    const isLoginFormVisible = loginForm && loginForm.offsetParent !== null;
-
-    if (loginForm && isLoginFormVisible) {
-      success = validateForm(LOGIN_FORM_NAME);
-      if (!success) scrollToElement($login);
-    }
-
-    // Billing form validation
-    if (success && billingFormRef.current) {
-      success = validateForm(BILLING_FORM_NAME, billingFormRef);
-      if (!success) scrollToElement($billingForm);
-    }
-
-    // Terms and conditions validation
-    if (success) {
-      success = validateForm(TERMS_AND_CONDITIONS_FORM_NAME);
-      if (!success) scrollToElement($termsAndConditions);
-    }
-
-    return success;
-  };
+  const handleValidation = () => validateForms([
+    { name: LOGIN_FORM_NAME },
+    { name: PURCHASE_ORDER_FORM_NAME },
+    { name: BILLING_FORM_NAME, ref: billingFormRef },
+    { name: TERMS_AND_CONDITIONS_FORM_NAME },
+  ]);
 
   const handlePlaceOrder = async ({ quoteId, code }) => {
     await displayOverlaySpinner(loaderRef, $loader);
@@ -180,7 +156,10 @@ export default async function decorate(block) {
   };
 
   // First, render the place order component
-  const placeOrder = await renderPlaceOrder($placeOrder, { handleValidation, handlePlaceOrder });
+  const placeOrder = await renderPlaceOrder($placeOrder, {
+    handleValidation,
+    handlePlaceOrder,
+  });
 
   // Render the remaining containers
   const [
@@ -192,8 +171,6 @@ export default async function decorate(block) {
     _shippingMethods,
     _paymentMethods,
     _billingFormSkeleton,
-    _orderSummary,
-    _cartSummary,
     _termsAndConditions,
     _giftOptions,
   ] = await Promise.all([
@@ -213,10 +190,6 @@ export default async function decorate(block) {
 
     renderBillingAddressFormSkeleton($billingForm),
 
-    renderOrderSummary($orderSummary),
-
-    renderCartSummaryList($cartSummary),
-
     renderTermsAndConditions($termsAndConditions),
 
     renderGiftOptions($giftOptions),
@@ -227,7 +200,11 @@ export default async function decorate(block) {
 
     if (data?.uid && data.shippingAddresses?.[0]) {
       const quoteAddress = data.shippingAddresses[0];
-      const quoteAddressSummary = createAddressSummary(quoteAddress, null, 'Shipping address');
+      const quoteAddressSummary = createAddressSummary(
+        quoteAddress,
+        null,
+        'Shipping address',
+      );
       $shippingForm.innerHTML = '';
       $shippingForm.appendChild(quoteAddressSummary);
     }
@@ -332,7 +309,9 @@ export default async function decorate(block) {
 
     const url = token
       ? rootLink(`/order-details?orderRef=${encodedOrderRef}`)
-      : rootLink(`/order-details?orderRef=${encodedOrderRef}&orderNumber=${encodedOrderNumber}`);
+      : rootLink(
+        `/order-details?orderRef=${encodedOrderRef}&orderNumber=${encodedOrderNumber}`,
+      );
 
     window.history.pushState({}, '', url);
 

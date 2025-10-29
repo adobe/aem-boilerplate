@@ -14,7 +14,12 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-/** Actions */
+/**
+ * Handles GraphQL fetch errors by extracting error messages and throwing a new Error
+ *
+ * @param errors - Array of GraphQL error objects with message property
+ * @throws {Error} Combined error message from all GraphQL errors
+ */
 export declare const handleFetchError: (errors: Array<{
     message: string;
 }>) => never;

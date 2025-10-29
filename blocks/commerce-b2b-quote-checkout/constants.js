@@ -2,6 +2,7 @@
 const BILLING_FORM_NAME = 'selectedBillingAddress';
 const BILLING_ADDRESS_DATA_KEY = `${BILLING_FORM_NAME}_addressData`;
 const LOGIN_FORM_NAME = 'login-form';
+const PURCHASE_ORDER_FORM_NAME = 'purchase-order';
 const TERMS_AND_CONDITIONS_FORM_NAME = 'checkout-terms-and-conditions__form';
 
 // Timing constants
@@ -23,6 +24,7 @@ export {
   BILLING_ADDRESS_DATA_KEY,
   BILLING_FORM_NAME,
   LOGIN_FORM_NAME,
+  PURCHASE_ORDER_FORM_NAME,
   TERMS_AND_CONDITIONS_FORM_NAME,
 
   // Timing constants

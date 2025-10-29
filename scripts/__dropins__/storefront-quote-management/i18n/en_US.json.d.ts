@@ -51,7 +51,9 @@ declare const _default: {
       },
       "quoteComments": {
         "title": "Quote Comments",
-        "placeholder": "Add your comment"
+        "placeholder": "Add your comment",
+        "emptyState": "No comments yet",
+        "by": "by"
       },
       "productListTable": {
         "headers": {
@@ -68,6 +70,11 @@ declare const _default: {
           "editNoteToSeller": "Edit note to seller",
           "remove": "Remove"
         }
+      },
+      "tabbedContent": {
+        "itemsQuoted": "Items quoted",
+        "comments": "Comments",
+        "historyLog": "History log"
       },
       "quotePricesSummary": {
         "subtotal": {
@@ -115,6 +122,39 @@ declare const _default: {
         "saved": "Total saved"
       }
     }
+  },
+  "historyLog": {
+    "changeTypes": {
+      "created": "Quote Created",
+      "updated": "Quote Updated",
+      "statusChanged": "Status Changed",
+      "commentAdded": "Comment Added",
+      "expirationChanged": "Expiration Changed"
+    },
+    "noteTypes": {
+      "buyerNoteAdded": "Buyer Note Added",
+      "sellerNoteAdded": "Seller Note Added"
+    },
+    "authorLabels": {
+      "buyer": "(Buyer)",
+      "seller": "(Seller)"
+    },
+    "changeDetails": {
+      "comment": "Comment: \"{comment}\"",
+      "statusChangedFromTo": "Status changed from {oldStatus} to {newStatus}",
+      "statusSetTo": "Status set to {newStatus}",
+      "expirationChangedFromTo": "Expiration changed from {oldExpiration} to {newExpiration}",
+      "expirationSetTo": "Expiration set to {newExpiration}",
+      "totalChangedFromTo": "Total changed from {oldTotal} to {newTotal}",
+      "customChange": "{title}: changed from \"{oldValue}\" to \"{newValue}\"",
+      "productsRemovedFromCatalog": "Products removed from catalog: {products}",
+      "productsRemovedFromQuote": "Products removed from quote: {products}",
+      "noDetailsAvailable": "No details available"
+    },
+    "emptyState": "No history available for this quote."
+  },
+  "dateUtils": {
+    "never": "Never"
   },
   "QuoteManagement": {
     "QuotesListTable": {

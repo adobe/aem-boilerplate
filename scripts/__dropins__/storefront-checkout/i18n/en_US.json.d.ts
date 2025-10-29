@@ -76,9 +76,10 @@ declare const _default: {
       "exceedLimitError": "Payment On Account cannot be used for this order because your order amount exceeds your credit amount."
     },
     "PurchaseOrder": {
+      "missingReferenceNumberError": "Reference number is required",
+      "referenceNumberHint": "",
       "referenceNumberLabel": "Custom Reference Number",
-      "referenceNumberPlaceholder": "Enter custom reference number",
-      "referenceNumberHint": ""
+      "referenceNumberPlaceholder": "Enter custom reference number"
     },
     "PlaceOrder": {
       "button": "Place Order"

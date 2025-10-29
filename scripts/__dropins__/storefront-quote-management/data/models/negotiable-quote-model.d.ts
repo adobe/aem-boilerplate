@@ -40,7 +40,13 @@ export interface NegotiableQuoteModel {
             firstname: string;
             lastname: string;
         };
+        text: string;
+        attachments?: {
+            name: string;
+            url: string;
+        }[];
     }[];
+    history?: NegotiableQuoteHistoryEntry[];
     prices: {
         subtotalExcludingTax?: Currency;
         subtotalIncludingTax?: Currency;
@@ -99,6 +105,16 @@ export interface NegotiableQuoteCartItem {
             price: Currency;
         }[];
     }[];
+    noteFromBuyer?: ItemNote[];
+    noteFromSeller?: ItemNote[];
+}
+export interface ItemNote {
+    createdAt: string;
+    creatorId: number;
+    creatorType: number;
+    negotiableQuoteItemUid: string;
+    note: string;
+    noteUid: string;
 }
 export interface Currency {
     value: number;
@@ -135,6 +151,54 @@ export interface NegotiableQuotesListModel {
             value: string;
         }>;
     };
+}
+export interface NegotiableQuoteHistoryEntry {
+    author: {
+        firstname: string;
+        lastname: string;
+    };
+    changeType: NegotiableQuoteHistoryEntryChangeType;
+    changes: {
+        commentAdded?: {
+            comment: string;
+        };
+        customChanges?: {
+            new_value: string;
+            old_value: string;
+            title: string;
+        };
+        expiration?: {
+            newExpiration: string;
+            oldExpiration: string;
+        };
+        productsRemoved?: {
+            productsRemovedFromCatalog: string[];
+            productsRemovedFromQuote?: {
+                uid: string;
+                name: string;
+                sku: string;
+                quantity: number;
+            }[];
+        };
+        statuses?: {
+            changes: {
+                newStatus: string;
+                oldStatus: string;
+            }[];
+        };
+        total?: {
+            newPrice: Currency;
+            oldPrice: Currency;
+        };
+    };
+    createdAt: string;
+    uid: string;
+}
+export declare enum NegotiableQuoteHistoryEntryChangeType {
+    CREATED = "CREATED",
+    UPDATED = "UPDATED",
+    CLOSED = "CLOSED",
+    UPDATED_BY_SYSTEM = "UPDATED_BY_SYSTEM"
 }
 export declare enum NegotiableQuoteStatus {
     NEW = "NEW",

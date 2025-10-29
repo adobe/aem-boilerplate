@@ -15,7 +15,10 @@
  * from Adobe.
  *******************************************************************/
 export * from './CompanyProfile';
+export * from './CompanyStructure';
+export * from './CompanyUsers';
 export * from './CustomerCompanyInfo';
 export * from './CompanyStructure';
 export * from './CompanyRegistration';
+export * from './RolesAndPermissions';
 //# sourceMappingURL=index.d.ts.map

@@ -27,7 +27,7 @@ The block automatically handles authentication and company feature checks. No ad
 
 ### Prerequisites
 - User must be authenticated
-- B2B Company feature must be enabled
+- B2B Company feature must be enabled using `companyEnabled()`
 - Customer must be associated with a company
 
 ### Displayed Information
@@ -38,6 +38,7 @@ The block automatically handles authentication and company feature checks. No ad
 
 ### Behavior
 - Block is hidden if user is not authenticated
+- Block is hidden if company functionality is not enabled
 - Block is hidden if no company information is available
 - Only displays fields that have values (job title, work phone, and user role are optional)
 

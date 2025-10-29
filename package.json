@@ -1,7 +1,7 @@
 {
   "name": "@adobe/aem-boilerplate-commerce",
   "private": true,
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Starter project for Adobe Commerce on Edge Delivery Services",
   "scripts": {
     "lint:js": "eslint .",
@@ -37,19 +37,19 @@
   },
   "dependencies": {
     "@adobe/adobe-client-data-layer": "^3.0.1",
-    "@adobe/magento-storefront-event-collector": "^1.8.0",
-    "@adobe/magento-storefront-events-sdk": "^1.8.0",
+    "@adobe/magento-storefront-event-collector": "^1.15.0",
+    "@adobe/magento-storefront-events-sdk": "^1.15.0",
     "@dropins/storefront-account": "~1.2.0",
-    "@dropins/storefront-auth": "~2.1.1",
+    "@dropins/storefront-auth": "~2.1.5",
     "@dropins/storefront-cart": "~1.5.1",
     "@dropins/storefront-checkout": "~2.1.0",
     "@dropins/storefront-order": "~1.4.0",
-    "@dropins/storefront-payment-services": "~1.0.2",
+    "@dropins/storefront-payment-services": "~1.0.3",
     "@dropins/storefront-pdp": "~1.3.5",
     "@dropins/storefront-personalization": "~1.0.1",
     "@dropins/storefront-product-discovery": "~2.1.0",
     "@dropins/storefront-recommendations": "~1.1.1",
     "@dropins/storefront-wishlist": "~2.0.1",
-    "@dropins/tools": "1.6.0-beta1"
+    "@dropins/tools": "1.6.0-alpha7"
   }
 }

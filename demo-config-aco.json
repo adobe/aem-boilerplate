@@ -1,0 +1,25 @@
+{
+  "public": {
+    "default": {
+      "commerce-core-endpoint": "https://na1-sandbox.api.commerce.adobe.com/8idEEDDiVwjCEJAyB5kjfi/graphql",
+      "commerce-endpoint": "https://na1-sandbox.api.commerce.adobe.com/8idEEDDiVwjCEJAyB5kjfi/graphql",
+      "headers": {
+        "cs": {
+          "ac-view-id": "0d3eebf7-b5fb-4904-9ccf-f35fcc61862b",
+          "ac-price-book-id": "west_coast_inc",
+          "ac-scope-locale": "en-US"
+        }
+      },
+      "analytics": {
+        "environment-id": "8idEEDDiVwjCEJAyB5kjfi",
+        "environment": "Testing",
+        "store-url": "https://main--boilerplate-aco--adobe-commerce.aem.live/",
+        "base-currency-code": "USD",
+        "store-view-currency-code": "USD",
+        "storefront-template": "Other",
+        "view-id": "0d3eebf7-b5fb-4904-9ccf-f35fcc61862b",
+        "locale": "en-US"
+      }
+    }
+  }
+}

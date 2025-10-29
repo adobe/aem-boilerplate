@@ -14,15 +14,16 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  ****************************************************************** */
-import { getHeaders } from '@dropins/tools/lib/aem/configs.js';
 import { initializers } from '@dropins/tools/initializer.js';
-import { initialize, setFetchGraphQlHeaders } from '@dropins/storefront-company-management/api.js';
+import { initialize, setEndpoint } from '@dropins/storefront-company-management/api.js';
 import { initializeDropin } from './index.js';
-import { fetchPlaceholders } from '../commerce.js';
+import { CORE_FETCH_GRAPHQL, fetchPlaceholders } from '../commerce.js';
 
 await initializeDropin(async () => {
-  setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('company') }));
+  // Set Fetch GraphQL (Core)
+  setEndpoint(CORE_FETCH_GRAPHQL);
 
+  // Fetch placeholders
   const labels = await fetchPlaceholders('placeholders/company.json').catch(() => ({}));
   const langDefinitions = {
     default: {
@@ -30,5 +31,6 @@ await initializeDropin(async () => {
     },
   };
 
+  // Initialize company
   return initializers.mountImmediately(initialize, { langDefinitions });
 })();

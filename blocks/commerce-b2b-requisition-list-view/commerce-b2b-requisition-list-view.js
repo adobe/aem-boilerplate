@@ -1,7 +1,6 @@
 import * as rlApi from '@dropins/storefront-requisition-list/api.js';
 import { render as rlRenderer } from '@dropins/storefront-requisition-list/render.js';
 import RequisitionListView from '@dropins/storefront-requisition-list/containers/RequisitionListView.js';
-import { getHeaders } from '@dropins/tools/lib/aem/configs.js';
 
 import {
   CUSTOMER_LOGIN_PATH,
@@ -18,8 +17,7 @@ export default async function decorate(block) {
     if (!isEnabled) {
       return;
     }
-    // Set Fetch Headers (Service)
-    rlApi.setFetchGraphQlHeaders?.((prev) => ({ ...prev, ...getHeaders('cs') }));
+
     let viewRenderFunction = null;
 
     const renderView = async () => {

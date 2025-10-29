@@ -1,17 +1,15 @@
 /* eslint-disable import/no-cycle */
-import { initialize, setFetchGraphQlHeaders } from '@dropins/storefront-quote-management/api.js';
+import { initialize, setEndpoint } from '@dropins/storefront-quote-management/api.js';
 import { initializers } from '@dropins/tools/initializer.js';
-import { getHeaders } from '@dropins/tools/lib/aem/configs.js';
-import { fetchPlaceholders } from '../commerce.js';
+import { CORE_FETCH_GRAPHQL, fetchPlaceholders } from '../commerce.js';
 import { initializeDropin } from './index.js';
 
 await initializeDropin(async () => {
-  setFetchGraphQlHeaders(await getHeaders('quote-management'));
+  // Set Fetch GraphQL (Core)
+  setEndpoint(CORE_FETCH_GRAPHQL);
 
-  const labels = await fetchPlaceholders();
-
-  const url = new URL(window.location.href);
-  const quoteId = url.searchParams.get('quoteid') || url.searchParams.get('quoteId');
+  // Fetch placeholders
+  const labels = await fetchPlaceholders('placeholders/quote-management.json');
 
   const langDefinitions = {
     default: {
@@ -19,6 +17,11 @@ await initializeDropin(async () => {
     },
   };
 
+  // Get quote ID from URL
+  const url = new URL(window.location.href);
+  const quoteId = url.searchParams.get('quoteid') || url.searchParams.get('quoteId');
+
+  // Initialize quote management
   return initializers.mountImmediately(initialize, {
     langDefinitions,
     quoteId,

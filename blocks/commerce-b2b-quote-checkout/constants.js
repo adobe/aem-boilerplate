@@ -13,7 +13,6 @@ const ADDRESS_INPUT_DEBOUNCE_TIME = 500;
 const CHECKOUT_BLOCK = 'checkout__block';
 const CHECKOUT_ERROR_CLASS = 'checkout__content--error';
 const CHECKOUT_HEADER_CLASS = 'checkout-header';
-const ORDER_CONFIRMATION_BLOCK = 'order-confirmation__block';
 
 // Default values
 const USER_TOKEN_COOKIE_NAME = 'auth_dropin_user_token';
@@ -34,7 +33,6 @@ export {
   CHECKOUT_BLOCK,
   CHECKOUT_ERROR_CLASS,
   CHECKOUT_HEADER_CLASS,
-  ORDER_CONFIRMATION_BLOCK,
 
   // Default values
   USER_TOKEN_COOKIE_NAME,

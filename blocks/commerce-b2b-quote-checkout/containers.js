@@ -25,11 +25,7 @@ import AddressForm from '@dropins/storefront-account/containers/AddressForm.js';
 import { render as AccountProvider } from '@dropins/storefront-account/render.js';
 
 // Cart Dropin
-import CartSummaryList from '@dropins/storefront-cart/containers/CartSummaryList.js';
-import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
-import GiftCards from '@dropins/storefront-cart/containers/GiftCards.js';
 import GiftOptions from '@dropins/storefront-cart/containers/GiftOptions.js';
-import OrderSummary from '@dropins/storefront-cart/containers/OrderSummary.js';
 import { render as CartProvider } from '@dropins/storefront-cart/render.js';
 
 // Payment Services Dropin
@@ -37,24 +33,13 @@ import { PaymentMethodCode } from '@dropins/storefront-payment-services/api.js';
 import CreditCard from '@dropins/storefront-payment-services/containers/CreditCard.js';
 import { render as PaymentServices } from '@dropins/storefront-payment-services/render.js';
 
-// Order Dropin
-import CustomerDetails from '@dropins/storefront-order/containers/CustomerDetails.js';
-import OrderCostSummary from '@dropins/storefront-order/containers/OrderCostSummary.js';
-import OrderHeader from '@dropins/storefront-order/containers/OrderHeader.js';
-import OrderProductList from '@dropins/storefront-order/containers/OrderProductList.js';
-import OrderStatus from '@dropins/storefront-order/containers/OrderStatus.js';
-import ShippingStatus from '@dropins/storefront-order/containers/ShippingStatus.js';
-import { render as OrderProvider } from '@dropins/storefront-order/render.js';
-
 // Tools
 import {
-  Button,
   Header,
   provider as UI,
 } from '@dropins/tools/components.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { debounce, getCookie } from '@dropins/tools/lib.js';
-import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 
 // Checkout Dropin Libs
@@ -65,9 +50,6 @@ import {
 } from '@dropins/storefront-checkout/lib/utils.js';
 
 import { swatchImageSlot } from './utils.js';
-
-// External dependencies
-import { rootLink } from '../../scripts/commerce.js';
 
 // Constants
 import {
@@ -95,8 +77,6 @@ export const CONTAINERS = Object.freeze({
   SHIPPING_METHODS: 'shippingMethods',
   PAYMENT_METHODS: 'paymentMethods',
   BILLING_ADDRESS_FORM_SKELETON: 'billingAddressFormSkeleton',
-  ORDER_SUMMARY: 'orderSummary',
-  CART_SUMMARY_LIST: 'cartSummaryList',
   TERMS_AND_CONDITIONS: 'termsAndConditions',
   PLACE_ORDER_BUTTON: 'placeOrderButton',
   GIFT_OPTIONS: 'giftOptions',
@@ -104,21 +84,6 @@ export const CONTAINERS = Object.freeze({
 
   // Dynamic containers (conditional rendering)
   BILLING_ADDRESS_FORM: 'billingAddressForm',
-
-  // Order confirmation containers
-  ORDER_HEADER: 'orderHeader',
-  ORDER_STATUS: 'orderStatus',
-  SHIPPING_STATUS: 'shippingStatus',
-  CUSTOMER_DETAILS: 'customerDetails',
-  ORDER_COST_SUMMARY: 'orderCostSummary',
-  ORDER_GIFT_OPTIONS: 'orderGiftOptions',
-  ORDER_PRODUCT_LIST: 'orderProductList',
-  ORDER_CONFIRMATION_FOOTER_BUTTON: 'orderConfirmationFooterButton',
-
-  // Slot/Sub-containers (nested within other containers)
-  CART_COUPONS: 'cartCoupons',
-  GIFT_CARDS: 'giftCards',
-  CART_GIFT_OPTIONS: 'cartGiftOptions',
 });
 
 /**
@@ -370,130 +335,6 @@ export const renderTermsAndConditions = async (container) => renderContainer(
 );
 
 /**
- * Renders cart coupons for order summary slot
- * @param {HTMLElement} ctx - The slot context element
- * @returns {void}
- */
-export const renderCartCoupons = (ctx) => {
-  const coupons = document.createElement('div');
-  CartProvider.render(Coupons)(coupons);
-  ctx.appendChild(coupons);
-};
-
-/**
- * Renders gift cards for order summary slot
- * @param {HTMLElement} ctx - The slot context element
- * @returns {void}
- */
-export const renderGiftCards = (ctx) => {
-  const giftCards = document.createElement('div');
-  CartProvider.render(GiftCards)(giftCards);
-  ctx.appendChild(giftCards);
-};
-
-/**
- * Renders gift options for cart summary list footer slot
- * @param {HTMLElement} ctx - The slot context element
- * @returns {void}
- */
-export const renderCartGiftOptions = (ctx) => {
-  const giftOptions = document.createElement('div');
-
-  CartProvider.render(GiftOptions, {
-    item: ctx.item,
-    view: 'product',
-    dataSource: 'cart',
-    isEditable: false,
-    handleItemsLoading: ctx.handleItemsLoading,
-    handleItemsError: ctx.handleItemsError,
-    onItemUpdate: ctx.onItemUpdate,
-    slots: {
-      SwatchImage: swatchImageSlot,
-    },
-  })(giftOptions);
-
-  ctx.appendChild(giftOptions);
-};
-
-// ============================================================================
-// SUMMARY CONTAINERS
-// ============================================================================
-
-/**
- * Renders order summary with coupons and gift cards slots
- * @param {HTMLElement} container - DOM element to render order summary in
- * @returns {Promise<Object>} - The rendered order summary component
- */
-export const renderOrderSummary = async (container) => renderContainer(
-  CONTAINERS.ORDER_SUMMARY,
-  async () => CartProvider.render(OrderSummary, {
-    slots: {
-      Coupons: renderCartCoupons,
-      GiftCards: renderGiftCards,
-    },
-  })(container),
-);
-
-/**
- * Renders cart summary list with custom heading, thumbnail and gift options slots
- * @param {HTMLElement} container - DOM element to render cart summary list in
- * @returns {Promise<Object>} - The rendered cart summary list component
- */
-export const renderCartSummaryList = async (container) => renderContainer(
-  CONTAINERS.CART_SUMMARY_LIST,
-  async () => CartProvider.render(CartSummaryList, {
-    variant: 'secondary',
-    slots: {
-      Heading: (headingCtx) => {
-        const title = 'Your Cart ({count})';
-
-        const cartSummaryListHeading = document.createElement('div');
-        cartSummaryListHeading.classList.add('cart-summary-list__heading');
-
-        const cartSummaryListHeadingText = document.createElement('div');
-        cartSummaryListHeadingText.classList.add(
-          'cart-summary-list__heading-text',
-        );
-
-        cartSummaryListHeadingText.innerText = title.replace(
-          '({count})',
-          headingCtx.count ? `(${headingCtx.count})` : '',
-        );
-        const editCartLink = document.createElement('a');
-        editCartLink.classList.add('cart-summary-list__edit');
-        editCartLink.href = rootLink('/cart');
-        editCartLink.rel = 'noreferrer';
-        editCartLink.innerText = 'Edit';
-
-        cartSummaryListHeading.appendChild(cartSummaryListHeadingText);
-        cartSummaryListHeading.appendChild(editCartLink);
-        headingCtx.appendChild(cartSummaryListHeading);
-
-        headingCtx.onChange((nextHeadingCtx) => {
-          cartSummaryListHeadingText.innerText = title.replace(
-            '({count})',
-            nextHeadingCtx.count ? `(${nextHeadingCtx.count})` : '',
-          );
-        });
-      },
-      Thumbnail: (ctx) => {
-        const { item, defaultImageProps } = ctx;
-        tryRenderAemAssetsImage(ctx, {
-          alias: item.sku,
-          imageProps: defaultImageProps,
-
-          params: {
-            width: defaultImageProps.width,
-            height: defaultImageProps.height,
-          },
-        });
-      },
-      Footer: renderCartGiftOptions,
-    },
-  })(container),
-);
-
-/**
  * Renders place order button with handler functions - follows multi-step pattern
  * @param {HTMLElement} container - DOM element to render the place order button in
  * @param {Object} options - Configuration object with handler functions
@@ -590,130 +431,5 @@ export const renderGiftOptions = async (container) => renderContainer(
     slots: {
       SwatchImage: swatchImageSlot,
     },
-  })(container),
-);
-
-/**
- * Renders order confirmation header with email check and sign up integration
- * @param {HTMLElement} container - DOM element to render the order header in
- * @param {Object} options - Configuration object with handlers and order data
- * @returns {Promise<Object>} - The rendered order header component
- */
-export const renderOrderHeader = async (container, options = {}) => renderContainer(
-  CONTAINERS.ORDER_HEADER,
-  async () => OrderProvider.render(OrderHeader, { ...options })(container)
-  ,
-);
-
-/**
- * Renders the order status component
- * @param {HTMLElement} container - The DOM element to render the order status in
- * @returns {Promise<Object>} - The rendered order status component
- */
-export const renderOrderStatus = async (container) => renderContainer(
-  CONTAINERS.ORDER_STATUS,
-  async () => OrderProvider.render(OrderStatus, { slots: { OrderActions: () => null } })(container),
-);
-
-/**
- * Renders the shipping status component
- * @param {HTMLElement} container - The DOM element to render the shipping status in
- * @returns {Promise<Object>} - The rendered shipping status component
- */
-export const renderShippingStatus = async (container) => renderContainer(
-  CONTAINERS.SHIPPING_STATUS,
-  async () => OrderProvider.render(ShippingStatus)(container),
-);
-
-/**
- * Renders the customer details component
- * @param {HTMLElement} container - The DOM element to render the customer details in
- * @returns {Promise<Object>} - The rendered customer details component
- */
-export const renderCustomerDetails = async (container) => renderContainer(
-  CONTAINERS.CUSTOMER_DETAILS,
-  async () => OrderProvider.render(CustomerDetails)(container),
-);
-
-/**
- * Renders the order cost summary component
- * @param {HTMLElement} container - The DOM element to render the order cost summary in
- * @returns {Promise<Object>} - The rendered order cost summary component
- */
-export const renderOrderCostSummary = async (container) => renderContainer(
-  CONTAINERS.ORDER_COST_SUMMARY,
-  async () => OrderProvider.render(OrderCostSummary)(container),
-);
-
-/**
- * Renders the order product list component with image slots and gift options
- * @param {HTMLElement} container - The DOM element to render the order product list in
- * @returns {Promise<Object>} - The rendered order product list component
- */
-export const renderOrderProductList = async (container) => renderContainer(
-  CONTAINERS.ORDER_PRODUCT_LIST,
-  async () => OrderProvider.render(OrderProductList, {
-    slots: {
-      Footer: (ctx) => {
-        const giftOptions = document.createElement('div');
-        CartProvider.render(GiftOptions, {
-          item: ctx.item,
-          view: 'product',
-          dataSource: 'order',
-          isEditable: false,
-          slots: {
-            SwatchImage: swatchImageSlot,
-          },
-        })(giftOptions);
-        ctx.appendChild(giftOptions);
-      },
-      CartSummaryItemImage: (ctx) => {
-        const { data, defaultImageProps } = ctx;
-        tryRenderAemAssetsImage(ctx, {
-          alias: data.product.sku,
-          imageProps: defaultImageProps,
-          params: {
-            width: defaultImageProps.width,
-            height: defaultImageProps.height,
-          },
-        });
-      },
-    },
-  })(container),
-);
-
-/**
- * Renders order-level gift options for order confirmation
- * @param {HTMLElement} container - DOM element to render order gift options in
- * @returns {Promise<Object>} - The rendered order gift options component
- */
-export const renderOrderGiftOptions = async (container) => renderContainer(
-  CONTAINERS.ORDER_GIFT_OPTIONS,
-  async () => CartProvider.render(GiftOptions, {
-    view: 'order',
-    dataSource: 'order',
-    isEditable: false,
-    readOnlyFormOrderView: 'secondary',
-    slots: {
-      SwatchImage: swatchImageSlot,
-    },
-  })(container),
-);
-
-/**
- * Renders the continue shopping button for order confirmation footer
- * @param {HTMLElement} container - DOM element to render the button in
- * @returns {Promise<Object>} - The rendered continue shopping button component
- */
-export const renderOrderConfirmationFooterButton = async (container) => renderContainer(
-  CONTAINERS.ORDER_CONFIRMATION_FOOTER_BUTTON,
-  async () => UI.render(Button, {
-    children: 'Continue shopping',
-    'data-testid': 'order-confirmation-footer__continue-button',
-    className: 'order-confirmation-footer__continue-button',
-    size: 'medium',
-    variant: 'primary',
-    type: 'submit',
-    href: rootLink('/'),
   })(container),
 );

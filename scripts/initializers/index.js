@@ -1,28 +1,24 @@
 // Drop-in Tools
 import { getCookie } from '@dropins/tools/lib.js';
-import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
-import {
-  removeFetchGraphQlHeader,
-  setEndpoint,
-  setFetchGraphQlHeader,
-} from '@dropins/tools/fetch-graphql.js';
-import * as authApi from '@dropins/storefront-auth/api.js';
 import { initializers } from '@dropins/tools/initializer.js';
+import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 import { isAemAssetsEnabled } from '@dropins/tools/lib/aem/assets.js';
-import { fetchPlaceholders } from '../commerce.js';
+import { CORE_FETCH_GRAPHQL, CS_FETCH_GRAPHQL, fetchPlaceholders } from '../commerce.js';
 
 export const getUserTokenCookie = () => getCookie('auth_dropin_user_token');
 
-// Update auth headers
 const setAuthHeaders = (state) => {
   if (state) {
     const token = getUserTokenCookie();
-    setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
+    CORE_FETCH_GRAPHQL.setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
   } else {
-    removeFetchGraphQlHeader('Authorization');
-    authApi.removeFetchGraphQlHeader('Authorization');
+    CORE_FETCH_GRAPHQL.removeFetchGraphQlHeader('Authorization');
   }
+};
+
+const setCustomerGroupHeader = (customerGroupId) => {
+  CS_FETCH_GRAPHQL.setFetchGraphQlHeader('Magento-Customer-Group', customerGroupId);
 };
 
 const persistCartDataInSession = (data) => {
@@ -49,8 +45,11 @@ const setupAemAssetsImageParams = () => {
 
 export default async function initializeDropins() {
   const init = async () => {
+    // Set Customer-Group-ID header
+    events.on('auth/group-uid', setCustomerGroupHeader, { eager: true });
+
     // Set auth headers on authenticated event
-    events.on('authenticated', setAuthHeaders);
+    events.on('authenticated', setAuthHeaders, { eager: true });
 
     // Cache cart data in session storage
     events.on('cart/data', persistCartDataInSession, { eager: true });
@@ -62,8 +61,6 @@ export default async function initializeDropins() {
 
     // Event Bus Logger
     events.enableLogger(true);
-    // Set Fetch Endpoint (Global)
-    setEndpoint(getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint'));
 
     // Set up AEM Assets image parameter conversion
     setupAemAssetsImageParams();
@@ -88,8 +85,8 @@ export default async function initializeDropins() {
     events.on('aem/lcp', async () => {
       // Recaptcha
       await import('@dropins/tools/recaptcha.js').then((recaptcha) => {
+        recaptcha.setEndpoint(CORE_FETCH_GRAPHQL);
         recaptcha.enableLogger(true);
-        recaptcha.setEndpoint(getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint'));
         return recaptcha.setConfig();
       });
     });

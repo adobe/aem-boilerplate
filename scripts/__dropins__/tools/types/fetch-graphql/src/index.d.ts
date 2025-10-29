@@ -33,11 +33,11 @@ export type AfterHook<T = any> = (requestInit: RequestInit, response: {
 };
 declare class FetchGraphQLMesh {
     protected _endpoint?: string;
-    get endpoint(): string | undefined;
-    get fetchGraphQlHeaders(): Header;
     _fetchGraphQlHeaders: Header;
     _beforeHooks: BeforeHook[];
     _afterHooks: AfterHook[];
+    get endpoint(): string | undefined;
+    get fetchGraphQlHeaders(): Header;
     /**
      * Sets the GraphQL endpoint.
      * @param endpoint - The GraphQL endpoint URL string.
@@ -169,31 +169,61 @@ export declare class FetchGraphQL extends FetchGraphQLMesh {
     get endpoint(): string | undefined;
     get fetchGraphQlHeaders(): Header;
     /**
-     * Sets the GraphQL endpoint or inherits from a parent instance.
-     * @param endpoint - The GraphQL endpoint URL string, or a FetchGraphQL instance to inherit from.
+     * Sets the GraphQL endpoint or links to another FetchGraphQL instance.
+     * @param endpoint - The GraphQL endpoint URL string, or a FetchGraphQL instance to link to.
      * @example
      * ```js
      * // Set endpoint as string
      * instance.setEndpoint('https://api.example.com/graphql');
      *
-     * // Inherit from parent instance
+     * // Link to another instance
      * const parent = new FetchGraphQL();
      * parent.setEndpoint('https://api.example.com/graphql');
      *
      * const child = new FetchGraphQL();
-     * child.setEndpoint(parent); // Inherits endpoint, headers, and hooks
+     * child.setEndpoint(parent); // Links to parent, shares endpoint, headers, and hooks
      * ```
      */
     setEndpoint(endpoint: string | FetchGraphQL): void;
     /**
-     * Collects all before hooks from the parent chain.
-     * Parent hooks execute first, then child hooks.
+     * Sets a GraphQL header. When linked to another instance, this sets the header on the linked instance.
+     * @param key - The key of the header.
+     * @param value - The value of the header.
+     */
+    setFetchGraphQlHeader(key: string, value: string | null): void;
+    /**
+     * Sets the GraphQL headers. When linked to another instance, this sets the headers on the linked instance.
+     * @param header - The header object or a function that returns a header object.
+     */
+    setFetchGraphQlHeaders(header: Header | ((prev: Header) => Header)): void;
+    /**
+     * Removes a specific GraphQL header. When linked to another instance, this removes the header from the linked instance.
+     * @param key - The key of the header.
+     */
+    removeFetchGraphQlHeader(key: string): void;
+    /**
+     * Gets the value of a specific GraphQL header. When linked to another instance, this gets the header from the linked instance.
+     * @param key - The key of the header.
+     * @returns The value of the header, or undefined if not found.
+     */
+    getFetchGraphQlHeader(key: string): string | null | undefined;
+    /**
+     * Adds a before hook. When linked to another instance, this adds the hook to the linked instance.
+     * @param hook - The hook function.
+     */
+    addBeforeHook(hook: BeforeHook): void;
+    /**
+     * Adds an after hook. When linked to another instance, this adds the hook to the linked instance.
+     * @param hook - The hook function.
+     */
+    addAfterHook(hook: AfterHook): void;
+    /**
+     * Collects all before hooks. When linked, delegates to the linked instance.
      * @protected
      */
     protected _collectBeforeHooks(): BeforeHook[];
     /**
-     * Collects all after hooks from the parent chain.
-     * Child hooks execute first, then parent hooks.
+     * Collects all after hooks. When linked, delegates to the linked instance.
      * @protected
      */
     protected _collectAfterHooks(): AfterHook[];

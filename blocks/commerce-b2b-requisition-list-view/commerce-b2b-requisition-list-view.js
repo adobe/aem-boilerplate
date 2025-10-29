@@ -30,7 +30,7 @@ export default async function decorate(block) {
       viewRenderFunction = rlRenderer.render(RequisitionListView, {
         requisitionList,
         routeRequisitionListGrid: () => rootLink(`${CUSTOMER_REQUISITION_LISTS_PATH}`),
-      })(block);
+      });
 
       return viewRenderFunction(block);
     };

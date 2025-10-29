@@ -409,6 +409,50 @@ export default async function decorate(block) {
     );
   }, { eager: true });
 
+  // Show notification if redirected from requisition list
+  let redirectNotification = null;
+
+  // Check if user was redirected from requisition list (sessionStorage)
+  const redirectData = sessionStorage.getItem('requisitionListRedirect');
+  if (redirectData) {
+    try {
+      const { timestamp, message } = JSON.parse(redirectData);
+
+      // Only show notification if redirect happened within last 5 seconds
+      // This prevents showing stale notifications
+      const isRecent = Date.now() - timestamp < 5000;
+
+      if (isRecent && message) {
+        const showRedirectNotification = async () => {
+          redirectNotification = await UI.render(InLineAlert, {
+            heading: message,
+            type: 'warning',
+            variant: 'secondary',
+            icon: h(Icon, { source: 'Warning' }),
+            'aria-live': 'polite',
+            role: 'alert',
+            onDismiss: () => {
+              redirectNotification?.remove();
+            },
+          })($alert);
+
+          // Auto-dismiss after 5 seconds
+          setTimeout(() => {
+            redirectNotification?.remove();
+          }, 5000);
+        };
+
+        // Show notification after a brief delay to ensure DOM is ready
+        setTimeout(showRedirectNotification, 100);
+      }
+    } catch (e) {
+      console.error('Failed to parse requisition list redirect data:', e);
+    } finally {
+      // Always clean up sessionStorage
+      sessionStorage.removeItem('requisitionListRedirect');
+    }
+  }
+
   // --- Add new event listener for cart/data ---
   events.on(
     'cart/data',

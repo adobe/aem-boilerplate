@@ -8,6 +8,8 @@ import {
   CUSTOMER_ACCOUNT_PATH,
   authPrivacyPolicyConsentSlot,
 } from '../../scripts/commerce.js';
+
+// Initialize dropins
 import '../../scripts/initializers/company.js';
 
 /**

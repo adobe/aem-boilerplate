@@ -6,6 +6,8 @@ import {
   CUSTOMER_LOGIN_PATH,
   CUSTOMER_ACCOUNT_PATH,
 } from '../../scripts/commerce.js';
+
+// Initialize dropins
 import '../../scripts/initializers/company.js';
 
 export default async function decorate(block) {

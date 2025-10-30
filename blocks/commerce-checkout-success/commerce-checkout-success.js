@@ -35,8 +35,11 @@ import {
   authPrivacyPolicyConsentSlot,
 } from '../../scripts/commerce.js';
 
-// Ensure order drop-in initializer side effects are applied
+// Initialize dropins
 import '../../scripts/initializers/order.js';
+import '../../scripts/initializers/checkout.js';
+import '../../scripts/initializers/cart.js';
+import '../../scripts/initializers/auth.js';
 
 // Local modal helper
 import createModal from '../modal/modal.js';

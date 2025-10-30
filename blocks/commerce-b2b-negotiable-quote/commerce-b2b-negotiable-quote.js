@@ -31,6 +31,8 @@ import { setShippingAddress } from '@dropins/storefront-quote-management/api.js'
 
 // Initialize
 import '../../scripts/initializers/quote-management.js';
+import '../../scripts/initializers/company.js';
+import '../../scripts/initializers/account.js';
 
 // Commerce
 import {

@@ -1,6 +1,5 @@
-/* eslint-disable import/no-cycle */
-import { initialize, setEndpoint } from '@dropins/storefront-quote-management/api.js';
 import { initializers } from '@dropins/tools/initializer.js';
+import { initialize, setEndpoint } from '@dropins/storefront-quote-management/api.js';
 import { CORE_FETCH_GRAPHQL, fetchPlaceholders } from '../commerce.js';
 import { initializeDropin } from './index.js';
 

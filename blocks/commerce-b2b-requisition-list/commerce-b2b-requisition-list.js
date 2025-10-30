@@ -9,6 +9,9 @@ import {
   rootLink,
 } from '../../scripts/commerce.js';
 
+// Initialize dropins
+import '../../scripts/initializers/requisition-list.js';
+
 export default async function decorate(block) {
   if (!checkIsAuthenticated()) {
     window.location.href = rootLink(CUSTOMER_LOGIN_PATH);

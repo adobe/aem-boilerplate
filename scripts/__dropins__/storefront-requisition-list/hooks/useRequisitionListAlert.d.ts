@@ -18,6 +18,7 @@ export interface Alert {
     type: string;
     description: string;
     action?: string;
+    sku?: string;
 }
 export declare function useRequisitionListAlert(translationsOverride?: Record<string, string>): {
     alert: Alert | null;

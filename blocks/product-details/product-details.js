@@ -165,6 +165,7 @@ export default async function decorate(block) {
         canCreate: true,
         sku: product.sku,
         quantity: configValues?.quantity || 1,
+        variant: 'neutral',
         selectedOptions: currentOptions,
       })($container);
     }

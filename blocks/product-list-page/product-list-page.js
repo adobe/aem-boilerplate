@@ -109,6 +109,7 @@ export default async function decorate(block) {
         items: [],
         sku: product.sku,
         quantity: 1,
+        variant: 'hover',
         beforeAddProdToReqList: () => {
           const url = rootLink(`/products/${product.urlKey}/${product.sku}`.toLowerCase());
           if (product.typename !== 'SimpleProductView') {

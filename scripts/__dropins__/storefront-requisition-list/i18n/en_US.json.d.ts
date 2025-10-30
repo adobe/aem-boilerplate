@@ -45,7 +45,9 @@ declare const _default: {
       "errorDeleteReqList": "Error deleting requisition list",
       "successDeleteReqList": "Requisition list deleted successfully.",
       "errorMove": "Error moving item(s) to cart",
-      "successMove": "Item(s) successfully moved to cart."
+      "successMove": "Item(s) successfully moved to cart.",
+      "errorAddToRequisitionList": "Error adding item(s) to requisition list",
+      "successAddToRequisitionList": "Item(s) successfully added to requisition list."
     },
     "RequisitionListView": {
       "actionDelete": "Delete",

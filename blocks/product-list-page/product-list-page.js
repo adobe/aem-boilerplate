@@ -28,6 +28,7 @@ import {
 } from '../../scripts/commerce.js';
 
 // Initializers
+import '../../scripts/initializers/requisition-list.js';
 import '../../scripts/initializers/search.js';
 import '../../scripts/initializers/wishlist.js';
 

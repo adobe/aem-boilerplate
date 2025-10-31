@@ -1,4 +1,3 @@
-export * from './initialize';
 /********************************************************************
  * ADOBE CONFIDENTIAL
  * __________________
@@ -15,4 +14,5 @@ export * from './initialize';
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
+export * from './initialize';
 //# sourceMappingURL=index.d.ts.map

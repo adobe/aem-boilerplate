@@ -14,9 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './initialize';
-export * from './fetch-graphql';
-export * from './customerCompanyContext';
-export * from './setCompanyHeaders';
-export * from './setGroupHeaders';
+export { useCompanyData } from './useCompanyData';
 //# sourceMappingURL=index.d.ts.map

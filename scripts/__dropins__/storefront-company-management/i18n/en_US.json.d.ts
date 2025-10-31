@@ -287,6 +287,49 @@ declare const _default: {
       "individualUserMessage": "You don't have a company account yet.",
       "createAccountCta": "Create a Company Account"
     },
+    "CompanyCredit": {
+      "title": "Company Credit",
+      "creditAvailable": "Credit Available",
+      "creditLimit": "Credit Limit",
+      "outstandingBalance": "Outstanding Balance",
+      "messages": {
+        "loadError": "Failed to load company credit"
+      }
+    },
+    "CompanyCreditHistory": {
+      "title": "Credit History",
+      "columns": {
+        "date": "Date",
+        "operation": "Operation",
+        "amount": "Amount",
+        "outstandingBalance": "Outstanding Balance",
+        "availableCredit": "Available Credit",
+        "creditLimit": "Credit Limit",
+        "customReference": "Custom Reference",
+        "updatedBy": "Updated By"
+      },
+      "pagination": {
+        "itemsCount": "{count} Item(s)",
+        "itemsPerPage": "Items per page:",
+        "show": "Show",
+        "perPage": "per page",
+        "previous": "Previous",
+        "next": "Next",
+        "pageInfo": "Page {current} of {total}"
+      },
+      "ariaLabels": {
+        "dataLoaded": "Loaded {count} credit history entries",
+        "dataError": "Failed to load credit history entries. Please try again.",
+        "loadingHistory": "Loading credit history",
+        "historyTable": "Credit history table",
+        "paginationNav": "Pagination navigation",
+        "pageNavigation": "Page navigation",
+        "pageSizeSelector": "Items per page selector",
+        "previousPageFull": "Go to previous page, current page {current}",
+        "nextPageFull": "Go to next page, current page {current}",
+        "showingHistory": "Showing {count} credit history entries"
+      }
+    },
     "EditRoleAndPermission": {
       "createTitle": "Add New Role",
       "editTitle": "Edit Role",

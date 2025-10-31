@@ -20,5 +20,6 @@ export * from './CompanyUsers';
 export * from './CustomerCompanyInfo';
 export * from './CompanyStructure';
 export * from './CompanyRegistration';
+export * from './CompanyCredit';
 export * from './RolesAndPermissions';
 //# sourceMappingURL=index.d.ts.map

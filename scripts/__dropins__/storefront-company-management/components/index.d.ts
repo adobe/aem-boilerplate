@@ -28,6 +28,8 @@ export * from './Tree';
 export * from './CompanyStructureEmpty';
 export * from './CompanyRegistrationForm';
 export * from './CompanyRegistrationSuccess';
+export * from './CompanyCreditDisplay';
+export * from './CompanyCreditHistoryDisplay';
 export * from './EditRoleAndPermission';
 export * from './RoleAndPermissionTable';
 //# sourceMappingURL=index.d.ts.map

@@ -41,5 +41,8 @@ export * from './updateCompanyTeam';
 export * from './updateCompanyUser';
 export * from './updateCompanyUserStatus';
 export * from './validateCompanyEmail';
+export * from './getCompanyCredit';
+export * from './getCompanyCreditHistory';
+export * from './checkCompanyCreditEnabled';
 export * from './companyRoles';
 //# sourceMappingURL=index.d.ts.map

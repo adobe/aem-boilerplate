@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{f as s}from"./fetch-error.js";const i=`
+import{f as s}from"./network-error.js";const i=`
   query GET_ALLOW_COMPANY_REGISTRATION {
     storeConfig {
       allow_company_registration

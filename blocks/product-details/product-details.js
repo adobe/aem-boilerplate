@@ -42,6 +42,7 @@ import {
 import { IMAGES_SIZES } from '../../scripts/initializers/pdp.js';
 import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
+import '../../scripts/initializers/requisition-list.js';
 
 /**
  * Checks if the page has prerendered product JSON-LD data

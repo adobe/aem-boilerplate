@@ -8,6 +8,7 @@ export interface RequisitionListNamesProps extends HTMLAttributes<HTMLDivElement
     sku: string;
     selectedOptions?: string[];
     quantity?: number;
+    variant?: 'neutral' | 'hover';
     beforeAddProdToReqList?: () => Promise<void> | void;
 }
 export declare const RequisitionListNames: Container<RequisitionListNamesProps>;

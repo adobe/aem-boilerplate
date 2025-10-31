@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{R as I,f as n,h as u,t as a}from"./transform-requisition-list.js";import{R as _}from"./RequisitionListItemsFragment.graphql.js";import{events as l}from"@dropins/tools/event-bus.js";function m(i){var e;return{sku:i.sku,parent_sku:i.sku,name:i.name,price:i.price,shortDescription:i.shortDescription||"",metaDescription:i.metaDescription||"",metaKeyword:i.metaKeyword||"",metaTitle:i.metaTitle||"",description:i.description||"",addToCartAllowed:i.addToCartAllowed,url:i.url||"",urlKey:i.urlKey||"",externalId:i.externalId||"",images:((e=i.images)==null?void 0:e.map(t=>({url:t.url,label:t.label||"",roles:t.roles||[]})))||[]}}function c(i){return i!=null&&i.length?i.map(m):[]}const R=`
+import{R as I,f as o,h as a,t as _}from"./transform-requisition-list.js";import{R as l}from"./RequisitionListItemsFragment.graphql.js";import{events as T}from"@dropins/tools/event-bus.js";function m(i){var e;return{sku:i.sku,parent_sku:i.sku,name:i.name,price:i.price,shortDescription:i.shortDescription||"",metaDescription:i.metaDescription||"",metaKeyword:i.metaKeyword||"",metaTitle:i.metaTitle||"",description:i.description||"",addToCartAllowed:i.addToCartAllowed,url:i.url||"",urlKey:i.urlKey||"",externalId:i.externalId||"",images:((e=i.images)==null?void 0:e.map(t=>({url:t.url,label:t.label||"",roles:t.roles||[]})))||[]}}function c(i){return i!=null&&i.length?i.map(m):[]}const R=`
   query GET_REQUISITION_LIST_QUERY(
     $requisitionListUid: String,
     $currentPage: Int = 1,
@@ -23,12 +23,14 @@ import{R as I,f as n,h as u,t as a}from"./transform-requisition-list.js";import{
       }
     }
   }
-${_}
+${l}
 ${I}
-`,O=async(i,e,t)=>n(R,{variables:{requisitionListUid:i,currentPage:e,pageSize:t}}).then(({errors:r,data:s})=>{var T;if(r)return u(r);if(!((T=s==null?void 0:s.customer)!=null&&T.requisition_lists))return null;const o=a(s.customer.requisition_lists.items[0]);return l.emit("requisitionList/data",o),o}),d=`
+`,O=async(i,e,t)=>o(R,{variables:{requisitionListUid:i,currentPage:e,pageSize:t}}).then(({errors:r,data:s})=>{var u;if(r)return a(r);if(!((u=s==null?void 0:s.customer)!=null&&u.requisition_lists))return null;const n=_(s.customer.requisition_lists.items[0]);return T.emit("requisitionList/data",n),n}),d=`
   mutation UPDATE_REQUISITION_LIST_ITEMS_MUTATION(
       $requisitionListUid: ID!, 
       $requisitionListItems: [UpdateRequisitionListItemsInput!]!,
+      $pageSize: Int = 20,
+      $currentPage: Int = 1
     ) {
     updateRequisitionListItems(
       requisitionListUid: $requisitionListUid
@@ -36,18 +38,20 @@ ${I}
     ) {
       requisition_list {
       ...REQUISITION_LIST_FRAGMENT
-        items {
+        items(pageSize: $pageSize, currentPage: $currentPage) {
           ...REQUISITION_LIST_ITEMS_FRAGMENT
         }
       }
     }
   }
 ${I}
-${_}
-`,A=async(i,e)=>n(d,{variables:{requisitionListUid:i,requisitionListItems:e}}).then(({errors:t,data:r})=>{if(t)return u(t);const s=a(r.updateRequisitionListItems.requisition_list);return l.emit("requisitionList/data",s),s}),E=`
+${l}
+`,A=async(i,e,t,r)=>o(d,{variables:{requisitionListUid:i,requisitionListItems:e,pageSize:t,currentPage:r}}).then(({errors:s,data:n})=>{if(s)return a(s);const u=_(n.updateRequisitionListItems.requisition_list);return T.emit("requisitionList/data",u),u}),E=`
   mutation DELETE_REQUISITION_LIST_ITEMS_MUTATION(
       $requisitionListUid: ID!, 
-      $requisitionListItemUids: [ID!]!
+      $requisitionListItemUids: [ID!]!,
+      $pageSize: Int = 20,
+      $currentPage: Int = 1
     ) {
     deleteRequisitionListItems(
       requisitionListUid: $requisitionListUid
@@ -55,15 +59,15 @@ ${_}
     ) {
       requisition_list {
         ...REQUISITION_LIST_FRAGMENT
-        items {
+        items(pageSize: $pageSize, currentPage: $currentPage) {
           ...REQUISITION_LIST_ITEMS_FRAGMENT
         }
       }
     }
   }
 ${I}
-${_}
-`,y=async(i,e)=>n(E,{variables:{requisitionListUid:i,requisitionListItemUids:e}}).then(({errors:t,data:r})=>{if(t)return u(t);const s=a(r.deleteRequisitionListItems.requisition_list);return l.emit("requisitionList/data",s),s}),L=`
+${l}
+`,g=async(i,e,t,r)=>o(E,{variables:{requisitionListUid:i,requisitionListItemUids:e,pageSize:t,currentPage:r}}).then(({errors:s,data:n})=>{if(s)return a(s);const u=_(n.deleteRequisitionListItems.requisition_list);return T.emit("requisitionList/data",u),u}),S=`
 fragment PRODUCT_FRAGMENT on ProductView {
   __typename
   id
@@ -196,14 +200,14 @@ fragment PRICE_RANGE_FRAGMENT on ComplexProductView {
     }
   }
 }
-`,q=`
+`,L=`
   query GET_PRODUCT_DATA($skus: [String]) {
     products(skus: $skus) {
       ...PRODUCT_FRAGMENT
     }
   }
-  ${L}
-`,D=async i=>n(q,{variables:{skus:i}}).then(({errors:e,data:t})=>e?u(e):t!=null&&t.products?c(t.products):null),U=`
+  ${S}
+`,$=async i=>o(L,{variables:{skus:i}}).then(({errors:e,data:t})=>e?a(e):t!=null&&t.products?c(t.products):null),q=`
   mutation ADD_REQUISITION_LIST_ITEMS_TO_CART_MUTATION(
       $requisitionListUid: ID!, 
       $requisitionListItemUids: [ID!]!
@@ -233,5 +237,5 @@ fragment PRICE_RANGE_FRAGMENT on ComplexProductView {
       }
     }
   }
-`,M=async(i,e)=>n(U,{variables:{requisitionListUid:i,requisitionListItemUids:e}}).then(({errors:t,data:r})=>{var s;return t?u(t):(s=r.addRequisitionListItemsToCart.add_requisition_list_items_to_cart_user_errors)!=null&&s.length?r.addRequisitionListItemsToCart.add_requisition_list_items_to_cart_user_errors.map(o=>o.type):null});export{M as a,D as b,y as d,O as g,A as u};
+`,y=async(i,e)=>o(q,{variables:{requisitionListUid:i,requisitionListItemUids:e}}).then(({errors:t,data:r})=>{var s;return t?a(t):(s=r.addRequisitionListItemsToCart.add_requisition_list_items_to_cart_user_errors)!=null&&s.length?r.addRequisitionListItemsToCart.add_requisition_list_items_to_cart_user_errors.map(n=>n.type):null});export{y as a,$ as b,g as d,O as g,A as u};
 //# sourceMappingURL=addRequisitionListItemsToCart.js.map

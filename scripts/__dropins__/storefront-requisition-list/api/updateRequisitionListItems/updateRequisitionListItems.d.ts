@@ -1,6 +1,6 @@
 import { RequisitionList } from '../../data/models/requisitionList';
 
-export declare const updateRequisitionListItems: (requisitionListUid: string, requisitionListItems: Array<UpdateRequisitionListItemsInput>) => Promise<RequisitionList | null>;
+export declare const updateRequisitionListItems: (requisitionListUid: string, requisitionListItems: Array<UpdateRequisitionListItemsInput>, pageSize: number, currentPage: number) => Promise<RequisitionList | null>;
 type UpdateRequisitionListItemsInput = {
     item_id: string;
     quantity?: number;

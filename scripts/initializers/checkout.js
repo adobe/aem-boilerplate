@@ -1,17 +1,20 @@
-import {
-  initialize,
-  setFetchGraphQlHeaders,
-} from '@dropins/storefront-checkout/api.js';
 import { initializers } from '@dropins/tools/initializer.js';
-import { getHeaders } from '@dropins/tools/lib/aem/configs.js';
-import { fetchPlaceholders, rootLink, detectPageType } from '../commerce.js';
+import { initialize, setEndpoint } from '@dropins/storefront-checkout/api.js';
+import {
+  CORE_FETCH_GRAPHQL,
+  fetchPlaceholders,
+  rootLink,
+  detectPageType,
+} from '../commerce.js';
 import { initializeDropin } from './index.js';
 
 await initializeDropin(async () => {
-  setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('checkout') }));
+  // Set Fetch GraphQL (Core)
+  setEndpoint(CORE_FETCH_GRAPHQL);
 
   const pageType = detectPageType();
 
+  // Fetch placeholders
   const labels = await fetchPlaceholders('placeholders/checkout.json');
 
   const langDefinitions = {
@@ -20,6 +23,7 @@ await initializeDropin(async () => {
     },
   };
 
+  // Initialize checkout
   return initializers.mountImmediately(initialize, {
     features: {
       b2b: {

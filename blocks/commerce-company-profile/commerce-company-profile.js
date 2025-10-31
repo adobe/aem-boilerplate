@@ -24,6 +24,9 @@ import {
   rootLink,
 } from '../../scripts/commerce.js';
 
+// Initialize dropins
+import '../../scripts/initializers/company.js';
+
 export default async function decorate(block) {
   // Check authentication
   if (!checkIsAuthenticated()) {

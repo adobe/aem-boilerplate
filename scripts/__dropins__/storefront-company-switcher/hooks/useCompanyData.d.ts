@@ -1,4 +1,4 @@
-import { UseCompanyDataReturn } from '../../types/company';
+import { UseCompanyDataReturn } from '../types/company';
 
 /**
  * Custom hook that manages company data fetching and state management

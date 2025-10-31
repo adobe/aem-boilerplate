@@ -1,19 +1,12 @@
-import { getHeaders } from '@dropins/tools/lib/aem/configs.js';
 import { initializers } from '@dropins/tools/initializer.js';
 import { Image, provider as UI } from '@dropins/tools/components.js';
-import {
-  initialize,
-  setEndpoint,
-  setFetchGraphQlHeaders,
-  getFetchGraphQlHeader,
-  fetchProductData,
-} from '@dropins/storefront-pdp/api.js';
+import { initialize, setEndpoint, fetchProductData } from '@dropins/storefront-pdp/api.js';
 import { isAemAssetsEnabled, tryGenerateAemAssetsOptimizedUrl } from '@dropins/tools/lib/aem/assets.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { initializeDropin } from './index.js';
 import {
+  CS_FETCH_GRAPHQL,
   fetchPlaceholders,
-  commerceEndpointWithQueryParams,
   getOptionsUIDsFromUrl,
   getProductSku,
   loadErrorPage,
@@ -80,21 +73,13 @@ function preloadPDPAssets() {
 }
 
 await initializeDropin(async () => {
+  // Inherit Fetch GraphQL Instance (Catalog Service)
+  setEndpoint(CS_FETCH_GRAPHQL);
+
   // Preload PDP assets immediately when this module is imported
   preloadPDPAssets();
 
-  // Set Fetch Headers (Service)
-  const customerGroupHeaderValue = getFetchGraphQlHeader('Magento-Customer-Group');
-  const customerGroupHeader = customerGroupHeaderValue ? {
-    'Magento-Customer-Group': customerGroupHeaderValue,
-  } : {};
-  setEndpoint(await commerceEndpointWithQueryParams(customerGroupHeader));
-  setFetchGraphQlHeaders((prev) => ({
-    ...prev,
-    ...getHeaders('cs'),
-    ...customerGroupHeader,
-  }));
-
+  // Fetch product data
   const sku = getProductSku();
   const optionsUIDs = getOptionsUIDsFromUrl();
 

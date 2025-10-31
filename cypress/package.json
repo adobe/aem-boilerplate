@@ -10,7 +10,7 @@
     "cypress:saas:run": "cypress run --config-file cypress.saas.config.js --env grepTags=-@skipSaas",
     "cypress:b2b:open": "cypress open --browser chrome --config-file cypress.b2b.paas.config.js",
     "cypress:b2b:run": "cypress run --config-file cypress.b2b.paas.config.js --env grepTags=@B2BPaas",
-     "cypress:b2b:saas:open": "cypress open --browser chrome --config-file cypress.b2b.saas.config.js",
+    "cypress:b2b:saas:open": "cypress open --browser chrome --config-file cypress.b2b.saas.config.js",
     "cypress:b2b:saas:run": "cypress run --config-file cypress.b2b.saas.config.js --env grepTags=@B2BSaas"
   },
   "author": "Adobe Commerce",

@@ -25,5 +25,6 @@ export interface CompanyUserFormProps {
         type: 'user';
     }) => void;
     onCancel: () => void;
+    onError?: (error: string) => void;
 }
 //# sourceMappingURL=companyForm.types.d.ts.map

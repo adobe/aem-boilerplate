@@ -4,7 +4,7 @@ import { initializeDropin } from './index.js';
 import { CS_FETCH_GRAPHQL, fetchPlaceholders } from '../commerce.js';
 
 await initializeDropin(async () => {
-  // Set Fetch GraphQL (Core)
+  // Set Fetch GraphQL (Catalog Service)
   setEndpoint(CS_FETCH_GRAPHQL);
 
   // Fetch placeholders

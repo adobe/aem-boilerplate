@@ -1,11 +1,11 @@
 import { initializers } from '@dropins/tools/initializer.js';
 import { initialize, setEndpoint } from '@dropins/storefront-requisition-list/api.js';
 import { initializeDropin } from './index.js';
-import { CORE_FETCH_GRAPHQL, fetchPlaceholders } from '../commerce.js';
+import { CS_FETCH_GRAPHQL, fetchPlaceholders } from '../commerce.js';
 
 await initializeDropin(async () => {
-  // Set Fetch GraphQL (Core)
-  setEndpoint(CORE_FETCH_GRAPHQL);
+  // Set Fetch GraphQL (Catalog Service)
+  setEndpoint(CS_FETCH_GRAPHQL);
 
   // Fetch placeholders
   const labels = await fetchPlaceholders('placeholders/requisition-list.json');

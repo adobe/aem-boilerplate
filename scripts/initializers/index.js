@@ -12,8 +12,10 @@ const setAuthHeaders = (state) => {
   if (state) {
     const token = getUserTokenCookie();
     CORE_FETCH_GRAPHQL.setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
+    CS_FETCH_GRAPHQL.setFetchGraphQlHeader('Authorization', `Bearer ${token}`);
   } else {
     CORE_FETCH_GRAPHQL.removeFetchGraphQlHeader('Authorization');
+    CS_FETCH_GRAPHQL.removeFetchGraphQlHeader('Authorization');
   }
 };
 

@@ -22,70 +22,81 @@ export default async function decorate(block) {
   };
 
   /** Get permissions */
-  const permissions = events.lastPayload('auth/permissions') || {};
+  events.on('auth/permissions', (permissions) => {
+    /** Clear nav */
+    $nav.innerHTML = '';
 
-  /** Create items */
-  $items.forEach(($item) => {
-    /**
-     * Permissions
-     * Skip rendering if the user lacks permission for this item.
-     * Default permission is 'all'.
-     * Note: permissions can be explicitly set to false (disabled feature),
-     * which should hide the item even for admins.
-     */
-    const permission = $item.querySelector(`:scope > div:nth-child(${rows.permission})`)?.textContent?.trim() || 'all';
+    /** Create items */
+    $items.forEach(($item) => {
+      /**
+       * Permissions
+       * Skip rendering if the user lacks permission for this item.
+       * Default permission is 'all'.
+       * Note: permissions can be explicitly set to false (disabled feature),
+       * which should hide the item even for admins.
+       */
+      const permission = $item.querySelector(`:scope > div:nth-child(${rows.permission})`)?.textContent?.trim() || 'all';
 
-    // Skip if permission is explicitly disabled (false)
-    if (permissions[permission] === false) {
-      return;
-    }
+      // Skip if permission is explicitly disabled (false)
+      if (permissions[permission] === false) {
+        return;
+      }
 
-    // Skip if the user is not an admin and permission is not granted
-    if (!permissions.admin && !permissions[permission]) {
-      return;
-    }
+      // Skip if the user is not an admin and permission is not granted
+      if (!permissions.admin && !permissions[permission]) {
+        return;
+      }
 
-    /** Template */
-    const template = document.createRange().createContextualFragment(`
-      <a class="commerce-account-nav__item">
-        <span class="commerce-account-nav__item__icon"></span>
-        <span class="commerce-account-nav__item__title"></span>
-        <span class="commerce-account-nav__item__description"></span>
-        <span class="commerce-account-nav__item__chevron" aria-hidden="true"></span>
-      </a>
-    `);
+      /** Template */
+      const template = document.createRange().createContextualFragment(`
+        <a class="commerce-account-nav__item">
+          <span class="commerce-account-nav__item__icon"></span>
+          <span class="commerce-account-nav__item__title"></span>
+          <span class="commerce-account-nav__item__description"></span>
+          <span class="commerce-account-nav__item__chevron" aria-hidden="true"></span>
+        </a>
+      `);
 
-    const $link = template.querySelector('.commerce-account-nav__item');
-    const $icon = template.querySelector('.commerce-account-nav__item__icon');
-    const $title = template.querySelector('.commerce-account-nav__item__title');
-    const $description = template.querySelector('.commerce-account-nav__item__description');
+      const $link = template.querySelector('.commerce-account-nav__item');
+      const $icon = template.querySelector('.commerce-account-nav__item__icon');
+      const $title = template.querySelector('.commerce-account-nav__item__title');
+      const $description = template.querySelector('.commerce-account-nav__item__description');
 
-    /** Content */
-    const $content = $item.querySelector(`:scope > div:nth-child(${rows.label})`)?.children;
+      /** Content */
+      const $content = $item.querySelector(`:scope > div:nth-child(${rows.label})`)?.children;
 
-    /** Link */
-    const link = $content[0]?.querySelector('a')?.href;
-    const isActive = link && new URL(link).pathname === window.location.pathname;
-    $link.classList.toggle('commerce-account-nav__item--active', isActive);
-    $link.href = link;
+      /** Link */
+      const link = $content[0]?.querySelector('a')?.href;
+      const isActive = link && new URL(link).pathname === window.location.pathname;
+      $link.classList.toggle('commerce-account-nav__item--active', isActive);
+      $link.href = link;
 
-    /** Icon */
-    const icon = $item.querySelector(`:scope > div:nth-child(${rows.icon})`)?.textContent?.trim();
+      /** Icon */
+      const icon = $item.querySelector(`:scope > div:nth-child(${rows.icon})`)?.textContent?.trim();
 
-    if (icon) {
-      $link.classList.add('commerce-account-nav__item--has-icon');
-      UI.render(Icon, { source: icon, size: 24 })($icon);
-    }
+      if (icon) {
+        $link.classList.add('commerce-account-nav__item--has-icon');
+        UI.render(Icon, { source: icon, size: 24 })($icon);
+      }
 
-    /** Title */
-    $title.textContent = $content[0]?.textContent || '';
+      /** Title */
+      $title.textContent = $content[0]?.textContent || '';
 
-    /** Description */
-    $description.textContent = $content[1]?.textContent || '';
+      /** Description */
+      $description.textContent = $content[1]?.textContent || '';
 
-    /** Add link to nav */
-    $nav.appendChild($link);
-  });
+      /** Add link to nav */
+      $nav.appendChild($link);
+    });
+  }, { eager: true });
 
   block.replaceWith($nav);
 }
+
+// Force a refresh of the permissions
+events.on('companyContext/changed', () => {
+  import('@dropins/storefront-auth/api.js').then((module) => {
+    module._resetCache();
+    module.getCustomerRolePermissions();
+  });
+});

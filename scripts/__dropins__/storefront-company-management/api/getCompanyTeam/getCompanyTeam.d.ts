@@ -3,7 +3,7 @@ import { CompanyTeamModel } from '../../data/models';
 /**
  * Retrieves a specific company team by their ID
  *
- * @param id - The ID of the company team to retrieve
+ * @param id - The ID of the company team to retrieve (base64 encoded UID from GraphQL)
  * @returns Promise resolving to CompanyTeamModel or null if team not found
  * @throws {Error} When network errors or GraphQL errors occur
  */

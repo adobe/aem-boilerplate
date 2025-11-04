@@ -3,7 +3,7 @@ import { UpdateCompanyTeamInput } from '../../types/api/updateCompanyTeam.types'
 /**
  * Updates an existing company team with the provided information
  *
- * @param input - Team information including ID and fields to update
+ * @param input - Team information including ID (base64 encoded UID) and fields to update
  * @returns Promise resolving to boolean indicating success
  * @throws {Error} When network errors or GraphQL errors occur
  */

@@ -1,0 +1,4 @@
+/*! Copyright 2025 Adobe
+All Rights Reserved. */
+import{_ as r}from"./Add.js";const e=t=>r("svg",{width:24,height:24,viewBox:"0 0 24 24",fill:"none",xmlns:"http://www.w3.org/2000/svg",...t},r("rect",{vectorEffect:"non-scaling-stroke",x:5,y:5.28076,width:14,height:1.5,rx:.75,fill:"currentColor"}),r("rect",{vectorEffect:"non-scaling-stroke",x:8.27539,y:11.2192,width:14,height:1.5,rx:.75,fill:"currentColor"}),r("rect",{vectorEffect:"non-scaling-stroke",x:8.44922,y:17.2192,width:14,height:1.5,rx:.75,fill:"currentColor"}),r("circle",{vectorEffect:"non-scaling-stroke",cx:2.30078,cy:6.03076,r:.75,fill:"currentColor"}),r("circle",{vectorEffect:"non-scaling-stroke",cx:5.67578,cy:11.9692,r:.75,fill:"currentColor"}),r("circle",{vectorEffect:"non-scaling-stroke",cx:5.67578,cy:17.9692,r:.75,fill:"currentColor"}));export{e as default};
+//# sourceMappingURL=Structure.js.map

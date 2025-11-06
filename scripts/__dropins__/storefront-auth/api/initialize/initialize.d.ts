@@ -8,6 +8,7 @@ type ConfigProps = {
         header: string;
         tokenPrefix: string;
     };
+    customerPermissionRoles?: boolean;
     models?: {
         CustomerModel?: Model<CustomerModel>;
     };

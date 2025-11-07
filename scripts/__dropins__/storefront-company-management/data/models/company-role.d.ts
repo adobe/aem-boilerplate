@@ -38,7 +38,7 @@ export interface CompanyRolesResponseModel {
 }
 export interface CompanyRoleCreateInputModel {
     name: string;
-    permissions: string[];
+    permissions?: string[];
 }
 export interface CompanyRoleUpdateInputModel {
     id: string;

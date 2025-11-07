@@ -25,5 +25,5 @@ import{b as p}from"./company-permissions.js";import{f as c,h as y}from"./network
       is_email_available
     }
   }
-`,R=async i=>{try{const e=await c(f,{variables:{email:i}});return e.errors?{isValid:!1,error:"Unable to validate email"}:{isValid:e.data.isCompanyEmailAvailable.is_email_available,error:e.data.isCompanyEmailAvailable.is_email_available?void 0:"This email is already used by another company"}}catch{return{isValid:!1,error:"Unable to validate email"}}};export{A as a,I as g,E as t,R as v};
+`,R=async i=>{try{const e=await c(f,{variables:{email:i}});return e.errors?{isValid:!1,error:"Unable to validate email"}:{isValid:e.data.isCompanyEmailAvailable.is_email_available,error:e.data.isCompanyEmailAvailable.is_email_available?void 0:"This email is already used by another company"}}catch{return{isValid:!1,error:"Unable to validate email"}}};export{E as a,I as g,A as t,R as v};
 //# sourceMappingURL=validateCompanyEmail.js.map

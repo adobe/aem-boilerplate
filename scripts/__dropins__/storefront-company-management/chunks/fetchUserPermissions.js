@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{f as c,i as h,g as m}from"./company-permissions.js";import{h as e}from"./fetch-error.js";import{f as o,h as f}from"./network-error.js";const E=`
+import{a as c,i as h,g as m}from"./company-permissions.js";import{h as e}from"./fetch-error.js";import{f as o,h as f}from"./network-error.js";const E=`
   query GET_CUSTOMER_ROLE_PERMISSIONS {
     customer {
       role {

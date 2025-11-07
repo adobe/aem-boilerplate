@@ -38,5 +38,5 @@ import{f as o,h as u}from"./network-error.js";import{h as i}from"./fetch-error.j
   mutation updateCompanyTeam($input: CompanyTeamUpdateInput!) {
     updateCompanyTeam(input: $input) { __typename team { id name } }
   }
-`;async function M(a){const n={id:a.id,name:a.name,description:a.description};return await o(C,{variables:{input:n}}).then(e=>{var t,r,m,p;return(t=e.errors)!=null&&t.length?i(e.errors):!!((p=(m=(r=e==null?void 0:e.data)==null?void 0:r.updateCompanyTeam)==null?void 0:m.team)!=null&&p.id)}).catch(u)}export{A as a,M as b,f as c,E as d,g,$ as u};
+`;async function M(a){const n={id:a.id,name:a.name,description:a.description};return await o(C,{variables:{input:n}}).then(e=>{var t,r,m,p;return(t=e.errors)!=null&&t.length?i(e.errors):!!((p=(m=(r=e==null?void 0:e.data)==null?void 0:r.updateCompanyTeam)==null?void 0:m.team)!=null&&p.id)}).catch(u)}export{g as a,$ as b,f as c,E as d,A as g,M as u};
 //# sourceMappingURL=updateCompanyTeam.js.map

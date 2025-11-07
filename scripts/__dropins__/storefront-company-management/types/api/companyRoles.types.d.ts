@@ -108,7 +108,7 @@ export interface IsCompanyRoleNameAvailableResponse {
 }
 export interface CompanyRoleCreateInput {
     name: string;
-    permissions: string[];
+    permissions?: string[];
 }
 export interface CompanyRoleUpdateInput {
     id: string;

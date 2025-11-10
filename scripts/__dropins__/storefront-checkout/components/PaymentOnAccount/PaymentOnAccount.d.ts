@@ -1,6 +1,6 @@
+import { Money } from '../../data/models';
 import { FunctionComponent } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
-import { Money } from '../../data/models';
 
 export type CompanyCredit = {
     availableCredit: Money;
@@ -11,7 +11,7 @@ export interface PaymentOnAccountProps extends HTMLAttributes<HTMLFormElement> {
     onReferenceNumberChange?: (event: Event) => void;
     onReferenceNumberBlur?: (event: Event) => void;
     companyCredit?: CompanyCredit | null;
-    cartAmount?: Money | null;
+    totalAmount?: Money | null;
 }
 export declare const PaymentOnAccount: FunctionComponent<PaymentOnAccountProps & import('../ConditionalWrapper/ConditionalWrapper').ConditionalProps>;
 //# sourceMappingURL=PaymentOnAccount.d.ts.map

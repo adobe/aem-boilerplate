@@ -88,7 +88,8 @@ declare const _default: {
       "button": "Try again",
       "contactSupport": "If you continue to have issues, please contact support.",
       "title": "We were unable to process your order",
-      "unexpected": "An unexpected error occurred while processing your order. Please try again later."
+      "unexpected": "An unexpected error occurred while processing your order. Please try again later.",
+      "permissionDenied": "You do not have permission to complete checkout. Please contact your administrator for assistance."
     },
     "Quote": {
       "permissionDenied": "You do not have permission to checkout with this quote.",

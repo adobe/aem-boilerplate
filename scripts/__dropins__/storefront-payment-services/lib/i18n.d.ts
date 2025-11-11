@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2025 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -14,6 +14,15 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './CreditCard/CreditCard';
-export * from './ApplePay/ApplePay';
-//# sourceMappingURL=index.d.ts.map
+/**
+ * Translates a text into the current locale (imperative version of useText hook).
+ *
+ * Example
+ * ~~~
+ *
+ *    translate("PaymentServices.messages.methodLoading")
+ *
+ *  @param key key of text to translate
+ */
+export declare function translate(key: string): string;
+//# sourceMappingURL=i18n.d.ts.map

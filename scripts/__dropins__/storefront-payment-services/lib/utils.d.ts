@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2025 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -14,6 +14,12 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './CreditCard/CreditCard';
-export * from './ApplePay/ApplePay';
-//# sourceMappingURL=index.d.ts.map
+/**
+ * Awaitable 'sleep'.
+ */
+export declare function timeout(ms: number): Promise<void>;
+/**
+ * Converts SCREAMING_SNAKE_CASE to kebab-case.
+ */
+export declare function screamingSnakeToKebabCase(screamCaseText: string): string;
+//# sourceMappingURL=utils.d.ts.map

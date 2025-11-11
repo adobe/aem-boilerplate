@@ -51,9 +51,8 @@ import {
   provider as UI,
 } from '@dropins/tools/components.js';
 import { events } from '@dropins/tools/event-bus.js';
-import { debounce, getCookie } from '@dropins/tools/lib.js';
+import { debounce } from '@dropins/tools/lib.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
-import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
 
 // Checkout Dropin Libs
 import {
@@ -82,7 +81,6 @@ import {
   LOGIN_FORM_NAME,
   SHIPPING_ADDRESS_DATA_KEY,
   SHIPPING_FORM_NAME,
-  USER_TOKEN_COOKIE_NAME,
 } from './constants.js';
 
 /**
@@ -361,47 +359,39 @@ export const renderShippingMethods = async (container) => renderContainer(
  */
 export const renderPaymentMethods = async (container, creditCardFormRef) => renderContainer(
   CONTAINERS.PAYMENT_METHODS,
-  async () => {
-    // Retrieve constants internally to minimize parameters
-    const commerceCoreEndpoint = getConfigValue('commerce-core-endpoint') || getConfigValue('commerce-endpoint');
-    const getUserTokenCookie = () => getCookie(USER_TOKEN_COOKIE_NAME);
+  async () => CheckoutProvider.render(PaymentMethods, {
+    slots: {
+      Methods: {
+        [PaymentMethodCode.CREDIT_CARD]: {
+          render: (ctx) => {
+            const $creditCard = document.createElement('div');
 
-    return CheckoutProvider.render(PaymentMethods, {
-      slots: {
-        Methods: {
-          [PaymentMethodCode.CREDIT_CARD]: {
-            render: (ctx) => {
-              const $creditCard = document.createElement('div');
+            PaymentServices.render(CreditCard, {
+              getCartId: () => ctx.cartId,
+              creditCardFormRef,
+            })($creditCard);
 
-              PaymentServices.render(CreditCard, {
-                apiUrl: commerceCoreEndpoint,
-                getCustomerToken: getUserTokenCookie,
-                getCartId: () => ctx.cartId,
-                creditCardFormRef,
-              })($creditCard);
-
-              ctx.replaceHTML($creditCard);
-            },
-          },
-          [PaymentMethodCode.SMART_BUTTONS]: {
-            enabled: false,
-          },
-          [PaymentMethodCode.APPLE_PAY]: {
-            enabled: false,
-          },
-          [PaymentMethodCode.GOOGLE_PAY]: {
-            enabled: false,
-          },
-          [PaymentMethodCode.VAULT]: {
-            enabled: false,
-          },
-          [PaymentMethodCode.FASTLANE]: {
-            enabled: false,
+            ctx.replaceHTML($creditCard);
           },
         },
+        [PaymentMethodCode.SMART_BUTTONS]: {
+          enabled: false,
+        },
+        [PaymentMethodCode.APPLE_PAY]: {
+          enabled: false,
+        },
+        [PaymentMethodCode.GOOGLE_PAY]: {
+          enabled: false,
+        },
+        [PaymentMethodCode.VAULT]: {
+          enabled: false,
+        },
+        [PaymentMethodCode.FASTLANE]: {
+          enabled: false,
+        },
       },
-    })(container);
-  },
+    },
+  })(container),
 );
 
 /**

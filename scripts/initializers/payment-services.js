@@ -1,13 +1,11 @@
 import { initializers } from '@dropins/tools/initializer.js';
-import { initialize, setEndpoint } from '@dropins/storefront-payment-services/api.js';
-import { initializeDropin } from './index.js';
-import { CORE_FETCH_GRAPHQL, fetchPlaceholders } from '../commerce.js';
+import { getConfigValue, getHeaders } from '@dropins/tools/lib/aem/configs.js';
+import * as paymentServicesApi from '@dropins/storefront-payment-services/api.js';
+import { initializeDropin, getUserTokenCookie } from './index.js';
+import { fetchPlaceholders } from '../commerce.js';
 
 await initializeDropin(async () => {
-  // Set Fetch GraphQL (Core)
-  setEndpoint(CORE_FETCH_GRAPHQL);
-
-  // Fetch placeholders
+  const headers = getHeaders('payment-services');
   const labels = await fetchPlaceholders('placeholders/payment-services.json');
   const langDefinitions = {
     default: {
@@ -15,8 +13,10 @@ await initializeDropin(async () => {
     },
   };
 
-  // Initialize payment services
-  return initializers.mountImmediately(initialize, {
+  return initializers.mountImmediately(paymentServicesApi.initialize, {
+    apiUrl: getConfigValue('commerce-core-endpoint'),
+    getCustomerToken: getUserTokenCookie,
+    storeViewCode: headers.Store,
     langDefinitions,
   });
 })();

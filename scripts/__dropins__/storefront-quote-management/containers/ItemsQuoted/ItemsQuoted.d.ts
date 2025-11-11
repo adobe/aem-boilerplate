@@ -6,13 +6,13 @@ export interface ItemsQuotedProps extends HTMLAttributes<HTMLDivElement> {
     quoteData?: NegotiableQuoteModel;
     onItemCheckboxChange?: (item: NegotiableQuoteCartItem, isSelected: boolean) => void;
     onItemDropdownChange?: (item: NegotiableQuoteCartItem, action: string) => void;
-    onUpdate?: (e: SubmitEvent) => void;
     slots?: {
         ProductListTable?: SlotProps<{
             items: NegotiableQuoteModel['items'];
             canEdit: boolean;
             onItemCheckboxChange?: (item: NegotiableQuoteCartItem, isSelected: boolean) => void;
             onItemDropdownChange?: (item: NegotiableQuoteCartItem, action: string) => void;
+            onQuantityChange?: (item: NegotiableQuoteCartItem, newQuantity: number) => void;
             onUpdate?: (e: SubmitEvent) => void;
         }>;
         QuotePricesSummary?: SlotProps<{

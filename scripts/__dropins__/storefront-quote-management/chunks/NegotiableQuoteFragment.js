@@ -1,10 +1,56 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
 const e=`
+  fragment SELECTED_SHIPPING_METHOD_FRAGMENT on SelectedShippingMethod {
+    amount {
+      currency
+      value
+    }
+    carrier_code
+    carrier_title
+    method_code
+    method_title
+    price_excl_tax {
+      value
+      currency
+    }
+    price_incl_tax {
+      value
+      currency
+    }
+  }
+`,t=`
+  fragment NEGOTIABLE_QUOTE_SHIPPING_ADDRESS_FRAGMENT on NegotiableQuoteShippingAddress {
+    uid
+    firstname
+    lastname
+    company
+    street
+    city
+    region {
+      code
+      label
+      region_id
+    }
+    postcode
+    country {
+      code
+      label
+    }
+    telephone
+
+    selected_shipping_method {
+      ...SELECTED_SHIPPING_METHOD_FRAGMENT
+    }
+  }
+
+  ${e}
+`,a=`
   fragment NegotiableQuoteFragment on NegotiableQuote {
     uid
     name
     created_at
+    is_virtual
     status
     sales_rep_name
     expiration_date
@@ -22,13 +68,14 @@ const e=`
       }
       text
       attachments {
-          name
-          url
+        name
+        url
       }
     }
     template_id
     template_name
     items {
+      uid
       product {
         name
         sku
@@ -165,7 +212,7 @@ const e=`
       }
     }
     prices {
-      subtotal_excluding_tax {
+      subtotal_with_discount_excluding_tax {
         currency
         value
       }
@@ -173,41 +220,43 @@ const e=`
         currency
         value
       }
-      subtotal_with_discount_excluding_tax {
+      subtotal_excluding_tax {
         currency
         value
-      }
-      applied_taxes {
-        amount {
-          currency
-          value
-        }
-        label
       }
       grand_total {
         currency
         value
       }
+      grand_total_excluding_tax {
+        currency
+        value
+      }
+      applied_taxes {
+        label
+        amount {
+          value
+          currency
+        }
+      }
+      discounts {
+        amount {
+          value
+          currency
+        }
+        label
+        coupon {
+          code
+        }
+        applied_to
+      }
     }
+
     shipping_addresses {
-      uid
-      firstname
-      lastname
-      company
-      street
-      city
-      region {
-        code
-        label
-        region_id
-      }
-      postcode
-      country {
-        code
-        label
-      }
-      telephone
+      ...NEGOTIABLE_QUOTE_SHIPPING_ADDRESS_FRAGMENT
     }
   }
-`;export{e as N};
+
+  ${t}
+`;export{a as N};
 //# sourceMappingURL=NegotiableQuoteFragment.js.map

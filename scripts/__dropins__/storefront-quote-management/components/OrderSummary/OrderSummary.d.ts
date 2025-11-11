@@ -9,18 +9,21 @@ export interface OrderSummaryLineItem {
     sortOrder: number;
     content: string | JSXInternal.Element | VNode<HTMLAttributes<HTMLDivElement>> | OrderSummaryLineItem[] | undefined;
 }
-export interface OrderSummaryProps extends Omit<HTMLAttributes<HTMLDivElement>, 'loading'> {
+export interface OrderSummaryProps extends HTMLAttributes<HTMLDivElement> {
     variant?: 'primary' | 'secondary';
     heading?: VNode<HTMLAttributes<HTMLDivElement>>;
-    loading?: boolean;
     subTotal?: {
         price: VNode<HTMLAttributes<HTMLSpanElement>>;
         priceExcludingTax?: VNode<HTMLAttributes<HTMLSpanElement>>;
         taxIncluded?: boolean;
         taxExcluded?: boolean;
-        zeroTaxSubtotal?: boolean;
     };
-    shipping?: VNode<HTMLAttributes<HTMLDivElement>>;
+    shipping?: {
+        price: VNode<HTMLAttributes<HTMLSpanElement>>;
+        priceExcludingTax?: VNode<HTMLAttributes<HTMLSpanElement>>;
+        taxIncluded?: boolean;
+        taxExcluded?: boolean;
+    };
     discounts?: {
         label: string;
         price: VNode<HTMLAttributes<HTMLSpanElement>>;
@@ -38,28 +41,6 @@ export interface OrderSummaryProps extends Omit<HTMLAttributes<HTMLDivElement>, 
         price: VNode<HTMLAttributes<HTMLSpanElement>>;
         priceWithoutTax?: VNode<HTMLAttributes<HTMLSpanElement>>;
     };
-    printedCard?: {
-        renderContent: boolean;
-        taxIncluded: boolean;
-        taxInclAndExcl: boolean;
-        priceExclTax: VNode<HTMLAttributes<HTMLSpanElement>>;
-        priceInclTax: VNode<HTMLAttributes<HTMLSpanElement>>;
-    };
-    itemsGiftWrapping?: {
-        renderContent: boolean;
-        taxIncluded: boolean;
-        taxInclAndExcl: boolean;
-        priceExclTax: VNode<HTMLAttributes<HTMLSpanElement>>;
-        priceInclTax: VNode<HTMLAttributes<HTMLSpanElement>>;
-    };
-    orderGiftWrapping?: {
-        renderContent: boolean;
-        taxIncluded: boolean;
-        taxInclAndExcl: boolean;
-        priceExclTax: VNode<HTMLAttributes<HTMLSpanElement>>;
-        priceInclTax: VNode<HTMLAttributes<HTMLSpanElement>>;
-    };
-    primaryAction?: VNode<HTMLAttributes<HTMLButtonElement>>;
     totalSaved?: VNode<HTMLAttributes<HTMLSpanElement>>;
     updateLineItems?: (lineItems: Array<OrderSummaryLineItem>) => Array<OrderSummaryLineItem>;
 }

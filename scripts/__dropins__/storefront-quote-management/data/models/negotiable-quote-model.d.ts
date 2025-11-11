@@ -1,3 +1,11 @@
+/********************************************************************
+ *  Copyright 2025 Adobe
+ *  All Rights Reserved.
+ *
+ * NOTICE:  Adobe permits you to use, modify, and distribute this
+ * file in accordance with the terms of the Adobe license agreement
+ * accompanying it.
+ *******************************************************************/
 export interface ShippingAddress {
     /**
      * The unique string identifier of the address
@@ -28,6 +36,7 @@ export interface NegotiableQuoteModel {
     expirationDate: string;
     updatedAt: string;
     status: NegotiableQuoteStatus;
+    isVirtual: boolean;
     buyer: {
         firstname: string;
         lastname: string;
@@ -48,21 +57,42 @@ export interface NegotiableQuoteModel {
     }[];
     history?: NegotiableQuoteHistoryEntry[];
     prices: {
+        appliedDiscounts?: Discount[];
+        appliedTaxes?: Tax[];
+        discount?: Currency;
+        grandTotal?: Currency;
+        grandTotalExcludingTax?: Currency;
+        shippingExcludingTax?: Currency;
+        shippingIncludingTax?: Currency;
         subtotalExcludingTax?: Currency;
         subtotalIncludingTax?: Currency;
         subtotalWithDiscountExcludingTax?: Currency;
-        grandTotal?: Currency;
-        appliedTaxes?: {
-            amount: Currency;
-            label: string;
-        }[];
+        totalTax?: Currency;
     };
     items: NegotiableQuoteCartItem[];
     shippingAddresses?: ShippingAddress[];
     canCheckout: boolean;
     canSendForReview: boolean;
+    lockedForEditing?: boolean;
+    canDelete: boolean;
+    canClose: boolean;
+    canUpdateQuote: boolean;
+}
+export interface ConfigurableOption {
+    optionLabel: string;
+    valueLabel: string;
+}
+export interface BundleOption {
+    label: string;
+    values: {
+        label: string;
+        quantity: number;
+        originalPrice: Currency;
+        price: Currency;
+    }[];
 }
 export interface NegotiableQuoteCartItem {
+    uid: string;
     product: {
         uid: string;
         sku: string;
@@ -92,19 +122,10 @@ export interface NegotiableQuoteCartItem {
         originalItemPrice: Currency;
         rowTotal: Currency;
     };
-    configurableOptions?: {
-        optionLabel: string;
-        valueLabel: string;
-    }[];
-    bundleOptions?: {
-        label: string;
-        values: {
-            label: string;
-            quantity: number;
-            originalPrice: Currency;
-            price: Currency;
-        }[];
-    }[];
+    configurableOptions?: ConfigurableOption[];
+    optionLabel: string;
+    valueLabel: string;
+    bundleOptions?: BundleOption[];
     noteFromBuyer?: ItemNote[];
     noteFromSeller?: ItemNote[];
 }
@@ -119,6 +140,18 @@ export interface ItemNote {
 export interface Currency {
     value: number;
     currency: string;
+}
+export interface Tax {
+    amount: Currency;
+    label: string;
+}
+export interface Discount {
+    amount: Currency;
+    label: string;
+    coupon?: Coupon;
+}
+export interface Coupon {
+    code: string;
 }
 export interface NegotiableQuoteListEntry {
     uid: string;

@@ -11,6 +11,8 @@ export declare function useCompanyTeamForm(opts: {
         type: 'team';
         description?: string;
     }) => void;
+    onError?: (error: string) => void;
+    onSuccess?: (message: string) => void;
 }): {
     values: CompanyTeamModel;
     errors: Record<string, string>;

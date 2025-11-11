@@ -30,7 +30,7 @@ export declare function useCompanyStructureCard({ handleSetInLineAlert, permissi
     handleInputChange: (value: Record<string, string | number | boolean>) => void;
     handleShowEditForm: () => void;
     handleHideEditForm: (clearStates?: () => void) => void;
-    renderAlertMessage: (type: 'success' | 'error', message?: string) => void;
+    renderAlertMessage: (type: 'success' | 'error', message: string) => void;
     working: boolean;
 };
 //# sourceMappingURL=useCompanyStructureCard.d.ts.map

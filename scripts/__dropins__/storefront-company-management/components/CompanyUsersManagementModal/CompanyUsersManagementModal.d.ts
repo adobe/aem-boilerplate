@@ -11,6 +11,8 @@ export interface CompanyUsersManagementModalProps extends Omit<HTMLAttributes<HT
     onClose: () => void;
     /** Whether the modal is currently open */
     isOpen?: boolean;
+    /** Callback for success messages */
+    onSuccess?: (message: string) => void;
 }
 export declare const CompanyUsersManagementModal: FunctionComponent<CompanyUsersManagementModalProps>;
 //# sourceMappingURL=CompanyUsersManagementModal.d.ts.map

@@ -178,8 +178,6 @@ declare const _default: {
         }
       },
       "messages": {
-        "structureSuccess": "Company structure updated successfully",
-        "structureError": "Failed to update company structure",
         "loadError": "Failed to load company structure",
         "updateError": "Failed to update company structure",
         "noStructureData": "No structure data.",
@@ -198,6 +196,15 @@ declare const _default: {
         "createTeamError": "Failed to create team. You may not have permission to perform this action.",
         "saveUserError": "An error occurred while saving the user.",
         "saveTeamError": "An error occurred while saving the team.",
+        "createUserSuccess": "The customer was successfully created.",
+        "updateUserSuccess": "The customer was successfully updated.",
+        "createTeamSuccess": "The team was successfully created.",
+        "updateTeamSuccess": "The team was successfully updated.",
+        "removeUserSuccess": "User was successfully removed from company structure.",
+        "deleteTeamSuccess": "Team was successfully deleted.",
+        "removeMultipleSuccess": "{count} item(s) were successfully removed.",
+        "moveUserSuccess": "User was successfully moved.",
+        "moveTeamSuccess": "Team was successfully moved.",
         "loadRolesError": "Failed to load roles",
         "fetchPermissionsError": "Failed to fetch permissions"
       }
@@ -271,6 +278,9 @@ declare const _default: {
         "setInactiveErrorSpecific": "Failed to set user as inactive.",
         "deleteErrorGeneric": "An unexpected error occurred.",
         "deleteErrorSpecific": "Failed to delete user.",
+        "setActiveSuccess": "User was successfully activated.",
+        "setInactiveSuccess": "User was successfully deactivated.",
+        "deleteSuccess": "User was successfully deleted.",
         "ariaLabels": {
           "closeModal": "Close modal",
           "modalDescription": "User management options including setting as inactive or deleting the user account"

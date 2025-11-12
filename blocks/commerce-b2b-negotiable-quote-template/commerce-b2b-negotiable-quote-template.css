@@ -6,6 +6,7 @@
 /* Min.Quote Total (Negotiated) column */
 .negotiable-quote-template__list .quote-management-quote-templates-list-table__table thead > tr > th:nth-child(6) {
     --width: 130px;
+
     white-space: normal;
     max-width: var(--width);
     min-width: var(--width);
@@ -14,6 +15,7 @@
 /* Orders Placed column */
 .negotiable-quote-template__list .quote-management-quote-templates-list-table__table thead > tr > th:nth-child(7) {
     --width: 50px;
+    
     white-space: normal;
     max-width: var(--width);
     min-width: var(--width);

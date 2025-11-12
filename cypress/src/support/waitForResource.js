@@ -25,41 +25,77 @@ Cypress.Commands.add('waitForResource', (name, options = {}) => {
     (win) => {
       return new Cypress.Promise((resolve, reject) => {
         let foundResource
+        let isResolved = false
+        let interval
+        let timeoutId
 
-        // control how long we should try finding the resource
-        // and if it is still not found. An explicit "reject"
-        // allows us to show nice informative message
-        setTimeout(() => {
-          if (foundResource) {
-            // nothing needs to be done, successfully found the resource
-            return
+        // Increase performance buffer size to handle slow-loading resources
+        // This prevents entries from being evicted before we can detect them
+        try {
+          win.performance.setResourceTimingBufferSize(500)
+        } catch (e) {
+        }
+
+        const checkForResource = () => {
+          if (isResolved) {
+            return null
           }
 
-          clearInterval(interval)
-          reject(new Error(`Timed out waiting for resource ${name}`))
-        }, timeout)
+          const resource = win.performance
+            .getEntriesByType('resource')
+            .find((item) => item.name.endsWith(name))
 
-        const interval = setInterval(() => {
-          foundResource = win.performance
-          .getEntriesByType('resource')
-          .find((item) => item.name.endsWith(name))
+          return resource
+        }
 
-          if (!foundResource) {
-            // resource not found, will try again
+        const resolveWithResource = (resource) => {
+          if (isResolved) {
             return
           }
-
+          isResolved = true
           clearInterval(interval)
+          clearTimeout(timeoutId)
           // because cy.log changes the subject, let's resolve the returned promise
           // with log + returned actual result
           resolve(
             cy.log('✅ success').then(() => {
               // let's resolve with the found performance object
               // to allow tests to inspect it
-              return foundResource
+              return resource
             })
           )
-        }, 100)
+        }
+
+        // Check immediately in case resource is already loaded
+        foundResource = checkForResource()
+        if (foundResource) {
+          resolveWithResource(foundResource)
+          return
+        }
+
+        // control how long we should try finding the resource
+        // and if it is still not found. An explicit "reject"
+        // allows us to show nice informative message
+        timeoutId = setTimeout(() => {
+          if (isResolved) {
+            return
+          }
+          isResolved = true
+          clearInterval(interval)
+          reject(new Error(`Timed out waiting for resource ${name}`))
+        }, timeout)
+
+        interval = setInterval(() => {
+          foundResource = checkForResource()
+
+          if (!foundResource) {
+            // resource not found, will try again
+            // Max 120 retiries before cypress timeouts
+            return
+          }
+
+          resolveWithResource(foundResource)
+        }, 500)
       })
     }
   )

@@ -25,7 +25,6 @@ export default async function decorate(block) {
 
     const renderGrid = async () => {
       gridRenderFunction = rlRenderer.render(RequisitionListGrid, {
-        requisitionLists: await rlApi.getRequisitionLists(),
         routeRequisitionListDetails: (uid) => rootLink(`${CUSTOMER_REQUISITION_LIST_DETAILS_PATH}?requisitionListUid=${uid}`),
         slots: {},
       });

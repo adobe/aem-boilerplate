@@ -52,8 +52,9 @@
     "@dropins/storefront-product-discovery": "~2.1.0",
     "@dropins/storefront-quote-management": "0.0.1-alpha21",
     "@dropins/storefront-recommendations": "~1.1.1",
-    "@dropins/storefront-requisition-list": "0.6.0-beta",
+    "@dropins/storefront-requisition-list": "0.7.0-beta",
     "@dropins/storefront-wishlist": "~2.0.1",
+    "@dropins/storefront-purchase-order": "0.0.6-alpha4",
     "@dropins/tools": "1.6.0-beta2"
   }
 }

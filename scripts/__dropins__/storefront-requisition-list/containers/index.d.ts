@@ -17,5 +17,6 @@
 export * from './RequisitionListForm';
 export * from './RequisitionListGrid';
 export * from './RequisitionListView';
-export * from './RequisitionListNames';
+export * from './RequisitionListSelector';
+export * from './RequisitionListHeader';
 //# sourceMappingURL=index.d.ts.map

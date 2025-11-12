@@ -15,9 +15,12 @@ import {
   validateForms,
 } from '@dropins/storefront-checkout/lib/utils.js';
 
-import { getUserTokenCookie } from '../../scripts/initializers/index.js';
+// Purchase Order Dropin
+import * as poApi from '@dropins/storefront-purchase-order/api.js';
+import { PO_PERMISSIONS } from '@dropins/storefront-purchase-order/api.js';
 
 // Block Utilities
+import { getUserTokenCookie } from '../../scripts/initializers/index.js';
 import {
   displayOverlaySpinner,
   removeOverlaySpinner,
@@ -54,11 +57,11 @@ import {
   PURCHASE_ORDER_FORM_NAME,
   TERMS_AND_CONDITIONS_FORM_NAME,
 } from './constants.js';
-
 import { rootLink } from '../../scripts/commerce.js';
 
-// Success block entry point
+// Success block entry points
 import { renderOrderSuccess } from '../commerce-checkout-success/commerce-checkout-success.js';
+import { renderPOSuccess } from '../commerce-b2b-po-checkout-success/commerce-b2b-po-checkout-success.js';
 
 // Initializers
 import '../../scripts/initializers/account.js';
@@ -67,6 +70,9 @@ import '../../scripts/initializers/order.js';
 import '../../scripts/initializers/quote-management.js';
 
 export default async function decorate(block) {
+  const permissions = events.lastPayload('auth/permissions');
+  const isPoEnabled = permissions ? !(permissions[PO_PERMISSIONS.PO_ALL] === false) : false;
+
   // Container and component references
   let billingForm;
   let shippingAddresses;
@@ -117,8 +123,11 @@ export default async function decorate(block) {
   const handlePlaceOrder = async ({ quoteId }) => {
     await displayOverlaySpinner(loaderRef, $loader);
     try {
-      // Place order
-      await orderApi.placeNegotiableQuoteOrder(quoteId);
+      if (isPoEnabled) {
+        await poApi.placePurchaseOrder(quoteId);
+      } else {
+        await orderApi.placeNegotiableQuoteOrder(quoteId);
+      }
     } catch (error) {
       console.error(error);
       throw error;
@@ -128,7 +137,11 @@ export default async function decorate(block) {
   };
 
   // First, render the place order component
-  const placeOrder = await renderPlaceOrder($placeOrder, { handleValidation, handlePlaceOrder });
+  const placeOrder = await renderPlaceOrder($placeOrder, {
+    handleValidation,
+    handlePlaceOrder,
+    isPoEnabled,
+  });
 
   // Render the remaining containers
   const [
@@ -231,8 +244,20 @@ export default async function decorate(block) {
     await renderOrderSuccess(block, { orderData });
   }
 
+  async function handlePurchaseOrderPlaced(poData) {
+    // Clear address form data
+    sessionStorage.removeItem(BILLING_ADDRESS_DATA_KEY);
+
+    const url = rootLink(`/customer/purchase-order-details?poRef=${poData.number}`);
+
+    window.history.pushState({}, '', url);
+
+    await renderPOSuccess(block, poData);
+  }
+
   events.on('checkout/initialized', handleCheckoutInitialized, { eager: true });
   events.on('checkout/updated', handleCheckoutUpdated);
   events.on('checkout/values', handleCheckoutValues);
   events.on('order/placed', handleOrderPlaced);
+  events.on('purchase-order/placed', handlePurchaseOrderPlaced);
 }

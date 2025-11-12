@@ -15,11 +15,6 @@ import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js
 import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
 import { WishlistAlert } from '@dropins/storefront-wishlist/containers/WishlistAlert.js';
 
-// Requisition List Dropin
-import * as rlApi from '@dropins/storefront-requisition-list/api.js';
-import { render as rlRenderer } from '@dropins/storefront-requisition-list/render.js';
-import { RequisitionListNames } from '@dropins/storefront-requisition-list/containers/RequisitionListNames.js';
-
 // Containers
 import ProductHeader from '@dropins/storefront-pdp/containers/ProductHeader.js';
 import ProductPrice from '@dropins/storefront-pdp/containers/ProductPrice.js';
@@ -37,14 +32,12 @@ import {
   setJsonLd,
   fetchPlaceholders,
   getProductLink,
-  checkIsAuthenticated,
 } from '../../scripts/commerce.js';
 
 // Initializers
 import { IMAGES_SIZES } from '../../scripts/initializers/pdp.js';
 import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/wishlist.js';
-import '../../scripts/initializers/requisition-list.js';
 
 /**
  * Checks if the page has prerendered product JSON-LD data
@@ -153,31 +146,6 @@ export default async function decorate(block) {
   // Alert
   let inlineAlert = null;
   const routeToWishlist = '/wishlist';
-
-  async function renderRequisitionListNamesIfEnabled($container, currentOptions = null) {
-    const isAuthenticated = checkIsAuthenticated();
-    if (!isAuthenticated) {
-      $container.innerHTML = '';
-      return null;
-    }
-    const isEnabled = await rlApi.isRequisitionListEnabled();
-    if (isEnabled) {
-      const configValues = pdpApi.getProductConfigurationValues();
-      return rlRenderer.render(RequisitionListNames, {
-        items: [],
-        canCreate: true,
-        sku: product.sku,
-        quantity: configValues?.quantity || 1,
-        variant: 'neutral',
-        selectedOptions: currentOptions,
-      })($container);
-    }
-    $container.innerHTML = '';
-    return null;
-  }
-
-  // Declare requisitionListNames as let so we can reassign it after login
-  let requisitionListNames;
 
   const [
     _galleryMobile,
@@ -353,14 +321,26 @@ export default async function decorate(block) {
   }, { eager: true });
 
   // Handle option changes
-  events.on('pdp/values', () => {
+  events.on('pdp/values', async () => {
     const configValues = pdpApi.getProductConfigurationValues();
 
     // Check URL parameter for empty optionsUIDs
     const urlOptionsUIDs = urlParams.get('optionsUIDs');
 
-    // If URL has empty optionsUIDs parameter, treat as base product (no options)
-    const optionUIDs = urlOptionsUIDs === '' ? undefined : (configValues?.optionsUIDs || undefined);
+    // Get optionsUIDs - prioritize actual selected values from configValues
+    let optionUIDs = null;
+    // First priority: actual selected options from configValues
+    const hasConfigOptions = configValues?.optionsUIDs
+      && Array.isArray(configValues.optionsUIDs)
+      && configValues.optionsUIDs.length > 0;
+
+    if (hasConfigOptions) {
+      optionUIDs = configValues.optionsUIDs;
+    } else if (urlOptionsUIDs === '') {
+      // Second priority: URL has explicit empty optionsUIDs parameter
+      optionUIDs = null;
+    }
+
     if (wishlistToggleBtn) {
       wishlistToggleBtn.setProps((prev) => ({
         ...prev,
@@ -368,14 +348,6 @@ export default async function decorate(block) {
           ...product,
           optionUIDs,
         },
-      }));
-    }
-
-    if (requisitionListNames) {
-      requisitionListNames.setProps((prev) => ({
-        ...prev,
-        selectedOptions: optionUIDs,
-        quantity: configValues?.quantity || 1,
       }));
     }
   }, { eager: true });
@@ -399,62 +371,20 @@ export default async function decorate(block) {
     }, 0);
   });
 
-  // Handle authentication state changes (login/logout)
-  // Using { eager: true } to also catch the initial state on page load
-  events.on('authenticated', async () => {
-    // Get current selected options when rendering for authenticated user
-    const configValues = pdpApi.getProductConfigurationValues();
-    const urlOptionsUIDs = urlParams.get('optionsUIDs');
-    const optionUIDs = urlOptionsUIDs === '' ? undefined : (configValues?.optionsUIDs || undefined);
-    // Render and update the reference to the new instance
-    requisitionListNames = await renderRequisitionListNamesIfEnabled(
+  // Conditionally load requisition list functionality
+  // The module sets up event handlers that check feature status on each render
+  try {
+    const { initializeRequisitionList } = await import('./requisition-list.js');
+    await initializeRequisitionList({
+      $alert,
       $requisitionListNames,
-      optionUIDs,
-    );
-  }, { eager: true });
-
-  // Show notification if redirected from requisition list
-  let redirectNotification = null;
-
-  // Check if user was redirected from requisition list (sessionStorage)
-  const redirectData = sessionStorage.getItem('requisitionListRedirect');
-  if (redirectData) {
-    try {
-      const { timestamp, message } = JSON.parse(redirectData);
-
-      // Only show notification if redirect happened within last 5 seconds
-      // This prevents showing stale notifications
-      const isRecent = Date.now() - timestamp < 5000;
-
-      if (isRecent && message) {
-        const showRedirectNotification = async () => {
-          redirectNotification = await UI.render(InLineAlert, {
-            heading: message,
-            type: 'warning',
-            variant: 'secondary',
-            icon: h(Icon, { source: 'Warning' }),
-            'aria-live': 'polite',
-            role: 'alert',
-            onDismiss: () => {
-              redirectNotification?.remove();
-            },
-          })($alert);
-
-          // Auto-dismiss after 5 seconds
-          setTimeout(() => {
-            redirectNotification?.remove();
-          }, 5000);
-        };
-
-        // Show notification after a brief delay to ensure DOM is ready
-        setTimeout(showRedirectNotification, 100);
-      }
-    } catch (e) {
-      console.error('Failed to parse requisition list redirect data:', e);
-    } finally {
-      // Always clean up sessionStorage
-      sessionStorage.removeItem('requisitionListRedirect');
-    }
+      product,
+      labels,
+      urlParams,
+    });
+  } catch (error) {
+    // If module fails to load, requisition list features won't be available
+    console.warn('Requisition list module not available:', error);
   }
 
   // --- Add new event listener for cart/data ---

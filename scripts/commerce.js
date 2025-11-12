@@ -54,6 +54,11 @@ export const CUSTOMER_REQUISITION_LIST_DETAILS_PATH = `${CUSTOMER_PATH}/requisit
 // TRACKING URL
 export const UPS_TRACKING_URL = 'https://www.ups.com/track';
 
+// CUSTOMER B2B PATHS
+export const CUSTOMER_PO_RULES_PATH = `${CUSTOMER_PATH}/approval-rules`;
+export const CUSTOMER_PO_RULE_FORM_PATH = `${CUSTOMER_PATH}/approval-rule`;
+export const CUSTOMER_PO_RULE_DETAILS_PATH = `${CUSTOMER_PATH}/approval-rule-details`;
+
 /**
  * Auth Privacy Policy Consent Slot
  * @param {Object} ctx - The context object

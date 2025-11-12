@@ -29,24 +29,28 @@ declare const _default: {
       "label": "Description",
       "updateTitle": "Update Requisition List",
       "createTitle": "Create Requisition List",
-      "addToRequisitionList": "Add to Requisition List:"
+      "addToRequisitionList": "Add to Requisition List"
+    },
+    "RequisitionListSelector": {
+      "addToNewRequisitionList": "Add to New Requisition List",
+      "addToSelected": "Add to Selected List"
     },
     "RequisitionListAlert": {
-      "errorCreate": "Error creating requisition list",
+      "errorCreate": "Error creating requisition list.",
       "successCreate": "Requisition list created successfully.",
-      "errorAddToCart": "Error adding item to cart",
+      "errorAddToCart": "Error adding item to cart.",
       "successAddToCart": "Item(s) added to cart successfully.",
-      "errorUpdateQuantity": "Error updating quantity",
+      "errorUpdateQuantity": "Error updating quantity.",
       "successUpdateQuantity": "Item quantity updated successfully.",
-      "errorUpdate": "Error updating requisition list",
+      "errorUpdate": "Error updating requisition list.",
       "successUpdate": "Requisition list updated successfully.",
-      "errorDeleteItem": "Error deleting item",
+      "errorDeleteItem": "Error deleting item.",
       "successDeleteItem": "Item(s) deleted successfully.",
-      "errorDeleteReqList": "Error deleting requisition list",
+      "errorDeleteReqList": "Error deleting requisition list.",
       "successDeleteReqList": "Requisition list deleted successfully.",
-      "errorMove": "Error moving item(s) to cart",
+      "errorMove": "Error moving item(s) to cart.",
       "successMove": "Item(s) successfully moved to cart.",
-      "errorAddToRequisitionList": "Error adding item(s) to requisition list",
+      "errorAddToRequisitionList": "Error adding item(s) to requisition list.",
       "successAddToRequisitionList": "Item(s) successfully added to requisition list."
     },
     "RequisitionListView": {
@@ -64,7 +68,14 @@ declare const _default: {
       "errorUpdateQuantity": "Error updating quantity",
       "successUpdateQuantity": "Item quantity updated successfully.",
       "actionBackToRequisitionListsOverview": "Back to requisition lists overview",
+      "actionBackToRequisitionLists": "Back to Requisition Lists",
+      "actionRename": "Rename",
+      "actionDeleteList": "Delete List",
+      "deleteListTitle": "Delete Requisition List?",
+      "deleteListMessage": "Are you sure you want to delete this requisition list? This action cannot be undone.",
       "emptyRequisitionList": " Requisition List is empty",
+      "show": "Show",
+      "itemsCounter": "Items {from}-{to} of {total}",
       "productListTable": {
         "headers": {
           "productName": "Product name",
@@ -76,7 +87,11 @@ declare const _default: {
         },
         "itemQuantity": "Item quantity"
       },
-      "errorLoadPage": "Failed to load page"
+      "errorLoadPage": "Failed to load page",
+      "errorLoadingProducts": "Failed to load product data",
+      "notFoundTitle": "Requisition List Not Found",
+      "notFoundMessage": "The requisition list you are looking for does not exist or you do not have access to it.",
+      "notFoundActionLabel": "Back to Requisition Lists"
     },
     "PageSizePicker": {
       "itemsPerPage": "Items per page"

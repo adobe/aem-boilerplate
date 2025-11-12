@@ -27,9 +27,8 @@ export default async function decorate(block) {
       const { searchParams } = new URL(window.location.href);
       const requisitionListUid = searchParams.get('requisitionListUid');
 
-      const requisitionList = await rlApi.getRequisitionList(requisitionListUid);
       viewRenderFunction = rlRenderer.render(RequisitionListView, {
-        requisitionList,
+        requisitionListUid,
         routeRequisitionListGrid: () => rootLink(`${CUSTOMER_REQUISITION_LISTS_PATH}`),
       });
 

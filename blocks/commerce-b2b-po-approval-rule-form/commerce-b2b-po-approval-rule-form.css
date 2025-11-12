@@ -1,0 +1,10 @@
+.b2b-purchase-order-approval-rule-form-container
+    .dropin-textarea:not(:placeholder-shown)
+    + .dropin-textarea__label--floating,
+.b2b-purchase-order-approval-rule-form-container
+    .dropin-textarea:focus
+    + .dropin-textarea__label--floating {
+    display: block;
+    opacity: 1;
+    z-index: 1;
+}

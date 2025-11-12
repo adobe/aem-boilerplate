@@ -9,10 +9,6 @@ import { search } from '@dropins/storefront-product-discovery/api.js';
 // Wishlist Dropin
 import { WishlistToggle } from '@dropins/storefront-wishlist/containers/WishlistToggle.js';
 import { render as wishlistRender } from '@dropins/storefront-wishlist/render.js';
-// Requisition List Dropin
-import * as rlApi from '@dropins/storefront-requisition-list/api.js';
-import { render as rlRenderer } from '@dropins/storefront-requisition-list/render.js';
-import { RequisitionListNames } from '@dropins/storefront-requisition-list/containers/RequisitionListNames.js';
 // Cart Dropin
 import * as cartApi from '@dropins/storefront-cart/api.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
@@ -23,12 +19,9 @@ import { readBlockConfig } from '../../scripts/aem.js';
 import {
   fetchPlaceholders,
   getProductLink,
-  checkIsAuthenticated,
-  rootLink,
 } from '../../scripts/commerce.js';
 
 // Initializers
-import '../../scripts/initializers/requisition-list.js';
 import '../../scripts/initializers/search.js';
 import '../../scripts/initializers/wishlist.js';
 
@@ -98,36 +91,6 @@ export default async function decorate(block) {
     return button;
   };
 
-  async function renderRequisitionListNamesIfEnabled($container, product) {
-    const isAuthenticated = checkIsAuthenticated();
-    if (!isAuthenticated) {
-      $container.innerHTML = '';
-      return;
-    }
-    const isEnabled = await rlApi.isRequisitionListEnabled();
-    if (isEnabled) {
-      rlRenderer.render(RequisitionListNames, {
-        items: [],
-        sku: product.sku,
-        quantity: 1,
-        variant: 'hover',
-        beforeAddProdToReqList: () => {
-          const url = rootLink(`/products/${product.urlKey}/${product.sku}`.toLowerCase());
-          if (product.typename !== 'SimpleProductView') {
-            sessionStorage.setItem('requisitionListRedirect', JSON.stringify({
-              timestamp: Date.now(),
-              message: labels.Global?.SelectProductOptionsBeforeRequisition || 'Please select product options before adding it to a requisition list',
-            }));
-            window.location.href = url;
-            throw new Error('Redirecting to product page');
-          }
-        },
-      })($container);
-    } else {
-      $container.innerHTML = '';
-    }
-  }
-
   await Promise.all([
     // Sort By
     provider.render(SortBy, {})($productSort),
@@ -186,16 +149,32 @@ export default async function decorate(block) {
           })($wishlistToggle);
           actionsWrapper.appendChild(addToCartBtn);
           actionsWrapper.appendChild($wishlistToggle);
-          // Requisition List Button
-          const $reqListNames = document.createElement('div');
-          $reqListNames.classList.add('product-discovery-product-actions__requisition-list-names');
-          await renderRequisitionListNamesIfEnabled($reqListNames, ctx.product);
-          actionsWrapper.appendChild($reqListNames);
-          ctx.replaceWith(actionsWrapper);
 
-          events.on('authenticated', async () => {
-            await renderRequisitionListNamesIfEnabled($reqListNames, ctx.product);
-          });
+          // Conditionally load and render Requisition List Button
+          try {
+            const { isRequisitionListFeatureEnabled, createRequisitionListRenderer, createRequisitionListAction } = await import('./requisition-list.js');
+
+            const isEnabled = await isRequisitionListFeatureEnabled();
+            if (isEnabled) {
+              const renderFunction = createRequisitionListRenderer(labels);
+
+              const $reqListContainer = await createRequisitionListAction({
+                renderFunction,
+                product: ctx.product,
+                onAuthenticated: ($container, product) => {
+                  events.on('authenticated', async () => {
+                    await renderFunction($container, product);
+                  });
+                },
+              });
+
+              actionsWrapper.appendChild($reqListContainer);
+            }
+          } catch (error) {
+            console.warn('Requisition list module not available:', error);
+          }
+
+          ctx.replaceWith(actionsWrapper);
         },
       },
     })($productList),

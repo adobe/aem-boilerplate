@@ -292,6 +292,7 @@ export const renderTermsAndConditions = async (container) => renderContainer(
  * @param {Object} options - Configuration object with handler functions
  * @param {Function} options.handleValidation - Validation handler function
  * @param {Function} options.handlePlaceOrder - Place order handler function
+ * @param {Boolean} options.isPoEnabled - Indicate if PO enabled or not (B2B)
  * @returns {Promise<Object>} - The rendered place order component
  */
 export const renderPlaceOrder = async (container, options = {}) => renderContainer(
@@ -299,6 +300,13 @@ export const renderPlaceOrder = async (container, options = {}) => renderContain
   async () => CheckoutProvider.render(PlaceOrder, {
     handleValidation: options.handleValidation,
     handlePlaceOrder: options.handlePlaceOrder,
+    slots: {
+      Content: (placeOrderCtx) => {
+        const spanElement = document.createElement('span');
+        spanElement.innerText = options.isPoEnabled ? 'Place Purchase Order' : 'Place Order';
+        placeOrderCtx.replaceWith(spanElement);
+      },
+    },
   })(container),
 );
 

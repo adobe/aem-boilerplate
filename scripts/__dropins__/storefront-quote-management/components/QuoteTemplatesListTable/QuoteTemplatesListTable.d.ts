@@ -15,7 +15,6 @@ export interface QuoteTemplatesListTableProps extends Omit<HTMLAttributes<HTMLDi
 }
 export type QuoteTemplateRowData = {
     id: string;
-    templateId: VNode;
     name: VNode;
     state: VNode;
     status: VNode;

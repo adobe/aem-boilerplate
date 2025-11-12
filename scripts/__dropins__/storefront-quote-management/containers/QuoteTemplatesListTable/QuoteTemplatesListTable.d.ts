@@ -10,10 +10,6 @@ export interface QuoteTemplatesListTableProps extends HTMLAttributes<HTMLDivElem
     onPageSizeChange?: (pageSize: number) => void;
     onPageChange?: (page: number) => void;
     slots?: {
-        /** Slot for customizing the template ID cell content */
-        TemplateId?: SlotProps<{
-            template: NegotiableQuoteTemplateListEntry;
-        }>;
         /** Slot for customizing the template name cell content */
         Name?: SlotProps<{
             template: NegotiableQuoteTemplateListEntry;

@@ -221,8 +221,7 @@ declare const _default: {
       "actions": "Action"
     },
     "QuoteTemplatesListTable": {
-      "templateId": "ID",
-      "name": "Name",
+      "name": "Template Name",
       "state": "State",
       "status": "Status",
       "validUntil": "Valid Until",

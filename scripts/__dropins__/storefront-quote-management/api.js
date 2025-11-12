@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/tools/event-bus.js";import{f as s,t as I}from"./chunks/fetch-graphql.js";import{d as _e,r as ge,s as he,b as Ie,c as Qe}from"./chunks/fetch-graphql.js";import{r as we,u as Ne}from"./chunks/uploadFile.js";import{g as Q}from"./chunks/renameNegotiableQuote.js";import{c as qe,d as be,r as Ue,s as Oe}from"./chunks/renameNegotiableQuote.js";import{F as Me,N as De,S as ve,n as Se}from"./chunks/negotiableQuotes.js";import{N as f}from"./chunks/NegotiableQuoteFragment.js";import{t as u}from"./chunks/getQuoteTemplates.js";import{Q as Pe,a as $e,S as Le,g as Re}from"./chunks/getQuoteTemplates.js";import{u as xe}from"./chunks/updateQuantities.js";import{Initializer as w}from"@dropins/tools/lib.js";import"@dropins/tools/fetch-graphql.js";const N=`
+import{s as a,D as l,a as h,Q as c}from"./chunks/state.js";import{events as i}from"@dropins/tools/event-bus.js";import{f as s,t as Q}from"./chunks/transform-quote.js";import{d as Qe,r as we,s as Ne,b as Ae,c as qe}from"./chunks/transform-quote.js";import{r as ye,u as Ue}from"./chunks/uploadFile.js";import{g as w}from"./chunks/renameNegotiableQuote.js";import{c as De,d as Me,r as Se,s as ve}from"./chunks/renameNegotiableQuote.js";import{F as Pe,N as Le,S as Ce,n as $e}from"./chunks/negotiableQuotes.js";import{N}from"./chunks/NegotiableQuoteFragment.js";import{t as u}from"./chunks/getQuoteTemplates.js";import{Q as xe,a as Ge,S as ze,g as je}from"./chunks/getQuoteTemplates.js";import{u as ke}from"./chunks/updateQuantities.js";import{Initializer as A}from"@dropins/tools/lib.js";import"@dropins/tools/fetch-graphql.js";const T=new A({init:async t=>{const r={};T.config.setConfig({...r,...t}),await L().then(e=>{a.config=e}).catch(e=>{console.error("Failed to fetch store config: ",e),a.config=h})},listeners:()=>[i.on("authenticated",async t=>{a.authenticated=!!t,t?F().then(r=>{a.permissions={requestQuote:r.permissions.canRequestQuote,editQuote:r.permissions.canEditQuote,deleteQuote:r.permissions.canDeleteQuote,checkoutQuote:r.permissions.canCheckoutQuote},i.emit("quote-management/permissions",a.permissions)}).catch(r=>{console.error(r),a.permissions=l,i.emit("quote-management/permissions",l)}):(a.permissions=l,i.emit("quote-management/permissions",l))},{eager:!0}),i.on("quote-management/permissions",async t=>{const r=T.config.getConfig().quoteId;r&&t.editQuote&&w(r).then(e=>{i.emit("quote-management/quote-data/initialized",{quote:e,permissions:t},{})}).catch(e=>{i.emit("quote-management/quote-data/error",{error:e})})},{eager:!0})]}),ie=T.config,q=`
     fragment CUSTOMER_FRAGMENT on Customer {
         role {
             permissions {
@@ -17,15 +17,29 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
             }
         }
     }
-`,A=`
+`,b=`
     query CUSTOMER_QUERY {
         customer {
             ...CUSTOMER_FRAGMENT
         }
     }
 
-    ${N}
-`,q="All/Quotes/View/Request, Edit, Delete",b="All/Quotes/View/Request, Edit, Delete",U="All/Quotes/View/Request, Edit, Delete",O="All/Quotes/View/Checkout with quote",y=t=>{const o=[],e=(a,d=[])=>{for(const n of a){const p=[...d,n.text];n.children&&n.children.length>0?e(n.children,p):o.push(p.join("/"))}};return e(t),o};function M(t){const{role:o}=t;if(!o)return{permissions:{canRequestQuote:l.requestQuote,canEditQuote:l.editQuote,canDeleteQuote:l.deleteQuote,canCheckoutQuote:l.checkoutQuote}};const{permissions:e}=o,a=y(e);return{permissions:{canRequestQuote:a.includes(q),canEditQuote:a.includes(b),canDeleteQuote:a.includes(U),canCheckoutQuote:a.includes(O)}}}const D=async()=>{var t;if(!r.authenticated)return Promise.reject(new Error("Unauthorized"));try{const o=await s(A);if(!((t=o==null?void 0:o.data)!=null&&t.customer))throw new Error("No customer data received");return M(o.data.customer)}catch(o){return Promise.reject(o)}},T=new w({init:async t=>{const o={};T.config.setConfig({...o,...t})},listeners:()=>[i.on("authenticated",async t=>{r.authenticated=!!t,t?D().then(o=>{r.permissions={requestQuote:o.permissions.canRequestQuote,editQuote:o.permissions.canEditQuote,deleteQuote:o.permissions.canDeleteQuote,checkoutQuote:o.permissions.canCheckoutQuote},i.emit("quote-management/permissions",r.permissions)}).catch(o=>{console.error(o),r.permissions=l,i.emit("quote-management/permissions",l)}):(r.permissions=l,i.emit("quote-management/permissions",l))},{eager:!0}),i.on("quote-management/permissions",async t=>{const o=T.config.getConfig().quoteId;o&&t.editQuote&&Q(o).then(e=>{i.emit("quote-management/quote-data/initialized",{quote:e,permissions:t},{})}).catch(e=>{i.emit("quote-management/quote-data/error",{error:e})})},{eager:!0})]}),ee=T.config,v=`
+    ${q}
+`;function y(t){if(!t)return h;const r=e=>[c.TAX_EXCLUDED,c.TAX_INCLUDED,c.TAX_INCLUDED_AND_EXCLUDED].includes(e)?e:c.TAX_EXCLUDED;return{quoteSummaryDisplayTotal:t.cart_summary_display_quantity,quoteSummaryMaxItems:t.max_items_in_order_summary,quoteDisplaySettings:{zeroTax:t.shopping_cart_display_zero_tax,subtotal:r(t.shopping_cart_display_subtotal),price:r(t.shopping_cart_display_price),shipping:r(t.shopping_cart_display_shipping),fullSummary:t.shopping_cart_display_full_summary,grandTotal:t.shopping_cart_display_grand_total},useConfigurableParentThumbnail:t.configurable_thumbnail_source==="parent"}}const U="All/Quotes/View/Request, Edit, Delete",O="All/Quotes/View/Request, Edit, Delete",D="All/Quotes/View/Request, Edit, Delete",M="All/Quotes/View/Checkout with quote",S=t=>{const r=[],e=(o,d=[])=>{for(const n of o){const p=[...d,n.text];n.children&&n.children.length>0?e(n.children,p):r.push(p.join("/"))}};return e(t),r};function v(t){const{role:r}=t;if(!r)return{permissions:{canRequestQuote:l.requestQuote,canEditQuote:l.editQuote,canDeleteQuote:l.deleteQuote,canCheckoutQuote:l.checkoutQuote}};const{permissions:e}=r,o=S(e);return{permissions:{canRequestQuote:o.includes(U),canEditQuote:o.includes(O),canDeleteQuote:o.includes(D),canCheckoutQuote:o.includes(M)}}}const F=async()=>{var t;if(!a.authenticated)return Promise.reject(new Error("Unauthorized"));try{const r=await s(b);if(!((t=r==null?void 0:r.data)!=null&&t.customer))throw new Error("No customer data received");return v(r.data.customer)}catch(r){return Promise.reject(r)}},P=`
+  query STORE_CONFIG_QUERY {
+    storeConfig {
+      cart_summary_display_quantity
+      max_items_in_order_summary
+      shopping_cart_display_full_summary
+      shopping_cart_display_grand_total
+      shopping_cart_display_price
+      shopping_cart_display_shipping
+      shopping_cart_display_subtotal
+      shopping_cart_display_zero_tax
+      configurable_thumbnail_source
+    }
+  }
+`,L=async()=>s(P,{method:"GET",cache:"force-cache"}).then(({errors:t,data:r})=>{if(t){const e=t.map(o=>o.message).join(", ");throw new Error(`Failed to get store config: ${e}`)}return y(r.storeConfig)}),C=`
   mutation SET_NEGOTIABLE_QUOTE_SHIPPING_ADDRESS_MUTATION(
     $quoteUid: ID!
     $addressId: ID
@@ -45,8 +59,8 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
       }
     }
   }
-  ${f}
-`;function S(t){const{additionalInput:o,...e}=t,a={city:e.city,company:e.company,country_code:e.countryCode,firstname:e.firstname,lastname:e.lastname,postcode:e.postcode,region:e.region,region_id:e.regionId,save_in_address_book:e.saveInAddressBook,street:e.street,telephone:e.telephone};return{...o||{},...a}}const te=async t=>{const{quoteUid:o,addressId:e,addressData:a}=t;if(!o)throw new Error("Quote UID is required");if(e===void 0&&!a)throw new Error("Either addressId or addressData must be provided");if(e!==void 0&&a)throw new Error("Cannot provide both addressId and addressData");const d=a?S(a):null;return s(v,{variables:{quoteUid:o,addressId:e||null,addressData:d}}).then(n=>{var E,_;const{errors:p}=n;if(p){const g=p.map(h=>h.message).join("; ");throw new Error(`Failed to set shipping address: ${g}`)}const c=I((_=(E=n.data)==null?void 0:E.setNegotiableQuoteShippingAddress)==null?void 0:_.quote);if(!c)throw new Error("Failed to transform quote data: Invalid response structure");return i.emit("quote-management/shipping-address-set",{quote:c,input:{quoteUid:o,addressId:e,addressData:a}}),c})},m=`
+  ${N}
+`;function $(t){const{additionalInput:r,...e}=t,o={city:e.city,company:e.company,country_code:e.countryCode,firstname:e.firstname,lastname:e.lastname,postcode:e.postcode,region:e.region,region_id:e.regionId,save_in_address_book:e.saveInAddressBook,street:e.street,telephone:e.telephone};return{...r||{},...o}}const ne=async t=>{const{quoteUid:r,addressId:e,addressData:o}=t;if(!r)throw new Error("Quote UID is required");if(e===void 0&&!o)throw new Error("Either addressId or addressData must be provided");if(e!==void 0&&o)throw new Error("Cannot provide both addressId and addressData");const d=o?$(o):null;return s(C,{variables:{quoteUid:r,addressId:e||null,addressData:d}}).then(n=>{var E,g;const{errors:p}=n;if(p){const I=p.map(f=>f.message).join("; ");throw new Error(`Failed to set shipping address: ${I}`)}const _=Q((g=(E=n.data)==null?void 0:E.setNegotiableQuoteShippingAddress)==null?void 0:g.quote);if(!_)throw new Error("Failed to transform quote data: Invalid response structure");return i.emit("quote-management/shipping-address-set",{quote:_,input:{quoteUid:r,addressId:e,addressData:o}}),_})},m=`
   fragment NegotiableQuoteTemplateFragment on NegotiableQuoteTemplate {
     # uid
     name
@@ -231,7 +245,7 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
       telephone
     }
   }
-`,F=`
+`,R=`
   query QUOTE_TEMPLATE_DATA_QUERY($templateId: ID!) {
     negotiableQuoteTemplate(templateId: $templateId) {
       ...NegotiableQuoteTemplateFragment
@@ -239,7 +253,7 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
   }
 
   ${m}
-`,oe=async t=>{var o;if(!r.authenticated)throw new Error("Unauthorized");if(!t)throw new Error("Template ID is required");try{const e=await s(F,{variables:{templateId:t}});if(!((o=e==null?void 0:e.data)!=null&&o.negotiableQuoteTemplate))throw new Error("Quote template not found");const a=u(e.data.negotiableQuoteTemplate);if(!a)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:a,permissions:r.permissions}),a}catch(e){return Promise.reject(e)}},P=`
+`,se=async t=>{var r;if(!a.authenticated)throw new Error("Unauthorized");if(!t)throw new Error("Template ID is required");try{const e=await s(R,{variables:{templateId:t}});if(!((r=e==null?void 0:e.data)!=null&&r.negotiableQuoteTemplate))throw new Error("Quote template not found");const o=u(e.data.negotiableQuoteTemplate);if(!o)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:o,permissions:a.permissions}),o}catch(e){return Promise.reject(e)}},x=`
   mutation CREATE_QUOTE_TEMPLATE_MUTATION($cartId: ID!) {
     requestNegotiableQuoteTemplateFromQuote(input: { cart_id: $cartId }) {
       ...NegotiableQuoteTemplateFragment
@@ -247,7 +261,7 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
   }
 
   ${m}
-`,ae=async t=>{var o;if(!r.authenticated)throw new Error("Unauthorized");if(!t)throw new Error("Cart ID is required");try{const e=await s(P,{variables:{cartId:t}});if(!((o=e==null?void 0:e.data)!=null&&o.requestNegotiableQuoteTemplateFromQuote))throw new Error("Failed to create quote template");const a=u(e.data.requestNegotiableQuoteTemplateFromQuote);if(!a)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:a,permissions:r.permissions}),a}catch(e){return Promise.reject(e)}},$=`
+`,de=async t=>{var r;if(!a.authenticated)throw new Error("Unauthorized");if(!t)throw new Error("Cart ID is required");try{const e=await s(x,{variables:{cartId:t}});if(!((r=e==null?void 0:e.data)!=null&&r.requestNegotiableQuoteTemplateFromQuote))throw new Error("Failed to create quote template");const o=u(e.data.requestNegotiableQuoteTemplateFromQuote);if(!o)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:o,permissions:a.permissions}),o}catch(e){return Promise.reject(e)}},G=`
   mutation SEND_QUOTE_TEMPLATE_FOR_REVIEW_MUTATION(
     $templateId: ID!
     $comment: String
@@ -258,7 +272,7 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
     }
   }
   ${m}
-`,re=async t=>{var o;if(!t.templateId)throw new Error("Template ID is required");if(!r.authenticated)throw new Error("Unauthorized");try{const e=await s($,{variables:{templateId:t.templateId,name:t.name,comment:t.comment}});if(!((o=e==null?void 0:e.data)!=null&&o.submitNegotiableQuoteTemplateForReview))throw new Error("No quote template data received");const a=u(e.data.submitNegotiableQuoteTemplateForReview);if(!a)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:a,permissions:r.permissions}),a}catch(e){return Promise.reject(e)}},L=`
+`,ue=async t=>{var r;if(!t.templateId)throw new Error("Template ID is required");if(!a.authenticated)throw new Error("Unauthorized");try{const e=await s(G,{variables:{templateId:t.templateId,name:t.name,comment:t.comment}});if(!((r=e==null?void 0:e.data)!=null&&r.submitNegotiableQuoteTemplateForReview))throw new Error("No quote template data received");const o=u(e.data.submitNegotiableQuoteTemplateForReview);if(!o)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:o,permissions:a.permissions}),o}catch(e){return Promise.reject(e)}},z=`
   mutation ACCEPT_QUOTE_TEMPLATE_MUTATION($templateId: ID!) {
     acceptNegotiableQuoteTemplate(input: { template_id: $templateId }) {
       ...NegotiableQuoteTemplateFragment
@@ -266,7 +280,7 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
   }
   
   ${m}
-`,ie=async t=>{var o;if(!t.templateId)throw new Error("Template ID is required");if(!r.authenticated)throw new Error("Unauthorized");try{const e=await s(L,{variables:{templateId:t.templateId}});if(!((o=e==null?void 0:e.data)!=null&&o.acceptNegotiableQuoteTemplate))throw new Error("No quote template data received");const a=u(e.data.acceptNegotiableQuoteTemplate);if(!a)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:a,permissions:r.permissions}),a}catch(e){return Promise.reject(e)}},R=`
+`,me=async t=>{var r;if(!t.templateId)throw new Error("Template ID is required");if(!a.authenticated)throw new Error("Unauthorized");try{const e=await s(z,{variables:{templateId:t.templateId}});if(!((r=e==null?void 0:e.data)!=null&&r.acceptNegotiableQuoteTemplate))throw new Error("No quote template data received");const o=u(e.data.acceptNegotiableQuoteTemplate);if(!o)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:o,permissions:a.permissions}),o}catch(e){return Promise.reject(e)}},j=`
   mutation CANCEL_QUOTE_TEMPLATE_MUTATION(
     $templateId: ID!
     $comment: String
@@ -281,11 +295,11 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
     }
   }
   ${m}
-`,ne=async t=>{var o;if(!t.templateId)throw new Error("Template ID is required");if(!r.authenticated)throw new Error("Unauthorized");try{const e=await s(R,{variables:{templateId:t.templateId,comment:t.comment}});if(!((o=e==null?void 0:e.data)!=null&&o.cancelNegotiableQuoteTemplate))throw new Error("No quote template data received");const a=u(e.data.cancelNegotiableQuoteTemplate);if(!a)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:a,permissions:r.permissions}),a}catch(e){return Promise.reject(e)}},C=`
+`,le=async t=>{var r;if(!t.templateId)throw new Error("Template ID is required");if(!a.authenticated)throw new Error("Unauthorized");try{const e=await s(j,{variables:{templateId:t.templateId,comment:t.comment}});if(!((r=e==null?void 0:e.data)!=null&&r.cancelNegotiableQuoteTemplate))throw new Error("No quote template data received");const o=u(e.data.cancelNegotiableQuoteTemplate);if(!o)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:o,permissions:a.permissions}),o}catch(e){return Promise.reject(e)}},B=`
   mutation DELETE_QUOTE_TEMPLATE_MUTATION($templateId: ID!) {
     deleteNegotiableQuoteTemplate(input: { template_id: $templateId })
   }
-`,se=async t=>{var o;if(!t.templateId)throw new Error("Template ID is required");if(!r.authenticated)throw new Error("Unauthorized");try{const e=await s(C,{variables:{templateId:t.templateId}});if(e!=null&&e.errors&&e.errors.length>0){const d=e.errors.map(n=>n==null?void 0:n.message).filter(Boolean).join("; ");throw new Error(d||"Failed to delete quote template")}if(!((o=e==null?void 0:e.data)==null?void 0:o.deleteNegotiableQuoteTemplate))throw new Error("Failed to delete quote template");return i.emit("quote-management/quote-template-deleted",{templateId:t.templateId}),{templateId:t.templateId}}catch(e){return Promise.reject(e)}},x=`
+`,pe=async t=>{var r;if(!t.templateId)throw new Error("Template ID is required");if(!a.authenticated)throw new Error("Unauthorized");try{const e=await s(B,{variables:{templateId:t.templateId}});if(e!=null&&e.errors&&e.errors.length>0){const d=e.errors.map(n=>n==null?void 0:n.message).filter(Boolean).join("; ");throw new Error(d||"Failed to delete quote template")}if(!((r=e==null?void 0:e.data)==null?void 0:r.deleteNegotiableQuoteTemplate))throw new Error("Failed to delete quote template");return i.emit("quote-management/quote-template-deleted",{templateId:t.templateId}),{templateId:t.templateId}}catch(e){return Promise.reject(e)}},k=`
   mutation OPEN_QUOTE_TEMPLATE_MUTATION($templateId: ID!) {
     openNegotiableQuoteTemplate(input: { template_id: $templateId }) {
       ...NegotiableQuoteTemplateFragment
@@ -293,7 +307,7 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
   }
 
   ${m}
-`,de=async t=>{var o;if(!t.templateId)throw new Error("Template ID is required");if(!r.authenticated)throw new Error("Unauthorized");try{const e=await s(x,{variables:{templateId:t.templateId}});if(!((o=e==null?void 0:e.data)!=null&&o.openNegotiableQuoteTemplate))throw new Error("No quote template data received");const a=u(e.data.openNegotiableQuoteTemplate);if(!a)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:a,permissions:r.permissions}),a}catch(e){return Promise.reject(e)}},G=`
+`,ce=async t=>{var r;if(!t.templateId)throw new Error("Template ID is required");if(!a.authenticated)throw new Error("Unauthorized");try{const e=await s(k,{variables:{templateId:t.templateId}});if(!((r=e==null?void 0:e.data)!=null&&r.openNegotiableQuoteTemplate))throw new Error("No quote template data received");const o=u(e.data.openNegotiableQuoteTemplate);if(!o)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:o,permissions:a.permissions}),o}catch(e){return Promise.reject(e)}},V=`
   mutation SET_NEGOTIABLE_QUOTE_TEMPLATE_SHIPPING_ADDRESS_MUTATION(
     $templateId: ID!
     $shippingAddress: NegotiableQuoteTemplateShippingAddressInput!
@@ -309,7 +323,7 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
   }
   
   ${m}
-`,ue=async t=>{var o;if(!t.templateId)throw new Error("Template ID is required");if(!t.shippingAddress)throw new Error("Shipping address is required");if(!r.authenticated)throw new Error("Unauthorized");if(!t.shippingAddress.address&&!t.shippingAddress.customerAddressUid)throw new Error("Either address or customerAddressUid must be provided");try{const e=await s(G,{variables:{templateId:t.templateId,shippingAddress:{address:t.shippingAddress.address?{city:t.shippingAddress.address.city,company:t.shippingAddress.address.company,country_code:t.shippingAddress.address.countryCode,fax:t.shippingAddress.address.fax,firstname:t.shippingAddress.address.firstname,lastname:t.shippingAddress.address.lastname,middlename:t.shippingAddress.address.middlename,postcode:t.shippingAddress.address.postcode,prefix:t.shippingAddress.address.prefix,region:t.shippingAddress.address.region,region_id:t.shippingAddress.address.regionId,save_in_address_book:t.shippingAddress.address.saveInAddressBook,street:t.shippingAddress.address.street,suffix:t.shippingAddress.address.suffix,telephone:t.shippingAddress.address.telephone,vat_id:t.shippingAddress.address.vatId}:void 0,customer_address_uid:t.shippingAddress.customerAddressUid,customer_notes:t.shippingAddress.customerNotes}}});if(!((o=e==null?void 0:e.data)!=null&&o.setNegotiableQuoteTemplateShippingAddress))throw new Error("No quote template data received");const a=u(e.data.setNegotiableQuoteTemplateShippingAddress);if(!a)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:a,permissions:r.permissions}),a}catch(e){return Promise.reject(e)}},j=`
+`,_e=async t=>{var r;if(!t.templateId)throw new Error("Template ID is required");if(!t.shippingAddress)throw new Error("Shipping address is required");if(!a.authenticated)throw new Error("Unauthorized");if(!t.shippingAddress.address&&!t.shippingAddress.customerAddressUid)throw new Error("Either address or customerAddressUid must be provided");try{const e=await s(V,{variables:{templateId:t.templateId,shippingAddress:{address:t.shippingAddress.address?{city:t.shippingAddress.address.city,company:t.shippingAddress.address.company,country_code:t.shippingAddress.address.countryCode,fax:t.shippingAddress.address.fax,firstname:t.shippingAddress.address.firstname,lastname:t.shippingAddress.address.lastname,middlename:t.shippingAddress.address.middlename,postcode:t.shippingAddress.address.postcode,prefix:t.shippingAddress.address.prefix,region:t.shippingAddress.address.region,region_id:t.shippingAddress.address.regionId,save_in_address_book:t.shippingAddress.address.saveInAddressBook,street:t.shippingAddress.address.street,suffix:t.shippingAddress.address.suffix,telephone:t.shippingAddress.address.telephone,vat_id:t.shippingAddress.address.vatId}:void 0,customer_address_uid:t.shippingAddress.customerAddressUid,customer_notes:t.shippingAddress.customerNotes}}});if(!((r=e==null?void 0:e.data)!=null&&r.setNegotiableQuoteTemplateShippingAddress))throw new Error("No quote template data received");const o=u(e.data.setNegotiableQuoteTemplateShippingAddress);if(!o)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:o,permissions:a.permissions}),o}catch(e){return Promise.reject(e)}},H=`
   mutation UPDATE_NEGOTIABLE_QUOTE_TEMPLATE_QUANTITIES_MUTATION(
     $input: UpdateNegotiableQuoteTemplateQuantitiesInput!
   ) {
@@ -320,7 +334,7 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
     }
   }
   ${m}
-`,me=async t=>{var o,e;if(!t.templateId)throw new Error("Template ID is required");if(!t.items||t.items.length===0)throw new Error("Items array is required and must not be empty");if(!r.authenticated)throw new Error("Unauthorized");try{const a=await s(j,{variables:{input:{template_id:t.templateId,items:t.items.map(n=>({item_id:n.itemId,quantity:n.quantity,min_qty:n.minQty,max_qty:n.maxQty}))}}});if(!((e=(o=a==null?void 0:a.data)==null?void 0:o.updateNegotiableQuoteTemplateQuantities)!=null&&e.quote_template))throw new Error("No quote template data received");const d=u(a.data.updateNegotiableQuoteTemplateQuantities.quote_template);if(!d)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:d,permissions:r.permissions}),d}catch(a){return Promise.reject(a)}},z=`
+`,Te=async t=>{var r,e;if(!t.templateId)throw new Error("Template ID is required");if(!t.items||t.items.length===0)throw new Error("Items array is required and must not be empty");if(!a.authenticated)throw new Error("Unauthorized");try{const o=await s(H,{variables:{input:{template_id:t.templateId,items:t.items.map(n=>({item_id:n.itemId,quantity:n.quantity,min_qty:n.minQty,max_qty:n.maxQty}))}}});if(!((e=(r=o==null?void 0:o.data)==null?void 0:r.updateNegotiableQuoteTemplateQuantities)!=null&&e.quote_template))throw new Error("No quote template data received");const d=u(o.data.updateNegotiableQuoteTemplateQuantities.quote_template);if(!d)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:d,permissions:a.permissions}),d}catch(o){return Promise.reject(o)}},X=`
   mutation REMOVE_NEGOTIABLE_QUOTE_TEMPLATE_ITEMS_MUTATION(
     $input: RemoveNegotiableQuoteTemplateItemsInput!
   ) {
@@ -329,7 +343,7 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
     }
   }
   ${m}
-`,le=async t=>{var o;if(!t.templateId)throw new Error("Template ID is required");if(!t.itemUids||t.itemUids.length===0)throw new Error("Item UIDs array is required and must not be empty");if(!r.authenticated)throw new Error("Unauthorized");try{const e=await s(z,{variables:{input:{template_id:t.templateId,item_uids:t.itemUids}}});if(!((o=e==null?void 0:e.data)!=null&&o.removeNegotiableQuoteTemplateItems))throw new Error("No quote template data received");const a=u(e.data.removeNegotiableQuoteTemplateItems);if(!a)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:a,permissions:r.permissions}),a}catch(e){return Promise.reject(e)}},B=`
+`,Ee=async t=>{var r;if(!t.templateId)throw new Error("Template ID is required");if(!t.itemUids||t.itemUids.length===0)throw new Error("Item UIDs array is required and must not be empty");if(!a.authenticated)throw new Error("Unauthorized");try{const e=await s(X,{variables:{input:{template_id:t.templateId,item_uids:t.itemUids}}});if(!((r=e==null?void 0:e.data)!=null&&r.removeNegotiableQuoteTemplateItems))throw new Error("No quote template data received");const o=u(e.data.removeNegotiableQuoteTemplateItems);if(!o)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:o,permissions:a.permissions}),o}catch(e){return Promise.reject(e)}},Y=`
   mutation SET_QUOTE_TEMPLATE_LINE_ITEM_NOTE_MUTATION(
     $input: QuoteTemplateLineItemNoteInput!
   ) {
@@ -338,7 +352,7 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
     }
   }
   ${m}
-`,pe=async t=>{var o;if(!t.templateId)throw new Error("Template ID is required");if(!t.itemId)throw new Error("Item ID is required");if(!r.authenticated)throw new Error("Unauthorized");try{const e=await s(B,{variables:{input:{templateId:t.templateId,item_id:t.itemId,note:t.note}}});if(!((o=e==null?void 0:e.data)!=null&&o.setQuoteTemplateLineItemNote))throw new Error("No quote template data received");const a=u(e.data.setQuoteTemplateLineItemNote);if(!a)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:a,permissions:r.permissions}),a}catch(e){return Promise.reject(e)}},k=`
+`,ge=async t=>{var r;if(!t.templateId)throw new Error("Template ID is required");if(!t.itemId)throw new Error("Item ID is required");if(!a.authenticated)throw new Error("Unauthorized");try{const e=await s(Y,{variables:{input:{templateId:t.templateId,item_id:t.itemId,note:t.note}}});if(!((r=e==null?void 0:e.data)!=null&&r.setQuoteTemplateLineItemNote))throw new Error("No quote template data received");const o=u(e.data.setQuoteTemplateLineItemNote);if(!o)throw new Error("Failed to transform quote template data");return i.emit("quote-management/quote-template-data",{quoteTemplate:o,permissions:a.permissions}),o}catch(e){return Promise.reject(e)}},W=`
   mutation GENERATE_NEGOTIABLE_QUOTE_FROM_TEMPLATE_MUTATION(
     $input: GenerateNegotiableQuoteFromTemplateInput!
   ) {
@@ -346,5 +360,5 @@ import{D as l,s as r}from"./chunks/state.js";import{events as i}from"@dropins/to
       negotiable_quote_uid
     }
   }
-`,ce=async t=>{var o,e;if(!t.templateId)throw new Error("Template ID is required");if(!r.authenticated)throw new Error("Unauthorized");try{const a=await s(k,{variables:{input:{template_id:t.templateId}}});if(!((e=(o=a==null?void 0:a.data)==null?void 0:o.generateNegotiableQuoteFromTemplate)!=null&&e.negotiable_quote_uid))throw new Error("No quote UID received");const d=a.data.generateNegotiableQuoteFromTemplate.negotiable_quote_uid;return i.emit("quote-management/quote-template-generated",{quoteId:d}),{quoteId:d}}catch(a){return Promise.reject(a)}};export{Me as FilterMatchTypeEnum,De as NegotiableQuoteSortableField,Pe as QuoteTemplateFilterStatus,$e as QuoteTemplateSortField,Le as SortDirection,ve as SortEnum,ie as acceptQuoteTemplate,pe as addQuoteTemplateLineItemNote,ue as addQuoteTemplateShippingAddress,ne as cancelQuoteTemplate,qe as closeNegotiableQuote,ee as config,ae as createQuoteTemplate,be as deleteQuote,se as deleteQuoteTemplate,s as fetchGraphQl,ce as generateQuoteFromTemplate,_e as getConfig,D as getCustomerData,Q as getQuoteData,oe as getQuoteTemplateData,Re as getQuoteTemplates,T as initialize,Se as negotiableQuotes,de as openQuoteTemplate,ge as removeFetchGraphQlHeader,le as removeQuoteTemplateItems,Ue as renameNegotiableQuote,we as requestNegotiableQuote,Oe as sendForReview,re as sendQuoteTemplateForReview,he as setEndpoint,Ie as setFetchGraphQlHeader,Qe as setFetchGraphQlHeaders,te as setShippingAddress,xe as updateQuantities,me as updateQuoteTemplateItemQuantities,Ne as uploadFile};
+`,he=async t=>{var r,e;if(!t.templateId)throw new Error("Template ID is required");if(!a.authenticated)throw new Error("Unauthorized");try{const o=await s(W,{variables:{input:{template_id:t.templateId}}});if(!((e=(r=o==null?void 0:o.data)==null?void 0:r.generateNegotiableQuoteFromTemplate)!=null&&e.negotiable_quote_uid))throw new Error("No quote UID received");const d=o.data.generateNegotiableQuoteFromTemplate.negotiable_quote_uid;return i.emit("quote-management/quote-template-generated",{quoteId:d}),{quoteId:d}}catch(o){return Promise.reject(o)}};export{Pe as FilterMatchTypeEnum,Le as NegotiableQuoteSortableField,xe as QuoteTemplateFilterStatus,Ge as QuoteTemplateSortField,ze as SortDirection,Ce as SortEnum,me as acceptQuoteTemplate,ge as addQuoteTemplateLineItemNote,_e as addQuoteTemplateShippingAddress,le as cancelQuoteTemplate,De as closeNegotiableQuote,ie as config,de as createQuoteTemplate,Me as deleteQuote,pe as deleteQuoteTemplate,s as fetchGraphQl,he as generateQuoteFromTemplate,Qe as getConfig,F as getCustomerData,w as getQuoteData,se as getQuoteTemplateData,je as getQuoteTemplates,L as getStoreConfig,T as initialize,$e as negotiableQuotes,ce as openQuoteTemplate,we as removeFetchGraphQlHeader,Ee as removeQuoteTemplateItems,Se as renameNegotiableQuote,ye as requestNegotiableQuote,ve as sendForReview,ue as sendQuoteTemplateForReview,Ne as setEndpoint,Ae as setFetchGraphQlHeader,qe as setFetchGraphQlHeaders,ne as setShippingAddress,ke as updateQuantities,Te as updateQuoteTemplateItemQuantities,Ue as uploadFile};
 //# sourceMappingURL=api.js.map

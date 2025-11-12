@@ -174,6 +174,18 @@ declare const _default: {
         "withoutTax": "Total excluding taxes",
         "saved": "Total saved"
       }
+    },
+    "QuoteSummaryList": {
+      "discountedPrice": "Discounted Price",
+      "discountPercentage": "{discount}% off",
+      "editQuote": "Edit",
+      "file": "{count} file",
+      "files": "{count} files",
+      "heading": "Negotiable Quote ({count})",
+      "listOfQuoteItems": "List of Quote Items",
+      "regularPrice": "Regular Price",
+      "savingsAmount": "Savings",
+      "viewMore": "View more"
     }
   },
   "historyLog": {

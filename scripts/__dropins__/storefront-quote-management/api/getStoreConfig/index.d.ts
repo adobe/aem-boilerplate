@@ -6,8 +6,5 @@
  * file in accordance with the terms of the Adobe license agreement
  * accompanying it.
  *******************************************************************/
-export * from './transform-store-config';
-export * from './transform-customer';
-export * from './transform-quote';
-export * from './transform-quote-template';
+export * from './getStoreConfig';
 //# sourceMappingURL=index.d.ts.map

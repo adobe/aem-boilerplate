@@ -74,7 +74,9 @@ const e=`
     }
     template_id
     template_name
+    total_quantity
     items {
+      __typename
       uid
       product {
         name
@@ -82,11 +84,48 @@ const e=`
         uid
         stock_status
         quantity
+        thumbnail {
+          label
+          url
+        }
         price_range {
+          minimum_price {
+            regular_price {
+              value
+              currency
+            }
+            final_price {
+              value
+              currency
+            }
+            discount {
+              percent_off
+              amount_off
+            }
+          }
           maximum_price {
             regular_price {
               value
+              currency
             }
+            final_price {
+              value
+              currency
+            }
+            discount {
+              percent_off
+              amount_off
+            }
+          }
+        }
+        price_tiers {
+          quantity
+          final_price {
+            value
+          }
+          discount {
+            amount_off
+            percent_off
           }
         }
       }
@@ -94,6 +133,10 @@ const e=`
         price {
           currency
           value
+        }
+        price_including_tax {
+          value
+          currency
         }
         original_item_price {
           currency
@@ -106,6 +149,10 @@ const e=`
         row_total {
           currency
           value
+        }
+        row_total_including_tax {
+          value
+          currency
         }
         catalog_discount {
           amount_off
@@ -121,6 +168,7 @@ const e=`
         }
       }
       quantity
+      is_available
       note_from_buyer {
         created_at
         creator_id
@@ -139,10 +187,77 @@ const e=`
         note_uid
         __typename
       }
+      ... on SimpleCartItem {
+        customizable_options {
+          type
+          label
+          values {
+            label
+            value
+          }
+        }
+      }
       ... on ConfigurableCartItem {
         configurable_options {
           option_label
           value_label
+        }
+        configured_variant {
+          uid
+          sku
+          stock_status
+          thumbnail {
+            label
+            url
+          }
+          price_range {
+            minimum_price {
+              regular_price {
+                value
+                currency
+              }
+              final_price {
+                value
+                currency
+              }
+              discount {
+                percent_off
+                amount_off
+              }
+            }
+            maximum_price {
+              regular_price {
+                value
+                currency
+              }
+              final_price {
+                value
+                currency
+              }
+              discount {
+                percent_off
+                amount_off
+              }
+            }
+          }
+          price_tiers {
+            quantity
+            final_price {
+              value
+            }
+            discount {
+              amount_off
+              percent_off
+            }
+          }
+        }
+        customizable_options {
+          type
+          label
+          values {
+            label
+            value
+          }
         }
       }
       ... on BundleCartItem {
@@ -159,6 +274,20 @@ const e=`
               currency
               value
             }
+          }
+        }
+      }
+      ... on DownloadableCartItem {
+        links {
+          sort_order
+          title
+        }
+        customizable_options {
+          type
+          label
+          values {
+            label
+            value
           }
         }
       }

@@ -7,11 +7,13 @@
  * accompanying it.
  *******************************************************************/
 export declare enum QuoteDisplayAmount {
-    TAX_INCLUDED = 1,
-    TAX_EXCLUDED = 2,
+    TAX_EXCLUDED = 1,
+    TAX_INCLUDED = 2,
     TAX_INCLUDED_AND_EXCLUDED = 3
 }
 export interface StoreConfigModel {
+    quoteSummaryDisplayTotal: number;
+    quoteSummaryMaxItems: number;
     quoteDisplaySettings: {
         zeroTax: boolean;
         subtotal: QuoteDisplayAmount;
@@ -20,5 +22,6 @@ export interface StoreConfigModel {
         fullSummary: boolean;
         grandTotal: boolean;
     };
+    useConfigurableParentThumbnail: boolean;
 }
 //# sourceMappingURL=store-config-model.d.ts.map

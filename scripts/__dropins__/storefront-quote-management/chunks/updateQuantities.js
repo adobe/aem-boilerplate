@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{f as d,t as I}from"./fetch-graphql.js";import{s as E}from"./state.js";import{events as f}from"@dropins/tools/event-bus.js";import{N as p}from"./NegotiableQuoteFragment.js";const U=`
+import{f as d,t as I}from"./transform-quote.js";import{s as E}from"./state.js";import{events as f}from"@dropins/tools/event-bus.js";import{N as p}from"./NegotiableQuoteFragment.js";const U=`
   mutation UPDATE_NEGOTIABLE_QUOTE_QUANTITIES_MUTATION(
     $quoteUid: ID!
     $items: [NegotiableQuoteItemQuantityInput!]!

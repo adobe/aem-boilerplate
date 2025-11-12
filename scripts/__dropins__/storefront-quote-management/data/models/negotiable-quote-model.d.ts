@@ -42,6 +42,7 @@ export interface NegotiableQuoteModel {
         lastname: string;
     };
     templateName?: string;
+    totalQuantity: number;
     comments?: {
         uid: string;
         createdAt: string;
@@ -91,7 +92,16 @@ export interface BundleOption {
         price: Currency;
     }[];
 }
+export interface CustomizableOption {
+    type: string;
+    label: string;
+    values: {
+        label: string;
+        value: string;
+    }[];
+}
 export interface NegotiableQuoteCartItem {
+    itemType: string;
     uid: string;
     product: {
         uid: string;
@@ -101,12 +111,14 @@ export interface NegotiableQuoteCartItem {
         templateName?: string;
         priceRange: {
             maximumPrice: {
-                regularPrice: {
-                    value: number;
-                };
+                regularPrice: Currency;
             };
         };
     };
+    image: ItemImage;
+    links?: ItemLinks;
+    discounted: boolean;
+    discountedTotal: Currency;
     catalogDiscount: {
         amountOff: number;
         percentOff: number;
@@ -116,18 +128,33 @@ export interface NegotiableQuoteCartItem {
         value: string;
         amount: Currency;
     }[];
+    discountPercentage?: number;
+    insufficientQuantity?: boolean;
+    outOfStock?: boolean;
     stockStatus: string;
     quantity: number;
     prices: {
+        regularPrice: Currency;
+        priceIncludingTax: Currency;
         originalItemPrice: Currency;
+        originalRowTotal: Currency;
         rowTotal: Currency;
+        rowTotalIncludingTax: Currency;
     };
+    savingsAmount?: Currency;
     configurableOptions?: ConfigurableOption[];
-    optionLabel: string;
-    valueLabel: string;
     bundleOptions?: BundleOption[];
+    customizableOptions?: CustomizableOption[];
     noteFromBuyer?: ItemNote[];
     noteFromSeller?: ItemNote[];
+}
+interface ItemImage {
+    src: string;
+    alt: string;
+}
+interface ItemLinks {
+    count: number;
+    result: string;
 }
 export interface ItemNote {
     createdAt: string;
@@ -254,4 +281,5 @@ export interface PaginationInfo {
     totalPages: number;
     pageSizeOptions?: number[];
 }
+export {};
 //# sourceMappingURL=negotiable-quote-model.d.ts.map

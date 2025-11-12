@@ -34,6 +34,10 @@ export declare const mockGraphQLResponse: {
                                 };
                             };
                         };
+                        thumbnail: {
+                            url: string;
+                            label: string;
+                        };
                     };
                     quantity: number;
                     note_from_buyer: {
@@ -119,6 +123,7 @@ export declare const mockQuoteData: {
     template_id: null;
     template_name: null;
     items: ({
+        __typename: string;
         uid: string;
         product: {
             name: string;
@@ -126,16 +131,40 @@ export declare const mockQuoteData: {
             uid: string;
             stock_status: string;
             quantity: null;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
             price_range: {
                 maximum_price: {
                     regular_price: {
+                        currency: string;
                         value: number;
+                    };
+                    discount: {
+                        amount_off: number;
+                        percent_off: number;
                     };
                 };
             };
+            price_tiers: {
+                quantity: number;
+                final_price: {
+                    currency: string;
+                    value: number;
+                };
+                discount: {
+                    amount_off: number;
+                    percent_off: number;
+                };
+            }[];
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -148,6 +177,10 @@ export declare const mockQuoteData: {
                 value: number;
             };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -181,9 +214,20 @@ export declare const mockQuoteData: {
             note: string;
             note_uid: string;
         }[];
+        customizable_options: {
+            type: string;
+            label: string;
+            values: {
+                label: string;
+                value: string;
+            }[];
+        }[];
         configurable_options?: undefined;
+        configured_variant?: undefined;
         bundle_options?: undefined;
+        links?: undefined;
     } | {
+        __typename: string;
         uid: string;
         product: {
             name: string;
@@ -191,16 +235,27 @@ export declare const mockQuoteData: {
             uid: string;
             stock_status: string;
             quantity: null;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
             price_range: {
                 maximum_price: {
                     regular_price: {
+                        currency: string;
                         value: number;
                     };
+                    discount?: undefined;
                 };
             };
+            price_tiers?: undefined;
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -213,6 +268,10 @@ export declare const mockQuoteData: {
                 value: number;
             };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -236,8 +295,47 @@ export declare const mockQuoteData: {
             note_uid: string;
         }[];
         note_from_seller: never[];
+        configured_variant: {
+            thumbnail: {
+                label: string;
+                url: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        currency: string;
+                        value: number;
+                    };
+                    discount: {
+                        amount_off: number;
+                        percent_off: number;
+                    };
+                };
+            };
+            price_tiers: {
+                quantity: number;
+                final_price: {
+                    currency: string;
+                    value: number;
+                };
+                discount: {
+                    amount_off: number;
+                    percent_off: number;
+                };
+            }[];
+        };
+        customizable_options: {
+            type: string;
+            label: string;
+            values: {
+                label: string;
+                value: string;
+            }[];
+        }[];
         bundle_options?: undefined;
+        links?: undefined;
     } | {
+        __typename: string;
         uid: string;
         product: {
             name: string;
@@ -245,16 +343,30 @@ export declare const mockQuoteData: {
             uid: string;
             stock_status: string;
             quantity: null;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
             price_range: {
                 maximum_price: {
                     regular_price: {
+                        currency: string;
                         value: number;
+                    };
+                    discount: {
+                        amount_off: number;
+                        percent_off: number;
                     };
                 };
             };
+            price_tiers?: undefined;
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -267,6 +379,10 @@ export declare const mockQuoteData: {
                 value: number;
             };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -315,7 +431,103 @@ export declare const mockQuoteData: {
             note: string;
             note_uid: string;
         }[];
+        customizable_options?: undefined;
         configurable_options?: undefined;
+        configured_variant?: undefined;
+        links?: undefined;
+    } | {
+        __typename: string;
+        uid: string;
+        product: {
+            name: string;
+            sku: string;
+            uid: string;
+            stock_status: string;
+            quantity: null;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        currency: string;
+                        value: number;
+                    };
+                    discount: {
+                        amount_off: number;
+                        percent_off: number;
+                    };
+                };
+            };
+            price_tiers: {
+                quantity: number;
+                final_price: {
+                    currency: string;
+                    value: number;
+                };
+                discount: {
+                    amount_off: number;
+                    percent_off: number;
+                };
+            }[];
+        };
+        prices: {
+            price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
+                currency: string;
+                value: number;
+            };
+            original_item_price: {
+                currency: string;
+                value: number;
+            };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
+                currency: string;
+                value: number;
+            };
+            catalog_discount: {
+                amount_off: number;
+                percent_off: number;
+            };
+            discounts: {
+                label: string;
+                value: number;
+                amount: {
+                    currency: string;
+                    value: number;
+                };
+            }[];
+        };
+        quantity: number;
+        links: {
+            sort_order: number;
+            title: string;
+        }[];
+        customizable_options: {
+            type: string;
+            label: string;
+            values: {
+                label: string;
+                value: string;
+            }[];
+        }[];
+        note_from_buyer?: undefined;
+        note_from_seller?: undefined;
+        configurable_options?: undefined;
+        configured_variant?: undefined;
+        bundle_options?: undefined;
     })[];
     history: {
         uid: string;
@@ -445,6 +657,10 @@ export declare const mockNegotiableQuotesResponse: {
                                     value: number;
                                 };
                             };
+                        };
+                        thumbnail: {
+                            url: string;
+                            label: string;
                         };
                     };
                     quantity: number;

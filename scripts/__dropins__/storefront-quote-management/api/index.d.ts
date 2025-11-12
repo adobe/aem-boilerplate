@@ -12,6 +12,7 @@ export * from './getCustomerData';
 export * from './requestNegotiableQuote';
 export * from './getQuoteData';
 export * from './negotiableQuotes';
+export * from './getStoreConfig';
 export * from './deleteQuote';
 export * from './setShippingAddress';
 export * from './sendForReview';

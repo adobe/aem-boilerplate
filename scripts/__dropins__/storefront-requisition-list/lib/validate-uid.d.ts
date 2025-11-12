@@ -14,9 +14,12 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './RequisitionListForm';
-export * from './RequisitionListGrid';
-export * from './RequisitionListView';
-export * from './RequisitionListSelector';
-export * from './RequisitionListHeader';
-//# sourceMappingURL=index.d.ts.map
+/**
+ * Validates if a string is a valid base64-encoded UID
+ * Adobe Commerce/Magento UIDs are base64 encoded
+ *
+ * @param uid - The UID to validate
+ * @returns true if the UID appears to be valid base64 encoding
+ */
+export declare function isValidBase64Uid(uid: string | undefined | null): boolean;
+//# sourceMappingURL=validate-uid.d.ts.map

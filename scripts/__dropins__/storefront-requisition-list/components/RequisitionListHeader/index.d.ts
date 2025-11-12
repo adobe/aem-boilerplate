@@ -14,6 +14,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './RequisitionListNames';
-export { RequisitionListNames as default } from './RequisitionListNames';
+export { RequisitionListHeader } from './RequisitionListHeader';
+export type { RequisitionListHeaderProps } from './RequisitionListHeader';
 //# sourceMappingURL=index.d.ts.map

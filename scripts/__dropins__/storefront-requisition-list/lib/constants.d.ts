@@ -14,9 +14,8 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './RequisitionListForm';
-export * from './RequisitionListGrid';
-export * from './RequisitionListView';
-export * from './RequisitionListSelector';
-export * from './RequisitionListHeader';
-//# sourceMappingURL=index.d.ts.map
+/**
+ * Default page size for pagination in requisition lists
+ */
+export declare const DEFAULT_PAGE_SIZE = 10;
+//# sourceMappingURL=constants.d.ts.map

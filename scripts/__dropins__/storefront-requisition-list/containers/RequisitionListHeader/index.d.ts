@@ -14,9 +14,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './RequisitionListForm';
-export * from './RequisitionListGrid';
-export * from './RequisitionListView';
-export * from './RequisitionListSelector';
-export * from './RequisitionListHeader';
+export { RequisitionListHeader } from './RequisitionListHeader';
+export type { RequisitionListHeaderProps } from './RequisitionListHeader';
 //# sourceMappingURL=index.d.ts.map

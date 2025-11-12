@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{R as I,f as a,h as c,t as g}from"./transform-requisition-list.js";import{events as m}from"@dropins/tools/event-bus.js";const p=`
+import{R as I,f as a,h as c,t as g}from"./updateRequisitionList.js";import{events as m}from"@dropins/tools/event-bus.js";const p=`
   query GET_REQUISITION_LISTS_QUERY(
     $currentPage: Int = 1
     $pageSize: Int = 10,

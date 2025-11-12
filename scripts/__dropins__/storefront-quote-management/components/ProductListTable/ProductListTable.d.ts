@@ -7,6 +7,7 @@ export interface ProductListTableProps extends HTMLAttributes<HTMLDivElement | H
     canEdit: boolean;
     onItemCheckboxChange?: (item: NegotiableQuoteCartItem, isSelected: boolean) => void;
     onItemDropdownChange?: (item: NegotiableQuoteCartItem, action: string) => void;
+    onQuantityChange?: (item: NegotiableQuoteCartItem, newQuantity: number) => void;
     onUpdate?: (e: SubmitEvent) => void;
 }
 export declare const ProductListTable: FunctionComponent<ProductListTableProps>;

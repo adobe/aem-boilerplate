@@ -12,4 +12,10 @@
  */
 export declare function formatExpirationDate(date: string, dateFormatter: Intl.DateTimeFormat): string;
 export declare function getUserTimezone(): string;
+/**
+ * Formats a date string to locale date string, returning "–" for invalid dates
+ * @param dateString - The date string to format
+ * @returns Formatted date string or "–" for invalid dates
+ */
+export declare function formattedDate(dateString: string): string;
 //# sourceMappingURL=dateUtils.d.ts.map

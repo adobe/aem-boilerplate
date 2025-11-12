@@ -1,3 +1,5 @@
+import { StoreConfigModel } from '../data/models';
+
 export type State = {
     authenticated: boolean;
     permissions: {
@@ -6,5 +8,6 @@ export type State = {
         deleteQuote: boolean;
         checkoutQuote: boolean;
     };
+    config: StoreConfigModel;
 };
 //# sourceMappingURL=state.types.d.ts.map

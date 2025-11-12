@@ -50,7 +50,7 @@
     "@dropins/storefront-pdp": "~1.3.5",
     "@dropins/storefront-personalization": "~1.0.1",
     "@dropins/storefront-product-discovery": "~2.1.0",
-    "@dropins/storefront-quote-management": "0.0.1-alpha17",
+    "@dropins/storefront-quote-management": "0.0.1-alpha22",
     "@dropins/storefront-recommendations": "~1.1.1",
     "@dropins/storefront-requisition-list": "0.7.0-beta",
     "@dropins/storefront-wishlist": "~2.0.1",

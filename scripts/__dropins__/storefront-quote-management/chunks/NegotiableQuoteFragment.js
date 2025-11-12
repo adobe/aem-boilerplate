@@ -1,10 +1,56 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
 const e=`
+  fragment SELECTED_SHIPPING_METHOD_FRAGMENT on SelectedShippingMethod {
+    amount {
+      currency
+      value
+    }
+    carrier_code
+    carrier_title
+    method_code
+    method_title
+    price_excl_tax {
+      value
+      currency
+    }
+    price_incl_tax {
+      value
+      currency
+    }
+  }
+`,t=`
+  fragment NEGOTIABLE_QUOTE_SHIPPING_ADDRESS_FRAGMENT on NegotiableQuoteShippingAddress {
+    uid
+    firstname
+    lastname
+    company
+    street
+    city
+    region {
+      code
+      label
+      region_id
+    }
+    postcode
+    country {
+      code
+      label
+    }
+    telephone
+
+    selected_shipping_method {
+      ...SELECTED_SHIPPING_METHOD_FRAGMENT
+    }
+  }
+
+  ${e}
+`,a=`
   fragment NegotiableQuoteFragment on NegotiableQuote {
     uid
     name
     created_at
+    is_virtual
     status
     sales_rep_name
     expiration_date
@@ -22,24 +68,64 @@ const e=`
       }
       text
       attachments {
-          name
-          url
+        name
+        url
       }
     }
     template_id
     template_name
+    total_quantity
     items {
+      __typename
+      uid
       product {
         name
         sku
         uid
         stock_status
         quantity
+        thumbnail {
+          label
+          url
+        }
         price_range {
+          minimum_price {
+            regular_price {
+              value
+              currency
+            }
+            final_price {
+              value
+              currency
+            }
+            discount {
+              percent_off
+              amount_off
+            }
+          }
           maximum_price {
             regular_price {
               value
+              currency
             }
+            final_price {
+              value
+              currency
+            }
+            discount {
+              percent_off
+              amount_off
+            }
+          }
+        }
+        price_tiers {
+          quantity
+          final_price {
+            value
+          }
+          discount {
+            amount_off
+            percent_off
           }
         }
       }
@@ -47,6 +133,10 @@ const e=`
         price {
           currency
           value
+        }
+        price_including_tax {
+          value
+          currency
         }
         original_item_price {
           currency
@@ -59,6 +149,10 @@ const e=`
         row_total {
           currency
           value
+        }
+        row_total_including_tax {
+          value
+          currency
         }
         catalog_discount {
           amount_off
@@ -74,6 +168,7 @@ const e=`
         }
       }
       quantity
+      is_available
       note_from_buyer {
         created_at
         creator_id
@@ -92,10 +187,77 @@ const e=`
         note_uid
         __typename
       }
+      ... on SimpleCartItem {
+        customizable_options {
+          type
+          label
+          values {
+            label
+            value
+          }
+        }
+      }
       ... on ConfigurableCartItem {
         configurable_options {
           option_label
           value_label
+        }
+        configured_variant {
+          uid
+          sku
+          stock_status
+          thumbnail {
+            label
+            url
+          }
+          price_range {
+            minimum_price {
+              regular_price {
+                value
+                currency
+              }
+              final_price {
+                value
+                currency
+              }
+              discount {
+                percent_off
+                amount_off
+              }
+            }
+            maximum_price {
+              regular_price {
+                value
+                currency
+              }
+              final_price {
+                value
+                currency
+              }
+              discount {
+                percent_off
+                amount_off
+              }
+            }
+          }
+          price_tiers {
+            quantity
+            final_price {
+              value
+            }
+            discount {
+              amount_off
+              percent_off
+            }
+          }
+        }
+        customizable_options {
+          type
+          label
+          values {
+            label
+            value
+          }
         }
       }
       ... on BundleCartItem {
@@ -112,6 +274,20 @@ const e=`
               currency
               value
             }
+          }
+        }
+      }
+      ... on DownloadableCartItem {
+        links {
+          sort_order
+          title
+        }
+        customizable_options {
+          type
+          label
+          values {
+            label
+            value
           }
         }
       }
@@ -165,7 +341,7 @@ const e=`
       }
     }
     prices {
-      subtotal_excluding_tax {
+      subtotal_with_discount_excluding_tax {
         currency
         value
       }
@@ -173,41 +349,43 @@ const e=`
         currency
         value
       }
-      subtotal_with_discount_excluding_tax {
+      subtotal_excluding_tax {
         currency
         value
-      }
-      applied_taxes {
-        amount {
-          currency
-          value
-        }
-        label
       }
       grand_total {
         currency
         value
       }
+      grand_total_excluding_tax {
+        currency
+        value
+      }
+      applied_taxes {
+        label
+        amount {
+          value
+          currency
+        }
+      }
+      discounts {
+        amount {
+          value
+          currency
+        }
+        label
+        coupon {
+          code
+        }
+        applied_to
+      }
     }
+
     shipping_addresses {
-      uid
-      firstname
-      lastname
-      company
-      street
-      city
-      region {
-        code
-        label
-        region_id
-      }
-      postcode
-      country {
-        code
-        label
-      }
-      telephone
+      ...NEGOTIABLE_QUOTE_SHIPPING_ADDRESS_FRAGMENT
     }
   }
-`;export{e as N};
+
+  ${t}
+`;export{a as N};
 //# sourceMappingURL=NegotiableQuoteFragment.js.map

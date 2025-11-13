@@ -29,15 +29,19 @@ No localStorage keys are used by this block.
 ## Public API
 
 - `default export decorate(block)` — Renders the success view into the provided block element.
-- `export async function renderOrderSuccess(container, { orderData } = {})` — Renders the success view into `container`. Pass `orderData` to provide pre-fetched order data; otherwise the Order drop-in will fetch it when possible (not possible when placing an order as a guest using an email address that’s already associated with an existing account).
+- `export async function renderCheckoutSuccess(container, { orderData } = {})` — Renders the success view into `container`. Pass `orderData` to provide pre-fetched order data; otherwise the Order drop-in will fetch it when possible (not possible when placing an order as a guest using an email address that’s already associated with an existing account).
+- `export function preloadCheckoutSuccess()` — Preloads the checkout success CSS. Call this before `renderCheckoutSuccess`.
 
 Example (programmatic):
 
 ```js
-import { renderOrderSuccess } from './blocks/commerce-checkout-success/commerce-checkout-success.js';
+import { preloadCheckoutSuccess, renderCheckoutSuccess } from './blocks/commerce-checkout-success/commerce-checkout-success.js';
 
-// Optionally pass pre-fetched order data
-await renderOrderSuccess(container, { orderData });
+// Load CSS
+preloadCheckoutSuccess();
+
+// Pass pre-fetched order data
+await renderCheckoutSuccess(container, { orderData });
 ```
 
 ## Behavior
@@ -107,7 +111,7 @@ Add the block to your confirmation page template:
 <div class="block commerce-checkout-success"></div>
 ```
 
-When used via the decorator system, the block will automatically render the confirmation experience into the block container. For programmatic usage, use the `renderOrderSuccess` export and pass `orderData`.
+When used via the decorator system, the block will automatically render the confirmation experience into the block container. For programmatic usage, use the `renderCheckoutSuccess` export and pass `orderData`.
 
 ## File Structure
 

@@ -84,7 +84,7 @@ async function renderPOConfirmationContent(container, poData = {}) {
 }
 
 export async function renderPOSuccess(container, poData) {
-  await loadCSS('/blocks/commerce-b2b-po-checkout-success/commerce-b2b-po-checkout-success.css');
+  await loadCSS(`${window.hlx.codeBasePath}/blocks/commerce-b2b-po-checkout-success/commerce-b2b-po-checkout-success.css`);
   return renderPOConfirmationContent(container, poData);
 }
 

@@ -59,6 +59,8 @@ export const UPS_TRACKING_URL = 'https://www.ups.com/track';
 export const CUSTOMER_PO_RULES_PATH = `${CUSTOMER_PATH}/approval-rules`;
 export const CUSTOMER_PO_RULE_FORM_PATH = `${CUSTOMER_PATH}/approval-rule`;
 export const CUSTOMER_PO_RULE_DETAILS_PATH = `${CUSTOMER_PATH}/approval-rule-details`;
+export const CUSTOMER_PO_LIST_PATH = `${CUSTOMER_PATH}/purchase-orders`;
+export const CUSTOMER_PO_DETAILS_PATH = `${CUSTOMER_PATH}/purchase-order-details`;
 
 /**
  * Auth Privacy Policy Consent Slot

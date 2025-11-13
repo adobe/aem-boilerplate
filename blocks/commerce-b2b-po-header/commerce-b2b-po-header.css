@@ -1,0 +1,12 @@
+body:not(.columns) main div.commerce-b2b-po-header-wrapper {
+    margin-top: var(--spacing-large);
+}
+
+body.columns main > .section > div.commerce-b2b-po-header-wrapper {
+    margin-bottom: 0;
+}
+
+.po-list-link {
+    display: inline-block;
+    margin-bottom: var(--spacing-medium);
+}

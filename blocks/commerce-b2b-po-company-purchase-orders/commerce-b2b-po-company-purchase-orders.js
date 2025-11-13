@@ -7,6 +7,7 @@ import {
   checkIsAuthenticated,
   CUSTOMER_LOGIN_PATH,
   CUSTOMER_ACCOUNT_PATH,
+  CUSTOMER_PO_DETAILS_PATH,
   rootLink,
 } from '../../scripts/commerce.js';
 
@@ -61,6 +62,7 @@ const renderCompanyPurchaseOrders = async (blockElement, permissions = {}) => {
       { text: '20', value: '20', selected: false },
       { text: '30', value: '30', selected: false },
     ],
+    routePurchaseOrderDetails: (poRef) => `${CUSTOMER_PO_DETAILS_PATH}?poRef=${poRef}`,
   })(blockElement);
 };
 

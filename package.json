@@ -54,7 +54,7 @@
     "@dropins/storefront-recommendations": "~1.1.1",
     "@dropins/storefront-requisition-list": "0.7.0-beta",
     "@dropins/storefront-wishlist": "~2.0.1",
-    "@dropins/storefront-purchase-order": "0.0.7-alpha2",
+    "@dropins/storefront-purchase-order": "0.0.7-alpha3",
     "@dropins/tools": "1.6.0-beta2"
   }
 }

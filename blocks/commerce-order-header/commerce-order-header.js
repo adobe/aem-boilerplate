@@ -8,17 +8,16 @@ import {
 } from '../../scripts/commerce.js';
 
 export default async function decorate(block) {
-  block.innerHTML = '';
+  const placeholders = await fetchPlaceholders();
 
   const headerContainer = document.createElement('div');
-  await UI.render(Header, { title: 'Order' })(headerContainer);
+  const headerTitleText = placeholders?.Global?.CommerceOrderHeader?.orderHeaderTitle || 'Order';
+  await UI.render(Header, { title: headerTitleText })(headerContainer);
 
   if (window.location.href.includes(CUSTOMER_ORDER_DETAILS_PATH)) {
-    const placeholders = await fetchPlaceholders();
-
     const link = document.createElement('a');
 
-    link.innerText = placeholders?.Global?.CommerceOrderHeader?.backToAllOrders;
+    link.innerText = placeholders?.Global?.CommerceOrderHeader?.backToAllOrders || '< Back to all orders';
     link.href = rootLink(CUSTOMER_ORDERS_PATH);
     link.classList.add('orders-list-link');
 
@@ -28,6 +27,6 @@ export default async function decorate(block) {
   block.appendChild(headerContainer);
 
   events.on('order/data', (orderData) => {
-    UI.render(Header, { title: `Order ${orderData.number}` })(headerContainer);
+    UI.render(Header, { title: `${headerTitleText} ${orderData.number}` })(headerContainer);
   }, { eager: true });
 }

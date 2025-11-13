@@ -11,7 +11,7 @@ import { render as POProvider } from '@dropins/storefront-purchase-order/render.
 import { createFragment, createScopedSelector } from '@dropins/storefront-checkout/lib/utils.js';
 
 // Commerce helpers
-import { rootLink } from '../../scripts/commerce.js';
+import { rootLink, CUSTOMER_PO_DETAILS_PATH } from '../../scripts/commerce.js';
 import { loadCSS } from '../../scripts/aem.js';
 
 // Initialize dropins
@@ -42,10 +42,10 @@ function createPOConfirmationFragment() {
 // Local renderers (order confirmation only)
 // ----------------------------------------------------------------------------
 
-async function renderPOConfirmationContainer(container, poNumber) {
+async function renderPOConfirmationContainer(container, poNumber, poUid) {
   return POProvider.render(PurchaseOrderConfirmation, {
     purchaseOrderNumber: poNumber,
-    routePurchaseOrderDetails: () => rootLink(`/customer/purchase-order-details?poRef=${poNumber}`),
+    routePurchaseOrderDetails: () => rootLink(`${CUSTOMER_PO_DETAILS_PATH}?poRef=${poUid}`),
   })(container);
 }
 
@@ -78,7 +78,7 @@ async function renderPOConfirmationContent(container, poData = {}) {
   container.replaceChildren(poConfirmationFragment);
 
   await Promise.all([
-    renderPOConfirmationContainer($poConfirmationContent, poData?.number),
+    renderPOConfirmationContainer($poConfirmationContent, poData?.number, poData?.uid),
     renderPOConfirmationFooterButton($poConfirmationFooter),
   ]);
 }

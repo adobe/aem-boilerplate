@@ -33,6 +33,8 @@ import {
   rootLink,
   SUPPORT_PATH,
   authPrivacyPolicyConsentSlot,
+  CUSTOMER_LOGIN_PATH,
+  CUSTOMER_ACCOUNT_PATH,
 } from '../../scripts/commerce.js';
 
 // Initialize dropins
@@ -134,8 +136,8 @@ async function renderOrderHeader(container, options = {}) {
     AuthProvider.render(SignUp, {
       inputsDefaultValueSet,
       addressesData,
-      routeSignIn: () => rootLink('/customer/login'),
-      routeRedirectOnEmailConfirmationClose: () => rootLink('/customer/account'),
+      routeSignIn: () => rootLink(CUSTOMER_LOGIN_PATH),
+      routeRedirectOnEmailConfirmationClose: () => rootLink(CUSTOMER_ACCOUNT_PATH),
       slots: { ...authPrivacyPolicyConsentSlot },
     })(signUpForm);
     await showModal(signUpForm);

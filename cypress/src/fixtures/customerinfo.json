@@ -1,0 +1,13 @@
+{
+  "customer": {
+    "firstname": "John",
+    "lastname": "Doe",
+    "password": "ag23rt45++",
+    "is_subscribed": true,
+    "email": "cypresstest@example.com"
+  },
+  "quote": {
+    "comment": "test quote",
+    "quote_name": "my test quote cypress"
+  }
+}

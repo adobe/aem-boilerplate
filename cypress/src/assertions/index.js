@@ -420,6 +420,13 @@ export const assertSearchResultClick = () => {
   cy.get(".product-details", { timeout: 10000 })
     .should("be.visible");
 };
+
+export const assertSignInSuccess = (firstname, lastname, username) => {
+  cy.url().should("include", "/customer/account");
+  cy.contains(firstname).should("be.visible");
+  cy.contains(lastname).should("be.visible");
+  cy.contains(username).should("be.visible");
+}
 // Company Registration Assertions
 export const assertCompanyRegistrationForm = () => {
   cy.get('.company-registration-container').should('exist');

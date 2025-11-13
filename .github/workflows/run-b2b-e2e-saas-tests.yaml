@@ -28,6 +28,10 @@ jobs:
           command: npm run cypress:b2b:saas:run
         env:
           AEM_ASSETS_PRIVATE_USER: ${{ secrets.AEM_ASSETS_PRIVATE_USER }}
+          CYPRESS_API_ENDPOINT: ${{ secrets.CYPRESS_API_ENDPOINT }}
+          CYPRESS_IMS_CLIENT_ID: ${{ secrets.CYPRESS_IMS_CLIENT_ID }}
+          CYPRESS_IMS_ORG_ID: ${{ secrets.CYPRESS_IMS_ORG_ID }}
+          CYPRESS_IMS_CLIENT_SECRET: ${{ secrets.CYPRESS_IMS_CLIENT_SECRET }}
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

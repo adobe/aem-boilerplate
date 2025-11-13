@@ -1,24 +1,27 @@
-# Running E2E tests
+# Pre Setup for B2B specific
+1. Created server to server auth project 
+   Note, these credetials are needed only for Admin Rest API interactions and not for Storefront graphql
+ 
+   Reference https://developer.adobe.com/commerce/webapi/rest/authentication/ 
 
-Note - Following commands expects local server is running at <http://127.0.0.1:3000/>.
+2. Set cypress local env variable, these can be found in vault pre-fixed with LOCAL
+ `export CYPRESS_API_ENDPOINT=#######`  
+ `export CYPRESS_IMS_CLIENT_ID=#######`  
+ `export CYPRESS_IMS_ORG_ID=#######`  
+ `export CYPRESS_IMS_CLIENT_SECRET=#######`  
+  Same variables are set in Github Secret management for CI, these pre-fixed with CI in vault
+
+# Running E2E tests
 
 1. Clone the repo and change directory to `cypress`
 2. Run `npm install`
-3. Run `npm run cypress:open`
-4. Click on E2E Testing in cypress UI window.
-5. Click on Start E2E Testing on Chrome button.
-6. Now select respective test to Run from Cypress UI.
-7. To run all tests use `npm run cypress:run`
+3. Run `bash run-cypress.sh` 
+4. Select which setup you need to run - SaaS, PaaS, B2B , as per your testing needs.
+5. To run all tests use `npm run cypress:run` For This command local server needs to be running at <http://127.0.0.1:3000/>.
 
-## SaaS vs PaaS
+## SaaS vs PaaS Configs
 
-By default, the `cypress:open` and `cypress:run` commands run tests targeting the PaaS commerce environment created for the boilerplate.
-
-You can run tests against the SaaS environment with `cypress:saas:open` or `cypress:saas:run`.
-
-Both sets of commands are used during the boilerplate CICD workflows to ensure that any change to the boilerplate works against either type of environment.
-
-Both commands use a base config, defined in `cypress.base.config.js` and extend in the corresponding config, either `cypress.paas.config.js` or `cypress.saas.config.js`. This allows us to use variables for things which differ in the environments, such as gift card codes, product option uids, etc.
+All commands use a base config, defined in `cypress.base.config.js` and extend in the corresponding config,  `cypress.paas.config.js`, `cypress.saas.config.js`, `cypress.b2b.saas.config`, `cypress.b2b.paas.config` This allows us to use variables for things which differ in the environments, such as gift card codes, product option uids, etc.
 
 ### Skipping Tests
 

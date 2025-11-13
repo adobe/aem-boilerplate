@@ -8,7 +8,8 @@ import './interceptConfig';
 import './waitForWishlistPage';
 import '@percy/cypress';
 import './percyTakeSnapshot';
-import './waitForLoadingSkeletonToDisappear'
+import './waitForLoadingSkeletonToDisappear';
+import './deleteNegotiableQuotes';
 
 import registerCypressGrep from '@cypress/grep'
 registerCypressGrep();

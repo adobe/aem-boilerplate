@@ -16,9 +16,12 @@
  ****************************************************************** */
 import { companyEnabled, getCompany } from '@dropins/storefront-company-management/api.js';
 import { render as negotiableQuoteRenderer } from '@dropins/storefront-quote-management/render.js';
+import { InLineAlert, provider as UI } from '@dropins/tools/components.js';
+import { events } from '@dropins/tools/event-bus.js';
 
 // Containers
 import { QuoteTemplatesListTable } from '@dropins/storefront-quote-management/containers/QuoteTemplatesListTable.js';
+import { ManageNegotiableQuoteTemplate } from '@dropins/storefront-quote-management/containers/ManageNegotiableQuoteTemplate.js';
 
 // Initialize
 import '../../scripts/initializers/company.js';
@@ -80,17 +83,29 @@ export default async function decorate(block) {
     block.setAttribute('data-quote-view', 'details');
 
     // Render the quote template details view
-    console.warn('Quote template ID is not implemented yet');
+    await negotiableQuoteRenderer.render(ManageNegotiableQuoteTemplate, {})(block);
   } else {
     // Render the quote templates list view
     block.classList.add('negotiable-quote-template__list');
     block.setAttribute('data-quote-view', 'list');
 
     await negotiableQuoteRenderer.render(QuoteTemplatesListTable, {
+      // Append quote template id to the url to navigate to render the details view
+      onViewQuoteTemplate: (id) => {
+        window.location.href = `${window.location.pathname}?quoteTemplateId=${id}`;
+      },
       pageSize: 10,
       showItemRange: true,
       showPageSizePicker: true,
       showPagination: true,
     })(block);
   }
+
+  // Render error when quote data fails to load
+  events.on('quote-management/quote-data/error', ({ error }) => {
+    UI.render(InLineAlert, {
+      type: 'error',
+      description: `${error}`,
+    })(block);
+  });
 }

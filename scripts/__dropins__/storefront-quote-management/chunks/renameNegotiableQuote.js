@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{events as _}from"@dropins/tools/event-bus.js";import{f as g,t as q}from"./fetch-graphql.js";import{N as E}from"./NegotiableQuoteFragment.js";import{s as p}from"./state.js";const Q=`
+import{events as _}from"@dropins/tools/event-bus.js";import{f as g,a as q}from"./transform-quote.js";import{N as E}from"./NegotiableQuoteFragment.js";import{s as p}from"./state.js";const Q=`
     query QUOTE_DATA_QUERY(
         $quoteId: ID!
     ) {

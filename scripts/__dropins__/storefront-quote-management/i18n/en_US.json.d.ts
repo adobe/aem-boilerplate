@@ -204,6 +204,36 @@ declare const _default: {
       "viewMore": "View more"
     }
   },
+  "NegotiableQuoteTemplate": {
+    "Manage": {
+      "createdLabel": "Created:",
+      "salesRepLabel": "Sales Rep:",
+      "expiresLabel": "Expires:",
+      "referenceDocuments": {
+        "title": "Reference Documents"
+      },
+      "comments": {
+        "title": "Comments"
+      },
+      "historyLog": {
+        "title": "History Log"
+      },
+      "tabs": {
+        "itemsQuoted": "Items Quoted",
+        "comments": "Comments",
+        "historyLog": "History Log"
+      },
+      "quotePricesSummary": {
+        "subtotal": {
+          "excludingTax": "Quote Template Subtotal (excluding tax)"
+        },
+        "appliedTaxes": "Applied Taxes",
+        "grandTotal": {
+          "includingTax": "Quote Template Grand Total (including tax)"
+        }
+      }
+    }
+  },
   "historyLog": {
     "changeTypes": {
       "created": "Quote Created",
@@ -234,9 +264,6 @@ declare const _default: {
     },
     "emptyState": "No history available for this quote."
   },
-  "dateUtils": {
-    "never": "Never"
-  },
   "QuoteManagement": {
     "QuotesListTable": {
       "quoteName": "Quote Name",
@@ -256,7 +283,8 @@ declare const _default: {
       "minQuoteTotal": "Min. Quote Total (Negotiated)",
       "ordersPlaced": "Orders Placed",
       "lastOrdered": "Last Ordered",
-      "actions": "Action"
+      "actions": "Action",
+      "view": "View"
     }
   }
 }

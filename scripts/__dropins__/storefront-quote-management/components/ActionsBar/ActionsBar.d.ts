@@ -7,6 +7,7 @@ export interface ActionsBarProps extends HTMLAttributes<HTMLDivElement> {
         label: string;
         value: string;
     }[];
+    dropdownValue?: string;
     handleDropdownChange?: (event: Event) => void;
     buttons?: VNode[];
 }

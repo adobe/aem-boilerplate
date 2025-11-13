@@ -6,5 +6,5 @@
  * file in accordance with the terms of the Adobe license agreement
  * accompanying it.
  *******************************************************************/
-export * from './getCustomerData';
-//# sourceMappingURL=index.d.ts.map
+export declare const REMOVE_NEGOTIABLE_QUOTE_ITEMS_MUTATION: string;
+//# sourceMappingURL=RemoveNegotiableQuoteItemsMutation.d.ts.map

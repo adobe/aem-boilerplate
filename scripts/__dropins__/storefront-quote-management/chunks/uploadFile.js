@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{f as l,t as w}from"./transform-quote.js";import"./state.js";import{events as E}from"@dropins/tools/event-bus.js";import{N as f}from"./NegotiableQuoteFragment.js";const N=`
+import{events as E}from"@dropins/tools/event-bus.js";import{N as w}from"./NegotiableQuoteFragment.js";import{f as l,t as f}from"./fetch-graphql.js";import"./state.js";const N=`
   mutation REQUEST_NEGOTIABLE_QUOTE_MUTATION(
     $cartId: ID!
     $quoteName: String!
@@ -20,8 +20,8 @@ import{f as l,t as w}from"./transform-quote.js";import"./state.js";import{events
       }
     }
   }
-  ${f}
-`,$=async t=>{const{cartId:n,quoteName:e,comment:o,attachments:r,isDraft:i}=t;if(!n)throw new Error("Cart ID is required");if(!e)throw new Error("Quote name is required");if(!o)throw new Error("Comment is required");return l(N,{variables:{cartId:n,quoteName:e,comment:r!=null&&r.length?{comment:o,attachments:r}:{comment:o},isDraft:i}}).then(m=>{var s,u;const{errors:d}=m;if(d){const c=d.map(p=>p.message).join("; ");throw new Error(`Failed to request negotiable quote: ${c}`)}const a=w((u=(s=m.data)==null?void 0:s.requestNegotiableQuote)==null?void 0:u.quote);if(!a)throw new Error("Failed to transform quote data: Invalid response structure");return E.emit("quote-management/negotiable-quote-requested",{quote:a,input:{cartId:n,quoteName:e,comment:o,attachments:r,isDraft:i}}),a})},h=`
+  ${w}
+`,$=async t=>{const{cartId:n,quoteName:e,comment:o,attachments:r,isDraft:i}=t;if(!n)throw new Error("Cart ID is required");if(!e)throw new Error("Quote name is required");if(!o)throw new Error("Comment is required");return l(N,{variables:{cartId:n,quoteName:e,comment:r!=null&&r.length?{comment:o,attachments:r}:{comment:o},isDraft:i}}).then(m=>{var s,u;const{errors:d}=m;if(d){const c=d.map(p=>p.message).join("; ");throw new Error(`Failed to request negotiable quote: ${c}`)}const a=f((u=(s=m.data)==null?void 0:s.requestNegotiableQuote)==null?void 0:u.quote);if(!a)throw new Error("Failed to transform quote data: Invalid response structure");return E.emit("quote-management/negotiable-quote-requested",{quote:a,input:{cartId:n,quoteName:e,comment:o,attachments:r,isDraft:i}}),a})},h=`
   mutation INITIATE_UPLOAD_MUTATION($input: initiateUploadInput!) {
     initiateUpload(input: $input) {
       upload_url

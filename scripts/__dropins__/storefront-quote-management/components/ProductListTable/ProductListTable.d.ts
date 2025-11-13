@@ -5,10 +5,12 @@ import { NegotiableQuoteCartItem } from '../../data/models/negotiable-quote-mode
 export interface ProductListTableProps extends HTMLAttributes<HTMLDivElement | HTMLFormElement> {
     items: NegotiableQuoteCartItem[];
     canEdit: boolean;
+    readOnly?: boolean;
     onItemCheckboxChange?: (item: NegotiableQuoteCartItem, isSelected: boolean) => void;
     onItemDropdownChange?: (item: NegotiableQuoteCartItem, action: string) => void;
     onQuantityChange?: (item: NegotiableQuoteCartItem, newQuantity: number) => void;
     onUpdate?: (e: SubmitEvent) => void;
+    dropdownSelections?: Record<string, string | undefined>;
 }
 export declare const ProductListTable: FunctionComponent<ProductListTableProps>;
 //# sourceMappingURL=ProductListTable.d.ts.map

@@ -64,6 +64,11 @@ declare const _default: {
           "confirmLoading": "Closing...",
           "successHeading": "Success",
           "successDescription": "Quote has been successfully closed"
+        },
+        "noItemsSelected": {
+          "title": "Please Select Quote Items",
+          "message": "Please select at least one quote item to proceed.",
+          "confirm": "Ok"
         }
       },
       "shippingInformation": {
@@ -129,6 +134,17 @@ declare const _default: {
         "successMessage": "Quote quantities have been successfully updated.",
         "errorHeading": "Error",
         "errorMessage": "Failed to update quote quantities. Please try again."
+      },
+      "removeItemsModal": {
+        "title": "Change Quote Items",
+        "description": "Making changes to any quote item changes the terms of the quote. After you update the quote, return it to the seller for review and approval.",
+        "cancelButton": "Cancel",
+        "confirmButton": "Remove",
+        "confirmButtonRemoving": "Removing...",
+        "successHeading": "Success",
+        "successMessage": "Quote items have been successfully removed.",
+        "errorHeading": "Error",
+        "errorMessage": "Failed to remove quote items. Please try again."
       }
     },
     "PriceSummary": {

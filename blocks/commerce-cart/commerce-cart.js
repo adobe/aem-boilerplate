@@ -375,7 +375,7 @@ export default async function decorate(block) {
       requestQuoteButtonContainer.removeAttribute('data-can-request-quote');
     }
     renderRequestQuoteButton(requestQuoteButtonContainer);
-  });
+  }, { eager: true });
 
   // Refresh cart and close modal when quote is requested and successfully created
   events.on('quote-management/negotiable-quote-requested', () => {

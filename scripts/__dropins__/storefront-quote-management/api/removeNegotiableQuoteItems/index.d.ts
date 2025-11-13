@@ -6,5 +6,5 @@
  * file in accordance with the terms of the Adobe license agreement
  * accompanying it.
  *******************************************************************/
-export declare const getCustomerData: () => Promise<import('../../data/models/customer-model').CustomerModel>;
-//# sourceMappingURL=getCustomerData.d.ts.map
+export * from './removeNegotiableQuoteItems';
+//# sourceMappingURL=index.d.ts.map

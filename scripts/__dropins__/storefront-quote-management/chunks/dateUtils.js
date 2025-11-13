@@ -1,4 +1,4 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-function a(t,e){return e.format(new Date(t))}function n(){try{return Intl.DateTimeFormat().resolvedOptions().timeZone}catch(t){return console.warn("Failed to detect user timezone, falling back to UTC:",t),"UTC"}}function r(t){const e=new Date(t);return isNaN(e.getTime())?"–":e.toLocaleDateString()}export{a,r as f,n as g};
+import{getGlobalLocale as r}from"@dropins/tools/lib.js";function o(e){const t=new Date(e);return!isNaN(t.getTime())}function a(e,t="short"){if(!o(e))return"–";const n=r()||"en-US";return t==="short"?new Date(e).toLocaleDateString(n,{year:"numeric",month:"numeric",day:"numeric"}):new Date(e).toLocaleDateString(n,{year:"numeric",month:"long",day:"numeric",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:!0})}export{a as f};
 //# sourceMappingURL=dateUtils.js.map

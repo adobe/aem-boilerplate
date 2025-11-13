@@ -7,6 +7,12 @@ export type State = {
         editQuote: boolean;
         deleteQuote: boolean;
         checkoutQuote: boolean;
+        /** Permission to view quote templates */
+        viewQuoteTemplates: boolean;
+        /** Permission to manage (create, edit, delete) quote templates */
+        manageQuoteTemplates: boolean;
+        /** Permission to generate quotes from templates */
+        generateQuoteFromTemplate: boolean;
     };
     config: StoreConfigModel;
 };

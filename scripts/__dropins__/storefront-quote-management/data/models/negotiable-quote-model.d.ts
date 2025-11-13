@@ -78,6 +78,7 @@ export interface NegotiableQuoteModel {
     canDelete: boolean;
     canClose: boolean;
     canUpdateQuote: boolean;
+    readOnly: boolean;
 }
 export interface ConfigurableOption {
     optionLabel: string;

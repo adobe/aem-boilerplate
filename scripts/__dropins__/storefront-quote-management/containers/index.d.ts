@@ -16,5 +16,9 @@ export * from './QuoteHistoryLog';
 export * from './QuoteSummaryList';
 export * from './QuotesListTable';
 export * from './ShippingAddressDisplay';
+export * from './ManageNegotiableQuoteTemplate';
+export * from './ItemsQuotedTemplate';
+export * from './QuoteTemplateCommentsList';
+export * from './QuoteTemplateHistoryLog';
 export * from './QuoteTemplatesListTable';
 //# sourceMappingURL=index.d.ts.map

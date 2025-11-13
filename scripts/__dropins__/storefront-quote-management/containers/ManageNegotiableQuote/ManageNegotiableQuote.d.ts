@@ -26,6 +26,7 @@ export interface ManageNegotiableQuoteProps extends HTMLAttributes<HTMLDivElemen
         }>;
         ActionBar?: SlotProps<{
             quoteData?: NegotiableQuoteModel;
+            actionsBarDropdownValue?: string;
         }>;
         QuoteContent?: SlotProps<{
             quoteData?: NegotiableQuoteModel;

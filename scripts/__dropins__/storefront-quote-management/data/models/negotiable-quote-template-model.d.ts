@@ -7,7 +7,7 @@ export interface NegotiableQuoteTemplateModel {
     updatedAt: string;
     expirationDate?: string;
     status: NegotiableQuoteTemplateStatus;
-    salesRepName?: string;
+    salesRepName: string;
     buyer: {
         firstname: string;
         lastname: string;

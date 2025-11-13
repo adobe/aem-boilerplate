@@ -19,10 +19,12 @@ await initializeDropin(async () => {
   // Get quote ID from URL
   const url = new URL(window.location.href);
   const quoteId = url.searchParams.get('quoteid') || url.searchParams.get('quoteId');
+  const quoteTemplateId = url.searchParams.get('quoteTemplateId');
 
   // Initialize quote management
   return initializers.mountImmediately(initialize, {
     langDefinitions,
     quoteId,
+    quoteTemplateId,
   });
 })();

@@ -17,7 +17,12 @@
 import { getFormValues } from '@dropins/tools/lib.js';
 import { companyEnabled, getCompany } from '@dropins/storefront-company-management/api.js';
 import { events } from '@dropins/tools/event-bus.js';
-import { InLineAlert, Button, ProgressSpinner } from '@dropins/tools/components.js';
+import {
+  InLineAlert,
+  Button,
+  ProgressSpinner,
+  provider as UI,
+} from '@dropins/tools/components.js';
 import { render as negotiableQuoteRenderer } from '@dropins/storefront-quote-management/render.js';
 import { render as accountRenderer } from '@dropins/storefront-account/render.js';
 
@@ -97,7 +102,7 @@ export default async function decorate(block) {
           ctx.onChange((next) => {
             const enabled = next.quoteData?.canCheckout;
 
-            negotiableQuoteRenderer.render(Button, {
+            UI.render(Button, {
               children: placeholders?.Cart?.PriceSummary?.checkout,
               disabled: !enabled,
               onClick: () => {
@@ -116,7 +121,7 @@ export default async function decorate(block) {
           progressSpinner.setAttribute('hidden', true);
           ctx.appendChild(progressSpinner);
 
-          negotiableQuoteRenderer.render(ProgressSpinner, {
+          UI.render(ProgressSpinner, {
             className: 'negotiable-quote__progress-spinner',
             size: 'large',
           })(progressSpinner);
@@ -222,7 +227,7 @@ export default async function decorate(block) {
 
   // Render error when quote data fails to load
   events.on('quote-management/quote-data/error', ({ error }) => {
-    negotiableQuoteRenderer.render(InLineAlert, {
+    UI.render(InLineAlert, {
       type: 'error',
       description: `${error}`,
     })(block);

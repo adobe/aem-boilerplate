@@ -6,7 +6,7 @@ export interface ManageNegotiableQuoteProps extends Omit<HTMLAttributes<HTMLDivE
     quoteName: VNode;
     quoteStatus: VNode;
     banner?: VNode;
-    details: VNode;
+    details?: VNode;
     actionBar?: VNode;
     quoteContent: VNode;
     shippingInformationTitle: VNode;

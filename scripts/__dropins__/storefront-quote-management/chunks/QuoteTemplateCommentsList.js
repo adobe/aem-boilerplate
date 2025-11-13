@@ -1,0 +1,4 @@
+/*! Copyright 2025 Adobe
+All Rights Reserved. */
+import{jsx as o,jsxs as i}from"@dropins/tools/preact-jsx-runtime.js";import{useState as f,useEffect as p}from"@dropins/tools/preact-compat.js";import{Q as d}from"./QuoteCommentsList.js";import{events as l}from"@dropins/tools/event-bus.js";import{f as c}from"./dateUtils.js";const C=({templateData:a,...s})=>{var r;const[e,m]=f(a);if(p(()=>{const t=l.on("quote-management/quote-template-data",u=>{m(u.quoteTemplate)},{eager:!0});return()=>t==null?void 0:t.off()},[]),!e)return null;const n=(r=e==null?void 0:e.comments)==null?void 0:r.map(t=>({uid:t.uid,createdAt:o("span",{children:c(t.createdAt,"long")}),author:i("span",{children:[t.author.firstname," ",t.author.lastname]}),text:o("p",{children:t.text})}));return o(d,{"data-testid":"quote-template-comments-list-container",...s,comments:n||[]})};export{C as Q};
+//# sourceMappingURL=QuoteTemplateCommentsList.js.map

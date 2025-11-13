@@ -6,5 +6,6 @@
  * file in accordance with the terms of the Adobe license agreement
  * accompanying it.
  *******************************************************************/
-export * from './getCustomerData';
+export * from './QuoteTemplateCommentsList';
+export { QuoteTemplateCommentsList as default } from './QuoteTemplateCommentsList';
 //# sourceMappingURL=index.d.ts.map

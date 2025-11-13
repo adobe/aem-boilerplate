@@ -64,6 +64,11 @@ declare const _default: {
           "confirmLoading": "Closing...",
           "successHeading": "Success",
           "successDescription": "Quote has been successfully closed"
+        },
+        "noItemsSelected": {
+          "title": "Please Select Quote Items",
+          "message": "Please select at least one quote item to proceed.",
+          "confirm": "Ok"
         }
       },
       "shippingInformation": {
@@ -129,6 +134,17 @@ declare const _default: {
         "successMessage": "Quote quantities have been successfully updated.",
         "errorHeading": "Error",
         "errorMessage": "Failed to update quote quantities. Please try again."
+      },
+      "removeItemsModal": {
+        "title": "Change Quote Items",
+        "description": "Making changes to any quote item changes the terms of the quote. After you update the quote, return it to the seller for review and approval.",
+        "cancelButton": "Cancel",
+        "confirmButton": "Remove",
+        "confirmButtonRemoving": "Removing...",
+        "successHeading": "Success",
+        "successMessage": "Quote items have been successfully removed.",
+        "errorHeading": "Error",
+        "errorMessage": "Failed to remove quote items. Please try again."
       }
     },
     "PriceSummary": {
@@ -188,6 +204,36 @@ declare const _default: {
       "viewMore": "View more"
     }
   },
+  "NegotiableQuoteTemplate": {
+    "Manage": {
+      "createdLabel": "Created:",
+      "salesRepLabel": "Sales Rep:",
+      "expiresLabel": "Expires:",
+      "referenceDocuments": {
+        "title": "Reference Documents"
+      },
+      "comments": {
+        "title": "Comments"
+      },
+      "historyLog": {
+        "title": "History Log"
+      },
+      "tabs": {
+        "itemsQuoted": "Items Quoted",
+        "comments": "Comments",
+        "historyLog": "History Log"
+      },
+      "quotePricesSummary": {
+        "subtotal": {
+          "excludingTax": "Quote Template Subtotal (excluding tax)"
+        },
+        "appliedTaxes": "Applied Taxes",
+        "grandTotal": {
+          "includingTax": "Quote Template Grand Total (including tax)"
+        }
+      }
+    }
+  },
   "historyLog": {
     "changeTypes": {
       "created": "Quote Created",
@@ -218,9 +264,6 @@ declare const _default: {
     },
     "emptyState": "No history available for this quote."
   },
-  "dateUtils": {
-    "never": "Never"
-  },
   "QuoteManagement": {
     "QuotesListTable": {
       "quoteName": "Quote Name",
@@ -240,7 +283,8 @@ declare const _default: {
       "minQuoteTotal": "Min. Quote Total (Negotiated)",
       "ordersPlaced": "Orders Placed",
       "lastOrdered": "Last Ordered",
-      "actions": "Action"
+      "actions": "Action",
+      "view": "View"
     }
   }
 }

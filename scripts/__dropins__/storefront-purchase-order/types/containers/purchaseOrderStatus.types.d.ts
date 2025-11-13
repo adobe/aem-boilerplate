@@ -11,6 +11,8 @@ export type PurchaseOrderStatusSlotContext = {
 };
 export interface PurchaseOrderStatusProps {
     className?: string;
+    withHeader?: boolean;
+    withWrapper?: boolean;
     slots?: {
         PurchaseOrderActions: SlotProps<PurchaseOrderStatusSlotContext>;
     };

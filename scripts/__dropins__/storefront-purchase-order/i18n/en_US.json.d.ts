@@ -104,41 +104,43 @@ declare const _default: {
       "messageSuffix": "A copy of this Purchase Order will be emailed to you shortly."
     },
     "purchaseOrderStatus": {
+      "headerText": "Status",
+      "emptyText": "No actions available for this purchase order.",
       "status": {
         "pending": {
-          "title": "Pending Approval",
+          "title": "Pending approval",
           "message": "Purchase order is awaiting approval."
         },
         "approval_required": {
-          "title": "Approval Required",
+          "title": "Approval required",
           "message": "Purchase order requires approval before it can be processed."
         },
         "approved": {
-          "title": "Approved",
+          "title": "Order approved",
           "message": "Purchase order has been approved."
         },
         "order_in_progress": {
-          "title": "Processing in Progress",
+          "title": "Processing in progress",
           "message": "Purchase order is currently being processed."
         },
         "order_placed": {
-          "title": "Placed",
-          "message": "Purchase order has been placed successfully."
+          "title": "Order placed",
+          "message": "Order has been placed successfully."
         },
         "order_failed": {
-          "title": "Failed",
-          "message": "Purchase order processing has failed."
+          "title": "Order failed",
+          "message": "Order placing has failed."
         },
         "rejected": {
-          "title": "Rejected",
+          "title": "Order rejected",
           "message": "Purchase order has been rejected."
         },
         "canceled": {
-          "title": "Canceled",
+          "title": "Order canceled",
           "message": "Purchase order has been canceled."
         },
         "approved_pending_payment": {
-          "title": "Approved - Pending Payment",
+          "title": "Order approved - pending payment",
           "message": "Purchase order has been approved and is awaiting payment."
         }
       },
@@ -252,8 +254,13 @@ declare const _default: {
       "statusTitle": "Status Changes",
       "emptyText": "No history log available.",
       "status": {
+        "cancel": "Cancelled on {{date}}",
+        "reject": "Rejected on {{date}}",
+        "place_order_fail": "Failed to place order on {{date}}",
+        "apply_rules": "Rule applied on {{date}}",
         "place_order": "Order placed on {{date}}",
         "auto_approve": "Auto approved on {{date}}",
+        "approve": "Approved on {{date}}",
         "submit": "Submitted for approval on {{date}}"
       },
       "buttons": {

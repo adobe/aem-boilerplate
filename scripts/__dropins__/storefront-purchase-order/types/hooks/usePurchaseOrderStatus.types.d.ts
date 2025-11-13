@@ -8,6 +8,7 @@ export interface UsePurchaseOrderStatusReturn {
     status: PURCHASE_ORDER_STATUS;
     availableActions: PURCHASE_ORDER_ACTION[] | [];
     loading: boolean;
+    poDataLoading: boolean;
     isDismissed: boolean;
     alertMessage: string;
     handleOnDismiss: () => void;

@@ -39,10 +39,11 @@ import {
   renderBillToShippingAddress,
   renderCheckoutHeader,
   renderCustomerBillingAddresses,
-  renderGiftOptions,
   renderLoginForm,
+  renderOrderSummary,
   renderPaymentMethods,
   renderPlaceOrder,
+  renderQuoteSummaryList,
   renderServerError,
   renderShippingAddressFormSkeleton,
   renderShippingMethods,
@@ -109,8 +110,9 @@ export default async function decorate(block) {
   const $delivery = getElement(selectors.checkout.delivery);
   const $paymentMethods = getElement(selectors.checkout.paymentMethods);
   const $billingForm = getElement(selectors.checkout.billingForm);
+  const $orderSummary = getElement(selectors.checkout.orderSummary);
+  const $quoteSummary = getElement(selectors.checkout.quoteSummary);
   const $placeOrder = getElement(selectors.checkout.placeOrder);
-  const $giftOptions = getElement(selectors.checkout.giftOptions);
   const $termsAndConditions = getElement(selectors.checkout.termsAndConditions);
 
   block.appendChild(checkoutFragment);
@@ -156,8 +158,9 @@ export default async function decorate(block) {
     _shippingMethods,
     _paymentMethods,
     _billingFormSkeleton,
+    _orderSummary,
+    _quoteSummary,
     _termsAndConditions,
-    _giftOptions,
   ] = await Promise.all([
     renderCheckoutHeader($heading, 'B2B Checkout'),
 
@@ -175,9 +178,11 @@ export default async function decorate(block) {
 
     renderBillingAddressFormSkeleton($billingForm),
 
-    renderTermsAndConditions($termsAndConditions),
+    renderOrderSummary($orderSummary),
 
-    renderGiftOptions($giftOptions),
+    renderQuoteSummaryList($quoteSummary),
+
+    renderTermsAndConditions($termsAndConditions),
   ]);
 
   async function initializeCheckout(data) {

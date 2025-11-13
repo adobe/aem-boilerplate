@@ -24,9 +24,10 @@ import Addresses from '@dropins/storefront-account/containers/Addresses.js';
 import AddressForm from '@dropins/storefront-account/containers/AddressForm.js';
 import { render as AccountProvider } from '@dropins/storefront-account/render.js';
 
-// Cart Dropin
-import GiftOptions from '@dropins/storefront-cart/containers/GiftOptions.js';
-import { render as CartProvider } from '@dropins/storefront-cart/render.js';
+// Quote Management Dropin
+import OrderSummary from '@dropins/storefront-quote-management/containers/OrderSummary.js';
+import QuoteSummaryList from '@dropins/storefront-quote-management/containers/QuoteSummaryList.js';
+import { render as QuoteManagementProvider } from '@dropins/storefront-quote-management/render.js';
 
 // Tools
 import {
@@ -35,6 +36,7 @@ import {
 } from '@dropins/tools/components.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { debounce } from '@dropins/tools/lib.js';
+import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 
 // Checkout Dropin Libs
 import {
@@ -43,7 +45,8 @@ import {
   transformCartAddressToFormValues,
 } from '@dropins/storefront-checkout/lib/utils.js';
 
-import { swatchImageSlot } from './utils.js';
+// External dependencies
+import { rootLink, CUSTOMER_NEGOTIABLE_QUOTE_PATH } from '../../scripts/commerce.js';
 
 // Constants
 import {
@@ -70,9 +73,10 @@ export const CONTAINERS = Object.freeze({
   SHIPPING_METHODS: 'shippingMethods',
   PAYMENT_METHODS: 'paymentMethods',
   BILLING_ADDRESS_FORM_SKELETON: 'billingAddressFormSkeleton',
+  ORDER_SUMMARY: 'orderSummary',
+  QUOTE_SUMMARY_LIST: 'quoteSummaryList',
   TERMS_AND_CONDITIONS: 'termsAndConditions',
   PLACE_ORDER_BUTTON: 'placeOrderButton',
-  GIFT_OPTIONS: 'giftOptions',
   CUSTOMER_BILLING_ADDRESSES: 'customerBillingAddresses',
 
   // Dynamic containers (conditional rendering)
@@ -286,6 +290,78 @@ export const renderTermsAndConditions = async (container) => renderContainer(
   })(container),
 );
 
+// ============================================================================
+// SUMMARY CONTAINERS
+// ============================================================================
+
+/**
+ * Renders order summary
+ * @param {HTMLElement} container - DOM element to render order summary in
+ * @returns {Promise<Object>} - The rendered order summary component
+ */
+export const renderOrderSummary = async (container) => renderContainer(
+  CONTAINERS.ORDER_SUMMARY,
+  async () => QuoteManagementProvider.render(OrderSummary)(container),
+);
+
+/**
+ * Renders quote summary list with custom heading and thumbnail slots
+ * @param {HTMLElement} container - DOM element to render quote summary list in
+ * @returns {Promise<Object>} - The rendered quote summary list component
+ */
+export const renderQuoteSummaryList = async (container) => renderContainer(
+  CONTAINERS.QUOTE_SUMMARY_LIST,
+  async () => QuoteManagementProvider.render(QuoteSummaryList, {
+    variant: 'secondary',
+    slots: {
+      Heading: (headingCtx) => {
+        const title = 'Your Quote ({count})';
+
+        const quoteSummaryListHeading = document.createElement('div');
+        quoteSummaryListHeading.classList.add('quote-summary-list__heading');
+
+        const quoteSummaryListHeadingText = document.createElement('div');
+        quoteSummaryListHeadingText.classList.add(
+          'quote-summary-list__heading-text',
+        );
+
+        quoteSummaryListHeadingText.innerText = title.replace(
+          '({count})',
+          headingCtx.count ? `(${headingCtx.count})` : '',
+        );
+        const editQuoteLink = document.createElement('a');
+        editQuoteLink.classList.add('quote-summary-list__edit');
+        editQuoteLink.href = rootLink(`${CUSTOMER_NEGOTIABLE_QUOTE_PATH}?quoteid=${headingCtx.quoteId}`);
+        editQuoteLink.rel = 'noreferrer';
+        editQuoteLink.innerText = 'Edit';
+
+        quoteSummaryListHeading.appendChild(quoteSummaryListHeadingText);
+        quoteSummaryListHeading.appendChild(editQuoteLink);
+        headingCtx.appendChild(quoteSummaryListHeading);
+
+        headingCtx.onChange((nextHeadingCtx) => {
+          quoteSummaryListHeadingText.innerText = title.replace(
+            '({count})',
+            nextHeadingCtx.count ? `(${nextHeadingCtx.count})` : '',
+          );
+        });
+      },
+      Thumbnail: (ctx) => {
+        const { item, defaultImageProps } = ctx;
+        tryRenderAemAssetsImage(ctx, {
+          alias: item.sku,
+          imageProps: defaultImageProps,
+
+          params: {
+            width: defaultImageProps.width,
+            height: defaultImageProps.height,
+          },
+        });
+      },
+    },
+  })(container),
+);
+
 /**
  * Renders place order button with handler functions - follows multi-step pattern
  * @param {HTMLElement} container - DOM element to render the place order button in
@@ -375,21 +451,4 @@ export const renderCustomerBillingAddresses = async (container, formRef, data, p
       title: 'Billing address',
     })(container);
   },
-);
-
-/**
- * Renders order-level gift options with swatch image integration
- * @param {HTMLElement} container - DOM element to render gift options in
- * @returns {Promise<Object>} - The rendered gift options component
- */
-export const renderGiftOptions = async (container) => renderContainer(
-  CONTAINERS.GIFT_OPTIONS,
-  async () => CartProvider.render(GiftOptions, {
-    view: 'order',
-    dataSource: 'cart',
-    isEditable: false,
-    slots: {
-      SwatchImage: swatchImageSlot,
-    },
-  })(container),
 );

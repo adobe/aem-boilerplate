@@ -119,6 +119,59 @@
     margin: 0;
 }
 
+/* Quote Summary */
+.checkout__block .quote-management-quote-summary-list {
+    padding: var(--spacing-medium);
+}
+
+/* Order Summary Coupon */
+.dropin-accordion-section__heading {
+    margin: var(--spacing-medium) auto;
+}
+
+.cart-coupons__accordion {
+    margin-top: var(--spacing-xsmall);
+}
+
+/* temporary fix to hide the default quote summary list heading */
+[data-testid="default-quote-summary-list-heading"] {
+    display: none;
+}
+
+.quote-summary-list__heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.quote-summary-list__heading-text {
+    font: var(--type-headline-2-strong-font);
+    letter-spacing: var(--type-headline-2-strong-letter-spacing);
+    color: var(--color-neutral-800);
+}
+
+.quote-management-quote-summary-list__heading {
+    row-gap: var(--spacing-small);
+    padding-top: 0;
+}
+
+.quote-management-quote-summary-list__heading-text {
+    font: var(--type-headline-2-strong-font);
+    letter-spacing: var(--type-headline-2-strong-letter-spacing);
+    color: var(--color-neutral-800);
+}
+
+.quote-summary-list__edit {
+    font: var(--type-body-2-strong-font);
+    letter-spacing: var(--type-body-2-strong-letter-spacing);
+}
+
+.checkout__block
+.quote-management-quote-summary-list
+.quote-management-quote-summary-list__footer-divider {
+    margin: var(--spacing-small) 0;
+}
+
 /* Address form */
 .checkout__shipping-form .account-address-form-wrapper__title,
 .checkout__shipping-form .dropin-header-container__title,
@@ -181,6 +234,10 @@
 
     .checkout__heading {
         order: 1;
+    }
+
+    .checkout__quote-summary {
+        order: 2;
     }
 
     .checkout__place-order {

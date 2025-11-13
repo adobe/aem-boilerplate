@@ -1,0 +1,57 @@
+{
+  "definitions": [
+    {
+      "title": "Accordion",
+      "id": "accordion",
+      "plugins": {
+        "da": {
+          "name": "accordion",
+          "rows": 1,
+          "columns": 2
+        }
+      }
+    },
+    {
+      "title": "Accordion Item",
+      "id": "accordion-item",
+      "plugins": {
+        "da": {
+          "name": "accordion-item",
+          "rows": 2,
+          "columns": 0
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "accordion-item",
+      "fields": [
+        {
+          "component": "richtext",
+          "valueType": "string",
+          "name": "div:nth-child(1)",
+          "value": "",
+          "label": "Summary",
+          "required": true
+        },
+        {
+          "component": "richtext",
+          "name": "div:nth-child(2)",
+          "value": "",
+          "label": "Text",
+          "valueType": "string",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "accordion",
+      "components": [
+        "accordion-item"
+      ]
+    }
+  ]
+}

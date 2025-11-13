@@ -63,6 +63,9 @@ function getPurchaseHistory(storeViewCode) {
 export default async function decorate(block) {
   const labels = await fetchPlaceholders();
 
+  block.children[0].style.display = 'none';
+  block.children[1].style.display = 'none';
+
   // Configuration
   const { currentsku, recid } = readBlockConfig(block);
 
@@ -74,6 +77,7 @@ export default async function decorate(block) {
   `);
 
   const $list = fragment.querySelector('.recommendations__list');
+  const $wrapper = fragment.querySelector('.recommendations__wrapper');
 
   block.appendChild(fragment);
 
@@ -220,7 +224,7 @@ export default async function decorate(block) {
               });
             },
           },
-        })(block),
+        })($wrapper),
       ]);
     } finally {
       isLoading = false;

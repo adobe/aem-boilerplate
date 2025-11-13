@@ -12,6 +12,10 @@
     "install:dropins": "node build.mjs && node postinstall.js",
     "postinstall": "npm run install:dropins",
     "postupdate": "npm run install:dropins",
+    "build:json": "npm-run-all -p build:json:models build:json:definitions build:json:filters",
+    "build:json:models": "merge-json-cli -i \"models/_component-models.json\" -o \"component-models.json\"",
+    "build:json:definitions": "merge-json-cli -i \"models/_component-definition.json\" -o \"component-definition.json\"",
+    "build:json:filters": "merge-json-cli -i \"models/_component-filters.json\" -o \"component-filters.json\"",
     "prepare": "husky"
   },
   "repository": {
@@ -32,6 +36,8 @@
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.32.0",
     "husky": "^9.1.7",
+    "merge-json-cli": "^1.0.4",
+    "npm-run-all": "^4.1.5",
     "stylelint": "16.25.0",
     "stylelint-config-standard": "39.0.1"
   },

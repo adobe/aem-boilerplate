@@ -3,6 +3,10 @@ import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { NegotiableQuoteTemplateModel } from '../../data/models/negotiable-quote-template-model';
 
 export interface ManageNegotiableQuoteTemplateProps extends HTMLAttributes<HTMLDivElement> {
+    onSendForReview?: (params: {
+        templateData?: NegotiableQuoteTemplateModel;
+        comment?: string;
+    }) => void;
     slots?: {
         TemplateName?: SlotProps<{
             templateName?: string;
@@ -47,6 +51,11 @@ export interface ManageNegotiableQuoteTemplateProps extends HTMLAttributes<HTMLD
         }>;
         HistoryLog?: SlotProps<{
             templateData?: NegotiableQuoteTemplateModel;
+        }>;
+        Footer?: SlotProps<{
+            templateData?: NegotiableQuoteTemplateModel;
+            comment?: string;
+            isSubmitting?: boolean;
         }>;
     };
 }

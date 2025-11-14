@@ -15,5 +15,7 @@ export type State = {
         generateQuoteFromTemplate: boolean;
     };
     config: StoreConfigModel;
+    initialized: boolean;
+    quoteDataLoaded: boolean;
 };
 //# sourceMappingURL=state.types.d.ts.map

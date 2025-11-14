@@ -65,6 +65,15 @@ declare const _default: {
           "successHeading": "Success",
           "successDescription": "Quote has been successfully closed"
         },
+        "createTemplate": {
+          "message": "Are you sure you want to create a quote template from this quote?",
+          "confirm": "Create Template",
+          "confirmLoading": "Creating...",
+          "successHeading": "Success",
+          "successDescription": "Quote template has been successfully created",
+          "errorHeading": "Error",
+          "errorFallback": "Failed to create quote template"
+        },
         "noItemsSelected": {
           "title": "Please Select Quote Items",
           "message": "Please select at least one quote item to proceed.",
@@ -222,6 +231,13 @@ declare const _default: {
         "itemsQuoted": "Items Quoted",
         "comments": "Comments",
         "historyLog": "History Log"
+      },
+      "templateComments": {
+        "title": "Template Comments",
+        "placeholder": "Add your comment"
+      },
+      "actionButtons": {
+        "sendForReview": "Send for review"
       },
       "quotePricesSummary": {
         "subtotal": {

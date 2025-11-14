@@ -1,6 +1,7 @@
 import { Currency, ItemNote, PaginationInfo, ShippingAddress, ConfigurableOption, BundleOption } from './negotiable-quote-model';
 
 export interface NegotiableQuoteTemplateModel {
+    id: string;
     uid: string;
     name: string;
     createdAt: string;
@@ -39,7 +40,7 @@ export interface NegotiableQuoteTemplateModel {
     canDelete: boolean;
     canReopen: boolean;
     canCancel: boolean;
-    canGenerateQuote: boolean;
+    canSendForReview: boolean;
 }
 export declare enum NegotiableQuoteTemplateStatus {
     ACTIVE = "ACTIVE",

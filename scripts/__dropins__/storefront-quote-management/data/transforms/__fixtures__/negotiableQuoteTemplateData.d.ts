@@ -7,6 +7,7 @@
  * accompanying it.
  *******************************************************************/
 export declare const mockQuoteTemplateData: {
+    template_id: string;
     uid: string;
     name: string;
     created_at: string;
@@ -315,6 +316,7 @@ export declare const mockQuoteTemplateData: {
     }[];
 };
 export declare const mockMinimalQuoteTemplateData: {
+    template_id: string;
     uid: string;
     name: string;
     created_at: string;
@@ -327,6 +329,7 @@ export declare const mockMinimalQuoteTemplateData: {
     items: never[];
 };
 export declare const mockSubmittedQuoteTemplateData: {
+    template_id: string;
     uid: string;
     name: string;
     status: string;
@@ -635,6 +638,7 @@ export declare const mockSubmittedQuoteTemplateData: {
     }[];
 };
 export declare const mockInReviewQuoteTemplateData: {
+    template_id: string;
     uid: string;
     name: string;
     status: string;
@@ -943,6 +947,7 @@ export declare const mockInReviewQuoteTemplateData: {
     }[];
 };
 export declare const mockClosedQuoteTemplateData: {
+    template_id: string;
     uid: string;
     name: string;
     status: string;
@@ -1251,6 +1256,7 @@ export declare const mockClosedQuoteTemplateData: {
     }[];
 };
 export declare const mockInactiveQuoteTemplateData: {
+    template_id: string;
     uid: string;
     name: string;
     status: string;

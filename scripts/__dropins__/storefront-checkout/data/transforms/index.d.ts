@@ -18,6 +18,7 @@ export * from './transform-api';
 export * from './transform-custom-attributes';
 export * from './transform-cart';
 export * from './transform-cart-address';
+export * from './transform-company-credit';
 export * from './transform-quote-address';
 export * from './transform-checkout-agreements';
 export * from './transform-country';

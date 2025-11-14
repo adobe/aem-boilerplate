@@ -15,5 +15,5 @@
  * from Adobe.
  *******************************************************************/
 export declare const AVAILABLE_PAYMENT_METHOD_FRAGMENT = "\n  fragment AVAILABLE_PAYMENT_METHOD_FRAGMENT on AvailablePaymentMethod {\n    code\n    title\n  }\n";
-export declare const SELECTED_PAYMENT_METHOD_FRAGMENT = "\n  fragment SELECTED_PAYMENT_METHOD_FRAGMENT on SelectedPaymentMethod {\n    code\n    title\n  }\n";
+export declare const SELECTED_PAYMENT_METHOD_FRAGMENT = "\n  fragment SELECTED_PAYMENT_METHOD_FRAGMENT on SelectedPaymentMethod {\n    code\n    title\n    purchase_order_number\n  }\n";
 //# sourceMappingURL=PaymentMethodFragment.graphql.d.ts.map

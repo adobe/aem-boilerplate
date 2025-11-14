@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{CHECKOUT_DATA_FRAGMENT as A,NEGOTIABLE_QUOTE_FRAGMENT as I}from"../fragments.js";import{e as g,f as p,g as c}from"./guards.js";import{t as B,e as m}from"./synchronizeCheckout.js";import{s as r,d as f,Q as C,I as o,p as a}from"./fetch-graphql.js";import"@dropins/tools/lib.js";import"@dropins/tools/event-bus.js";const Q=`
+import{CHECKOUT_DATA_FRAGMENT as A,NEGOTIABLE_QUOTE_FRAGMENT as I}from"../fragments.js";import{e as g,c as p,d as c}from"./guards.js";import{t as B,e as m}from"./synchronizeCheckout.js";import{s as r,d as f,Q as C,I as o,l as a}from"./fetch-graphql.js";import"@dropins/tools/lib.js";import"@dropins/tools/event-bus.js";const Q=`
   mutation setBillingAddress(
     $cartId: String!
     $billingAddress: BillingAddressInput!

@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{CUSTOMER_FRAGMENT as o,CHECKOUT_DATA_FRAGMENT as n}from"../fragments.js";import{s as m,d as r,l,m as u,Q as c}from"./fetch-graphql.js";import{merge as E}from"@dropins/tools/lib.js";import"@dropins/tools/event-bus.js";import{c as f,t as p}from"./synchronizeCheckout.js";const C=t=>{var i,a,s;if(!t)return null;const e={firstName:t.firstname||"",lastName:t.lastname||"",email:t.email||""};return E(e,(s=(a=(i=f.getConfig().models)==null?void 0:i.CustomerModel)==null?void 0:a.transformer)==null?void 0:s.call(a,t))},y=t=>!!(t!=null&&t.is_email_available),A=`
+import{CUSTOMER_FRAGMENT as o,CHECKOUT_DATA_FRAGMENT as n}from"../fragments.js";import{s as m,d as r,t as l,o as u,Q as c}from"./fetch-graphql.js";import{merge as E}from"@dropins/tools/lib.js";import"@dropins/tools/event-bus.js";import{c as f,t as p}from"./synchronizeCheckout.js";const C=t=>{var i,a,s;if(!t)return null;const e={firstName:t.firstname||"",lastName:t.lastname||"",email:t.email||""};return E(e,(s=(a=(i=f.getConfig().models)==null?void 0:i.CustomerModel)==null?void 0:a.transformer)==null?void 0:s.call(a,t))},y=t=>!!(t!=null&&t.is_email_available),A=`
   query getCustomer {
     customer {
       ...CUSTOMER_FRAGMENT

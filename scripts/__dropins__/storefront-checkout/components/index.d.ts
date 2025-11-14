@@ -16,13 +16,15 @@
  *******************************************************************/
 export * from './AddressValidation';
 export * from './BillToShippingAddress';
-export * from './ConditionalWrapper/index';
+export * from './ConditionalWrapper';
 export * from './EstimateShipping';
 export * from './LoginForm';
 export * from './Markup';
 export * from './OutOfStock';
 export * from './PaymentMethods';
+export * from './PaymentOnAccount';
 export * from './PlaceOrder';
+export * from './PurchaseOrder';
 export * from './ServerError';
 export * from './ShippingMethods';
 export * from './TermsAndConditions';

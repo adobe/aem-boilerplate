@@ -226,7 +226,12 @@ export const renderServerError = async (container, contentElement) => renderCont
   CONTAINERS.SERVER_ERROR,
   async () => CheckoutProvider.render(ServerError, {
     autoScroll: true,
-    onRetry: () => {
+    onRetry: (error) => {
+      if (error.code === 'PERMISSION_DENIED') {
+        document.location.reload();
+        return;
+      }
+
       contentElement.classList.remove(CHECKOUT_ERROR_CLASS);
     },
     onServerError: () => {

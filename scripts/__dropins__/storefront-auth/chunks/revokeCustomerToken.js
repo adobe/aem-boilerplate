@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{f as s,r as i,h as m}from"./network-error.js";import{c,C as n,d as u,e as h,v as E}from"./verifyToken.js";import{events as f}from"@dropins/tools/event-bus.js";import{p as k,E as d}from"./acdl.js";const l=e=>{var t,r,a;let o="";return(t=e==null?void 0:e.errors)!=null&&t.length&&(o=((r=e==null?void 0:e.errors[0])==null?void 0:r.message)||"Unknown error"),{message:o,success:!!((a=e==null?void 0:e.data)!=null&&a.revokeCustomerToken)}},v=`
+import{f as s,r as i,h as m}from"./network-error.js";import{c,C as n,d as u,e as h,v as E}from"./getCustomerRolePermissions.js";import{events as f}from"@dropins/tools/event-bus.js";import{p as k,E as d}from"./acdl.js";const l=e=>{var t,r,a;let o="";return(t=e==null?void 0:e.errors)!=null&&t.length&&(o=((r=e==null?void 0:e.errors[0])==null?void 0:r.message)||"Unknown error"),{message:o,success:!!((a=e==null?void 0:e.data)!=null&&a.revokeCustomerToken)}},v=`
   mutation REVOKE_CUSTOMER_TOKEN {
     revokeCustomerToken {
       result

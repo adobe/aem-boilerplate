@@ -18,4 +18,11 @@
  * Default page size for pagination in requisition lists
  */
 export declare const DEFAULT_PAGE_SIZE = 10;
+/**
+ * Validation constants for requisition list forms
+ */
+export declare const NAME_MIN_LENGTH = 3;
+export declare const NAME_MAX_LENGTH = 40;
+export declare const DESCRIPTION_MAX_LENGTH = 255;
+export declare const NAME_VALID_CHARS: RegExp;
 //# sourceMappingURL=constants.d.ts.map

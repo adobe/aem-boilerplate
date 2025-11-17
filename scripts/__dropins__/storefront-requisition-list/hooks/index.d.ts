@@ -19,4 +19,5 @@ export * from './useRequisitionListAlert';
 export * from './useRequisitionListForm';
 export * from './useRequisitionListGrid';
 export * from './useRequisitionListSelectedItems';
+export * from './useRequisitionListEnabled';
 //# sourceMappingURL=index.d.ts.map

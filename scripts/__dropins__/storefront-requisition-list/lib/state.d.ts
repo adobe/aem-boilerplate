@@ -1,7 +1,13 @@
 import { RequisitionList } from '../data/models/requisitionList';
 
+export type StoreConfig = {
+    is_requisition_list_active?: string;
+    company_enabled?: boolean;
+    [key: string]: any;
+};
 type State = {
     authenticated: boolean;
+    config: StoreConfig | undefined;
     requisitionLists: RequisitionList[];
     requisitionListsLoading: boolean;
     requisitionListsVersion: number;

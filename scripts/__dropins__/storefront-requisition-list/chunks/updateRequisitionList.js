@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{events as _}from"@dropins/tools/event-bus.js";import{FetchGraphQL as l}from"@dropins/tools/fetch-graphql.js";const{setEndpoint:R,setFetchGraphQlHeader:S,removeFetchGraphQlHeader:q,setFetchGraphQlHeaders:L,fetchGraphQl:p,getConfig:E}=new l().getMethods(),c=t=>{const i=t.map(e=>e.message).join(" ");throw Error(i)},d=`
+import{events as _}from"@dropins/tools/event-bus.js";import{FetchGraphQL as l}from"@dropins/tools/fetch-graphql.js";const p=t=>{const e=t.map(o=>o.message).join(" ");throw Error(e)},{setEndpoint:R,setFetchGraphQlHeader:S,removeFetchGraphQlHeader:q,setFetchGraphQlHeaders:L,fetchGraphQl:c,getConfig:E}=new l().getMethods(),d=`
 fragment REQUISITION_LIST_FRAGMENT on RequisitionList {
     uid
     name
@@ -8,7 +8,7 @@ fragment REQUISITION_LIST_FRAGMENT on RequisitionList {
     items_count
     updated_at
   }
-`;function I(t){var i,e;return t?{uid:t.uid,name:t.name,description:t.description,updated_at:t.updated_at,items_count:t.items_count,items:m((i=t.items)==null?void 0:i.items),page_info:(e=t.items)==null?void 0:e.page_info}:null}function m(t){return t!=null&&t.length?t.map(i=>({uid:i.uid,sku:i.product.sku,quantity:i.quantity,customizable_options:i.customizable_options?i.customizable_options.map(e=>({uid:e.customizable_option_uid,is_required:e.is_required,label:e.label,sort_order:e.sort_order,type:e.type,values:e.values.map(o=>({uid:o.customizable_option_value_uid,label:o.label,price:o.price,value:o.value}))})):[],bundle_options:i.bundle_options||[],configurable_options:i.configurable_options?i.configurable_options.map(e=>({option_uid:e.configurable_product_option_uid,option_label:e.option_label,value_uid:e.configurable_product_option_value_uid,value_label:e.value_label})):[],samples:i.samples?i.samples.map(e=>({url:e.sample_url,sort_order:e.sort_order,title:e.title})):[],gift_card_options:i.gift_card_options||{}})):[]}const g=`
+`;function I(t){var e,o;return t?{uid:t.uid,name:t.name,description:t.description,updated_at:t.updated_at,items_count:t.items_count,items:m((e=t.items)==null?void 0:e.items),page_info:(o=t.items)==null?void 0:o.page_info}:null}function m(t){return t!=null&&t.length?t.map(e=>{var n,s;const o={uid:e.uid,sku:(n=e.product)==null?void 0:n.sku,quantity:e.quantity,customizable_options:e.customizable_options?e.customizable_options.map(i=>({uid:i.customizable_option_uid,is_required:i.is_required,label:i.label,sort_order:i.sort_order,type:i.type,values:i.values.map(r=>({uid:r.customizable_option_value_uid,label:r.label,price:r.price,value:r.value}))})):[],bundle_options:e.bundle_options||[],configurable_options:e.configurable_options?e.configurable_options.map(i=>({option_uid:i.configurable_product_option_uid,option_label:i.option_label,value_uid:i.configurable_product_option_value_uid,value_label:i.value_label})):[],samples:e.samples?e.samples.map(i=>({url:i.sample_url,sort_order:i.sort_order,title:i.title})):[],gift_card_options:e.gift_card_options||{}};return(s=e.configured_product)!=null&&s.name?{...o,configured_product:e.configured_product}:o}):[]}const g=`
 fragment REQUISITION_LIST_ITEMS_FRAGMENT on RequistionListItems {
   items {
     uid
@@ -79,7 +79,7 @@ fragment REQUISITION_LIST_ITEMS_FRAGMENT on RequistionListItems {
     total_pages
   }
 }
-`,b=`
+`,f=`
   mutation UPDATE_REQUISITION_LIST_MUTATION(
       $requisitionListUid: ID!,
       $name: String!,
@@ -104,5 +104,5 @@ fragment REQUISITION_LIST_ITEMS_FRAGMENT on RequistionListItems {
   }
 ${d}
 ${g}
-`,h=async(t,i,e,o,a)=>p(b,{variables:{requisitionListUid:t,name:i,description:e,pageSize:o,currentPage:a}}).then(({errors:r,data:s})=>{var u;if(r)return c(r);if(!((u=s==null?void 0:s.updateRequisitionList)!=null&&u.requisition_list))return null;const n=I(s.updateRequisitionList.requisition_list);return _.emit("requisitionList/data",n),n});export{d as R,S as a,L as b,g as c,p as f,E as g,c as h,q as r,R as s,I as t,h as u};
+`,h=async(t,e,o,n,s)=>c(f,{variables:{requisitionListUid:t,name:e,description:o,pageSize:n,currentPage:s}}).then(({errors:i,data:r})=>{var a;if(i)return p(i);if(!((a=r==null?void 0:r.updateRequisitionList)!=null&&a.requisition_list))return null;const u=I(r.updateRequisitionList.requisition_list);return _.emit("requisitionList/data",u),u});export{d as R,S as a,L as b,g as c,c as f,E as g,p as h,q as r,R as s,I as t,h as u};
 //# sourceMappingURL=updateRequisitionList.js.map

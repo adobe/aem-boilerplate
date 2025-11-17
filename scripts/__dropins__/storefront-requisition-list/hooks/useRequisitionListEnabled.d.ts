@@ -14,5 +14,7 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const isRequisitionListEnabled: () => Promise<boolean>;
-//# sourceMappingURL=isRequisitionListEnabled.d.ts.map
+export declare const useRequisitionListEnabled: () => {
+    isEnabled: boolean;
+};
+//# sourceMappingURL=useRequisitionListEnabled.d.ts.map

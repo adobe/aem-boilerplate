@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './getStoreConfig';
-//# sourceMappingURL=index.d.ts.map
+export declare const getStoreConfig: () => Promise<any>;
+//# sourceMappingURL=getStoreConfig.d.ts.map

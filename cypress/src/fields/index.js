@@ -190,8 +190,8 @@ export const requisitionListSelectorAvailableListFirstChild =
 export const requisitionListFormActionsButton =
   ".requisition-list-form__actions button";
 
-export const requisitionListItemActionsUpdateButton =
-  '.requisition-list-grid-wrapper__actions button[data-testid="update-button"]';
+export const requisitionListItemActionsRenameButton =
+  '.requisition-list-grid-wrapper__actions button[data-testid="rename-button"]';
 export const requisitionListItemActionsRemoveButton =
   '.requisition-list-grid-wrapper__actions button[data-testid="delete-button"]';
 export const requisitionListModalConfirmButton =

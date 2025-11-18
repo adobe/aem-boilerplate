@@ -172,7 +172,7 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" }, () => {
     cy.get(fields.requisitionListItemRow).should("have.length", 3);
 
     // Rename Requisition List
-    cy.get(fields.requisitionListItemActionsUpdateButton).eq(1).click();
+    cy.get(fields.requisitionListItemActionsRenameButton).eq(1).click();
     cy.contains("Update Requisition List").should("be.visible");
     cy.wait(1000);
     cy.get(fields.requisitionListFormName)

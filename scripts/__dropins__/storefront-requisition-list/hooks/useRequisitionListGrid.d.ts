@@ -3,11 +3,11 @@ import { RequisitionList as RequisitionListModel } from '../data/models/requisit
 
 type Row = Record<string, VNode | string | number | undefined>;
 type Callbacks = {
-    handleOpenModal: (rl: RequisitionListModel) => void;
+    handleOpenRenameModal: (rl: RequisitionListModel) => void;
+    handleOpenDeleteModal: (rl: RequisitionListModel) => void;
 };
-export declare function useRequisitionListGrid(callbacks?: Callbacks, routeRequisitionListDetails?: (uid: string) => string | void): {
+export declare function useRequisitionListGrid(callbacks?: Callbacks, routeRequisitionListDetails?: (uid: string) => string | void, closeModal?: () => void): {
     rows: Row[];
-    expandedRows: Set<number>;
     isLoading: boolean;
     pageInfo: {
         page_size: number;

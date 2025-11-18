@@ -1,0 +1,61 @@
+{
+  "definitions": [
+    {
+      "title": "Cards",
+      "id": "cards",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div class=\"cards\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+        }
+      },
+      "model": "cards",
+      "filter": "cards"
+    },
+    {
+      "title": "Card",
+      "id": "card",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+        }
+      },
+      "model": "card"
+    }
+  ],
+  "models": [
+    {
+      "id": "card",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+          "label": "Image Alt",
+          "multi": false
+        },
+        {
+          "component": "richtext",
+          "name": "div:nth-child(2)",
+          "value": "",
+          "label": "Text",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "cards",
+      "components": [
+        "card"
+      ]
+    }
+  ]
+}

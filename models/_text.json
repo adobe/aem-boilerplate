@@ -1,0 +1,15 @@
+{
+  "definitions": [
+    {
+      "title": "Text",
+      "id": "text",
+      "plugins": {
+        "da": {
+          "name": "text",
+          "type": "text"
+        }
+      }
+    }
+  ],
+  "models": []
+}

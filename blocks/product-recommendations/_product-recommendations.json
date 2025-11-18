@@ -1,0 +1,32 @@
+{
+    "definitions": [
+      {
+        "title": "Product Recommendations",
+        "id": "product-recommendations",
+        "plugins": {
+          "da": {
+            "unsafeHTML": "<div class=\"product-recommendations\"><div><div>recid</div><div><p>PLACEHOLDER</p></div></div><div><div>currentSku</div><div><p>PLACEHOLDER</p></div></div></div>"
+          }
+        }
+      }
+    ],
+    "models": [
+      {
+        "id": "product-recommendations",
+        "fields": [
+          {
+            "component": "text",
+            "name": "div:nth-child(1)>div:nth-child(2)>p:nth-child(1)",
+            "label": "Rec ID",
+            "required": true
+          },
+          {
+            "component": "text",
+            "name": "div:nth-child(2)>div:nth-child(2)>p:nth-child(1)",
+            "label": "Current SKU"
+          }
+        ]
+      }
+    ],
+    "filters": []
+  }

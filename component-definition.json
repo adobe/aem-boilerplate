@@ -1,0 +1,188 @@
+{
+  "groups": [
+    {
+      "title": "Default Content",
+      "id": "default",
+      "components": [
+        {
+          "title": "Text",
+          "id": "text",
+          "plugins": {
+            "da": {
+              "name": "text",
+              "type": "text"
+            }
+          }
+        },
+        {
+          "title": "Image",
+          "id": "image",
+          "plugins": {
+            "da": {
+              "name": "image",
+              "type": "image"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Sections",
+      "id": "sections",
+      "components": [
+        {
+          "title": "Section",
+          "id": "section",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div></div>"
+            }
+          },
+          "filter": "section",
+          "model": "section"
+        }
+      ]
+    },
+    {
+      "title": "Blocks",
+      "id": "blocks",
+      "components": [
+        {
+          "title": "Accordion",
+          "id": "accordion",
+          "plugins": {
+            "da": {
+              "name": "accordion",
+              "rows": 1,
+              "columns": 2
+            }
+          }
+        },
+        {
+          "title": "Accordion Item",
+          "id": "accordion-item",
+          "plugins": {
+            "da": {
+              "name": "accordion-item",
+              "rows": 2,
+              "columns": 0
+            }
+          }
+        },
+        {
+          "title": "Cards",
+          "id": "cards",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"cards\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+            }
+          },
+          "model": "cards",
+          "filter": "cards"
+        },
+        {
+          "title": "Card",
+          "id": "card",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+            }
+          },
+          "model": "card"
+        },
+        {
+          "title": "Carousel",
+          "id": "carousel",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"carousel\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+            }
+          }
+        },
+        {
+          "title": "Carousel Slide",
+          "id": "carousel-item",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+            }
+          }
+        },
+        {
+          "title": "Columns",
+          "id": "columns",
+          "plugins": {
+            "da": {
+              "name": "columns",
+              "rows": 1,
+              "columns": 2,
+              "behaviour": "columns"
+            }
+          }
+        },
+        {
+          "title": "Columns Row",
+          "id": "columns-row",
+          "plugins": {
+            "da": {
+              "name": "columns-row",
+              "behaviour": "columns-row"
+            }
+          }
+        },
+        {
+          "title": "Columns Cell",
+          "id": "columns-cell",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div></div>",
+              "behaviour": "columns-cell"
+            }
+          }
+        },
+        {
+          "title": "Fragment",
+          "id": "fragment",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"fragment\"><div><div><p><a href=\"\">Fragment URL</a></p></div></div></div>"
+            }
+          }
+        },
+        {
+          "title": "Hero",
+          "id": "hero",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"hero\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture><h1></h1></div></div></div>"
+            }
+          }
+        },
+        {
+          "title": "Targeted Block",
+          "id": "targeted-block",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"targeted-block\"><div><div><p>Customer Groups</p></div><div><p>Specify id's of customer groups the block is visible to</p></div></div><div><div><p>Customer Segments</p></div><div><p>Specify id's of customer segments the block is visible to</p></div></div><div><div><p>Type</p></div><div><p>Provide a custom name. If there are multiple targeted block of the same type on a page, only the first block of the type will be displayed</p></div></div><div><div><p>Fragment</p></div><div><p>Relative path to a fragment. If specified the block content will be replaced with fragment content</p></div></div><div><div><p>Targeted Block Content</p></div></div></div>"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Product",
+      "id": "product",
+      "components": [
+        {
+          "title": "Product Recommendations",
+          "id": "product-recommendations",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"product-recommendations\"><div><div>recid</div><div><p>PLACEHOLDER</p></div></div><div><div>currentSku</div><div><p>PLACEHOLDER</p></div></div></div>"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

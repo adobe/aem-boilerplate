@@ -15,4 +15,5 @@
  * from Adobe.
  *******************************************************************/
 export * from './CreditCard/CreditCard';
+export * from './ApplePay/ApplePay';
 //# sourceMappingURL=index.d.ts.map

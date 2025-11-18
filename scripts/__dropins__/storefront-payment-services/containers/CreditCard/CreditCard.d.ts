@@ -1,4 +1,5 @@
 import { RefObject } from 'preact/compat';
+import { default as LocalizedError } from '../../lib/localizedError';
 
 export declare enum CardTypes {
     Visa = "visa",
@@ -15,23 +16,9 @@ export declare enum FormFields {
 }
 export interface CreditCardProps {
     /**
-     * The URL to the Adobe Commerce GraphQL endpoint, such as "https://example.com/graphql".
-     */
-    apiUrl: string;
-    /**
      * Should return a promise that resolves to the shopper`s cart ID.
      */
     getCartId: () => Promise<string>;
-    /**
-     * The credit card container may send GraphQL requests on behalf of the shopper. This requires GraphQL authorization,
-     * which can be performed using authorization tokens or session cookies.
-     *
-     * For token-based authorization, the "getCustomerToken" function should return a customer token as a string, or null
-     * for guest checkouts. The "getCustomerToken" function should not be provided for session-based authorization.
-     *
-     * For more information, see: https://developer.adobe.com/commerce/webapi/graphql/usage/authorization-tokens/.
-     */
-    getCustomerToken?: (() => string | null) | null;
     /**
      * Credit card form reference. Initially, { current: null } should be passed. Once rendered, the credit card
      * container will set the 'current' property to a { validate: () => boolean; submit: () => Promise<void> } object,
@@ -41,11 +28,17 @@ export interface CreditCardProps {
     /**
      * Called when payment flow is successful.
      */
-    onSuccess: () => void;
+    onSuccess: (result: {
+        cartId: string;
+    }) => void;
     /**
-     * Called when payment flow was aborted due to an error.
+     * Called when the payment flow was aborted due to an error.
+     *
+     * The function receives an object with two properties, { name: string, message: string }, containing the localized
+     * error name and message. Both properties are user-facing and can be translated using the
+     * "PaymentServices.CreditCard.errors" language definitions.
      */
-    onError: (error: Error) => void;
+    onError: (localizedError: LocalizedError) => void;
 }
 export interface CreditCardFormRef {
     /**
@@ -58,5 +51,5 @@ export interface CreditCardFormRef {
      */
     submit: () => Promise<void>;
 }
-export declare const CreditCard: ({ apiUrl, getCartId, getCustomerToken, creditCardFormRef, onSuccess, onError, ...props }: CreditCardProps) => import("preact/compat").JSX.Element;
+export declare const CreditCard: ({ getCartId, creditCardFormRef, onSuccess, onError, ...props }: CreditCardProps) => import("preact/compat").JSX.Element;
 //# sourceMappingURL=CreditCard.d.ts.map

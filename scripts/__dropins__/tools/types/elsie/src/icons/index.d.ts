@@ -32,6 +32,7 @@ export { default as OrderSuccess } from './OrderSuccess.svg';
 export { default as PaymentError } from './PaymentError.svg';
 export { default as Placeholder } from './Placeholder.svg';
 export { default as PlaceholderFilled } from './PlaceholderFilled.svg';
+export { default as Purchase } from './Purchase.svg';
 export { default as Quote } from './Quote.svg';
 export { default as Search } from './Search.svg';
 export { default as SearchFilled } from './SearchFilled.svg';

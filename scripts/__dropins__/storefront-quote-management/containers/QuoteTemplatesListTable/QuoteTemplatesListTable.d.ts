@@ -8,6 +8,7 @@ export interface QuoteTemplatesListTableProps extends HTMLAttributes<HTMLDivElem
     showPageSizePicker?: boolean;
     showPagination?: boolean;
     onViewQuoteTemplate?: (templateId: string, templateName: string, status: string) => void;
+    onGenerateQuoteFromTemplate?: (templateId: string, templateName: string, quoteId: string) => void;
     onPageSizeChange?: (pageSize: number) => void;
     onPageChange?: (page: number) => void;
     slots?: {
@@ -43,6 +44,7 @@ export interface QuoteTemplatesListTableProps extends HTMLAttributes<HTMLDivElem
         Actions?: SlotProps<{
             template: NegotiableQuoteTemplateListEntry;
             onViewQuoteTemplate?: (id: string, name: string, status: string) => void;
+            onGenerateQuoteFromTemplate?: (id: string, name: string) => void;
         }>;
         /** Slot for customizing the empty templates message */
         EmptyTemplates?: SlotProps;

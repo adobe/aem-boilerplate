@@ -41,15 +41,24 @@ export interface NegotiableQuoteTemplateModel {
     canReopen: boolean;
     canCancel: boolean;
     canSendForReview: boolean;
+    canGenerateQuoteFromTemplate: boolean;
+    canEditTemplateItems: boolean;
 }
 export declare enum NegotiableQuoteTemplateStatus {
-    ACTIVE = "ACTIVE",
-    IN_REVIEW = "IN_REVIEW",
-    INACTIVE = "INACTIVE",
-    SUBMITTED = "SUBMITTED",
-    PENDING = "PENDING",
-    CLOSED = "CLOSED",
-    OPEN = "OPEN"
+    ACTIVE = "Active",
+    IN_REVIEW = "In Review",
+    INACTIVE = "Inactive",
+    SUBMITTED = "Submitted",
+    PENDING = "Pending",
+    CLOSED = "Closed",
+    OPEN = "Open",
+    UPDATED = "Updated",
+    EDITED = "Edited",
+    NEW = "New",
+    DRAFT = "Draft",
+    DECLINED = "Declined",
+    CANCELED = "Canceled",
+    EXPIRED = "Expired"
 }
 export interface QuoteTemplateCartItem {
     uid?: string;
@@ -133,5 +142,6 @@ export interface NegotiableQuoteTemplateListEntry {
         grandTotal: Currency;
         minNegotiatedGrandTotal: Currency;
     };
+    canGenerateQuoteFromTemplate?: boolean;
 }
 //# sourceMappingURL=negotiable-quote-template-model.d.ts.map

@@ -37,11 +37,20 @@ export interface ProductListTableItem {
             };
         }>;
     }>;
+    noteFromBuyer?: Array<{
+        createdAt: string;
+        creatorId: number;
+        creatorType: number;
+        negotiableQuoteItemUid: string;
+        note: string;
+        noteUid: string;
+    }>;
 }
 export interface ProductListTableProps extends HTMLAttributes<HTMLDivElement | HTMLFormElement> {
     items: ProductListTableItem[];
     canEdit: boolean;
     readOnly?: boolean;
+    showActions?: boolean;
     onItemCheckboxChange?: (item: ProductListTableItem, isSelected: boolean) => void;
     onItemDropdownChange?: (item: ProductListTableItem, action: string) => void;
     onQuantityChange?: (item: ProductListTableItem, newQuantity: number) => void;

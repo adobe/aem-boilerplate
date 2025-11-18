@@ -1,6 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
 import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { NegotiableQuoteModel } from '../../data/models/negotiable-quote-model';
+import { AttachedFile } from '../../components';
 
 export interface ManageNegotiableQuoteProps extends HTMLAttributes<HTMLDivElement> {
     onActionsDropdownChange?: (event: Event) => void;
@@ -8,6 +9,14 @@ export interface ManageNegotiableQuoteProps extends HTMLAttributes<HTMLDivElemen
     onSendForReview?: (params: {
         quoteData: NegotiableQuoteModel;
         comment?: string;
+        attachments?: AttachedFile[];
+    }) => void;
+    maxFiles?: number;
+    maxFileSize?: number;
+    acceptedFileTypes?: string[];
+    onDuplicateQuote?: (params: {
+        quoteData: NegotiableQuoteModel;
+        newQuote: NegotiableQuoteModel;
     }) => void;
     slots?: {
         QuoteName?: SlotProps<{
@@ -54,10 +63,23 @@ export interface ManageNegotiableQuoteProps extends HTMLAttributes<HTMLDivElemen
         QuoteComments?: SlotProps<{
             quoteData?: NegotiableQuoteModel;
         }>;
+        AttachFilesField?: SlotProps<{
+            onFileChange: (files: File[]) => void;
+            attachedFiles: AttachedFile[];
+            fileUploadError: string | undefined;
+            disabled?: boolean;
+        }>;
+        AttachedFilesList?: SlotProps<{
+            files: AttachedFile[];
+            onRemove: (key: string) => void;
+            disabled?: boolean;
+        }>;
         Footer?: SlotProps<{
             quoteData?: NegotiableQuoteModel;
             comment?: string;
             isSubmitting?: boolean;
+            attachments?: AttachedFile[];
+            handleSendForReview: () => void;
         }>;
     };
 }

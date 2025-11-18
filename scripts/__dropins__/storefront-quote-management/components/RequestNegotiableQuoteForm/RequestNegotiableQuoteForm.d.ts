@@ -7,6 +7,7 @@ export interface RequestNegotiableQuoteFormProps extends Omit<HTMLAttributes<HTM
     commentField?: VNode;
     quoteNameField?: VNode;
     attachFile?: VNode;
+    attachedFilesList?: VNode;
     requestButton?: VNode;
     saveButton?: VNode;
     onSubmit: (e: Event) => void;

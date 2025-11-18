@@ -211,6 +211,36 @@ export default async function decorate(block) {
         },
       },
     })(block);
+
+    // On delete success: navigate back to quotes list after delay to show success banner
+    const deleteListener = events.on('quote-management/negotiable-quote-deleted', ({ deletedQuoteUids }) => {
+      if (deletedQuoteUids && deletedQuoteUids.length > 0) {
+        // Delay redirect by 2 seconds
+        setTimeout(() => {
+          window.location.href = window.location.pathname;
+        }, 2000);
+      }
+    });
+
+    // On duplicate success: navigate to new quote after delay to show success banner
+    const duplicateListener = events.on('quote-management/quote-duplicated', ({ quote }) => {
+      if (quote && quote.uid) {
+        // Delay redirect by 2 seconds
+        setTimeout(() => {
+          window.location.href = `${window.location.pathname}?quoteid=${quote.uid}`;
+        }, 2000);
+      }
+    });
+
+    // Clean up listeners if block is removed
+    const observer = new MutationObserver(() => {
+      if (!document.body.contains(block)) {
+        deleteListener?.off();
+        duplicateListener?.off();
+        observer.disconnect();
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
   } else {
     block.classList.add('negotiable-quote__list');
     block.setAttribute('data-quote-view', 'list');

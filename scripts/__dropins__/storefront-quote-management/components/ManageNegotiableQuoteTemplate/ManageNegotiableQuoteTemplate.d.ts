@@ -13,8 +13,6 @@ export interface ManageNegotiableQuoteTemplateProps extends Omit<HTMLAttributes<
     itemsTable: VNode;
     commentsTitle: VNode;
     comments: VNode;
-    historyLogTitle: VNode;
-    historyLog: VNode;
     footer?: VNode;
 }
 export declare const ManageNegotiableQuoteTemplate: FunctionComponent<ManageNegotiableQuoteTemplateProps>;

@@ -18,7 +18,7 @@ export interface ItemsQuotedProps extends HTMLAttributes<HTMLDivElement> {
             onItemDropdownChange?: (item: NegotiableQuoteCartItem, action: string) => void;
             onQuantityChange?: (item: NegotiableQuoteCartItem, newQuantity: number) => void;
             onUpdate?: (e: SubmitEvent) => void;
-            dropdownSelections?: Record<string, string>;
+            dropdownSelections?: Record<string, string | undefined>;
         }>;
         QuotePricesSummary?: SlotProps<{
             items: NegotiableQuoteModel['items'];

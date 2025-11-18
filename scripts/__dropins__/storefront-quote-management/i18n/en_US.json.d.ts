@@ -11,6 +11,13 @@ declare const _default: {
       "quoteName": "Quote name",
       "quoteNameError": "Please add a quote name",
       "attachmentsError": "Error uploading attachments",
+      "maxFilesExceeded": "Maximum {maxFiles} file(s) allowed",
+      "maxFileSizeExceeded": "File size exceeds maximum limit of {maxSize}",
+      "invalidFileType": "File type not accepted",
+      "removeFile": "Remove file",
+      "uploading": "Uploading...",
+      "uploadSuccess": "Upload complete",
+      "uploadError": "Upload failed",
       "requestCta": "Request a Quote",
       "saveDraftCta": "Save as draft",
       "error": {
@@ -33,6 +40,16 @@ declare const _default: {
       "actions": {
         "remove": "Remove"
       },
+      "attachFile": "Attach File",
+      "attachFiles": "Attach Files",
+      "fileUploadError": "Failed to upload file. Please try again.",
+      "maxFilesExceeded": "Maximum {maxFiles} file(s) allowed",
+      "maxFileSizeExceeded": "File size exceeds maximum limit of {maxSize}",
+      "invalidFileType": "File type not accepted",
+      "removeFile": "Remove file",
+      "uploading": "Uploading...",
+      "uploadSuccess": "Upload complete",
+      "uploadError": "Upload failed",
       "bannerTitle": "Alert",
       "bannerStatusMessages": {
         "submitted": "This quote is currently locked for editing. It will become available once released by the Merchant.",
@@ -57,6 +74,15 @@ declare const _default: {
           "errorFallback": "Failed to delete quote",
           "successHeading": "Success",
           "successDescription": "Quote has been successfully deleted"
+        },
+        "duplicate": {
+          "title": "Duplicate Quote",
+          "message": "Are you sure you want to create a copy of this quote?",
+          "confirm": "Create Copy",
+          "errorHeading": "Error",
+          "errorFallback": "Failed to duplicate quote",
+          "successHeading": "Success",
+          "successDescription": "Quote has been successfully duplicated. You will be redirected to the new quote shortly."
         },
         "close": {
           "message": "Are you sure you want to close this quote?",
@@ -90,7 +116,8 @@ declare const _default: {
         "title": "Quote Comments",
         "placeholder": "Add your comment",
         "emptyState": "No comments yet",
-        "by": "by"
+        "by": "by",
+        "attachments": "Attachments:"
       },
       "productListTable": {
         "headers": {
@@ -106,6 +133,11 @@ declare const _default: {
         "actions": {
           "editNoteToSeller": "Edit note to seller",
           "remove": "Remove"
+        },
+        "notes": {
+          "header": "NOTES",
+          "leftANote": "left a note:",
+          "buyer": "Buyer"
         }
       },
       "rename": {
@@ -119,6 +151,23 @@ declare const _default: {
         "errorDefault": "Failed to rename quote. Please try again.",
         "successHeading": "Success",
         "successMessage": "Quote renamed successfully!"
+      },
+      "lineItemNote": {
+        "title": "Leave a note to seller",
+        "productLabel": "Name & SKU",
+        "skuLabel": "SKU",
+        "priceLabel": "Price",
+        "stockLabel": "Stock",
+        "quantityLabel": "Qty",
+        "discountLabel": "Discount",
+        "subtotalLabel": "Subtotal",
+        "noteLabel": "Note to seller",
+        "notePlaceholder": "Can I get a discount on this?",
+        "noteHelper": "The seller will see the note when you send the quote back.",
+        "confirmButton": "Confirm",
+        "cancelButton": "Cancel",
+        "noteError": "Please enter a note",
+        "quantityError": "Quantity must be greater than 0"
       },
       "tabbedContent": {
         "itemsQuoted": "Items quoted",
@@ -236,8 +285,33 @@ declare const _default: {
         "title": "Template Comments",
         "placeholder": "Add your comment"
       },
+      "actionsLabel": "Actions",
       "actionButtons": {
-        "sendForReview": "Send for review"
+        "sendForReview": "Send for review",
+        "accept": "Accept",
+        "generateQuote": "Generate quote"
+      },
+      "confirmationModal": {
+        "cancel": "Cancel",
+        "accept": {
+          "title": "Accept Quote Template",
+          "message": "Are you sure you want to accept this quote template?",
+          "confirm": "Accept",
+          "confirmLoading": "Accepting...",
+          "successHeading": "Quote Template Accepted",
+          "successDescription": "Quote template has been successfully accepted.",
+          "errorHeading": "Error",
+          "errorFallback": "Failed to accept quote template. Please try again."
+        },
+        "generateQuote": {
+          "message": "Are you sure you want to generate a quote from this template?",
+          "confirm": "Generate Quote",
+          "confirmLoading": "Generating...",
+          "successHeading": "Quote Generated",
+          "successDescription": "Quote has been successfully generated from the template.",
+          "errorHeading": "Error",
+          "errorFallback": "Failed to generate quote from template. Please try again."
+        }
       },
       "quotePricesSummary": {
         "subtotal": {
@@ -247,6 +321,9 @@ declare const _default: {
         "grandTotal": {
           "includingTax": "Quote Template Grand Total (including tax)"
         }
+      },
+      "lineItemNoteModal": {
+        "errorHeading": "Error"
       }
     }
   },

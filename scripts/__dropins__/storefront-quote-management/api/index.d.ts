@@ -31,6 +31,8 @@ export * from './removeQuoteTemplateItems';
 export * from './addQuoteTemplateLineItemNote';
 export * from './generateQuoteFromTemplate';
 export * from './renameNegotiableQuote';
+export * from './duplicateNegotiableQuote';
 export * from './updateQuantities';
 export * from './removeNegotiableQuoteItems';
+export * from './setLineItemNote';
 //# sourceMappingURL=index.d.ts.map

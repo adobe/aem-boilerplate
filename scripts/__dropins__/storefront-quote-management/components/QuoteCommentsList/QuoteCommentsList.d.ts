@@ -7,6 +7,10 @@ export interface QuoteCommentsListProps extends HTMLAttributes<HTMLUListElement>
         createdAt: VNode;
         author: VNode;
         text: VNode;
+        attachments?: Array<{
+            name: string;
+            url: string;
+        }>;
     }>;
 }
 export declare const QuoteCommentsList: FunctionComponent<QuoteCommentsListProps>;

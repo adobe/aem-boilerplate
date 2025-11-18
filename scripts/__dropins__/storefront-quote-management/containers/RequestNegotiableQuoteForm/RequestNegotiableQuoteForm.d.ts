@@ -1,6 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
 import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { requestNegotiableQuote } from '../../api';
+import { AttachedFile } from '../../components';
 
 export type RequestNegotiableQuoteHandlers = {
     onAttachFiles?: (files: File[]) => Promise<void>;
@@ -15,6 +16,9 @@ export type RequestNegotiableQuoteHandlers = {
 };
 export interface RequestNegotiableQuoteFormProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onError'>, RequestNegotiableQuoteHandlers {
     cartId: string;
+    maxFiles?: number;
+    maxFileSize?: number;
+    acceptedFileTypes?: string[];
     slots?: {
         ErrorBanner?: SlotProps<{
             message: string;
@@ -39,6 +43,12 @@ export interface RequestNegotiableQuoteFormProps extends Omit<HTMLAttributes<HTM
             onChange: (files: File[]) => void;
             formErrors: Record<string, string>;
             isFormDisabled: boolean;
+            attachedFiles: AttachedFile[];
+        }>;
+        AttachedFilesList?: SlotProps<{
+            files: AttachedFile[];
+            onRemove: (key: string) => void;
+            disabled?: boolean;
         }>;
         RequestButton?: SlotProps<{
             requestNegotiableQuote: typeof requestNegotiableQuote;

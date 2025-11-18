@@ -8,6 +8,8 @@ export interface ItemsQuotedTemplateProps extends HTMLAttributes<HTMLDivElement>
         ProductListTable?: SlotProps<{
             items: NegotiableQuoteTemplateModel['items'];
             canEdit: boolean;
+            onItemDropdownChange?: (item: any, action: string) => void;
+            dropdownSelections?: Record<string, string>;
         }>;
         QuotePricesSummary?: SlotProps<{
             items: NegotiableQuoteTemplateModel['items'];

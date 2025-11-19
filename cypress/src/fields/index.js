@@ -70,16 +70,16 @@ export const billToShippingAddress =
 export const shippingMethods = 'div[class*="checkout-shipping-methods"]';
 
 // Payment Methods
-export const paymentMethods = ".checkout-payment-methods__method";
+export const paymentMethods = '.checkout-payment-methods__method';
 
 export const creditCardNumberIFrame =
-  ".payment-services-credit-card-form__card-number iframe";
+  '.payment-services-credit-card-form__card-number iframe';
 export const creditCardNumber = 'input[name="credit-card-number"]';
 export const creditCardExpIFrame =
-  ".payment-services-credit-card-form__expiration-date iframe";
+  '.payment-services-credit-card-form__expiration-date iframe';
 export const creditCardExp = 'input[name="expiration"]';
 export const creditCardCvvIFrame =
-  ".payment-services-credit-card-form__security-code iframe";
+  '.payment-services-credit-card-form__security-code iframe';
 export const creditCardCvv = 'input[name="cvv"]';
 
 // Place Order
@@ -129,7 +129,7 @@ export const termsAndConditionsCheckbox =
   'input[name="default"][type="checkbox"]';
 
 // Gift card and options
-export const orderSummary = ".cart__order-summary";
+export const orderSummary = '.cart__order-summary';
 export const giftCardField = 'input[name="giftCardCode"]';
 export const giftOptionCardIncludedCheckBox =
   'input[name="printedCardIncluded"]';
@@ -141,13 +141,13 @@ export const giftOptionGiftReceiptIncluded =
   'input[name="giftReceiptIncluded"]';
 
 // Search
-export const searchIcon = ".nav-search-button";
-export const searchField = "#search";
-export const productListGrid = ".product-discovery-product-list__grid";
-export const productCard = ".dropin-product-item-card";
-export const productName = ".dropin-product-item-card__title";
-export const productPrice = ".dropin-product-item-card__price";
-export const productImage = ".dropin-product-item-card__image";
+export const searchIcon = '.nav-search-button';
+export const searchField = '#search';
+export const productListGrid = '.product-discovery-product-list__grid';
+export const productCard = '.dropin-product-item-card';
+export const productName = '.dropin-product-item-card__title';
+export const productPrice = '.dropin-product-item-card__price';
+export const productImage = '.dropin-product-item-card__image';
 
 // Customer Address
 
@@ -170,25 +170,25 @@ export const submitButton = 'button[type="submit"]';
 
 // Requisition Lists
 export const addToRequisitionListButton =
-  ".product-details__buttons__add-to-req-list";
-export const reqListGridWrapper = ".requisition-list-grid-wrapper";
-export const reqListGridEmptyList = ".empty-list";
-export const requisitionListFormName = "#requisition-list-form-name";
+  '.product-details__buttons__add-to-req-list';
+export const reqListGridWrapper = '.requisition-list-grid-wrapper';
+export const reqListGridEmptyList = '.empty-list';
+export const requisitionListFormName = '#requisition-list-form-name';
 export const requisitionListFormDescription =
-  "#requisition-list-form-description";
-export const navDrop = ".nav-drop";
-export const requisitionListItemRow = ".dropin-table__body__row";
-export const requisitionListSelector = ".requisition-list-selector button";
-export const requisitionListActions = ".requisition-list-actions";
-export const requisitionListForm = ".requisition-list-form";
-export const requisitionListAlert = ".requisition-list-selector__alert";
-export const requisitionListSelectorForm = ".requisition-list-selector__form";
+  '#requisition-list-form-description';
+export const navDrop = '.nav-drop';
+export const requisitionListItemRow = '.dropin-table__body__row';
+export const requisitionListSelector = '.requisition-list-selector button';
+export const requisitionListActions = '.requisition-list-actions';
+export const requisitionListForm = '.requisition-list-form';
+export const requisitionListAlert = '.requisition-list-selector__alert';
+export const requisitionListSelectorForm = '.requisition-list-selector__form';
 export const requisitionListSelectorAvailableLists =
-  ".requisition-list-selector__available-lists";
+  '.requisition-list-selector__available-lists';
 export const requisitionListSelectorAvailableListFirstChild =
-  ".requisition-list-selector__available-lists .dropin-card:first-child";
+  '.requisition-list-selector__available-lists .dropin-card:first-child';
 export const requisitionListFormActionsButton =
-  ".requisition-list-form__actions button";
+  '.requisition-list-form__actions button';
 
 export const requisitionListItemActionsRenameButton =
   '.requisition-list-grid-wrapper__actions button[data-testid="rename-button"]';
@@ -197,12 +197,12 @@ export const requisitionListItemActionsRemoveButton =
 export const requisitionListModalConfirmButton =
   '.requisition-list-modal__buttons button[data-testid="rl-modal-confirm-button"]';
 
-export const COMPANY_CREATE_PATH = "/customer/company/create";
+export const COMPANY_CREATE_PATH = '/customer/company/create';
 
 // Navigation Fields
-export const navAccountDropdown = ".nav-dropdown-button";
-export const navAccountMenu = ".nav-auth-menu-panel";
-export const navAccountMenuVisible = ".nav-tools-panel--show";
+export const navAccountDropdown = '.nav-dropdown-button';
+export const navAccountMenu = '.nav-auth-menu-panel';
+export const navAccountMenuVisible = '.nav-tools-panel--show';
 export const navAccountLink = 'a[href*="/customer/account"]';
 export const navCompanyRegistrationLink =
   'a[href*="' + COMPANY_CREATE_PATH + '"]';
@@ -233,4 +233,35 @@ export const companyFormAdminEmail = 'input[name="adminEmail"]';
 export const companyFormJobTitle = 'input[name="adminJobTitle"]';
 export const companyFormWorkTelephone = 'input[name="adminWorkTelephone"]';
 export const companyFormAdminGender = 'select[name="adminGender"]';
-export const companyFormSubmitButton = "button";
+export const companyFormSubmitButton = 'button';
+
+// Purchase Orders selectors
+export const poLoginForm = 'main .auth-sign-in-form';
+export const poEmailInput = 'input[name="email"]';
+export const poPasswordInput = 'input[name="password"]';
+export const poSubmitButton = 'button[type="submit"]';
+export const poAddToCartButton = 'button';
+export const poNavCartButton = '.nav-cart-button';
+export const poCheckoutLink = 'a[href="/checkout"]';
+export const poCheckMoneyOrderLabel = 'label';
+export const poTermsCheckbox = 'input[type="checkbox"]';
+export const poPlacePOButton = 'button[type="button"]';
+export const poNavDropdownButton = '.nav-dropdown-button';
+export const poLogoutButton = 'button';
+export const poCheckbox = 'input[type="checkbox"]';
+export const poCompanyPOContainer =
+  '[data-testid="company-purchase-orders-container"]';
+export const poApprovalPOWrapper =
+  '.commerce-b2b-po-require-approval-purchase-orders-wrapper';
+export const poMyApprovalPOWrapper =
+  '.commerce-b2b-po-require-approval-purchase-orders';
+export const poTable = '.b2b-purchase-order-purchase-orders-table';
+export const poShowButton = 'button';
+export const poEditButton = 'button.dropin-action-button';
+export const poNameInput = 'input[name="name"]';
+export const poStatusCheckbox = 'input[type="checkbox"][name="status"]';
+export const poTextarea = 'textarea';
+export const poRuleTypeSelect = 'select[name="ruleType"]';
+export const poRuleConditionSelect = 'select[name="ruleCondition"]';
+export const poRuleValueInput = 'input[name="ruleValue"]';
+export const poMultiSelect = '.dropin-multi-select';

@@ -1,5 +1,5 @@
-import * as fields from "../fields/index";
-import { companyRegistrationSuccessMessage } from "../fixtures/companyData";
+import * as fields from '../fields/index';
+import { companyRegistrationSuccessMessage } from '../fixtures/companyData';
 
 export const assertCartSummaryProduct =
   (
@@ -8,27 +8,27 @@ export const assertCartSummaryProduct =
     productQty,
     productPrice,
     totalPrice,
-    productPosition,
+    productPosition
   ) =>
-    (elem = ".commerce-cart-wrapper") => {
-      cy.get(`${elem} .dropin-cart-item__title`)
-        .eq(productPosition)
-        .should("contain", productName);
-      cy.get(`${elem} .dropin-cart-item__sku`)
-        .eq(productPosition)
-        .should("contain", productSku);
+  (elem = '.commerce-cart-wrapper') => {
+    cy.get(`${elem} .dropin-cart-item__title`)
+      .eq(productPosition)
+      .should('contain', productName);
+    cy.get(`${elem} .dropin-cart-item__sku`)
+      .eq(productPosition)
+      .should('contain', productSku);
 
-      if (elem === ".commerce-cart-wrapper") {
-        cy.get(`${elem} .dropin-incrementer__input`)
-          .eq(productPosition)
-          .should("have.value", productQty);
-      }
-
-      cy.get(`${elem} .dropin-cart-item__price`).should("contain", productPrice);
-      cy.get(`${elem} .dropin-cart-item__total`)
+    if (elem === '.commerce-cart-wrapper') {
+      cy.get(`${elem} .dropin-incrementer__input`)
         .eq(productPosition)
-        .should("contain", totalPrice);
-    };
+        .should('have.value', productQty);
+    }
+
+    cy.get(`${elem} .dropin-cart-item__price`).should('contain', productPrice);
+    cy.get(`${elem} .dropin-cart-item__total`)
+      .eq(productPosition)
+      .should('contain', totalPrice);
+  };
 
 export const assertCartSummaryProductsOnCheckout = (
   productName,
@@ -36,46 +36,46 @@ export const assertCartSummaryProductsOnCheckout = (
   productQty,
   productPrice,
   totalPrice,
-  productPosition,
+  productPosition
 ) => {
-  cy.get(".dropin-cart-item__title")
+  cy.get('.dropin-cart-item__title')
     .eq(productPosition)
-    .should("contain", productName);
-  cy.get(".dropin-cart-item__sku")
+    .should('contain', productName);
+  cy.get('.dropin-cart-item__sku')
     .eq(productPosition)
-    .should("contain", productSku);
-  cy.get(".dropin-cart-item__price__quantity")
+    .should('contain', productSku);
+  cy.get('.dropin-cart-item__price__quantity')
     .eq(productPosition)
-    .should("contain", productQty);
-  cy.get(".dropin-cart-item__price")
+    .should('contain', productQty);
+  cy.get('.dropin-cart-item__price')
     .eq(productPosition)
-    .should("contain", productPrice);
-  cy.get(".dropin-cart-item__total")
+    .should('contain', productPrice);
+  cy.get('.dropin-cart-item__total')
     .eq(productPosition)
-    .should("contain", totalPrice);
+    .should('contain', totalPrice);
 };
 
 export const assertCartSummaryMisc = (itemCount) => {
-  cy.get(".cart-summary-list__heading-text")
-    .should("contain", "Your Cart")
-    .and("contain", itemCount);
-  cy.contains("Edit").should("have.attr", "href", "/cart");
+  cy.get('.cart-summary-list__heading-text')
+    .should('contain', 'Your Cart')
+    .and('contain', itemCount);
+  cy.contains('Edit').should('have.attr', 'href', '/cart');
 };
 
 export const assertOrderSummaryMisc = (subtotal, shipping, total) => {
-  cy.get(".cart-order-summary__primary")
-    .find(".cart-order-summary__heading-text")
-    .contains("Order Summary")
-    .should("be.visible");
-  cy.get(".cart-order-summary__primary")
-    .find(".cart-order-summary__subTotal")
-    .should("contain", "Subtotal")
-    .and("contain", subtotal);
+  cy.get('.cart-order-summary__primary')
+    .find('.cart-order-summary__heading-text')
+    .contains('Order Summary')
+    .should('be.visible');
+  cy.get('.cart-order-summary__primary')
+    .find('.cart-order-summary__subTotal')
+    .should('contain', 'Subtotal')
+    .and('contain', subtotal);
   if (shipping) {
-    cy.get(".cart-order-summary__primary")
+    cy.get('.cart-order-summary__primary')
       .find('div[data-testid="estimate-shipping"]')
-      .should("contain", "Shipping")
-      .and("contain", shipping);
+      .should('contain', 'Shipping')
+      .and('contain', shipping);
   }
   // TODO:
   // cy.get('.cart-order-summary__primary')
@@ -86,248 +86,252 @@ export const assertOrderSummaryMisc = (subtotal, shipping, total) => {
 
 export const assertTitleHasLink =
   (productName, productHref) =>
-    (elem = ".cart-cart") => {
-      cy.get(`${elem} .dropin-cart-item`)
-        .contains(productName)
-        .should("have.attr", "href", productHref);
-    };
+  (elem = '.cart-cart') => {
+    cy.get(`${elem} .dropin-cart-item`)
+      .contains(productName)
+      .should('have.attr', 'href', productHref);
+  };
 
 export const assertProductImage =
   (productImageSrc) =>
-    (elem = ".cart-cart") => {
-      cy.get(`${elem} img[src*="${productImageSrc}"]`, { matchCase: false })
-        .should("be.visible")
-        .and(($img) => expect($img[0].naturalWidth).to.be.gt(0));
-    };
+  (elem = '.cart-cart') => {
+    cy.get(`${elem} img[src*="${productImageSrc}"]`, { matchCase: false })
+      .should('be.visible')
+      .and(($img) => expect($img[0].naturalWidth).to.be.gt(0));
+  };
 
 export const assertSelectedPaymentMethod = (
   selected_payment_method,
-  index_number,
+  index_number
 ) => {
-  cy.get(".checkout-payment-methods__methods")
+  cy.get('.checkout-payment-methods__methods')
     .find('[type="radio"]')
     .eq(index_number)
-    .should("be.checked")
-    .and("have.value", selected_payment_method);
+    .should('be.checked')
+    .and('have.value', selected_payment_method);
 };
 
 export const assertOrderConfirmationCommonDetails = (
   customerDetails,
-  paymentMethod,
+  paymentMethod
 ) => {
-  cy.get(".order-confirmation")
+  cy.get('.order-confirmation')
     .should(
-      "contain",
-      `${customerDetails.firstName}, thank you for your order!`,
+      'contain',
+      `${customerDetails.firstName}, thank you for your order!`
     )
-    .and("contain", "Customer information")
-    .and("contain", "Contact details")
-    .and("contain", customerDetails.email)
-    .and("contain", "Payment method")
-    .and("contain", paymentMethod.name)
-    .and("contain", "Order summary");
-  cy.contains("p", /ORDER #\d+/).should("be.visible");
-  cy.get(".order-confirmation__order-cost-summary").should("exist");
-  cy.get('a[role="link"]').should("contain", "Continue shopping");
+    .and('contain', 'Customer information')
+    .and('contain', 'Contact details')
+    .and('contain', customerDetails.email)
+    .and('contain', 'Payment method')
+    .and('contain', paymentMethod.name)
+    .and('contain', 'Order summary');
+  cy.contains('p', /ORDER #\d+/).should('be.visible');
+  cy.get('.order-confirmation__order-cost-summary').should('exist');
+  cy.get('a[role="link"]').should('contain', 'Continue shopping');
 };
 
 export const assertOrderConfirmationShippingDetails = (customerAddress) => {
-  cy.get(".order-customer-details-content__container-shipping_address")
-    .should("contain", "Shipping address")
-    .and("contain", customerAddress.firstName)
-    .and("contain", customerAddress.lastName)
-    .and("contain", customerAddress.street)
-    .and("contain", customerAddress.street1)
-    .and("contain", customerAddress.city)
-    .and("contain", customerAddress.postCode)
-    .and("contain", customerAddress.regionFull)
-    .and("contain", customerAddress.countryCode);
+  cy.get('.order-customer-details-content__container-shipping_address')
+    .should('contain', 'Shipping address')
+    .and('contain', customerAddress.firstName)
+    .and('contain', customerAddress.lastName)
+    .and('contain', customerAddress.street)
+    .and('contain', customerAddress.street1)
+    .and('contain', customerAddress.city)
+    .and('contain', customerAddress.postCode)
+    .and('contain', customerAddress.regionFull)
+    .and('contain', customerAddress.countryCode);
 };
 
 export const assertOrderConfirmationBillingDetails = (customerAddress) => {
-  cy.get(".order-customer-details-content__container-billing_address")
-    .should("contain", "Billing address")
-    .and("contain", customerAddress.firstName)
-    .and("contain", customerAddress.lastName)
-    .and("contain", customerAddress.street)
-    .and("contain", customerAddress.street1)
-    .and("contain", customerAddress.city)
-    .and("contain", customerAddress.postCode)
+  cy.get('.order-customer-details-content__container-billing_address')
+    .should('contain', 'Billing address')
+    .and('contain', customerAddress.firstName)
+    .and('contain', customerAddress.lastName)
+    .and('contain', customerAddress.street)
+    .and('contain', customerAddress.street1)
+    .and('contain', customerAddress.city)
+    .and('contain', customerAddress.postCode)
     // NewYork is displayed in app instead of New York
     // .and('contain', customerAddress.regionFull)
-    .and("contain", customerAddress.countryCode);
+    .and('contain', customerAddress.countryCode);
 };
 
 export const assertOrderConfirmationShippingMethod = (
-  customerDeliveryMethod,
+  customerDeliveryMethod
 ) => {
-  cy.get(".order-customer-details-content__container-shipping_methods")
-    .should("contain", "Shipping method")
-    .and("contain", customerDeliveryMethod.shippingMethod);
+  cy.get('.order-customer-details-content__container-shipping_methods')
+    .should('contain', 'Shipping method')
+    .and('contain', customerDeliveryMethod.shippingMethod);
 };
 export const assertAuthUser = (sign_up) => {
-  cy.url().should("include", "/customer/account");
-  cy.contains(sign_up.firstName).should("be.visible");
-  cy.contains(sign_up.lastName).should("be.visible");
-  cy.contains(sign_up.email).should("be.visible");
+  cy.url().should('include', '/customer/account');
+  cy.contains(sign_up.firstName).should('be.visible');
+  cy.contains(sign_up.lastName).should('be.visible');
+  cy.contains(sign_up.email).should('be.visible');
 };
 
 // imports and re-exports the functions from ./adobeDataLayer.js
-export * from "./adobeDataLayer";
+export * from './adobeDataLayer';
 
 export const assertGiftOptionsSummary = (title, price) => {
-  const summaryClassName = ".cart-order-summary__content";
+  const summaryClassName = '.cart-order-summary__content';
 
-  cy.get(summaryClassName).contains(title).should("exist").should("be.visible");
+  cy.get(summaryClassName).contains(title).should('exist').should('be.visible');
   if (price) {
     cy.get(summaryClassName)
       .contains(price)
-      .should("exist")
-      .should("be.visible");
+      .should('exist')
+      .should('be.visible');
   }
 };
 
 export const assertGiftOptionsEmptyForm = (className) => {
   cy.get(`${className} ${fields.giftOptionRecipientName}`).should(
-    "have.class",
-    "dropin-input--error",
+    'have.class',
+    'dropin-input--error'
   );
   cy.get(`${className} ${fields.giftOptionSenderName}`).should(
-    "have.class",
-    "dropin-input--error",
+    'have.class',
+    'dropin-input--error'
   );
   cy.get(`${className} ${fields.giftOptionMessage}`).should(
-    "have.class",
-    "dropin-textarea--error",
+    'have.class',
+    'dropin-textarea--error'
   );
 };
 
 export const assertGiftOptionsReadOnlyFormView = () => {
-  const summaryClassName = ".cart-gift-options-view--readonly";
+  const summaryClassName = '.cart-gift-options-view--readonly';
   const cartClassName =
-    ".cart-cart-summary-list.cart-cart-summary-list__background--secondary";
+    '.cart-cart-summary-list.cart-cart-summary-list__background--secondary';
 
   cy.get(summaryClassName)
-    .contains("Selected gift order options")
-    .should("exist")
-    .should("be.visible");
+    .contains('Selected gift order options')
+    .should('exist')
+    .should('be.visible');
   cy.get(summaryClassName)
-    .contains("Use gift receipt")
-    .should("exist")
-    .should("be.visible");
+    .contains('Use gift receipt')
+    .should('exist')
+    .should('be.visible');
   cy.get(summaryClassName)
-    .contains("Selected gift order options")
-    .should("exist")
-    .should("be.visible");
+    .contains('Selected gift order options')
+    .should('exist')
+    .should('be.visible');
   cy.get(summaryClassName)
-    .contains("The receipt and order invoice will not show the price.")
-    .should("exist")
-    .should("be.visible");
+    .contains('The receipt and order invoice will not show the price.')
+    .should('exist')
+    .should('be.visible');
   cy.get(summaryClassName)
-    .contains("Use printed card")
-    .should("exist")
-    .should("be.visible");
+    .contains('Use printed card')
+    .should('exist')
+    .should('be.visible');
   cy.get(summaryClassName)
-    .contains("Gift wrap this order (+$30.00)")
-    .should("exist")
-    .should("be.visible");
+    .contains('Gift wrap this order (+$30.00)')
+    .should('exist')
+    .should('be.visible');
   cy.get(summaryClassName)
-    .contains("Foil Finish Paper")
-    .should("exist")
-    .should("be.visible");
+    .contains('Foil Finish Paper')
+    .should('exist')
+    .should('be.visible');
   cy.get(summaryClassName)
-    .contains("giftOptionRecipientName")
-    .should("exist")
-    .should("be.visible");
+    .contains('giftOptionRecipientName')
+    .should('exist')
+    .should('be.visible');
   cy.get(summaryClassName)
-    .contains("giftOptionSenderName")
-    .should("exist")
-    .should("be.visible");
+    .contains('giftOptionSenderName')
+    .should('exist')
+    .should('be.visible');
   cy.get(summaryClassName)
-    .contains("giftOptionMessage")
-    .should("exist")
-    .should("be.visible");
+    .contains('giftOptionMessage')
+    .should('exist')
+    .should('be.visible');
 
-  cy.get(cartClassName).contains("This item is a gift").click();
+  cy.get(cartClassName).contains('This item is a gift').click();
   cy.get(cartClassName)
-    .contains("Foil Finish Paper")
-    .should("exist")
-    .should("be.visible");
+    .contains('Foil Finish Paper')
+    .should('exist')
+    .should('be.visible');
   cy.get(cartClassName)
-    .contains("giftOptionRecipientName")
-    .should("exist")
-    .should("be.visible");
+    .contains('giftOptionRecipientName')
+    .should('exist')
+    .should('be.visible');
   cy.get(cartClassName)
-    .contains("giftOptionSenderName")
-    .should("exist")
-    .should("be.visible");
+    .contains('giftOptionSenderName')
+    .should('exist')
+    .should('be.visible');
   cy.get(cartClassName)
-    .contains("giftOptionMessage")
-    .should("exist")
-    .should("be.visible");
+    .contains('giftOptionMessage')
+    .should('exist')
+    .should('be.visible');
 };
 
 export const assertWishlistEmpty = () => {
-  cy.get(".dropin-illustrated-message__heading")
-    .should("exist")
-    .and("contain", "Your wishlist is empty");
-  cy.get(".dropin-illustrated-message__message")
-    .should("exist")
-    .and("contain", "Add items by clicking on the heart icon.");
-  cy.get('[data-testid="wishlist-heading-wrapper"]')
-    .should("not.exist");
-}
-
-export const assertWishlistItem = (productName, productPrice) => (elem = ".commerce-wishlist-wrapper") => {
-  cy.get(elem).within(() => {
-    cy.get(".wishlist-product-item-name")
-      .contains(productName)
-      .should("be.visible");
-    cy.get(".wishlist-product-item-price")
-      .contains(productPrice)
-      .should("be.visible");
-  });
+  cy.get('.dropin-illustrated-message__heading')
+    .should('exist')
+    .and('contain', 'Your wishlist is empty');
+  cy.get('.dropin-illustrated-message__message')
+    .should('exist')
+    .and('contain', 'Add items by clicking on the heart icon.');
+  cy.get('[data-testid="wishlist-heading-wrapper"]').should('not.exist');
 };
 
-export const assertWishlistItemHasOptions = (attribute, label) => (elem = ".commerce-wishlist-wrapper") => {
-  cy.get(elem).within(() => {
-    cy.get(".wishlist-product-item-options").within(() => {
-      cy.get(".wishlist-product-item-option__attribute")
-        .contains(attribute)
-        .should("be.visible");
-      cy.get(".wishlist-product-item-option__label")
-        .contains(label)
-        .should("be.visible");
+export const assertWishlistItem =
+  (productName, productPrice) =>
+  (elem = '.commerce-wishlist-wrapper') => {
+    cy.get(elem).within(() => {
+      cy.get('.wishlist-product-item-name')
+        .contains(productName)
+        .should('be.visible');
+      cy.get('.wishlist-product-item-price')
+        .contains(productPrice)
+        .should('be.visible');
     });
-  });
-};
+  };
+
+export const assertWishlistItemHasOptions =
+  (attribute, label) =>
+  (elem = '.commerce-wishlist-wrapper') => {
+    cy.get(elem).within(() => {
+      cy.get('.wishlist-product-item-options').within(() => {
+        cy.get('.wishlist-product-item-option__attribute')
+          .contains(attribute)
+          .should('be.visible');
+        cy.get('.wishlist-product-item-option__label')
+          .contains(label)
+          .should('be.visible');
+      });
+    });
+  };
 
 export const assertWishlistTitleHasLink =
   (productName, productHref) =>
-    (elem = ".commerce-wishlist-wrapper") => {
-      cy.get(`${elem} .wishlist-product-item-name`)
-        .contains(productName)
-        .should("have.attr", "href", productHref);
-    };
+  (elem = '.commerce-wishlist-wrapper') => {
+    cy.get(`${elem} .wishlist-product-item-name`)
+      .contains(productName)
+      .should('have.attr', 'href', productHref);
+  };
 
 export const assertWishlistProductImage =
   (productImageSrc) =>
-    (elem = ".commerce-wishlist-wrapper") => {
-      cy.get(`${elem} img[src*="${productImageSrc}"]`, { matchCase: false })
-        .should("be.visible")
-        .and(($img) => expect($img[0].naturalWidth).to.be.gt(0));
-    };
+  (elem = '.commerce-wishlist-wrapper') => {
+    cy.get(`${elem} img[src*="${productImageSrc}"]`, { matchCase: false })
+      .should('be.visible')
+      .and(($img) => expect($img[0].naturalWidth).to.be.gt(0));
+  };
 
 export const assertCartEmpty = () => {
   cy.get('.commerce-cart', { timeout: 10000 }).should('exist');
-  cy.get('.cart__list .dropin-cart-item', { timeout: 10000 }).should('not.exist');
+  cy.get('.cart__list .dropin-cart-item', { timeout: 10000 }).should(
+    'not.exist'
+  );
   cy.get('.cart__wrapper .dropin-cart-item').should('not.exist');
 };
 
 export const assertWishlistCount = (count) => {
   // Wait for the wrapper and its content to be fully loaded
-  cy.get('[data-testid="wishlist-heading-wrapper"]')
-    .should('exist');
+  cy.get('[data-testid="wishlist-heading-wrapper"]').should('exist');
 
   // Then check the inner elements directly
   cy.get('[data-testid="default-wishlist-heading"]')
@@ -361,10 +365,8 @@ export const assertWishlistCountWithWait = (count) => {
 };
 
 export const assertOrderImageDisplay = () => {
-  cy.get(".dropin-image--loaded")
-    .should('be.visible')
-}
-
+  cy.get('.dropin-image--loaded').should('be.visible');
+};
 
 export const assertImageListDisplay = (selector, limit = null) => {
   let imageQuery = cy.get(selector).find('img');
@@ -382,63 +384,57 @@ export const assertImageListDisplay = (selector, limit = null) => {
   });
 };
 
-
 export const assertSearchResults = () => {
   // Check if search results are displayed
-  cy.get(fields.productListGrid)
-    .should("be.visible");
+  cy.get(fields.productListGrid).should('be.visible');
 
   // Verify that product items are shown
-  cy.get(fields.productCard)
-    .should("have.length.at.least", 1);
+  cy.get(fields.productCard).should('have.length.at.least', 1);
 
   // Check that each result has product name
   cy.get(fields.productName)
-    .should("have.length.at.least", 1)
+    .should('have.length.at.least', 1)
     .each(($name) => {
-      cy.wrap($name).should("not.be.empty");
+      cy.wrap($name).should('not.be.empty');
     });
 
   // Check that each result has price information
   cy.get(fields.productPrice)
-    .should("have.length.at.least", 1)
+    .should('have.length.at.least', 1)
     .each(($price) => {
-      cy.wrap($price).should("not.be.empty");
+      cy.wrap($price).should('not.be.empty');
     });
 };
 
 export const assertSearchResultClick = () => {
   // Click on first search result
-  cy.get(fields.productImage)
-    .first()
-    .click();
+  cy.get(fields.productImage).first().click();
 
   // Verify navigation to product page
-  cy.url().should("include", "/products/");
+  cy.url().should('include', '/products/');
 
   // Verify product page elements are loaded
-  cy.get(".product-details", { timeout: 10000 })
-    .should("be.visible");
+  cy.get('.product-details', { timeout: 10000 }).should('be.visible');
 };
 
 export const assertSignInSuccess = (firstname, lastname, username) => {
-  cy.url().should("include", "/customer/account");
-  cy.contains(firstname).should("be.visible");
-  cy.contains(lastname).should("be.visible");
-  cy.contains(username).should("be.visible");
-}
+  cy.url().should('include', '/customer/account');
+  cy.contains(firstname).should('be.visible');
+  cy.contains(lastname).should('be.visible');
+  cy.contains(username).should('be.visible');
+};
 // Company Registration Assertions
 export const assertCompanyRegistrationForm = () => {
   cy.get('.company-registration-container').should('exist');
   cy.get('.company-form').should('exist');
-  
+
   // Company Information Fields
   cy.get(fields.companyFormCompanyName).should('exist');
   cy.get(fields.companyFormLegalName).should('exist');
   cy.get(fields.companyFormCompanyEmail).should('exist');
   cy.get(fields.companyFormVatTaxId).should('exist');
   cy.get(fields.companyFormResellerId).should('exist');
-  
+
   // Legal Address Fields
   cy.get(fields.companyFormStreet).should('exist');
   cy.get(fields.companyFormStreetLine2).should('exist');
@@ -447,7 +443,7 @@ export const assertCompanyRegistrationForm = () => {
   cy.get(fields.companyFormTelephone).should('exist');
   cy.get(fields.companyFormCountryCode).should('exist');
   cy.get(fields.companyFormRegion).should('exist');
-  
+
   // Company Administrator Fields
   cy.get(fields.companyFormFirstName).should('exist');
   cy.get(fields.companyFormLastName).should('exist');
@@ -455,55 +451,94 @@ export const assertCompanyRegistrationForm = () => {
   cy.get(fields.companyFormJobTitle).should('exist');
   cy.get(fields.companyFormWorkTelephone).should('exist');
   cy.get(fields.companyFormAdminGender).should('exist');
-  
+
   // Submit Button
   cy.get(fields.companyFormSubmitButton).should('exist');
 };
 
 export const assertCompanyRegistrationSuccess = (companyData) => {
   cy.get('.company-registration-success').should('exist');
-  
+
   // Check success message
   cy.contains(companyRegistrationSuccessMessage).should('be.visible');
-  
+
   // Company Details Section
-  cy.get('.company-registration-success').should('contain', companyData.company.companyName);
+  cy.get('.company-registration-success').should(
+    'contain',
+    companyData.company.companyName
+  );
   if (companyData.company.legalName) {
-    cy.get('.company-registration-success').should('contain', companyData.company.legalName);
+    cy.get('.company-registration-success').should(
+      'contain',
+      companyData.company.legalName
+    );
   }
   const companyEmail = Cypress.env('currentTestCompanyEmail');
   if (companyEmail) {
     cy.get('.company-registration-success').should('contain', companyEmail);
   }
   if (companyData.company.vatTaxId) {
-    cy.get('.company-registration-success').should('contain', companyData.company.vatTaxId);
+    cy.get('.company-registration-success').should(
+      'contain',
+      companyData.company.vatTaxId
+    );
   }
   if (companyData.company.resellerId) {
-    cy.get('.company-registration-success').should('contain', companyData.company.resellerId);
+    cy.get('.company-registration-success').should(
+      'contain',
+      companyData.company.resellerId
+    );
   }
-  
+
   // Legal Address Section
   cy.get('.company-registration-success').should('contain', 'Legal Address');
-  cy.get('.company-registration-success').should('contain', companyData.legalAddress.street);
+  cy.get('.company-registration-success').should(
+    'contain',
+    companyData.legalAddress.street
+  );
   if (companyData.legalAddress.streetLine2) {
-    cy.get('.company-registration-success').should('contain', companyData.legalAddress.streetLine2);
+    cy.get('.company-registration-success').should(
+      'contain',
+      companyData.legalAddress.streetLine2
+    );
   }
-  cy.get('.company-registration-success').should('contain', companyData.legalAddress.city);
-  cy.get('.company-registration-success').should('contain', companyData.legalAddress.region);
-  cy.get('.company-registration-success').should('contain', companyData.legalAddress.postcode);
-  cy.get('.company-registration-success').should('contain', companyData.legalAddress.telephone);
-  
+  cy.get('.company-registration-success').should(
+    'contain',
+    companyData.legalAddress.city
+  );
+  cy.get('.company-registration-success').should(
+    'contain',
+    companyData.legalAddress.region
+  );
+  cy.get('.company-registration-success').should(
+    'contain',
+    companyData.legalAddress.postcode
+  );
+  cy.get('.company-registration-success').should(
+    'contain',
+    companyData.legalAddress.telephone
+  );
+
   // Company Administrator Section
-  cy.get('.company-registration-success').should('contain', 'Company Administrator');
+  cy.get('.company-registration-success').should(
+    'contain',
+    'Company Administrator'
+  );
   const adminEmail = Cypress.env('currentTestAdminEmail');
   if (adminEmail) {
     cy.get('.company-registration-success').should('contain', adminEmail);
   }
   if (companyData.companyAdmin.jobTitle) {
-    cy.get('.company-registration-success').should('contain', companyData.companyAdmin.jobTitle);
+    cy.get('.company-registration-success').should(
+      'contain',
+      companyData.companyAdmin.jobTitle
+    );
   }
   if (companyData.companyAdmin.workTelephone) {
-    cy.get('.company-registration-success').should('contain', companyData.companyAdmin.workTelephone);
+    cy.get('.company-registration-success').should(
+      'contain',
+      companyData.companyAdmin.workTelephone
+    );
   }
 };
 

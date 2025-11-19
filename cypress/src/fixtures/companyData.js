@@ -4,7 +4,7 @@ export const companyRegistrationData = {
     legalName: 'Test Company Legal',
     companyEmail: 'test@example.com', // Will be overridden with dynamic email in actions
     vatTaxId: 'VAT123456',
-    resellerId: 'RES123456'
+    resellerId: 'RES123456',
   },
   legalAddress: {
     street: '123 Test St',
@@ -13,7 +13,7 @@ export const companyRegistrationData = {
     postcode: '12345',
     telephone: '1234567890',
     countryCode: 'US',
-    region: 'Texas'
+    region: 'Texas',
   },
   companyAdmin: {
     firstName: 'Mike',
@@ -21,8 +21,9 @@ export const companyRegistrationData = {
     email: 'mike.williams@example.com', // Will be overridden with dynamic email in actions
     jobTitle: 'Manager',
     workTelephone: '1234567890',
-    gender: 'Male' 
-  }
+    gender: 'Male',
+  },
 };
 
-export const companyRegistrationSuccessMessage = "Thank you! We're reviewing your request and will contact you soon.";
+export const companyRegistrationSuccessMessage =
+  "Thank you! We're reviewing your request and will contact you soon.";

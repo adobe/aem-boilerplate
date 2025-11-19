@@ -1,9 +1,9 @@
-const { defineConfig } = require("cypress");
-const baseConfig = require("./cypress.base.config");
+const { defineConfig } = require('cypress');
+const baseConfig = require('./cypress.base.config');
 
 // A private user used with AEM Assets testing suite.
 const AEM_ASSETS_PRIVATE_USER = JSON.parse(
-  process.env.AEM_ASSETS_PRIVATE_USER ?? "{}"
+  process.env.AEM_ASSETS_PRIVATE_USER ?? '{}'
 );
 
 module.exports = defineConfig({
@@ -14,14 +14,25 @@ module.exports = defineConfig({
   },
   env: {
     ...baseConfig.env,
-    graphqlEndPoint: "https://na1-sandbox.api.commerce.adobe.com/LwndYQs37CvkUQk9WEmNkz/graphql",
-    giftCardA: "00419VQ5C341",
+    graphqlEndPoint:
+      'https://na1-sandbox.api.commerce.adobe.com/LwndYQs37CvkUQk9WEmNkz/graphql',
+    giftCardA: '00419VQ5C341',
     productUrlWithOptions:
-      "/products/cypress-configurable-product-latest/cypress456?optionsUIDs=Y29uZmlndXJhYmxlLzkzLzEz",
-    stateShippingId: "TX,57",
-    stateBillingId: "NY,43",
-    productImageName: "/adb150.jpg",
-    productImageNameConfigurable: "/adb124_1.jpg",
-    productWithOptionImageNameConfigurable: "/adb192_1.jpg",
+      '/products/cypress-configurable-product-latest/cypress456?optionsUIDs=Y29uZmlndXJhYmxlLzkzLzEz',
+    stateShippingId: 'TX,57',
+    stateBillingId: 'NY,43',
+    productImageName: '/adb150.jpg',
+    productImageNameConfigurable: '/adb124_1.jpg',
+    productWithOptionImageNameConfigurable: '/adb192_1.jpg',
+    // Purchase Orders URLs
+    poUrls: {
+      login: '/customer/login',
+      account: '/customer/account',
+      product: '/products/adobe-pattern-hoodie/adb127',
+      cheepProduct: '/products/badge-reel/adb153',
+      checkout: '/checkout',
+      purchaseOrders: '/customer/purchase-orders',
+      approvalRules: '/customer/approval-rules',
+    },
   },
 });

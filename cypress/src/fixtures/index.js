@@ -37,7 +37,7 @@ export const paymentServicesCreditCard = {
     cc_number: '4111111111111111',
     cc_exp: '12/2030',
     cc_cid: '123',
-  }
+  },
 };
 
 export const checkMoneyOrder = {
@@ -47,22 +47,23 @@ export const checkMoneyOrder = {
 
 export const products = {
   configurable: {
-    urlPath: "/products/cypress-configurable-product-latest/cypress456",
+    urlPath: '/products/cypress-configurable-product-latest/cypress456',
     urlPathWithOptions: Cypress.env('productUrlWithOptions'),
   },
   virtual: {
-    urlPath: "/products/virtual-product/virtual123",
+    urlPath: '/products/virtual-product/virtual123',
     sku: 'VIRTUAL123',
   },
   simple: {
-    urlPath: "/products/youth-tee/ADB150",
+    urlPath: '/products/youth-tee/ADB150',
     sku: 'ADB150',
   },
   virtualGiftCard: {
-    urlPath: "/products/gift-card-virtual/gift-card-virtual",
+    urlPath: '/products/gift-card-virtual/gift-card-virtual',
     sku: 'gift-card-virtual',
-  }
+  },
 };
 
 // Export company data fixtures
 export * from './companyData';
+export * from './purchaseOrdersConfig';

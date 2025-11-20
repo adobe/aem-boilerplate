@@ -58,7 +58,7 @@
 
 .product-details__buttons {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
   gap: var(--grid-1-gutters);
   grid-auto-rows: max-content;
 }

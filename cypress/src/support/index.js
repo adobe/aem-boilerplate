@@ -10,6 +10,7 @@ import '@percy/cypress';
 import './percyTakeSnapshot';
 import './waitForLoadingSkeletonToDisappear';
 import './deleteNegotiableQuotes';
+import './logToTerminal';
 
 import registerCypressGrep from '@cypress/grep'
 registerCypressGrep();

@@ -17,6 +17,15 @@ module.exports = {
   e2e: {
     setupNodeEvents(on, config) {
       require('@cypress/grep/src/plugin')(config);
+
+      // Custom task to print logs to terminal in CI
+      on("task", {
+        log(message) {
+          console.log(message);
+          return null;
+        },
+      });
+
       return config;
     },
     baseUrl: 'http://localhost:3000/',

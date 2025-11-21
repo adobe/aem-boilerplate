@@ -66,4 +66,6 @@ export const products = {
 
 // Export company data fixtures
 export * from './companyData';
+
+// Export PO fixtures
 export * from './purchaseOrdersConfig';

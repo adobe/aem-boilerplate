@@ -4,6 +4,7 @@
 import { Button, provider as UI } from '@dropins/tools/components.js';
 import { initializers } from '@dropins/tools/initializer.js';
 import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
+import { events } from '@dropins/tools/event-bus.js';
 
 // Order Dropin API
 import * as orderApi from '@dropins/storefront-order/api.js';
@@ -115,11 +116,14 @@ function swatchImageSlot(ctx) {
   });
 }
 
-let modal;
-async function showModal(content) {
-  modal = await createModal([content]);
-  modal.showModal();
-}
+let signUpModal;
+
+const handleAuthenticated = (authenticated) => {
+  if (authenticated) {
+    signUpModal?.removeModal();
+    signUpModal = null;
+  }
+};
 
 // ----------------------------------------------------------------------------
 // Local renderers (order confirmation only)
@@ -135,7 +139,8 @@ async function renderOrderHeader(container, options = {}) {
       routeRedirectOnEmailConfirmationClose: () => rootLink('/customer/account'),
       slots: { ...authPrivacyPolicyConsentSlot },
     })(signUpForm);
-    await showModal(signUpForm);
+    signUpModal = await createModal([signUpForm]);
+    signUpModal.showModal();
   };
 
   return OrderProvider.render(OrderHeader, {
@@ -217,6 +222,9 @@ async function renderOrderConfirmationFooterButton(container) {
 }
 
 async function renderCheckoutSuccessContent(container, { orderData } = {}) {
+  // Register event handler for authenticated event
+  events.on('authenticated', handleAuthenticated);
+
   // Scroll to top on success view
   window.scrollTo(0, 0);
 

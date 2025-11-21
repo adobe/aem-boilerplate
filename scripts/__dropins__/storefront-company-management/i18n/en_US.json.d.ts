@@ -230,7 +230,7 @@ declare const _default: {
       },
       "emptyTeam": "-",
       "pagination": {
-        "itemsCount": "{count} Item(s)",
+        "itemsRange": "Items {start}-{end} of {total}",
         "itemsPerPage": "Items per page:",
         "show": "Show",
         "perPage": "per page",
@@ -239,6 +239,7 @@ declare const _default: {
         "pageInfo": "Page {current} of {total}"
       },
       "emptyActions": "",
+      "noUsersFound": "No users found.",
       "actions": {
         "manage": "Manage",
         "edit": "Edit",
@@ -410,6 +411,7 @@ declare const _default: {
       "viewOnlyLabel": "View Only",
       "systemRoleLabel": "System Role",
       "itemCount": "Item(s)",
+      "itemsRange": "Items {start}-{end} of {total}",
       "show": "Show",
       "perPage": "per page",
       "deleteRole": {

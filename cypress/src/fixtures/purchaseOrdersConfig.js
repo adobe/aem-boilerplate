@@ -1,6 +1,12 @@
 const random = Cypress._.random(0, 10000000);
 
-export const texts = {
+const SALES_MANAGER_ROLE_NAME = `PO Sales Manager ${random}`
+const RULES_MANAGER_ROLE_NAME = `PO Rules Manager ${random}`
+const APPROVER_ROLE_NAME = `PO Approver ${random}`
+const USER_PASSWORD = 'Qwe123456';
+const COMPANY_ID = 13;
+
+export const poLabels = {
   addToCart: 'Add to Cart',
   checkout: 'Checkout',
   checkMoneyOrder: 'Check / Money order',
@@ -19,72 +25,121 @@ export const texts = {
   allUsers: 'All Users',
   grandTotal: 'Grand Total',
   numberOfSKUs: 'Number of SKUs',
+  approvalRulesHeader: 'Approval rules',
+  approvalRuleFormHeader: 'Purchase order approval rule'
 };
 
-export const approvalRules = {
+export const poApprovalRules = {
   rule1: {
     name: `Approval Rule for Orders Over 50 Dollars ${random}`,
     description:
       'This rule requires approval for purchase orders with grand total over 50 dollars',
     appliesTo: 'Specific Roles',
-    role: 'PO Sales',
+    role: SALES_MANAGER_ROLE_NAME,
     ruleType: 'Grand Total',
     ruleCondition: 'is more than or equal to',
     ruleValue: '50',
-    approverRole: 'PO Approver',
+    approverRole: APPROVER_ROLE_NAME,
   },
-  rule2: {
+  rule1Edited: {
     name: `Approval Rule for Multiple Product Orders ${random}`,
     description:
       'This rule requires approval for purchase orders with more than one unique product SKU',
     appliesTo: 'All Users',
+    role: null,
     ruleType: 'Number of SKUs',
     ruleCondition: 'is more than',
     ruleValue: '1',
-    approverRole: 'PO Rules Manager',
+    approverRole: RULES_MANAGER_ROLE_NAME,
   },
-  rule3: {
+  rule2: {
     name: `New Approval Rule for Multiple Product Orders ${random}`,
     description:
       'This rule requires approval for purchase orders with more than one unique product SKU',
     appliesTo: 'All Users',
+    role: null,
     ruleType: 'Number of SKUs',
     ruleCondition: 'is more than',
     ruleValue: '1',
-    approverRole: 'PO Approver',
+    approverRole: APPROVER_ROLE_NAME,
   },
-  rule4: {
+  rule2Edited: {
     name: `Approval Rule for Orders Over 50 Dollars ${random}`,
     description:
       'This rule requires approval for purchase orders with grand total over 50 dollars',
     appliesTo: 'Specific Roles',
-    role: 'PO Sales',
+    role: SALES_MANAGER_ROLE_NAME,
     ruleType: 'Grand Total',
     ruleCondition: 'is more than or equal to',
     ruleValue: '50',
-    approverRole: 'PO Rules Manager',
+    approverRole: RULES_MANAGER_ROLE_NAME,
   },
 };
 
-export const PASSWORD = 'Qwe123456';
-
-export const users = {
+export const poUsers = {
   sales_manager: {
-    firstname: 'Sales',
-    lastname: 'Manager',
-    email: `${random}po_user_sales_manager@example.com`,
-    password: PASSWORD,
+    firstname: `PO Sales Manager ${random}`,
+    lastname: 'Test',
+    email: `po_sales_manager_${random}@example.com`,
+    password: USER_PASSWORD,
   },
   po_rules_manager: {
-    firstname: 'PO Rules',
-    lastname: 'Manager',
-    email: `${random}po_user_po_rules_manager@example.com`,
-    password: PASSWORD,
+    firstname: `PO Rules Manager ${random}`,
+    lastname: 'Test',
+    email: `po_rules_manager_${random}@example.com`,
+    password: USER_PASSWORD,
   },
   approver_manager: {
-    firstname: 'Approver',
-    lastname: 'Manager',
-    email: `${random}po_user_approver_manager@example.com`,
-    password: PASSWORD,
+    firstname: 'PO Approver',
+    lastname: 'Test',
+    email: `po_approver_${random}@example.com`,
+    password: USER_PASSWORD,
+  },
+};
+
+export const poRolesConfig = {
+  salesManager: {
+    role_name: SALES_MANAGER_ROLE_NAME,
+    company_id: COMPANY_ID,
+    permissions: [
+      { resource_id: "Magento_Company::index", permission: "allow" },
+      { resource_id: "Magento_Company::view", permission: "allow" },
+      { resource_id: "Magento_Company::view_account", permission: "allow" },
+      { resource_id: "Magento_Sales::all", permission: "allow" },
+      { resource_id: "Magento_Sales::place_order", permission: "allow" },
+      { resource_id: "Magento_Sales::view_orders", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrder::all", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrderRule::view_approval_rules", permission: "allow" },
+    ]
+  },
+  rulesManager: {
+    role_name: RULES_MANAGER_ROLE_NAME,
+    company_id: COMPANY_ID,
+    permissions: [
+      { resource_id: "Magento_Company::index", permission: "allow" },
+      { resource_id: "Magento_Company::view", permission: "allow" },
+      { resource_id: "Magento_Company::view_account", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrder::all", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrderRule::view_approval_rules", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrderRule::manage_approval_rules", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrder::view_purchase_orders", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrder::view_purchase_orders_for_company", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrder::view_purchase_orders_for_subordinates", permission: "allow" },
+    ]
+  },
+  approver: {
+    role_name: APPROVER_ROLE_NAME,
+    company_id: COMPANY_ID,
+    permissions: [
+      { resource_id: "Magento_Company::index", permission: "allow" },
+      { resource_id: "Magento_Company::view", permission: "allow" },
+      { resource_id: "Magento_Company::view_account", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrder::all", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrderRule::view_approval_rules", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrderRule::manage_approval_rules", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrder::view_purchase_orders", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrder::view_purchase_orders_for_company", permission: "allow" },
+      { resource_id: "Magento_PurchaseOrder::view_purchase_orders_for_subordinates", permission: "allow" },
+    ]
   },
 };

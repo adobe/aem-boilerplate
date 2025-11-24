@@ -212,7 +212,7 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" }, () => {
       cy.wait(1000);
       cy.contains("Save").should("be.visible").click();
       cy.contains("Now updating from RL view page").should("be.visible");
-      // TODO: assert alert is displayed
+      cy.contains("Requisition list updated successfully.").should("be.visible");
 
       // 2. Update quantity of the first item in the Requisition List
       cy.get(fields.requisitionListViewQuantityInput).eq(0).click();
@@ -223,7 +223,7 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" }, () => {
         .type("10")
         .blur();
       cy.wait(1000);
-      // TODO: assert alert is displayed
+      cy.contains("Item quantity updated successfully.").should("be.visible");
       cy.get(fields.requisitionListViewQuantityInput)
         .eq(0)
         .should("have.value", "10");
@@ -234,9 +234,18 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" }, () => {
         "have.text",
         "2"
       );
+
       cy.get(fields.requisitionListViewBulkActionsAddToCartButton).click();
-      // TODO: assert alert is displayed
-      cy.get(fields.miniCartButton).should("have.attr", "data-count", "12");
+
+      // Verify success message appears (check immediately before it auto-dismisses)
+      cy.contains("Item(s) successfully moved to cart.", { timeout: 5000 }).should("be.visible");
+
+      // Wait for the cart to be refreshed and the data-count attribute to be updated
+      // The cart refresh happens automatically via requisitionList/alert event
+      // Cypress will retry the assertion until it passes or times out
+      cy.get(fields.miniCartButton, { timeout: 30000 })
+        .should("exist")
+        .and("have.attr", "data-count", "12");
 
       // 4. Delete all items from the Requisition List
       cy.get(fields.requisitionListViewBatchActionsToggle).click();
@@ -251,13 +260,14 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" }, () => {
       );
       cy.get(fields.requisitionListViewBulkActionsDeleteButton).click();
       cy.get(fields.requisitionListModalConfirmButton).click();
-      // TODO: assert alert is displayed
+      cy.contains("Item(s) deleted successfully.").should("be.visible");
       cy.get(fields.requisitionListItemRow).should("have.length", 0);
 
       // 5. Delete the whole Requisition List
       cy.get(fields.requisitionListViewDeleteButton).click();
       cy.get(fields.requisitionListModalConfirmButton).click();
-      // TODO: assert alert is displayed
+      cy.contains("Requisition list deleted successfully.").should("be.visible");
+
 
       cy.url().should("include", "customer/requisition-lists");
       cy.get(fields.requisitionListItemRow).should(

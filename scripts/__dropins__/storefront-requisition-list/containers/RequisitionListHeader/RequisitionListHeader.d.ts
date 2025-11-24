@@ -5,6 +5,11 @@ export interface RequisitionListHeaderProps {
     requisitionList: RequisitionList;
     routeRequisitionListGrid?: () => string | void;
     onUpdate?: (updatedList: RequisitionList) => void | Promise<void>;
+    onAlert?: (payload: {
+        action: string;
+        type: string;
+        context: string;
+    }) => void;
 }
 export declare const RequisitionListHeader: Container<RequisitionListHeaderProps>;
 //# sourceMappingURL=RequisitionListHeader.d.ts.map

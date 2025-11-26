@@ -1,6 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
 import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { NegotiableQuoteTemplateModel } from '../../data/models/negotiable-quote-template-model';
+import { ReferenceDocument } from '../../components';
 
 export interface ManageNegotiableQuoteTemplateProps extends HTMLAttributes<HTMLDivElement> {
     onActionsButtonClick?: (action: string) => void;
@@ -26,11 +27,14 @@ export interface ManageNegotiableQuoteTemplateProps extends HTMLAttributes<HTMLD
         ActionBar?: SlotProps<{
             templateData?: NegotiableQuoteTemplateModel;
         }>;
-        ReferenceDocumentsTitle?: SlotProps<{
-            templateData?: NegotiableQuoteTemplateModel;
-        }>;
         ReferenceDocuments?: SlotProps<{
             templateData?: NegotiableQuoteTemplateModel;
+            referenceDocuments?: ReferenceDocument[];
+            isEditable?: boolean;
+            onAddDocument?: () => void;
+            onEditDocument?: (document: ReferenceDocument) => void;
+            onRemoveDocument?: (document: ReferenceDocument) => void;
+            referenceDocumentsTitle?: string;
         }>;
         ItemsTable?: SlotProps<{
             templateData?: NegotiableQuoteTemplateModel;
@@ -60,6 +64,8 @@ export interface ManageNegotiableQuoteTemplateProps extends HTMLAttributes<HTMLD
             templateData?: NegotiableQuoteTemplateModel;
             comment?: string;
             isSubmitting?: boolean;
+            referenceDocuments?: ReferenceDocument[];
+            hasUnsavedChanges?: boolean;
         }>;
     };
 }

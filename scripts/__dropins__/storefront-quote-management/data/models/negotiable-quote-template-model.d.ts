@@ -30,6 +30,7 @@ export interface NegotiableQuoteTemplateModel {
     referenceDocuments?: {
         uid: string;
         name: string;
+        identifier?: string;
         url: string;
     }[];
     quantityThresholds?: {

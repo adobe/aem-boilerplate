@@ -89,27 +89,32 @@ export default async function decorate(block) {
   // Get the quote id from the url
   const quoteId = new URLSearchParams(window.location.search).get('quoteid');
 
+  // Checkout button
+  const checkoutButtonContainer = document.createElement('div');
+  checkoutButtonContainer.classList.add('negotiable-quote__checkout-button-container');
+
+  // Function for rendering or re-rendering the checkout button
+  const renderCheckoutButton = (_context, checkoutEnabled = false) => {
+    if (!quoteId) return;
+
+    UI.render(Button, {
+      children: placeholders?.Cart?.PriceSummary?.checkout,
+      disabled: !checkoutEnabled,
+      onClick: () => {
+        window.location.href = `/b2b/quote-checkout?quoteId=${quoteId}`;
+      },
+    })(checkoutButtonContainer);
+  };
+
   if (quoteId) {
     block.classList.add('negotiable-quote__manage');
     block.setAttribute('data-quote-view', 'manage');
     await negotiableQuoteRenderer.render(ManageNegotiableQuote, {
       slots: {
         Footer: (ctx) => {
-          const checkoutButtonContainer = document.createElement('div');
-          checkoutButtonContainer.classList.add('negotiable-quote__checkout-button-container');
           ctx.appendChild(checkoutButtonContainer);
-
-          ctx.onChange((next) => {
-            const enabled = next.quoteData?.canCheckout;
-
-            UI.render(Button, {
-              children: placeholders?.Cart?.PriceSummary?.checkout,
-              disabled: !enabled,
-              onClick: () => {
-                window.location.href = `/b2b/quote-checkout?quoteId=${quoteId}`;
-              },
-            })(checkoutButtonContainer);
-          });
+          const enabled = ctx.quoteData?.canCheckout;
+          renderCheckoutButton(ctx, enabled);
         },
         ShippingInformation: (ctx) => {
           const shippingInformation = document.createElement('div');
@@ -254,6 +259,21 @@ export default async function decorate(block) {
       showPagination: true,
     })(block);
   }
+
+  // On quote item removed disable checkout button
+  events.on('quote-management/quote-items-removed', ({ quote }) => {
+    renderCheckoutButton(quote, false);
+  });
+
+  // On quote item quantity updated disable checkout button
+  events.on('quote-management/quantities-updated', ({ quote }) => {
+    renderCheckoutButton(quote, false);
+  });
+
+  // On shipping address selected disable checkout button
+  events.on('quote-management/shipping-address-set', ({ quote }) => {
+    renderCheckoutButton(quote, false);
+  });
 
   // Listen for changes to the company context (e.g. when user switches companies).
   events.on('companyContext/changed', () => {

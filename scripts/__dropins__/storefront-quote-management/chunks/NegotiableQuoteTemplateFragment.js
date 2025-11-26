@@ -185,6 +185,12 @@ const e=`
       }
       telephone
     }
+    reference_document_links {
+      link_id
+      document_name
+      document_identifier
+      reference_document_url
+    }
   }
 `;export{e as N};
 //# sourceMappingURL=NegotiableQuoteTemplateFragment.js.map

@@ -9,7 +9,6 @@ export interface ManageNegotiableQuoteTemplateProps extends Omit<HTMLAttributes<
     details?: VNode;
     actionBar?: VNode;
     referenceDocuments?: VNode;
-    referenceDocumentsTitle?: VNode;
     itemsTable: VNode;
     commentsTitle: VNode;
     comments: VNode;

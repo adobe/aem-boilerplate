@@ -314,6 +314,17 @@ export declare const mockQuoteTemplateData: {
         };
         telephone: string;
     }[];
+    reference_document_links: ({
+        link_id: string;
+        document_name: string;
+        document_identifier: string;
+        reference_document_url: string;
+    } | {
+        link_id: string;
+        document_name: string;
+        reference_document_url: string;
+        document_identifier?: undefined;
+    })[];
 };
 export declare const mockMinimalQuoteTemplateData: {
     template_id: string;
@@ -636,6 +647,17 @@ export declare const mockSubmittedQuoteTemplateData: {
         };
         telephone: string;
     }[];
+    reference_document_links: ({
+        link_id: string;
+        document_name: string;
+        document_identifier: string;
+        reference_document_url: string;
+    } | {
+        link_id: string;
+        document_name: string;
+        reference_document_url: string;
+        document_identifier?: undefined;
+    })[];
 };
 export declare const mockInReviewQuoteTemplateData: {
     template_id: string;
@@ -945,6 +967,17 @@ export declare const mockInReviewQuoteTemplateData: {
         };
         telephone: string;
     }[];
+    reference_document_links: ({
+        link_id: string;
+        document_name: string;
+        document_identifier: string;
+        reference_document_url: string;
+    } | {
+        link_id: string;
+        document_name: string;
+        reference_document_url: string;
+        document_identifier?: undefined;
+    })[];
 };
 export declare const mockClosedQuoteTemplateData: {
     template_id: string;
@@ -1254,6 +1287,17 @@ export declare const mockClosedQuoteTemplateData: {
         };
         telephone: string;
     }[];
+    reference_document_links: ({
+        link_id: string;
+        document_name: string;
+        document_identifier: string;
+        reference_document_url: string;
+    } | {
+        link_id: string;
+        document_name: string;
+        reference_document_url: string;
+        document_identifier?: undefined;
+    })[];
 };
 export declare const mockInactiveQuoteTemplateData: {
     template_id: string;
@@ -1563,6 +1607,17 @@ export declare const mockInactiveQuoteTemplateData: {
         };
         telephone: string;
     }[];
+    reference_document_links: ({
+        link_id: string;
+        document_name: string;
+        document_identifier: string;
+        reference_document_url: string;
+    } | {
+        link_id: string;
+        document_name: string;
+        reference_document_url: string;
+        document_identifier?: undefined;
+    })[];
 };
 export declare const mockQuoteTemplateListData: {
     items: {

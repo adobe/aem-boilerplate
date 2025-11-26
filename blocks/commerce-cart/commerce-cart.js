@@ -51,6 +51,7 @@ export default async function decorate(block) {
     'checkout-url': checkoutURL = '',
     'enable-updating-product': enableUpdatingProduct = 'false',
     'undo-remove-item': undo = 'false',
+    'minimum-total-for-quote-request': minimumTotalForQuoteRequest = '0',
   } = readBlockConfig(block);
 
   const placeholders = await fetchPlaceholders();
@@ -192,7 +193,10 @@ export default async function decorate(block) {
 
   // Render (or re-render) request quote button into an element
   const renderRequestQuoteButton = (element) => {
-    const { dataset: { cartId, canRequestQuote } } = element;
+    const { dataset: { cartId, canRequestQuote, cartSubtotal } } = element;
+
+    // Convert the minimum total for quote request to a number or return 0 if it's not a number
+    const minimumTotalNumberForQuoteRequest = parseInt(minimumTotalForQuoteRequest, 10) || 0;
 
     if (!canRequestQuote) {
       element.setAttribute('hidden', '');
@@ -201,14 +205,24 @@ export default async function decorate(block) {
 
     element.removeAttribute('hidden');
 
+    // Button is disabled is there is no cartId or the cart subtotal
+    // is less than the minimum total for quote request
+    const isDisabled = !cartId || cartSubtotal < minimumTotalNumberForQuoteRequest;
+
+    if (isDisabled) {
+      element.setAttribute('title', (placeholders?.NegotiableQuote?.Request?.Button?.insufficientTotalMessage || '').replace('{count}', minimumTotalNumberForQuoteRequest));
+    } else {
+      element.removeAttribute('title');
+    }
+
     UI.render(Button, {
-      children: placeholders?.Global?.CartRequestQuote || 'Request a Quote',
+      children: placeholders?.NegotiableQuote?.Request?.Button.label || 'Request Quote',
       variant: 'secondary',
       size: 'medium',
       onClick: () => {
         handleRequestQuoteButtonClick(cartId);
       },
-      disabled: !cartId,
+      disabled: isDisabled,
       className: 'cart__request-quote-button',
     })(element);
   };
@@ -350,6 +364,8 @@ export default async function decorate(block) {
   events.on(
     'cart/data',
     (cartData) => {
+      const cartSubtotal = cartData?.subtotal?.excludingTax?.value || 0;
+      requestQuoteButtonContainer.dataset.cartSubtotal = cartSubtotal;
       requestQuoteButtonContainer.dataset.cartId = cartData?.id;
       renderRequestQuoteButton(requestQuoteButtonContainer);
 

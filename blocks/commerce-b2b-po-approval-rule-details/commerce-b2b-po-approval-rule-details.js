@@ -68,6 +68,11 @@ export default async function decorate(block) {
     await renderApprovalRuleDetails(block, updatedPermissions);
   });
 
+  // Handle company switching (context changing) during interaction
+  events.on('companyContext/changed', async () => {
+    redirectToApprovalRulesList();
+  });
+
   // Handle logout during interaction
   events.on('authenticated', (isAuthenticated) => {
     if (!isAuthenticated) redirectToLogin();

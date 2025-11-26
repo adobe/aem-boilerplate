@@ -60,7 +60,7 @@
     "@dropins/storefront-recommendations": "~1.1.1",
     "@dropins/storefront-requisition-list": "1.0.0-beta3",
     "@dropins/storefront-wishlist": "~3.0.0-beta1",
-    "@dropins/storefront-purchase-order": "1.0.0-beta2",
+    "@dropins/storefront-purchase-order": "1.0.0-beta3",
     "@dropins/tools": "1.6.0-beta3"
   }
 }

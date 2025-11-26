@@ -26,10 +26,11 @@ No localStorage keys are used by this block. -->
 
 #### Event Listeners
 
-| Event Name         | Payload                   | Description                                                          | Side Effects                                                                      |
-| ------------------ | ------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `auth/permissions` | `permissions` object      | Listens for permission changes to update block visibility and access | Re-renders the block with updated permissions, shows/hides based on access rights |
-| `authenticated`    | `isAuthenticated` boolean | Listens for authentication status changes                            | Redirects to login page when user becomes unauthenticated                         |
+| Event Name               | Payload                   | Description                                                          | Side Effects                                                                      |
+|--------------------------| ------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `auth/permissions`       | `permissions` object      | Listens for permission changes to update block visibility and access | Re-renders the block with updated permissions, shows/hides based on access rights |
+| `companyContext/changed` | –                         | Listens for company context switching events                         | Redirects to approval rules list page when company context changes                |
+| `authenticated`          | `isAuthenticated` boolean | Listens for authentication status changes                            | Redirects to login page when user becomes unauthenticated                         |
 
 <!-- #### Event Emitters
 
@@ -63,8 +64,9 @@ No events are emitted by this block. -->
 10. **Form Interaction**: User can fill out or modify approval rule details (name, conditions, approvers, etc.)
 11. **Form Submission**: User can save changes (creating new rule or updating existing rule)
 12. **List Navigation**: Provides route to return to approval rules list at configured `CUSTOMER_PO_RULES_PATH` (`/customer/approval-rules`) (triggered on save or cancel)
-13. **Permission Updates**: Listens for permission changes and re-renders accordingly
-14. **Logout Handling**: Redirects to login page if user logs out during interaction
+13. **Company Context Handling**: Listens for company context changes and redirects to approval rules list when company is switched
+14. **Permission Updates**: Listens for permission changes and re-renders accordingly
+15. **Logout Handling**: Redirects to login page if user logs out during interaction
 
 ### Error Handling
 

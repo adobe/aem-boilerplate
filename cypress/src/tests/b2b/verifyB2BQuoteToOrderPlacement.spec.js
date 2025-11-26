@@ -77,7 +77,7 @@ describe("Verify B2B Quote feature", () => {
 
         // Request a quote
         cy.contains("Request a Quote").click();
-      
+
         // Needs to be imlemented
         // Submit quote
         // Approve quote using admin rest api

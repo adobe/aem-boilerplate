@@ -1,12 +1,12 @@
-import { 
-  assertCompanyRegistrationForm, 
+import {
+  assertCompanyRegistrationForm,
   assertCompanyRegistrationSuccess,
   assertHomePageLoaded,
   assertAccountSectionAccessible
 } from "../../assertions";
 import { COMPANY_CREATE_PATH } from "../../fields";
-import { 
-  fillCompanyRegistrationForm, 
+import {
+  fillCompanyRegistrationForm,
   submitCompanyRegistrationForm,
   navigateToCompanyRegistration,
   signUpUser
@@ -20,54 +20,54 @@ describe("USF-2528: Company Registration", () => {
   beforeEach(() => {
     cy.clearCookies();
     cy.clearLocalStorage();
-    
+
     // Clear any existing intercepts
     cy.intercept('**/graphql').as('defaultGraphQL');
   });
 
   it("USF-2789: Verify company registration via navigation menu", () => {
     cy.visit("/");
-    
+
     assertHomePageLoaded();
     assertAccountSectionAccessible();
-    
+
     navigateToCompanyRegistration();
-    
+
     testCompanyRegistrationFlow();
   });
 
   it("USF-2789: Verify company registration via direct URL", () => {
     cy.visit(COMPANY_CREATE_PATH);
-    
+
     testCompanyRegistrationFlow();
   });
 
   it("USF-2789: Verify company registration for authenticated non-company user", () => {
     createAuthenticatedUser();
-    
+
     cy.visit("/");
     navigateToCompanyRegistration();
 
     cy.get('body').should('not.contain', 'Page Not Found');
     cy.get('body').should('not.contain', '404');
-    
+
     cy.url().should('include', COMPANY_CREATE_PATH);
     assertCompanyRegistrationForm();
   });
 
   it("USF-2790: Verify redirect to login from navigation menu for unauthenticated users when configuration disabled", () => {
     mockDisabledConfiguration();
-    
+
     cy.visit("/");
-    
+
     testCompanyRegistrationRedirect('login');
   });
 
   it("USF-2790: Verify redirect to login from direct url for unauthenticated users when configuration disabled", () => {
     mockDisabledConfiguration();
-    
+
     cy.visit(COMPANY_CREATE_PATH);
-    
+
     cy.url().should('include', '/customer/login');
   });
 
@@ -90,12 +90,12 @@ describe("USF-2528: Company Registration", () => {
         req.continue();
       }
     }).as('configDisabledWithRealAuth');
-    
+
     createAuthenticatedUser();
-    
+
     cy.visit("/");
     navigateToCompanyRegistration();
-    
+
     cy.url().should('include', '/customer/account');
   });
 
@@ -106,11 +106,11 @@ const testCompanyRegistrationFlow = () => {
 
   cy.url().should('include', COMPANY_CREATE_PATH);
   cy.title().should('not.be.empty');
-  
+
   // Ensure page loaded correctly (no 404 errors)
   cy.get('body').should('not.contain', 'Page Not Found');
   cy.get('body').should('not.contain', '404');
-  
+
   cy.get('.commerce-company-create-container', { timeout: 8000 }).should('exist');
   cy.get('.company-registration-container', { timeout: 8000 }).should('exist');
   cy.get('.company-form', { timeout: 8000 }).should('exist');
@@ -128,9 +128,9 @@ const testCompanyRegistrationFlow = () => {
 const testCompanyRegistrationRedirect = (expectedDestination) => {
 
   cy.visit(COMPANY_CREATE_PATH);
-  
+
   cy.url({ timeout: 3000 });
-  
+
   // Verify the expected redirect destination
   switch (expectedDestination) {
     case 'form':
@@ -138,15 +138,15 @@ const testCompanyRegistrationRedirect = (expectedDestination) => {
       cy.get('.company-registration-container', { timeout: 5000 }).should('exist');
       cy.get('.company-form', { timeout: 5000 }).should('exist');
       break;
-      
+
     case 'login':
       cy.url().should('include', '/customer/login');
       break;
-      
+
     case 'account':
       cy.url().should('include', '/customer/account');
       break;
-      
+
     default:
       throw new Error(`Unknown expected destination: ${expectedDestination}`);
   }
@@ -198,7 +198,7 @@ const mockDisabledConfiguration = () => {
       });
     }
   }).as('disabledConfigMock');
-  
+
   cy.intercept('GET', '**/graphql*', {
     statusCode: 200,
     body: {

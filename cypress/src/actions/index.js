@@ -1,4 +1,5 @@
 import * as fields from '../fields/index';
+import * as selectors from "../fields";
 
 export const setGuestEmail = (customerEmail) => {
   cy.get(fields.shippingFormGuestEmail).clear().type(customerEmail);
@@ -436,8 +437,8 @@ export const logout = (texts) => {
   cy.contains(fields.poLogoutButton, texts.logout).click();
 };
 
-export const addProductToCart = (times = 1, isCheep = false, urls, texts) => {
-  cy.visit(!isCheep ? urls.product : urls.cheepProduct);
+export const addProductToCart = (times = 1, isCheap = false, urls, texts) => {
+  cy.visit(!isCheap ? urls.product : urls.cheapProduct);
   cy.wait(2000);
   for (let i = 0; i < times; i++) {
     cy.contains(fields.poAddToCartButton, texts.addToCart).click();
@@ -528,11 +529,11 @@ export const verifyPOConfirmation = () => {
 
 export const createPurchaseOrder = (
   itemCount = 2,
-  isCheep = false,
+  isCheap = false,
   urls,
   texts
 ) => {
-  addProductToCart(itemCount, isCheep, urls, texts);
+  addProductToCart(itemCount, isCheap, urls, texts);
   proceedToCheckout(texts);
   completeCheckout(urls, texts);
   verifyPOConfirmation();
@@ -574,5 +575,27 @@ export const fillApprovalRuleForm = (rule, texts) => {
     .click();
   cy.wait(1500);
   cy.get('body').type('{esc}');
+  cy.wait(1500);
+};
+
+export const deleteApprovalRule = (ruleName) => {
+  const getRowByName = (name) => {
+    return cy.get(selectors.poTableRow).filter(`:has(:contains("${name}"))`);
+  };
+
+  getRowByName(ruleName).then(($row) => {
+    cy.wrap($row).within(() => {
+      cy.contains("button", "Show").click();
+    });
+  });
+
+  cy.wait(2000);
+
+  cy.contains("button", "Delete").click();
+
+  cy.wait(2000);
+  
+  getRowByName(ruleName).should("not.exist");
+
   cy.wait(1500);
 };

@@ -22,6 +22,10 @@ const redirectToAccountDashboard = () => {
   window.location.href = rootLink(CUSTOMER_ACCOUNT_PATH);
 };
 
+const redirectToApprovalRulesList = () => {
+  window.location.href = rootLink(CUSTOMER_PO_RULES_PATH);
+};
+
 /**
  * Initializes and decorates the Approval Rule Form block
  * Redirects unauthenticated users and handles permission updates
@@ -57,6 +61,11 @@ export default async function decorate(block) {
   // React to permission updates
   events.on('auth/permissions', async (updatedPermissions) => {
     await renderApprovalRuleForm(block, updatedPermissions);
+  });
+
+  // Handle company switching (context changing) during interaction
+  events.on('companyContext/changed', async () => {
+    redirectToApprovalRulesList();
   });
 
   // Handle logout during interaction

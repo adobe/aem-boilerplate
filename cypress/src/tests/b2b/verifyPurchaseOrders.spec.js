@@ -390,18 +390,13 @@ describe('B2B Purchase Orders', () => {
 
       cy.logToTerminal('📄 Navigating to Approval Rules page');
       cy.visit(urls.approvalRules);
-
       cy.contains(poLabels.approvalRulesHeader).should('be.visible');
 
       cy.logToTerminal('🗑️ Deleting first approval rule');
-      cy.contains(selectors.poShowButton, poLabels.show).first().click();
-      cy.contains(selectors.poShowButton, 'Delete').first().click();
-
-      cy.wait(1000);
+      actions.deleteApprovalRule(poApprovalRules.rule1Edited.name);
 
       cy.logToTerminal('🗑️ Deleting second approval rule');
-      cy.contains(selectors.poShowButton, 'Delete').first().click();
-      cy.contains(selectors.poShowButton, poLabels.show).should('not.exist');
+      actions.deleteApprovalRule(poApprovalRules.rule2Edited.name);
 
       cy.logToTerminal(
         '✅ B2B Purchase Orders E2E workflow execution completed'

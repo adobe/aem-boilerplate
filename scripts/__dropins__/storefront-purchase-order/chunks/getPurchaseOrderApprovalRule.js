@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{f as u,h as i}from"./fetch-graphql.js";import{t as n}from"./transform-purchase-order-approval-rule.js";const c=`
+import{f as i,h as c,a as d}from"./fetch-graphql.js";import"@dropins/tools/lib.js";import{t as n}from"./transform-purchase-order-approval-rule.js";const l=`
   query GET_PURCHASE_ORDER_APPROVAL_RULE($uid: ID!) {
     customer {
       purchase_order_approval_rule(uid: $uid) {
@@ -41,5 +41,5 @@ import{f as u,h as i}from"./fetch-graphql.js";import{t as n}from"./transform-pur
       }
     }
   }
-`,_=async e=>u(c,{variables:{uid:e}}).then(r=>{var t,a;const o=(a=(t=r==null?void 0:r.data)==null?void 0:t.customer)==null?void 0:a.purchase_order_approval_rule;return n(o)}).catch(i);export{_ as g};
+`,h=async o=>i(l,{variables:{uid:o}}).then(r=>{var t,a,e;(t=r.errors)!=null&&t.length&&c(r.errors);const u=(e=(a=r==null?void 0:r.data)==null?void 0:a.customer)==null?void 0:e.purchase_order_approval_rule;return n(u)}).catch(d);export{h as g};
 //# sourceMappingURL=getPurchaseOrderApprovalRule.js.map

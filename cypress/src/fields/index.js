@@ -285,3 +285,4 @@ export const poRuleTypeSelect = 'select[name="ruleType"]';
 export const poRuleConditionSelect = 'select[name="ruleCondition"]';
 export const poRuleValueInput = 'input[name="ruleValue"]';
 export const poMultiSelect = '.dropin-multi-select';
+export const poTableRow = '.b2b-purchase-order-purchase-orders-table tr.dropin-table__body__row';

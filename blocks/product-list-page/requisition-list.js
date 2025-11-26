@@ -52,7 +52,6 @@ function createRequisitionListRenderer(labels) {
         const url = rootLink(`/products/${product.urlKey}/${product.sku}`.toLowerCase());
         if (product.typename !== 'SimpleProductView') {
           sessionStorage.setItem('requisitionListRedirect', JSON.stringify({
-            timestamp: Date.now(),
             message: labels.Global?.SelectProductOptionsBeforeRequisition || 'Please select product options before adding it to a requisition list',
           }));
           window.location.href = url;

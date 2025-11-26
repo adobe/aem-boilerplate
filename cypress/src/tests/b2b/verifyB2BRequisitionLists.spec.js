@@ -164,6 +164,102 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" }, () => {
       cy.contains("Apparel").should("be.visible").click();
     });
 
+    describe("Configurable Product Option Validation", () => {
+      // Ignore the expected redirect error
+      cy.on('uncaught:exception', (err) => {
+        if (err.message.includes('Redirecting to product page')) {
+          return false;
+        }
+      });
+
+      // Navigate to search page to find configurable products
+      cy.visit('/search?q=configurable');
+      cy.wait(2000);
+
+      // Click requisition list on first configurable product in search results
+      cy.get(fields.requisitionListSelector).first().click();
+
+      // Should redirect to PDP
+      cy.url().should("include", "/products/");
+      cy.wait(2000);
+
+      // Should show validation message on PDP from the redirection
+      cy.get(fields.productDetailsAlert)
+        .should("be.visible")
+        .contains("Please select product options before adding it to a requisition list");
+
+      // Click requisition list again in PDP, should show validation when no options selected on PDP
+      cy.get(fields.requisitionListSelector).click();
+      cy.get(fields.productDetailsAlert)
+        .should("be.visible")
+        .contains("Please select all required product options before adding to a requisition list.");
+
+      // Select all available options
+      cy.get('.product-details__options select').each(($select) => {
+        cy.wrap($select).select(1);
+        cy.wait(500);
+      });
+
+      cy.get(fields.productDetailsAlert).should("not.be.visible");
+
+      // Add configurable product to requisition list
+      cy.get(fields.requisitionListSelector).click();
+      cy.get(fields.requisitionListSelectorAvailableListFirstChild).click();
+      cy.get(fields.requisitionListFormActionsButton).click();
+
+      cy.get(fields.requisitionListAlert)
+        .should("be.visible")
+        .contains("Item(s) successfully added");
+    });
+
+    describe("Bundle Product Option Validation", () => {
+      // Ignore the expected redirect error
+      cy.on('uncaught:exception', (err) => {
+        if (err.message.includes('Redirecting to product page')) {
+          return false;
+        }
+      });
+
+      // Navigate to search page to find bundle products
+      cy.visit('/search?q=bundle');
+      cy.wait(2000);
+
+      // Click requisition list on first bundle product in search results
+      cy.get(fields.requisitionListSelector).last().click();
+
+      // Should redirect to PDP
+      cy.url().should("include", "/products/");
+      cy.wait(2000);
+
+      // Should show validation message on PDP from the redirection
+      cy.get(fields.productDetailsAlert)
+        .should("be.visible")
+        .contains("Please select product options before adding it to a requisition list");
+
+      // Click requisition list again in PDP, should show validation when required options not selected
+      cy.get(fields.requisitionListSelector).click();
+      cy.get(fields.productDetailsAlert)
+        .should("be.visible")
+        .contains("Please select all required product options before adding to a requisition list.");
+
+      // Select required options
+      cy.get('.product-details__options select').each(($select) => {
+        cy.wrap($select).select(1);
+        cy.wait(500);
+      });
+
+      cy.get(fields.productDetailsAlert).should("not.be.visible");
+
+      // Add bundle product to requisition list
+      cy.get(fields.requisitionListSelector).click();
+      cy.get(fields.requisitionListSelectorAvailableListFirstChild).click();
+      cy.get(fields.requisitionListFormActionsButton).click();
+
+      cy.get(fields.requisitionListAlert)
+        .should("be.visible")
+        .contains("Item(s) successfully added");
+    });
+
     // Go to customer account page
     cy.visit("/customer/account");
 
@@ -232,7 +328,7 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" }, () => {
       cy.get(fields.requisitionListViewBatchActionsToggle).click();
       cy.get(fields.requisitionListViewBatchActionsCountBadge).should(
         "have.text",
-        "2"
+        "4"
       );
 
       cy.get(fields.requisitionListViewBulkActionsAddToCartButton).click();
@@ -245,7 +341,7 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" }, () => {
       // Cypress will retry the assertion until it passes or times out
       cy.get(fields.miniCartButton, { timeout: 30000 })
         .should("exist")
-        .and("have.attr", "data-count", "12");
+        .and("have.attr", "data-count", "14");
 
       // 4. Delete all items from the Requisition List
       cy.get(fields.requisitionListViewBatchActionsToggle).click();
@@ -256,7 +352,7 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" }, () => {
       cy.get(fields.requisitionListViewBatchActionsToggle).click();
       cy.get(fields.requisitionListViewBatchActionsCountBadge).should(
         "have.text",
-        "2"
+        "4"
       );
       cy.get(fields.requisitionListViewBulkActionsDeleteButton).click();
       cy.get(fields.requisitionListModalConfirmButton).click();
@@ -267,7 +363,6 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" }, () => {
       cy.get(fields.requisitionListViewDeleteButton).click();
       cy.get(fields.requisitionListModalConfirmButton).click();
       cy.contains("Requisition list deleted successfully.").should("be.visible");
-
 
       cy.url().should("include", "customer/requisition-lists");
       cy.get(fields.requisitionListItemRow).should(

@@ -215,6 +215,7 @@ export const requisitionListViewBulkActionsDeleteButton =
 export const requisitionListViewDeleteButton =
   '[data-testid="delete-list-btn"]';
 export const miniCartButton = ".minicart-wrapper .nav-cart-button";
+export const productDetailsAlert = ".product-details__alert";
 
 export const COMPANY_CREATE_PATH = "/customer/company/create";
 

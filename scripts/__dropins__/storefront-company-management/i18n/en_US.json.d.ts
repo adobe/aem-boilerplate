@@ -174,7 +174,14 @@ declare const _default: {
           "jobTitleRequired": "Job title is required",
           "workPhoneRequired": "Work phone number is required",
           "selectRole": "Select a role",
-          "teamTitleRequired": "Team title is required"
+          "teamTitleRequired": "Team title is required",
+          "firstNameMaxLength": "First name must not exceed 255 characters",
+          "lastNameMaxLength": "Last name must not exceed 255 characters",
+          "emailMaxLength": "Email must not exceed 254 characters",
+          "jobTitleMaxLength": "Job title must not exceed 255 characters",
+          "telephoneMaxLength": "Phone number must not exceed 20 characters",
+          "teamNameMaxLength": "Team title must not exceed 40 characters",
+          "teamDescriptionMaxLength": "Team description must not exceed 1000 characters"
         }
       },
       "messages": {

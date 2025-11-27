@@ -1,5 +1,5 @@
 import { ProductListTableItem } from '../components';
-import { QuoteTemplateCartItem } from '../data/models/negotiable-quote-template-model';
+import { CartItemModel } from '../data/models/negotiable-quote-model';
 
 export interface UseItemsQuotedTemplateReturn {
     dropdownSelections: Record<string, string | undefined>;
@@ -7,7 +7,7 @@ export interface UseItemsQuotedTemplateReturn {
     handleDismissRemoveBanner: () => void;
 }
 export interface UseItemsQuotedTemplateParams {
-    handleRemoveItems: (items: QuoteTemplateCartItem[]) => void;
+    handleRemoveItems: (items: CartItemModel[]) => void;
 }
 /**
  * Custom hook to manage dropdown selections and item actions for quote template items

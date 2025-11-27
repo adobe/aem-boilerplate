@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import"@dropins/tools/event-bus.js";import{f as n,b as s}from"./transform-quote.js";import{s as i}from"./state.js";const u=`
+import"@dropins/tools/event-bus.js";import{f as n,d as s}from"./transform-quote.js";import{s as i}from"./state.js";const u=`
   fragment NegotiableQuoteListFragment on NegotiableQuote {
     uid
     name

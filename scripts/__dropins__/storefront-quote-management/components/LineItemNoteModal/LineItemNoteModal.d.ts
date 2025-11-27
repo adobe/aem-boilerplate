@@ -1,10 +1,10 @@
 import { FunctionComponent, VNode } from 'preact';
 import { HTMLAttributes } from 'preact/compat';
-import { NegotiableQuoteCartItem } from '../../data/models/negotiable-quote-model';
+import { CartItemModel } from '../../data/models/negotiable-quote-model';
 
 export interface LineItemNoteModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
     open: boolean;
-    item: NegotiableQuoteCartItem;
+    item: CartItemModel;
     onClose?: () => void;
     onConfirm: (note: string, quantity: number) => void;
     isSubmitting?: boolean;

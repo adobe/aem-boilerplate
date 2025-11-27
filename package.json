@@ -57,7 +57,7 @@
     "@dropins/storefront-personalization": "~3.0.0-beta1",
     "@dropins/storefront-product-discovery": "~2.1.0",
     "@dropins/storefront-purchase-order": "1.0.0-beta3",
-    "@dropins/storefront-quote-management": "1.0.0-beta2",
+    "@dropins/storefront-quote-management": "1.0.0-beta4",
     "@dropins/storefront-recommendations": "~1.1.1",
     "@dropins/storefront-requisition-list": "1.0.0-beta3",
     "@dropins/storefront-wishlist": "~3.0.0-beta1",

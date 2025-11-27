@@ -1,6 +1,6 @@
 import { ImageProps } from '@dropins/tools/types/elsie/src/components';
 import { SlotProps } from '@dropins/tools/types/elsie/src/lib';
-import { NegotiableQuoteCartItem as NegotiableQuoteItemModel, StoreConfigModel } from '../data/models';
+import { CartItemModel as NegotiableQuoteItemModel, StoreConfigModel } from '../data/models';
 import { SwitchableAttributes } from '../containers/QuoteSummaryList/QuoteSummaryList';
 
 export interface ItemFormatterOptions {

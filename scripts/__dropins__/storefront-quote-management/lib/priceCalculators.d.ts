@@ -1,5 +1,5 @@
 import { PriceProps } from '@dropins/tools/types/elsie/src/components';
-import { NegotiableQuoteCartItem as NegotiableQuoteItemModel, StoreConfigModel } from '../data/models';
+import { CartItemModel as NegotiableQuoteItemModel, StoreConfigModel } from '../data/models';
 
 export interface PriceCalculatorOptions {
     dictionary: Record<string, string>;

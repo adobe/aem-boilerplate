@@ -42,15 +42,32 @@ export declare const mockQuoteTemplateData: {
         attachments?: undefined;
     })[];
     items: ({
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -58,7 +75,15 @@ export declare const mockQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -76,34 +101,70 @@ export declare const mockQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
+        configured_variant?: undefined;
         configurable_options?: undefined;
         bundle_options?: undefined;
     } | {
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
+        };
+        configured_variant: {
+            uid: string;
+            sku: string;
+            stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -111,7 +172,15 @@ export declare const mockQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -129,30 +198,48 @@ export declare const mockQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         configurable_options: {
             option_label: string;
             value_label: string;
         }[];
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: never[];
         bundle_options?: undefined;
     } | {
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -160,7 +247,15 @@ export declare const mockQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -178,6 +273,7 @@ export declare const mockQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         bundle_options: {
             label: string;
             values: {
@@ -195,20 +291,21 @@ export declare const mockQuoteTemplateData: {
         }[];
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
+        configured_variant?: undefined;
         configurable_options?: undefined;
     })[];
     history: ({
@@ -375,15 +472,32 @@ export declare const mockSubmittedQuoteTemplateData: {
         attachments?: undefined;
     })[];
     items: ({
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -391,7 +505,15 @@ export declare const mockSubmittedQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -409,34 +531,70 @@ export declare const mockSubmittedQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
+        configured_variant?: undefined;
         configurable_options?: undefined;
         bundle_options?: undefined;
     } | {
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
+        };
+        configured_variant: {
+            uid: string;
+            sku: string;
+            stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -444,7 +602,15 @@ export declare const mockSubmittedQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -462,30 +628,48 @@ export declare const mockSubmittedQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         configurable_options: {
             option_label: string;
             value_label: string;
         }[];
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: never[];
         bundle_options?: undefined;
     } | {
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -493,7 +677,15 @@ export declare const mockSubmittedQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -511,6 +703,7 @@ export declare const mockSubmittedQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         bundle_options: {
             label: string;
             values: {
@@ -528,20 +721,21 @@ export declare const mockSubmittedQuoteTemplateData: {
         }[];
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
+        configured_variant?: undefined;
         configurable_options?: undefined;
     })[];
     history: ({
@@ -695,15 +889,32 @@ export declare const mockInReviewQuoteTemplateData: {
         attachments?: undefined;
     })[];
     items: ({
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -711,7 +922,15 @@ export declare const mockInReviewQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -729,34 +948,70 @@ export declare const mockInReviewQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
+        configured_variant?: undefined;
         configurable_options?: undefined;
         bundle_options?: undefined;
     } | {
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
+        };
+        configured_variant: {
+            uid: string;
+            sku: string;
+            stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -764,7 +1019,15 @@ export declare const mockInReviewQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -782,30 +1045,48 @@ export declare const mockInReviewQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         configurable_options: {
             option_label: string;
             value_label: string;
         }[];
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: never[];
         bundle_options?: undefined;
     } | {
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -813,7 +1094,15 @@ export declare const mockInReviewQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -831,6 +1120,7 @@ export declare const mockInReviewQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         bundle_options: {
             label: string;
             values: {
@@ -848,20 +1138,21 @@ export declare const mockInReviewQuoteTemplateData: {
         }[];
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
+        configured_variant?: undefined;
         configurable_options?: undefined;
     })[];
     history: ({
@@ -1015,15 +1306,32 @@ export declare const mockClosedQuoteTemplateData: {
         attachments?: undefined;
     })[];
     items: ({
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -1031,7 +1339,15 @@ export declare const mockClosedQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -1049,34 +1365,70 @@ export declare const mockClosedQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
+        configured_variant?: undefined;
         configurable_options?: undefined;
         bundle_options?: undefined;
     } | {
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
+        };
+        configured_variant: {
+            uid: string;
+            sku: string;
+            stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -1084,7 +1436,15 @@ export declare const mockClosedQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -1102,30 +1462,48 @@ export declare const mockClosedQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         configurable_options: {
             option_label: string;
             value_label: string;
         }[];
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: never[];
         bundle_options?: undefined;
     } | {
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -1133,7 +1511,15 @@ export declare const mockClosedQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -1151,6 +1537,7 @@ export declare const mockClosedQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         bundle_options: {
             label: string;
             values: {
@@ -1168,20 +1555,21 @@ export declare const mockClosedQuoteTemplateData: {
         }[];
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
+        configured_variant?: undefined;
         configurable_options?: undefined;
     })[];
     history: ({
@@ -1335,15 +1723,32 @@ export declare const mockInactiveQuoteTemplateData: {
         attachments?: undefined;
     })[];
     items: ({
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -1351,7 +1756,15 @@ export declare const mockInactiveQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -1369,34 +1782,70 @@ export declare const mockInactiveQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
+        configured_variant?: undefined;
         configurable_options?: undefined;
         bundle_options?: undefined;
     } | {
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
+        };
+        configured_variant: {
+            uid: string;
+            sku: string;
+            stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -1404,7 +1853,15 @@ export declare const mockInactiveQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -1422,30 +1879,48 @@ export declare const mockInactiveQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         configurable_options: {
             option_label: string;
             value_label: string;
         }[];
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: never[];
         bundle_options?: undefined;
     } | {
+        __typename: string;
         uid: string;
         product: {
             name: string;
             sku: string;
             uid: string;
             stock_status: string;
+            thumbnail: {
+                url: string;
+                label: string;
+            };
+            price_range: {
+                maximum_price: {
+                    regular_price: {
+                        value: number;
+                        currency: string;
+                    };
+                };
+            };
         };
         prices: {
             price: {
+                currency: string;
+                value: number;
+            };
+            price_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -1453,7 +1928,15 @@ export declare const mockInactiveQuoteTemplateData: {
                 currency: string;
                 value: number;
             };
+            original_row_total: {
+                currency: string;
+                value: number;
+            };
             row_total: {
+                currency: string;
+                value: number;
+            };
+            row_total_including_tax: {
                 currency: string;
                 value: number;
             };
@@ -1471,6 +1954,7 @@ export declare const mockInactiveQuoteTemplateData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         bundle_options: {
             label: string;
             values: {
@@ -1488,20 +1972,21 @@ export declare const mockInactiveQuoteTemplateData: {
         }[];
         note_from_buyer: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
         note_from_seller: {
             created_at: string;
-            creator_id: string;
-            creator_type: string;
-            negotiable_quote_template_item_uid: string;
+            creator_id: number;
+            creator_type: number;
+            negotiable_quote_item_uid: string;
             note: string;
             note_uid: string;
         }[];
+        configured_variant?: undefined;
         configurable_options?: undefined;
     })[];
     history: ({

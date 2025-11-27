@@ -82,7 +82,9 @@ declare const _default: {
           "errorHeading": "Error",
           "errorFallback": "Failed to duplicate quote",
           "successHeading": "Success",
-          "successDescription": "Quote has been successfully duplicated. You will be redirected to the new quote shortly."
+          "successDescription": "Quote has been successfully duplicated. You will be redirected to the new quote shortly.",
+          "outOfStockWarningHeading": "Alert",
+          "outOfStockWarningMessage": "Some items were skipped during duplication due to errors."
         },
         "close": {
           "message": "Are you sure you want to close this quote?",
@@ -267,6 +269,7 @@ declare const _default: {
       "createdLabel": "Created:",
       "salesRepLabel": "Sales Rep:",
       "expiresLabel": "Expires:",
+      "templateIdLabel": "Template ID:",
       "referenceDocuments": {
         "title": "Reference Documents",
         "add": "Add",
@@ -282,11 +285,15 @@ declare const _default: {
           "updateButton": "Update Document",
           "cancelButton": "Cancel",
           "documentNameRequired": "Document name is required",
+          "documentIdentifierRequired": "Document identifier is required",
           "referenceUrlRequired": "Reference URL is required",
           "invalidUrl": "Please enter a valid URL",
           "errorHeading": "Error",
           "duplicateUidError": "A document with this identifier already exists in the template. Please use a different identifier."
         }
+      },
+      "shippingInformation": {
+        "title": "Shipping Information"
       },
       "comments": {
         "title": "Comments"
@@ -383,7 +390,23 @@ declare const _default: {
       },
       "lineItemNoteModal": {
         "errorHeading": "Error"
-      }
+      },
+      "rename": {
+        "title": "Rename Quote Template",
+        "templateNameLabel": "Template name",
+        "reasonLabel": "Reason for change",
+        "renameButton": "Rename",
+        "cancelButton": "Cancel",
+        "errorHeading": "Error",
+        "templateNameRequired": "Template name is required",
+        "errorDefault": "Failed to rename quote template. Please try again.",
+        "successHeading": "Success",
+        "successMessage": "Quote template renamed successfully!"
+      },
+      "unsavedChangesWarningHeading": "Unsaved Changes",
+      "unsavedChangesWarningMessage": "The quote template must be submitted for review to save the changes.",
+      "shippingAddressWarningHeading": "No Shipping Address",
+      "shippingAddressWarningMessage": "No shipping address has been set for this quote template."
     }
   },
   "historyLog": {

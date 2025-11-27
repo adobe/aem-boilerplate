@@ -1,4 +1,4 @@
-import { Currency, ItemNote, PaginationInfo, ShippingAddress, ConfigurableOption, BundleOption } from './negotiable-quote-model';
+import { Currency, PaginationInfo, ShippingAddress, NegotiableQuoteHistoryEntry, CartItemModel } from './negotiable-quote-model';
 
 export interface NegotiableQuoteTemplateModel {
     id: string;
@@ -14,7 +14,7 @@ export interface NegotiableQuoteTemplateModel {
         lastname: string;
     };
     comments?: QuoteTemplateComment[];
-    history?: QuoteTemplateHistoryEntry[];
+    history?: NegotiableQuoteHistoryEntry[];
     prices: {
         subtotalExcludingTax?: Currency;
         subtotalIncludingTax?: Currency;
@@ -25,7 +25,7 @@ export interface NegotiableQuoteTemplateModel {
             label: string;
         }[];
     };
-    items: QuoteTemplateCartItem[];
+    items: CartItemModel[];
     shippingAddresses?: ShippingAddress[];
     referenceDocuments?: {
         uid: string;
@@ -61,32 +61,6 @@ export declare enum NegotiableQuoteTemplateStatus {
     CANCELED = "Canceled",
     EXPIRED = "Expired"
 }
-export interface QuoteTemplateCartItem {
-    uid?: string;
-    product: {
-        uid: string;
-        sku: string;
-        name: string;
-    };
-    quantity: number;
-    prices: {
-        originalItemPrice: Currency;
-        rowTotal: Currency;
-    };
-    catalogDiscount?: {
-        amountOff: number;
-        percentOff: number;
-    };
-    discounts?: {
-        label: string;
-        value: string;
-        amount: Currency;
-    }[];
-    noteFromBuyer?: ItemNote[];
-    noteFromSeller?: ItemNote[];
-    configurableOptions?: ConfigurableOption[];
-    bundleOptions?: BundleOption[];
-}
 export interface QuoteTemplateComment {
     uid: string;
     createdAt: string;
@@ -99,16 +73,6 @@ export interface QuoteTemplateComment {
         name: string;
         url: string;
     }[];
-}
-export interface QuoteTemplateHistoryEntry {
-    uid: string;
-    createdAt: string;
-    author: {
-        firstname: string;
-        lastname: string;
-    };
-    changeType: string;
-    changes: any;
 }
 export interface NegotiableQuoteTemplatesListModel {
     items: NegotiableQuoteTemplateListEntry[];

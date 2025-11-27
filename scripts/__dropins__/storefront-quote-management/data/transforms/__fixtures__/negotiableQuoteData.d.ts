@@ -198,6 +198,7 @@ export declare const mockQuoteData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         note_from_buyer: {
             created_at: string;
             creator_id: number;
@@ -282,6 +283,7 @@ export declare const mockQuoteData: {
             discounts: never[];
         };
         quantity: number;
+        is_available: boolean;
         configurable_options: {
             option_label: string;
             value_label: string;
@@ -296,6 +298,7 @@ export declare const mockQuoteData: {
         }[];
         note_from_seller: never[];
         configured_variant: {
+            stock_status: string;
             thumbnail: {
                 label: string;
                 url: string;
@@ -400,6 +403,7 @@ export declare const mockQuoteData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         bundle_options: {
             label: string;
             values: {
@@ -511,6 +515,7 @@ export declare const mockQuoteData: {
             }[];
         };
         quantity: number;
+        is_available: boolean;
         links: {
             sort_order: number;
             title: string;

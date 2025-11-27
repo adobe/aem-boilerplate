@@ -2,20 +2,25 @@ import { HTMLAttributes } from 'preact/compat';
 import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { NegotiableQuoteTemplateModel } from '../../data/models/negotiable-quote-template-model';
 import { ReferenceDocument } from '../../components';
+import { ReferenceDocumentLinkInput } from '../../api';
 
 export interface ManageNegotiableQuoteTemplateProps extends HTMLAttributes<HTMLDivElement> {
     onActionsButtonClick?: (action: string) => void;
     onSendForReview?: (params: {
         templateData?: NegotiableQuoteTemplateModel;
+        name?: string;
         comment?: string;
+        referenceDocumentLinks?: ReferenceDocumentLinkInput[];
     }) => void;
     slots?: {
         TemplateName?: SlotProps<{
             templateName?: string;
             templateData?: NegotiableQuoteTemplateModel;
+            templateDisplayName?: string;
+            isRenameDisabled?: boolean;
         }>;
-        TemplateId?: SlotProps<{
-            templateId?: string;
+        TemplateStatus?: SlotProps<{
+            templateStatus?: string;
             templateData?: NegotiableQuoteTemplateModel;
         }>;
         Banner?: SlotProps<{
@@ -66,6 +71,18 @@ export interface ManageNegotiableQuoteTemplateProps extends HTMLAttributes<HTMLD
             isSubmitting?: boolean;
             referenceDocuments?: ReferenceDocument[];
             hasUnsavedChanges?: boolean;
+            handleSendForReview: () => void;
+            showAcceptButton?: boolean;
+            renameTemplateName?: string;
+            renameReason?: string;
+        }>;
+        ShippingInformationTitle?: SlotProps<{
+            templateData?: NegotiableQuoteTemplateModel;
+        }>;
+        ShippingInformation?: SlotProps<{
+            templateData?: NegotiableQuoteTemplateModel;
+            loading?: boolean;
+            setLoading?: (loading: boolean) => void;
         }>;
     };
 }

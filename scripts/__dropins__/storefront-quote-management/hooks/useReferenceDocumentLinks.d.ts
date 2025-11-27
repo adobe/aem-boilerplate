@@ -20,14 +20,14 @@ export interface UseReferenceDocumentLinksReturn {
      */
     getReferenceDocumentLinks: () => ReferenceDocumentLinkInput[];
     /**
-     * Indicates if there are unsaved changes (documents in local state not in template data).
+     * Indicates if there are unsaved changes (new documents, removed documents, or modified documents).
      */
     hasUnsavedChanges: boolean;
 }
 /**
  * Custom hook to manage reference document links logic.
  * Handles document matching, filtering new documents, transformation to API format,
- * and detection of unsaved changes.
+ * and detection of unsaved changes (new, removed, or modified documents).
  * Note: getReferenceDocumentLinks() returns all local reference documents, not just new ones.
  */
 export declare const useReferenceDocumentLinks: (params: UseReferenceDocumentLinksParams) => UseReferenceDocumentLinksReturn;

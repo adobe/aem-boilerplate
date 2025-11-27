@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'preact/compat';
 import { ImageProps } from '@dropins/tools/types/elsie/src/components';
 import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
-import { NegotiableQuoteCartItem as NegotiableQuoteItemModel } from '../../data/models';
+import { CartItemModel as NegotiableQuoteItemModel } from '../../data/models';
 
 export interface QuoteSummaryListProps extends HTMLAttributes<HTMLDivElement> {
     hideHeading?: boolean;

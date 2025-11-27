@@ -1,8 +1,8 @@
-import { NegotiableQuoteCartItem, NegotiableQuoteModel } from '../negotiable-quote-model';
+import { CartItemModel, NegotiableQuoteModel } from '../negotiable-quote-model';
 
-export declare const baseCartItem: NegotiableQuoteCartItem;
-export declare const configurableCartItem: NegotiableQuoteCartItem;
-export declare const bundleCartItem: NegotiableQuoteCartItem;
-export declare const downloadableCartItem: NegotiableQuoteCartItem;
+export declare const baseCartItem: CartItemModel;
+export declare const configurableCartItem: CartItemModel;
+export declare const bundleCartItem: CartItemModel;
+export declare const downloadableCartItem: CartItemModel;
 export declare const base: NegotiableQuoteModel;
 //# sourceMappingURL=negotiableQuoteModel.d.ts.map

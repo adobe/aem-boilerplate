@@ -1,4 +1,5 @@
 /* eslint-disable import/no-unresolved */
+/* eslint-disable no-unused-vars */
 
 // Dropin Tools
 import { events } from '@dropins/tools/event-bus.js';

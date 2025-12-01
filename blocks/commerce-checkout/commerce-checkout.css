@@ -96,7 +96,8 @@
 .checkout__out-of-stock:has(> :empty),
 .checkout__merged-cart-banner:has(> :empty),
 .checkout__delivery:has(> div:first-child:empty),
-.checkout__bill-to-shipping:has(> :empty) {
+.checkout__bill-to-shipping:has(> :empty),
+.checkout__gift-options:has(.cart-gift-options-view--readonly:empty) {
     display: none;
 }
 

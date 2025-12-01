@@ -28,8 +28,8 @@ module.exports = defineConfig({
     poUrls: {
       login: '/customer/login',
       account: '/customer/account',
-      product: '/products/adobe-pattern-hoodie/adb330',
-      cheapProduct: '/products/badge-reel/adb153',
+      product: '/products/women-s-script-crewneck/adb374',
+      cheapProduct: '/products/ben-at-adobe-pin/adb346',
       checkout: '/checkout',
       purchaseOrders: '/customer/purchase-orders',
       approvalRules: '/customer/approval-rules',

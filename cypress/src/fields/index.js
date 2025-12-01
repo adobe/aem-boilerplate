@@ -199,26 +199,25 @@ export const requisitionListModalConfirmButton =
 
 // Requisition List View
 export const requisitionListGridNameLink =
-  ".dropin-table__body__row .requisition-list-grid-wrapper__name a";
+  '.dropin-table__body__row .requisition-list-grid-wrapper__name a';
 export const requisitionListViewRenameButton =
   '[data-testid="rename-list-btn"]';
 export const requisitionListViewQuantityInput =
-  ".requisition-list-view-product-list-table__quantity input";
+  '.requisition-list-view-product-list-table__quantity input';
 export const requisitionListViewBatchActionsToggle =
-  ".requisition-list-view__batch-actions-select-toggle";
+  '.requisition-list-view__batch-actions-select-toggle';
 export const requisitionListViewBatchActionsCountBadge =
-  ".requisition-list-view__batch-actions-count-badge";
+  '.requisition-list-view__batch-actions-count-badge';
 export const requisitionListViewBulkActionsAddToCartButton =
   '[data-testid="bulk-actions-add-to-cart-btn"]';
 export const requisitionListViewBulkActionsDeleteButton =
   '[data-testid="bulk-actions-delete-btn"]';
 export const requisitionListViewDeleteButton =
   '[data-testid="delete-list-btn"]';
-export const miniCartButton = ".minicart-wrapper .nav-cart-button";
-export const productDetailsAlert = ".product-details__alert";
+export const miniCartButton = '.minicart-wrapper .nav-cart-button';
+export const productDetailsAlert = '.product-details__alert';
 
-export const COMPANY_CREATE_PATH = "/customer/company/create";
-
+export const COMPANY_CREATE_PATH = '/customer/company/create';
 
 // Navigation Fields
 export const navAccountDropdown = '.nav-dropdown-button';
@@ -266,7 +265,7 @@ export const poNavCartButton = '.nav-cart-button';
 export const poCheckoutLink = 'a[href="/checkout"]';
 export const poCheckMoneyOrderLabel = 'label';
 export const poTermsCheckbox = 'input[type="checkbox"]';
-export const poPlacePOButton = 'button[type="button"]';
+export const poPlacePOButton = 'button[data-testid="place-order-button"]';
 export const poNavDropdownButton = '.nav-dropdown-button';
 export const poLogoutButton = 'button';
 export const poCheckbox = 'input[type="checkbox"]';
@@ -286,4 +285,5 @@ export const poRuleTypeSelect = 'select[name="ruleType"]';
 export const poRuleConditionSelect = 'select[name="ruleCondition"]';
 export const poRuleValueInput = 'input[name="ruleValue"]';
 export const poMultiSelect = '.dropin-multi-select';
-export const poTableRow = '.b2b-purchase-order-purchase-orders-table tr.dropin-table__body__row';
+export const poTableRow =
+  '.b2b-purchase-order-purchase-orders-table tr.dropin-table__body__row';

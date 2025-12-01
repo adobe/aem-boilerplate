@@ -47,7 +47,6 @@ async function createCustomer({
   });
 
   const responseData = await response.json();
-  console.log('GraphQL response:', responseData);
 
   if (!response.ok || responseData.errors) {
     throw new Error(
@@ -292,13 +291,153 @@ async function getCompanyRoles(companyId = 13) {
 
     return { success: true, roles: result };
   } catch (error) {
-    console.error('❌ Error fetching company roles:', error.message);
     return { success: false, error: error.message };
   }
+}
+
+async function deleteCompanyRoles(roleNames = []) {
+  try {
+    if (!Array.isArray(roleNames) || roleNames.length === 0) {
+      console.log('⚠️ No role names provided for deletion');
+      return { success: true, deletedCount: 0, missing: [] };
+    }
+
+    console.log(`🔍 Looking for roles to delete: ${roleNames.join(', ')}`);
+
+    const client = new ACCSApiClient();
+    const accessToken = await client.tokenManager.getValidToken();
+
+    // Fetch all company roles using REST API
+    const searchUrl = `${COMPANY_ROLE_URL}?searchCriteria[currentPage]=1&searchCriteria[pageSize]=100`;
+
+    const searchResponse = await fetch(searchUrl, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'x-api-key': IMS_CLIENT_ID,
+        'x-gw-ims-org-id': IMS_ORG_ID,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!searchResponse.ok) {
+      throw new Error(`Failed to fetch roles: ${searchResponse.status}`);
+    }
+
+    const searchResult = await searchResponse.json();
+    const allRoles = searchResult?.items || [];
+
+    console.log(`📋 Found ${allRoles.length} total company roles`);
+
+    // Create map of role name -> role id
+    const nameToIdMap = new Map();
+    allRoles.forEach((role) => {
+      if (role?.role_name && role?.id) {
+        nameToIdMap.set(role.role_name, role.id);
+      }
+    });
+
+    // Find roles to delete by matching names
+    const rolesToDelete = [];
+    const missingNames = [];
+
+    roleNames.forEach((name) => {
+      const roleId = nameToIdMap.get(name);
+      if (roleId) {
+        rolesToDelete.push({ name, id: roleId });
+        console.log(`✓ Found role "${name}" with ID: ${roleId}`);
+      } else {
+        missingNames.push(name);
+        console.log(`✗ Role "${name}" not found`);
+      }
+    });
+
+    if (missingNames.length) {
+      console.log(`⚠️ Roles not found: ${missingNames.join(', ')}`);
+    }
+
+    if (!rolesToDelete.length) {
+      console.log('⚠️ No matching roles found for deletion');
+      return {
+        success: true,
+        deletedCount: 0,
+        missing: missingNames,
+      };
+    }
+
+    // Delete each role using REST API
+    let deletedCount = 0;
+
+    for (const { name, id } of rolesToDelete) {
+      const deleteUrl = `${COMPANY_ROLE_URL}/${id}`;
+
+      const deleteResponse = await fetch(deleteUrl, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!deleteResponse.ok) {
+        const errorText = await deleteResponse.text();
+        console.error(
+          `❌ Failed to delete role "${name}" (ID: ${id}): ${errorText}`
+        );
+        throw new Error(
+          `Failed to delete role "${name}": ${deleteResponse.status}`
+        );
+      }
+
+      console.log(`✅ Deleted role "${name}" (ID: ${id})`);
+      deletedCount += 1;
+    }
+
+    return {
+      success: true,
+      deletedCount,
+      missing: missingNames,
+      deletedRoles: rolesToDelete,
+    };
+  } catch (error) {
+    console.error('❌ Error in deleteCompanyRoles:', error);
+    throw error;
+  }
+}
+
+async function unassignRoles(users = [], companyId = 13, fallbackRoleId = 50) {
+  const client = new ACCSApiClient();
+  const accessToken = await client.tokenManager.getValidToken();
+
+  let reassignedCount = 0;
+  const processedEmails = new Set();
+
+  for (const email of users) {
+    processedEmails.add(email);
+
+    try {
+      const restCustomerId = await findCustomerRestId(email, client);
+
+      await assignRole(restCustomerId, fallbackRoleId, accessToken);
+
+      reassignedCount += 1;
+      console.log(
+        `✅ Reassigned customer ${email} (ID: ${restCustomerId}) to company ${companyId} with role ${fallbackRoleId}`
+      );
+    } catch (error) {
+      console.error(
+        `❌ Failed to reassign customer ${email}: ${error.message}`
+      );
+    }
+  }
+
+  return { success: true, reassignedCount };
 }
 
 module.exports = {
   createUserAssignCompanyAndRole,
   manageCompanyRole,
   getCompanyRoles,
+  deleteCompanyRoles,
+  unassignRoles,
 };

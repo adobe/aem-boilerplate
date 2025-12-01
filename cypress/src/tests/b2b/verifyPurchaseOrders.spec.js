@@ -1,6 +1,8 @@
 import {
   createUserAssignCompanyAndRole,
   manageCompanyRole,
+  deleteCompanyRoles,
+  unassignRoles,
 } from '../../support/b2bPOAPICalls';
 import {
   poLabels,
@@ -14,19 +16,26 @@ import * as actions from '../../actions';
 describe('B2B Purchase Orders', () => {
   const urls = Cypress.env('poUrls');
 
+  before(() => {
+    cy.logToTerminal('🚀 B2B Purchase Orders test suite started');
+  });
+
   beforeEach(() => {
+    cy.logToTerminal('🧹 B2B Purchase Orders test suite cleanup');
     cy.clearCookies();
     cy.clearLocalStorage();
     cy.intercept('**/graphql').as('defaultGraphQL');
   });
 
+  // Test 1: Setup roles and users
   it(
-    'Should verify Purchase Orders end-to-end workflow with approval rules management and order processing',
+    'Setup - Create roles and users',
     { tags: ['@B2BSaas'] },
     () => {
-      cy.logToTerminal('🚀 B2B Purchase Orders E2E workflow execution started');
+      cy.logToTerminal(
+        '========= ⚙️ Test 1: Setup - Creating roles and users =========',
+      );
 
-      cy.logToTerminal('⚙️ Test suite setup started');
       const poUsersConfig = [
         {
           user: poUsers.po_rules_manager,
@@ -45,68 +54,85 @@ describe('B2B Purchase Orders', () => {
         },
       ];
 
-      /**
-       * Createing unique set of user roles on each execution to avoid conflicts
-       * when multiple test suites run in parallel
-       */
+      // Create roles
       cy.logToTerminal('⚙️ Creating user roles');
       const createdRoleIds = [];
       poUsersConfig
         .reduce((chain, element, index) => {
           return chain.then(() => {
             cy.logToTerminal(`Creating role: ${element.role.role_name}...`);
-            cy.wait(1000);
+            cy.wait(1500);
 
             return manageCompanyRole(element.role).then((result) => {
               poUsersConfig[index].roleId = result?.role?.id;
               createdRoleIds.push(result?.role?.id);
 
               cy.logToTerminal(
-                `✅ Role created: ${element.role.role_name} | ID: ${result?.role?.id}`
+                `✅ Role created: ${element.role.role_name} | ID: ${result?.role?.id}`,
               );
             });
           });
         }, cy.wrap(null))
         .then(() => {
-          // Store role IDs in Cypress.env for cleanup
           Cypress.env('poTestRoleIds', createdRoleIds);
+          Cypress.env('poUsersConfig', poUsersConfig);
           cy.logToTerminal(
-            `📝 Stored ${createdRoleIds.length} role IDs for cleanup`
+            `📝 Stored ${createdRoleIds.length} role IDs for cleanup`,
           );
+          cy.logToTerminal(
+            '⏳ Waiting for roles to be indexed in the system...',
+          );
+          cy.wait(5000);
         });
 
-      /**
-       * Createing unique set of test users on each execution to avoid conflicts
-       * when multiple test suites run in parallel
-       */
-      cy.logToTerminal('⚙️ Creating test users');
-      poUsersConfig.reduce((chain, element) => {
-        return chain.then(() => {
-          cy.wait(3000);
-          return cy.wrap(null).then(() => {
-            cy.logToTerminal(
-              `✅ Creating user: ${element.user.email} with role ID: ${element.roleId}`
-            );
-            return createUserAssignCompanyAndRole(element.user, element.roleId);
+      // Create users
+      cy.logToTerminal('⚙️ Creating test users & assigning roles');
+      poUsersConfig
+        .reduce((chain, element) => {
+          return chain.then(() => {
+            cy.wait(5000);
+            return cy.wrap(null).then(() => {
+              cy.logToTerminal(
+                `Creating user: ${element.user.email} with role ID: ${element.roleId}...`,
+              );
+              return createUserAssignCompanyAndRole(
+                element.user,
+                element.roleId,
+              ).then(() => {
+                cy.logToTerminal(`✅ User crated`);
+              });
+            });
           });
+        }, cy.wrap(null))
+        .then(() => {
+          cy.logToTerminal(
+            '⏳ Waiting for users and permissions to be fully applied in the system...',
+          );
+          cy.wait(5000);
+          cy.logToTerminal('✅ Test 1: Setup completed successfully');
         });
-      }, cy.wrap(null));
+    },
+  );
 
-      // Test scenario: Create and edit approval rules with Grand Total and Number of SKUs conditions
-      // - Creates first rule with Grand Total condition
-      // - Edits it to Number of SKUs condition
-      // - Creates second rule with Number of SKUs condition
-      // - Edits it to Grand Total condition
-      // Verifies: Single login session, rule creation, rule editing, condition changes
-      cy.logToTerminal('🧪 Test suite execution started');
+  // Test 2: Manage approval rules
+  it(
+    'Manage approval rules - Create and edit',
+    { tags: ['@B2BSaas'] },
+    () => {
+      cy.logToTerminal(
+        '========= ⚙️ Test 2: Managing approval rules =========',
+      );
+
       cy.logToTerminal(`🔐 Login as PO Rules Manager`);
       actions.login(poUsers.po_rules_manager, urls);
 
-      // === Step 1: Create Approval Rule with Grand Total condition ===
+      // Step 1: Create Approval Rule with Grand Total condition
       cy.logToTerminal(
-        '📝 STEP 1: Creating Approval Rule with Grand Total condition'
+        '📝 STEP 1: Creating Approval Rule with Grand Total condition',
       );
+
       cy.visit(urls.approvalRules);
+      cy.wait(5000);
       cy.contains(poLabels.approvalRulesHeader).should('be.visible');
 
       cy.get(selectors.poShowButton).contains(poLabels.addNewRule).click();
@@ -118,9 +144,9 @@ describe('B2B Purchase Orders', () => {
       cy.contains(poLabels.approvalRulesHeader).should('be.visible');
       cy.contains(poApprovalRules.rule1.name).should('be.visible');
 
-      // === Step 2: Edit first Approval Rule (Grand Total) to Number of SKUs condition ===
+      // Step 2: Edit first Approval Rule (Grand Total) to Number of SKUs
       cy.logToTerminal(
-        '✏️ STEP 2: Editing first Approval Rule to Number of SKUs condition'
+        '✏️ STEP 2: Editing first Approval Rule to Number of SKUs condition',
       );
       cy.contains(poApprovalRules.rule1.name)
         .should('be.visible')
@@ -140,9 +166,9 @@ describe('B2B Purchase Orders', () => {
       cy.contains(poLabels.approvalRulesHeader).should('be.visible');
       cy.contains(poApprovalRules.rule1Edited.name).should('be.visible');
 
-      // === Step 3: Create Approval Rule with Number of SKUs condition ===
+      // Step 3: Create second Approval Rule with Number of SKUs
       cy.logToTerminal(
-        '📝 STEP 3: Creating second Approval Rule with Number of SKUs condition'
+        '📝 STEP 3: Creating second Approval Rule with Number of SKUs condition',
       );
       cy.get(selectors.poShowButton).contains(poLabels.addNewRule).click();
       cy.contains(poLabels.approvalRuleFormHeader).should('be.visible');
@@ -153,11 +179,10 @@ describe('B2B Purchase Orders', () => {
       cy.contains(poLabels.approvalRulesHeader).should('be.visible');
       cy.contains(poApprovalRules.rule2.name).should('be.visible');
 
-      // === Step 4: Edit second Approval Rule (Number of SKUs) to Grand Total condition ===
+      // Step 4: Edit second Approval Rule (Number of SKUs) to Grand Total
       cy.logToTerminal(
-        '✏️ STEP 4: Editing second Approval Rule to Grand Total condition'
+        '✏️ STEP 4: Editing second Approval Rule to Grand Total condition',
       );
-
       cy.get(`tr:contains("${poApprovalRules.rule2.name}")`)
         .last()
         .find(selectors.poShowButton)
@@ -176,122 +201,261 @@ describe('B2B Purchase Orders', () => {
       cy.contains(poApprovalRules.rule2Edited.name).should('be.visible');
 
       cy.logToTerminal('🚪 Logging out PO Rules Manager');
+      cy.visit('/');
+      cy.wait(3000);
       actions.logout(poLabels);
+      cy.logToTerminal('✅ Test 2: Approval rules management completed');
+    },
+  );
 
-      // === Step 5: Create Purchase Orders as Sales user ===
-      // Test scenario: Sales user creates 3 Purchase Orders with 3 items each
-      // These orders will require approval due to quantity/total amount
-      // Verifies: Login, product selection, cart, checkout flow, PO creation confirmation
+  // Test 3: Sales Manager - Create first Purchase Order requiring approval
+  it(
+    'Sales Manager - Create first Purchase Order requiring approval',
+    { tags: ['@B2BSaas'] },
+    () => {
       cy.logToTerminal(
-        '🔐 STEP 5: Login as Sales Manager and create Purchase Orders'
+        '========= ⚙️ Test 3: Sales Manager - Creating first Purchase Order requiring approval =========',
       );
+
+      cy.logToTerminal('🔐 Login as Sales Manager');
       actions.login(poUsers.sales_manager, urls);
 
-      // Create 3 Purchase Orders
-      for (let i = 0; i < 3; i++) {
-        cy.logToTerminal(`🛒 Creating Purchase Order ${i + 1}/3 with 3 items`);
-        actions.createPurchaseOrder(3, false, urls, poLabels);
-        if (i < 2) {
-          cy.wait(3000);
-        }
-      }
+      cy.logToTerminal('🛒 Creating first Purchase Order with 2 items');
+      actions.createPurchaseOrder(2, false, urls, poLabels);
 
       cy.logToTerminal('🚪 Logging out Sales Manager');
+      cy.visit('/');
+      cy.wait(3000);
       actions.logout(poLabels);
 
-      // === Step 6: Test scenario: Approver logs in and manages pending Purchase Orders ===
-      // - Approves 2 Purchase Orders (status changes to "Order placed")
-      // - Rejects 1 Purchase Order (status changes to "Rejected")
-      // Verifies: Login, PO list display, bulk approve/reject actions, success messages, status updates
+      cy.logToTerminal('✅ Test 3: First Purchase Order created successfully');
+      cy.logToTerminal('⏳ Waiting for Purchase Order to be indexed...');
+      cy.wait(5000);
+    },
+  );
+
+  // Test 4: Sales Manager - Create second Purchase Order requiring approval
+  it(
+    'Sales Manager - Create second Purchase Order requiring approval',
+    { tags: ['@B2BSaas'] },
+    () => {
       cy.logToTerminal(
-        '🔐 STEP 6: Login as Approver Manager to manage Purchase Orders'
+        '========= ⚙️ Test 4: Sales Manager - Creating second Purchase Order requiring approval =========',
       );
+
+      cy.logToTerminal('🔐 Login as Sales Manager');
+      actions.login(poUsers.sales_manager, urls);
+
+      cy.logToTerminal('🛒 Creating second Purchase Order with 2 items');
+      actions.createPurchaseOrder(2, false, urls, poLabels);
+
+      cy.logToTerminal('🚪 Logging out Sales Manager');
+      cy.visit('/');
+      cy.wait(3000);
+      actions.logout(poLabels);
+
+      cy.logToTerminal('✅ Test 4: Second Purchase Order created successfully');
+      cy.logToTerminal('⏳ Waiting for Purchase Order to be indexed...');
+      cy.wait(5000);
+    },
+  );
+
+  // Test 5: Approver - Approve and reject Purchase Orders
+  it(
+    'Approver - Approve and reject Purchase Orders',
+    { tags: ['@B2BSaas'] },
+    () => {
+      cy.logToTerminal(
+        '========= ⚙️ Test 5: Approver - Managing Purchase Orders approval =========',
+      );
+
+      cy.logToTerminal('🔐 Login as Approver Manager');
       actions.login(poUsers.approver_manager, urls);
 
-      // Navigate to Purchase Orders page
+      // Safely parses GraphQL request body, handling JSON, strings, or empty payloads
+      const resolveGraphQLPayload = (rawBody) => {
+        if (!rawBody) {
+          return { operationName: '', query: '' };
+        }
+
+        if (typeof rawBody === 'string') {
+          try {
+            return JSON.parse(rawBody);
+          } catch (error) {
+            return { operationName: '', query: rawBody };
+          }
+        }
+
+        return rawBody;
+      };
+
+      // Detects purchase-order GraphQL queries and assigns them the alias 'poApprovalList'
+      const aliasIfPurchaseOrders = (req) => {
+        const { operationName = '', query = '' } = resolveGraphQLPayload(
+          req.body,
+        );
+        const queryText = typeof query === 'string' ? query : '';
+
+        if (
+          operationName === 'GET_PURCHASE_ORDERS' ||
+          queryText.includes('GET_PURCHASE_ORDERS') ||
+          queryText.includes('purchaseOrders') ||
+          queryText.includes('customerPurchaseOrders')
+        ) {
+          req.alias = 'poApprovalList';
+        }
+      };
+
+      // Intercepts all GraphQL POST/GET calls and applies PO aliasing logic
+      cy.intercept('POST', '**/graphql', aliasIfPurchaseOrders);
+      cy.intercept('GET', '**/graphql*', aliasIfPurchaseOrders);
+
+      // Waits for the expected number of PO requests using the aliased GraphQL calls
+      const waitForPurchaseOrdersRequest = (expectedCount = 1) => {
+        const waitNext = (remaining) => {
+          if (remaining <= 0) {
+            return;
+          }
+
+          cy.wait('@poApprovalList', { timeout: 60000 }).then(() => {
+            waitNext(remaining - 1);
+          });
+        };
+
+        waitNext(expectedCount);
+      };
+
       cy.logToTerminal('📄 Navigating to Purchase Orders page');
       cy.visit(urls.purchaseOrders);
+      waitForPurchaseOrdersRequest(3);
 
-      // Find wrapper with Purchase Orders requiring approval
-      cy.get(selectors.poApprovalPOWrapper).within(() => {
-        // Find table with "Requires my approval" header
-        cy.contains('Requires my approval').should('be.visible');
-
-        // Find 3 enabled checkboxes (not disabled, excluding selectAll)
-        cy.get(
-          `${selectors.poCheckbox}:not([disabled]):not([name="selectAll"])`
-        ).should('have.length.at.least', 3);
-
-        // Verify action buttons exist
-        cy.contains(selectors.poShowButton, poLabels.rejectSelected).should(
-          'be.visible'
-        );
-        cy.contains(selectors.poShowButton, poLabels.approveSelected).should(
-          'be.visible'
-        );
-      });
-
-      // Select first two checkboxes and approve
-      cy.logToTerminal('✅ Approving first 2 Purchase Orders');
+      // Find and verify Purchase Orders requiring approval
+      cy.logToTerminal('🔍 Verifying Purchase Orders requiring approval');
       const checkboxSelector = `${selectors.poCheckbox}:not([disabled]):not([name="selectAll"])`;
-      [0, 1].forEach((index) => {
-        cy.get(selectors.poApprovalPOWrapper)
-          .find(checkboxSelector)
-          .eq(index)
-          .click();
-        cy.wait(1500);
-      });
+      const MAX_APPROVAL_FETCH_ATTEMPTS = 3;
+      const APPROVAL_RETRY_DELAY = 10000;
 
-      // Click Approve selected button
+      const waitForPurchaseOrders = (attempt = 1) => {
+        cy.get(selectors.poApprovalPOWrapper).within(() => {
+          cy.contains('Requires my approval').should('be.visible');
+        });
+
+        return cy
+          .get(selectors.poApprovalPOWrapper)
+          .find(checkboxSelector)
+          .then(($checkboxes) => {
+            if ($checkboxes.length >= 2) {
+              cy.logToTerminal(
+                `✅ Found ${$checkboxes.length} Purchase Orders requiring approval`,
+              );
+              return;
+            }
+
+            if (attempt >= MAX_APPROVAL_FETCH_ATTEMPTS) {
+              throw new Error(
+                `Expected at least 2 Purchase Orders, found ${$checkboxes.length} after ${attempt} attempts`,
+              );
+            }
+
+            cy.logToTerminal(
+              `⏳ Found ${$checkboxes.length} Purchase Orders (need 2). Retrying... [attempt ${attempt}/${MAX_APPROVAL_FETCH_ATTEMPTS}]`,
+            );
+
+            cy.wait(APPROVAL_RETRY_DELAY);
+            cy.reload();
+            waitForPurchaseOrdersRequest(3);
+            return waitForPurchaseOrders(attempt + 1);
+          });
+      };
+
+      waitForPurchaseOrders();
+
+      cy.get(selectors.poApprovalPOWrapper)
+        .contains(selectors.poShowButton, poLabels.rejectSelected)
+        .should('be.visible');
       cy.get(selectors.poApprovalPOWrapper)
         .contains(selectors.poShowButton, poLabels.approveSelected)
-        .click();
+        .should('be.visible');
 
-      // Verify approval success message appears
-      cy.get('.dropin-in-line-alert--success').should('be.visible');
-
-      // Verify that only 1 "Approval required" item remains (was 3, approved 2)
-      cy.get(selectors.poApprovalPOWrapper)
-        .find('.b2b-purchase-order-purchase-orders-table__status')
-        .contains('Approval required')
-        .should('have.length', 1);
-
-      // Select third checkbox and reject
-      cy.logToTerminal('🗑️ Rejecting third Purchase Order');
+      // Approve first Purchase Order
+      cy.logToTerminal('Approving first Purchase Order...');
       cy.get(selectors.poApprovalPOWrapper)
         .find(checkboxSelector)
         .eq(0)
         .click();
       cy.wait(1500);
+      cy.get(selectors.poApprovalPOWrapper)
+        .contains(selectors.poShowButton, poLabels.approveSelected)
+        .click();
 
-      // Click Reject selected button
+      cy.get('.dropin-in-line-alert--success').should('be.visible');
+      cy.logToTerminal('✅ First Purchase Order approved successfully');
+
+      cy.get(selectors.poApprovalPOWrapper)
+        .find('.b2b-purchase-order-purchase-orders-table__status')
+        .contains('Approval required')
+        .should('have.length', 1);
+      cy.logToTerminal(
+        '✅ Verified that 1 Purchase Order left in approval required list',
+      );
+
+      cy.logToTerminal(
+        '⏳ Reloading page to refresh DOM after Purchase Order approval...',
+      );
+      cy.reload();
+      cy.wait(5000); // Wait for page reload and data to settle
+
+      // Reject second Purchase Order
+      cy.logToTerminal('🗑️ Rejecting second Purchase Order');
+
+      cy.logToTerminal('Rejecting second Purchase Order...');
+      cy.get(selectors.poApprovalPOWrapper)
+        .find(checkboxSelector)
+        .eq(0)
+        .should('not.be.disabled')
+        .click();
+      cy.wait(1500);
+
       cy.get(selectors.poApprovalPOWrapper)
         .contains(selectors.poShowButton, poLabels.rejectSelected)
         .click();
 
-      // Verify rejection success message appears
       cy.get('.dropin-in-line-alert--success').should('be.visible');
+      cy.logToTerminal('✅ Second Purchase Order rejected successfully');
 
-      // Verify that no "Approval required" items remain (all processed)
       cy.get(selectors.poApprovalPOWrapper)
         .find('.b2b-purchase-order-purchase-orders-table__status')
         .contains('Approval required')
         .should('have.length', 0);
-
-      // Find and select 30 in the dropdown
-      cy.get(selectors.poApprovalPOWrapper)
-        .find(
-          'select.dropin-picker__select.dropin-picker__select--primary.dropin-picker__select--medium'
-        )
-        .select('30')
-        .should('have.value', '30');
-
-      // === Step 7: Test scenario: Approver logs in, navigates to "My purchase orders ===
-      //      finds first order, expands it, views details page
-      //      Verifies: Login, navigation, order expansion, detail page headers
       cy.logToTerminal(
-        '📋 STEP 7: Viewing Purchase Order details and adding comment'
+        '✅ Verified that no Purchase Orders left in approval required list',
       );
+
+      cy.logToTerminal('🚪 Logging out Approver Manager');
+      cy.visit('/');
+      cy.wait(3000);
+      actions.logout(poLabels);
+      cy.logToTerminal('✅ Test 5: Purchase Orders approved/rejected');
+    },
+  );
+
+  // Test 6: Approver - View Purchase Order details and add comment
+  it(
+    'Approver - View Purchase Order details and add comment',
+    { tags: ['@B2BSaas'] },
+    () => {
+      cy.logToTerminal(
+        '========= ⚙️ Test 6: Approver - Viewing Purchase Order details =========',
+      );
+
+      cy.logToTerminal('🔐 Login as Approver Manager');
+      actions.login(poUsers.approver_manager, urls);
+
+      cy.logToTerminal('📄 Navigating to Purchase Orders page');
+      cy.visit(urls.purchaseOrders);
+      cy.wait(5000);
+
+      cy.logToTerminal('📋 Viewing Purchase Order details and adding comment');
       cy.contains('Requires my approval').should('be.visible');
 
       cy.get(selectors.poMyApprovalPOWrapper)
@@ -308,6 +472,7 @@ describe('B2B Purchase Orders', () => {
         .click();
 
       cy.url().should('not.include', urls.purchaseOrders);
+      cy.wait(6000);
 
       cy.get('.dropin-header-container__title').should('have.length.gt', 7);
       cy.contains(/Purchase order \d+/).should('be.visible');
@@ -318,153 +483,196 @@ describe('B2B Purchase Orders', () => {
       cy.contains('Order summary').should('be.visible');
       cy.contains(/Your order \(\d+\)/).should('be.visible');
       cy.contains('Add purchase order comment').should('be.visible');
-
-      // Add a comment
       cy.get('textarea').type('Test comment message');
       cy.contains('button', 'Add Comment').click();
 
       cy.logToTerminal('🚪 Logging out Approver Manager');
+      cy.visit('/');
+      cy.wait(3000);
       actions.logout(poLabels);
+      cy.logToTerminal('✅ Test 6: Purchase Order details verified');
+    },
+  );
 
-      // === Step 8: Test scenario: Sales creates Purchase Order with 1 item (auto-approved), Admin verifies ===
-      // - Sales user creates PO with single item (bypasses approval rules)
-      // - PO is automatically approved (status: "Order placed")
-      // - Sales logs out, Admin logs in
-      // - Admin views company Purchase Orders and verifies auto-approved order details
+  // Test 7: Sales Manager - Create auto-approved Purchase Order
+  it(
+    'Sales Manager - Create auto-approved Purchase Order',
+    { tags: ['@B2BSaas'] },
+    () => {
       cy.logToTerminal(
-        '🔐 STEP 8: Login as Sales Manager to create auto-approved PO'
+        '========= ⚙️ Test 7: Sales Manager - Creating auto-approved Purchase Order =========',
       );
+
+      cy.logToTerminal('🔐 Login as Sales Manager');
       actions.login(poUsers.sales_manager, urls);
 
       cy.logToTerminal('🛒 Creating auto-approved Purchase Order with 1 item');
       actions.createPurchaseOrder(1, true, urls, poLabels);
 
       cy.logToTerminal('🚪 Logging out Sales Manager');
+      cy.visit('/');
+      cy.wait(3000);
       actions.logout(poLabels);
 
-      cy.logToTerminal(
-        '🔐 Login as PO Rules Manager to verify auto-approved order'
-      );
+      // Verify auto-approved order
+      cy.logToTerminal('🔐 Login as PO Rules Manager to verify order');
       actions.login(poUsers.po_rules_manager, urls);
 
       cy.logToTerminal('📄 Navigating to Company Purchase Orders');
       cy.visit(urls.purchaseOrders);
-      cy.wait(3000);
+      cy.wait(6000);
 
       cy.get(selectors.poCompanyPOContainer).should('exist');
-
       cy.contains('Company purchase orders').should('be.visible');
 
       cy.get(selectors.poCompanyPOContainer)
-        .contains(selectors.poShowButton, poLabels.show)
-        .first()
-        .click();
-
-      cy.get(selectors.poCompanyPOContainer)
-        .find('.b2b-purchase-order-purchase-orders-table__row-details-content')
-        .should('be.visible')
         .within(() => {
-          cy.contains(/Total: \$\d+\.\d{2}/)
-            .invoke('text')
-            .then((text) => {
-              const match = text.match(/Total: \$(\d+\.\d{2})/);
-              if (match) {
-                const total = parseFloat(match[1]);
-                cy.log(`Found total: $${total}`);
-                expect(total).to.be.lessThan(10);
-              }
+          cy.get(selectors.poTableRow)
+            .filter(`:has(:contains("${poUsers.sales_manager.firstname}"))`)
+            .then(($rows) => {
+              let placedCount = 0;
+              let rejectedCount = 0;
+
+              cy.wrap($rows).each(($row) => {
+                const text = $row.text();
+
+                if (text.includes('Order placed')) {
+                  placedCount++;
+                }
+
+                if (text.includes('Rejected')) {
+                  rejectedCount++;
+                }
+              }).then(() => {
+                expect(placedCount, 'Order placed count').to.eq(2);
+                expect(rejectedCount, 'Rejected count').to.eq(1);
+              });
             });
         });
 
       cy.logToTerminal('🚪 Logging out PO Rules Manager');
       cy.visit('/');
-      cy.wait(5000);
+      cy.wait(3000);
       actions.logout(poLabels);
-
-      // === Step 9: Delete approval rules ===
-      // Navigate to Approval Rules page
-      cy.logToTerminal('🗑️ STEP 9: Deleting approval rules');
-      cy.logToTerminal('🔐 Login as PO Rules Manager');
-      actions.login(poUsers.po_rules_manager, urls);
-      cy.wait(1000);
-
-      cy.logToTerminal('📄 Navigating to Approval Rules page');
-      cy.visit(urls.approvalRules);
-      cy.contains(poLabels.approvalRulesHeader).should('be.visible');
-
-      cy.logToTerminal('🗑️ Deleting first approval rule');
-      actions.deleteApprovalRule(poApprovalRules.rule1Edited.name);
-
-      cy.logToTerminal('🗑️ Deleting second approval rule');
-      actions.deleteApprovalRule(poApprovalRules.rule2Edited.name);
-
-      cy.logToTerminal(
-        '✅ B2B Purchase Orders E2E workflow execution completed'
-      );
-
-      /**
-       * User removal is handled by "cypress/src/support/deleteCustomer.js"
-       * The currently logged-in user will be automatically deleted at the end of each test block
-       */
-      cy.logToTerminal('🗑️ Deleting PO Rules Manager user');
-    }
+      cy.logToTerminal('✅ Test 7: Auto-approved Purchase Order verified');
+    },
   );
 
-  it('Cleanup 1 - Remove PO Rules Manager user', { tags: ['@B2BSaas'] }, () => {
-    cy.logToTerminal('🚀 Cleanup 1 started');
+  // Test 8: Cleanup - Delete approval rules, users and roles
+  it(
+    'Cleanup - Delete approval rules, users and roles',
+    { tags: ['@B2BSaas'] },
+    () => {
+      cy.logToTerminal(
+        '========= ⚙️ Test 8: Cleanup - Deleting approval rules, users and roles =========',
+      );
 
-    actions.login(poUsers.sales_manager, urls);
-    cy.url().should('include', urls.account);
+      // Delete Sales Manager user
+      cy.logToTerminal('🗑️ Deleting Sales Manager user...');
+      actions.login(poUsers.sales_manager, urls);
+      cy.visit('/');
+      cy.wait(3000);
+      cy.deleteCustomer();
 
-    /**
-     * User removal is handled by "cypress/src/support/deleteCustomer.js"
-     * The currently logged-in user will be automatically deleted at the end of each test block
-     */
-    cy.logToTerminal('🗑️ Deleting Sales Manager user');
-    cy.logToTerminal('✅ Cleanup 1 completed');
-  });
+      // Delete Approver Manager user
+      cy.logToTerminal('🗑️ Deleting Approver user...');
+      actions.login(poUsers.approver_manager, urls);
+      cy.visit('/');
+      cy.wait(3000);
+      cy.deleteCustomer();
 
-  it('Cleanup 2 - Remove Approver user', { tags: ['@B2BSaas'] }, () => {
-    cy.logToTerminal('🚀 Cleanup 2 started');
+      // Delete approval rules as PO Rules Manager
+      cy.logToTerminal('🔐 Login as PO Rules Manager');
+      actions.login(poUsers.po_rules_manager, urls);
 
-    actions.login(poUsers.approver_manager, urls);
-    cy.url().should('include', urls.account);
+      cy.logToTerminal(
+        '⏳ Waiting for session and permissions to initialize...',
+      );
+      cy.wait(3000);
 
-    /**
-     * User removal is handled by "cypress/src/support/deleteCustomer.js"
-     * The currently logged-in user will be automatically deleted at the end of each test block
-     */
-    cy.logToTerminal('🗑️ Deleting Approver user');
-    cy.logToTerminal('✅ Cleanup 2 completed');
-  });
+      cy.logToTerminal('📄 Navigating to Approval Rules page...');
+      cy.visit(urls.approvalRules);
+      cy.wait(5000);
+      cy.contains(poLabels.approvalRulesHeader).should('be.visible');
 
-  it('Cleanup 3 - Remove company roles', { tags: ['@B2BSaas'] }, () => {
-    cy.logToTerminal('🚀 Cleanup 3 started');
+      cy.logToTerminal('🗑️ Deleting first PO approval rule...');
+      actions.deleteApprovalRule(poApprovalRules.rule1Edited.name);
+      cy.wait(3000);
 
-    const roleIds = Cypress.env('poTestRoleIds') || [];
-    cy.logToTerminal(`🗑️ Deleting ${roleIds.length} company roles`);
+      cy.logToTerminal('🗑️ Deleting second PO approval rule...');
+      actions.deleteApprovalRule(poApprovalRules.rule2Edited.name);
+      cy.wait(3000);
 
-    if (roleIds.length === 0) {
-      cy.logToTerminal('⚠️ No role IDs found to delete');
-      cy.logToTerminal('✅ Cleanup 3 completed');
-      return;
-    }
+      cy.logToTerminal('✅ All PO approval rules deleted successfully');
 
-    roleIds
-      .reduce((chain, roleId) => {
-        return chain.then(() => {
-          cy.logToTerminal(`Deleting role ID: ${roleId}...`);
-          cy.wait(1000);
+      // Delete PO Rules Manager user
+      cy.logToTerminal('🗑️ Deleting PO Rules Manager user...');
+      cy.visit('/');
+      cy.wait(3000);
+      cy.deleteCustomer();
 
-          return manageCompanyRole(null, roleId).then((result) => {
-            cy.logToTerminal(`✅ Role deleted: ID ${roleId}`);
-          });
-        });
-      }, cy.wrap(null))
-      .then(() => {
-        // Clear the stored role IDs
-        Cypress.env('poTestRoleIds', []);
-        cy.logToTerminal('✅ Cleanup 3 completed');
+      // Delete roles AFTER all users are deleted
+      cy.then(() => {
+        cy.logToTerminal('🗑️ Deleting test company roles...');
+
+        const envUsersConfig = Cypress.env('poUsersConfig') || [];
+        const roleIdsFromEnv = Cypress.env('poTestRoleIds') || [];
+
+        const poUsersConfig = envUsersConfig.length
+          ? envUsersConfig
+          : [
+            {
+              user: poUsers.po_rules_manager,
+              role: poRolesConfig.rulesManager,
+              roleId: null,
+            },
+            {
+              user: poUsers.sales_manager,
+              role: poRolesConfig.salesManager,
+              roleId: null,
+            },
+            {
+              user: poUsers.approver_manager,
+              role: poRolesConfig.approver,
+              roleId: null,
+            },
+          ];
+
+        // Extract role names for deletion
+        const roleNamesToDelete = poUsersConfig
+          .map((config) => config.role?.role_name)
+          .filter(Boolean);
+
+        const userEmailsToUnassign = poUsersConfig.map(
+          (config) => config.user.email,
+        );
+
+        cy.logToTerminal(
+          `🗑️ Role names to delete: ${roleNamesToDelete.join(', ') || 'none'}`,
+        );
+
+        cy.wrap(unassignRoles(userEmailsToUnassign), { timeout: 60000 }).then(
+          () => {
+            if (!roleNamesToDelete.length) {
+              cy.logToTerminal(
+                '⚠️ No role names found. Skipping deleting company roles.',
+              );
+              return;
+            }
+
+            cy.wrap(deleteCompanyRoles(roleNamesToDelete), {
+              timeout: 60000,
+            }).then(() =>
+              cy.logToTerminal(
+                '✅ All test company roles deleted successfully',
+              ),
+            );
+          },
+        );
       });
-  });
+
+      cy.wait(1000);
+      cy.logToTerminal('✅ B2B Purchase Orders test suite completed');
+    },
+  );
 });

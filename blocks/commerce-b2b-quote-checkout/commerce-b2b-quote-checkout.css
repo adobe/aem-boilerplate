@@ -75,7 +75,8 @@
 
 /* Hide blocks with empty divs */
 .checkout__delivery:has(> div:first-child:empty),
-.checkout__bill-to-shipping:has(> :empty) {
+.checkout__bill-to-shipping:has(> :empty),
+.checkout__gift-options:has(.cart-gift-options-view--readonly:empty) {
     display: none;
 }
 

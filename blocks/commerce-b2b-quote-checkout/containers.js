@@ -46,7 +46,7 @@ import {
 } from '@dropins/storefront-checkout/lib/utils.js';
 
 // External dependencies
-import { rootLink, CUSTOMER_NEGOTIABLE_QUOTE_PATH } from '../../scripts/commerce.js';
+import { fetchPlaceholders, rootLink, CUSTOMER_NEGOTIABLE_QUOTE_PATH } from '../../scripts/commerce.js';
 
 // Constants
 import {
@@ -397,6 +397,8 @@ export const renderPlaceOrder = async (container, options = {}) => renderContain
 export const renderCustomerBillingAddresses = async (container, formRef, data, placeOrderButton) => renderContainer(
   CONTAINERS.CUSTOMER_BILLING_ADDRESSES,
   async () => {
+    const placeholders = await fetchPlaceholders('placeholders/checkout.json');
+
     const cartBillingAddress = getCartAddress(data, 'billing');
 
     const customerBillingAddressUid = cartBillingAddress
@@ -431,7 +433,7 @@ export const renderCustomerBillingAddresses = async (container, formRef, data, p
     }, ADDRESS_INPUT_DEBOUNCE_TIME);
 
     return AccountProvider.render(Addresses, {
-      addressFormTitle: 'Bill to new address',
+      addressFormTitle: placeholders?.Checkout?.Addresses?.billToNewAddress,
       defaultSelectAddressId: customerBillingAddressUid,
       formName: BILLING_FORM_NAME,
       forwardFormRef: formRef,
@@ -448,7 +450,7 @@ export const renderCustomerBillingAddresses = async (container, formRef, data, p
       showBillingCheckBox: false,
       showSaveCheckBox: true,
       showShippingCheckBox: false,
-      title: 'Billing address',
+      title: placeholders?.Checkout?.Addresses?.billingAddressTitle,
     })(container);
   },
 );

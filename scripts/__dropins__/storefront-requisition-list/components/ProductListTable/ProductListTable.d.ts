@@ -10,7 +10,7 @@ export interface ProductListTableProps extends HTMLAttributes<HTMLDivElement | H
     pageSize: number;
     canEdit?: boolean;
     handleItemSelection: (itemUid: string, isSelected: boolean) => void;
-    handleUpdateQuantity: (itemUid: string, newQuantity: number) => void;
+    handleUpdateQuantity: (itemUid: string, newQuantity: number) => Promise<void>;
     onAddToCart: (itemUids: string[] | undefined) => void;
     onDeleteItem: (itemUids: string[] | undefined) => void;
 }

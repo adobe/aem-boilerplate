@@ -24,6 +24,11 @@ export interface RequisitionListViewProps extends HTMLAttributes<HTMLDivElement>
      * Function that returns the URL to the requisition list grid view or performs navigation
      */
     routeRequisitionListGrid?: () => string | void;
+    /**
+     * Fallback URL to redirect when requisition lists are not enabled.
+     * Defaults to '/customer/account'
+     */
+    fallbackRoute?: string;
 }
 export declare const RequisitionListView: Container<RequisitionListViewProps>;
 //# sourceMappingURL=RequisitionListView.d.ts.map

@@ -24,6 +24,8 @@ interface Product {
     metaTitle: string;
     description: string;
     addToCartAllowed: boolean;
+    stock_status: 'IN_STOCK' | 'OUT_OF_STOCK';
+    only_x_left_in_stock: number | null;
     url: string;
     urlKey: string;
     externalId: string;
@@ -89,6 +91,23 @@ interface CustomizableOption {
         value: string;
     }[];
 }
+export interface RawCustomizableOption {
+    customizable_option_uid: string;
+    is_required: boolean;
+    label: string;
+    sort_order: number;
+    type: string;
+    values: Array<{
+        customizable_option_value_uid: string;
+        label: string;
+        price: {
+            type: string;
+            units: string;
+            value: number;
+        };
+        value: string;
+    }>;
+}
 interface Link {
     uid: string;
     price?: number;
@@ -119,8 +138,10 @@ interface Sample {
 interface Item {
     uid: string;
     sku: string;
-    product: Product;
+    product?: Product;
     quantity: number;
+    stock_status: 'IN_STOCK' | 'OUT_OF_STOCK';
+    only_x_left_in_stock: number | null;
     customizable_options?: CustomizableOption[];
     bundle_options?: BundleOption[];
     configurable_options?: ConfigurableOption[];

@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{c as _,R as a,f as I,h as m,e as T,t as c}from"./updateRequisitionList.js";import{events as q}from"@dropins/tools/event-bus.js";function R(i){var r;return{sku:i.sku,parent_sku:i.sku,name:i.name,price:i.price,shortDescription:i.shortDescription||"",metaDescription:i.metaDescription||"",metaKeyword:i.metaKeyword||"",metaTitle:i.metaTitle||"",description:i.description||"",addToCartAllowed:i.addToCartAllowed,url:i.url||"",urlKey:i.urlKey||"",externalId:i.externalId||"",images:((r=i.images)==null?void 0:r.map(t=>({url:t.url,label:t.label||"",roles:t.roles||[]})))||[]}}function L(i){return i!=null&&i.length?i.map(R):[]}const E=`
+import{c as m,R as a,f as I,h as _,e as T,t as c}from"./updateRequisitionList.js";import{events as q}from"@dropins/tools/event-bus.js";function R(i){var r;return{sku:i.sku,parent_sku:i.sku,name:i.name,price:i.price,shortDescription:i.shortDescription||"",metaDescription:i.metaDescription||"",metaKeyword:i.metaKeyword||"",metaTitle:i.metaTitle||"",description:i.description||"",addToCartAllowed:i.addToCartAllowed,stock_status:i.inStock?"IN_STOCK":"OUT_OF_STOCK",only_x_left_in_stock:null,url:i.url||"",urlKey:i.urlKey||"",externalId:i.externalId||"",images:((r=i.images)==null?void 0:r.map(t=>({url:t.url,label:t.label||"",roles:t.roles||[]})))||[]}}function L(i){return i!=null&&i.length?i.map(R):[]}const E=`
   query GET_REQUISITION_LIST_QUERY(
     $requisitionListUid: String,
     $currentPage: Int = 1,
@@ -23,9 +23,9 @@ import{c as _,R as a,f as I,h as m,e as T,t as c}from"./updateRequisitionList.js
       }
     }
   }
-${_}
+${m}
 ${a}
-`;function p(i){return!i||typeof i!="string"||i.length<2||!/^[A-Za-z0-9+/]+(==|=)?$/.test(i)?!1:i.length%4===0}const O=async(i,r,t)=>p(i)?I(E,{variables:{requisitionListUid:i,currentPage:r,pageSize:t}}).then(async({errors:n,data:s})=>{var u,o;if(n)return m(n);if(!((u=s==null?void 0:s.customer)!=null&&u.requisition_lists))return null;(o=s.customer.requisition_lists.items[0].items)!=null&&o.items&&(s.customer.requisition_lists.items[0].items.items=await T(s.customer.requisition_lists.items[0].items.items));const e=c(s.customer.requisition_lists.items[0]);return q.emit("requisitionList/data",e),e}):(console.error("Invalid requisition list UID format:",i),null),S=`
+`;function S(i){return!i||typeof i!="string"||i.length<2||!/^[A-Za-z0-9+/]+(==|=)?$/.test(i)?!1:i.length%4===0}const y=async(i,r,t)=>S(i)?I(E,{variables:{requisitionListUid:i,currentPage:r,pageSize:t}}).then(async({errors:n,data:s})=>{var u,o;if(n)return _(n);if(!((u=s==null?void 0:s.customer)!=null&&u.requisition_lists))return null;(o=s.customer.requisition_lists.items[0].items)!=null&&o.items&&(s.customer.requisition_lists.items[0].items.items=await T(s.customer.requisition_lists.items[0].items.items));const e=c(s.customer.requisition_lists.items[0]);return q.emit("requisitionList/data",e),e}):(console.error("Invalid requisition list UID format:",i),null),p=`
   mutation UPDATE_REQUISITION_LIST_ITEMS_MUTATION(
       $requisitionListUid: ID!, 
       $requisitionListItems: [UpdateRequisitionListItemsInput!]!,
@@ -45,8 +45,8 @@ ${a}
     }
   }
 ${a}
-${_}
-`,A=async(i,r,t,n)=>I(S,{variables:{requisitionListUid:i,requisitionListItems:r,pageSize:t,currentPage:n}}).then(async({errors:s,data:e})=>{var o,l;if(s)return m(s);if(!((o=e==null?void 0:e.updateRequisitionListItems)!=null&&o.requisition_list))return null;(l=e.updateRequisitionListItems.requisition_list.items)!=null&&l.items&&(e.updateRequisitionListItems.requisition_list.items.items=await T(e.updateRequisitionListItems.requisition_list.items.items));const u=c(e.updateRequisitionListItems.requisition_list);return q.emit("requisitionList/data",u),u}),U=`
+${m}
+`,A=async(i,r,t,n)=>I(p,{variables:{requisitionListUid:i,requisitionListItems:r,pageSize:t,currentPage:n}}).then(async({errors:s,data:e})=>{var o,l;if(s)return _(s);if(!((o=e==null?void 0:e.updateRequisitionListItems)!=null&&o.requisition_list))return null;(l=e.updateRequisitionListItems.requisition_list.items)!=null&&l.items&&(e.updateRequisitionListItems.requisition_list.items.items=await T(e.updateRequisitionListItems.requisition_list.items.items));const u=c(e.updateRequisitionListItems.requisition_list);return q.emit("requisitionList/data",u),u}),U=`
   mutation DELETE_REQUISITION_LIST_ITEMS_MUTATION(
       $requisitionListUid: ID!, 
       $requisitionListItemUids: [ID!]!,
@@ -66,8 +66,8 @@ ${_}
     }
   }
 ${a}
-${_}
-`,P=async(i,r,t,n)=>I(U,{variables:{requisitionListUid:i,requisitionListItemUids:r,pageSize:t,currentPage:n}}).then(async({errors:s,data:e})=>{var o,l;if(s)return m(s);if(!((o=e==null?void 0:e.deleteRequisitionListItems)!=null&&o.requisition_list))return null;(l=e.deleteRequisitionListItems.requisition_list.items)!=null&&l.items&&(e.deleteRequisitionListItems.requisition_list.items.items=await T(e.deleteRequisitionListItems.requisition_list.items.items));const u=c(e.deleteRequisitionListItems.requisition_list);return q.emit("requisitionList/data",u),u}),d=`
+${m}
+`,P=async(i,r,t,n)=>I(U,{variables:{requisitionListUid:i,requisitionListItemUids:r,pageSize:t,currentPage:n}}).then(async({errors:s,data:e})=>{var o,l;if(s)return _(s);if(!((o=e==null?void 0:e.deleteRequisitionListItems)!=null&&o.requisition_list))return null;(l=e.deleteRequisitionListItems.requisition_list.items)!=null&&l.items&&(e.deleteRequisitionListItems.requisition_list.items.items=await T(e.deleteRequisitionListItems.requisition_list.items.items));const u=c(e.deleteRequisitionListItems.requisition_list);return q.emit("requisitionList/data",u),u}),d=`
 fragment PRODUCT_FRAGMENT on ProductView {
   __typename
   id
@@ -207,7 +207,7 @@ fragment PRICE_RANGE_FRAGMENT on ComplexProductView {
     }
   }
   ${d}
-`,$=async i=>I(f,{variables:{skus:i}}).then(({errors:r,data:t})=>r?m(r):t!=null&&t.products?L(t.products):null),N=`
+`,$=async i=>I(f,{variables:{skus:i}}).then(({errors:r,data:t})=>r?_(r):t!=null&&t.products?L(t.products):null),N=`
   mutation ADD_REQUISITION_LIST_ITEMS_TO_CART_MUTATION(
       $requisitionListUid: ID!, 
       $requisitionListItemUids: [ID!]!
@@ -237,5 +237,5 @@ fragment PRICE_RANGE_FRAGMENT on ComplexProductView {
       }
     }
   }
-`,D=async(i,r)=>I(N,{variables:{requisitionListUid:i,requisitionListItemUids:r}}).then(({errors:t,data:n})=>{var s;return t?m(t):(s=n.addRequisitionListItemsToCart.add_requisition_list_items_to_cart_user_errors)!=null&&s.length?n.addRequisitionListItemsToCart.add_requisition_list_items_to_cart_user_errors.map(e=>e.type):null});export{D as a,$ as b,P as d,O as g,p as i,A as u};
+`,D=async(i,r)=>I(N,{variables:{requisitionListUid:i,requisitionListItemUids:r}}).then(({errors:t,data:n})=>{var s;return t?_(t):(s=n.addRequisitionListItemsToCart.add_requisition_list_items_to_cart_user_errors)!=null&&s.length?n.addRequisitionListItemsToCart.add_requisition_list_items_to_cart_user_errors.map(e=>e.type):null});export{D as a,$ as b,P as d,y as g,S as i,A as u};
 //# sourceMappingURL=addRequisitionListItemsToCart.js.map

@@ -1,5 +1,5 @@
 import { RequisitionList } from '../models/requisitionList';
-import { ConfiguredProduct, Link, Sample, BundleOption, ConfigurableOption, CustomizableOption, GiftCardOption } from '../models/item';
+import { ConfiguredProduct, Link, Sample, BundleOption, ConfigurableOption, RawCustomizableOption, GiftCardOption } from '../models/item';
 
 export interface RawRequisitionListData {
     name: string;
@@ -21,9 +21,11 @@ interface RawItemData {
     uid: string;
     product: {
         sku: string;
+        stock_status?: string;
+        only_x_left_in_stock?: number | null;
     };
     quantity: number;
-    customizable_options?: CustomizableOption[];
+    customizable_options?: RawCustomizableOption[];
     bundle_options?: BundleOption[];
     configurable_options?: ConfigurableOption[];
     configured_product?: ConfiguredProduct;

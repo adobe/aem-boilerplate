@@ -81,8 +81,6 @@ declare const _default: {
       "confirmAction": "Delete",
       "cancelAction": "Cancel",
       "emptyRequisitionList": " Requisition List is empty",
-      "show": "Show",
-      "itemsCounter": "Items {from}-{to} of {total}",
       "productListTable": {
         "headers": {
           "productName": "Product name",
@@ -92,7 +90,9 @@ declare const _default: {
           "subtotal": "Subtotal",
           "actions": "Actions"
         },
-        "itemQuantity": "Item quantity"
+        "itemQuantity": "Item quantity",
+        "outOfStock": "Out of stock",
+        "onlyXLeftInStock": "Only {count} left in stock"
       },
       "errorLoadPage": "Failed to load page",
       "errorLoadingProducts": "Failed to load product data",
@@ -100,8 +100,17 @@ declare const _default: {
       "notFoundMessage": "The requisition list you are looking for does not exist or you do not have access to it.",
       "notFoundActionLabel": "Back to Requisition Lists"
     },
+    "RequisitionListsNotEnabled": {
+      "title": "Requisition Lists Not Available",
+      "message": "Requisition Lists are not available. Please contact your administrator for more information.",
+      "actionLabel": "Go to My Account"
+    },
     "PageSizePicker": {
+      "show": "Show",
       "itemsPerPage": "Items per page"
+    },
+    "PaginationItemsCounter": {
+      "itemsCounter": "Items {from}-{to} of {total}"
     }
   }
 }

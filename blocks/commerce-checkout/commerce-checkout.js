@@ -1,4 +1,5 @@
 /* eslint-disable import/no-unresolved */
+/* eslint-disable no-unused-vars */
 
 // Dropin Tools
 import { events } from '@dropins/tools/event-bus.js';
@@ -335,8 +336,7 @@ export default async function decorate(block) {
 
   function handleAuthenticated(authenticated) {
     if (!authenticated) return;
-    removeModal();
-    displayOverlaySpinner(loaderRef, $loader);
+    window.location.reload();
   }
 
   function handleCheckoutValues(payload) {

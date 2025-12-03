@@ -67,6 +67,7 @@ import { showModal, swatchImageSlot } from './utils.js';
 // External dependencies
 import {
   authPrivacyPolicyConsentSlot,
+  fetchPlaceholders,
   rootLink,
 } from '../../scripts/commerce.js';
 
@@ -284,8 +285,9 @@ export const renderLoginForm = async (container) => renderContainer(
 
       await showModal(signInForm);
     },
-    onSignOutClick: () => {
-      authApi.revokeCustomerToken();
+    onSignOutClick: async () => {
+      await authApi.revokeCustomerToken();
+      window.location.href = rootLink('/cart');
     },
   })(container),
 );
@@ -503,56 +505,60 @@ export const renderOrderSummary = async (container) => renderContainer(
  */
 export const renderCartSummaryList = async (container) => renderContainer(
   CONTAINERS.CART_SUMMARY_LIST,
-  async () => CartProvider.render(CartSummaryList, {
-    variant: 'secondary',
-    slots: {
-      Heading: (headingCtx) => {
-        const title = 'Your Cart ({count})';
+  async () => {
+    const placeholders = await fetchPlaceholders('placeholders/checkout.json');
 
-        const cartSummaryListHeading = document.createElement('div');
-        cartSummaryListHeading.classList.add('cart-summary-list__heading');
+    return CartProvider.render(CartSummaryList, {
+      variant: 'secondary',
+      slots: {
+        Heading: (headingCtx) => {
+          const title = placeholders?.Checkout?.Summary?.heading;
 
-        const cartSummaryListHeadingText = document.createElement('div');
-        cartSummaryListHeadingText.classList.add(
-          'cart-summary-list__heading-text',
-        );
+          const cartSummaryListHeading = document.createElement('div');
+          cartSummaryListHeading.classList.add('cart-summary-list__heading');
 
-        cartSummaryListHeadingText.innerText = title.replace(
-          '({count})',
-          headingCtx.count ? `(${headingCtx.count})` : '',
-        );
-        const editCartLink = document.createElement('a');
-        editCartLink.classList.add('cart-summary-list__edit');
-        editCartLink.href = rootLink('/cart');
-        editCartLink.rel = 'noreferrer';
-        editCartLink.innerText = 'Edit';
-
-        cartSummaryListHeading.appendChild(cartSummaryListHeadingText);
-        cartSummaryListHeading.appendChild(editCartLink);
-        headingCtx.appendChild(cartSummaryListHeading);
-
-        headingCtx.onChange((nextHeadingCtx) => {
-          cartSummaryListHeadingText.innerText = title.replace(
-            '({count})',
-            nextHeadingCtx.count ? `(${nextHeadingCtx.count})` : '',
+          const cartSummaryListHeadingText = document.createElement('div');
+          cartSummaryListHeadingText.classList.add(
+            'cart-summary-list__heading-text',
           );
-        });
-      },
-      Thumbnail: (ctx) => {
-        const { item, defaultImageProps } = ctx;
-        tryRenderAemAssetsImage(ctx, {
-          alias: item.sku,
-          imageProps: defaultImageProps,
 
-          params: {
-            width: defaultImageProps.width,
-            height: defaultImageProps.height,
-          },
-        });
+          cartSummaryListHeadingText.innerText = title?.replace(
+            '({count})',
+            headingCtx.count ? `(${headingCtx.count})` : '',
+          );
+          const editCartLink = document.createElement('a');
+          editCartLink.classList.add('cart-summary-list__edit');
+          editCartLink.href = rootLink('/cart');
+          editCartLink.rel = 'noreferrer';
+          editCartLink.innerText = placeholders?.Checkout?.Summary?.Edit;
+
+          cartSummaryListHeading.appendChild(cartSummaryListHeadingText);
+          cartSummaryListHeading.appendChild(editCartLink);
+          headingCtx.appendChild(cartSummaryListHeading);
+
+          headingCtx.onChange((nextHeadingCtx) => {
+            cartSummaryListHeadingText.innerText = title?.replace(
+              '({count})',
+              nextHeadingCtx.count ? `(${nextHeadingCtx.count})` : '',
+            );
+          });
+        },
+        Thumbnail: (ctx) => {
+          const { item, defaultImageProps } = ctx;
+          tryRenderAemAssetsImage(ctx, {
+            alias: item.sku,
+            imageProps: defaultImageProps,
+
+            params: {
+              width: defaultImageProps.width,
+              height: defaultImageProps.height,
+            },
+          });
+        },
+        Footer: renderCartGiftOptions,
       },
-      Footer: renderCartGiftOptions,
-    },
-  })(container),
+    })(container);
+  },
 );
 
 /**
@@ -590,6 +596,8 @@ export const renderPlaceOrder = async (container, options = {}) => renderContain
 export const renderCustomerShippingAddresses = async (container, formRef, data, placeOrderButton) => renderContainer(
   CONTAINERS.CUSTOMER_SHIPPING_ADDRESSES,
   async () => {
+    const placeholders = await fetchPlaceholders('placeholders/checkout.json');
+
     const cartShippingAddress = getCartAddress(data, 'shipping');
 
     const shippingAddressId = cartShippingAddress
@@ -628,7 +636,7 @@ export const renderCustomerShippingAddresses = async (container, formRef, data, 
     }, ADDRESS_INPUT_DEBOUNCE_TIME);
 
     return AccountProvider.render(Addresses, {
-      addressFormTitle: 'Deliver to new address',
+      addressFormTitle: placeholders?.Checkout?.Addresses?.shippingAddressTitle,
       defaultSelectAddressId: shippingAddressId,
       fieldIdPrefix: 'shipping',
       formName: SHIPPING_FORM_NAME,
@@ -647,7 +655,7 @@ export const renderCustomerShippingAddresses = async (container, formRef, data, 
       showBillingCheckBox: false,
       showSaveCheckBox: true,
       showShippingCheckBox: false,
-      title: 'Shipping address',
+      title: placeholders?.Checkout?.Addresses?.shippingAddressTitle,
     })(container);
   },
 );
@@ -663,6 +671,8 @@ export const renderCustomerShippingAddresses = async (container, formRef, data, 
 export const renderCustomerBillingAddresses = async (container, formRef, data, placeOrderButton) => renderContainer(
   CONTAINERS.CUSTOMER_BILLING_ADDRESSES,
   async () => {
+    const placeholders = await fetchPlaceholders('placeholders/checkout.json');
+
     const cartBillingAddress = getCartAddress(data, 'billing');
 
     const billingAddressId = cartBillingAddress
@@ -697,7 +707,7 @@ export const renderCustomerBillingAddresses = async (container, formRef, data, p
     }, ADDRESS_INPUT_DEBOUNCE_TIME);
 
     return AccountProvider.render(Addresses, {
-      addressFormTitle: 'Bill to new address',
+      addressFormTitle: placeholders?.Checkout?.Addresses?.billToNewAddress,
       defaultSelectAddressId: billingAddressId,
       formName: BILLING_FORM_NAME,
       forwardFormRef: formRef,
@@ -714,7 +724,7 @@ export const renderCustomerBillingAddresses = async (container, formRef, data, p
       showBillingCheckBox: false,
       showSaveCheckBox: true,
       showShippingCheckBox: false,
-      title: 'Billing address',
+      title: placeholders?.Checkout?.Addresses?.billingAddressTitle,
     })(container);
   },
 );
@@ -735,6 +745,8 @@ export const renderAddressForm = async (container, formRef, data, placeOrderButt
   return renderContainer(
     containerKey,
     async () => {
+      const placeholders = await fetchPlaceholders('placeholders/checkout.json');
+
       // Get address type specific configurations
       const cartAddress = getCartAddress(data, addressType);
       const addressDataKey = isShipping ? SHIPPING_ADDRESS_DATA_KEY : BILLING_ADDRESS_DATA_KEY;
@@ -769,7 +781,9 @@ export const renderAddressForm = async (container, formRef, data, placeOrderButt
 
       // Address type specific configurations
       const formName = isShipping ? SHIPPING_FORM_NAME : BILLING_FORM_NAME;
-      const addressTitle = isShipping ? 'Shipping address' : 'Billing address';
+      const addressTitle = isShipping
+        ? placeholders?.Checkout?.Addresses?.shippingAddressTitle
+        : placeholders?.Checkout?.Addresses?.billingAddressTitle;
       const className = isShipping
         ? 'checkout-shipping-form__address-form'
         : 'checkout-billing-form__address-form';

@@ -44,17 +44,15 @@ const showAuthModal = (event) => {
 
   // Render auth form
   authRenderer.render(AuthCombine, {
-    signInFormConfig: { renderSignUpLink: true },
+    signInFormConfig: {
+      renderSignUpLink: true,
+      onSuccessCallback: () => {
+        window.location.reload();
+      },
+    },
     signUpFormConfig: {},
     resetPasswordFormConfig: {},
   })(signInForm);
-
-  const authListener = events.on('authenticated', (authenticated) => {
-    if (authenticated) {
-      signInModal.remove();
-      authListener.off();
-    }
-  });
 };
 
 events.on('wishlist/alert', () => {

@@ -42,7 +42,7 @@ No events are emitted by this block. -->
 
 1. **Initialization**: Block initializes wishlist renderer and sets up product data API endpoints
 2. **Wishlist Display**: Renders wishlist items with product images and management options
-3. **Authentication Flow**: When unauthenticated users sign-in, guest wishlist is preserved and merged with authenticated user wishlist
+3. **Authentication Flow**: When unauthenticated users sign-in through the modal, the page automatically reloads. Upon reload, the guest wishlist is preserved and merged with the authenticated user wishlist
 4. **Product Management**: Users can add/remove products from wishlist and move items to cart
 5. **Product Navigation**: Users can navigate to product detail pages
 6. **Alert Handling**: Shows wishlist action alerts and scrolls to top of page

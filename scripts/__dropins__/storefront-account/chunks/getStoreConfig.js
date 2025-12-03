@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{Initializer as d}from"@dropins/tools/lib.js";import{f as h,h as g,a as m}from"./removeCustomerAddress.js";const _=new d({init:async t=>{const a={authHeaderConfig:{header:"Authorization",tokenPrefix:"Bearer"}};_.config.setConfig({...a,...t})},listeners:()=>[]}),G=_.config,u=t=>{var a,r,i,o,e,c,n,f;return{baseMediaUrl:(r=(a=t==null?void 0:t.data)==null?void 0:a.storeConfig)==null?void 0:r.base_media_url,minLength:+((o=(i=t==null?void 0:t.data)==null?void 0:i.storeConfig)==null?void 0:o.minimum_password_length)||3,requiredCharacterClasses:+((c=(e=t==null?void 0:t.data)==null?void 0:e.storeConfig)==null?void 0:c.required_character_classes_number)||0,storeCode:((f=(n=t==null?void 0:t.data)==null?void 0:n.storeConfig)==null?void 0:f.store_code)??""}},l=`
+import{f as e,h as m,a as u}from"./removeCustomerAddress.js";const f=t=>{var a,r,c,_,i,o,d,h;return{baseMediaUrl:(r=(a=t==null?void 0:t.data)==null?void 0:a.storeConfig)==null?void 0:r.base_media_url,minLength:+((_=(c=t==null?void 0:t.data)==null?void 0:c.storeConfig)==null?void 0:_.minimum_password_length)||3,requiredCharacterClasses:+((o=(i=t==null?void 0:t.data)==null?void 0:i.storeConfig)==null?void 0:o.required_character_classes_number)||0,storeCode:((h=(d=t==null?void 0:t.data)==null?void 0:d.storeConfig)==null?void 0:h.store_code)??""}},g=`
   query GET_STORE_CONFIG {
     storeConfig {
       base_media_url
@@ -10,5 +10,5 @@ import{Initializer as d}from"@dropins/tools/lib.js";import{f as h,h as g,a as m}
       store_code
     }
   }
-`,b=async()=>await h(l,{method:"GET",cache:"force-cache"}).then(t=>{var a;return(a=t.errors)!=null&&a.length?g(t.errors):u(t)}).catch(m);export{G as c,b as g,_ as i};
+`,C=async()=>await e(g,{method:"GET",cache:"force-cache"}).then(t=>{var a;return(a=t.errors)!=null&&a.length?m(t.errors):f(t)}).catch(u);export{C as g};
 //# sourceMappingURL=getStoreConfig.js.map

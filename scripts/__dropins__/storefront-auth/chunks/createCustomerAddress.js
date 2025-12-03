@@ -1,6 +1,6 @@
 /*! Copyright 2025 Adobe
 All Rights Reserved. */
-import{CUSTOMER_INFORMATION_FRAGMENT as O}from"../fragments.js";import{f as s,h as u}from"./network-error.js";import{s as b}from"./setReCaptchaToken.js";import"@dropins/tools/event-bus.js";import"@dropins/tools/recaptcha.js";import{merge as N}from"@dropins/tools/lib.js";import{c as p,h as S}from"./getCustomerRolePermissions.js";import{t as F}from"./transform-attributes-form.js";const I=`
+import{CUSTOMER_INFORMATION_FRAGMENT as O}from"../fragments.js";import{f as s,h as u}from"./network-error.js";import{s as b}from"./setReCaptchaToken.js";import"@dropins/tools/event-bus.js";import"@dropins/tools/recaptcha.js";import{merge as N}from"@dropins/tools/lib.js";import{c as p,h as S}from"./getAdobeCommerceOptimizerData.js";import{t as F}from"./transform-attributes-form.js";const I=`
   mutation CREATE_CUSTOMER($input: CustomerInput!) {
     createCustomer(input: $input) {
       customer {

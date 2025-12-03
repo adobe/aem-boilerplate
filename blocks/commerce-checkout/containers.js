@@ -285,8 +285,9 @@ export const renderLoginForm = async (container) => renderContainer(
 
       await showModal(signInForm);
     },
-    onSignOutClick: () => {
-      authApi.revokeCustomerToken();
+    onSignOutClick: async () => {
+      await authApi.revokeCustomerToken();
+      window.location.href = rootLink('/cart');
     },
   })(container),
 );

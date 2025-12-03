@@ -312,8 +312,7 @@ export default async function decorate(block) {
 
   function handleAuthenticated(authenticated) {
     if (!authenticated) return;
-    removeModal();
-    displayOverlaySpinner(loaderRef, $loader);
+    window.location.reload();
   }
 
   function handleCheckoutValues(payload) {

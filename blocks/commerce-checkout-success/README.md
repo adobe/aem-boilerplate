@@ -113,6 +113,10 @@ Add the block to your confirmation page template:
 
 When used via the decorator system, the block will automatically render the confirmation experience into the block container. For programmatic usage, use the `renderCheckoutSuccess` export and pass `orderData`.
 
+## Authentication Flow
+
+The block listens for authentication state changes via `events.on('authenticated', callback)`. When a guest user successfully signs up through the modal, the page automatically reloads to reflect the authenticated state across all components.
+
 ## File Structure
 
 - `commerce-checkout-success.js` — Entry point and block decorator; builds fragment, mounts Order drop-in, renders containers, and footer actions.

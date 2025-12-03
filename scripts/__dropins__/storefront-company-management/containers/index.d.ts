@@ -14,11 +14,11 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
+export * from './AcceptInvitation';
 export * from './CompanyProfile';
 export * from './CompanyStructure';
 export * from './CompanyUsers';
 export * from './CustomerCompanyInfo';
-export * from './CompanyStructure';
 export * from './CompanyRegistration';
 export * from './CompanyCredit';
 export * from './RolesAndPermissions';

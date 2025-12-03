@@ -14,16 +14,16 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './containers';
-export * from './useAcceptInvitation';
-export * from './useCompanyContextListener';
-export * from './useCompanyRoles';
-export * from './useCompanyStructureCard';
-export * from './useCompanyTeamForm';
-export * from './useCompanyUserForm';
-export * from './useCountries';
-export * from './useInLineAlert';
-export * from './useModal';
-export * from './usePermissions';
-export * from './useUserPermissions';
-//# sourceMappingURL=index.d.ts.map
+/**
+ * Switches the company context to the specified company ID
+ * Only switches if:
+ * 1. The invited customer ID matches the logged-in customer ID
+ * 2. There's no company ID already in session
+ *
+ * This replicates Luma's behavior in AcceptInvitation controller.
+ *
+ * @param companyId - The company ID to switch to (base64 encoded)
+ * @param invitedCustomerId - The customer ID from the invitation (base64 encoded)
+ */
+export declare function switchCompanyContext(companyId: string, invitedCustomerId: string): Promise<void>;
+//# sourceMappingURL=switchCompanyContext.d.ts.map

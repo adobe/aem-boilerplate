@@ -27,5 +27,6 @@ export interface CreateCompanyUserInput {
 export interface CreateCompanyUserResult {
     id?: string;
     structureId?: string;
+    jobTitle?: string | null;
 }
 //# sourceMappingURL=createCompanyUser.types.d.ts.map

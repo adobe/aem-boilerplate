@@ -28,6 +28,7 @@ export interface CompanyStructureItemResponse {
         lastname?: string;
         name?: string;
         description?: string | null;
+        status?: 'ACTIVE' | 'INACTIVE';
     };
 }
 //# sourceMappingURL=getCompanyStructure.types.d.ts.map

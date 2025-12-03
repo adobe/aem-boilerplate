@@ -23,6 +23,7 @@ export * from './cookies';
 export * from './encoding';
 export * from './fetch-error';
 export * from './network-error';
+export * from './switchCompanyContext';
 export * from './userHelpers';
 export * from './validationFields';
 //# sourceMappingURL=index.d.ts.map

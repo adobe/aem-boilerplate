@@ -25,6 +25,8 @@ export interface CompanyUserFormProps {
         structureId?: string;
         entityId?: string;
         type: 'user';
+        status?: 'ACTIVE' | 'INACTIVE';
+        jobTitle?: string | null;
     }) => void;
     onCancel: () => void;
     onError?: (error: string) => void;

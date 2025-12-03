@@ -17,7 +17,9 @@
 export * from './initialize';
 export * from './fetch-graphql';
 export * from './fetchUserPermissions';
+export * from './acceptCompanyInvitation';
 export * from './allowCompanyRegistration';
+export * from './checkCompanyCreditEnabled';
 export * from './companyEnabled';
 export * from './createCompany';
 export * from './createCompanyTeam';
@@ -25,6 +27,8 @@ export * from './createCompanyUser';
 export * from './deleteCompanyTeam';
 export * from './deleteCompanyUser';
 export * from './getCompany';
+export * from './getCompanyCredit';
+export * from './getCompanyCreditHistory';
 export * from './getCompanyStructure';
 export * from './getCompanyTeam';
 export * from './getCompanyUser';
@@ -41,8 +45,5 @@ export * from './updateCompanyTeam';
 export * from './updateCompanyUser';
 export * from './updateCompanyUserStatus';
 export * from './validateCompanyEmail';
-export * from './getCompanyCredit';
-export * from './getCompanyCreditHistory';
-export * from './checkCompanyCreditEnabled';
 export * from './companyRoles';
 //# sourceMappingURL=index.d.ts.map

@@ -14,6 +14,7 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
+export * from './acceptInvitation.types';
 export * from './companyForm.types';
 export * from './companyPermission.types';
 export * from './companyProfile.types';
@@ -22,6 +23,7 @@ export * from './customerCompanyInfo.types';
 export * from './events';
 export * from './hook.types';
 export * from './form.types';
+export * from './api/acceptCompanyInvitation.types';
 export * from './api/createCompanyTeam.types';
 export * from './api/createCompanyUser.types';
 export * from './api/deleteCompanyTeam.types';

@@ -13,6 +13,8 @@ interface CompanyStructureItemResponse {
         structure_id: string;
         firstname?: string;
         lastname?: string;
+        status?: 'ACTIVE' | 'INACTIVE';
+        job_title?: string | null;
         name?: string;
         description?: string | null;
     };

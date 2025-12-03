@@ -15,30 +15,22 @@
  * from Adobe.
  ****************************************************************** */
 
-import { render as provider } from '@dropins/storefront-company-management/render.js';
-import { CompanyStructure } from '@dropins/storefront-company-management/containers/CompanyStructure.js';
+/* eslint-disable import/no-unresolved */
+import { AcceptInvitation } from '@dropins/storefront-company-management/containers/AcceptInvitation.js';
+import { render as companyRenderer } from '@dropins/storefront-company-management/render.js';
 import {
-  checkIsAuthenticated,
-  rootLink,
-  CUSTOMER_LOGIN_PATH,
-  CUSTOMER_ACCOUNT_PATH,
+  CUSTOMER_LOGIN_PATH, CUSTOMER_ACCOUNT_PATH, rootLink, checkIsAuthenticated,
 } from '../../scripts/commerce.js';
 
-// Initialize dropins
+// Initialize company dropin
 import '../../scripts/initializers/company.js';
 
 export default async function decorate(block) {
-  block.classList.add('commerce-company-structure-container');
-
   const isAuthenticated = checkIsAuthenticated();
 
-  await provider.render(CompanyStructure, {
+  await companyRenderer.render(AcceptInvitation, {
+    routeMyAccount: () => rootLink(CUSTOMER_ACCOUNT_PATH),
+    routeLogin: () => rootLink(CUSTOMER_LOGIN_PATH),
     isAuthenticated,
-    onRedirectLogin: () => {
-      window.location.href = rootLink(CUSTOMER_LOGIN_PATH);
-    },
-    onRedirectAccount: () => {
-      window.location.href = rootLink(CUSTOMER_ACCOUNT_PATH);
-    },
   })(block);
 }

@@ -14,16 +14,19 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './containers';
-export * from './useAcceptInvitation';
-export * from './useCompanyContextListener';
-export * from './useCompanyRoles';
-export * from './useCompanyStructureCard';
-export * from './useCompanyTeamForm';
-export * from './useCompanyUserForm';
-export * from './useCountries';
-export * from './useInLineAlert';
-export * from './useModal';
-export * from './usePermissions';
-export * from './useUserPermissions';
-//# sourceMappingURL=index.d.ts.map
+export interface AcceptCompanyInvitationUserInput {
+    customerId: string;
+    companyId: string;
+    jobTitle?: string | null;
+    telephone?: string | null;
+    status?: 'ACTIVE' | 'INACTIVE' | null;
+}
+export interface AcceptCompanyInvitationInput {
+    code: string;
+    user: AcceptCompanyInvitationUserInput;
+    roleId?: string | null;
+}
+export interface AcceptCompanyInvitationResult {
+    success: boolean;
+}
+//# sourceMappingURL=acceptCompanyInvitation.types.d.ts.map

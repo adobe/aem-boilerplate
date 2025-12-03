@@ -9,6 +9,7 @@ type ConfigProps = {
         tokenPrefix: string;
     };
     customerPermissionRoles?: boolean;
+    adobeCommerceOptimizer?: boolean;
     models?: {
         CustomerModel?: Model<CustomerModel>;
     };

@@ -23,5 +23,7 @@ export interface StoreConfigModel {
         grandTotal: boolean;
     };
     useConfigurableParentThumbnail: boolean;
+    quoteMinimumAmount: number | null;
+    quoteMinimumAmountMessage: string | null;
 }
 //# sourceMappingURL=store-config-model.d.ts.map

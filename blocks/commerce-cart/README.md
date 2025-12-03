@@ -20,7 +20,6 @@ The Commerce Cart block renders a comprehensive shopping cart interface with pro
 | `checkout-url` | string | `''` | URL for checkout button | No | Sets destination for checkout action |
 | `enable-updating-product` | string | `'false'` | Enables product editing via mini-PDP modal | No | Shows/hides edit buttons for configurable products |
 | `undo-remove-item` | string | `'false'` | Enables undo functionality when removing items | No | Shows/hides undo option after item removal |
-| `minimum-total-for-quote-request` | string | `'0'` | Minimum cart subtotal required to enable quote request button | No | Disables quote request button when cart subtotal is below threshold |
 
 <!-- ### URL Parameters
 
@@ -36,6 +35,7 @@ No localStorage keys are used by this block. -->
 
 - `events.on('cart/data', callback)` - Listens for cart data updates to refresh the cart display, toggle empty state, and update quote request button state based on cart subtotal
 - `events.on('wishlist/alert', callback)` - Listens for wishlist actions to show wishlist-related notifications
+- `events.on('quote-management/initialized', callback)` - Listens for quote management initialization to retrieve minimum cart amount required for quote requests and related messaging
 - `events.on('quote-management/permissions', callback)` - Listens for quote management permissions to show/hide request quote button based on user permissions
 - `events.on('quote-management/negotiable-quote-requested', callback)` - Listens for successful quote request to refresh cart and close modal
 
@@ -51,7 +51,7 @@ No localStorage keys are used by this block. -->
 - **Populated Cart**: When cart has items, shows full cart interface with product list and order summary
 - **Configurable Products**: When configurable products are present and editing is enabled, shows edit buttons
 - **Gift Options**: Shows gift options section when cart is not empty
-- **Quote Request Button**: Shows request quote button when user has permissions and hides it otherwise. Button is disabled when cart subtotal is below minimum threshold
+- **Quote Request Button**: Shows request quote button when user has permissions and hides it otherwise. Button is disabled when cart subtotal is below minimum threshold configured in quote management system
 
 ### User Interaction Flows
 
@@ -60,8 +60,9 @@ No localStorage keys are used by this block. -->
 3. **Product Editing**: Clicking edit button opens mini-PDP modal for configurable product updates
 4. **Wishlist Integration**: Users can move items to/from wishlist with confirmation notifications
 5. **Quote Request**: Users with appropriate permissions can request a negotiable quote when cart subtotal meets minimum threshold
-   - Button is disabled when cart subtotal is below configured minimum
-   - Tooltip displays minimum requirement when button is disabled
+   - Minimum cart amount is retrieved dynamically from quote management system configuration
+   - Button is disabled when cart subtotal is below the minimum threshold
+   - Visible warning message and tooltip display the minimum requirement when button is disabled
    - Clicking button opens modal with quote request form
    - Cart refreshes and modal closes automatically after successful quote creation
 6. **Checkout Flow**: Users can proceed to checkout via configured checkout URL

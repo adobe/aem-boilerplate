@@ -16,11 +16,15 @@ export declare const mockStoreConfigGraphQLResponse: {
     shopping_cart_display_full_summary: boolean;
     shopping_cart_display_grand_total: boolean;
     configurable_thumbnail_source: string;
+    quote_minimum_amount: number;
+    quote_minimum_amount_message: string;
 };
 export declare const mockStoreConfigGraphQLResponseWithWrongValues: {
     shopping_cart_display_subtotal: number;
     shopping_cart_display_price: null;
     shopping_cart_display_shipping: number;
+    quote_minimum_amount: null;
+    quote_minimum_amount_message: null;
     cart_summary_display_quantity: number;
     max_items_in_order_summary: number;
     shopping_cart_display_zero_tax: boolean;

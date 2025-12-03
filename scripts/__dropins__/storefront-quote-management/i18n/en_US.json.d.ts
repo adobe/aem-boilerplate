@@ -112,7 +112,9 @@ declare const _default: {
         "title": "Shipping Information"
       },
       "shippingAddress": {
-        "noAddress": "No shipping address has been set for this quote."
+        "noAddress": "No shipping address has been set for this quote.",
+        "noAddressHeading": "No Shipping Address",
+        "noAddressDescription": "Please select or enter a shipping address."
       },
       "quoteComments": {
         "title": "Quote Comments",
@@ -139,8 +141,11 @@ declare const _default: {
         "notes": {
           "header": "NOTES",
           "leftANote": "left a note:",
-          "buyer": "Buyer"
-        }
+          "buyer": "Buyer",
+          "seller": "Seller"
+        },
+        "outOfStock": "Out of Stock",
+        "outOfStockMessage": "This item is currently out of stock."
       },
       "rename": {
         "title": "Rename Quote",

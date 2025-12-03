@@ -2,13 +2,13 @@
 All Rights Reserved. */
 const e=`
   fragment NegotiableQuoteTemplateFragment on NegotiableQuoteTemplate {
-    # uid
+    uid
     template_id
     name
-    # created_at
-    # updated_at
+    created_at
+    updated_at
     status
-    # sales_rep_name
+    sales_rep_name
     expiration_date
     buyer {
       firstname

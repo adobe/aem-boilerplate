@@ -2107,6 +2107,7 @@ export declare const mockInactiveQuoteTemplateData: {
 export declare const mockQuoteTemplateListData: {
     items: {
         template_id: string;
+        uid: string;
         name: string;
         created_at: string;
         updated_at: string;

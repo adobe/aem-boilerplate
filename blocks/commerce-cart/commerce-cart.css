@@ -76,6 +76,20 @@
   padding-top: var(--spacing-medium);
 }
 
+/* Request Quote Message */
+.cart__request-quote-message-wrapper {
+  margin-top: var(--spacing-xsmall);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart__request-quote-message {
+  font: var(--type-details-caption-2-font);
+  letter-spacing: var(--type-details-caption-2-letter-spacing);
+  color: var(--color-alert-800);
+}
+
 @media (min-width: 768px) {
   .cart__wrapper {
     flex-direction: row;

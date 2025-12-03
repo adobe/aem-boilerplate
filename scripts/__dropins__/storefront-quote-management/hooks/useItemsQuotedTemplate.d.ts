@@ -1,9 +1,8 @@
-import { ProductListTableItem } from '../components';
 import { CartItemModel } from '../data/models/negotiable-quote-model';
 
 export interface UseItemsQuotedTemplateReturn {
     dropdownSelections: Record<string, string | undefined>;
-    handleItemDropdownChange: (item: ProductListTableItem, action: string) => void;
+    handleItemDropdownChange: (item: CartItemModel, action: string) => void;
     handleDismissRemoveBanner: () => void;
 }
 export interface UseItemsQuotedTemplateParams {

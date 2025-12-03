@@ -1,8 +1,8 @@
-import { ProductListTableItem } from '../components';
+import { CartItemModel } from '../data/models/negotiable-quote-model';
 
 export interface UseUpdateTemplateQuantitiesReturn {
     quantityChanges: Record<string, number>;
-    handleQuantityChange: (item: ProductListTableItem, newQuantity: number) => void;
+    handleQuantityChange: (item: CartItemModel, newQuantity: number) => void;
     handleUpdate: (e: SubmitEvent) => void;
     handleConfirmUpdate: () => Promise<void>;
     handleCancelUpdate: () => void;

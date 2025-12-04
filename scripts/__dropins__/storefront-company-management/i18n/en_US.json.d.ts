@@ -8,6 +8,7 @@ declare const _default: {
         "legalName": "Legal Name",
         "vatTaxId": "VAT/Tax ID",
         "resellerId": "Reseller ID",
+        "accountInformation": "Account Information",
         "legalAddress": "Legal Address",
         "streetAddress": "Street Address",
         "city": "City",

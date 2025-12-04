@@ -171,7 +171,7 @@ export default async function decorate(block) {
 
     renderShippingAddressFormSkeleton($shippingForm),
 
-    renderBillToShippingAddress($billToShipping, placeOrder),
+    renderBillToShippingAddress($billToShipping),
 
     renderShippingMethods($delivery),
 
@@ -216,7 +216,6 @@ export default async function decorate(block) {
         $billingForm,
         billingFormRef,
         data,
-        placeOrder,
       );
     }
   }

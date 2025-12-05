@@ -113,6 +113,13 @@ await initializeDropin(async () => {
   events.on('companyContext/changed', async () => {
     // Reload PDP when company context changes
     const loadedProduct = await getProductData(false);
+    if (!loadedProduct?.sku) {
+      // Calling loadErrorPage() here produces a 404 page without header.
+      // This does not allow the user to go back or switch companies again.
+      // Instead, we reload the page to show the error page with the header and controls.
+      window.location.reload();
+      return;
+    }
     events.emit('pdp/data', loadedProduct);
   });
 

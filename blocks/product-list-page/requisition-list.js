@@ -25,7 +25,6 @@ import { render as rlRenderer } from '@dropins/storefront-requisition-list/rende
 import {
   RequisitionListSelector,
 } from '@dropins/storefront-requisition-list/containers/RequisitionListSelector.js';
-import { events } from '@dropins/tools/event-bus.js';
 import { checkIsAuthenticated, rootLink } from '../../scripts/commerce.js';
 
 // Initialize dropins
@@ -105,10 +104,5 @@ export async function initializeRequisitionList({
   return createRequisitionListAction({
     renderFunction,
     product,
-    onAuthenticated: ($container) => {
-      events.on('authenticated', async () => {
-        await renderFunction($container, product);
-      });
-    },
   });
 }

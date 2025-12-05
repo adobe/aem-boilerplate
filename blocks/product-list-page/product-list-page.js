@@ -225,16 +225,6 @@ export default async function decorate(block) {
     // Update the URL
     window.history.pushState({}, '', url.toString());
   }, { eager: false });
-
-  // Listen for company context changed and reload data if needed.
-  events.on('companyContext/changed', async () => {
-    await performInitialSearch(config, {
-      q,
-      page,
-      sort,
-      filter,
-    });
-  });
 }
 
 async function performInitialSearch(config, urlParams) {

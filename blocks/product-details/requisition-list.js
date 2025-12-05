@@ -165,19 +165,6 @@ function setupRequisitionListEventHandlers({
       optionUIDs,
     );
   }, { eager: true });
-
-  // Handle authentication state changes (login/logout)
-  // Using { eager: true } to also catch the initial state on page load
-  events.on('authenticated', async () => {
-    const configValues = pdpApi.getProductConfigurationValues();
-    const urlOptionsUIDs = urlParams.get('optionsUIDs');
-    const optionUIDs = urlOptionsUIDs === '' ? null : (configValues?.optionsUIDs || null);
-    // Render requisition list for authenticated user
-    await renderFunction(
-      $requisitionListSelector,
-      optionUIDs,
-    );
-  }, { eager: true });
 }
 
 /**

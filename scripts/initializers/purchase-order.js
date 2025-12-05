@@ -32,12 +32,6 @@ await initializeDropin(async () => {
     poRef = searchParams.get('poRef') || '';
   }
 
-  events.on('companyContext/changed', () => {
-    if (pathname.includes(CUSTOMER_PO_DETAILS_PATH)) {
-      events.emit('purchase-order/refresh', true);
-    }
-  }, { eager: true });
-
   events.on(
     'purchase-order/error',
     () => {

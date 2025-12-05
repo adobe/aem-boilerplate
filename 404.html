@@ -81,17 +81,6 @@
     import { sampleRUM } from '/scripts/aem.js';
     sampleRUM('404', { source: document.referrer });
   </script>
-  <script nonce="aem" type="module">
-    import { events } from '@dropins/tools/event-bus.js';
-    import { getConfigValue } from '@dropins/tools/lib/aem/configs.js';
-
-    if (events.lastPayload('authenticated') && getConfigValue('commerce-companies-enabled') === true) {
-      // Error page cannot handle company context changes correctly, so we reload the page.
-      events.on('companyContext/changed', () => {
-        window.location.reload();
-      });
-    }
-  </script>
   <link rel="stylesheet" href="/styles/styles.css">
   <style>
     main.error {

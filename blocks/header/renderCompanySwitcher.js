@@ -6,7 +6,7 @@ import '../../scripts/initializers/company-switcher.js';
  * Renders the Company Switcher directly inline in the header navigation tools
  * @param {Element} navTools - The navigation tools container element
  */
-export default function renderCompanySwitcher(navTools) {
+export default async function renderCompanySwitcher(navTools) {
   const companySwitcherContainer = document.createRange().createContextualFragment(`
     <div class="company-switcher-wrapper nav-tools-wrapper">
       <div class="company-switcher-inline"></div>
@@ -17,7 +17,11 @@ export default function renderCompanySwitcher(navTools) {
 
   const companySwitcherElement = navTools.querySelector('.company-switcher-inline');
 
-  render.render(CompanySwitcher, {})(companySwitcherElement);
+  await render.render(CompanySwitcher, {
+    onCompanyChange: () => {
+      window.location.reload();
+    },
+  })(companySwitcherElement);
 
   return {
     companySwitcherElement,

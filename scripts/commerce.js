@@ -56,6 +56,7 @@ export const SALES_ORDER_VIEW_PATH = '/sales/order/view/';
 export const CUSTOMER_REQUISITION_LISTS_PATH = `${CUSTOMER_PATH}/requisition-lists`;
 export const CUSTOMER_REQUISITION_LIST_DETAILS_PATH = `${CUSTOMER_PATH}/requisition-list-view`;
 export const CUSTOMER_NEGOTIABLE_QUOTE_PATH = `${CUSTOMER_PATH}/negotiable-quote`;
+export const CUSTOMER_NEGOTIABLE_QUOTE_TEMPLATE_PATH = `${CUSTOMER_PATH}/negotiable-quote-template`;
 
 // TRACKING URL
 export const UPS_TRACKING_URL = 'https://www.ups.com/track';

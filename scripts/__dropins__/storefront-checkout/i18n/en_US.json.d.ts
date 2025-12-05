@@ -101,7 +101,13 @@ declare const _default: {
       "title": "Shipping options"
     },
     "Summary": {
-      "Edit": "Edit"
+      "Edit": "Edit",
+      "heading": "Your Cart ({count})"
+    },
+    "Addresses": {
+      "billToNewAddress": "Bill to new address",
+      "shippingAddressTitle": "Shipping address",
+      "billingAddressTitle": "Billing address"
     },
     "TermsAndConditions": {
       "error": "Please accept the Terms and Conditions to continue.",

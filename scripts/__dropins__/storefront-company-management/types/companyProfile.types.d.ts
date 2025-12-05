@@ -16,7 +16,6 @@ export interface InLineAlertProps {
 }
 export interface CompanyProfileProps {
     className?: string;
-    withHeader?: boolean;
     slots?: {
         CompanyData?: SlotProps<CompanyDataContext & {
             Default?: any;

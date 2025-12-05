@@ -37,6 +37,12 @@ export interface CustomerCompanyInfo {
     customerGroupId: string;
 }
 /**
+ * Props for the useCompanyData hook
+ */
+export interface UseCompanyDataProps {
+    onCompanyChange?: (company: Company) => void;
+}
+/**
  * Return type for the useCompanyData hook
  */
 export interface UseCompanyDataReturn {

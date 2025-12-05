@@ -1,9 +1,12 @@
 import { HTMLAttributes } from 'preact/compat';
 import { Container } from '@dropins/tools/types/elsie/src/lib';
+import { Company } from '../../types/company';
 
 export interface CompanySwitcherProps extends HTMLAttributes<HTMLDivElement> {
     /** Custom aria-label for the picker */
     ariaLabel?: string;
+    /** Callback function to be called when the company changes */
+    onCompanyChange?: (company: Company) => void;
 }
 /**
  * CompanySwitcher component allows users to switch between companies they have access to.

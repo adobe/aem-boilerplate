@@ -1,7 +1,6 @@
 import { render } from '@dropins/storefront-company-switcher/render.js';
 import { CompanySwitcher } from '@dropins/storefront-company-switcher/containers/CompanySwitcher.js';
 import '../../scripts/initializers/company-switcher.js';
-import { CUSTOMER_NEGOTIABLE_QUOTE_PATH, CUSTOMER_NEGOTIABLE_QUOTE_TEMPLATE_PATH, CUSTOMER_ORDER_DETAILS_PATH, rootLink } from '../../scripts/commerce.js';
 
 /**
  * Renders the Company Switcher directly inline in the header navigation tools
@@ -20,11 +19,10 @@ export default async function renderCompanySwitcher(navTools) {
 
   await render.render(CompanySwitcher, {
     onCompanyChange: () => {
-      handleCompanyChange({
-        '/customer/order-details?orderRef=': rootLink(CUSTOMER_ORDER_DETAILS_PATH),
-        '/customer/negotiable-quote?quoteid=': rootLink(CUSTOMER_NEGOTIABLE_QUOTE_PATH),
-        '/customer/negotiable-quote-template?quoteTemplateId=': rootLink(CUSTOMER_NEGOTIABLE_QUOTE_TEMPLATE_PATH),
-      });
+      // first remove any query params from the url
+      window.history.replaceState({}, '', window.location.pathname);
+      // reload page
+      window.location.reload();
     },
   })(companySwitcherElement);
 
@@ -33,21 +31,3 @@ export default async function renderCompanySwitcher(navTools) {
   };
 }
 
-function handleCompanyChange(redirections) {
-  const shouldRedirect = Object.entries(redirections).some(([currentPath, redirectPath]) => {
-    const [pathname, search] = currentPath.split('?');
-    const pathnameMatches = window.location.pathname.includes(pathname);
-    const searchMatches = !search || window.location.search.includes(search);
-
-    if (pathnameMatches && searchMatches) {
-      window.location.href = redirectPath;
-      return true;
-    }
-    return false;
-  });
-
-  if (!shouldRedirect) {
-    // reload the page if no redirect occurred
-    window.location.reload();
-  }
-}

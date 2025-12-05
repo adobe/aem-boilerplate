@@ -26,6 +26,35 @@ module.exports = {
         },
       });
 
+      // Disable Chrome autofill popups during tests
+      on('before:browser:launch', (browser, launchOptions) => {
+        if (browser.family === 'chromium' && browser.name !== 'electron') {
+          // Disable password manager and autofill via preferences
+          launchOptions.preferences.default = {
+            ...launchOptions.preferences.default,
+            'credentials_enable_service': false,
+            'profile.password_manager_enabled': false,
+            'autofill.profile_enabled': false,
+            'autofill.credit_card_enabled': false,
+            'autofill.address_enabled': false,
+          };
+          // Add command line args to completely disable autofill
+          launchOptions.args.push('--disable-features=AutofillServerCommunication,AutofillEnableAccountWalletStorage');
+          launchOptions.args.push('--disable-component-update');
+          launchOptions.args.push('--no-first-run');
+          launchOptions.args.push('--disable-default-apps');
+          launchOptions.args.push('--disable-popup-blocking');
+          launchOptions.args.push('--disable-translate');
+          launchOptions.args.push('--disable-background-networking');
+          launchOptions.args.push('--safebrowsing-disable-auto-update');
+          launchOptions.args.push('--disable-sync');
+          launchOptions.args.push('--metrics-recording-only');
+          launchOptions.args.push('--disable-extensions');
+          launchOptions.args.push('--incognito');
+        }
+        return launchOptions;
+      });
+
       return config;
     },
     baseUrl: 'http://localhost:3000/',

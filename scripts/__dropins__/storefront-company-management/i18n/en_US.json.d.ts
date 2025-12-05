@@ -374,7 +374,9 @@ declare const _default: {
       "selectCountry": "Please select a country",
       "selectRegion": "Please select a region, state or province",
       "selectCountryFirst": "Please select a country first",
-      "companyNameLengthError": "Company name must be between {min} and {max} characters."
+      "companyNameLengthError": "Company name must be between {min} and {max} characters.",
+      "loading": "Loading...",
+      "submitting": "Registering your company..."
     },
     "AcceptInvitation": {
       "title": "Accept Company Invitation",

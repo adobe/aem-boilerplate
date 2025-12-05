@@ -247,6 +247,7 @@ export const companyFormPostcode = 'input[name="postcode"]';
 export const companyFormTelephone = 'input[name="addressTelephone"]';
 export const companyFormCountryCode = 'select[name="countryCode"]';
 export const companyFormRegion = 'select[name="region"]';
+export const companyFormRegionInput = 'input[name="region"]';
 export const companyFormFirstName = 'input[name="adminFirstname"]';
 export const companyFormLastName = 'input[name="adminLastname"]';
 export const companyFormAdminEmail = 'input[name="adminEmail"]';

@@ -62,8 +62,12 @@ export interface FormProps {
     name?: string;
     className?: string;
     children?: any;
+    /** Show loading spinner (for initial data loading like countries/store config) */
     loading?: boolean;
+    /** Show loading spinner centered (legacy, use loading instead) */
     showFormLoader?: boolean;
+    /** Show submitting overlay (form stays visible but disabled with spinner on top) */
+    submitting?: boolean;
     onSubmit?: (event: SubmitEvent, isValid: boolean) => Promise<void | null | undefined>;
     onChange?: (values: Record<string, string | string[] | number | boolean>) => void;
     onBlur?: (event: Event) => void;

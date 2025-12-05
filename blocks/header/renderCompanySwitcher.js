@@ -30,4 +30,3 @@ export default async function renderCompanySwitcher(navTools) {
     companySwitcherElement,
   };
 }
-

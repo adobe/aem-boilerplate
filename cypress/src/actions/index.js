@@ -256,6 +256,8 @@ export const inputSearchString = (searchString) => {
 };
 // Company Registration Actions
 export const fillCompanyRegistrationForm = (companyData) => {
+  cy.log(`📝 Fill company registration form: ${companyData.company.companyName}`);
+
   // Company Information
   cy.get(fields.companyFormCompanyName)
     .clear()
@@ -273,6 +275,7 @@ export const fillCompanyRegistrationForm = (companyData) => {
   const companyRandom = Math.random().toString(36).substring(2, 8);
   const dynamicCompanyEmail = `company.${companyTimestamp}.${companyRandom}@example.com`;
   Cypress.env('currentTestCompanyEmail', dynamicCompanyEmail);
+  cy.log(`📧 Company email: ${dynamicCompanyEmail}`);
   cy.get(fields.companyFormCompanyEmail)
     .clear()
     .type(dynamicCompanyEmail)
@@ -292,6 +295,11 @@ export const fillCompanyRegistrationForm = (companyData) => {
   }
 
   // Legal Address
+  // Select country FIRST so region field is properly configured (dropdown vs text input)
+  cy.log(`🌍 Selecting country: ${companyData.legalAddress.countryCode}`);
+  cy.get(fields.companyFormCountryCode).select(companyData.legalAddress.countryCode);
+  cy.wait(1000); // Wait for region field to update based on country
+
   cy.get(fields.companyFormStreet)
     .clear()
     .type(companyData.legalAddress.street)
@@ -319,12 +327,25 @@ export const fillCompanyRegistrationForm = (companyData) => {
     .type(companyData.legalAddress.telephone)
     .blur();
 
-  // Country and Region
-  cy.get(fields.companyFormCountryCode).select(
-    companyData.legalAddress.countryCode,
-  );
-  cy.wait(1000);
-  cy.get(fields.companyFormRegion).select(companyData.legalAddress.region);
+  // USF-3439: Handle region field - dropdown for US, text input for UK
+  // Only interact with region if a value is provided
+  if (companyData.legalAddress.region) {
+    cy.log(`📍 Setting region: ${companyData.legalAddress.region}`);
+    cy.get('body').then(($body) => {
+      if ($body.find(fields.companyFormRegion).length > 0) {
+        // Region dropdown exists (e.g., US)
+        cy.get(fields.companyFormRegion).select(companyData.legalAddress.region);
+      } else if ($body.find(fields.companyFormRegionInput).length > 0) {
+        // Region text input exists (e.g., UK)
+        cy.get(fields.companyFormRegionInput)
+          .clear()
+          .type(companyData.legalAddress.region)
+          .blur();
+      }
+    });
+  } else {
+    cy.log('📍 No region provided (optional for this country)');
+  }
 
   // Company Administrator
   cy.get(fields.companyFormFirstName)
@@ -343,7 +364,11 @@ export const fillCompanyRegistrationForm = (companyData) => {
   const adminName = `${companyData.companyAdmin.firstName} ${companyData.companyAdmin.lastName}`;
   Cypress.env('currentTestAdminEmail', dynamicAdminEmail);
   Cypress.env('currentTestAdminName', adminName);
-  cy.get(fields.companyFormAdminEmail).clear().type(dynamicAdminEmail).blur();
+  cy.log(`📧 Admin email: ${dynamicAdminEmail}`);
+  cy.get(fields.companyFormAdminEmail)
+    .clear()
+    .type(dynamicAdminEmail)
+    .blur();
 
   if (companyData.companyAdmin.jobTitle) {
     cy.get(fields.companyFormJobTitle)
@@ -358,10 +383,9 @@ export const fillCompanyRegistrationForm = (companyData) => {
       .blur();
   }
   if (companyData.companyAdmin.gender) {
-    cy.get(fields.companyFormAdminGender).select(
-      companyData.companyAdmin.gender,
-    );
+    cy.get(fields.companyFormAdminGender).select(companyData.companyAdmin.gender);
   }
+  cy.log('✅ Form filled successfully');
 };
 
 export const submitCompanyRegistrationForm = () => {

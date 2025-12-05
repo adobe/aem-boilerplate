@@ -1,6 +1,7 @@
 import { FunctionComponent } from 'preact';
 import { CompanyFormSlots } from '../../types/form.types';
 import { Company } from '../../data/models/company';
+import { InLineAlertProps } from '../../types/companyProfile.types';
 
 export interface CompanyRegistrationFormProps {
     onSuccess?: (company: Company) => void;
@@ -8,6 +9,7 @@ export interface CompanyRegistrationFormProps {
     className?: string;
     slots?: CompanyFormSlots;
     hideActionFormButtons?: boolean;
+    inLineAlertProps?: InLineAlertProps;
 }
 export declare const CompanyRegistrationForm: FunctionComponent<CompanyRegistrationFormProps>;
 //# sourceMappingURL=CompanyRegistrationForm.d.ts.map

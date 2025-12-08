@@ -5,12 +5,14 @@ import {
   CUSTOMER_NEGOTIABLE_QUOTE_PATH,
   CUSTOMER_NEGOTIABLE_QUOTE_TEMPLATE_PATH,
   CUSTOMER_ORDERS_PATH,
+  CUSTOMER_PO_DETAILS_PATH,
   rootLink,
 } from '../../scripts/commerce.js';
 
 // Redirection rules:
 const redirections = {
   '/customer/order-details?orderRef=': rootLink(CUSTOMER_ORDERS_PATH),
+  '/customer/purchase-order-details?poRef=': rootLink(CUSTOMER_PO_DETAILS_PATH),
   '/customer/negotiable-quote?quoteid=': rootLink(CUSTOMER_NEGOTIABLE_QUOTE_PATH),
   '/customer/negotiable-quote-template?quoteTemplateId=': rootLink(CUSTOMER_NEGOTIABLE_QUOTE_TEMPLATE_PATH),
 };

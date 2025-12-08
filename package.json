@@ -47,7 +47,7 @@
     "@adobe/magento-storefront-events-sdk": "^1.15.0",
     "@dropins/storefront-account": "~3.0.0-beta3",
     "@dropins/storefront-auth": "~3.0.0-beta2",
-    "@dropins/storefront-cart": "3.0.0-beta2",
+    "@dropins/storefront-cart": "3.0.0-alpha001",
     "@dropins/storefront-checkout": "~3.0.0-beta3",
     "@dropins/storefront-company-switcher": "1.0.6-alpha002",
     "@dropins/storefront-company-management": "1.0.0-beta24",

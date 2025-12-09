@@ -125,8 +125,7 @@ let signUpModal;
 
 const handleAuthenticated = (authenticated) => {
   if (authenticated) {
-    signUpModal?.removeModal();
-    signUpModal = null;
+    window.location.reload();
   }
 };
 

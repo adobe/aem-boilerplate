@@ -2,7 +2,6 @@ import { initializers } from '@dropins/tools/initializer.js';
 import { Image, provider as UI } from '@dropins/tools/components.js';
 import { initialize, setEndpoint, fetchProductData } from '@dropins/storefront-pdp/api.js';
 import { isAemAssetsEnabled, tryGenerateAemAssetsOptimizedUrl } from '@dropins/tools/lib/aem/assets.js';
-import { events } from '@dropins/tools/event-bus.js';
 import { initializeDropin } from './index.js';
 import {
   CS_FETCH_GRAPHQL,
@@ -109,19 +108,6 @@ await initializeDropin(async () => {
       initialData: { ...product },
     },
   };
-
-  events.on('companyContext/changed', async () => {
-    // Reload PDP when company context changes
-    const loadedProduct = await getProductData(false);
-    if (!loadedProduct?.sku) {
-      // Calling loadErrorPage() here produces a 404 page without header.
-      // This does not allow the user to go back or switch companies again.
-      // Instead, we reload the page to show the error page with the header and controls.
-      window.location.reload();
-      return;
-    }
-    events.emit('pdp/data', loadedProduct);
-  });
 
   // Initialize Dropins
   return initializers.mountImmediately(initialize, {

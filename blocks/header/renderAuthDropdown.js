@@ -2,25 +2,32 @@ import { getCookie } from '@dropins/tools/lib.js';
 import * as authApi from '@dropins/storefront-auth/api.js';
 import { render as authRenderer } from '@dropins/storefront-auth/render.js';
 import { SignIn } from '@dropins/storefront-auth/containers/SignIn.js';
-import { events } from '@dropins/tools/event-bus.js';
 import {
   CUSTOMER_FORGOTPASSWORD_PATH,
   rootLink,
 } from '../../scripts/commerce.js';
 
-function checkAndRedirect(redirections) {
-  Object.entries(redirections).some(([currentPath, redirectPath]) => {
+function handleLogout(redirections) {
+  const shouldRedirect = Object.entries(redirections).some(([currentPath, redirectPath]) => {
     if (window.location.pathname.includes(currentPath)) {
       window.location.href = redirectPath;
       return true;
     }
     return false;
   });
+
+  if (!shouldRedirect) {
+    // reload the page if no redirect occurred
+    window.location.reload();
+  }
 }
 
 function renderSignIn(element) {
   authRenderer.render(SignIn, {
-    onSuccessCallback: () => {},
+    onSuccessCallback: () => {
+      // reload the page
+      window.location.reload();
+    },
     formSize: 'small',
     routeForgotPassword: () => rootLink(CUSTOMER_FORGOTPASSWORD_PATH),
   })(element);
@@ -76,7 +83,8 @@ export function renderAuthDropdown(navTools) {
 
   logoutButtonElement.addEventListener('click', async () => {
     await authApi.revokeCustomerToken();
-    checkAndRedirect({
+    handleLogout({
+      '/checkout': rootLink('/cart'),
       '/customer': rootLink('/customer/login'),
       '/order-details': rootLink('/'),
     });
@@ -108,10 +116,6 @@ export function renderAuthDropdown(navTools) {
         `;
     }
   };
-
-  events.on('authenticated', (isAuthenticated) => {
-    updateDropDownUI(isAuthenticated);
-  });
 
   updateDropDownUI();
 }

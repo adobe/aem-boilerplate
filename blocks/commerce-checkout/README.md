@@ -22,7 +22,7 @@ No localStorage keys are used by this block. -->
 
 #### Event Listeners
 
-- `events.on('authenticated', callback)` - Handles user authentication state changes
+- `events.on('authenticated', callback)` - Handles user authentication state changes by reloading the page to reflect the authenticated state
 - `events.on('cart/initialized', callback)` - Handles cart initialization with eager loading
 - `events.on('checkout/initialized', callback)` - Handles checkout initialization with eager loading
 - `events.on('checkout/updated', callback)` - Handles checkout data updates
@@ -47,7 +47,9 @@ No localStorage keys are used by this block. -->
 ### User Interaction Flows
 
 1. **Initialization**: Block sets up meta tags, renders checkout layout, and initializes all containers
-2. **Authentication**: Users can sign in/out via modal with form validation and success callbacks
+2. **Authentication**: 
+   - **Sign In**: Users can sign in via modal with form validation. Upon successful authentication, the page automatically reloads to ensure all components reflect the authenticated state
+   - **Sign Out**: When users sign out from the checkout page, they are redirected to the cart page after token revocation
 3. **Address Management**: Users can enter shipping/billing addresses with real-time validation and cart updates
 4. **Payment Processing**: Users can select payment methods and enter credit card information with validation
 5. **Order Placement**: Users can place orders with comprehensive form validation and payment processing

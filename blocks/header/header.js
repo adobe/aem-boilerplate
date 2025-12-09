@@ -531,13 +531,8 @@ export default async function decorate(block) {
   renderAuthDropdown(navTools);
 
   /** Company Switcher */
-  events.on(
-    'authenticated',
-    async (authenticated) => {
-      if (authenticated && getConfigValue('commerce-companies-enabled') === true) {
-        (await import('./renderCompanySwitcher.js')).default(navTools);
-      }
-    },
-    { eager: true },
-  );
+  const isAuthenticated = events.lastPayload('authenticated');
+  if (isAuthenticated && getConfigValue('commerce-companies-enabled') === true) {
+    await (await import('./renderCompanySwitcher.js')).default(navTools);
+  }
 }

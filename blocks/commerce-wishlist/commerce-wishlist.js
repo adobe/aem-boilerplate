@@ -50,7 +50,11 @@ const showAuthModal = (event) => {
         window.location.reload();
       },
     },
-    signUpFormConfig: {},
+    signUpFormConfig: {
+      onSuccessCallback: () => {
+        window.location.reload();
+      },
+    },
     resetPasswordFormConfig: {},
   })(signInForm);
 };

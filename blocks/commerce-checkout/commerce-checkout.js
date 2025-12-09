@@ -222,7 +222,7 @@ export default async function decorate(block) {
 
     renderShippingAddressFormSkeleton($shippingForm),
 
-    renderBillToShippingAddress($billToShipping, placeOrder),
+    renderBillToShippingAddress($billToShipping),
 
     renderShippingMethods($delivery),
 
@@ -275,13 +275,13 @@ export default async function decorate(block) {
     } else if (!shippingForm) {
       shippingFormSkeleton.remove();
 
-      shippingForm = await renderAddressForm($shippingForm, shippingFormRef, data, placeOrder, 'shipping');
+      shippingForm = await renderAddressForm($shippingForm, shippingFormRef, data, 'shipping');
     }
 
     if (!billingForm) {
       billingFormSkeleton.remove();
 
-      billingForm = await renderAddressForm($billingForm, billingFormRef, data, placeOrder, 'billing');
+      billingForm = await renderAddressForm($billingForm, billingFormRef, data, 'billing');
     }
   }
 
@@ -299,7 +299,6 @@ export default async function decorate(block) {
         $shippingForm,
         shippingFormRef,
         data,
-        placeOrder,
       );
     }
 
@@ -312,7 +311,6 @@ export default async function decorate(block) {
         $billingForm,
         billingFormRef,
         data,
-        placeOrder,
       );
     }
   }

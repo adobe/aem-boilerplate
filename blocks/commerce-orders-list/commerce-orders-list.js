@@ -18,7 +18,19 @@ import '../../scripts/initializers/account.js';
 
 export default async function decorate(block) {
   const { 'minified-view': minifiedViewConfig = 'false' } = readBlockConfig(block);
-  const createProductLink = (productData) => (productData?.product ? getProductLink(productData.product.urlKey, productData.product.sku) : rootLink('#'));
+  const createProductLink = (productData) => {
+    // If product is null/undefined, it's been deleted from catalog
+    if (!productData?.product) {
+      return rootLink('#');
+    }
+
+    // Product exists in catalog, validate it has the required fields
+    const { urlKey, sku } = productData;
+    if (urlKey && sku) {
+      return getProductLink(urlKey, sku);
+    }
+    return rootLink('#');
+  };
 
   if (!checkIsAuthenticated()) {
     window.location.href = rootLink(CUSTOMER_LOGIN_PATH);

@@ -22,7 +22,6 @@ import { render as CheckoutProvider } from '@dropins/storefront-checkout/render.
 // Auth Dropin
 import * as authApi from '@dropins/storefront-auth/api.js';
 import AuthCombine from '@dropins/storefront-auth/containers/AuthCombine.js';
-import SignUp from '@dropins/storefront-auth/containers/SignUp.js';
 import { render as AuthProvider } from '@dropins/storefront-auth/render.js';
 
 // Account Dropin
@@ -323,18 +322,12 @@ export const renderBillingAddressFormSkeleton = async (container) => renderConta
 /**
  * Renders checkbox to set billing address same as shipping address - original regular checkout functionality
  * @param {HTMLElement} container - DOM element to render the checkbox in
- * @param {Object} placeOrderButton - Optional place order button reference for state management
  * @returns {Promise<Object>} - The rendered bill to shipping address component
  */
-export const renderBillToShippingAddress = async (container, placeOrderButton = null) => renderContainer(
+export const renderBillToShippingAddress = async (container) => renderContainer(
   CONTAINERS.BILL_TO_SHIPPING_ADDRESS,
   async () => {
-    // Create setAddressOnCart with optional place order button
-    const setBillingAddressOnCart = setAddressOnCart({
-      type: 'billing',
-      debounceMs: DEBOUNCE_TIME,
-      placeOrderBtn: placeOrderButton, // Optional - will be null initially
-    });
+    const setBillingAddressOnCart = setAddressOnCart({ type: 'billing' });
 
     return CheckoutProvider.render(BillToShippingAddress, {
       onChange: (checked) => {
@@ -590,10 +583,9 @@ export const renderPlaceOrder = async (container, options = {}) => renderContain
  * @param {HTMLElement} container - DOM element to render shipping addresses in
  * @param {Object} formRef - React-style ref for form reference
  * @param {Object} data - Cart data containing shipping address information
- * @param {Object} placeOrderButton - Place order button reference
  * @returns {Promise<Object>} - The rendered customer shipping addresses component
  */
-export const renderCustomerShippingAddresses = async (container, formRef, data, placeOrderButton) => renderContainer(
+export const renderCustomerShippingAddresses = async (container, formRef, data) => renderContainer(
   CONTAINERS.CUSTOMER_SHIPPING_ADDRESSES,
   async () => {
     const placeholders = await fetchPlaceholders('placeholders/checkout.json');
@@ -624,7 +616,6 @@ export const renderCustomerShippingAddresses = async (container, formRef, data, 
     const setShippingAddressOnCart = setAddressOnCart({
       type: 'shipping',
       debounceMs: DEBOUNCE_TIME,
-      placeOrderBtn: placeOrderButton,
     });
 
     const estimateShippingCostOnCart = estimateShippingCost({
@@ -665,10 +656,9 @@ export const renderCustomerShippingAddresses = async (container, formRef, data, 
  * @param {HTMLElement} container - DOM element to render billing addresses in
  * @param {Object} formRef - React-style ref for form reference
  * @param {Object} data - Cart data containing billing address information
- * @param {Object} placeOrderButton - Place order button reference
  * @returns {Promise<Object>} - The rendered customer billing addresses component
  */
-export const renderCustomerBillingAddresses = async (container, formRef, data, placeOrderButton) => renderContainer(
+export const renderCustomerBillingAddresses = async (container, formRef, data) => renderContainer(
   CONTAINERS.CUSTOMER_BILLING_ADDRESSES,
   async () => {
     const placeholders = await fetchPlaceholders('placeholders/checkout.json');
@@ -699,7 +689,6 @@ export const renderCustomerBillingAddresses = async (container, formRef, data, p
     const setBillingAddressOnCart = setAddressOnCart({
       type: 'billing',
       debounceMs: DEBOUNCE_TIME,
-      placeOrderBtn: placeOrderButton,
     });
 
     const notifyBillingValues = debounce((values) => {
@@ -734,11 +723,10 @@ export const renderCustomerBillingAddresses = async (container, formRef, data, p
  * @param {HTMLElement} container - DOM element to render address form in
  * @param {Object} formRef - React-style ref for form reference
  * @param {Object} data - Cart data containing address information
- * @param {Object} placeOrderButton - Place order button reference
  * @param {string} addressType - Type of address form ('shipping' or 'billing')
  * @returns {Promise<Object>} - The rendered address form component
  */
-export const renderAddressForm = async (container, formRef, data, placeOrderButton, addressType) => {
+export const renderAddressForm = async (container, formRef, data, addressType) => {
   const isShipping = addressType === 'shipping';
   const containerKey = isShipping ? CONTAINERS.SHIPPING_ADDRESS_FORM : CONTAINERS.BILLING_ADDRESS_FORM;
 
@@ -762,9 +750,8 @@ export const renderAddressForm = async (container, formRef, data, placeOrderButt
 
       // Create address setter with appropriate API
       const setAddressOnCartFn = setAddressOnCart({
-        type: isShipping ? 'shipping' : 'billing',
+        type: addressType,
         debounceMs: DEBOUNCE_TIME,
-        placeOrderBtn: placeOrderButton,
       });
 
       // Create shipping cost estimator (only for shipping addresses)

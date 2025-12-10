@@ -12,6 +12,26 @@ import { getMetadata } from './aem.js';
 import initializeDropins from './initializers/index.js';
 
 /**
+ * Sanitizes the given string by:
+ * - convert to lower case
+ * - normalize all unicode characters
+ * - replace all non-alphanumeric characters with a dash
+ * - remove all consecutive dashes
+ * - remove all leading and trailing dashes
+ *
+ * @param {string} name
+ * @returns {string} sanitized name
+ */
+function sanitizeName(name) {
+  return name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+/**
  * Fetch GraphQL Instances
  */
 
@@ -596,7 +616,15 @@ function getSkuFromUrl() {
 }
 
 export function getProductLink(urlKey, sku) {
-  return rootLink(`/products/${urlKey}/${sku}`.toLowerCase());
+  if (!urlKey) {
+    console.warn('getProductLink: urlKey is missing or empty', { urlKey, sku });
+  }
+  if (!sku) {
+    console.warn('getProductLink: sku is missing or empty', { urlKey, sku });
+  }
+  const sanitizedUrlKey = urlKey ? sanitizeName(urlKey) : '';
+  const sanitizedSku = sku ? sanitizeName(sku) : '';
+  return rootLink(`/products/${sanitizedUrlKey}/${sanitizedSku}`);
 }
 
 /**

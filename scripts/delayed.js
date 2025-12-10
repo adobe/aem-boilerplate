@@ -30,10 +30,21 @@ async function initAnalytics() {
             viewId: analyticsConfig['view-id'], // applicable for ACO storefronts
           },
         },
-        { eventForwardingContext: { commerce: true, aep: false } },
+        {
+          eventForwardingContext: {
+            commerce: true,
+            aep: !!(analyticsConfig['aep-ims-org-id'] && analyticsConfig['aep-datastream-id']),
+          },
+        },
         {
           shopperContext: {
             shopperId: getUserTokenCookie() ? 'logged-in' : 'guest',
+          },
+        },
+        {
+          aepContext: {
+            imsOrgId: analyticsConfig['aep-ims-org-id'],
+            datastreamId: analyticsConfig['aep-datastream-id'],
           },
         },
       );

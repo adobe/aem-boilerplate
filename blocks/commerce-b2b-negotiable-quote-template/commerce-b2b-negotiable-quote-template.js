@@ -19,8 +19,10 @@ import { companyEnabled, getCompany } from '@dropins/storefront-company-manageme
 import { render as negotiableQuoteRenderer } from '@dropins/storefront-quote-management/render.js';
 import { render as accountRenderer } from '@dropins/storefront-account/render.js';
 import { events } from '@dropins/tools/event-bus.js';
+import { h } from '@dropins/tools/preact.js';
 import {
   InLineAlert,
+  Icon,
   ProgressSpinner,
   provider as UI,
 } from '@dropins/tools/components.js';
@@ -41,26 +43,28 @@ import '../../scripts/initializers/account.js';
 // Commerce
 import {
   CUSTOMER_LOGIN_PATH,
-  CUSTOMER_ACCOUNT_PATH,
   checkIsAuthenticated,
   rootLink,
 } from '../../scripts/commerce.js';
 
 /**
  * Check if the user has the necessary permissions to access the block
+ * @returns {Promise<{hasPermission: boolean, message: string}>}
  */
 const checkPermissions = async () => {
   // Check authentication
   if (!checkIsAuthenticated()) {
     window.location.href = rootLink(CUSTOMER_LOGIN_PATH);
-    return false;
+    return { hasPermission: false, message: '' };
   }
 
   // Check if company functionality is enabled
   const isEnabled = await companyEnabled();
   if (!isEnabled) {
-    window.location.href = rootLink(CUSTOMER_ACCOUNT_PATH);
-    return false;
+    return {
+      hasPermission: false,
+      message: 'B2B company functionality is not enabled for your account. Please contact your administrator for access.',
+    };
   }
 
   // Check if customer has a company
@@ -68,11 +72,13 @@ const checkPermissions = async () => {
     await getCompany();
   } catch (error) {
     // Customer doesn't have a company or error occurred
-    window.location.href = rootLink(CUSTOMER_ACCOUNT_PATH);
-    return false;
+    return {
+      hasPermission: false,
+      message: 'You need to be associated with a company to access quote template management. Please contact your administrator.',
+    };
   }
 
-  return true;
+  return { hasPermission: true, message: '' };
 };
 
 /**
@@ -81,10 +87,19 @@ const checkPermissions = async () => {
  */
 export default async function decorate(block) {
   // Check if user has permissions to access the block
-  const hasPermissions = await checkPermissions();
+  const permissionCheck = await checkPermissions();
 
-  // Return early if user doesn't have permissions
-  if (!hasPermissions) return;
+  // Show warning banner if user doesn't have permissions
+  if (!permissionCheck.hasPermission) {
+    UI.render(InLineAlert, {
+      type: 'warning',
+      variant: 'primary',
+      heading: 'Access Restricted',
+      description: permissionCheck.message,
+      icon: h(Icon, { source: 'Warning' }),
+    })(block);
+    return;
+  }
 
   // Get the quote id from the url
   const quoteTemplateId = new URLSearchParams(window.location.search).get('quoteTemplateId');

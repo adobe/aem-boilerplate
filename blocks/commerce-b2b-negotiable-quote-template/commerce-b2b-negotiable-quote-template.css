@@ -1,3 +1,9 @@
+/* Access restricted warning banner */
+.commerce-b2b-negotiable-quote-template .dropin-in-line-alert__heading,
+.commerce-b2b-negotiable-quote-template .dropin-in-line-alert__description {
+    margin-left: var(--spacing-small);
+}
+
 /* Template Name column */
 .negotiable-quote-template__list .quote-management-quote-templates-list-table__table tbody > tr > td:nth-child(1) {
     white-space: nowrap;

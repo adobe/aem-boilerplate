@@ -17,8 +17,10 @@
 import { getFormValues } from '@dropins/tools/lib.js';
 import { companyEnabled, getCompany } from '@dropins/storefront-company-management/api.js';
 import { events } from '@dropins/tools/event-bus.js';
+import { h } from '@dropins/tools/preact.js';
 import {
   InLineAlert,
+  Icon,
   Button,
   ProgressSpinner,
   provider as UI,
@@ -42,7 +44,6 @@ import '../../scripts/initializers/account.js';
 // Commerce
 import {
   CUSTOMER_LOGIN_PATH,
-  CUSTOMER_ACCOUNT_PATH,
   checkIsAuthenticated,
   rootLink,
   fetchPlaceholders,
@@ -50,17 +51,22 @@ import {
 
 /**
  * Check if the user has the necessary permissions to access the block
+ * @returns {Promise<{hasPermission: boolean, message: string}>}
  */
 const checkPermissions = async () => {
   // Check authentication
   if (!checkIsAuthenticated()) {
     window.location.href = rootLink(CUSTOMER_LOGIN_PATH);
+    return { hasPermission: false, message: '' };
   }
 
   // Check if company functionality is enabled
   const isEnabled = await companyEnabled();
   if (!isEnabled) {
-    window.location.href = rootLink(CUSTOMER_ACCOUNT_PATH);
+    return {
+      hasPermission: false,
+      message: 'B2B company functionality is not enabled for your account. Please contact your administrator for access.',
+    };
   }
 
   // Check if customer has a company
@@ -68,8 +74,13 @@ const checkPermissions = async () => {
     await getCompany();
   } catch (error) {
     // Customer doesn't have a company or error occurred
-    window.location.href = rootLink(CUSTOMER_ACCOUNT_PATH);
+    return {
+      hasPermission: false,
+      message: 'You need to be associated with a company to access quote management. Please contact your administrator.',
+    };
   }
+
+  return { hasPermission: true, message: '' };
 };
 
 /**
@@ -82,9 +93,20 @@ export default async function decorate(block) {
     return;
   }
 
-  const placeholders = await fetchPlaceholders();
+  const permissionCheck = await checkPermissions();
+  if (!permissionCheck.hasPermission) {
+    // Show warning banner instead of redirecting
+    UI.render(InLineAlert, {
+      type: 'warning',
+      variant: 'primary',
+      heading: 'Access Restricted',
+      description: permissionCheck.message,
+      icon: h(Icon, { source: 'Warning' }),
+    })(block);
+    return;
+  }
 
-  checkPermissions();
+  const placeholders = await fetchPlaceholders();
 
   // Get the quote id from the url
   const quoteId = new URLSearchParams(window.location.search).get('quoteid');

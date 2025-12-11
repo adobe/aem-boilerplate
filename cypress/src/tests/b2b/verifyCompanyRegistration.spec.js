@@ -1,14 +1,19 @@
-/*
- * Copyright 2025 Adobe. All rights reserved.
- * This file is licensed to you under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License. You may obtain a copy
- * of the License at http://www.apache.org/licenses/LICENSE-2.0
+/** ******************************************************************
+ * ADOBE CONFIDENTIAL
+ * __________________
  *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
+ *  Copyright 2025 Adobe
+ *  All Rights Reserved.
+ *
+ * NOTICE:  All information contained herein is, and remains
+ * the property of Adobe and its suppliers, if any. The intellectual
+ * and technical concepts contained herein are proprietary to Adobe
+ * and its suppliers and are protected by all applicable intellectual
+ * property laws, including trade secret and copyright laws.
+ * Dissemination of this information or reproduction of this material
+ * is strictly forbidden unless prior written permission is obtained
+ * from Adobe.
+ ****************************************************************** */
 
 /**
  * @fileoverview Company Registration E2E tests.
@@ -83,7 +88,7 @@ import {
 import {
   verifyCompanyCreated,
   cleanupTestCompany,
-} from '../../support/companyApiHelper';
+} from '../../support/b2bCompanyAPICalls';
 
 describe('USF-2528: Company Registration', { tags: ['@B2BSaas'] }, () => {
   before(() => {
@@ -289,9 +294,9 @@ describe('USF-2528: Company Registration', { tags: ['@B2BSaas'] }, () => {
       .should('satisfy', ($el) => {
         // Check for error hint or error class on the field
         const hasErrorHint = $el.find('.dropin-field__hint--error').length > 0;
-        const hasErrorClass = $el.hasClass('dropin-field--error') ||
-          $el.find('.dropin-input--error').length > 0 ||
-          $el.find('[class*="error"]').length > 0;
+        const hasErrorClass = $el.hasClass('dropin-field--error')
+          || $el.find('.dropin-input--error').length > 0
+          || $el.find('[class*="error"]').length > 0;
         return hasErrorHint || hasErrorClass;
       });
 
@@ -335,9 +340,9 @@ describe('USF-2528: Company Registration', { tags: ['@B2BSaas'] }, () => {
         .should('satisfy', ($el) => {
           // Check for error hint or error class
           const hasErrorHint = $el.find('.dropin-field__hint--error').length > 0;
-          const hasErrorClass = $el.hasClass('dropin-field--error') ||
-            $el.find('.dropin-input--error').length > 0 ||
-            $el.find('[class*="error"]').length > 0;
+          const hasErrorClass = $el.hasClass('dropin-field--error')
+            || $el.find('.dropin-input--error').length > 0
+            || $el.find('[class*="error"]').length > 0;
           return hasErrorHint || hasErrorClass;
         });
     };

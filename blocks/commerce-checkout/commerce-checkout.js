@@ -310,6 +310,17 @@ export default async function decorate(block) {
 
   function handleAuthenticated(authenticated) {
     if (!authenticated) return;
+
+    // When a customer creates an account on the checkout success page and then
+    // signs in, they will be redirected to the order details page with the order
+    // number as orderRef, allowing the order details to be displayed
+    const orderData = events.lastPayload('order/placed');
+    if (orderData) {
+      const encodedOrderNumber = encodeURIComponent(orderData.number);
+      const url = rootLink(`/order-details?orderRef=${encodedOrderNumber}`);
+      window.history.pushState({}, '', url);
+    }
+
     window.location.reload();
   }
 

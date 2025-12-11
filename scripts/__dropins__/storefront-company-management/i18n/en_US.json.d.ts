@@ -181,8 +181,11 @@ declare const _default: {
           "emailMaxLength": "Email must not exceed 254 characters",
           "jobTitleMaxLength": "Job title must not exceed 255 characters",
           "telephoneMaxLength": "Phone number must not exceed 20 characters",
-          "teamNameMaxLength": "Team title must not exceed 40 characters",
-          "teamDescriptionMaxLength": "Team description must not exceed 1000 characters"
+          "teamNameMaxLength": "Team title must not exceed 39 characters",
+          "teamDescriptionMaxLength": "Team description must not exceed 1000 characters",
+          "firstNameInvalidChars": "First name contains invalid characters. Only letters, numbers, spaces, and ,-._'`& are allowed",
+          "lastNameInvalidChars": "Last name contains invalid characters. Only letters, numbers, spaces, and ,-._'`& are allowed",
+          "telephoneInvalidChars": "Phone number contains invalid characters. Only 0-9, +, -, (, ), and spaces are allowed"
         }
       },
       "messages": {

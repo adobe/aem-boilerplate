@@ -1,7 +1,7 @@
 import { CompanyTeamModel } from '../data/models';
 
 export declare const TEAM_FIELD_MAX_LENGTHS: {
-    readonly name: 40;
+    readonly name: 39;
     readonly description: 1000;
 };
 export declare function useCompanyTeamForm(opts: {

@@ -23,22 +23,10 @@ The Commerce Company Profile block provides company profile management functiona
 ## Integration
 
 ### Block Configuration
-The block can be configured with the following options via `readBlockConfig()`:
 
-- **className** (string, optional): CSS class for additional styling customization of the CompanyProfile component
-- **withHeader** (boolean, optional, default: true): Controls whether the container header is visible or not
-- **slots** (object, optional): Slot configuration for customizing company data display
-  - **CompanyData** (SlotProps, optional): Slot for customizing how company data is rendered
+The block does not use `readBlockConfig()`. The CompanyProfile container is rendered without configuration options as it relies on backend permissions to determine what data to display and allow editing.
 
-Example configuration:
-```javascript
-const config = readBlockConfig(block);
-// config = {
-//   className: 'custom-company-profile',
-//   withHeader: false,
-//   slots: { CompanyData: customSlot }
-// }
-```
+**Note:** The CompanyProfile container supports `className` and `slots` props, but these must be passed programmatically if needed and are not read from block configuration in the standard implementation.
 
 <!-- ### URL Parameters
 

@@ -23,22 +23,10 @@ The Commerce Company Users block provides company user management functionality 
 ## Integration
 
 ### Block Configuration
-The block can be configured with the following options via `readBlockConfig()`:
 
-- **className** (string, optional): CSS class for additional styling customization of the CompanyUsers component
-- **withHeader** (boolean, optional, default: true): Controls whether the container header is visible or not
-- **slots** (object, optional): Slot configuration for customizing company data display
-  - **CompanyData** (SlotProps, optional): Slot for customizing how company data is rendered
+The block does not use `readBlockConfig()`. The CompanyUsers container is rendered without configuration options as it manages its own pagination, filtering, and user management interface internally.
 
-Example configuration:
-```javascript
-const config = readBlockConfig(block);
-// config = {
-//   className: 'custom-company-profile',
-//   withHeader: false,
-//   slots: { CompanyData: customSlot }
-// }
-```
+**Note:** The CompanyUsers container has no configurable props - it only accepts standard HTML attributes and manages all functionality internally based on backend permissions.
 
 <!-- ### URL Parameters
 

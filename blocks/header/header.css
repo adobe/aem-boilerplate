@@ -31,6 +31,10 @@ header nav[aria-expanded='true'] {
 }
 
 @media (width >= 900px) {
+  header .nav-wrapper {
+    position: relative;
+  }
+
   header nav {
     display: flex;
     justify-content: space-between;

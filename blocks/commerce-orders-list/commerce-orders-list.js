@@ -25,9 +25,9 @@ export default async function decorate(block) {
     }
 
     // Product exists in catalog, validate it has the required fields
-    const { urlKey, sku } = productData;
-    if (urlKey && sku) {
-      return getProductLink(urlKey, sku);
+    const { urlKey, topLevelSku } = productData;
+    if (urlKey && topLevelSku) {
+      return getProductLink(urlKey, topLevelSku);
     }
     return rootLink('#');
   };

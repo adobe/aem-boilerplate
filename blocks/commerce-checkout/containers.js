@@ -33,7 +33,6 @@ import { render as AccountProvider } from '@dropins/storefront-account/render.js
 import * as cartApi from '@dropins/storefront-cart/api.js';
 import CartSummaryList from '@dropins/storefront-cart/containers/CartSummaryList.js';
 import Coupons from '@dropins/storefront-cart/containers/Coupons.js';
-import EmptyCart from '@dropins/storefront-cart/containers/EmptyCart.js';
 import GiftCards from '@dropins/storefront-cart/containers/GiftCards.js';
 import GiftOptions from '@dropins/storefront-cart/containers/GiftOptions.js';
 import OrderSummary from '@dropins/storefront-cart/containers/OrderSummary.js';
@@ -108,7 +107,6 @@ export const CONTAINERS = Object.freeze({
   CUSTOMER_BILLING_ADDRESSES: 'customerBillingAddresses',
 
   // Dynamic containers (conditional rendering)
-  EMPTY_CART: 'emptyCart',
   SHIPPING_ADDRESS_FORM: 'shippingAddressForm',
   BILLING_ADDRESS_FORM: 'billingAddressForm',
 
@@ -171,22 +169,6 @@ export const unmountContainer = (id) => {
   const containerApi = registry.get(id);
   containerApi.remove();
   registry.delete(id);
-};
-
-/**
- * Renders the empty cart container
- * @param {HTMLElement} container - The DOM element where the empty cart should be rendered
- * @returns {Promise<Object>} - The rendered empty cart component
- */
-export const renderEmptyCart = async (container) => renderContainer(
-  CONTAINERS.EMPTY_CART,
-  async () => CartProvider.render(EmptyCart, {
-    routeCTA: () => rootLink('/'),
-  })(container),
-);
-
-export const unmountEmptyCart = () => {
-  unmountContainer(CONTAINERS.EMPTY_CART);
 };
 
 /**
@@ -284,9 +266,8 @@ export const renderLoginForm = async (container) => renderContainer(
 
       await showModal(signInForm);
     },
-    onSignOutClick: async () => {
-      await authApi.revokeCustomerToken();
-      window.location.href = rootLink('/cart');
+    onSignOutClick: () => {
+      authApi.revokeCustomerToken();
     },
   })(container),
 );

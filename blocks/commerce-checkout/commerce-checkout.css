@@ -69,7 +69,7 @@
     display: none;
 }
 
-/* Hide main containers when the cart is empty or there is a server error */
+/* Hide main containers when there is a server error */
 .checkout__content--error .checkout__merged-cart-banner,
 .checkout__content--error .checkout__out-of-stock,
 .checkout__content--error .checkout__login,
@@ -78,17 +78,7 @@
 .checkout__content--error .checkout__delivery,
 .checkout__content--error .checkout__payment-methods,
 .checkout__content--error .checkout__billing-form,
-.checkout__content--error .checkout__terms-and-conditions,
-.checkout__content--empty .checkout__merged-cart-banner,
-.checkout__content--empty .checkout__server-error,
-.checkout__content--empty .checkout__out-of-stock,
-.checkout__content--empty .checkout__login,
-.checkout__content--empty .checkout__shipping-form,
-.checkout__content--empty .checkout__bill-to-shipping,
-.checkout__content--empty .checkout__delivery,
-.checkout__content--empty .checkout__payment-methods,
-.checkout__content--empty .checkout__billing-form,
-.checkout__content--empty .checkout__terms-and-conditions {
+.checkout__content--error .checkout__terms-and-conditions {
     display: none !important;
 }
 
@@ -101,9 +91,8 @@
     display: none;
 }
 
-/* Hide aside containers when the cart is empty or there is a server error */
-.checkout__content--error .checkout__aside,
-.checkout__content--empty .checkout__aside {
+/* Hide aside containers when there is a server error */
+.checkout__content--error .checkout__aside {
     display: none;
 }
 
@@ -114,9 +103,8 @@
     margin-top: calc(var(--spacing-big) * -1);
 }
 
-/* Hide the place order button when the cart is empty or there is a server error */
-.checkout__content--error .checkout__place-order,
-.checkout__content--empty .checkout__place-order {
+/* Hide the place order button when there is a server error */
+.checkout__content--error .checkout__place-order {
     display: none;
 }
 
@@ -261,8 +249,7 @@
         gap: var(--spacing-big) var(--grid-4-gutters);
     }
 
-    .checkout__content--error,
-    .checkout__content--empty {
+    .checkout__content--error {
         display: grid;
         grid-template-columns: 1fr;
     }

@@ -19,6 +19,8 @@ import {
   decorateLinks,
   loadErrorPage,
   decorateSections,
+  IS_UE,
+  IS_DA,
 } from './commerce.js';
 
 /**
@@ -165,7 +167,7 @@ async function loadPage() {
 }
 
 // UE Editor support before page load
-if (window.location.hostname.includes('ue.da.live')) {
+if (IS_UE) {
   // eslint-disable-next-line import/no-unresolved
   await import(`${window.hlx.codeBasePath}/scripts/ue.js`).then(({ default: ue }) => ue());
 }
@@ -173,7 +175,7 @@ if (window.location.hostname.includes('ue.da.live')) {
 loadPage();
 
 (async function loadDa() {
-  if (!new URL(window.location.href).searchParams.get('dapreview')) return;
+  if (!IS_DA) return;
   // eslint-disable-next-line import/no-unresolved
   import('https://da.live/scripts/dapreview.js').then(({ default: daPreview }) => daPreview(loadPage));
 }());

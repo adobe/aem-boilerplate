@@ -1,4 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
 import{CHECKOUT_DATA_FRAGMENT as A,NEGOTIABLE_QUOTE_FRAGMENT as I}from"../fragments.js";import{e as g,c as p,d as c}from"./guards.js";import{t as m,e as B}from"./synchronizeCheckout.js";import{s as r,d as f,Q as C,I as o,m as a}from"./fetch-graphql.js";import"@dropins/tools/lib.js";import"@dropins/tools/event-bus.js";const Q=`
   mutation setBillingAddress(

@@ -1,4 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
 import{CHECKOUT_DATA_FRAGMENT as d,NEGOTIABLE_QUOTE_FRAGMENT as i}from"../fragments.js";import{e as p,a as M,b as y}from"./guards.js";import{t as c,e as h}from"./synchronizeCheckout.js";import{s as e,l as I,d as P,Q as C}from"./fetch-graphql.js";import"@dropins/tools/lib.js";import"@dropins/tools/event-bus.js";const T=`
   mutation setPaymentMethodOnCart(

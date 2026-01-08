@@ -63,8 +63,11 @@ function getPurchaseHistory(storeViewCode) {
 export default async function decorate(block) {
   const labels = await fetchPlaceholders();
 
-  block.children[0].style.display = 'none';
-  block.children[1].style.display = 'none';
+  // Hide configuration rows if they exist
+  const children = [...block.children];
+  children.forEach((child) => {
+    child.style.display = 'none';
+  });
 
   // Configuration
   const { currentsku, recid } = readBlockConfig(block);

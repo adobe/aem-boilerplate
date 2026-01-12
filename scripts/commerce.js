@@ -327,7 +327,7 @@ export async function initializeCommerce() {
   initializeConfig(await getConfigFromSession());
 
   // Set Fetch GraphQL (Core)
-  CORE_FETCH_GRAPHQL.setEndpoint(getConfigValue('commerce-core-endpoint'));
+  CORE_FETCH_GRAPHQL.setEndpoint(getConfigValue('commerce-core-endpoint') || await getConfigValue('commerce-endpoint'));
   CORE_FETCH_GRAPHQL.setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('all') }));
 
   // Set Fetch GraphQL (Catalog Service)

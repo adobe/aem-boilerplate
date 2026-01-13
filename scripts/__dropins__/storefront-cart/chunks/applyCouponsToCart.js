@@ -1,4 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
 import{s as C,f as u,h as i}from"./resetCart.js";import{t as T}from"./refreshCart.js";import{events as s}from"@dropins/tools/event-bus.js";import{CART_FRAGMENT as A}from"../fragments.js";const _=`
 mutation APPLY_COUPONS_TO_CART_MUTATION(

@@ -1,4 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
 import{FetchGraphQL as i}from"@dropins/tools/fetch-graphql.js";const{setEndpoint:d,setFetchGraphQlHeader:C,removeFetchGraphQlHeader:E,setFetchGraphQlHeaders:S,fetchGraphQl:u,getConfig:k}=new i().getMethods();function m(e){return e?{shareActiveSegments:e.share_active_segments,shareCustomerGroup:e.graphql_share_customer_group,shareAppliedCartRule:e.share_applied_cart_rule,customerAccessTokenLifetime:e.customer_access_token_lifetime}:null}const l=e=>{const t=e.map(s=>s.message).join(" ");throw Error(t)},h=`
 query STORE_CONFIG_QUERY {

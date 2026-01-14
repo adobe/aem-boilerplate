@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const GET_CUSTOMER_DATA: string;
+export declare const GET_CUSTOMER_DATA = "\n  query GET_CUSTOMER_DATA {\n    customer {\n      ...CUSTOMER_INFORMATION_FRAGMENT\n    }\n  }\n  \n  fragment CUSTOMER_INFORMATION_FRAGMENT on Customer {\n    __typename\n    firstname\n    lastname\n    email\n    group {\n      uid\n    }\n  }\n\n";
 //# sourceMappingURL=getCustomerData.graphql.d.ts.map

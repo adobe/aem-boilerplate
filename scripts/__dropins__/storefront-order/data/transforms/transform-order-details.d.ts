@@ -20,5 +20,5 @@ export declare const transformAppliedGiftCards: (appliedGiftCards?: any[]) => {
     };
 }[];
 export declare const transformOrderData: (orderData: OrderProps, returnRef?: string) => OrderDataModel;
-export declare const transformOrderDetails: <T extends "orderData">(queryType: QueryType, response: ResponseData<T>, returnRef?: string) => TransformedData<T>;
+export declare const transformOrderDetails: <T extends QueryType>(queryType: QueryType, response: ResponseData<T>, returnRef?: string) => TransformedData<T>;
 //# sourceMappingURL=transform-order-details.d.ts.map

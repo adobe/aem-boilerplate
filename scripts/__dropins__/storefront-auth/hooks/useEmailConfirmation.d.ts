@@ -20,7 +20,7 @@ interface useEmailConfirmationProps {
 export declare const useEmailConfirmation: ({ enableEmailConfirmation, }: useEmailConfirmationProps) => {
     emailConfirmationStatusMessage: {
         text: string;
-        status: '' | 'success' | 'error';
+        status: "" | "success" | "error";
     };
 };
 export {};

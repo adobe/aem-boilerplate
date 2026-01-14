@@ -1,4 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
 import{W as c,t as h,b as m}from"./chunks/mergeWishlists.js";import{a as G,c as H,f as F,h as v,g as L,d as U,i as A,e as M,m as N,r as R}from"./chunks/mergeWishlists.js";import{s as l,g as u,f as a,h as I}from"./chunks/removeProductsFromWishlist.js";import{k as O,e as Q,l as y,c as b,r as C,a as Y,b as x,d as B,j as z}from"./chunks/removeProductsFromWishlist.js";import{events as _}from"@dropins/tools/event-bus.js";import"@dropins/tools/lib.js";import"@dropins/tools/fetch-graphql.js";const d=`
   query GET_WISHLIST_BY_ID_QUERY(

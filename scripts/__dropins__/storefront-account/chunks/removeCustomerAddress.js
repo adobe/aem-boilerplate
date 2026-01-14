@@ -1,4 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
 import{events as E}from"@dropins/tools/event-bus.js";import{FetchGraphQL as C}from"@dropins/tools/fetch-graphql.js";const{setEndpoint:j,setFetchGraphQlHeader:k,removeFetchGraphQlHeader:L,setFetchGraphQlHeaders:P,fetchGraphQl:s,getConfig:J}=new C().getMethods(),S=`
   query GET_ATTRIBUTES_FORM($formCode: String!) {

@@ -8,24 +8,24 @@ interface UseGetAttributesFormProps {
 export declare const useGetAttributesForm: ({ inputsDefaultValueSet, fieldsConfigForApiVersion1, apiVersion2, }: UseGetAttributesFormProps) => {
     fieldsListConfigs: {
         autocomplete?: string | undefined;
-        code?: string | undefined;
-        name?: string | undefined;
-        id?: string | undefined;
-        defaultValue?: string | number | boolean | undefined;
-        entityType?: string | undefined;
-        className?: string | undefined;
-        fieldType?: import('../../data/models').FieldEnumList | undefined;
+        code?: string;
+        name?: string;
+        id?: string;
+        defaultValue?: string | boolean | number;
+        entityType?: string;
+        className?: string;
+        fieldType?: import('../../data/models').FieldEnumList;
         multilineCount: number;
-        required?: boolean | undefined;
-        unique?: boolean | undefined;
-        label?: string | undefined;
+        required?: boolean;
+        unique?: boolean;
+        label?: string;
         orderNumber: number;
         options?: {
             is_default: boolean;
             label: string;
             value: string;
-        }[] | undefined;
-        hidden?: boolean | undefined;
+        }[];
+        hidden?: boolean;
         customUpperCode: string;
     }[];
 };

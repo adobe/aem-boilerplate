@@ -1,4 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
 import{f as o,h as w}from"./network-error.js";import{s as d}from"./setReCaptchaToken.js";const i=`
   mutation RESET_PASSWORD(

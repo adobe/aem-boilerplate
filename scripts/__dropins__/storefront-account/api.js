@@ -1,4 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
 import{c as b,i as v}from"./chunks/initialize.js";import{f as d,h as m,a as u}from"./chunks/removeCustomerAddress.js";import{e as _,d as A,g as F,j as N,i as O,k as R,r as $,s as H,b as I,c as Q,u as w}from"./chunks/removeCustomerAddress.js";import{g as k,b as J,a as j,u as q}from"./chunks/updateCustomer.js";import{g as B}from"./chunks/getOrderHistoryList.js";import{g as K}from"./chunks/getStoreConfig.js";import"@dropins/tools/lib.js";import"@dropins/tools/event-bus.js";import"@dropins/tools/fetch-graphql.js";import"./fragments.js";const g=t=>{var r,s;const a=(s=(r=t==null?void 0:t.data)==null?void 0:r.country)==null?void 0:s.available_regions;return a?a.filter(e=>{if(!e)return!1;const{id:i,code:n,name:c}=e;return!!(i&&n&&c)}).map(e=>{const{id:i}=e;return{id:i,text:e.name,value:`${e.code},${e.id}`}}):[]},f=`
   query GET_REGIONS($countryCode: String!) {

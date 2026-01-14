@@ -50,7 +50,7 @@
     "@dropins/storefront-cart": "~3.0.0",
     "@dropins/storefront-checkout": "~3.0.1",
     "@dropins/storefront-order": "~3.0.0",
-    "@dropins/storefront-payment-services": "~2.0.0",
+    "@dropins/storefront-payment-services": "~3.0.0",
     "@dropins/storefront-pdp": "~3.0.0",
     "@dropins/storefront-personalization": "~3.0.0",
     "@dropins/storefront-product-discovery": "~3.0.0",

@@ -13,15 +13,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  */
-export * from './Carousel';
-export * from './Product';
-export * from './GalleryGrid';
-export * from './PriceRange';
-export * from './Overlay';
-export * from './Swatches';
-export * from './Zoom';
-export * from './Header';
-export * from './Price';
 export * from './PriceTiers';
-export * from './GiftCardOptions';
+export { PriceTiers as default } from './PriceTiers';
 //# sourceMappingURL=index.d.ts.map

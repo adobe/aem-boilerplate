@@ -45,7 +45,8 @@ describe("Search Feature", () => {
 
   });
 
-  it("Verify Filter on search results page", { tags: "@snapPercy" }, () => {
+// Bug on ACCS https://jira.corp.adobe.com/browse/USF-3691
+  it("Verify Filter on search results page",  {tags: ["@skipSaas", "@snapPercy" ]}, () => {
     // Visit the homepage
     cy.visit("/search?q=tee&page=1&sort=&filter=categories%3Acollections");
 

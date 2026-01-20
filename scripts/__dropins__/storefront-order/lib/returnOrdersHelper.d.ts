@@ -44,7 +44,7 @@ export declare const cleanObjectKeys: (obj: KeyValueObject) => KeyValueObject;
 export declare const modifyFieldsConfig: (fieldsConfig: any, index: number) => any;
 export declare const replicateEntries: (objects: any[], n: number) => any[];
 export declare const normalizeAttributes: (obj: Record<string, string>) => normalizeAttributesTypes;
-export declare const formatReturnStatus: (str: string) => ReturnStatusValue | '';
+export declare const formatReturnStatus: (str: string) => ReturnStatusValue | "";
 export declare const processFormElement: (formsRef: any) => any[];
 export declare const sortItemsByCondition: (order: any) => any[];
 export {};

@@ -39,7 +39,7 @@ No localStorage keys are used by this block. -->
 ### Page Context Detection
 
 - **Checkout Flow**: Renders full checkout interface with shipping, billing, payment, and order summary
-- **Empty Cart**: When cart is empty, shows empty cart message and hides checkout forms
+- **Empty Cart**: When cart is empty, redirects to the cart page
 - **Server Errors**: When server errors occur, shows error state and hides checkout forms
 - **Out of Stock**: When items are out of stock, shows out of stock message with cart update options
 - **Order Confirmation**: After successful order placement, transitions to order confirmation view

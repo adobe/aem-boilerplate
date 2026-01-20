@@ -1,4 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
 import{s as h,f as _,h as T}from"./resetCart.js";import{t as u}from"./refreshCart.js";import"@dropins/tools/event-bus.js";import{CART_FRAGMENT as E}from"../fragments.js";const I=`
   mutation GET_ESTIMATED_TOTALS_MUTATION(

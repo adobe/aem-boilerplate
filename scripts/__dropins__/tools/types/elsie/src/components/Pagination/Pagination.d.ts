@@ -4,7 +4,8 @@ export interface PaginationProps {
     className?: string;
     currentPage?: number;
     totalPages?: number;
-    onChange?: (currentPage: number) => void;
+    onChange?: (currentPage: number, e?: Event) => void;
+    routePage?: (page: number) => string;
 }
 export type PaginationList = {
     page: number | string;

@@ -2,6 +2,5 @@ import { AttributesListItems, ResponseAttributesFormItemsProps } from '../../typ
 import { AttributesFormModel } from '../models';
 
 export declare const cloneArrayIfExists: (fields: ResponseAttributesFormItemsProps[]) => any;
-export declare const transformAttributesForm: (items?: ResponseAttributesFormItemsProps[] | AttributesListItems[] | [
-]) => AttributesFormModel[];
+export declare const transformAttributesForm: (items?: ResponseAttributesFormItemsProps[] | AttributesListItems[] | []) => AttributesFormModel[];
 //# sourceMappingURL=transform-attributes-form.d.ts.map

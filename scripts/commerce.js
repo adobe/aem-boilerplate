@@ -8,7 +8,12 @@ import {
 } from '@dropins/tools/lib/aem/configs.js';
 import { events } from '@dropins/tools/event-bus.js';
 import { FetchGraphQL } from '@dropins/tools/fetch-graphql.js';
-import { getMetadata } from './aem.js';
+import {
+  getMetadata,
+  readBlockConfig,
+  toCamelCase,
+  toClassName,
+} from './aem.js';
 import initializeDropins from './initializers/index.js';
 
 /**
@@ -44,6 +49,18 @@ export const CS_FETCH_GRAPHQL = new FetchGraphQL();
 /**
  * Constants
  */
+
+// Environment checks
+export const IS_UE = window.location.hostname.includes('ue.da.live');
+export const IS_DA = new URL(window.location.href).searchParams.has('dapreview');
+
+/**
+ * Product template paths - pages that are templates and should use
+ * default/fake SKUs. Should be relative to root path, ie "/" , "/fr/" , etc.
+ */
+export const PRODUCT_TEMPLATE_PATHS = [
+  'products/default',
+];
 
 // PATHS
 export const SUPPORT_PATH = '/support';
@@ -310,7 +327,7 @@ export async function initializeCommerce() {
   initializeConfig(await getConfigFromSession());
 
   // Set Fetch GraphQL (Core)
-  CORE_FETCH_GRAPHQL.setEndpoint(getConfigValue('commerce-core-endpoint'));
+  CORE_FETCH_GRAPHQL.setEndpoint(getConfigValue('commerce-core-endpoint') || await getConfigValue('commerce-endpoint'));
   CORE_FETCH_GRAPHQL.setFetchGraphQlHeaders((prev) => ({ ...prev, ...getHeaders('all') }));
 
   // Set Fetch GraphQL (Catalog Service)
@@ -615,6 +632,39 @@ function getSkuFromUrl() {
   return result?.[1];
 }
 
+/**
+ * Extracts the defaultSku property from the product-details block element.
+ * @returns {string|null} The defaultSku value from the block, or null if not found
+ */
+function getDefaultSkuFromBlock() {
+  const productDetailsBlock = document.querySelector('.product-details.block');
+  if (!productDetailsBlock) {
+    console.warn('No product-details block found');
+    return null;
+  }
+
+  const config = readBlockConfig(productDetailsBlock);
+  if (!config.defaultsku) {
+    console.warn('No defaultSku found in product-details block');
+    return null;
+  }
+  return config.defaultsku;
+}
+
+/**
+ * Checks if the current page is a product template page.
+ * @returns {boolean} True if the current page matches a product template path
+ */
+export function isProductTemplate() {
+  const root = getRootPath();
+  const { pathname } = window.location;
+
+  return PRODUCT_TEMPLATE_PATHS.some((templatePath) => {
+    const fullPath = root ? `${root}${templatePath}` : templatePath;
+    return pathname === fullPath || pathname === fullPath.replace(/\/$/, '');
+  });
+}
+
 export function getProductLink(urlKey, sku) {
   if (!urlKey) {
     console.warn('getProductLink: urlKey is missing or empty', { urlKey, sku });
@@ -632,6 +682,10 @@ export function getProductLink(urlKey, sku) {
  * @returns {string|null} The SKU from metadata or URL, or null if not found
  */
 export function getProductSku() {
+  if (isProductTemplate() && (IS_UE || IS_DA)) {
+    return getDefaultSkuFromBlock();
+  }
+
   return getMetadata('sku') || getSkuFromUrl();
 }
 
@@ -775,6 +829,56 @@ function autolinkModals(element) {
       e.preventDefault();
       const { openModal } = await import(`${window.hlx.codeBasePath}/blocks/modal/modal.js`);
       openModal(origin.href);
+    }
+  });
+}
+
+/**
+ * Decorates all sections in a container element.
+ * @param {Element} main The container element
+ */
+export function decorateSections(main) {
+  main.querySelectorAll(':scope > div').forEach((section) => {
+    const wrappers = [];
+    let defaultContent = false;
+    [...section.children].forEach((e) => {
+      if (e.classList.contains('richtext')) {
+        e.removeAttribute('class');
+        if (!defaultContent) {
+          const wrapper = document.createElement('div');
+          wrapper.classList.add('default-content-wrapper');
+          wrappers.push(wrapper);
+          defaultContent = true;
+        }
+      } else if (e.tagName === 'DIV' || !defaultContent) {
+        const wrapper = document.createElement('div');
+        wrappers.push(wrapper);
+        defaultContent = e.tagName !== 'DIV';
+        if (defaultContent) wrapper.classList.add('default-content-wrapper');
+      }
+      wrappers[wrappers.length - 1].append(e);
+    });
+    wrappers.forEach((wrapper) => section.append(wrapper));
+    section.classList.add('section');
+    section.dataset.sectionStatus = 'initialized';
+    section.style.display = 'none';
+
+    // Process section metadata
+    const sectionMeta = section.querySelector('div.section-metadata');
+    if (sectionMeta) {
+      const meta = readBlockConfig(sectionMeta);
+      Object.keys(meta).forEach((key) => {
+        if (key === 'style') {
+          const styles = meta.style
+            .split(',')
+            .filter((style) => style)
+            .map((style) => toClassName(style.trim()));
+          styles.forEach((style) => section.classList.add(style));
+        } else {
+          section.dataset[toCamelCase(key)] = meta[key];
+        }
+      });
+      sectionMeta.parentNode.remove();
     }
   });
 }

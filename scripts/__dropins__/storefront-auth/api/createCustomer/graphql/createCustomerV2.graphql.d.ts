@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const CREATE_CUSTOMER_V2: string;
+export declare const CREATE_CUSTOMER_V2 = "\n  mutation CREATE_CUSTOMER_V2($input: CustomerCreateInput!) {\n    createCustomerV2(input: $input) {\n      customer {\n        ...CUSTOMER_INFORMATION_FRAGMENT\n      }\n    }\n  }\n  \n  fragment CUSTOMER_INFORMATION_FRAGMENT on Customer {\n    __typename\n    firstname\n    lastname\n    email\n    group {\n      uid\n    }\n  }\n\n";
 //# sourceMappingURL=createCustomerV2.graphql.d.ts.map

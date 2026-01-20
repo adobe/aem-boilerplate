@@ -5,6 +5,7 @@ export interface Address {
     company?: string;
     country: Country;
     customAttributes: CustomAttribute[];
+    customerAddressUid?: string;
     fax?: string;
     firstName: string;
     id?: number;

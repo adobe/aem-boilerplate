@@ -17,6 +17,8 @@
         }
       },
       "analytics": {
+        "aep-ims-org-id": null,
+        "aep-datastream-id": null,
         "base-currency-code": "USD",
         "environment": "Testing",
         "environment-id": "f38a0de0-764b-41fa-bd2c-5bc2f3c7b39a",
@@ -33,8 +35,8 @@
       },
       "plugins": {
         "picker": {
-           "rootCategory": "YOUR_ROOT_CATEGORY_ID"
-         }
+          "rootCategory": "YOUR_ROOT_CATEGORY_ID"
+        }
       }
     }
   }

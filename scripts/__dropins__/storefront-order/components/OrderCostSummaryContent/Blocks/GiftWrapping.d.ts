@@ -1,7 +1,7 @@
 import { MoneyProps, TaxTypes } from '../../../types';
 
 export declare const GiftWrapping: ({ salesGiftWrapping, giftWrappingPrice, giftWrappingPriceInclTax, giftWrappingTitle, giftWrappingExclTaxText, giftWrappingInclTaxText, }: {
-    salesGiftWrapping?: TaxTypes | undefined;
+    salesGiftWrapping?: TaxTypes;
     giftWrappingPrice: MoneyProps;
     giftWrappingPriceInclTax: MoneyProps;
     giftWrappingTitle: string;

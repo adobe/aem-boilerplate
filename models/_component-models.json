@@ -1,0 +1,17 @@
+[
+  {
+    "...": "./_page.json#/models"
+  },
+  {
+    "...": "./_text.json#/models"
+  },
+  {
+    "...": "./_image.json#/models"
+  },
+  {
+    "...": "./_section.json#/models"
+  },
+  {
+    "...": "../blocks/*/_*.json#/models"
+  }
+]

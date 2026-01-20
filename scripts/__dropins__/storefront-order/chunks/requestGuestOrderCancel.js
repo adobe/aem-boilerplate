@@ -1,4 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
 import{PRODUCT_DETAILS_FRAGMENT as s,PRICE_DETAILS_FRAGMENT as i,GIFT_CARD_DETAILS_FRAGMENT as A,ORDER_ITEM_DETAILS_FRAGMENT as d,BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT as c,ORDER_SUMMARY_FRAGMENT as D,ADDRESS_FRAGMENT as G,ORDER_ITEM_FRAGMENT as u,GIFT_WRAPPING_FRAGMENT as M,GIFT_MESSAGE_FRAGMENT as N,GUEST_ORDER_FRAGMENT as O}from"../fragments.js";import{f as R,h as a}from"./fetch-graphql.js";import{a as T}from"./initialize.js";const m=`
   mutation CANCEL_ORDER_MUTATION($orderId: ID!, $reason: String!) {

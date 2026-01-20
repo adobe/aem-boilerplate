@@ -69,7 +69,7 @@
     display: none;
 }
 
-/* Hide main containers when the cart is empty or there is a server error */
+/* Hide main containers when there is a server error */
 .checkout__content--error .checkout__merged-cart-banner,
 .checkout__content--error .checkout__out-of-stock,
 .checkout__content--error .checkout__login,
@@ -78,17 +78,7 @@
 .checkout__content--error .checkout__delivery,
 .checkout__content--error .checkout__payment-methods,
 .checkout__content--error .checkout__billing-form,
-.checkout__content--error .checkout__terms-and-conditions,
-.checkout__content--empty .checkout__merged-cart-banner,
-.checkout__content--empty .checkout__server-error,
-.checkout__content--empty .checkout__out-of-stock,
-.checkout__content--empty .checkout__login,
-.checkout__content--empty .checkout__shipping-form,
-.checkout__content--empty .checkout__bill-to-shipping,
-.checkout__content--empty .checkout__delivery,
-.checkout__content--empty .checkout__payment-methods,
-.checkout__content--empty .checkout__billing-form,
-.checkout__content--empty .checkout__terms-and-conditions {
+.checkout__content--error .checkout__terms-and-conditions {
     display: none !important;
 }
 
@@ -96,13 +86,13 @@
 .checkout__out-of-stock:has(> :empty),
 .checkout__merged-cart-banner:has(> :empty),
 .checkout__delivery:has(> div:first-child:empty),
-.checkout__bill-to-shipping:has(> :empty) {
+.checkout__bill-to-shipping:has(> :empty),
+.checkout__gift-options:has(.cart-gift-options-view--readonly:empty) {
     display: none;
 }
 
-/* Hide aside containers when the cart is empty or there is a server error */
-.checkout__content--error .checkout__aside,
-.checkout__content--empty .checkout__aside {
+/* Hide aside containers when there is a server error */
+.checkout__content--error .checkout__aside {
     display: none;
 }
 
@@ -113,9 +103,8 @@
     margin-top: calc(var(--spacing-big) * -1);
 }
 
-/* Hide the place order button when the cart is empty or there is a server error */
-.checkout__content--error .checkout__place-order,
-.checkout__content--empty .checkout__place-order {
+/* Hide the place order button when there is a server error */
+.checkout__content--error .checkout__place-order {
     display: none;
 }
 
@@ -229,63 +218,6 @@
     display: none;
 }
 
-/* Order confirmation */
-.order-confirmation {
-    display: grid;
-    align-items: start;
-    grid-template-columns: repeat(var(--grid-4-columns), 1fr);
-    grid-template-areas: "main aside";
-    column-gap: var(--grid-4-gutters);
-    margin-bottom: var(--spacing-xbig);
-    padding-top: var(--spacing-xxlarge);
-}
-
-.order-confirmation__main {
-    display: grid;
-    row-gap: var(--spacing-xbig);
-    grid-column: 1 / span 7;
-}
-
-.order-confirmation__aside {
-    display: grid;
-    row-gap: var(--spacing-xbig);
-    grid-column: 9 / span 4;
-}
-
-.order-confirmation__footer {
-    display: grid;
-    gap: var(--spacing-small);
-    text-align: center;
-}
-
-.order-confirmation__footer p {
-    margin: 0;
-}
-
-.order-confirmation__footer .order-confirmation-footer__continue-button {
-    margin: 0 auto;
-    text-align: center;
-    display: inline-block;
-}
-
-.order-confirmation-footer__contact-support {
-    font: var(--type-body-2-default-font);
-    letter-spacing: var(--type-body-2-default-letter-spacing);
-    color: var(--color-neutral-700);
-}
-
-.order-confirmation-footer__contact-support a {
-    font: var(--type-body-2-strong-font);
-    letter-spacing: var(--type-body-2-strong-letter-spacing);
-    color: var(--color-brand-500);
-    cursor: pointer;
-}
-
-/* Hide empty blocks */
-.order-confirmation__block:empty {
-    display: none;
-}
-
 @media only screen and (min-width: 320px) and (max-width: 768px) {
     .checkout__main,
     .checkout__aside {
@@ -307,24 +239,6 @@
     .checkout__place-order {
         order: 4;
     }
-
-    .order-confirmation {
-        grid-template-columns: repeat(var(--grid-1-columns), 1fr);
-        padding-top: 0;
-    }
-
-    .order-confirmation__main,
-    .order-confirmation__aside {
-        row-gap: var(--spacing-medium);
-    }
-
-    .order-confirmation > div {
-        grid-column: 1 / span 4;
-    }
-
-    .order-confirmation__block .dropin-card {
-        border: 0;
-    }
 }
 
 @media only screen and (min-width: 768px) {
@@ -335,8 +249,7 @@
         gap: var(--spacing-big) var(--grid-4-gutters);
     }
 
-    .checkout__content--error,
-    .checkout__content--empty {
+    .checkout__content--error {
         display: grid;
         grid-template-columns: 1fr;
     }

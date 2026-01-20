@@ -2,6 +2,7 @@ import { Address, PaymentMethod, ShippingAddress } from '.';
 import { NegotiableQuoteStatus } from '../../__generated__/types';
 
 export interface NegotiableQuote {
+    type: 'quote';
     availablePaymentMethods?: PaymentMethod[];
     billingAddress?: Address;
     email?: string;

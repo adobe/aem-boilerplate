@@ -1,4 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
 const e=`
 fragment PRODUCT_OPTION_FRAGMENT on ProductViewOption {
@@ -130,6 +130,20 @@ fragment PRODUCT_FRAGMENT on ProductView {
                 value
                 currency
             }
+        }
+        tiers {
+          tier {
+            amount {
+              value
+              currency
+            }
+          }
+          quantity {
+            ... on ProductViewTierRangeCondition {
+              gte
+              lt
+            }
+          }
         }
       }
     }

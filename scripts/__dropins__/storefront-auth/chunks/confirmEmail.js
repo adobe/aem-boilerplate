@@ -1,4 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
 import{f as o,h as r}from"./network-error.js";const t=`
   mutation CONFIRM_EMAIL($email: String!, $confirmation_key: String!) {

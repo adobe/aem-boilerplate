@@ -1,0 +1,4 @@
+/*! Copyright 2026 Adobe
+All Rights Reserved. */
+import{g as s}from"./locale-config.js";const l=(e,t)=>{let n;return function(...r){clearTimeout(n),n=setTimeout(()=>e.apply(this,r),t)}},f=e=>typeof e=="number",g=()=>{const e=navigator.userAgent.toLowerCase(),t=/ipad|iphone|ipod/.test(e),n=e.includes("mac")&&"ontouchend"in document;return t||n};var o={};function u(e){if(e)return e;const t=s();return t||(o.LOCALE&&o.LOCALE!=="undefined"?o.LOCALE:"en-US")}function d(e={}){const{currency:t,locale:n,formatOptions:r={}}=e,c=u(n),i={style:"currency",currency:t||"USD",minimumFractionDigits:2,maximumFractionDigits:2,...r};try{return new Intl.NumberFormat(c,i)}catch(a){return console.error(`Error creating Intl.NumberFormat instance for locale ${c}. Falling back to en-US.`,a),new Intl.NumberFormat("en-US",i)}}export{g as a,d as b,l as d,u as g,f as i};
+//# sourceMappingURL=get-price-formatter.js.map

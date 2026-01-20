@@ -187,6 +187,7 @@ const onHeaderLinkClick = (element) => {
     document.body.style.overflow = 'auto';
     viewportMeta.setAttribute('content', originalViewportContent);
     window.removeEventListener('keydown', trapFocus);
+    window.location.reload();
   };
 
   const signInForm = document.createElement('div');

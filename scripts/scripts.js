@@ -4,7 +4,6 @@ import {
   loadFooter,
   decorateButtons,
   decorateIcons,
-  decorateSections,
   decorateBlocks,
   decorateTemplateAndTheme,
   waitForFirstImage,
@@ -19,6 +18,9 @@ import {
   applyTemplates,
   decorateLinks,
   loadErrorPage,
+  decorateSections,
+  IS_UE,
+  IS_DA,
 } from './commerce.js';
 
 /**
@@ -76,7 +78,7 @@ function buildAutoBlocks(main) {
       });
     }
 
-    buildHeroBlock(main);
+    if (!main.querySelector('.hero')) buildHeroBlock(main);
   } catch (error) {
     console.error('Auto Blocking failed', error);
   }
@@ -164,10 +166,16 @@ async function loadPage() {
   loadDelayed();
 }
 
+// UE Editor support before page load
+if (IS_UE) {
+  // eslint-disable-next-line import/no-unresolved
+  await import(`${window.hlx.codeBasePath}/scripts/ue.js`).then(({ default: ue }) => ue());
+}
+
 loadPage();
 
 (async function loadDa() {
-  if (!new URL(window.location.href).searchParams.get('dapreview')) return;
+  if (!IS_DA) return;
   // eslint-disable-next-line import/no-unresolved
   import('https://da.live/scripts/dapreview.js').then(({ default: daPreview }) => daPreview(loadPage));
 }());

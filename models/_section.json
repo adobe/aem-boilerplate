@@ -1,0 +1,144 @@
+{
+  "definitions": [
+    {
+      "title": "Section",
+      "id": "section",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div></div>"
+        }
+      },
+      "filter": "section",
+      "model": "section"
+    }
+  ],
+  "models": [
+    {
+      "id": "section",
+      "fields": [
+        {
+          "component": "multiselect",
+          "name": "style",
+          "label": "Style",
+          "options": [
+            {
+              "name": "Highlight",
+              "value": "highlight"
+            }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "padding",
+          "label": "Padding",
+          "options": [
+            {
+              "name": "Default",
+              "value": ""
+            },
+            {
+              "name": "Small",
+              "value": "small"
+            },
+            {
+              "name": "Medium",
+              "value": "medium"
+            },
+            {
+              "name": "Large",
+              "value": "large"
+            },
+            {
+              "name": "Big",
+              "value": "big"
+            },
+            {
+              "name": "XBig",
+              "value": "xbig"
+            },
+            {
+              "name": "XXBig",
+              "value": "xxbig"
+            },
+            {
+              "name": "Huge",
+              "value": "huge"
+            },
+            {
+              "name": "XHuge",
+              "value": "xhuge"
+            },
+            {
+              "name": "XXHuge",
+              "value": "xxhuge"
+            }
+          ]
+        },
+        {
+          "component": "select",
+          "name": "margin",
+          "label": "Margin",
+          "options": [
+            {
+              "name": "Default",
+              "value": ""
+            },
+            {
+              "name": "Small",
+              "value": "small"
+            },
+            {
+              "name": "Medium",
+              "value": "medium"
+            },
+            {
+              "name": "Large",
+              "value": "large"
+            },
+            {
+              "name": "Big",
+              "value": "big"
+            },
+            {
+              "name": "XBig",
+              "value": "xbig"
+            },
+            {
+              "name": "XXBig",
+              "value": "xxbig"
+            },
+            {
+              "name": "Huge",
+              "value": "huge"
+            },
+            {
+              "name": "XHuge",
+              "value": "xhuge"
+            },
+            {
+              "name": "XXHuge",
+              "value": "xxhuge"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "section",
+      "components": [
+        "hero",
+        "accordion",
+        "cards",
+        "carousel",
+        "columns",
+        "fragment",
+        "image",
+        "text",
+        "targeted-block",
+        "product-recommendations"
+      ]
+    }
+  ]
+}

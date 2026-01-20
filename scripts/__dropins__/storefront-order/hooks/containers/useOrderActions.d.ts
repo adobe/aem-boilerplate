@@ -4,7 +4,7 @@ export declare const useOrderActions: ({ enableOrderCancellation, }: UseOrderAct
     orderActionStatus: {
         heading: string;
         text: string;
-        status: 'success' | 'error' | 'warning' | undefined;
+        status: "success" | "error" | "warning" | undefined;
     };
     isDismissed: boolean;
     onDismiss: () => void;

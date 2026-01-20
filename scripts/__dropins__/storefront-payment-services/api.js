@@ -1,3 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
-import{c as r,i as e}from"./chunks/initialize.js";import"@dropins/tools/lib.js";var p=(_=>(_.APPLE_PAY="payment_services_paypal_apple_pay",_.CREDIT_CARD="payment_services_paypal_hosted_fields",_.FASTLANE="payment_services_paypal_fastlane",_.GOOGLE_PAY="payment_services_paypal_google_pay",_.SMART_BUTTONS="payment_services_paypal_smart_buttons",_.VAULT="payment_services_paypal_vault",_))(p||{});export{p as PaymentMethodCode,r as config,e as initialize};
+import{a as m,P as n,c as r,i as p}from"./chunks/location.js";import"@dropins/tools/lib.js";import"@dropins/tools/event-bus.js";import"@dropins/tools/signals.js";export{m as PaymentLocation,n as PaymentMethodCode,r as config,p as initialize};
+//# sourceMappingURL=api.js.map

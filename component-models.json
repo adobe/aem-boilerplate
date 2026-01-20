@@ -1,0 +1,339 @@
+[
+  {
+    "id": "page-metadata",
+    "fields": [
+      {
+        "component": "text",
+        "name": "title",
+        "label": "Title"
+      },
+      {
+        "component": "text",
+        "name": "description",
+        "label": "Description"
+      },
+      {
+        "component": "reference",
+        "name": "image",
+        "label": "Image"
+      },
+      {
+        "component": "text",
+        "name": "robots",
+        "label": "Robots",
+        "description": "Index control via robots"
+      }
+    ]
+  },
+  {
+    "id": "image",
+    "fields": [
+      {
+        "component": "reference",
+        "name": "image",
+        "hidden": true,
+        "multi": false
+      },
+      {
+        "component": "reference",
+        "name": "img:nth-child(3)[src]",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "name": "img:nth-child(3)[alt]",
+        "label": "Alt Text"
+      }
+    ]
+  },
+  {
+    "id": "section",
+    "fields": [
+      {
+        "component": "multiselect",
+        "name": "style",
+        "label": "Style",
+        "options": [
+          {
+            "name": "Highlight",
+            "value": "highlight"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "padding",
+        "label": "Padding",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Small",
+            "value": "small"
+          },
+          {
+            "name": "Medium",
+            "value": "medium"
+          },
+          {
+            "name": "Large",
+            "value": "large"
+          },
+          {
+            "name": "Big",
+            "value": "big"
+          },
+          {
+            "name": "XBig",
+            "value": "xbig"
+          },
+          {
+            "name": "XXBig",
+            "value": "xxbig"
+          },
+          {
+            "name": "Huge",
+            "value": "huge"
+          },
+          {
+            "name": "XHuge",
+            "value": "xhuge"
+          },
+          {
+            "name": "XXHuge",
+            "value": "xxhuge"
+          }
+        ]
+      },
+      {
+        "component": "select",
+        "name": "margin",
+        "label": "Margin",
+        "options": [
+          {
+            "name": "Default",
+            "value": ""
+          },
+          {
+            "name": "Small",
+            "value": "small"
+          },
+          {
+            "name": "Medium",
+            "value": "medium"
+          },
+          {
+            "name": "Large",
+            "value": "large"
+          },
+          {
+            "name": "Big",
+            "value": "big"
+          },
+          {
+            "name": "XBig",
+            "value": "xbig"
+          },
+          {
+            "name": "XXBig",
+            "value": "xxbig"
+          },
+          {
+            "name": "Huge",
+            "value": "huge"
+          },
+          {
+            "name": "XHuge",
+            "value": "xhuge"
+          },
+          {
+            "name": "XXHuge",
+            "value": "xxhuge"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "accordion-item",
+    "fields": [
+      {
+        "component": "richtext",
+        "valueType": "string",
+        "name": "div:nth-child(1)",
+        "value": "",
+        "label": "Summary",
+        "required": true
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(2)",
+        "value": "",
+        "label": "Text",
+        "valueType": "string",
+        "required": true
+      }
+    ]
+  },
+  {
+    "id": "card",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+        "label": "Image Alt",
+        "multi": false
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(2)",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "carousel-item",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+        "label": "Background Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+        "label": "Background Image Alt"
+      },
+      {
+        "component": "richtext",
+        "name": "div:nth-child(2)",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "columns",
+    "fields": [
+      {
+        "component": "number",
+        "valueType": "number",
+        "name": "columns",
+        "label": "Number of Columns",
+        "value": 2,
+        "validation": {
+          "numberMin": 1,
+          "numberMax": 6
+        }
+      }
+    ]
+  },
+  {
+    "id": "fragment",
+    "fields": [
+      {
+        "component": "text",
+        "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
+        "label": "Fragment URL",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "div:nth-child(1)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)",
+        "label": "Fragment URL Text"
+      }
+    ]
+  },
+  {
+    "id": "hero",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+        "label": "Alt",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "name": "div:nth-child(1)>div:nth-child(1)>h1:nth-child(2)",
+        "value": "",
+        "label": "Text",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "product-recommendations",
+    "fields": [
+      {
+        "component": "text",
+        "name": "div:nth-child(1)>div:nth-child(2)>p:nth-child(1)",
+        "label": "Rec ID",
+        "required": true
+      },
+      {
+        "component": "text",
+        "name": "div:nth-child(2)>div:nth-child(2)>p:nth-child(1)",
+        "label": "Current SKU"
+      }
+    ]
+  },
+  {
+    "id": "targeted-block",
+    "fields": [
+      {
+        "component": "richtext",
+        "name": "div:nth-child(5)>div:nth-child(1)",
+        "label": "Content"
+      },
+      {
+        "component": "text",
+        "name": "div:nth-child(1)>div:nth-child(2)>p:nth-child(1)",
+        "label": "Customer Groups",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "div:nth-child(2)>div:nth-child(2)>p:nth-child(1)",
+        "label": "Customer Segments",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "div:nth-child(3)>div:nth-child(2)>p:nth-child(1)",
+        "label": "Type",
+        "valueType": "string"
+      },
+      {
+        "component": "text",
+        "name": "div:nth-child(4)>div:nth-child(2)>p:nth-child(1)",
+        "label": "Fragment",
+        "valueType": "string"
+      }
+    ]
+  }
+]

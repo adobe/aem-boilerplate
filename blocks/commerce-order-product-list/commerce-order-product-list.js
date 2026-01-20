@@ -6,10 +6,19 @@ import { tryRenderAemAssetsImage } from '@dropins/tools/lib/aem/assets.js';
 
 // Initialize
 import '../../scripts/initializers/order.js';
-import { getProductLink } from '../../scripts/commerce.js';
+import { getProductLink, rootLink } from '../../scripts/commerce.js';
 
 export default async function decorate(block) {
-  const createProductLink = (product) => getProductLink(product.productUrlKey, product.productSku);
+  const createProductLink = (productData) => {
+    if (!productData) {
+      return rootLink('#');
+    }
+    const { product, productUrlKey } = productData;
+    if (!product || !productUrlKey || !product.sku) {
+      return rootLink('#');
+    }
+    return getProductLink(productUrlKey, product.sku);
+  };
   await orderRenderer.render(OrderProductList, {
     slots: {
       CartSummaryItemImage: (ctx) => {

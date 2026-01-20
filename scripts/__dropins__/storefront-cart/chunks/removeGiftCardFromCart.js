@@ -1,4 +1,4 @@
-/*! Copyright 2025 Adobe
+/*! Copyright 2026 Adobe
 All Rights Reserved. */
 import{s as i,f as c,h as d}from"./resetCart.js";import{t as _}from"./refreshCart.js";import{events as n}from"@dropins/tools/event-bus.js";import{b as T}from"./acdl.js";import{CART_FRAGMENT as f}from"../fragments.js";const p=`
   mutation APPLY_GIFT_CARD_ON_CART_MUTATION(

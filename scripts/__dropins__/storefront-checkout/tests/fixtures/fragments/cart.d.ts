@@ -145,6 +145,7 @@ export declare const cartFixture: {
         __typename?: "SelectedPaymentMethod" | undefined;
         code: string;
         title: string;
+        purchase_order_number?: string | null | undefined;
     } | null | undefined;
 } | null | undefined;
 //# sourceMappingURL=cart.d.ts.map

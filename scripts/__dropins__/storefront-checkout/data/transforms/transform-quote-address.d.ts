@@ -9,6 +9,7 @@ declare const transformQuoteShippingAddress: (data: ({
     __typename?: "NegotiableQuoteShippingAddress" | undefined;
     city: string;
     company?: string | null | undefined;
+    customer_address_uid?: string | null | undefined;
     fax?: string | null | undefined;
     firstname: string;
     lastname: string;

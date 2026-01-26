@@ -50,6 +50,8 @@
         {
           "title": "Accordion",
           "id": "accordion",
+          "model": "accordion",
+          "filter": "accordion",
           "plugins": {
             "da": {
               "name": "accordion",
@@ -61,56 +63,104 @@
         {
           "title": "Accordion Item",
           "id": "accordion-item",
+          "model": "accordion-item",
           "plugins": {
             "da": {
               "name": "accordion-item",
               "rows": 2,
-              "columns": 0
+              "columns": 0,
+              "fields": [
+                {
+                  "name": "summary",
+                  "selector": "div:nth-child(1)"
+                },
+                {
+                  "name": "text",
+                  "selector": "div:nth-child(2)"
+                }
+              ]
             }
           }
         },
         {
           "title": "Cards",
           "id": "cards",
+          "model": "cards",
+          "filter": "cards",
           "plugins": {
             "da": {
-              "unsafeHTML": "<div class=\"cards\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+              "rows": 1,
+              "columns": 2
             }
-          },
-          "model": "cards",
-          "filter": "cards"
+          }
         },
         {
           "title": "Card",
           "id": "card",
+          "model": "card",
           "plugins": {
             "da": {
-              "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+              "rows": 1,
+              "columns": 2,
+              "fields": [
+                {
+                  "name": "image",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "imageAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "text",
+                  "selector": "div:nth-child(2)"
+                }
+              ]
             }
-          },
-          "model": "card"
+          }
         },
         {
           "title": "Carousel",
           "id": "carousel",
+          "model": "carousel",
+          "filter": "carousel",
           "plugins": {
             "da": {
-              "unsafeHTML": "<div class=\"carousel\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+              "rows": 1,
+              "columns": 2
             }
           }
         },
         {
           "title": "Carousel Slide",
           "id": "carousel-item",
+          "model": "carousel-item",
           "plugins": {
             "da": {
-              "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+              "rows": 1,
+              "columns": 2,
+              "fields": [
+                {
+                  "name": "backgroundImage",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "backgroundImageAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "text",
+                  "selector": "div:nth-child(2)"
+                }
+              ]
             }
           }
         },
         {
           "title": "Columns",
           "id": "columns",
+          "model": "columns",
+          "filter": "columns",
           "plugins": {
             "da": {
               "name": "columns",
@@ -123,6 +173,8 @@
         {
           "title": "Columns Row",
           "id": "columns-row",
+          "model": "columns-row",
+          "filter": "columns-row",
           "plugins": {
             "da": {
               "name": "columns-row",
@@ -133,6 +185,8 @@
         {
           "title": "Columns Cell",
           "id": "columns-cell",
+          "model": "columns-cell",
+          "filter": "columns-cell",
           "plugins": {
             "da": {
               "unsafeHTML": "<div></div>",
@@ -143,27 +197,78 @@
         {
           "title": "Fragment",
           "id": "fragment",
+          "model": "fragment",
           "plugins": {
             "da": {
-              "unsafeHTML": "<div class=\"fragment\"><div><div><p><a href=\"\">Fragment URL</a></p></div></div></div>"
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "fragmentUrl",
+                  "selector": "div>div>p>a[href]"
+                },
+                {
+                  "name": "fragmentUrlText",
+                  "selector": "div>div>p>a"
+                }
+              ]
             }
           }
         },
         {
           "title": "Hero",
           "id": "hero",
+          "model": "hero",
           "plugins": {
             "da": {
-              "unsafeHTML": "<div class=\"hero\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture><h1></h1></div></div></div>"
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "image",
+                  "selector": "div>div>picture>img[src]"
+                },
+                {
+                  "name": "alt",
+                  "selector": "div>div>picture>img[alt]"
+                },
+                {
+                  "name": "text",
+                  "selector": "div>div>h1"
+                }
+              ]
             }
           }
         },
         {
           "title": "Targeted Block",
           "id": "targeted-block",
+          "model": "targeted-block",
           "plugins": {
             "da": {
-              "unsafeHTML": "<div class=\"targeted-block\"><div><div><p>Customer Groups</p></div><div><p>Specify id's of customer groups the block is visible to</p></div></div><div><div><p>Customer Segments</p></div><div><p>Specify id's of customer segments the block is visible to</p></div></div><div><div><p>Type</p></div><div><p>Provide a custom name. If there are multiple targeted block of the same type on a page, only the first block of the type will be displayed</p></div></div><div><div><p>Fragment</p></div><div><p>Relative path to a fragment. If specified the block content will be replaced with fragment content</p></div></div><div><div><p>Targeted Block Content</p></div></div></div>"
+              "unsafeHTML": "<div class=\"targeted-block\"><div><div><p>Customer Groups</p></div><div><p>Specify id's of customer groups the block is visible to</p></div></div><div><div><p>Customer Segments</p></div><div><p>Specify id's of customer segments the block is visible to</p></div></div><div><div><p>Type</p></div><div><p>Provide a custom name. If there are multiple targeted block of the same type on a page, only the first block of the type will be displayed</p></div></div><div><div><p>Fragment</p></div><div><p>Relative path to a fragment. If specified the block content will be replaced with fragment content</p></div></div><div><div><p>Targeted Block Content</p></div></div></div>",
+              "fields": [
+                {
+                  "name": "content",
+                  "selector": "div:nth-child(5)>div"
+                },
+                {
+                  "name": "customerGroups",
+                  "selector": "div:nth-child(1)>div:nth-child(2)>p"
+                },
+                {
+                  "name": "customerSegments",
+                  "selector": "div:nth-child(2)>div:nth-child(2)>p"
+                },
+                {
+                  "name": "type",
+                  "selector": "div:nth-child(3)>div:nth-child(2)>p"
+                },
+                {
+                  "name": "fragment",
+                  "selector": "div:nth-child(4)>div:nth-child(2)>p"
+                }
+              ]
             }
           }
         }
@@ -176,9 +281,20 @@
         {
           "title": "Product Recommendations",
           "id": "product-recommendations",
+          "model": "product-recommendations",
           "plugins": {
             "da": {
-              "unsafeHTML": "<div class=\"product-recommendations\"><div><div>recid</div><div><p>PLACEHOLDER</p></div></div><div><div>currentSku</div><div><p>PLACEHOLDER</p></div></div></div>"
+              "unsafeHTML": "<div class=\"product-recommendations\"><div><div>recid</div><div><p>PLACEHOLDER</p></div></div><div><div>currentSku</div><div><p>PLACEHOLDER</p></div></div></div>",
+              "fields": [
+                {
+                  "name": "recId",
+                  "selector": "div:nth-child(1)>div:nth-child(2)>p"
+                },
+                {
+                  "name": "currentSku",
+                  "selector": "div:nth-child(2)>div:nth-child(2)>p"
+                }
+              ]
             }
           }
         }

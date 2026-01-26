@@ -3,9 +3,14 @@
       {
         "title": "Product Recommendations",
         "id": "product-recommendations",
+        "model": "product-recommendations",
         "plugins": {
           "da": {
-            "unsafeHTML": "<div class=\"product-recommendations\"><div><div>recid</div><div><p>PLACEHOLDER</p></div></div><div><div>currentSku</div><div><p>PLACEHOLDER</p></div></div></div>"
+            "unsafeHTML": "<div class=\"product-recommendations\"><div><div>recid</div><div><p>PLACEHOLDER</p></div></div><div><div>currentSku</div><div><p>PLACEHOLDER</p></div></div></div>",
+            "fields": [
+              { "name": "recId", "selector": "div:nth-child(1)>div:nth-child(2)>p" },
+              { "name": "currentSku", "selector": "div:nth-child(2)>div:nth-child(2)>p" }
+            ]
           }
         }
       }
@@ -16,13 +21,13 @@
         "fields": [
           {
             "component": "text",
-            "name": "div:nth-child(1)>div:nth-child(2)>p:nth-child(1)",
+            "name": "recId",
             "label": "Rec ID",
             "required": true
           },
           {
             "component": "text",
-            "name": "div:nth-child(2)>div:nth-child(2)>p:nth-child(1)",
+            "name": "currentSku",
             "label": "Current SKU"
           }
         ]

@@ -3,23 +3,30 @@
     {
       "title": "Cards",
       "id": "cards",
+      "model": "cards",
+      "filter": "cards",
       "plugins": {
         "da": {
-          "unsafeHTML": "<div class=\"cards\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div></div>"
+          "rows": 1,
+          "columns": 2
         }
-      },
-      "model": "cards",
-      "filter": "cards"
+      }
     },
     {
       "title": "Card",
       "id": "card",
+      "model": "card",
       "plugins": {
         "da": {
-          "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+          "rows": 1,
+          "columns": 2,
+          "fields": [
+            { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "text", "selector": "div:nth-child(2)" }
+          ]
         }
-      },
-      "model": "card"
+      }
     }
   ],
   "models": [
@@ -29,20 +36,20 @@
         {
           "component": "reference",
           "valueType": "string",
-          "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+          "name": "image",
           "label": "Image",
           "multi": false
         },
         {
           "component": "text",
           "valueType": "string",
-          "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+          "name": "imageAlt",
           "label": "Image Alt",
           "multi": false
         },
         {
           "component": "richtext",
-          "name": "div:nth-child(2)",
+          "name": "text",
           "value": "",
           "label": "Text",
           "valueType": "string"

@@ -3,9 +3,16 @@
     {
       "title": "Hero",
       "id": "hero",
+      "model": "hero",
       "plugins": {
         "da": {
-          "unsafeHTML": "<div class=\"hero\"><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture><h1></h1></div></div></div>"
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "image", "selector": "div>div>picture>img[src]" },
+            { "name": "alt", "selector": "div>div>picture>img[alt]" },
+            { "name": "text", "selector": "div>div>h1" }
+          ]
         }
       }
     }
@@ -17,20 +24,20 @@
         {
           "component": "reference",
           "valueType": "string",
-          "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+          "name": "image",
           "label": "Image",
           "multi": false
         },
         {
           "component": "text",
           "valueType": "string",
-          "name": "div:nth-child(1)>div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+          "name": "alt",
           "label": "Alt",
           "value": ""
         },
         {
           "component": "text",
-          "name": "div:nth-child(1)>div:nth-child(1)>h1:nth-child(2)",
+          "name": "text",
           "value": "",
           "label": "Text",
           "valueType": "string"

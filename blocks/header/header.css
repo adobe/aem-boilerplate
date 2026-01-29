@@ -39,7 +39,7 @@ header nav[aria-expanded='true'] {
   min-height: 100dvh;
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   header .nav-wrapper {
     position: relative;
   }

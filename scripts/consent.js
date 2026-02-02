@@ -59,7 +59,7 @@ export async function displayConsentBanner(focus = false) {
 
 /* main consent handler */
 export default async function handleConsent() {
-  const mapStatus = (consentStatus) => !(consentStatus === 'declineAll');
+  const mapStatus = (consentStatus) => consentStatus !== 'declineAll';
 
   document.addEventListener('consent', (e) => {
     if (mapStatus(e.detail.consentStatus)) import('./consented.js');

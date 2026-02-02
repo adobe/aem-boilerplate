@@ -50,8 +50,8 @@ async function loadFonts() {
  */
 function buildAutoBlocks(main) {
   try {
-    // auto block `*/fragments/*` references
-    const fragments = main.querySelectorAll('a[href*="/fragments/"]');
+    // auto load `*/fragments/*` references
+    const fragments = [...main.querySelectorAll('a[href*="/fragments/"]')].filter((f) => !f.closest('.fragment'));
     if (fragments.length > 0) {
       // eslint-disable-next-line import/no-cycle
       import('../blocks/fragment/fragment.js').then(({ loadFragment }) => {
@@ -59,7 +59,7 @@ function buildAutoBlocks(main) {
           try {
             const { pathname } = new URL(fragment.href);
             const frag = await loadFragment(pathname);
-            fragment.parentElement.replaceWith(frag.firstElementChild);
+            fragment.parentElement.replaceWith(...frag.children);
           } catch (error) {
             // eslint-disable-next-line no-console
             console.error('Fragment loading failed', error);

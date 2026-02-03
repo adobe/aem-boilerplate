@@ -24,7 +24,7 @@
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.32.0",
-    "stylelint": "17.1.0",
+    "stylelint": "17.1.1",
     "stylelint-config-standard": "40.0.0"
   }
 }

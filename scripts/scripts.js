@@ -11,7 +11,6 @@ import {
   loadSection,
   loadSections,
   loadCSS,
-  sampleRUM,
 } from './aem.js';
 
 /**
@@ -23,6 +22,10 @@ function buildHeroBlock(main) {
   const picture = main.querySelector('picture');
   // eslint-disable-next-line no-bitwise
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+    // Check if h1 or picture is already inside a hero block
+    if (h1.closest('.hero') || picture.closest('.hero')) {
+      return; // Don't create a duplicate hero block
+    }
     const section = document.createElement('div');
     section.append(buildBlock('hero', { elems: [picture, h1] }));
     main.prepend(section);
@@ -47,6 +50,24 @@ async function loadFonts() {
  */
 function buildAutoBlocks(main) {
   try {
+    // auto load `*/fragments/*` references
+    const fragments = [...main.querySelectorAll('a[href*="/fragments/"]')].filter((f) => !f.closest('.fragment'));
+    if (fragments.length > 0) {
+      // eslint-disable-next-line import/no-cycle
+      import('../blocks/fragment/fragment.js').then(({ loadFragment }) => {
+        fragments.forEach(async (fragment) => {
+          try {
+            const { pathname } = new URL(fragment.href);
+            const frag = await loadFragment(pathname);
+            fragment.parentElement.replaceWith(...frag.children);
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error('Fragment loading failed', error);
+          }
+        });
+      });
+    }
+
     buildHeroBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -82,8 +103,6 @@ async function loadEager(doc) {
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
 
-  sampleRUM.enhance();
-
   try {
     /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
     if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
@@ -99,6 +118,8 @@ async function loadEager(doc) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  loadHeader(doc.querySelector('header'));
+
   const main = doc.querySelector('main');
   await loadSections(main);
 
@@ -106,7 +127,6 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);

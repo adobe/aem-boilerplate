@@ -23,7 +23,7 @@ export async function displayConsentBanner(focus = false) {
   const fragment = await loadFragment('/drafts/uncled/consent-banner');
   if (!fragment) {
     // eslint-disable-next-line no-console
-    console.warn('Consent banner fragment not found at /drafts/uncled/consent-banner');
+    console.warn('Consent banner fragment not found');
     return 'declineAll';
   }
   const consentBanner = fragment.firstElementChild;

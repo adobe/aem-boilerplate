@@ -138,11 +138,25 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
-  // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
+  let delayedTimeout;
+  let loaded = false;
 
-  // add other event-listeners that should trigger loading of delayed before timeout
-  document.addEventListener('scroll', () => import('./delayed.js'), { once: true });
+  const loadOnce = () => {
+    if (loaded) return;
+    loaded = true;
+    if (delayedTimeout) clearTimeout(delayedTimeout);
+    // eslint-disable-next-line import/no-cycle
+    import('./delayed.js');
+  };
+
+  // load after 3 seconds fallback
+  delayedTimeout = window.setTimeout(loadOnce, 3000);
+
+  // load on any active user interaction
+  const events = ['scroll', 'click', 'keydown', 'touchstart'];
+  events.forEach((e) => {
+    document.addEventListener(e, loadOnce, { once: true, passive: true });
+  });
 }
 
 async function loadPage() {

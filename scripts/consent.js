@@ -20,7 +20,13 @@ function createButton(text, clickHandler, style, label) {
 
 /* display consent banner */
 export async function displayConsentBanner(focus = false) {
-  const consentBanner = (await loadFragment('/drafts/uncled/consent-banner')).firstElementChild;
+  const fragment = await loadFragment('/drafts/uncled/consent-banner');
+  if (!fragment) {
+    // eslint-disable-next-line no-console
+    console.warn('Consent banner fragment not found at /drafts/uncled/consent-banner');
+    return 'declineAll';
+  }
+  const consentBanner = fragment.firstElementChild;
 
   const bannerClose = new Promise((resolve) => {
     const config = consentBanner.dataset;

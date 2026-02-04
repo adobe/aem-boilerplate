@@ -60,7 +60,7 @@ The repository provides the basic structure, blocks, and configuration needed to
 - Ensure all selectors are scoped to the block.
   - Bad: `.item-list`
   - Good: `.{blockName} .item-list`   
-- Avoid classes `{blockName}-container` and `{blockName}-wrapper}` as those are used on sections and could be confusing.
+- Avoid classes `{blockName}-container` and `{blockName}-wrapper` as those are used on sections and could be confusing.
 
 ### HTML
 - Use semantic HTML5 elements
@@ -74,14 +74,14 @@ The repository provides the basic structure, blocks, and configuration needed to
 CMS authored content is a key part of every AEM Website. The content of a page is broken into sections. Sections can have default content (text, headings, links, etc.) as well as content in blocks.
 
 You can create static content for testing in a dedicated drafts folder. If you do this, be sure to specify the folder location when starting the development server by running `npx -y @adobe/aem-cli up --no-open --forward-browser-logs --html-folder drafts`
-Background on content structure https://www.aem.live/developer/markup-sections-blocks
+Background on content structure: https://www.aem.live/developer/markup-sections-blocks
 You can inspect the contents of any page with `curl http://localhost:3000/path/to/page` and `curl http://localhost:3000/path/to/page.md`
 
 ### Blocks
 
 Blocks are the re-usable building blocks of AEM. Blocks add styling and functionality to content. Each block has an initial content structure it expects, and transforms the html in the block using DOM APIs to render a final structure. 
 
-The initial content sturcture is important because it impacts how the author will create the content and how you will write your code to decorate it. In some sense, you can think of this structure as the contract for your block between the author and the developer. You should decide on this initial structure before writing any code, and be careful when making changes to code that makes assumptions about that structure as it could break existing pages.
+The initial content structure is important because it impacts how the author will create the content and how you will write your code to decorate it. In some sense, you can think of this structure as the contract for your block between the author and the developer. You should decide on this initial structure before writing any code, and be careful when making changes to code that makes assumptions about that structure as it could break existing pages.
 
 The block javascript should export a default function which is called to perform the block decoration:
 
@@ -159,7 +159,7 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 
 Edge Delivery Services provides you with three environments. Your local development server at `http://localhost:3000` serves code from your local working copy (even uncommitted code) and content that has been previewed by authors. You can access this at any time when the development server is running.
 
-For all other environments, you need to know the GitHub owner and repository name (`gh repo view --json nameWithOwner` or `git remote -v`) and the current branch name `git branch`)
+For all other environments, you need to know the GitHub owner and repository name (`gh repo view --json nameWithOwner` or `git remote -v`) and the current branch name (`git branch`)
 
 With this information, you can construct URLs for the preview environment (same content as `localhost:3000`) and the production environment (same content as the live website, approved by authors)
 
@@ -210,10 +210,10 @@ With this information, you can construct URLs for the preview environment (same 
 ## Security Considerations
 
 - Never commit sensitive information (API keys, passwords)
-- consider that everything you do is clients-side code served on the public web
+- Consider that everything you do is client-side code served on the public web
 - Follow Adobe security guidelines
 - Regularly update dependencies
-- Use the .hlxignore file to prevent filed from being served
+- Use the .hlxignore file to prevent files from being served
 
 ## Contributing
 

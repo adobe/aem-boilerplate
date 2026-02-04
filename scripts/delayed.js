@@ -9,12 +9,13 @@ function decorateFileLinks(doc) {
     '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx',
     '.pdf', '.zip', '.mp4', '.mov', '.avi',
   ];
-  
+
   doc.querySelectorAll('a[href]').forEach((link) => {
     try {
       const url = new URL(link.href);
-      const hasFileExtension = fileExtensions.some((ext) => url.pathname.toLowerCase().endsWith(ext));
-      
+      const pathname = url.pathname.toLowerCase();
+      const hasFileExtension = fileExtensions.some((ext) => pathname.endsWith(ext));
+
       if (hasFileExtension && !link.hasAttribute('target')) {
         link.setAttribute('target', '_blank');
       }
@@ -24,4 +25,4 @@ function decorateFileLinks(doc) {
   });
 }
 
-decorateFileLinks(doc);
+decorateFileLinks(document);

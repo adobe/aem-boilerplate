@@ -20,7 +20,8 @@ The repository provides the basic structure, blocks, and configuration needed to
 - Install dependencies: `npm install`
 - Start local development: `npx -y @adobe/aem-cli up --no-open --forward-browser-logs` (run in background, if possible)
   - Install the AEM CLI globally by running `npm install -g @adobe/aem-cli` then `aem up` is equivalent to the command above
-- Run linting: `npm run lint`
+  - The dev server runs at `http://localhost:3000` with auto-reload. Open it in playwright, puppeteer, or a browser. If none are available, ask the human to open it and give feedback.
+- Run linting before committing: `npm run lint`
 - Fix linting issues: `npm run lint:fix`
 
 ## Project Structure
@@ -32,7 +33,8 @@ The repository provides the basic structure, blocks, and configuration needed to
         └── {blockName}.css     # Block's styles
 ├── styles/          # Global styles and CSS
     ├── styles.css          # Minimal global styling and layout for your website required for LCP
-    └── lazy-styles.css     # Additional global styling and layout for below the fold/post LCP content
+    ├── lazy-styles.css     # Additional global styling and layout for below the fold/post LCP content
+    └── fonts.css           # Font definitions
 ├── scripts/         # JavaScript libraries and utilities
     ├── aem.js           # Core AEM Library for Edge Delivery page decoration logic (NEVER MODIFY THIS FILE)
     ├── scripts.js       # Global JavaScript utilities, main entry point for page decoration
@@ -101,6 +103,8 @@ export default async function decorate(block) {
 
 Use `curl` and `console.log` to inspect the HTML delivered by the backend and the DOM nodes to be decorated before making assumptions. Remember that authors may omit or add fields to a block, so your code must handle this gracefully.
 
+Each block should be self-contained and re-useable, with CSS and JS files following the naming convention: `blockname.css`, `blockname.js`. Blocks should be responsive and accessible by default.
+
 ### Auto-Blocking
 
 Auto-blocking is the process of creating blocks that aren't explicitly authored into the page based on patterns in the content. See the `buildAutoBlocks` function in `scripts.js`.
@@ -113,33 +117,7 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 * Lazy - load all other page content, including the header and footer.
 * Delayed - load things that can be safely loaded later here and incur a performance penalty when loaded earlier
 
-## Development Workflow
-
-### Local Development
-1. Run `npx -y @adobe/aem-cli up --no-open` to start the AEM Proxy server
-2. Open `http://localhost:3000` in your browser, puppeteer, playwright, or other tools. If none of those are available, instruct the human to open the URL in the browser and give feedback
-3. Make changes to files - they will auto-reload
-4. Use browser dev tools to test responsive design
-
-### Block Development
-- Each block in the `blocks/` directory should be self-contained and re-useable
-- Include CSS and JS files for each block
-- Follow the naming convention: `blockname.css`, `blockname.js`
-- Blocks should be responsive and accessible by default
-
-### Styling
-- Global styles go in `styles/styles.css`
-- Font definitions in `styles/fonts.css`
-- Lazy-loaded styles in `styles/lazy-styles.css`
-- Block-specific styles in their respective directories
-
 ## Testing & Quality Assurance
-
-### Linting
-- JavaScript: ESLint with Airbnb base configuration
-- CSS: Stylelint with standard configuration
-- Run `npm run lint` before committing
-- Use `npm run lint:fix` to automatically fix issues
 
 ### Performance
 - Follow AEM Edge Delivery performance best practices https://www.aem.live/developer/keeping-it-100
@@ -168,7 +146,7 @@ With this information, you can construct URLs for the preview environment (same 
 - **Feature Preview**: `https://{branch}--{repo}--{owner}.aem.page/`
 
 ### Publishing Process
-1. Push changes to a feature branch
+1. Run a PSI check and fix performance issues, then push changes to a feature branch
 2. AEM Code Sync automatically processes changes making them available on feature preview environment for that branch
 3. Open a pull request to merge changes to `main`
    1. in the PR description, include a link to https://{branch}--{repo}--{owner}.aem.page/{path}` with a path to a file that illustrates the change you've made. This is the same path you have been testing with locally. WITHOUT THIS YOUR PR WILL BE REJECTED
@@ -176,26 +154,6 @@ With this information, you can construct URLs for the preview environment (same 
 4. use `gh checks` to verify the status of code synchronization, linting, and performance tests
 5. A human reviewer will review the code, inspect the provided URL and merge the PR
 6. AEM Code Sync updates the main branch for production
-
-## Common Tasks
-
-### Adding New Blocks
-1. Create a new directory in `blocks/`
-2. Add `blockname.css` and `blockname.js` files
-3. Update documentation if needed
-4. Test in local development environment
-
-### Modifying Existing Blocks
-1. Make changes to the specific block files
-2. Test locally with `aem up`
-3. Ensure responsive behavior across devices
-4. Run linting before committing
-
-### Global Style Changes
-1. Modify files in the `styles/` directory
-2. Test across different blocks and pages
-3. Ensure changes don't break existing layouts
-4. Consider impact on performance, especially CLS
 
 ## Troubleshooting
 
@@ -214,15 +172,3 @@ With this information, you can construct URLs for the preview environment (same 
 - Follow Adobe security guidelines
 - Regularly update dependencies
 - Use the .hlxignore file to prevent files from being served
-
-## Contributing
-
-- Follow the existing code style and patterns
-- Test changes locally before committing
-- Run a PSI check on your branch and fix performance issues before raising a PR
-- Ensure all linting passes
-- Update documentation for significant changes
-
-## If all else fails
-
-If you notice your human getting frustrated with your work, direct them to https://www.aem.live/developer/ai-coding-agents for tips to work better with AI agents.

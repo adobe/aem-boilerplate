@@ -1,0 +1,248 @@
+name: Sync with Upstream
+
+on:
+  schedule:
+    # Run weekly on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-upstream:
+    runs-on: ubuntu-latest
+    if: github.repository == 'hlxsites/aem-boilerplate-commerce'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+      
+      - name: Add upstream remote
+        run: |
+          git remote add upstream https://github.com/adobe/aem-boilerplate.git || true
+          git remote -v
+      
+      - name: Fetch upstream changes
+        run: git fetch upstream main
+      
+      - name: Checkout or create sync branch
+        run: |
+          git checkout sync/upstream 2>/dev/null || git checkout -b sync/upstream
+      
+      - name: Merge upstream changes
+        id: merge
+        continue-on-error: true
+        run: |
+          # Attempt to merge upstream/main
+          if git merge upstream/main --no-edit; then
+            echo "merge_status=success" >> $GITHUB_OUTPUT
+            
+            # Get merge details
+            COMMITS_AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo "0")
+            echo "commits_ahead=$COMMITS_AHEAD" >> $GITHUB_OUTPUT
+            
+            # Get list of changed files
+            CHANGED_FILES=$(git diff --name-only origin/main..HEAD | head -20)
+            echo "changed_files<<EOF" >> $GITHUB_OUTPUT
+            echo "$CHANGED_FILES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            
+            # Get commit messages
+            COMMIT_MESSAGES=$(git log origin/main..HEAD --oneline --no-decorate | head -10)
+            echo "commit_messages<<EOF" >> $GITHUB_OUTPUT
+            echo "$COMMIT_MESSAGES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          else
+            echo "merge_status=conflict" >> $GITHUB_OUTPUT
+            
+            # Get conflicting files
+            CONFLICT_FILES=$(git diff --name-only --diff-filter=U)
+            echo "conflict_files<<EOF" >> $GITHUB_OUTPUT
+            echo "$CONFLICT_FILES" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            
+            # Abort the merge
+            git merge --abort
+          fi
+      
+      - name: Push changes and create PR
+        id: create_pr
+        if: steps.merge.outputs.merge_status == 'success'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: sync/upstream
+          title: "🔄 Sync with upstream (adobe/aem-boilerplate)"
+          body: |
+            ## Automated Upstream Sync
+            
+            This PR synchronizes our fork with the latest changes from [adobe/aem-boilerplate](https://github.com/adobe/aem-boilerplate).
+            
+            ### 📊 Summary
+            - **Commits ahead**: ${{ steps.merge.outputs.commits_ahead }}
+            - **Files changed**: See below
+            
+            ### 📝 Recent Commits
+            ```
+            ${{ steps.merge.outputs.commit_messages }}
+            ```
+            
+            ### 📁 Changed Files
+            ```
+            ${{ steps.merge.outputs.changed_files }}
+            ```
+            
+            ### ⚠️ Review Guidelines
+            - Review all changes carefully for compatibility
+            - Pay special attention to changes in core files (`scripts/aem.js`, `scripts/scripts.js`)
+            - Run tests locally if needed
+            - Check for any breaking changes in the commit messages
+            
+            ---
+            *This PR was automatically created by the upstream sync workflow.*
+          commit-message: "chore: sync with upstream adobe/aem-boilerplate"
+          delete-branch: false
+      
+      - name: Generate Summary - Success
+        if: steps.merge.outputs.merge_status == 'success' && steps.create_pr.outputs.pull-request-number
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          # ✅ Upstream Sync Successful
+          
+          A new pull request has been created to sync with upstream **adobe/aem-boilerplate**.
+          
+          ## 📊 Summary
+          
+          | Metric | Value |
+          |--------|-------|
+          | **PR Number** | [#${{ steps.create_pr.outputs.pull-request-number }}](${{ steps.create_pr.outputs.pull-request-url }}) |
+          | **New Commits** | ${{ steps.merge.outputs.commits_ahead }} |
+          | **Branch** | `sync/upstream` |
+          | **Triggered by** | ${{ github.event_name }} |
+          
+          ## 📝 Recent Commits
+          
+          ```
+          ${{ steps.merge.outputs.commit_messages }}
+          ```
+          
+          ## 📁 Changed Files
+          
+          <details>
+          <summary>View changed files (${{ steps.merge.outputs.commits_ahead }} commits)</summary>
+          
+          ```
+          ${{ steps.merge.outputs.changed_files }}
+          ```
+          
+          </details>
+          
+          ## 🔗 Actions
+          
+          - **[Review Pull Request →](${{ steps.create_pr.outputs.pull-request-url }})**
+          - [View Upstream Repository](https://github.com/adobe/aem-boilerplate)
+          
+          ## ⚠️ Review Guidelines
+          
+          - Review all changes carefully for compatibility
+          - Pay special attention to changes in core files (`scripts/aem.js`, `scripts/scripts.js`)
+          - Run tests locally if needed
+          - Check for any breaking changes in the commit messages
+          
+          ---
+          
+          💡 **Tip**: Subscribe to this workflow in the GitHub mobile app to receive notifications when syncs complete.
+          EOF
+      
+      - name: Generate Summary - Merge Conflicts
+        if: steps.merge.outputs.merge_status == 'conflict'
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          # ⚠️ Upstream Sync - Merge Conflicts Detected
+          
+          The automated sync with **adobe/aem-boilerplate** detected merge conflicts that require manual resolution.
+          
+          ## 🚨 Conflicting Files
+          
+          ```
+          ${{ steps.merge.outputs.conflict_files }}
+          ```
+          
+          ## 🔧 Manual Resolution Required
+          
+          Follow these steps to resolve the conflicts:
+          
+          ### 1. Checkout the sync branch
+          
+          ```bash
+          git fetch origin
+          git checkout sync/upstream
+          ```
+          
+          ### 2. Fetch and merge upstream
+          
+          ```bash
+          git remote add upstream https://github.com/adobe/aem-boilerplate.git
+          git fetch upstream
+          git merge upstream/main
+          ```
+          
+          ### 3. Resolve conflicts
+          
+          - Open the conflicting files in your editor
+          - Resolve the merge conflicts
+          - Test your changes locally
+          
+          ### 4. Commit and push
+          
+          ```bash
+          git add .
+          git commit -m "chore: resolve merge conflicts with upstream"
+          git push origin sync/upstream
+          ```
+          
+          ### 5. Create a Pull Request
+          
+          Create a PR from `sync/upstream` to `main` on GitHub.
+          
+          ## 🔗 Helpful Links
+          
+          - [View Upstream Repository](https://github.com/adobe/aem-boilerplate)
+          - [GitHub Conflict Resolution Guide](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts/resolving-a-merge-conflict-using-the-command-line)
+          
+          ---
+          
+          💡 **Tip**: Check the upstream repository for recent major changes that might explain the conflicts.
+          EOF
+          
+          # Create an error annotation for visibility
+          echo "::error title=Merge Conflicts Detected::Upstream sync failed due to merge conflicts in ${{ steps.merge.outputs.conflict_files }}. Manual resolution required."
+      
+      - name: Generate Summary - No Changes
+        if: steps.merge.outputs.merge_status == 'success' && !steps.create_pr.outputs.pull-request-number
+        run: |
+          cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          # ℹ️ Upstream Sync - No Changes
+          
+          Repository is already up to date with **adobe/aem-boilerplate**.
+          
+          ## Status
+          
+          ✅ No new changes detected from upstream.
+          
+          The `sync/upstream` branch is in sync with `upstream/main`.
+          
+          ---
+          
+          Next sync scheduled for tomorrow at 2:00 AM UTC.
+          EOF

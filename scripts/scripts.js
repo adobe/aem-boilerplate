@@ -143,7 +143,7 @@ function loadDelayed() {
 
   if ('requestIdleCallback' in window) {
     // prevents INP/TBT issues by only loading when CPU has capacity
-    window.requestIdleCallback(importDelayed);
+    window.requestIdleCallback(importDelayed, { timeout: 3000 });
   } else {
     window.setTimeout(importDelayed, 3000); // fallback 3-second timeout
   }

@@ -1,8 +1,17 @@
 {
   "extends": ["config:recommended"],
-  "packageRules": [{
+  "packageRules": [
+    {
       "matchDepTypes": ["devDependencies"],
-      "labels": ["ignore-psi-check"], 
-      "automerge": true
-  }]
+      "labels": ["ignore-psi-check"],
+      "automerge": true,
+      "automergeType": "pr",
+      "requiredStatusChecks": ["build"]
+    },
+    {
+      "matchPackageNames": ["eslint"],
+      "allowedVersions": "^8.0.0",
+      "description": "Pin ESLint to v8 until airbnb-base supports v10"
+    }
+  ]
 }

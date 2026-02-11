@@ -20,19 +20,20 @@ The repository provides the basic structure, blocks, and configuration needed to
 - Install dependencies: `npm install`
 - Start local development: `npx -y @adobe/aem-cli up --no-open --forward-browser-logs` (run in background, if possible)
   - Install the AEM CLI globally by running `npm install -g @adobe/aem-cli` then `aem up` is equivalent to the command above
-- Run linting: `npm run lint`
-- Fix linting issues: `npm run lint:fix`
+  - The dev server runs at `http://localhost:3000` with auto-reload. Open it in playwright, puppeteer, or a browser. If none are available, ask the human to open it and give feedback.
+- Run linting before committing: `npm run lint`
+- Auto-Fix linting issues: `npm run lint:fix`
 
 ## Project Structure
 
 ```
 ├── blocks/          # Reusable content blocks
-    └── {blockName}/   - Individual block directory
-        ├── {blockName}.js      # Block's JavaScript
-        └── {blockName}.css     # Block's styles
+    └── {blockname}/   - Individual block directory
+        ├── {blockname}.js      # Block's JavaScript
+        └── {blockname}.css     # Block's styles
 ├── styles/          # Global styles and CSS
     ├── styles.css          # Minimal global styling and layout for your website required for LCP
-    └── lazy-styles.css     # Additional global styling and layout for below the fold/post LCP content
+    ├── lazy-styles.css     # Additional global styling and layout for below the fold/post LCP content
     └── fonts.css           # Font definitions
 ├── scripts/         # JavaScript libraries and utilities
     ├── aem.js           # Core AEM Library for Edge Delivery page decoration logic (NEVER MODIFY THIS FILE)
@@ -56,12 +57,11 @@ The repository provides the basic structure, blocks, and configuration needed to
 - Follow Stylelint standard configuration
 - Use modern CSS features (CSS Grid, Flexbox, CSS Custom Properties)
 - Maintain responsive design principles
-- Declare styles mobile first, use media queries for tablet and desktop specific styles
-- Use 600px/900px/1200px as breakpoints
+  - Declare styles mobile first, use `min-width` media queries at 600px/900px/1200px for tablet and desktop
 - Ensure all selectors are scoped to the block.
   - Bad: `.item-list`
-  - Good: `.{blockName} .item-list`   
-- Avoid classes `{blockName}-container` and `{blockName}-wrapper` as those are used on sections and could be confusing.
+  - Good: `.{blockname} .item-list`   
+- Avoid classes `{blockname}-container` and `{blockname}-wrapper` as those are used on sections and could be confusing.
 
 ### HTML
 - Use semantic HTML5 elements
@@ -74,9 +74,11 @@ The repository provides the basic structure, blocks, and configuration needed to
 
 CMS authored content is a key part of every AEM Website. The content of a page is broken into sections. Sections can have default content (text, headings, links, etc.) as well as content in blocks.
 
-You can create static content for testing in a dedicated drafts folder. If you do this, be sure to specify the folder location when starting the development server by running `npx -y @adobe/aem-cli up --no-open --forward-browser-logs --html-folder drafts`
-Background on content structure: https://www.aem.live/developer/markup-sections-blocks
-You can inspect the contents of any page with `curl http://localhost:3000/path/to/page` and `curl http://localhost:3000/path/to/page.md`
+If no authored content exists to test against, you can create static HTML files in a `drafts/` folder at the project root. Pass `--html-folder drafts` when starting the dev server. Follow the aem markup structure and save files with `.html` or `.plain.html` extensions.
+
+Background on content and markup structure can be found at https://www.aem.live/developer/markup-sections-blocks and https://www.aem.live/developer/markup-reference respectively.
+
+You can inspect the contents of any page with `curl http://localhost:3000/path/to/page`, `curl http://localhost:3000/path/to/page.md`, and `curl http://localhost:3000/path/to/page.plain.html`
 
 ### Blocks
 
@@ -96,11 +98,12 @@ export default async function decorate(block) {
   // 2. Extract configuration, if applicable
   // 3. Transform DOM
   // 4. Add event listeners
-  // 5. Set loaded status
 }
 ```
 
 Use `curl` and `console.log` to inspect the HTML delivered by the backend and the DOM nodes to be decorated before making assumptions. Remember that authors may omit or add fields to a block, so your code must handle this gracefully.
+
+Each block should be self-contained and re-useable, with CSS and JS files following the naming convention: `blockname.css`, `blockname.js`. Blocks should be responsive and accessible by default.
 
 ### Auto-Blocking
 
@@ -114,33 +117,7 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 * Lazy - load all other page content, including the header and footer.
 * Delayed - load things that can be safely loaded later here and incur a performance penalty when loaded earlier
 
-## Development Workflow
-
-### Local Development
-1. Run `npx -y @adobe/aem-cli up --no-open` to start the AEM Proxy server
-2. Open `http://localhost:3000` in your browser, puppeteer, playwright, or other tools. If none of those are available, instruct the human to open the URL in the browser and give feedback
-3. Make changes to files - they will auto-reload
-4. Use browser dev tools to test responsive design
-
-### Block Development
-- Each block in the `blocks/` directory should be self-contained and re-useable
-- Include CSS and JS files for each block
-- Follow the naming convention: `blockname.css`, `blockname.js`
-- Blocks should be responsive and accessible by default
-
-### Styling
-- Global styles go in `styles/styles.css`
-- Font definitions in `styles/fonts.css`
-- Lazy-loaded styles in `styles/lazy-styles.css`
-- Block-specific styles in their respective directories
-
 ## Testing & Quality Assurance
-
-### Linting
-- JavaScript: ESLint with Airbnb base configuration
-- CSS: Stylelint with standard configuration
-- Run `npm run lint` before committing
-- Use `npm run lint:fix` to automatically fix issues
 
 ### Performance
 - Follow AEM Edge Delivery performance best practices https://www.aem.live/developer/keeping-it-100
@@ -158,7 +135,7 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 
 ### Environments
 
-Edge Delivery Services provides you with three environments. Your local development server at `http://localhost:3000` serves code from your local working copy (even uncommitted code) and content that has been previewed by authors. You can access this at any time when the development server is running.
+Your local development server at `http://localhost:3000` serves code from your local working copy (even uncommitted code) and content that has been previewed by authors. You can access this at any time when the development server is running.
 
 For all other environments, you need to know the GitHub owner and repository name (`gh repo view --json nameWithOwner` or `git remote -v`) and the current branch name (`git branch`)
 
@@ -171,32 +148,13 @@ With this information, you can construct URLs for the preview environment (same 
 ### Publishing Process
 1. Push changes to a feature branch
 2. AEM Code Sync automatically processes changes making them available on feature preview environment for that branch
-3. Open a pull request to merge changes to `main`
+3. Run a PageSpeed Insights check at https://developers.google.com/speed/pagespeed/insights/?url=YOUR_URL against the feature preview URL and fix any issues. Target a score of 100
+4. Open a pull request to merge changes to `main`
    1. in the PR description, include a link to `https://{branch}--{repo}--{owner}.aem.page/{path}` with a path to a file that illustrates the change you've made. This is the same path you have been testing with locally. WITHOUT THIS YOUR PR WILL BE REJECTED
-   2. If an existing page to demonstrate your changes doesn't exist, create test content as a static html file and ask the user for help copying it to a content page you can link in the PR
-4. use `gh checks` to verify the status of code synchronization, linting, and performance tests
-5. A human reviewer will review the code, inspect the provided URL and merge the PR
-6. AEM Code Sync updates the main branch for production
-
-## Common Tasks
-
-### Adding New Blocks
-1. Create a new directory in `blocks/`
-2. Add `blockname.css` and `blockname.js` files
-3. Update documentation if needed
-4. Test in local development environment
-
-### Modifying Existing Blocks
-1. Make changes to the specific block files
-2. Test locally with `aem up`
-3. Ensure responsive behavior across devices
-4. Run linting before committing
-
-### Global Style Changes
-1. Modify files in the `styles/` directory
-2. Test across different blocks and pages
-3. Ensure changes don't break existing layouts
-4. Consider impact on performance, especially CLS
+   2. If an existing page to demonstrate your changes doesn't exist, create test content as a static html file and ask the user for help copying it to a cms content page you can link in the PR
+5. use `gh pr checks` to verify the status of code synchronization, linting, and performance tests
+6. A human reviewer will review the code, inspect the provided URL and merge the PR
+7. AEM Code Sync updates the main branch for production
 
 ## Troubleshooting
 
@@ -214,14 +172,13 @@ With this information, you can construct URLs for the preview environment (same 
 - Consider that everything you do is client-side code served on the public web
 - Follow Adobe security guidelines
 - Regularly update dependencies
-- Use the .hlxignore file to prevent files from being served
+- Use the .hlxignore file to prevent files from being served (same format as .gitingnore)
 
 ## Contributing
 
 - Follow the existing code style and patterns
 - Test changes locally before committing
-- Run a PSI check on your branch and fix performance issues before raising a PR
-- Ensure all linting passes
+- Follow the Publishing Process documented above
 - Update documentation for significant changes
 
 ## If all else fails

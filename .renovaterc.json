@@ -4,7 +4,8 @@
     {
       "matchDepTypes": ["devDependencies"],
       "labels": ["ignore-psi-check"],
-      "automerge": true
+      "automerge": true,
+      "ignoreTests": false
     },
     {
       "matchPackageNames": ["eslint"],

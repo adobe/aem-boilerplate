@@ -33,6 +33,7 @@ The repository provides the basic structure, blocks, and configuration needed to
 ├── styles/          # Global styles and CSS
     ├── styles.css          # Minimal global styling and layout for your website required for LCP
     └── lazy-styles.css     # Additional global styling and layout for below the fold/post LCP content
+    └── fonts.css           # Font definitions
 ├── scripts/         # JavaScript libraries and utilities
     ├── aem.js           # Core AEM Library for Edge Delivery page decoration logic (NEVER MODIFY THIS FILE)
     ├── scripts.js       # Global JavaScript utilities, main entry point for page decoration

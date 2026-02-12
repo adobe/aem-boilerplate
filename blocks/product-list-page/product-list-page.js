@@ -257,8 +257,11 @@ function getFilterFromParams(filterParam) {
           attribute,
           in: value.split(commaRegex),
         });
-      } else if (value.includes('-')) {
-        // Handle range values (like price)
+      } 
+
+      const rangeRegex = /^\d+(\.\d+)?-\d+(\.\d+)?$/;
+
+      if (rangeRegex.test(value)) {
         const [from, to] = value.split('-');
         results.push({
           attribute,
@@ -268,7 +271,7 @@ function getFilterFromParams(filterParam) {
           },
         });
       } else {
-        // Handle single values (like categories with one value)
+        // Supports hyphens in category/url keys
         results.push({
           attribute,
           in: [value],

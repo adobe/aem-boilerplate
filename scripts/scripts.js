@@ -176,7 +176,14 @@ async function loadLazy(doc) {
  */
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
+  const importDelayed = () => import('./delayed.js');
+
+  if ('requestIdleCallback' in window) {
+    // prevents INP/TBT issues by only loading when CPU has capacity
+    window.requestIdleCallback(importDelayed, { timeout: 3000 });
+  } else {
+    window.setTimeout(importDelayed, 3000); // fallback 3-second timeout
+  }
   // load anything that can be postponed to the latest here
 }
 

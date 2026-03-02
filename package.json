@@ -51,7 +51,7 @@
     "@dropins/storefront-checkout": "~3.0.1",
     "@dropins/storefront-order": "~3.0.0",
     "@dropins/storefront-payment-services": "~3.0.0",
-    "@dropins/storefront-pdp": "3.0.1-alpha5",
+    "@dropins/storefront-pdp": "3.0.2-alpha2",
     "@dropins/storefront-personalization": "~3.0.0",
     "@dropins/storefront-product-discovery": "~3.0.0",
     "@dropins/storefront-recommendations": "~3.0.0",

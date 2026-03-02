@@ -35,6 +35,7 @@ const d=`
     name
     sku
     only_x_left_in_stock
+    gift_wrapping_available
     gift_wrapping_price {
       currency
       value

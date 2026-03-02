@@ -47,6 +47,7 @@ export type OrderItemModel = {
         recipientName: string;
         message: string;
     };
+    giftWrappingAvailable: boolean;
     giftWrappingPrice: MoneyProps;
     productGiftWrapping: {
         uid: string;

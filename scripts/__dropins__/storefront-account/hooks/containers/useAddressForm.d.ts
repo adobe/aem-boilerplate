@@ -12,17 +12,17 @@ export declare const useAddressForm: ({ showFormLoader, showSaveCheckBox, saveCh
     saveCheckBoxAddress: boolean;
     inLineAlert: {
         text: string;
-        type: 'success' | 'warning' | 'error';
-        icon?: VNode<HTMLAttributes<SVGSVGElement>> | undefined;
+        type: "success" | "warning" | "error";
+        icon?: VNode<HTMLAttributes<SVGSVGElement>>;
     };
     addressId: string;
     submitLoading: boolean;
     normalizeFieldsConfig: {
         customUpperCode: string;
-        defaultValue?: string | number | boolean | undefined;
-        options?: any[] | undefined;
-        required?: boolean | undefined;
-        disabled?: boolean | undefined;
+        defaultValue?: string | boolean | number;
+        options?: any[];
+        required?: boolean;
+        disabled?: boolean;
     }[];
     handleSaveCheckBoxAddress: (event: Event) => void;
     handleUpdateAddress: (event: Event, valid: boolean) => Promise<void | null | undefined>;

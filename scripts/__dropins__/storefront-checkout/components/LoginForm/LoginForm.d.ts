@@ -11,6 +11,7 @@ export interface LoginFormProps extends Omit<HTMLAttributes<HTMLFormElement>, 't
     onEmailBlur: (event: Event) => void;
     onEmailChange: (event: Event) => void;
     onEmailInvalid: (event: Event) => void;
+    preferences?: VNode;
     title?: VNode;
 }
 export declare const LoginForm: FunctionComponent<LoginFormProps & import('..').ConditionalProps>;

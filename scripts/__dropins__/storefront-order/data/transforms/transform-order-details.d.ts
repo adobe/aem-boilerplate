@@ -1,4 +1,4 @@
-import { QueryType, ResponseData, OrderProps, OrderItemProps } from '../../types';
+import { OrderItemProps, OrderProps, QueryType, ResponseData } from '../../types';
 import { OrderDataModel, OrderItemModel, TransformedData } from '../models';
 
 export declare const transformConfigurableOptions: (item: OrderItemProps) => Record<string, string> | undefined;

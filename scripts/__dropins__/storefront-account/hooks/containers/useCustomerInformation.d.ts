@@ -45,6 +45,6 @@ export declare const useCustomerInformation: ({ handleSetInLineAlert, }: UseCust
     handleInputChange: (value: Record<string, string | number | boolean>) => void;
     handleSetPassword: (value: string) => void;
     handleOnBlurPassword: (event: Event) => void;
-    renderAlertMessage: (type: 'success' | 'error', message?: string) => void;
+    renderAlertMessage: (type: "success" | "error", message?: string) => void;
 };
 //# sourceMappingURL=useCustomerInformation.d.ts.map

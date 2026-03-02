@@ -19,6 +19,9 @@ export interface MiniCartProps extends HTMLAttributes<HTMLDivElement> {
         Heading?: SlotProps;
         EmptyCart?: SlotProps;
         Footer?: SlotProps;
+        RowTotalFooter?: SlotProps<{
+            item: CartModel['items'][number];
+        }>;
         ProductAttributes?: SlotProps;
         CartSummaryFooter?: SlotProps;
         CartItem?: SlotProps;

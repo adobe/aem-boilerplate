@@ -26,7 +26,7 @@ export default async function decorate(block) {
         throw new Error('No product list page block found');
       }
 
-      const category = readBlockConfig(plpBlock).urlpath;
+      const category = plpBlock.dataset?.urlpath || readBlockConfig(plpBlock).urlpath;
       if (!category) {
         throw new Error('No category ID found in product list page block');
       }

@@ -8,6 +8,7 @@ export declare const categorizeProducts: (order: OrderDataModel) => {
             recipientName: string;
             message: string;
         };
+        giftWrappingAvailable: boolean;
         giftWrappingPrice: import('../types').MoneyProps;
         productGiftWrapping: {
             uid: string;

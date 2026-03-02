@@ -180,6 +180,16 @@ declare const _default: {
         "defaultShippingLabel": "Set as default shipping address",
         "defaultBillingLabel": "Set as default billing address",
         "saveAddressBook": "Save in address book"
+      },
+      "fields": {
+        "street": {
+          "label": "Street Address",
+          "placeholder": "Enter your street address"
+        },
+        "street_multiline_2": {
+          "label": "House/Flat Number",
+          "placeholder": "Enter your house/flat number"
+        }
       }
     },
     "FormText": {

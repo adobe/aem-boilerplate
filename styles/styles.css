@@ -507,7 +507,6 @@ body.columns main {
   margin: 0 auto;
   padding: var(--spacing-large) var(--spacing-small);
   box-sizing: border-box;
-  gap: var(--grid-4-gutters);
 }
 
 body.columns main > .section {
@@ -515,7 +514,18 @@ body.columns main > .section {
   flex-basis: 100%;
   max-width: unset;
   margin: unset;
-  padding: unset;
+  padding: calc(var(--grid-4-gutters) / 2);
+  box-sizing: border-box;
+}
+
+body.columns main > .section:first-child {
+  padding-inline-start: 0;
+  padding-block-start: 0;
+}
+
+body.columns main > .section:last-child {
+  padding-inline-end: 0;
+  padding-block-end: 0;
 }
 
 body.columns main > .section > div {
@@ -543,7 +553,7 @@ body.columns main > .section:empty {
 
 @media (min-width: 900px) {
   body.columns main {
-    flex-direction: row;
+    flex-flow: row wrap;
   }
 
   body.columns main > .section {

@@ -14,9 +14,6 @@
       "type": "onedrive"
     }
   },
-  "folders": {
-    "/products/": "/products/default"
-  },
   "cdn": {
     "live": {
       "host": "main--{SITE}--{ORG}.aem.live"

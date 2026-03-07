@@ -568,7 +568,7 @@ main .hero-container {
   -webkit-transform: translateZ(-1px) scale(2);
   transform: translateZ(-1px) scale(2);
   padding: 0;
-  margin: -180px 0 180px !important;
+
 }
 main .cards-container {
   -webkit-transform: translateZ(0);

@@ -4585,7 +4585,7 @@
    font-family: 'Font Awesome 5 Brands';
    font-style: normal;
    font-weight: 400;
-   font-display: block;
+   font-display: swap;
    src: url("../fonts/fa/fa-brands-400.eot");
    src: url("../fonts/fa/fa-brands-400.eot?#iefix") format("embedded-opentype"), 
          url("../fonts/fa/fa-brands-400.woff2") format("woff2"), 
@@ -4602,7 +4602,7 @@
    font-family: 'Font Awesome 5 Free';
    font-style: normal;
    font-weight: 400;
-   font-display: block;
+   font-display: swap;
    src: url("../fonts/fa/fa-regular-400.eot");
    src: url("../fonts/fa/fa-regular-400.eot?#iefix") format("embedded-opentype"), 
          url("../fonts/fa/fa-regular-400.woff2") format("woff2"), 
@@ -4619,7 +4619,7 @@
    font-family: 'Font Awesome 5 Solid';
    font-style: normal;
    font-weight: 400;
-   font-display: block;
+   font-display: swap;
    src: url("../fonts/fa/fa-solid-900.eot");
    src: url("../fonts/fa/fa-solid-900.eot?#iefix") format("embedded-opentype"), 
          url("../fonts/fa/fa-solid-900.woff2") format("woff2"), 

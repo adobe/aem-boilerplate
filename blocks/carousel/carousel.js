@@ -76,9 +76,32 @@ function createSlide(row, slideIndex, carouselId) {
   slide.setAttribute('id', `carousel-${carouselId}-slide-${slideIndex}`);
   slide.classList.add('carousel-slide');
 
-  row.querySelectorAll(':scope > div').forEach((column, colIdx) => {
+  // Get style from row lastElementChild (similar to cards block)
+  const style = row.lastElementChild?.querySelector('p')?.textContent?.trim();
+  if (style) {
+    slide.classList.add(style);
+  }
+
+  // Only add divs that are NOT the style marker container
+  const divs = Array.from(row.querySelectorAll(':scope > div'));
+  const lastDiv = divs[divs.length - 1];
+  const isStyleMarker = lastDiv?.querySelector('p')?.textContent?.trim() === style;
+
+  divs.forEach((column, colIdx) => {
+    // Skip the last div if it only contains the style marker
+    if (isStyleMarker && column === lastDiv) return;
+
     column.classList.add(`carousel-slide-${colIdx === 0 ? 'image' : 'content'}`);
     slide.append(column);
+  });
+
+  // Remove any style marker paragraphs (similar to cards block)
+  slide.querySelectorAll('.carousel-slide-content p').forEach((p) => {
+    const text = p.textContent.trim();
+    // If paragraph contains only a style name (like "teaser-card"), remove it
+    if (text && text === p.textContent && !p.querySelector('strong, em, a, picture, img')) {
+      p.remove();
+    }
   });
 
   const labeledBy = slide.querySelector('h1, h2, h3, h4, h5, h6');

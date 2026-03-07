@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Yellow glow effect -->
+    <defs>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+    </defs>
+    
+    <!-- Main search icon with yellow stroke -->
+    <path fill-rule="evenodd" clip-rule="evenodd" 
+          d="M20.446 20.5796C16.2577 24.768 9.46696 24.768 5.27859 20.5796C1.09021 16.3912 1.09021 9.60052 5.27859 5.41215C9.46696 1.22377 16.2577 1.22377 20.446 5.41215C24.6344 9.60052 24.6344 16.3912 20.446 20.5796ZM20.9141 22.8508C15.9157 26.9446 8.52951 26.6589 3.86437 21.9938C-1.10505 17.0244 -1.10505 8.96735 3.86437 3.99793C8.83379 -0.971489 16.8908 -0.971489 21.8602 3.99793C26.6576 8.7953 26.8237 16.4702 22.3585 21.4668L27.8075 26.9158C28.1981 27.3063 28.1981 27.9395 27.8075 28.33C27.417 28.7205 26.7838 28.7205 26.3933 28.33L20.9141 22.8508Z" 
+          fill="white"
+          stroke="#ffc719"
+          stroke-width="0.5"
+          filter="url(#glow)"/>
+    
+    <!-- Yellow highlight circle -->
+    <circle cx="12" cy="12" r="7" 
+            fill="#ffc719" 
+            opacity="0.1"/>
+</svg>

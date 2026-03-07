@@ -1,7 +1,6 @@
 import {
   loadHeader,
   loadFooter,
-  decorateButtons as libDecorateButtons,
   decorateIcons,
   decorateSections,
   decorateBlocks,
@@ -184,7 +183,23 @@ export async function fetchLanguagePlaceholders() {
  */
 function buildAutoBlocks() {
   try {
-    // TODO: add auto block, if needed
+    // auto load `*/fragments/*` references
+    const fragments = [...main.querySelectorAll('a[href*="/fragments/"]')].filter((f) => !f.closest('.fragment'));
+    if (fragments.length > 0) {
+      // eslint-disable-next-line import/no-cycle
+      import('../blocks/fragment/fragment.js').then(({ loadFragment }) => {
+        fragments.forEach(async (fragment) => {
+          try {
+            const { pathname } = new URL(fragment.href);
+            const frag = await loadFragment(pathname);
+            fragment.parentElement.replaceWith(...frag.children);
+          } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error('Fragment loading failed', error);
+          }
+        });
+      });
+    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -192,55 +207,42 @@ function buildAutoBlocks() {
 }
 
 /**
- * Builds all synthetic blocks in a container element.
- * @param {Element} main The container element
+ * Decorates formatted links to style them as buttons.
+ * @param {HTMLElement} main The main container element
  */
 function decorateButtons(main) {
-  main.querySelectorAll('img').forEach((InnerImg) => {
-    let altT = decodeURIComponent(InnerImg.alt);
+  main.querySelectorAll('p a[href]').forEach((a) => {
+    a.title = a.title || a.textContent;
+    const p = a.closest('p');
+    const text = a.textContent.trim();
 
-    if (altT && altT.includes('https://delivery-')) {
-      try {
-        altT = JSON.parse(altT);
-        const { altText, deliveryUrl } = altT;
-        const url = new URL(deliveryUrl);
-        const imgName = url.pathname.substring(url.pathname.lastIndexOf('/') + 1);
-        const block = whatBlockIsThis(InnerImg);
-        const bp = getMetadata(block);
-        let breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }];
-        if (bp) {
-          const bps = bp.split('|');
-          const bpS = bps.map((b) => b.split(',').map((p) => p.trim()));
-          breakpoints = bpS.map((n) => {
-            const obj = {};
-            n.forEach((i) => {
-              const t = i.split(/:(.*)/s);
-              obj[t[0].trim()] = t[1].trim();
-            });
-            return obj;
-          });
-        } else {
-          const format = getMetadata(imgName.toLowerCase().replace('.', '-'));
-          const formats = format.split('|');
-          const formatObj = {};
-          formats.forEach((i) => {
-            const [a, b] = i.split('=');
-            formatObj[a] = b;
-          });
-          breakpoints = breakpoints.map((n) => (
-            { ...n, ...formatObj }
-          ));
-        }
-        const newPicture = createOptimizedPicture(deliveryUrl, altText, false, breakpoints);
-        InnerImg.parentElement.replaceWith(newPicture);
-      } catch (error) {
-        InnerImg.setAttribute('style', 'border:5px solid red');
-        InnerImg.setAttribute('data-asset-type', 'video');
-        InnerImg.setAttribute('title', 'Update block to render video.');
-      }
+    // quick structural checks
+    if (a.querySelector('img') || p.textContent.trim() !== text) return;
+
+    // skip URL display links
+    try {
+      if (new URL(a.href).href === new URL(text, window.location).href) return;
+    } catch { /* continue */ }
+
+    // require authored formatting for buttonization
+    const strong = a.closest('strong');
+    const em = a.closest('em');
+    if (!strong && !em) return;
+
+    p.className = 'button-wrapper';
+    a.className = 'button';
+    if (strong && em) { // high-impact call-to-action
+      a.classList.add('accent');
+      const outer = strong.contains(em) ? strong : em;
+      outer.replaceWith(a);
+    } else if (strong) {
+      a.classList.add('primary');
+      strong.replaceWith(a);
+    } else {
+      a.classList.add('secondary');
+      em.replaceWith(a);
     }
   });
-  libDecorateButtons(main);
 }
 
 /**
@@ -249,13 +251,12 @@ function decorateButtons(main) {
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
-  // hopefully forward compatible button decoration
-  decorateButtons(main);
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
   decorateDMImages(main);
+  decorateButtons(main);
 }
 
 async function renderWBDataLayer() {
@@ -307,6 +308,8 @@ async function loadEager(doc) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  loadHeader(doc.querySelector('header'));
+
   const main = doc.querySelector('main');
   await loadSections(main);
 
@@ -314,7 +317,6 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);

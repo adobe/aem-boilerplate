@@ -1,40 +1,40 @@
-.accordion details {
+.accordion > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.accordion > ul > li {
   border: 1px solid #dadada;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
-.accordion details + details {
+.accordion > ul > li + li {
   margin-top: 24px;
 }
 
-.accordion details p {
+.accordion p {
   margin-bottom: 0.8em;
 }
 
-.accordion details summary {
+.accordion .accordion-item-label {
   position: relative;
   padding: 0 16px;
   padding-right: 46px;
   cursor: pointer;
-  list-style: none;
   overflow: auto;
   transition: background-color 0.2s;
 }
 
-.accordion details[open] summary {
+.accordion li.active .accordion-item-label {
   background-color: var(--light-color);
 }
 
-.accordion details summary:focus,
-.accordion details summary:hover {
+.accordion .accordion-item-label:focus,
+.accordion .accordion-item-label:hover {
   background-color: var(--light-color);
 }
 
-.accordion details summary::-webkit-details-marker {
-  display: none;
-}
-
-.accordion details summary::after {
+.accordion .accordion-item-label::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -47,15 +47,17 @@
   transition: transform 0.2s;
 }
 
-.accordion details[open] summary::after {
+.accordion li.active .accordion-item-label::after {
   transform: translateY(-50%) rotate(-45deg);
 }
 
-.accordion details .accordion-item-body {
+.accordion .accordion-item-body {
+  display: none;
   padding: 0 16px;
 }
 
-.accordion details[open] .accordion-item-body {
+.accordion li.active .accordion-item-body {
+  display: block;
   border-top: 1px solid #dadada;
   background-color: var(--background-color);
 }

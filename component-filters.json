@@ -46,6 +46,23 @@
     ]
   },
   {
+    "id": "columns",
+    "components": [
+      "columns-row"
+    ]
+  },
+  {
+    "id": "columns-row",
+    "components": []
+  },
+  {
+    "id": "columns-cell",
+    "components": [
+      "text",
+      "image"
+    ]
+  },
+  {
     "id": "tabs",
     "components": [
       "tabs-item"

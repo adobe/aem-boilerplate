@@ -11,7 +11,6 @@ import {
   loadCSS,
   fetchPlaceholders,
   getMetadata,
-  createOptimizedPicture,
 } from './aem.js';
 import { picture, source, img } from './dom-helpers.js';
 
@@ -49,13 +48,6 @@ function whatBlockIsThis(element) {
     if (currentElement.classList.length > 0) return currentElement.classList[0];
   }
   return null;
-}
-
-export function isAuthorEnvironment() {
-  if (window?.location?.origin?.includes('author')) {
-    return true;
-  }
-  return false;
 }
 
 /**
@@ -181,7 +173,7 @@ export async function fetchLanguagePlaceholders() {
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
-function buildAutoBlocks() {
+function buildAutoBlocks(main) {
   try {
     // auto load `*/fragments/*` references
     const fragments = [...main.querySelectorAll('a[href*="/fragments/"]')].filter((f) => !f.closest('.fragment'));

@@ -1,23 +1,23 @@
-/*
- * Accordion Block
- * Recreate an accordion
- * https://www.hlx.live/developer/block-collection/accordion
- */
+import { moveInstrumentation } from '../../scripts/scripts.js';
 
 export default function decorate(block) {
+  const ul = document.createElement('ul');
   [...block.children].forEach((row) => {
-    // decorate accordion item label
-    const label = row.children[0];
-    const summary = document.createElement('summary');
-    summary.className = 'accordion-item-label';
-    summary.append(...label.childNodes);
-    // decorate accordion item body
-    const body = row.children[1];
-    body.className = 'accordion-item-body';
-    // decorate accordion item
-    const details = document.createElement('details');
-    details.className = 'accordion-item';
-    details.append(summary, body);
-    row.replaceWith(details);
+    const li = document.createElement('li');
+    li.className = 'accordion-item';
+    moveInstrumentation(row, li);
+    while (row.firstElementChild) li.append(row.firstElementChild);
+
+    const [label, body] = [...li.children];
+    if (label) {
+      label.className = 'accordion-item-label';
+      label.addEventListener('click', () => li.classList.toggle('active'));
+    }
+    if (body) body.className = 'accordion-item-body';
+
+    ul.append(li);
   });
+
+  block.textContent = '';
+  block.append(ul);
 }

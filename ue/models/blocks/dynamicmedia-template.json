@@ -3,9 +3,16 @@
     {
       "title": "Dynamic Media Template",
       "id": "dynamicmedia-template",
+      "model": "dynamicmedia-template",
       "plugins": {
         "da": {
-          "unsafeHTML": "<div class=\"dynamicmedia-template\"><div><div></div></div><div><div><p><a href=\"\"></a></p></div></div><div><div><p></p></div></div></div>"
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "type", "selector": "div:nth-child(1)>p:nth-child(1)" },
+            { "name": "dynamicMediaUrl", "selector": "div:nth-child(2)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]" },
+            { "name": "variableMappings", "selector": "div:nth-child(3)>div:nth-child(1)>p:nth-child(1)"}
+          ]
         }
       }
     }
@@ -16,13 +23,19 @@
       "fields": [
         {
           "component": "text",
-          "name": "div:nth-child(2)>div:nth-child(1)>p:nth-child(1)>a:nth-child(1)[href]",
+          "name": "type",
+          "label": "Type",
+          "required": true
+        },
+        {
+          "component": "text",
+          "name": "dynamicMediaUrl",
           "label": "Dynamic Media URL",
           "required": true
         },
         {
           "component": "text",
-          "name": "div:nth-child(3)>div:nth-child(1)>p:nth-child(1)",
+          "name": "variableMappings",
           "label": "Variable Mappings",
           "multi": true
         }

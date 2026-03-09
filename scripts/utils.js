@@ -1,10 +1,16 @@
 import { fetchPlaceholders } from './placeholders.js';
-import { isAuthorEnvironment } from './scripts.js';
 
 export const PATH_PREFIX = '/language-masters';
 export const SUPPORTED_LANGUAGES = ['en'];
 export const INTERNAL_PAGES = ['/footer', '/nav', '/fragments', '/data', '/drafts'];
 let lang;
+
+export function isAuthorEnvironment() {
+  if (window?.location?.origin?.includes('author')) {
+    return true;
+  }
+  return false;
+}
 
 /**
  * Extracts the site name from the current URL pathname

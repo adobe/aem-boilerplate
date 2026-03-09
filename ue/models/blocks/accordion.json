@@ -3,22 +3,27 @@
     {
       "title": "Accordion",
       "id": "accordion",
+      "model": "accordion",
+      "filter": "accordion",
       "plugins": {
         "da": {
-          "name": "accordion",
-          "rows": 1,
-          "columns": 2
+          "rows": 0,
+          "columns": 0
         }
       }
     },
     {
       "title": "Accordion Item",
       "id": "accordion-item",
+      "model": "accordion-item",
       "plugins": {
         "da": {
-          "name": "accordion-item",
-          "rows": 2,
-          "columns": 0
+          "rows": 1,
+          "columns": 2,
+          "fields": [
+            { "name": "summary", "selector": "div:nth-child(1)" },
+            { "name": "text", "selector": "div:nth-child(2)" }
+          ]
         }
       }
     }
@@ -30,14 +35,14 @@
         {
           "component": "richtext",
           "valueType": "string",
-          "name": "div:nth-child(1)",
+          "name": "summary",
           "value": "",
           "label": "Summary",
           "required": true
         },
         {
           "component": "richtext",
-          "name": "div:nth-child(2)",
+          "name": "text",
           "value": "",
           "label": "Text",
           "valueType": "string",

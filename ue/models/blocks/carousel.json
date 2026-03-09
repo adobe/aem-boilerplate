@@ -3,20 +3,28 @@
     {
       "title": "Carousel",
       "id": "carousel",
+      "model": "carousel",
+      "filter": "carousel",
       "plugins": {
         "da": {
-          "name": "carousel",
-          "unsafeHTML": "<div><div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+          "rows": 1,
+          "columns": 2
         }
       }
     },
     {
       "title": "Carousel Slide",
       "id": "carousel-item",
+      "model": "carousel-item",
       "plugins": {
         "da": {
-          "name": "carousel-item",
-          "unsafeHTML": "<div><div><picture><source type=\"image/webp\" srcset=\"\"><source type=\"image/jpeg\" srcset=\"\"><img loading=\"lazy\"></picture></div><div></div></div>"
+          "rows": 1,
+          "columns": 2,
+          "fields": [
+            { "name": "backgroundImage", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "backgroundImageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "text", "selector": "div:nth-child(2)" }
+          ]
         }
       }
     }
@@ -28,19 +36,19 @@
         {
           "component": "reference",
           "valueType": "string",
-          "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[src]",
+          "name": "backgroundImage",
           "label": "Background Image",
           "multi": false
         },
         {
           "component": "text",
           "valueType": "string",
-          "name": "div:nth-child(1)>picture:nth-child(1)>img:nth-child(3)[alt]",
+          "name": "backgroundImageAlt",
           "label": "Background Image Alt"
         },
         {
           "component": "richtext",
-          "name": "div:nth-child(2)",
+          "name": "text",
           "label": "Text",
           "valueType": "string"
         }

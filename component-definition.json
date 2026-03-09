@@ -87,8 +87,8 @@
           "filter": "cards",
           "plugins": {
             "da": {
-              "rows": 1,
-              "columns": 2
+              "rows": 0,
+              "columns": 0
             }
           }
         },
@@ -99,7 +99,7 @@
           "plugins": {
             "da": {
               "rows": 1,
-              "columns": 2,
+              "columns": 3,
               "fields": [
                 {
                   "name": "image",

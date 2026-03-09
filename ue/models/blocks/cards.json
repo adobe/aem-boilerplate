@@ -7,8 +7,8 @@
       "filter": "cards",
       "plugins": {
         "da": {
-          "rows": 1,
-          "columns": 2
+          "rows": 0,
+          "columns": 0
         }
       }
     },
@@ -19,7 +19,7 @@
       "plugins": {
         "da": {
           "rows": 1,
-          "columns": 2,
+          "columns": 3,
           "fields": [
             { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
             { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
@@ -56,11 +56,25 @@
           "valueType": "string"
         },
         {
-          "component": "text",
-          "name": "position",
-          "value": "",
-          "label": "Image Position",
-          "valueType": "string"
+          "component": "select",
+          "name": "variant",
+          "valueType": "string",
+          "label": "Variant",
+          "required": true,
+          "options": [
+            {
+              "name": "Image Top",
+              "value": "image-top"
+            },
+            {
+              "name": "Image Bottom",
+              "value": "image-bottom"
+            },
+            {
+              "name": "Image Left",
+              "value": "image-left"
+            }
+          ]
         }
       ]
     }

@@ -27,6 +27,7 @@ export default async function decorate(block) {
   const labels = await fetchPlaceholders();
 
   const config = readBlockConfig(block);
+  const pageSize = parseInt(config.pagesize, 10) || 9;
 
   const fragment = document.createRange().createContextualFragment(`
     <div class="search__wrapper">
@@ -72,7 +73,7 @@ export default async function decorate(block) {
     await search({
       phrase: '', // search all products in the category
       currentPage: searchState.currentPage,
-      pageSize: 8,
+      pageSize,
       sort: searchState?.sort?.length ? searchState.sort : [{ attribute: 'position', direction: 'DESC' }],
       filter: [
         { attribute: 'categoryPath', eq: config.urlpath }, // Add category filter
@@ -88,7 +89,7 @@ export default async function decorate(block) {
     await search({
       phrase: searchState.phrase,
       currentPage: searchState.currentPage,
-      pageSize: 8,
+      pageSize,
       sort: searchState.sort,
       // Always add visibility filter to the request
       filter: [visibilityFilter, ...userFilters],

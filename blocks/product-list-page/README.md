@@ -11,6 +11,7 @@ Block configuration is read via `readBlockConfig(block)`.
 | Option   | Effect |
 |----------|--------|
 | `urlpath` | When set, the block runs in **category page** mode: it filters by `categoryPath` and shows all products in that category. When absent, the block runs in **search page** mode and uses the `q` URL parameter as the search phrase. The value is also stored on the block as `data-urlpath` for use by other blocks (e.g. enrichment). |
+| `pageSize` | Number of products per page. Defaults to `9` if not set or invalid. |
 
 ## Integration
 

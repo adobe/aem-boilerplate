@@ -12,6 +12,9 @@ describe("Verify Product List Page", () => {
         // Navaigate to Apperal category page
         cy.contains("Apparel").should('be.visible').click();
 
+        // Wait for PLP to finish loading before asserting images (avoids flake when run with full suite)
+        cy.waitForLoadingSkeletonToDisappear();
+
         assertImageListDisplay('.product-discovery-product-list__grid');
 
         // If there is more than one sort option, change sort and assert it changed

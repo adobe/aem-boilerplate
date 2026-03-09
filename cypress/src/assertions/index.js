@@ -405,17 +405,3 @@ export const assertSearchResults = () => {
       cy.wrap($price).should("not.be.empty");
     });
 };
-
-export const assertSearchResultClick = () => {
-  // Click on first search result
-  cy.get(fields.productImage)
-    .first()
-    .click();
-
-  // Verify navigation to product page
-  cy.url().should("include", "/products/");
-
-  // Verify product page elements are loaded
-  cy.get(".product-details", { timeout: 10000 })
-    .should("be.visible");
-};

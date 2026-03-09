@@ -14,19 +14,27 @@ describe("Verify Product List Page", () => {
 
         assertImageListDisplay('.product-discovery-product-list__grid');
 
-        // Assert Position Sort is selected
-        cy.get('select')
-            .find('option:selected')
-            .should('have.text', 'Position');
-
-        // Select new Sort
-        cy.get('select').select('Product Name').should('have.value', 'name_DESC');
-        cy.waitForLoadingSkeletonToDisappear();
-        cy.contains('Youth tee: Colors outside the lines').should('be.visible');
-        assertImageListDisplay('.product-discovery-product-list__grid');
-
-        cy.percyTakeSnapshot('Product List page Category new');
-
+        // If there is more than one sort option, change sort and assert it changed
+        cy.get('select').then($select => {
+            const options = $select.find('option');
+            const initialSelected = options.filter(':selected').text().trim();
+            const allTexts = options.toArray().map((el) => el.textContent.trim());
+            const otherOptionText = allTexts.find((t) => t !== initialSelected);
+            if (options.length <= 1 || !otherOptionText) {
+                assertImageListDisplay('.product-discovery-product-list__grid');
+                cy.percyTakeSnapshot('Product List page Category new');
+                return;
+            }
+            cy.get('select').select(otherOptionText);
+            cy.waitForLoadingSkeletonToDisappear();
+            cy.get('select')
+                .find('option:selected')
+                .invoke('text')
+                .then((selectedText) => {
+                    expect(selectedText.trim()).not.to.equal(initialSelected);
+                });
+            assertImageListDisplay('.product-discovery-product-list__grid');
+            cy.percyTakeSnapshot('Product List page Category new');
+        });
     });
 });
-

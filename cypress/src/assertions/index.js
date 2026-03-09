@@ -373,7 +373,9 @@ export const assertImageListDisplay = (selector, limit = null) => {
   }
 
   imageQuery.each(($img) => {
+    // Scroll into view so lazy-loaded images actually load (browser loads when near viewport)
     cy.wrap($img)
+      .scrollIntoView()
       .should('be.visible')
       .and(($el) => {
         expect($el[0].naturalWidth).to.be.greaterThan(0);

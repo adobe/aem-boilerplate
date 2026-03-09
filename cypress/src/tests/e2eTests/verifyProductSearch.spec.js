@@ -23,7 +23,7 @@ describe("Search Feature", () => {
     assertImageListDisplay('.product-discovery-product-list__grid');
   });
 
-  it.only("Verify Search results page", () => {
+  it("Verify Search results page", () => {
     // Visit the homepage
     cy.visit("/");
 

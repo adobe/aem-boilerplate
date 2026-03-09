@@ -24,7 +24,7 @@
             { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
             { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
             { "name": "text", "selector": "div:nth-child(2)" },
-            { "name": "position", "selector": "div:nth-child(3)>:first-child" }
+            { "name": "variant", "selector": "div:nth-child(3)>:first-child" }
           ]
         }
       }

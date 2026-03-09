@@ -12,6 +12,7 @@ export interface ProductModel {
     metaTitle?: string;
     description?: string;
     images?: Image[];
+    videos?: Video[];
     prices: Prices;
     attributes?: Attribute[];
     options?: Option[];
@@ -28,6 +29,17 @@ interface Image {
     label: string;
     width: number;
     height: number;
+    roles?: string[];
+}
+interface Video {
+    url: string;
+    title?: string;
+    description?: string;
+    preview?: {
+        url: string;
+        label?: string;
+        roles?: string[];
+    };
 }
 interface Price {
     amount?: number;

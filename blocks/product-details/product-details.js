@@ -149,7 +149,7 @@ export default async function decorate(block) {
 
   // Alert
   let inlineAlert = null;
-  const routeToWishlist = '/wishlist';
+  const routeToWishlist = rootLink('/wishlist');
 
   const [
     _galleryMobile,

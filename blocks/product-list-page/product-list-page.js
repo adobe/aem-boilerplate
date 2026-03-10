@@ -68,14 +68,6 @@ export default async function decorate(block) {
   applySearchStateToUrl(normalizedUrl, searchState);
   window.history.replaceState({}, '', normalizedUrl.toString());
 
-<<<<<<< HEAD
-  await performInitialSearch(config, {
-    q,
-    page,
-    sort,
-    filter,
-  });
-=======
   // Request search based on the page type on block load
   if (config.urlpath) {
     // If it's a category page...
@@ -106,7 +98,6 @@ export default async function decorate(block) {
       console.error('Error searching for products', e);
     });
   }
->>>>>>> origin/integration
 
   const getAddToCartButton = (product) => {
     if (product.typename === 'ComplexProductView') {
@@ -246,142 +237,3 @@ export default async function decorate(block) {
     window.history.pushState({}, '', url.toString());
   }, { eager: false });
 }
-<<<<<<< HEAD
-
-async function performInitialSearch(config, urlParams) {
-  const {
-    q,
-    page,
-    sort,
-    filter,
-  } = urlParams;
-  // Request search based on the page type on block load
-  if (config.urlpath) {
-    // If it's a category page...
-    await search({
-      phrase: '', // search all products in the category
-      currentPage: page ? Number(page) : 1,
-      pageSize: 8,
-      sort: sort ? getSortFromParams(sort) : [{
-        attribute: 'position',
-        direction: 'DESC',
-      }],
-      filter: [
-        {
-          attribute: 'categoryPath',
-          eq: config.urlpath,
-        }, // Add category filter
-        {
-          attribute: 'visibility',
-          in: ['Search', 'Catalog, Search'],
-        },
-        ...getFilterFromParams(filter),
-      ],
-    })
-      .catch(() => {
-        console.error('Error searching for products');
-      });
-  } else {
-    // If it's a search page...
-    await search({
-      phrase: q || '',
-      currentPage: page ? Number(page) : 1,
-      pageSize: 8,
-      sort: getSortFromParams(sort),
-      filter: [
-        {
-          attribute: 'visibility',
-          in: ['Search', 'Catalog, Search'],
-        },
-        ...getFilterFromParams(filter),
-      ],
-    })
-      .catch(() => {
-        console.error('Error searching for products');
-      });
-  }
-}
-
-function getSortFromParams(sortParam) {
-  if (!sortParam) return [];
-  return sortParam.split(',')
-    .map((item) => {
-      const [attribute, direction] = item.split('_');
-      return {
-        attribute,
-        direction,
-      };
-    });
-}
-
-function getParamsFromSort(sort) {
-  return sort.map((item) => `${item.attribute}_${item.direction}`)
-    .join(',');
-}
-
-function getFilterFromParams(filterParam) {
-  if (!filterParam) return [];
-
-  // Decode the URL-encoded parameter
-  const decodedParam = decodeURIComponent(filterParam);
-  const results = [];
-  const filters = decodedParam.split('|');
-
-  filters.forEach((filter) => {
-    if (filter.includes(':')) {
-      const [attribute, value] = filter.split(':');
-      const commaRegex = /,(?!\s)/;
-
-      if (commaRegex.test(value)) {
-        // Handle array values like categories,
-        // but allow for commas within an array value (eg. "Catalog, Search")
-        results.push({
-          attribute,
-          in: value.split(commaRegex),
-        });
-      } else if (value.includes('-')) {
-        // Handle range values (like price)
-        const [from, to] = value.split('-');
-        results.push({
-          attribute,
-          range: {
-            from: Number(from),
-            to: Number(to),
-          },
-        });
-      } else {
-        // Handle single values (like categories with one value)
-        results.push({
-          attribute,
-          in: [value],
-        });
-      }
-    }
-  });
-
-  return results;
-}
-
-function getParamsFromFilter(filter) {
-  if (!filter || filter.length === 0) return '';
-
-  return filter.map(({
-    attribute,
-    in: inValues,
-    range,
-  }) => {
-    if (inValues) {
-      return `${attribute}:${inValues.join(',')}`;
-    }
-
-    if (range) {
-      return `${attribute}:${range.from}-${range.to}`;
-    }
-
-    return null;
-  })
-    .filter(Boolean)
-    .join('|');
-}
-=======
->>>>>>> origin/integration

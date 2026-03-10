@@ -97,7 +97,7 @@ export default async function decorate(block) {
   block.appendChild(fragment);
 
   // Wishlist variables
-  const routeToWishlist = '/wishlist';
+  const routeToWishlist = rootLink('/wishlist');
 
   // Toggle Empty Cart
   function toggleEmptyCart(_state) {

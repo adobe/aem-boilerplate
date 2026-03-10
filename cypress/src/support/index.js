@@ -1,3 +1,4 @@
+import './hideFetchAndXhrLogs';
 import './deleteCustomer';
 import './getUserTokenCookie';
 import './waitForResource';

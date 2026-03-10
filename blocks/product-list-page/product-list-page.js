@@ -17,6 +17,7 @@ import { events } from '@dropins/tools/event-bus.js';
 // AEM
 import { readBlockConfig } from '../../scripts/aem.js';
 import { fetchPlaceholders, getProductLink } from '../../scripts/commerce.js';
+import { getSearchStateFromUrl, applySearchStateToUrl } from './search-url.js';
 
 // Initializers
 import '../../scripts/initializers/search.js';
@@ -26,6 +27,7 @@ export default async function decorate(block) {
   const labels = await fetchPlaceholders();
 
   const config = readBlockConfig(block);
+  const pageSize = parseInt(config.pagesize, 10) || 9;
 
   const fragment = document.createRange()
     .createContextualFragment(`
@@ -55,22 +57,56 @@ export default async function decorate(block) {
     block.dataset.urlpath = config.urlpath;
   }
 
-  // Get variables from the URL
-  const urlParams = new URLSearchParams(window.location.search);
-  // get all params
-  const {
-    q,
-    page,
-    sort,
-    filter,
-  } = Object.fromEntries(urlParams.entries());
+  const searchState = getSearchStateFromUrl(new URL(window.location.href));
 
+  // Default visibility filter for all of our requests
+  const visibilityFilter = { attribute: 'visibility', in: ['Search', 'Catalog, Search'] };
+  const userFilters = searchState.filter.filter((f) => f.attribute !== 'visibility');
+
+  // Normalize URL (e.g. pipe-separated filter values)
+  const normalizedUrl = new URL(window.location.href);
+  applySearchStateToUrl(normalizedUrl, searchState);
+  window.history.replaceState({}, '', normalizedUrl.toString());
+
+<<<<<<< HEAD
   await performInitialSearch(config, {
     q,
     page,
     sort,
     filter,
   });
+=======
+  // Request search based on the page type on block load
+  if (config.urlpath) {
+    // If it's a category page...
+    await search({
+      phrase: '', // search all products in the category
+      currentPage: searchState.currentPage,
+      pageSize,
+      sort: searchState?.sort?.length ? searchState.sort : [{ attribute: 'position', direction: 'DESC' }],
+      filter: [
+        { attribute: 'categoryPath', eq: config.urlpath }, // Add category filter
+        // Always add visibility filter to the request
+        visibilityFilter,
+        ...userFilters,
+      ],
+    }).catch(() => {
+      console.error('Error searching for products');
+    });
+  } else {
+    // Search page: dropin uses only the request (no URL parsing).
+    await search({
+      phrase: searchState.phrase,
+      currentPage: searchState.currentPage,
+      pageSize,
+      sort: searchState.sort,
+      // Always add visibility filter to the request
+      filter: [visibilityFilter, ...userFilters],
+    }).catch((e) => {
+      console.error('Error searching for products', e);
+    });
+  }
+>>>>>>> origin/integration
 
   const getAddToCartButton = (product) => {
     if (product.typename === 'ComplexProductView') {
@@ -203,30 +239,14 @@ export default async function decorate(block) {
   }, { eager: true });
 
   // Listen for search results (event is fired after the block is rendered; eager: false)
+  // URL is owned by this project; update it when search state changes.
   events.on('search/result', (payload) => {
-    // update URL with new search params
     const url = new URL(window.location.href);
-
-    if (payload.request?.phrase) {
-      url.searchParams.set('q', payload.request.phrase);
-    }
-
-    if (payload.request?.currentPage) {
-      url.searchParams.set('page', payload.request.currentPage);
-    }
-
-    if (payload.request?.sort) {
-      url.searchParams.set('sort', getParamsFromSort(payload.request.sort));
-    }
-
-    if (payload.request?.filter) {
-      url.searchParams.set('filter', getParamsFromFilter(payload.request.filter));
-    }
-
-    // Update the URL
+    applySearchStateToUrl(url, payload.request);
     window.history.pushState({}, '', url.toString());
   }, { eager: false });
 }
+<<<<<<< HEAD
 
 async function performInitialSearch(config, urlParams) {
   const {
@@ -363,3 +383,5 @@ function getParamsFromFilter(filter) {
     .filter(Boolean)
     .join('|');
 }
+=======
+>>>>>>> origin/integration

@@ -128,22 +128,26 @@ export default async function decorate(block) {
 
   const gallerySlots = {
     CarouselThumbnail: (ctx) => {
-      tryRenderAemAssetsImage(ctx, {
-        ...imageSlotConfig(ctx),
-        wrapper: document.createElement('span'),
-      });
+      if (ctx.mediaType === 'image') {
+        tryRenderAemAssetsImage(ctx, {
+          ...imageSlotConfig(ctx),
+          wrapper: document.createElement('span'),
+        });
+      }
     },
 
     CarouselMainImage: (ctx) => {
-      tryRenderAemAssetsImage(ctx, {
-        ...imageSlotConfig(ctx),
-      });
+      if (ctx.mediaType === 'image') {
+        tryRenderAemAssetsImage(ctx, {
+          ...imageSlotConfig(ctx),
+        });
+      }
     },
   };
 
   // Alert
   let inlineAlert = null;
-  const routeToWishlist = '/wishlist';
+  const routeToWishlist = rootLink('/wishlist');
 
   const [
     _galleryMobile,
@@ -165,6 +169,7 @@ export default async function decorate(block) {
       peak: false,
       gap: 'small',
       loop: false,
+      videos: true, // Display videos if available
       imageParams: {
         ...IMAGES_SIZES,
       },
@@ -179,6 +184,7 @@ export default async function decorate(block) {
       peak: true,
       gap: 'small',
       loop: false,
+      videos: true, // Display videos if available
       imageParams: {
         ...IMAGES_SIZES,
       },

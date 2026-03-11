@@ -7,6 +7,7 @@ type State = {
     locale?: string;
     config?: StoreConfigModel | null;
     authenticated: boolean;
+    storeCode?: string;
 };
 export declare const state: State;
 export {};

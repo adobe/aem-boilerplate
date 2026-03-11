@@ -24,6 +24,9 @@ export interface SignUpProps {
     hideCloseBtnOnEmailConfirmation?: boolean;
     routeRedirectOnEmailConfirmationClose?: () => string;
     slots?: {
+        Title?: SlotProps<DefaultSlotContext>;
+        Form?: SlotProps<DefaultSlotContext>;
+        Buttons?: SlotProps<DefaultSlotContext>;
         SuccessNotification?: SlotProps<DefaultSlotContext>;
         PrivacyPolicyConsent: SlotProps;
     };

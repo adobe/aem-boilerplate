@@ -1,6 +1,6 @@
 /*! Copyright 2026 Adobe
 All Rights Reserved. */
-import{c as _,R as a,f as m,h as I,e as T,t as c}from"./updateRequisitionList.js";import{events as q}from"@dropins/tools/event-bus.js";function R(i){var r;return{sku:i.sku,parent_sku:i.sku,name:i.name,price:i.price,shortDescription:i.shortDescription||"",metaDescription:i.metaDescription||"",metaKeyword:i.metaKeyword||"",metaTitle:i.metaTitle||"",description:i.description||"",addToCartAllowed:i.addToCartAllowed,stock_status:i.inStock?"IN_STOCK":"OUT_OF_STOCK",only_x_left_in_stock:null,url:i.url||"",urlKey:i.urlKey||"",externalId:i.externalId||"",images:((r=i.images)==null?void 0:r.map(t=>({url:t.url,label:t.label||"",roles:t.roles||[]})))||[]}}function L(i){return i!=null&&i.length?i.map(R):[]}const E=`
+import{c as L,R as q,f as T,h as m,t as S}from"./updateRequisitionList.js";import{events as l}from"@dropins/tools/event-bus.js";const E=`
   query GET_REQUISITION_LIST_QUERY(
     $requisitionListUid: String,
     $currentPage: Int = 1,
@@ -23,9 +23,9 @@ import{c as _,R as a,f as m,h as I,e as T,t as c}from"./updateRequisitionList.js
       }
     }
   }
-${_}
-${a}
-`;function S(i){return!i||typeof i!="string"||i.length<2||!/^[A-Za-z0-9+/]+(==|=)?$/.test(i)?!1:i.length%4===0}const y=async(i,r,t)=>S(i)?m(E,{variables:{requisitionListUid:i,currentPage:r,pageSize:t}}).then(async({errors:n,data:s})=>{var u,o;if(n)return I(n);if(!((u=s==null?void 0:s.customer)!=null&&u.requisition_lists))return null;(o=s.customer.requisition_lists.items[0].items)!=null&&o.items&&(s.customer.requisition_lists.items[0].items.items=await T(s.customer.requisition_lists.items[0].items.items));const e=c(s.customer.requisition_lists.items[0]);return q.emit("requisitionList/data",e),e}):(console.error("Invalid requisition list UID format:",i),null),p=`
+${L}
+${q}
+`;function R(t){return!t||typeof t!="string"||t.length<2||!/^[A-Za-z0-9+/]+(==|=)?$/.test(t)?!1:t.length%4===0}const M=async(t,a,u,I)=>{var i,o,_,U;if(!R(t))return console.error("Invalid requisition list UID format:",t),null;const{errors:r,data:e}=await T(E,{variables:{requisitionListUid:t,currentPage:a,pageSize:u}});if(r)return m(r);if(!((_=(o=(i=e==null?void 0:e.customer)==null?void 0:i.requisition_lists)==null?void 0:o.items)!=null&&_[0]))return null;const n=e.customer.requisition_lists.items[0];let s=S(n);return(U=s==null?void 0:s.items)!=null&&U.length&&I&&(s={...s,items:await I(s.items)}),l.emit("requisitionList/data",s),s},d=`
   mutation UPDATE_REQUISITION_LIST_ITEMS_MUTATION(
       $requisitionListUid: ID!, 
       $requisitionListItems: [UpdateRequisitionListItemsInput!]!,
@@ -44,9 +44,9 @@ ${a}
       }
     }
   }
-${a}
-${_}
-`,A=async(i,r,t,n)=>m(p,{variables:{requisitionListUid:i,requisitionListItems:r,pageSize:t,currentPage:n}}).then(async({errors:s,data:e})=>{var o,l;if(s)return I(s);if(!((o=e==null?void 0:e.updateRequisitionListItems)!=null&&o.requisition_list))return null;(l=e.updateRequisitionListItems.requisition_list.items)!=null&&l.items&&(e.updateRequisitionListItems.requisition_list.items.items=await T(e.updateRequisitionListItems.requisition_list.items.items));const u=c(e.updateRequisitionListItems.requisition_list);return q.emit("requisitionList/data",u),u}),U=`
+${q}
+${L}
+`,O=async(t,a,u,I,r)=>{var o,_;const{errors:e,data:n}=await T(d,{variables:{requisitionListUid:t,requisitionListItems:a,pageSize:u,currentPage:I}});if(e)return m(e);if(!((o=n==null?void 0:n.updateRequisitionListItems)!=null&&o.requisition_list))return null;const s=n.updateRequisitionListItems.requisition_list;let i=S(s);return(_=i==null?void 0:i.items)!=null&&_.length&&r&&(i={...i,items:await r(i.items)}),l.emit("requisitionList/data",i),i},c=`
   mutation DELETE_REQUISITION_LIST_ITEMS_MUTATION(
       $requisitionListUid: ID!, 
       $requisitionListItemUids: [ID!]!,
@@ -65,149 +65,9 @@ ${_}
       }
     }
   }
-${a}
-${_}
-`,P=async(i,r,t,n)=>m(U,{variables:{requisitionListUid:i,requisitionListItemUids:r,pageSize:t,currentPage:n}}).then(async({errors:s,data:e})=>{var o,l;if(s)return I(s);if(!((o=e==null?void 0:e.deleteRequisitionListItems)!=null&&o.requisition_list))return null;(l=e.deleteRequisitionListItems.requisition_list.items)!=null&&l.items&&(e.deleteRequisitionListItems.requisition_list.items.items=await T(e.deleteRequisitionListItems.requisition_list.items.items));const u=c(e.deleteRequisitionListItems.requisition_list);return q.emit("requisitionList/data",u),u}),d=`
-fragment PRODUCT_FRAGMENT on ProductView {
-  __typename
-  id
-  sku
-  name
-  shortDescription
-  metaDescription
-  metaKeyword
-  metaTitle
-  description
-  inStock
-  addToCartAllowed
-  url
-  urlKey
-  externalId
-  images(roles: []) {
-    url
-    label
-    roles
-  }
-  attributes(roles: []) {
-    name
-    label
-    value
-    roles
-  }
-  ... on SimpleProductView {
-    price {
-      roles
-      regular {
-        amount {
-          value
-          currency
-        }
-      }
-      final {
-        amount {
-          value
-          currency
-        }
-      }
-    }
-  }
-  ... on ComplexProductView {
-    options {
-      ...PRODUCT_OPTION_FRAGMENT
-    }
-    ...PRICE_RANGE_FRAGMENT
-  }
-}
-fragment PRODUCT_OPTION_FRAGMENT on ProductViewOption {
-  id
-  title
-  required
-  multi
-  values {
-    id
-    title
-    inStock
-    __typename
-    ... on ProductViewOptionValueProduct {
-      title
-      quantity
-      isDefault
-      __typename
-      product {
-        sku
-        shortDescription
-        metaDescription
-        metaKeyword
-        metaTitle
-        name
-        price {
-          final {
-            amount {
-              value
-              currency
-            }
-          }
-          regular {
-            amount {
-              value
-              currency
-            }
-          }
-          roles
-        }
-      }
-    }
-    ... on ProductViewOptionValueSwatch {
-      id
-      title
-      type
-      value
-      inStock
-    }
-  }
-}
-fragment PRICE_RANGE_FRAGMENT on ComplexProductView {
-  priceRange {
-    maximum {
-      final {
-        amount {
-          value
-          currency
-        }
-      }
-      regular {
-        amount {
-          value
-          currency
-        }
-      }
-      roles
-    }
-    minimum {
-      final {
-        amount {
-          value
-          currency
-        }
-      }
-      regular {
-        amount {
-          value
-          currency
-        }
-      }
-      roles
-    }
-  }
-}
-`,f=`
-  query GET_PRODUCT_DATA($skus: [String]) {
-    products(skus: $skus) {
-      ...PRODUCT_FRAGMENT
-    }
-  }
-  ${d}
-`,$=async i=>m(f,{variables:{skus:i}}).then(({errors:r,data:t})=>r?I(r):t!=null&&t.products?L(t.products):null),N=`
+${q}
+${L}
+`,f=async(t,a,u,I,r)=>{var o,_;const{errors:e,data:n}=await T(c,{variables:{requisitionListUid:t,requisitionListItemUids:a,pageSize:u,currentPage:I}});if(e)return m(e);if(!((o=n==null?void 0:n.deleteRequisitionListItems)!=null&&o.requisition_list))return null;const s=n.deleteRequisitionListItems.requisition_list;let i=S(s);return(_=i==null?void 0:i.items)!=null&&_.length&&r&&(i={...i,items:await r(i.items)}),l.emit("requisitionList/data",i),i},$=`
   mutation ADD_REQUISITION_LIST_ITEMS_TO_CART_MUTATION(
       $requisitionListUid: ID!, 
       $requisitionListItemUids: [ID!]!
@@ -237,5 +97,5 @@ fragment PRICE_RANGE_FRAGMENT on ComplexProductView {
       }
     }
   }
-`,D=async(i,r)=>m(N,{variables:{requisitionListUid:i,requisitionListItemUids:r}}).then(({errors:t,data:n})=>{var s;return t?I(t):(s=n.addRequisitionListItemsToCart.add_requisition_list_items_to_cart_user_errors)!=null&&s.length?n.addRequisitionListItemsToCart.add_requisition_list_items_to_cart_user_errors.map(e=>({type:e.type,message:e.message||""})):null});export{D as a,y as b,P as d,$ as g,S as i,A as u};
+`,p=async(t,a)=>T($,{variables:{requisitionListUid:t,requisitionListItemUids:a}}).then(({errors:u,data:I})=>{var r;return u?m(u):(r=I.addRequisitionListItemsToCart.add_requisition_list_items_to_cart_user_errors)!=null&&r.length?I.addRequisitionListItemsToCart.add_requisition_list_items_to_cart_user_errors.map(e=>({type:e.type,message:e.message||""})):null});export{p as a,f as d,M as g,R as i,O as u};
 //# sourceMappingURL=addRequisitionListItemsToCart.js.map

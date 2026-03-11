@@ -1,5 +1,6 @@
 import { HTMLAttributes } from 'preact/compat';
 import { Container } from '@dropins/tools/types/elsie/src/lib';
+import { Item, Product } from '../../data/models/item';
 
 export interface RequisitionListViewProps extends HTMLAttributes<HTMLDivElement> {
     /**
@@ -29,6 +30,8 @@ export interface RequisitionListViewProps extends HTMLAttributes<HTMLDivElement>
      * Defaults to '/customer/account'
      */
     fallbackRoute?: string;
+    getProductData: (skus: string[]) => Promise<Product[] | null>;
+    enrichConfigurableProducts: (items: Item[]) => Promise<Item[]>;
 }
 export declare const RequisitionListView: Container<RequisitionListViewProps>;
 //# sourceMappingURL=RequisitionListView.d.ts.map

@@ -181,37 +181,59 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" }, () => {
       cy.url().should("include", "/products/");
       cy.wait(2000);
 
-      // Should show validation message on PDP from the redirection
-      cy.get(fields.productDetailsAlert)
-        .should("be.visible")
-        .contains(
-          "Please select product options before adding it to a requisition list"
-        );
+      // Check if grid ordering feature is enabled
+      cy.get("body").then(($body) => {
+        const isEnabled = $body.find(".product-details__grid-ordering--enabled").length > 0;
 
-      // Click requisition list again in PDP, should show validation when no options selected on PDP
-      cy.get(fields.requisitionListSelector).click();
-      cy.get(fields.productDetailsAlert)
-        .should("be.visible")
-        .contains(
-          "Please select all required product options before adding to a requisition list."
-        );
+        if (isEnabled) {
+          // Grid ordering is enabled, requisition list not available on configurable PDP
+          // Navigate to a simple product instead
+          cy.visit(products.additionalSimple.urlPath);
+          cy.wait(2000);
 
-      // Select all available options
-      cy.get(".product-details__options select").each(($select) => {
-        cy.wrap($select).select(1);
-        cy.wait(500);
+          // Add simple product to requisition list
+          cy.get(fields.requisitionListSelector).click();
+          cy.get(fields.requisitionListSelectorAvailableListFirstChild).click();
+          cy.get(fields.requisitionListFormActionsButton).click();
+
+          cy.get(fields.requisitionListAlert)
+            .should("be.visible")
+            .contains("Item(s) successfully added");
+        } else {
+          // Grid ordering is disabled, proceed with existing configurable product flow
+          // Should show validation message on PDP from the redirection
+          cy.get(fields.productDetailsAlert)
+            .should("be.visible")
+            .contains(
+              "Please select product options before adding it to a requisition list"
+            );
+
+          // Click requisition list again in PDP, should show validation when no options selected on PDP
+          cy.get(fields.requisitionListSelector).click();
+          cy.get(fields.productDetailsAlert)
+            .should("be.visible")
+            .contains(
+              "Please select all required product options before adding to a requisition list."
+            );
+
+          // Select all available options
+          cy.get(".product-details__options select").each(($select) => {
+            cy.wrap($select).select(1);
+            cy.wait(500);
+          });
+
+          cy.get(fields.productDetailsAlert).should("not.be.visible");
+
+          // Add configurable product to requisition list
+          cy.get(fields.requisitionListSelector).click();
+          cy.get(fields.requisitionListSelectorAvailableListFirstChild).click();
+          cy.get(fields.requisitionListFormActionsButton).click();
+
+          cy.get(fields.requisitionListAlert)
+            .should("be.visible")
+            .contains("Item(s) successfully added");
+        }
       });
-
-      cy.get(fields.productDetailsAlert).should("not.be.visible");
-
-      // Add configurable product to requisition list
-      cy.get(fields.requisitionListSelector).click();
-      cy.get(fields.requisitionListSelectorAvailableListFirstChild).click();
-      cy.get(fields.requisitionListFormActionsButton).click();
-
-      cy.get(fields.requisitionListAlert)
-        .should("be.visible")
-        .contains("Item(s) successfully added");
     });
 
     describe("Bundle Product Option Validation", () => {
@@ -349,7 +371,7 @@ describe("Verify B2B Requisition Lists feature", { tags: "@B2BSaas" }, () => {
       // Wait for the cart to be refreshed and the data-count attribute to be updated
       // The cart refresh happens automatically via requisitionList/alert event
       // Cypress will retry the assertion until it passes or times out
-      
+
       cy.get(fields.miniCartButton, { timeout: 30000 })
         .should("exist")
         .and("have.attr", "data-count", "14");

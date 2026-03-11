@@ -65,6 +65,7 @@ export const PRODUCT_TEMPLATE_PATHS = [
 // PATHS
 export const SUPPORT_PATH = '/support';
 export const PRIVACY_POLICY_PATH = '/privacy-policy';
+export const QUICK_ORDER_PATH = '/quick-order';
 
 // GUEST PATHS
 export const ORDER_STATUS_PATH = '/order-status';

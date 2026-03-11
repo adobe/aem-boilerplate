@@ -64,10 +64,10 @@ describe("Verify B2B Quote feature", () => {
         }).then((roleResult) => {
             quoteRoleId = roleResult?.role?.id;
             cy.logToTerminal(`✅ Quote role created with ID: ${quoteRoleId}`);
-            
+
             // Step 2: Create customer and assign to company with quote role
             cy.logToTerminal('========= Step 2: Create customer with quote role =========');
-            
+
             const testUser = {
                 firstname: customerData.customer.firstname,
                 lastname: customerData.customer.lastname,

@@ -6,9 +6,10 @@ The Product Details block provides comprehensive product detail page functionali
 
 ## Integration
 
-<!-- ### Block Configuration
+| Configuration Key     | Type   | Default  | Description                                                    | Required | Side Effects                                                                                                 |
+| --------------------- |--------|----------| -------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------ |
+| `grid-ordering-enabled` | string | `'false'` | Enables Grid Ordering functionality for configurable products. | No       | When enabled, product variants are displayed in a grid with quantity inputs and bulk add-to-cart capability. |
 
-No block configuration is read via `readBlockConfig()`. The block uses dynamic product data and URL parameters. -->
 
 ### URL Parameters
 

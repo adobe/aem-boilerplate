@@ -110,7 +110,7 @@ describe('USF-2525: Company Profile (Optimized Journeys)', { tags: ['@B2BSaas'] 
       // Wait for page to fully load and company context to be available
       cy.url().should('include', '/customer/account');
       cy.wait(2000); // Give time for company context to load
-      
+
       cy.logToTerminal('✅ Verify company information block exists');
       cy.get('.customer-company-info-card', { timeout: 15000 })
         .should('exist');
@@ -256,7 +256,7 @@ describe('USF-2525: Company Profile (Optimized Journeys)', { tags: ['@B2BSaas'] 
       cy.logToTerminal('🔧 Updating company via REST API (simulating Admin Panel changes)...');
       cy.then(async () => {
         const companyId = Cypress.env('testCompany').id;
-        
+
         await updateCompanyProfile(companyId, {
           company_name: 'BACKEND-UPDATED Company',
           legal_name: 'Legal BACKEND-UPDATED Company LTD',

@@ -1,6 +1,6 @@
 /*! Copyright 2026 Adobe
 All Rights Reserved. */
-const d=`
+const A=`
   fragment REQUEST_RETURN_ORDER_FRAGMENT on Return {
     __typename
     uid
@@ -231,7 +231,7 @@ const d=`
       label
     }
   }
-`,T=`
+`,d=`
   fragment RETURNS_FRAGMENT on Returns {
     __typename
     items {
@@ -272,7 +272,7 @@ const d=`
       }
     }
   }
-`,u=`
+`,T=`
   fragment APPLIED_GIFT_CARDS_FRAGMENT on ApplyGiftCardToOrder {
     __typename
     code
@@ -281,7 +281,7 @@ const d=`
       currency
     }
   }
-`,A=`
+`,u=`
   fragment GIFT_MESSAGE_FRAGMENT on GiftMessage {
     __typename
     from
@@ -328,9 +328,6 @@ const d=`
     shipping_method
     available_actions
     is_virtual
-    returns {
-      ...RETURNS_FRAGMENT
-    }
     payment_methods {
       name
       type
@@ -355,6 +352,7 @@ const d=`
         id
         product_sku
         product_name
+        quantity_shipped
         order_item {
           ...ORDER_ITEM_DETAILS_FRAGMENT
           ... on GiftCardOrderItem {
@@ -384,17 +382,16 @@ const d=`
     }
   }
   ${_}
-  ${u}
+  ${T}
   ${E}
   ${n}
-  ${A}
+  ${u}
   ${o}
   ${a}
   ${i}
   ${c}
   ${t}
   ${r}
-  ${T}
 `,s=`
   fragment PLACE_ORDER_FRAGMENT on PlaceOrderOutput {
     errors {
@@ -419,5 +416,5 @@ const d=`
   }
 
   ${e}
-`;export{_ as ADDRESS_FRAGMENT,u as APPLIED_GIFT_CARDS_FRAGMENT,E as BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT,R as DOWNLOADABLE_ORDER_ITEMS_FRAGMENT,n as GIFT_CARD_DETAILS_FRAGMENT,A as GIFT_MESSAGE_FRAGMENT,o as GIFT_WRAPPING_FRAGMENT,e as GUEST_ORDER_FRAGMENT,a as ORDER_ITEM_DETAILS_FRAGMENT,i as ORDER_ITEM_FRAGMENT,c as ORDER_SUMMARY_FRAGMENT,l as PLACE_NEGOTIABLE_QUOTE_ORDER_FRAGMENT,s as PLACE_ORDER_FRAGMENT,t as PRICE_DETAILS_FRAGMENT,r as PRODUCT_DETAILS_FRAGMENT,d as REQUEST_RETURN_ORDER_FRAGMENT,T as RETURNS_FRAGMENT};
+`;export{_ as ADDRESS_FRAGMENT,T as APPLIED_GIFT_CARDS_FRAGMENT,E as BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT,R as DOWNLOADABLE_ORDER_ITEMS_FRAGMENT,n as GIFT_CARD_DETAILS_FRAGMENT,u as GIFT_MESSAGE_FRAGMENT,o as GIFT_WRAPPING_FRAGMENT,e as GUEST_ORDER_FRAGMENT,a as ORDER_ITEM_DETAILS_FRAGMENT,i as ORDER_ITEM_FRAGMENT,c as ORDER_SUMMARY_FRAGMENT,l as PLACE_NEGOTIABLE_QUOTE_ORDER_FRAGMENT,s as PLACE_ORDER_FRAGMENT,t as PRICE_DETAILS_FRAGMENT,r as PRODUCT_DETAILS_FRAGMENT,A as REQUEST_RETURN_ORDER_FRAGMENT,d as RETURNS_FRAGMENT};
 //# sourceMappingURL=fragments.js.map

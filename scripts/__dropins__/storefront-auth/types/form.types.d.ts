@@ -9,11 +9,18 @@ export interface FormProps {
     fieldsConfig?: any;
     name?: string;
     className?: string;
+    /** Required. Form wraps all content in a Slot; when the host does not provide a Form slot, default content is shown. */
+    formSlot: {
+        name: string;
+        slot?: SlotProps;
+        context?: Record<string, unknown>;
+        dataTestId?: string;
+    };
     children?: any;
     loading: boolean;
     onSubmit?: (event: SubmitEvent, isValid: boolean) => Promise<void | null | undefined>;
 }
-export interface useFormProps extends Omit<FormProps, 'children' | 'className' | 'name' | 'loading'> {
+export interface useFormProps extends Omit<FormProps, 'children' | 'className' | 'name' | 'loading' | 'formSlot'> {
 }
 export interface FormInputsProps {
     slots?: {

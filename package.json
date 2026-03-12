@@ -49,7 +49,7 @@
     "@dropins/storefront-auth": "~3.2.0-beta.0",
     "@dropins/storefront-cart": "~3.2.0-beta.1",
     "@dropins/storefront-checkout": "~3.2.0-beta.0",
-    "@dropins/storefront-order": "3.2.0-alpha-20260312112615",
+    "@dropins/storefront-order": "3.2.0-beta.1",
     "@dropins/storefront-payment-services": "~3.0.0",
     "@dropins/storefront-pdp": "3.0.2-beta.1",
     "@dropins/storefront-personalization": "~3.1.0",

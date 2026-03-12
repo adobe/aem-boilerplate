@@ -9,13 +9,17 @@ import {
   rootLink,
 } from '../../scripts/commerce.js';
 
-// Initialize dropins
-import '../../scripts/initializers/requisition-list.js';
-
 export default async function decorate(block) {
   if (!checkIsAuthenticated()) {
     window.location.href = rootLink(CUSTOMER_LOGIN_PATH);
   } else {
+    // Ensure requisition list is initialized and get required props
+    // (getProductData, enrichConfigurableProducts)
+    const {
+      getProductData,
+      enrichConfigurableProducts,
+    } = await import('../../scripts/initializers/requisition-list.js');
+
     let viewRenderFunction = null;
 
     const renderView = async () => {
@@ -25,6 +29,8 @@ export default async function decorate(block) {
       viewRenderFunction = rlRenderer.render(RequisitionListView, {
         requisitionListUid,
         routeRequisitionListGrid: () => rootLink(`${CUSTOMER_REQUISITION_LISTS_PATH}`),
+        getProductData,
+        enrichConfigurableProducts,
       });
 
       return viewRenderFunction(block);

@@ -17,10 +17,21 @@
         {
           "title": "Image",
           "id": "image",
+          "model": "image",
           "plugins": {
             "da": {
               "name": "image",
-              "type": "image"
+              "type": "image",
+              "fields": [
+                {
+                  "name": "imageAlt",
+                  "selector": "img[alt]"
+                },
+                {
+                  "name": "image",
+                  "selector": "img[src]"
+                }
+              ]
             }
           }
         }

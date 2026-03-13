@@ -114,6 +114,62 @@ function decorateButtons(main) {
 }
 
 /**
+ * Collects consecutive sections with the 'accordion' style into an accordion block.
+ * Each section becomes one accordion item: its first heading is the title,
+ * everything else is the expandable body.
+ * @param {Element} main The container element
+ */
+function buildAccordionBlocks(main) {
+  const sections = [...main.querySelectorAll(':scope > div.accordion')];
+  if (sections.length === 0) return;
+
+  // group consecutive accordion sections
+  const groups = [];
+  let currentGroup = [];
+  sections.forEach((section) => {
+    if (currentGroup.length > 0) {
+      const prev = currentGroup[currentGroup.length - 1];
+      if (prev.nextElementSibling === section) {
+        currentGroup.push(section);
+      } else {
+        groups.push(currentGroup);
+        currentGroup = [section];
+      }
+    } else {
+      currentGroup.push(section);
+    }
+  });
+  if (currentGroup.length > 0) groups.push(currentGroup);
+
+  groups.forEach((group) => {
+    const rows = group.map((section) => {
+      const heading = section.querySelector('h1, h2, h3, h4, h5, h6');
+
+      // collect all remaining content from the section as body elements
+      const bodyElems = [];
+      [...section.querySelectorAll(':scope > .default-content-wrapper, :scope > div:not(.section-metadata-container)')].forEach((wrapper) => {
+        bodyElems.push(...wrapper.children);
+      });
+
+      return [{ elems: heading ? [heading] : [] }, { elems: bodyElems }];
+    });
+
+    const block = buildBlock('accordion', rows);
+    const blockWrapper = document.createElement('div');
+    blockWrapper.append(block);
+    const newSection = document.createElement('div');
+    newSection.classList.add('section');
+    newSection.dataset.sectionStatus = 'initialized';
+    newSection.style.display = 'none';
+    newSection.append(blockWrapper);
+
+    // insert before the first section in the group, then remove originals
+    group[0].before(newSection);
+    group.forEach((section) => section.remove());
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -122,6 +178,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  buildAccordionBlocks(main);
   decorateBlocks(main);
   decorateButtons(main);
 }

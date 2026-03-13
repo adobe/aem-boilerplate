@@ -1,0 +1,12 @@
+{
+  "name": "find-test-content",
+  "version": "1.0.0",
+  "description": "Script to find existing test content for AEM blocks",
+  "type": "module",
+  "scripts": {
+    "find": "node scripts/find-block-content.js"
+  },
+  "dependencies": {
+    "jsdom": "^25.0.1"
+  }
+}

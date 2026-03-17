@@ -53,7 +53,7 @@
     "@dropins/storefront-payment-services": "~3.0.0",
     "@dropins/storefront-pdp": "3.0.2-beta.1",
     "@dropins/storefront-personalization": "~3.1.1-beta.0",
-    "@dropins/storefront-product-discovery": "~3.1.0-beta2",
+    "@dropins/storefront-product-discovery": "~3.1.0",
     "@dropins/storefront-recommendations": "~3.0.0",
     "@dropins/storefront-wishlist": "~3.2.0-beta.1",
     "@dropins/tools": "~1.8.0-beta.0"

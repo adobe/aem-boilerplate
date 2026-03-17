@@ -1,6 +1,6 @@
 /*! Copyright 2026 Adobe
 All Rights Reserved. */
-import{f as R,h as P,a as S}from"./fetch-graphql.js";import{P as p,t as s}from"./rejectPurchaseOrders.js";import"@dropins/tools/lib.js";import{t as h}from"./case-converter.js";const $=`
+import{f as R,h as P,a as S}from"./fetch-error.js";import{P as p,t as s}from"./transform-purchase-order.js";import"@dropins/tools/lib.js";import{t as h}from"./case-converter.js";const $=`
   query GET_PURCHASE_ORDERS(
     $filter: PurchaseOrdersFilterInput
     $pageSize: Int

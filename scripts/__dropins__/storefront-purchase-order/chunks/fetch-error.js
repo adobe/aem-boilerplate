@@ -1,0 +1,4 @@
+/*! Copyright 2026 Adobe
+All Rights Reserved. */
+import{FetchGraphQL as r}from"@dropins/tools/fetch-graphql.js";import{events as h}from"@dropins/tools/event-bus.js";const{setEndpoint:i,setFetchGraphQlHeader:d,removeFetchGraphQlHeader:g,setFetchGraphQlHeaders:m,fetchGraphQl:E,getConfig:f}=new r().getMethods(),w=e=>{const s=e instanceof DOMException&&(e==null?void 0:e.name)==="AbortError",t=(e==null?void 0:e.name)==="PlaceOrderError";throw!s&&!t&&h.emit("purchase-order/error",{source:"purchase-order",type:"network",error:e.message}),e},u=e=>{var o,n;if(e.length===1&&((n=(o=e[0])==null?void 0:o.path)==null?void 0:n.length)>0){const a=e[0].path[e[0].path.length-1];if(["applied_coupons","applied_gift_cards","available_payment_methods"].includes(a))return}const t=e.map(a=>a.message).join(" ");throw Error(t)};export{w as a,d as b,m as c,E as f,f as g,u as h,g as r,i as s};
+//# sourceMappingURL=fetch-error.js.map

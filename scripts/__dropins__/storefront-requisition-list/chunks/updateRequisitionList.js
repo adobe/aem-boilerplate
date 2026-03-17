@@ -1,6 +1,6 @@
 /*! Copyright 2026 Adobe
 All Rights Reserved. */
-import{events as p}from"@dropins/tools/event-bus.js";import{FetchGraphQL as d}from"@dropins/tools/fetch-graphql.js";const I=t=>{const e=t.map(o=>o.message).join(" ");throw Error(e)},{setEndpoint:S,setFetchGraphQlHeader:E,removeFetchGraphQlHeader:v,setFetchGraphQlHeaders:N,fetchGraphQl:m,getConfig:h}=new d().getMethods(),g=`
+import{f as p,h as d}from"./fetch-graphql.js";import{events as I}from"@dropins/tools/event-bus.js";const m=`
 fragment REQUISITION_LIST_FRAGMENT on RequisitionList {
     uid
     name
@@ -8,7 +8,7 @@ fragment REQUISITION_LIST_FRAGMENT on RequisitionList {
     items_count
     updated_at
   }
-`;function f(t){var e,o;return t?{uid:t.uid,name:t.name,description:t.description,updated_at:t.updated_at,items_count:t.items_count,items:b((e=t.items)==null?void 0:e.items),page_info:(o=t.items)==null?void 0:o.page_info}:null}function b(t){return t!=null&&t.length?t.map(e=>{var a,_,n,u;const o={uid:e.uid,sku:(a=e.product)==null?void 0:a.sku,quantity:e.quantity,stock_status:((_=e.product)==null?void 0:_.stock_status)||"IN_STOCK",only_x_left_in_stock:((n=e.product)==null?void 0:n.only_x_left_in_stock)??null,customizable_options:e.customizable_options?e.customizable_options.map(i=>({uid:i.customizable_option_uid,is_required:i.is_required,label:i.label,sort_order:i.sort_order,type:i.type,values:i.values.map(r=>({uid:r.customizable_option_value_uid,label:r.label,price:r.price,value:r.value}))})):[],bundle_options:e.bundle_options||[],configurable_options:e.configurable_options?e.configurable_options.map(i=>({option_uid:i.configurable_product_option_uid,option_label:i.option_label,value_uid:i.configurable_product_option_value_uid,value_label:i.value_label})):[],samples:e.samples?e.samples.map(i=>({url:i.sample_url,sort_order:i.sort_order,title:i.title})):[],gift_card_options:e.gift_card_options||{}};return(u=e.configured_product)!=null&&u.name?{...o,configured_product:e.configured_product}:o}):[]}const T=`
+`;function f(t){var i,u;return t?{uid:t.uid,name:t.name,description:t.description,updated_at:t.updated_at,items_count:t.items_count,items:b((i=t.items)==null?void 0:i.items),page_info:(u=t.items)==null?void 0:u.page_info}:null}function b(t){return t!=null&&t.length?t.map(i=>{var _,a,s,r;const u={uid:i.uid,sku:(_=i.product)==null?void 0:_.sku,quantity:i.quantity,stock_status:((a=i.product)==null?void 0:a.stock_status)||"IN_STOCK",only_x_left_in_stock:((s=i.product)==null?void 0:s.only_x_left_in_stock)??null,customizable_options:i.customizable_options?i.customizable_options.map(e=>({uid:e.customizable_option_uid,is_required:e.is_required,label:e.label,sort_order:e.sort_order,type:e.type,values:e.values.map(n=>({uid:n.customizable_option_value_uid,label:n.label,price:n.price,value:n.value}))})):[],bundle_options:i.bundle_options||[],configurable_options:i.configurable_options?i.configurable_options.map(e=>({option_uid:e.configurable_product_option_uid,option_label:e.option_label,value_uid:e.configurable_product_option_value_uid,value_label:e.value_label})):[],samples:i.samples?i.samples.map(e=>({url:e.sample_url,sort_order:e.sort_order,title:e.title})):[],gift_card_options:i.gift_card_options||{}};return(r=i.configured_product)!=null&&r.name?{...u,configured_product:i.configured_product}:u}):[]}const g=`
 fragment REQUISITION_LIST_ITEMS_FRAGMENT on RequistionListItems {
   items {
     uid
@@ -101,7 +101,7 @@ fragment REQUISITION_LIST_ITEMS_FRAGMENT on RequistionListItems {
     total_pages
   }
 }
-`,R=`
+`,T=`
   mutation UPDATE_REQUISITION_LIST_MUTATION(
       $requisitionListUid: ID!,
       $name: String!,
@@ -124,7 +124,7 @@ fragment REQUISITION_LIST_ITEMS_FRAGMENT on RequistionListItems {
       }
     }
   }
+${m}
 ${g}
-${T}
-`,y=async(t,e,o,a,_,n)=>{var l,c;const{errors:u,data:i}=await m(R,{variables:{requisitionListUid:t,name:e,description:o,pageSize:a,currentPage:_}});if(u)return I(u);if(!((l=i==null?void 0:i.updateRequisitionList)!=null&&l.requisition_list))return null;const r=i.updateRequisitionList.requisition_list;let s=f(r);return(c=s==null?void 0:s.items)!=null&&c.length&&n&&(s={...s,items:await n(s.items)}),p.emit("requisitionList/data",s),s};export{g as R,E as a,N as b,T as c,m as f,h as g,I as h,v as r,S as s,f as t,y as u};
+`,S=async(t,i,u,_,a,s)=>{var l,c;const{errors:r,data:e}=await p(T,{variables:{requisitionListUid:t,name:i,description:u,pageSize:_,currentPage:a}});if(r)return d(r);if(!((l=e==null?void 0:e.updateRequisitionList)!=null&&l.requisition_list))return null;const n=e.updateRequisitionList.requisition_list;let o=f(n);return(c=o==null?void 0:o.items)!=null&&c.length&&s&&(o={...o,items:await s(o.items)}),I.emit("requisitionList/data",o),o};export{m as R,g as a,f as t,S as u};
 //# sourceMappingURL=updateRequisitionList.js.map

@@ -1,21 +1,7 @@
-/********************************************************************
- * ADOBE CONFIDENTIAL
- * __________________
- *
- *  Copyright 2025 Adobe
- *  All Rights Reserved.
- *
- * NOTICE:  All information contained herein is, and remains
- * the property of Adobe and its suppliers, if any. The intellectual
- * and technical concepts contained herein are proprietary to Adobe
- * and its suppliers and are protected by all applicable intellectual
- * property laws, including trade secret and copyright laws.
- * Dissemination of this information or reproduction of this material
- * is strictly forbidden unless prior written permission is obtained
- * from Adobe.
- *******************************************************************/
+import { Lang } from '@dropins/tools/types/elsie/src/i18n';
+
 export interface CompanyDropinConfig {
-    langDefinitions?: Record<string, Record<string, string>>;
+    langDefinitions?: Lang;
     models?: Record<string, any>;
 }
 //# sourceMappingURL=initialize.types.d.ts.map

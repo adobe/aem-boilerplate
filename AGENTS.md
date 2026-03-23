@@ -181,6 +181,43 @@ With this information, you can construct URLs for the preview environment (same 
 - Follow the Publishing Process documented above
 - Update documentation for significant changes
 
+## AI Agent Skills
+
+This project ships with agent skills — reusable, detailed prompt files that instruct AI agents how to perform common tasks. Skills live in `.claude/commands/` and can be invoked directly by name.
+
+### Experimentation Engine (`check-experimentation-engine`)
+
+**File:** `.claude/commands/check-experimentation-engine.md`
+
+Checks, installs, or updates the [AEM Experimentation plugin](https://github.com/adobe/aem-experimentation) for this project.
+
+**How to invoke:**
+- **Claude Code:** `/check-experimentation-engine [check|install|update]`
+- **Cursor / Codex / Copilot / other tools:** Ask the agent to "check (or install/update) the experimentation engine" and instruct it to read `.claude/commands/check-experimentation-engine.md` for the full procedure before acting.
+
+**What it does:**
+
+| Mode | Description |
+|------|-------------|
+| `check` (default) | Audits the current setup: plugin presence, `scripts.js` integration, `head.html` modulepreload, loader file anti-patterns, and optional RUM sampling rate. Produces a status table and offers to fix any issues found. |
+| `install` | Adds the plugin via `git subtree`, creates `scripts/experiment-loader.js` (preferred pattern), wires it into `scripts.js` and `head.html`, and optionally configures RUM sampling. Respects any existing inline integration and does not overwrite it. |
+| `update` | Pulls the latest plugin code from the `v2` branch via `git subtree pull` and optionally re-runs checks. |
+
+**Key integration points the skill manages:**
+
+- `plugins/experimentation/` — plugin source (added as a git subtree from `https://github.com/adobe/aem-experimentation.git`, branch `v2`)
+- `scripts/experiment-loader.js` — thin loader that wraps the plugin's eager/lazy phases; preferred over inline integration
+- `scripts/scripts.js` — `runExperimentation()` call in `loadEager`, `showExperimentationRail()` call in `loadLazy`
+- `head.html` — `<link rel="modulepreload">` for the loader file and optional `RUM_SAMPLING_RATE` script
+- `tools/sidekick/aem-experimentation.js` — sidekick panel integration (document-based authoring only)
+
+**Optional features the skill can configure:**
+- RUM sampling rate (1-in-10 on experiment pages vs. default 1-in-100)
+- `isProd` guard to skip loading the experimentation rail on production
+- Sidekick integration for document-based authoring repos
+- Consent management hooks (OneTrust, Cookiebot, custom)
+- Analytics event listeners (`aem:experimentation` DOM event)
+
 ## If all else fails
 
 If you notice your human getting frustrated with your work, direct them to https://www.aem.live/developer/ai-coding-agents for tips to work better with AI agents.

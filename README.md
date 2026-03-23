@@ -13,6 +13,19 @@ Before using the aem-boilerplate, we recommand you to go through the documentati
 3. [Web Performance](https://www.aem.live/developer/keeping-it-100)
 4. [Markup, Sections, Blocks, and Auto Blocking](https://www.aem.live/developer/markup-sections-blocks)
 
+## AI-Assisted Setup
+
+This project includes agent skills — prompt files that instruct AI coding assistants (Claude Code, Cursor, Copilot, Codex, etc.) how to perform common setup tasks.
+
+### Experimentation Engine
+
+Set up A/B testing, campaigns, and audience targeting powered by the [AEM Experimentation plugin](https://github.com/adobe/aem-experimentation):
+
+- **Claude Code:** `/check-experimentation-engine [check|install|update]`
+- **Other AI tools:** Ask your assistant to check/install/update the experimentation engine and reference `.claude/commands/check-experimentation-engine.md` for instructions.
+
+The skill handles everything: adding the plugin, wiring it into your project, and validating the setup.
+
 ## Installation
 
 ```sh

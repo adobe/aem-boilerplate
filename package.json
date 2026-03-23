@@ -31,7 +31,7 @@
   "devDependencies": {
     "@adobe/aem-cli": "^16.5.8",
     "@babel/eslint-parser": "7.28.6",
-    "@dropins/build-tools": "1.1.0-beta.0",
+    "@dropins/build-tools": "1.1.0",
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.32.0",
@@ -45,17 +45,17 @@
     "@adobe/adobe-client-data-layer": "^3.0.1",
     "@adobe/magento-storefront-event-collector": "^1.15.0",
     "@adobe/magento-storefront-events-sdk": "^1.15.0",
-    "@dropins/storefront-account": "~3.2.0-beta.1",
-    "@dropins/storefront-auth": "~3.2.0-beta.0",
-    "@dropins/storefront-cart": "~3.2.0-beta.1",
-    "@dropins/storefront-checkout": "~3.2.0-beta.0",
-    "@dropins/storefront-order": "3.2.0-beta.1",
+    "@dropins/storefront-account": "~3.2.0",
+    "@dropins/storefront-auth": "~3.2.0",
+    "@dropins/storefront-cart": "~3.2.0",
+    "@dropins/storefront-checkout": "~3.2.0",
+    "@dropins/storefront-order": "3.2.0",
     "@dropins/storefront-payment-services": "~3.0.0",
     "@dropins/storefront-pdp": "3.0.2-beta.1",
-    "@dropins/storefront-personalization": "~3.1.1-beta.0",
+    "@dropins/storefront-personalization": "~3.1.1",
     "@dropins/storefront-product-discovery": "~3.1.0",
     "@dropins/storefront-recommendations": "~3.0.0",
-    "@dropins/storefront-wishlist": "~3.2.0-beta.1",
-    "@dropins/tools": "~1.8.0-beta.0"
+    "@dropins/storefront-wishlist": "~3.2.0",
+    "@dropins/tools": "~1.8.0"
   }
 }

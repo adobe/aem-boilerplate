@@ -13,7 +13,7 @@ export interface ProductModel {
     description?: string;
     images?: Image[];
     videos?: Video[];
-    prices: Prices;
+    prices?: Prices;
     attributes?: Attribute[];
     options?: Option[];
     optionUIDs?: string[];

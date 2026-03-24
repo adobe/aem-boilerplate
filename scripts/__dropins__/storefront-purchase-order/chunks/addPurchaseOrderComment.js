@@ -1,6 +1,6 @@
 /*! Copyright 2026 Adobe
 All Rights Reserved. */
-import{f as C,h as g,a as w}from"./fetch-graphql.js";const D=`
+import{f as C,h as g,a as w}from"./fetch-error.js";const D=`
   mutation ADD_PURCHASE_ORDER_COMMENT(
     $purchaseOrderUid: ID!
     $comment: String!

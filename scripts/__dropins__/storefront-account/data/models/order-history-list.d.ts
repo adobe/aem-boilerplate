@@ -58,6 +58,7 @@ export type OrderDetails = {
     id: string;
     number: string;
     orderDate: string;
+    orderTime: string;
     items: OrderItem[];
     returns: ReturnProps[];
     shipments: ShipmentsModel[];

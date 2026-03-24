@@ -9,13 +9,13 @@ import {
   rootLink,
 } from '../../scripts/commerce.js';
 
-// Initialize dropins
-import '../../scripts/initializers/requisition-list.js';
-
 export default async function decorate(block) {
   if (!checkIsAuthenticated()) {
     window.location.href = rootLink(CUSTOMER_LOGIN_PATH);
   } else {
+    // Ensure endpoint and auth headers are set before the grid fetches
+    await import('../../scripts/initializers/requisition-list.js');
+
     let gridRenderFunction = null;
 
     const renderGrid = async () => {

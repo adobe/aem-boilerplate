@@ -1,6 +1,6 @@
 /*! Copyright 2026 Adobe
 All Rights Reserved. */
-import{Initializer as y}from"@dropins/tools/lib.js";import{events as r}from"@dropins/tools/event-bus.js";import{j as A,s as e,f as I,h as p,g as h,i as T,k as G}from"./removeProductsFromWishlist.js";const g=new y({init:async t=>{const s={isGuestWishlistEnabled:!1,...t};g.config.setConfig(s),e.storeCode=t.storeCode||void 0,f().catch(console.error)},listeners:()=>[r.on("wishlist/data",t=>{A(t)},{eager:!0}),r.on("authenticated",async t=>{if(e.authenticated&&!t&&r.emit("wishlist/reset",void 0),t&&!e.authenticated){e.authenticated=t;const s=await f().catch(console.error);s&&Z(s)}},{eager:!0}),r.on("wishlist/reset",()=>{B().catch(console.error),r.emit("wishlist/data",null)})]}),V=g.config;function N(t){return t?{wishlistIsEnabled:t.storeConfig.magento_wishlist_general_is_enabled,wishlistMultipleListIsEnabled:t.storeConfig.enable_multiple_wishlists,wishlistMaxNumber:t.storeConfig.maximum_number_of_wishlists}:null}function w(t,s){return t?{id:t.id,updated_at:t.updated_at,sharing_code:t.sharing_code,items_count:t.items_count,items:L(t,s??[])}:null}function L(t,s){var i,a;return(a=(i=t==null?void 0:t.items_v2)==null?void 0:i.items)!=null&&a.length?t.items_v2.items.map(n=>{const l=R(n);return{id:n.id,quantity:n.quantity,description:n.description,added_at:n.added_at,enteredOptions:s,selectedOptions:l,product:{sku:n.product.sku}}}):[]}function R(t){return t.__typename==="ConfigurableWishlistItem"?t.configurable_options?t.configurable_options.map(s=>({uid:s.configurable_product_option_value_uid})):[]:t.__typename==="BundleWishlistItem"?(t.bundle_options??[]).flatMap(i=>i.values??[]).map(i=>({uid:i.uid})):[]}const v=`
+import{Initializer as y}from"@dropins/tools/lib.js";import{events as r}from"@dropins/tools/event-bus.js";import{e as A,s as e,f as I,h as p,g as h,i as T,j as G}from"./fetch-error.js";const g=new y({init:async t=>{const s={isGuestWishlistEnabled:!1,...t};g.config.setConfig(s),e.storeCode=t.storeCode||void 0,f().catch(console.error)},listeners:()=>[r.on("wishlist/data",t=>{A(t)},{eager:!0}),r.on("authenticated",async t=>{if(e.authenticated&&!t&&r.emit("wishlist/reset",void 0),t&&!e.authenticated){e.authenticated=t;const s=await f().catch(console.error);s&&Z(s)}},{eager:!0}),r.on("wishlist/reset",()=>{B().catch(console.error),r.emit("wishlist/data",null)})]}),V=g.config;function N(t){return t?{wishlistIsEnabled:t.storeConfig.magento_wishlist_general_is_enabled,wishlistMultipleListIsEnabled:t.storeConfig.enable_multiple_wishlists,wishlistMaxNumber:t.storeConfig.maximum_number_of_wishlists}:null}function w(t,s){return t?{id:t.id,updated_at:t.updated_at,sharing_code:t.sharing_code,items_count:t.items_count,items:L(t,s??[])}:null}function L(t,s){var i,a;return(a=(i=t==null?void 0:t.items_v2)==null?void 0:i.items)!=null&&a.length?t.items_v2.items.map(n=>{const l=R(n);return{id:n.id,quantity:n.quantity,description:n.description,added_at:n.added_at,enteredOptions:s,selectedOptions:l,product:{sku:n.product.sku}}}):[]}function R(t){return t.__typename==="ConfigurableWishlistItem"?t.configurable_options?t.configurable_options.map(s=>({uid:s.configurable_product_option_value_uid})):[]:t.__typename==="BundleWishlistItem"?(t.bundle_options??[]).flatMap(i=>i.values??[]).map(i=>({uid:i.uid})):[]}const v=`
 query STORE_CONFIG_QUERY {
   storeConfig {
     magento_wishlist_general_is_enabled
@@ -48,7 +48,7 @@ query STORE_CONFIG_QUERY {
     }
     quantity
   }
-`,k=`
+`,H=`
   ... on GiftCardWishlistItem {
     added_at
     description
@@ -68,7 +68,7 @@ query STORE_CONFIG_QUERY {
       sender_name
     }
   }
-`,H=`
+`,k=`
   ... on BundleWishlistItem {
     bundle_options {
       label
@@ -93,8 +93,8 @@ fragment WISHLIST_ITEM_FRAGMENT on WishlistItemInterface {
     }
     ${U}
     ${F}
-    ${k}
     ${H}
+    ${k}
     customizable_options {
       ...CUSTOMIZABLE_OPTIONS_FRAGMENT
     }

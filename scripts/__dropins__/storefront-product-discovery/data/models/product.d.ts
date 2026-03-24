@@ -12,6 +12,7 @@ export interface Product {
     metaDescription: string;
     lowStock: boolean;
     links: any[];
+    attributes: ProductViewAttribute[];
     images: ProductImage[];
     description: string;
     externalId: string;
@@ -36,6 +37,12 @@ export interface ProductPrice {
         value: number;
         currency: string;
     };
+}
+export interface ProductViewAttribute {
+    label?: string;
+    name: string;
+    roles?: string[];
+    value?: any;
 }
 export interface ProductImage {
     label: string;

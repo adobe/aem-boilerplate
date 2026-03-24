@@ -25,6 +25,7 @@ export type ConfigProps = {
     models?: {
         CartModel?: Model<CartModel>;
         CustomerModel?: Model<CustomerModel>;
+        EstimateShippingModel?: Model<ShippingMethod[]>;
     };
 };
 export declare const initialize: Initializer<ConfigProps>;

@@ -373,7 +373,9 @@ export const assertImageListDisplay = (selector, limit = null) => {
   }
 
   imageQuery.each(($img) => {
+    // Scroll into view so lazy-loaded images actually load (browser loads when near viewport)
     cy.wrap($img)
+      .scrollIntoView()
       .should('be.visible')
       .and(($el) => {
         expect($el[0].naturalWidth).to.be.greaterThan(0);
@@ -404,18 +406,4 @@ export const assertSearchResults = () => {
     .each(($price) => {
       cy.wrap($price).should("not.be.empty");
     });
-};
-
-export const assertSearchResultClick = () => {
-  // Click on first search result
-  cy.get(fields.productImage)
-    .first()
-    .click();
-
-  // Verify navigation to product page
-  cy.url().should("include", "/products/");
-
-  // Verify product page elements are loaded
-  cy.get(".product-details", { timeout: 10000 })
-    .should("be.visible");
 };

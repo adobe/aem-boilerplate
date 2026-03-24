@@ -19,12 +19,19 @@ export interface ProductGalleryProps extends Omit<HTMLAttributes<HTMLDivElement>
     zoom?: {
         closeButton: boolean;
     } | boolean;
+    videos?: boolean | {
+        position: 'first' | 'last';
+    };
     slots?: {
         CarouselThumbnail?: SlotProps<DefaultSlotContext & {
             defaultImageProps: ImageProps;
+            mediaType?: 'image' | 'video';
+            previewUrl?: string;
         }>;
         CarouselMainImage?: SlotProps<DefaultSlotContext & {
             defaultImageProps: ImageProps;
+            mediaType?: 'image' | 'video';
+            previewUrl?: string;
         }>;
     };
 }

@@ -107,6 +107,17 @@ fragment PRODUCT_FRAGMENT on ProductView {
     roles
   }
 
+  videos {
+		description
+		url
+		title
+		preview {
+			label
+			roles
+			url
+		}
+	}
+
   attributes(roles: []) {
     name
     label

@@ -9,6 +9,11 @@ export interface OrdersListActionContext {
 export interface OrdersListCardContext {
     orderHistoryListItem: OrderDetails;
 }
+export interface OrdersListOrderTimeContext {
+    deliveryDateText?: string;
+    orderDate?: string;
+    orderTime?: string;
+}
 export interface OrdersListProps extends HTMLAttributes<HTMLDivElement> {
     minifiedView?: boolean;
     withHeader?: boolean;
@@ -43,6 +48,7 @@ export interface OrdersListCardProps extends HTMLAttributes<HTMLDivElement> {
     withThumbnails: boolean;
     slots?: {
         OrdersListCard?: SlotProps<OrdersListCardContext>;
+        OrdersListOrderTime?: SlotProps<OrdersListOrderTimeContext>;
         OrderItemImage?: SlotProps<{
             data: OrderItem;
             defaultImageProps: ImageProps;

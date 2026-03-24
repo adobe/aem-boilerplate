@@ -26,7 +26,7 @@ export const poLabels = {
   grandTotal: 'Grand Total',
   numberOfSKUs: 'Number of SKUs',
   approvalRulesHeader: 'Approval rules',
-  approvalRuleFormHeader: 'Purchase order approval rule',
+  approvalRuleFormHeader: 'Purchase Order Approval Rule',
 };
 
 export const poApprovalRules = {

@@ -215,6 +215,13 @@ export const requisitionListViewBulkActionsDeleteButton =
 export const requisitionListViewDeleteButton =
   '[data-testid="delete-list-btn"]';
 export const miniCartButton = '.minicart-wrapper .nav-cart-button';
+export const miniCartContainer = '.cart-mini-cart';
+export const miniCartHeading = '[data-testid="default-cart-heading"]';
+export const miniCartProductsList = '[data-testid="default-cart-summary-list"]';
+export const miniCartItems = '.dropin-cart-list__item';
+export const miniCartItemSku = '[data-testid="cart-list-item-sku"]';
+export const miniCartQuantity = '.dropin-cart-item__quantity__number';
+export const miniCartCheckoutButton = '[data-testid="route-checkout-button"]';
 export const productDetailsAlert = '.product-details__alert';
 
 export const COMPANY_CREATE_PATH = '/customer/company/create';
@@ -302,3 +309,41 @@ export const quoteStatusBadge = '.quote-status-badge';
 export const quoteDetailWrapper = '.quote-detail-wrapper';
 export const quotePlaceOrderButton = '.quote-place-order-button';
 export const quoteCheckoutButton = '[data-testid="quote-checkout-button"]';
+
+// Quick Order selectors
+export const quickOrderItemsContainer = '.quick-order-items-container';
+export const quickOrderMultipleSkuContainer = '.quick-order-multiple-sku-container';
+export const quickOrderCsvUploadContainer = '.quick-order-csv-upload-container';
+export const quickOrderMultipleSkuTextarea = 'textarea[data-testid="dropin-textarea-field"]';
+export const quickOrderCsvFileInput = 'input#quick-order-csv-file-input';
+export const quickOrderCsvErrorMessage = '.b2b-quick-order-csv-file-input__error';
+export const quickOrderItemCard = '.b2b-quick-order-form-quick-order-items__item-form';
+export const quickOrderItemQuantityInput = 'input.dropin-incrementer__input[name="quantity"]';
+export const quickOrderItemRemoveButton = 'button[data-testid="cart-item-remove-button"]';
+export const quickOrderProductOptionsSlot = '[data-slot="ProductOptions"]';
+export const quickOrderSearchInput = '.b2b-quick-order-search__input';
+export const quickOrderSearchResults = '.b2b-quick-order-search__results';
+export const quickOrderSearchResultItem = '[role="option"]';
+export const quickOrderAddAllToCartButton = 'button[data-testid="add-all-to-cart-button"]';
+
+// Quick Order Variants Grid selectors
+export const variantsGridButton = '.action-button#ProductVariantsGrid';
+export const variantsGridMainContainer = '.product-details__grid-ordering';
+export const variantsGridContainer = '[data-testid="variants-grid-container"]';
+export const variantsGrid = '[data-testid="variants-grid"]';
+export const variantsGridTable = '.b2b-quick-order-variants-grid__table';
+export const variantsGridTableRow = '.dropin-table__body__row';
+export const variantsGridTableHeaderRow = '.dropin-table__header__row';
+export const variantsGridTableCell = '.dropin-table__body__cell';
+export const variantsGridImage = '.b2b-quick-order-variants-grid__image';
+export const variantsGridQuantityInput = (index) => `[data-testid="variant-quantity-input-${index}"] .dropin-incrementer__input`;
+export const variantsGridIncrementButton = '.dropin-incrementer__increase-button';
+export const variantsGridDecrementButton = '.dropin-incrementer__decrease-button';
+export const variantsGridAvailability = '.b2b-quick-order-variants-grid__availability';
+export const variantsGridShowAllButton = '.b2b-quick-order-variants-grid__toggle-button';
+export const variantsGridActionsContainer = '.b2b-quick-order-variants-actions';
+export const variantsGridActionsButtons = '.b2b-quick-order-variants-actions__buttons';
+export const variantsGridClearButton = '[data-testid="variants-clear-button"]';
+export const variantsGridSaveCsvButton = '[data-testid="variants-save-csv-button"]';
+export const variantsGridError = '[data-testid="variants-grid-container-error"]';
+export const productDetailsAddToCartButton = '.product-details__buttons__add-to-cart button';

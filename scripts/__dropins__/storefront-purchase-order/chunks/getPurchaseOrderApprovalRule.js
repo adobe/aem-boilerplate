@@ -1,6 +1,6 @@
 /*! Copyright 2026 Adobe
 All Rights Reserved. */
-import{f as i,h as c,a as d}from"./fetch-graphql.js";import"@dropins/tools/lib.js";import{t as n}from"./transform-purchase-order-approval-rule.js";const l=`
+import{f as i,h as c,a as d}from"./fetch-error.js";import"@dropins/tools/lib.js";import{t as n}from"./transform-purchase-order-approval-rule.js";const l=`
   query GET_PURCHASE_ORDER_APPROVAL_RULE($uid: ID!) {
     customer {
       purchase_order_approval_rule(uid: $uid) {

@@ -1,0 +1,46 @@
+.commerce-b2b-quick-order {
+    padding: var(--spacing-large) 0;
+}
+
+.quick-order-main-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-medium);
+    width: 100%;
+}
+
+.quick-order-items-container {
+    width: 100%;
+}
+
+.quick-order-right-side {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-medium);
+    width: 100%;
+}
+
+.quick-order-multiple-sku-container,
+.quick-order-csv-upload-container {
+    width: 100%;
+}
+
+@media (min-width: 800px) {
+    .quick-order-main-container {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: var(--spacing-medium);
+    }
+
+    .quick-order-items-container {
+        flex: 2;
+        min-width: 0;
+    }
+
+    .quick-order-right-side {
+        flex: 1;
+        min-width: 0;
+        border-left: 1px solid var(--color-neutral-400);
+        padding-left: var(--spacing-medium);
+    }
+}

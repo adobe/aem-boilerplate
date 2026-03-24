@@ -71,6 +71,19 @@
   margin-top: var(--spacing-xsmall);
 }
 
+.product-details__variants-grid-attribute strong {
+  font-weight: var(--type-body-1-strong-font);
+  margin-right: var(--spacing-xxsmall);
+}
+
+.product-details__grid-ordering--enabled {
+  display: block;
+}
+
+.product-details__grid-ordering--disabled {
+  display: none;
+}
+
 @media (min-width: 900px) {
   .product-details__wrapper {
     grid-template-columns: repeat(var(--grid-3-columns), 1fr);

@@ -30,7 +30,7 @@ const e=`
     telephone
     vat_id
   }
-`,a=`
+`,r=`
   fragment ORDER_SUMMARY_FRAGMENT on OrderTotal {
     grand_total {
       value
@@ -76,5 +76,45 @@ const e=`
       label
     }
   }
-`;export{t as ADDRESS_FRAGMENT,e as BASIC_CUSTOMER_INFO_FRAGMENT,a as ORDER_SUMMARY_FRAGMENT};
+`,a=`
+  fragment CUSTOMER_ORDER_FRAGMENT on CustomerOrder {
+    token
+    email
+    shipping_method
+    payment_methods {
+      name
+      type
+    }
+    shipments {
+      id
+      number
+      tracking {
+        title
+        number
+        carrier
+      }
+    }
+    number
+    id
+    order_date
+    carrier
+    status
+    items {
+      status
+      product_name
+      id
+      quantity_ordered
+      quantity_shipped
+      quantity_invoiced
+      product_sku
+      product_url_key
+      product {
+        sku
+        small_image {
+          url
+        }
+      }
+    }
+  }
+`;export{t as ADDRESS_FRAGMENT,e as BASIC_CUSTOMER_INFO_FRAGMENT,a as CUSTOMER_ORDER_FRAGMENT,r as ORDER_SUMMARY_FRAGMENT};
 //# sourceMappingURL=fragments.js.map

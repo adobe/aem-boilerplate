@@ -58,6 +58,10 @@ export const products = {
     urlPath: '/products/youth-tee/ADB150',
     sku: 'ADB150',
   },
+  additionalSimple: {
+    urlPath: '/products/adobe-staff-event-tee/adb295',
+    sku: 'ADB295',
+  },
   virtualGiftCard: {
     urlPath: '/products/gift-card-virtual/gift-card-virtual',
     sku: 'gift-card-virtual',

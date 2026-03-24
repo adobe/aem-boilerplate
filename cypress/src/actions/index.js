@@ -801,3 +801,110 @@ export const deleteApprovalRule = (ruleName) => {
 
   cy.wait(5000);
 };
+
+// Quick Order Variants Grid Actions
+export const initializeVariantsGrid = () => {
+  cy.log('Waiting for QuickOrderVariantsGrid component to load');
+  
+  cy.get('main', { timeout: 10000 }).should('exist');
+  cy.get('.product-details', { timeout: 15000 }).should('be.visible');
+  cy.get(fields.variantsGridMainContainer, { timeout: 15000 })
+    .should('exist')
+    .scrollIntoView()
+    .should('be.visible');
+  cy.get(fields.variantsGridTable, { timeout: 10000 }).should('be.visible');
+  cy.get(fields.variantsGridTableRow, { timeout: 10000 }).should('have.length.greaterThan', 0);
+  
+  cy.wait(1000);
+  cy.log('QuickOrderVariantsGrid component loaded');
+};
+
+export const updateVariantQuantity = (rowIndex, quantity) => {
+  cy.get(fields.variantsGridQuantityInput(rowIndex))
+    .clear()
+    .type(quantity.toString());
+};
+
+export const incrementVariantQuantity = (rowIndex) => {
+  cy.get(fields.variantsGridTable)
+    .find(fields.variantsGridTableRow)
+    .eq(rowIndex)
+    .find(fields.variantsGridIncrementButton)
+    .click();
+};
+
+export const decrementVariantQuantity = (rowIndex) => {
+  cy.get(fields.variantsGridTable)
+    .find(fields.variantsGridTableRow)
+    .eq(rowIndex)
+    .find(fields.variantsGridDecrementButton)
+    .click();
+};
+
+export const clickClearAllButton = () => {
+  cy.get(fields.variantsGridClearButton).click({ force: true });
+  cy.wait(1000);
+  cy.get(fields.variantsGridClearButton).click({ force: true });
+  cy.wait(1000);
+};
+
+export const clickSaveToCsvButton = () => {
+  cy.get(fields.variantsGridSaveCsvButton).click();
+};
+
+export const clickCollectDataButton = () => {
+  cy.get(fields.variantsGridActionsButtons)
+    .contains('button', 'Collect Data')
+    .click();
+};
+
+export const clickShowAllButton = () => {
+  cy.get(fields.variantsGridShowAllButton).click();
+};
+
+export const verifyVariantRow = (rowIndex, expectedData) => {
+  const row = cy
+    .get(fields.variantsGridTable)
+    .find(fields.variantsGridTableRow)
+    .eq(rowIndex);
+
+  if (expectedData.sku) {
+    row.should('contain.text', expectedData.sku);
+  }
+
+  if (expectedData.inStock !== undefined) {
+    const availabilityText = expectedData.inStock ? 'In Stock' : 'Out of Stock';
+    row
+      .find(fields.variantsGridAvailability)
+      .should('contain.text', availabilityText);
+  }
+
+  if (expectedData.quantity !== undefined) {
+    const expected = expectedData.quantity.toString();
+    cy.get(fields.variantsGridQuantityInput(rowIndex)).should(($input) => {
+      const value = $input.val();
+      if (expected === '0') {
+        const isZeroOrEmpty = value === '0' || value === '' || value === 0;
+        expect(
+          isZeroOrEmpty,
+          `Expected quantity to be 0 or empty, but got "${value}"`
+        ).to.be.true;
+      } else {
+        expect(
+          value,
+          `Expected quantity to be ${expected}, but got "${value}"`
+        ).to.equal(expected);
+      }
+    });
+  }
+};
+
+export const onVariantsUpdated = (callback) => {
+  cy.window().then((win) => {
+    if (win.events && typeof win.events.on === 'function') {
+      win.events.on('quick-order/grid-ordering-updated', callback, {
+        eager: true,
+      });
+    }
+  });
+};

@@ -85,7 +85,7 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
     cy.clearCookies();
     cy.clearLocalStorage();
     cy.intercept('**/graphql').as('defaultGraphQL');
-    
+
   });
 
   afterEach(() => {
@@ -411,16 +411,16 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
     cy.logToTerminal('🛒 Adding product to cart for Company A...');
     cy.visit('/products/pride-at-adobe-t-shirt/ADB169');
     cy.wait(3000);
-    
+
     cy.get('.product-details__buttons__add-to-cart button', { timeout: 10000 })
       .should('be.visible')
       .click();
     cy.wait(2000);
-    
+
     // Verify cart has items
     cy.visit('/cart');
     cy.wait(3000);
-    
+
     cy.get('body').then(($body) => {
       if ($body.find('.cart-item').length > 0 || $body.text().includes('ADB169') || $body.text().includes('Pride at Adobe')) {
         cy.logToTerminal('✅ Company A: Cart has product (ADB169)');
@@ -448,10 +448,10 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
     cy.wait(3000);
 
     cy.get('body').then(($body) => {
-      const hasEmptyCartMessage = $body.text().includes('empty') || 
+      const hasEmptyCartMessage = $body.text().includes('empty') ||
                                    $body.text().includes('no items') ||
                                    $body.find('.cart-item').length === 0;
-      
+
       if (hasEmptyCartMessage || !$body.text().includes('ADB169')) {
         cy.logToTerminal('✅ TC-42: Company B cart is empty (cart is company-specific)');
       } else {
@@ -463,16 +463,16 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
     cy.logToTerminal('🛒 Adding different product to Company B cart...');
     cy.visit('/products/youth-tee/ADB150');
     cy.wait(3000);
-    
+
     cy.get('.product-details__buttons__add-to-cart button', { timeout: 10000 })
       .should('be.visible')
       .click();
     cy.wait(2000);
-    
+
     // Verify Company B cart has the new product
     cy.visit('/cart');
     cy.wait(3000);
-    
+
     cy.get('body').then(($body) => {
       if ($body.text().includes('ADB150') || $body.text().includes('Youth Tee')) {
         cy.logToTerminal('✅ Company B: Cart has product (ADB150)');
@@ -502,7 +502,7 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
     cy.get('body').then(($body) => {
       const hasOriginalProduct = $body.text().includes('ADB169') || $body.text().includes('Pride at Adobe');
       const hasCompanyBProduct = $body.text().includes('ADB150') || $body.text().includes('Youth Tee');
-      
+
       if (hasOriginalProduct && !hasCompanyBProduct) {
         cy.logToTerminal('✅ TC-42: Company A cart preserved original product, cart context is company-specific');
       } else if (hasOriginalProduct) {

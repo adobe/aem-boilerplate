@@ -35,6 +35,12 @@ const e=`
       inStock
       url
       urlKey
+      attributes(roles: []) {
+        name
+        label
+        value
+        roles
+      }
       images {
         label
         url

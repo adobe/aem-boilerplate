@@ -17,6 +17,9 @@ export interface UpdatePasswordProps {
     onErrorCallback?: (value: unknown) => void;
     onSuccessCallback?: (value?: string) => void;
     slots?: {
+        Title?: SlotProps<DefaultSlotContext>;
+        Form?: SlotProps<DefaultSlotContext>;
+        Buttons?: SlotProps<DefaultSlotContext>;
         SuccessNotification?: SlotProps<DefaultSlotContext>;
     };
 }

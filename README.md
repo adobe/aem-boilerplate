@@ -15,7 +15,7 @@ Before using the aem-boilerplate, we recommand you to go through the documentati
 
 ## AI-Assisted Setup
 
-This project includes agent skills — prompt files that instruct AI coding assistants (Claude Code, Cursor, Copilot, Codex, etc.) how to perform common setup tasks.
+This project includes assistant skills — prompt files that instruct AI coding assistants (Claude Code, Cursor, Copilot, Codex, etc.) how to perform common setup tasks.
 
 ### Experimentation Engine
 

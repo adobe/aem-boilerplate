@@ -181,9 +181,9 @@ With this information, you can construct URLs for the preview environment (same 
 - Follow the Publishing Process documented above
 - Update documentation for significant changes
 
-## AI Agent Skills
+## AI Assistant Skills
 
-This project ships with agent skills — reusable, detailed prompt files that instruct AI agents how to perform common tasks. Skills live in `.claude/commands/` and can be invoked directly by name.
+This project ships with assistant skills — reusable, detailed prompt files that instruct AI assistants how to perform common tasks. Skills live in `.claude/commands/` and can be invoked directly by name.
 
 ### Experimentation Engine (`check-experimentation-engine`)
 

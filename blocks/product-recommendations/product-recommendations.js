@@ -53,7 +53,6 @@ function getProductViewHistory(storeViewCode) {
   try {
     const viewHistory = window.localStorage.getItem(`${storeViewCode}:productViewHistory`) || '[]';
     const parsedHistory = JSON.parse(viewHistory);
-    console.log('Raw product view history loaded:', parsedHistory);
     if (!Array.isArray(parsedHistory)) {
       throw new Error('Product view history is not an array');
     }
@@ -62,7 +61,6 @@ function getProductViewHistory(storeViewCode) {
       // If no valid entries, clear the history to prevent future parsing issues
       window.localStorage.removeItem(`${storeViewCode}:productViewHistory`);
     }
-    console.log('Product view history loaded:', validHistory);
     return validHistory;
   } catch (e) {
     window.localStorage.removeItem(`${storeViewCode}:productViewHistory`);

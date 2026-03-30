@@ -716,7 +716,7 @@ function trackHistory() {
       let viewHistory = JSON.parse(window.localStorage.getItem(key) || '[]');
       viewHistory = viewHistory.filter((item) => item.sku !== event.productContext.sku);
       viewHistory.push({ date: new Date().toISOString(), sku: event.productContext.sku });
-      window.localStorage.setItem(key, JSON.stringify(viewHistory.slice(-10)));
+      window.localStorage.setItem(key, JSON.stringify(viewHistory.slice(-20)));
     }, { path: 'productContext' });
     dl.addEventListener('place-order', () => {
       const shoppingCartContext = dl.getState('shoppingCartContext');

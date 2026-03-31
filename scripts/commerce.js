@@ -709,7 +709,7 @@ function trackHistory() {
   const storeViewCode = getConfigValue('headers.cs.Magento-Store-View-Code');
   window.adobeDataLayer.push((dl) => {
     dl.addEventListener('adobeDataLayer:change', (event) => {
-      if (!event.productContext) {
+      if (!event.productContext || !event.productContext.sku) {
         return;
       }
       const key = `${storeViewCode}:productViewHistory`;

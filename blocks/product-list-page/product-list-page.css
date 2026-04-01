@@ -83,18 +83,101 @@
 
 /* Empty State */
 
-.block.product-list-page.product-list-page--empty .search__wrapper {
-    grid-template-areas:
-        "product-list";
-    grid-template-columns: 1fr;
-}
-
-.block.product-list-page.product-list-page--empty .search__result-info,
-.block.product-list-page.product-list-page--empty .search__view-facets,
-.block.product-list-page.product-list-page--empty .search__facets,
-.block.product-list-page.product-list-page--empty .search__product-sort,
 .block.product-list-page.product-list-page--empty .search__pagination {
     display: none;
+}
+
+/* Slider pills — icon after text to match dropin selected filters */
+.search__slider-pill .dropin-button {
+    flex-direction: row-reverse;
+}
+
+/* Numeric Range Slider */
+
+.numeric-range-slider {
+    padding-block: var(--spacing-small);
+    border-bottom: 1px solid var(--color-neutral-400);
+}
+
+.numeric-range-slider__label {
+    display: block;
+    margin-block-end: var(--spacing-xsmall);
+}
+
+.numeric-range-slider__body {
+    margin-block-start: var(--spacing-xxsmall);
+}
+
+.numeric-range-slider__track-wrapper {
+    position: relative;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    margin-inline: 8px;
+}
+
+.numeric-range-slider__track {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    background: var(--color-neutral-400);
+    border-radius: var(--shape-border-radius-2);
+    cursor: pointer;
+}
+
+.numeric-range-slider__fill {
+    position: absolute;
+    height: 100%;
+    border-radius: var(--shape-border-radius-2);
+}
+
+.numeric-range-slider__fill--left,
+.numeric-range-slider__fill--right {
+    background: var(--color-neutral-800, #222);
+}
+
+.numeric-range-slider__fill--locked {
+    background: repeating-linear-gradient(
+        -45deg,
+        var(--color-neutral-800, #222),
+        var(--color-neutral-800, #222) 2px,
+        var(--color-neutral-400, #bbb) 2px,
+        var(--color-neutral-400, #bbb) 5px
+    );
+    opacity: 0.5;
+}
+
+.numeric-range-slider__handle {
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--color-neutral-800, #222);
+    border: 2px solid var(--color-neutral-50, #fff);
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    touch-action: none;
+    z-index: 1;
+}
+
+.numeric-range-slider__handle:focus-visible {
+    outline: 2px solid var(--color-action-focus, #1473e6);
+    outline-offset: 2px;
+}
+
+.numeric-range-slider__handle:active {
+    cursor: grabbing;
+}
+
+.numeric-range-slider__footer {
+    display: flex;
+    justify-content: space-between;
+    margin-block-start: var(--spacing-xxsmall);
+}
+
+.numeric-range-slider__value {
+    font: var(--type-body-2-default-font);
 }
 
 /* Media Queries */

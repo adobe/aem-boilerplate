@@ -54,7 +54,11 @@ declare const _default: {
       "successMove": "Item(s) successfully moved to cart.",
       "partialMoveSuccess": "{successCount} product(s) successfully added and {failedCount} product(s) couldn't be added to your shopping cart.",
       "errorAddToRequisitionList": "Error adding item(s) to requisition list.",
-      "successAddToRequisitionList": "Item(s) successfully added to requisition list."
+      "successAddToRequisitionList": "Item(s) successfully added to requisition list.",
+      "errorMoveToList": "Error moving item(s) to requisition list.",
+      "successMoveToList": "Item(s) successfully moved to {listName}.",
+      "errorCopyToList": "Error copying item(s) to requisition list.",
+      "successCopyToList": "Item(s) successfully copied to {listName}."
     },
     "RequisitionListView": {
       "actionDelete": "Delete",
@@ -82,6 +86,12 @@ declare const _default: {
       "deleteItemsMessage": "Are you sure you want to delete the selected item(s) from this requisition list? This action cannot be undone.",
       "confirmAction": "Delete",
       "cancelAction": "Cancel",
+      "actionMoveToList": "Move to List",
+      "moveToListTitle": "Move to Requisition List",
+      "moveToListConfirm": "Move to requisition list",
+      "actionCopyToList": "Copy to List",
+      "copyToListTitle": "Copy to Requisition List",
+      "copyToListConfirm": "Copy to requisition list",
       "emptyRequisitionList": " Requisition List is empty",
       "productListTable": {
         "headers": {

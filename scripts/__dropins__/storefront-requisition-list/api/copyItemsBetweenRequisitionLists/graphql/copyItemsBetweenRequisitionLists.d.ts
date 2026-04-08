@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2025 Adobe
+ *  Copyright 2026 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -14,11 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './useRequisitionLists';
-export * from './useRequisitionListAlert';
-export * from './useRequisitionListForm';
-export * from './useRequisitionListGrid';
-export * from './useRequisitionListSelectedItems';
-export * from './useRequisitionListEnabled';
-export * from './useRequisitionListTransfer';
-//# sourceMappingURL=index.d.ts.map
+export declare const COPY_ITEMS_BETWEEN_REQUISITION_LISTS_MUTATION: string;
+//# sourceMappingURL=copyItemsBetweenRequisitionLists.d.ts.map

@@ -182,13 +182,13 @@ export const requisitionListSelector = '.requisition-list-selector button';
 export const requisitionListActions = '.requisition-list-actions';
 export const requisitionListForm = '.requisition-list-form';
 export const requisitionListAlert = '.requisition-list-selector__alert';
-export const requisitionListSelectorForm = '.requisition-list-selector__form';
-export const requisitionListSelectorAvailableLists =
-  '.requisition-list-selector__available-lists';
-export const requisitionListSelectorAvailableListFirstChild =
-  '.requisition-list-selector__available-lists .dropin-card:first-child';
-export const requisitionListFormActionsButton =
-  '.requisition-list-form__actions button';
+export const requisitionListPickerForm = '.requisition-list-picker__form';
+export const requisitionListPickerAvailableLists =
+  '.requisition-list-picker__available-lists';
+export const requisitionListPickerAvailableListFirstChild =
+  '.requisition-list-picker__available-lists .dropin-card:first-child';
+export const requisitionListPickerActionsButton =
+  '.requisition-list-picker__actions button';
 
 export const requisitionListItemActionsRenameButton =
   '.requisition-list-grid-wrapper__actions button[data-testid="rename-button"]';
@@ -210,6 +210,10 @@ export const requisitionListViewBatchActionsCountBadge =
   '.requisition-list-view__batch-actions-count-badge';
 export const requisitionListViewBulkActionsAddToCartButton =
   '[data-testid="bulk-actions-add-to-cart-btn"]';
+export const requisitionListViewBulkActionsMoveToListButton =
+  '[data-testid="bulk-actions-move-to-list-btn"]';
+export const requisitionListViewBulkActionsCopyToListButton =
+  '[data-testid="bulk-actions-copy-to-list-btn"]';
 export const requisitionListViewBulkActionsDeleteButton =
   '[data-testid="bulk-actions-delete-btn"]';
 export const requisitionListViewDeleteButton =

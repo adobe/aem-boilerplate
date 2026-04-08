@@ -377,8 +377,13 @@ describe('USF-2563: Company Credit (Optimized Journey)', { tags: ['@B2BSaas'] },
       cy.visit('/customer/company/credit');
       cy.wait(3000);
 
-      // Verify "Purchased" record appears
-      cy.contains(/purchas|order/i, { timeout: 15000 }).should('be.visible');
+      // Verify "Purchased" record appears - scoped to block to avoid matching nav links
+      // Uses /purchas|order/i in case the dropin renders the record type as "Order" vs "Purchased"
+      cy.get('.commerce-company-credit', { timeout: 15000 })
+        .should('be.visible')
+        .within(() => {
+          cy.contains(/purchas|order/i, { timeout: 15000 }).should('be.visible');
+        });
       cy.logToTerminal('✅ TC-47 CASE_1: Purchase record verified in credit history');
 
       // ========== TC-47 CASE_5: Refund (invoice + credit memo, credit restored) ==========

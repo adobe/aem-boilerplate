@@ -770,7 +770,7 @@ export const fillApprovalRuleForm = (rule, texts) => {
 
   const multiSelectIndex = rule.appliesTo === texts.specificRoles ? 1 : 0;
   cy.get(fields.poMultiSelect).eq(multiSelectIndex).click();
-  cy.wait(2500);
+  cy.get(fields.poMultiSelect).eq(multiSelectIndex).should('contain', rule.approverRole);
   cy.get(fields.poMultiSelect)
     .eq(multiSelectIndex)
     .contains(rule.approverRole)

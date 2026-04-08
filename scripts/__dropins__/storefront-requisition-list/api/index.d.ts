@@ -26,4 +26,6 @@ export * from './updateRequisitionListItems';
 export * from './deleteRequisitionListItems';
 export * from './addProductsToRequisitionList';
 export * from './addRequisitionListItemsToCart';
+export * from './moveItemsBetweenRequisitionLists';
+export * from './copyItemsBetweenRequisitionLists';
 //# sourceMappingURL=index.d.ts.map

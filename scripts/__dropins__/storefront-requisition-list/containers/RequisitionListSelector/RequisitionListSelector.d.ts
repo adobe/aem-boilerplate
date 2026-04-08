@@ -6,6 +6,7 @@ export interface RequisitionListSelectorProps extends HTMLAttributes<HTMLDivElem
     sku: string;
     selectedOptions?: string[];
     quantity?: number;
+    matchBySKU?: boolean;
     beforeAddProdToReqList?: () => Promise<void> | void;
 }
 export declare const RequisitionListSelector: Container<RequisitionListSelectorProps>;

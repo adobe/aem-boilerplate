@@ -59,7 +59,7 @@
     "@dropins/storefront-purchase-order": "~1.1.1",
     "@dropins/storefront-quote-management": "~1.1.2",
     "@dropins/storefront-recommendations": "~3.0.0",
-    "@dropins/storefront-requisition-list": "~1.2.0",
+    "@dropins/storefront-requisition-list": "1.3.0-alpha-20260331122640",
     "@dropins/storefront-wishlist": "~3.2.0",
     "@dropins/storefront-quick-order": "~1.0.0",
     "@dropins/tools": "~1.8.0"

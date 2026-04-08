@@ -7,10 +7,14 @@ export interface BatchActionsProps extends HTMLAttributes<HTMLDivElement | HTMLF
     addingToCartItemId: string | null;
     bulkAddingToCart: boolean;
     updatingQuantityItemId: string | null;
+    bulkMovingToList?: boolean;
+    bulkCopyingToList?: boolean;
     onSelectAll: () => void;
     onSelectNone: () => void;
     onBulkAddToCart: () => void;
     onBulkDelete: () => void;
+    onBulkMoveToList?: () => void;
+    onBulkCopyToList?: () => void;
 }
 export declare const BatchActions: FunctionComponent<BatchActionsProps>;
 //# sourceMappingURL=BatchActions.d.ts.map

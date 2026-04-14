@@ -63,7 +63,8 @@ export interface GraphQLResponse {
         message: string;
     }>;
     data?: {
-        recommendations: RecommendationsResponse;
+        recommendations?: RecommendationsResponse;
+        recommendationsByUnitIds?: RecommendationsResponse;
     };
 }
 export {};

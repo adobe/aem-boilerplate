@@ -14,6 +14,6 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export { PRODUCTS_VIEW_FRAGMENT } from './getRecommendations/graphql/ProductsViewFragment';
-export { UNIT_FRAGMENT } from './getRecommendations/graphql/UnitFragment';
+export { PRODUCTS_VIEW_FRAGMENT } from './getRecommendationsByUnitIds/graphql/ProductsViewFragment';
+export { RECOMMENDATION_UNIT_FRAGMENT } from './getRecommendationsByUnitIds/graphql/RecommendationUnitFragment';
 //# sourceMappingURL=fragments.d.ts.map

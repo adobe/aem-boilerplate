@@ -350,4 +350,5 @@ export const variantsGridActionsButtons = '.b2b-quick-order-variants-actions__bu
 export const variantsGridClearButton = '[data-testid="variants-clear-button"]';
 export const variantsGridSaveCsvButton = '[data-testid="variants-save-csv-button"]';
 export const variantsGridError = '[data-testid="variants-grid-container-error"]';
+export const variantsGridAddToCartButton = '.product-details__variants-grid-actions button';
 export const productDetailsAddToCartButton = '.product-details__buttons__add-to-cart button';

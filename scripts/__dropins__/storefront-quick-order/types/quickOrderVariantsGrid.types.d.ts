@@ -19,6 +19,8 @@ export interface ProductVariantPrice {
     };
 }
 export interface ProductVariant {
+    selections?: string[];
+    parentSku?: string;
     product: {
         sku: string;
         name: string;
@@ -53,6 +55,8 @@ export interface VariantTableData {
     quantity: number;
     subtotal: number;
     image: string;
+    optionsUIDs?: string[];
+    parentSku?: string;
 }
 export type VariantActionsContext = {
     onClear: () => void;

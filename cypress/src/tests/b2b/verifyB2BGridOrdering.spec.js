@@ -205,7 +205,7 @@ describe(
       cy.logToTerminal(
         '✅ Verifying Add to Cart button displays total quantity (5+3+7=15)...',
       );
-      cy.get(fields.productDetailsAddToCartButton, { timeout: 10000 })
+      cy.get(fields.variantsGridAddToCartButton, { timeout: 10000 })
         .scrollIntoView()
         .should('be.visible')
         .and('contain.text', 'Add to Cart (15)');
@@ -301,7 +301,7 @@ describe(
       cy.logToTerminal(
         '✅ Verifying Add to Cart button displays total quantity (5+3+4=12)...',
       );
-      cy.get(fields.productDetailsAddToCartButton, { timeout: 10000 })
+      cy.get(fields.variantsGridAddToCartButton, { timeout: 10000 })
         .scrollIntoView()
         .should('be.visible')
         .and('contain.text', 'Add to Cart (12)');
@@ -326,7 +326,7 @@ describe(
       cy.logToTerminal(
         '✅ Verifying Add to Cart button displays updated total quantity (10+8+6=24)...',
       );
-      cy.get(fields.productDetailsAddToCartButton, { timeout: 10000 })
+      cy.get(fields.variantsGridAddToCartButton, { timeout: 10000 })
         .scrollIntoView()
         .should('be.visible')
         .and('contain.text', 'Add to Cart (24)');
@@ -423,7 +423,7 @@ describe(
       cy.logToTerminal(
         '✅ Verifying Add to Cart button displays total quantity (2+3+4=9)...',
       );
-      cy.get(fields.productDetailsAddToCartButton, { timeout: 10000 })
+      cy.get(fields.variantsGridAddToCartButton, { timeout: 10000 })
         .scrollIntoView()
         .should('be.visible')
         .and('contain.text', 'Add to Cart (9)');
@@ -462,7 +462,7 @@ describe(
         0,
       );
 
-      cy.logToTerminal('📝 Setting quantities for all variants...');
+      cy.logToTerminal("📝 Setting quantities for all variants...");
       expectedVariants.forEach(({ index, quantity }) => {
         actions.updateVariantQuantity(index, quantity);
       });
@@ -478,13 +478,13 @@ describe(
       cy.logToTerminal(
         `✅ Verifying Add to Cart button displays total quantity (${expectedVariants.map((v) => v.quantity).join('+')}=${totalQuantity})...`,
       );
-      cy.get(fields.productDetailsAddToCartButton, { timeout: 10000 })
+      cy.get(fields.variantsGridAddToCartButton, { timeout: 10000 })
         .scrollIntoView()
         .should('be.visible')
         .and('contain.text', `Add to Cart (${totalQuantity})`);
 
       cy.logToTerminal('🛒 Adding variants to cart...');
-      cy.get(fields.productDetailsAddToCartButton)
+      cy.get(fields.variantsGridAddToCartButton)
         .should('not.be.disabled')
         .click({ force: true });
 
@@ -494,15 +494,31 @@ describe(
         expect(interception.response.statusCode).to.equal(200);
       });
 
+      // Wait for UI to update after cart API call completes
+      cy.wait(3000);
+
       cy.logToTerminal(
         `🛒 Verifying cart badge shows ${totalQuantity} items...`,
       );
-      cy.get(fields.miniCartButton, { timeout: 10000 })
-        .should('be.visible')
-        .and('have.attr', 'data-count')
-        .then((count) => {
+
+      // Wait for cart to update and verify badge count
+      // Cypress will retry this entire block until success or timeout
+      cy.get(fields.miniCartButton, { timeout: 60000 })
+        .should(($button) => {
+          // All assertions in one block for proper retry mechanism
+          expect($button, "cart button should be visible").to.be.visible;
+
+          const count = $button.attr("data-count");
+          expect(count, "data-count attribute should exist").to.exist;
+
           const itemCount = parseInt(count, 10);
-          expect(itemCount).to.be.at.least(totalQuantity);
+          expect(
+            itemCount,
+            `cart should have at least ${totalQuantity} items (currently ${itemCount})`,
+          ).to.be.at.least(totalQuantity);
+        })
+        .then(($button) => {
+          const itemCount = parseInt($button.attr("data-count"), 10);
           cy.logToTerminal(
             `✅ Cart badge shows ${itemCount} items (expected at least ${totalQuantity})`,
           );

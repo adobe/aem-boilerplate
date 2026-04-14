@@ -17,6 +17,7 @@
 export interface CartItem {
     sku: string;
     quantity: number;
+    itemId?: string;
     parentSku?: string;
     optionsUIDs?: string[];
     enteredOptions?: {

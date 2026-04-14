@@ -28,6 +28,9 @@ import '../../scripts/initializers/cart.js';
 import '../../scripts/initializers/pdp.js';
 
 export default async function decorate(block) {
+  // Stores rendered ProductOptions containers by scope, prevent redundant container re-rendering
+  const productOptionsContainerMap = new Map();
+
   const fragment = document.createRange().createContextualFragment(`
     <div class="quick-order-title"></div>
     <div class="quick-order-main-container">
@@ -66,9 +69,12 @@ export default async function decorate(block) {
     className: 'quick-order-items',
     handleAddToCart: async (values) => {
       if (!values.length) return;
-
+      const cartItems = values.map((item) => ({
+        ...item,
+        sku: item.parentSku || item.sku,
+      }));
       try {
-        await cartApi.addProductsToCart(values);
+        await cartApi.addProductsToCart(cartItems);
         window.location.href = rootLink('/cart');
       } catch (error) {
         // Return an error message string to display a notification
@@ -88,13 +94,21 @@ export default async function decorate(block) {
         ctx.replaceWith(priceContainer);
       },
       ProductOptions: (ctx) => {
-        const optionsContainer = document.createElement('div');
-        optionsContainer.className = 'product-options-slot';
-        pdpProvider.render(ProductOptions, {
-          scope: ctx.scope,
-        })(optionsContainer);
+        // Preventing re-creating duplicated containers
+        let productOptionsContainer = productOptionsContainerMap.get(ctx.scope);
 
-        ctx.replaceWith(optionsContainer);
+        if (!productOptionsContainer) {
+          // Create a new container only if not exist yet
+          productOptionsContainer = document.createElement('div');
+          productOptionsContainer.className = 'product-options-slot';
+          pdpProvider.render(ProductOptions, {
+            scope: ctx.scope,
+          })(productOptionsContainer);
+
+          productOptionsContainerMap.set(ctx.scope, productOptionsContainer);
+        }
+
+        ctx.replaceWith(productOptionsContainer);
       },
     },
   })(quickOrderItemsContainer);

@@ -102,6 +102,7 @@ export interface OrderItemInput {
 export interface OrderItem extends ProductData {
     id?: string;
     variantSku?: string;
+    parentSku?: string;
     sku: string;
     quantity: number;
 }

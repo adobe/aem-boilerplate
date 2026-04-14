@@ -62,18 +62,20 @@ function validateRequiredOptions(product, selectedOptions) {
  * Creates the render function for requisition list selector
  * @param {Object} params - Configuration parameters
  * @param {HTMLElement} params.$alert - Alert container element
- * @param {Object} params.product - Product data
  * @param {Object} params.labels - Placeholder labels
  * @returns {Function} Render function for requisition list selector
  */
-function createRequisitionListRenderer({
+export function createRequisitionListRenderer({
   $alert,
-  product,
   labels,
 }) {
   let inlineAlert = null;
 
-  return async function renderRequisitionListSelectorIfEnabled($container, currentOptions = null) {
+  return async function renderRequisitionListSelectorIfEnabled(
+    $container,
+    product,
+    currentOptions = null,
+  ) {
     const isAuthenticated = checkIsAuthenticated();
     if (!isAuthenticated) {
       $container.innerHTML = '';
@@ -89,7 +91,7 @@ function createRequisitionListRenderer({
     // Render RequisitionListSelector with beforeAddProdToReqList validation if B2B is enabled
     return rlRenderer.render(RequisitionListSelector, {
       sku: product.sku,
-      quantity: pdpApi.getProductConfigurationValues()?.quantity || 1,
+      quantity: product?.quantity || pdpApi.getProductConfigurationValues()?.quantity || 1,
       selectedOptions: currentOptions,
       beforeAddProdToReqList: async () => {
         // Check if all required product options are selected
@@ -138,14 +140,23 @@ function createRequisitionListRenderer({
  * @param {Object} params - Configuration parameters
  * @param {Function} params.renderFunction - The render function for requisition list names
  * @param {HTMLElement} params.$requisitionListSelector - Container element for requisition list
+ * @param {Object} params.product - Product data
  * @param {URLSearchParams} params.urlParams - URL search parameters
+ * @param {boolean} params.isGridOrdering - Flag to indicate grid ordering variant (skip PDP events)
  */
 function setupRequisitionListEventHandlers({
   renderFunction,
   $requisitionListSelector,
+  product,
   urlParams,
+  isGridOrdering = false,
 }) {
-  // Handle option changes
+  // Skip event subscription for grid ordering variants - they manage their own state
+  if (isGridOrdering) {
+    return;
+  }
+
+  // Handle option changes (only for main PDP)
   events.on('pdp/values', async () => {
     // Get current configuration values (updated with selected options)
     const configValues = pdpApi.getProductConfigurationValues();
@@ -158,10 +169,10 @@ function setupRequisitionListEventHandlers({
     } else if (urlOptionsUIDs === '') {
       optionUIDs = null;
     }
-
     // Re-render requisition list component with updated options
     await renderFunction(
       $requisitionListSelector,
+      product,
       optionUIDs,
     );
   }, { eager: true });
@@ -224,6 +235,7 @@ function showRequisitionListRedirectNotification($alert) {
  * @param {Object} params.product - Product data
  * @param {Object} params.labels - Placeholder labels
  * @param {URLSearchParams} params.urlParams - URL search parameters
+ * @param {boolean} params.isGridOrdering - Flag for grid ordering variant (disables PDP events)
  */
 export async function initializeRequisitionList({
   $alert,
@@ -231,30 +243,76 @@ export async function initializeRequisitionList({
   product,
   labels,
   urlParams,
+  isGridOrdering = false,
 }) {
   // Create the render function
   const renderFunction = createRequisitionListRenderer({
     $alert,
-    product,
     labels,
   });
 
-  // Setup event handlers (they fetch current values inside each handler)
+  // Setup event handlers (only for main PDP, not for grid ordering)
   setupRequisitionListEventHandlers({
     renderFunction,
     $requisitionListSelector,
+    product,
     urlParams,
+    isGridOrdering,
   });
 
   // Perform initial render based on current state
-  const configValues = pdpApi.getProductConfigurationValues();
-  const urlOptionsUIDs = urlParams.get('optionsUIDs');
-  const optionUIDs = urlOptionsUIDs === '' ? null : (configValues?.optionsUIDs || null);
+  let optionUIDs = null;
+
+  if (isGridOrdering) {
+    // For grid ordering: use the optionUIDs passed in product
+    optionUIDs = product.optionUIDs || null;
+  } else {
+    // For main PDP: use pdpApi configuration values
+    const configValues = pdpApi.getProductConfigurationValues();
+    const urlOptionsUIDs = urlParams.get('optionsUIDs');
+    optionUIDs = urlOptionsUIDs === '' ? null : (configValues?.optionsUIDs || null);
+  }
+
   await renderFunction(
     $requisitionListSelector,
+    product,
     optionUIDs,
   );
 
-  // Show redirect notification if applicable
-  showRequisitionListRedirectNotification($alert);
+  // Show redirect notification if applicable (only for main PDP)
+  if (!isGridOrdering) {
+    showRequisitionListRedirectNotification($alert);
+  }
+}
+
+/**
+ * Helper function to initialize requisition list for main PDP view
+ * @param {Object} params - Configuration parameters
+ * @param {Object} params.product - Product information
+ * @param {HTMLElement} params.$alert - Container for alerts
+ * @param {HTMLElement} params.$requisitionListSelector - Container for requisition list selector
+ * @param {Object} params.labels - Placeholder labels
+ * @param {URLSearchParams} params.urlParams - URL search parameters
+ * @returns {Promise<void>}
+ */
+export async function initializeRequisitionListForProduct({
+  product,
+  $alert,
+  $requisitionListSelector,
+  labels,
+  urlParams,
+}) {
+  try {
+    await initializeRequisitionList({
+      $alert,
+      $requisitionListSelector,
+      product,
+      labels,
+      urlParams,
+      isGridOrdering: false, // Main PDP always uses PDP event handlers
+    });
+  } catch (error) {
+    // If module fails to load, requisition list features won't be available
+    console.warn('Error initialize requisition list for product:', error);
+  }
 }

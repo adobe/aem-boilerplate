@@ -27,6 +27,7 @@ export * from './removeReplacedItems';
 export * from './mergeDuplicateItems';
 export * from './addOrMergeItems';
 export * from './replaceOrAddItems';
+export * from './collectVariantsData';
 export * from './updateItemInList';
 export * from './buildCartItemsFromForms';
 export * from './productOptionsStorage';

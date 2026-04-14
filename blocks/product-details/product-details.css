@@ -84,6 +84,12 @@
   display: none;
 }
 
+.b2b-quick-order-variants-actions,
+[data-slot="Actions"] {
+    display: flex;
+    gap: var(--spacing-small);
+}
+
 @media (min-width: 900px) {
   .product-details__wrapper {
     grid-template-columns: repeat(var(--grid-3-columns), 1fr);

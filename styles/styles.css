@@ -288,12 +288,18 @@ a:not(.dropin-design a):hover {
 }
 
 /* buttons */
+p.button-wrapper {
+  margin: var(--spacing-small) 0;
+}
+
 main a.button:any-link,
 button.button {
   box-sizing: border-box;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   max-width: 100%;
-  margin: var(--spacing-small) 0;
+  margin: 0;
   border: var(--shape-border-width-3) solid transparent;
   border-radius: var(--shape-border-radius-3);
   padding: 0.5em 1.2em;
@@ -302,7 +308,6 @@ button.button {
   font-style: normal;
   font-weight: 500;
   line-height: 1.25;
-  text-align: center;
   text-decoration: none;
   background-color: var(--color-brand-500);
   color: var(--color-neutral-50);
@@ -310,6 +315,12 @@ button.button {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+a.button[aria-disabled="true"],
+button.button:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 main a.button:hover,
@@ -325,6 +336,32 @@ button.button:disabled,
 button.button:disabled:hover {
   background-color: var(--color-neutral-300);
   cursor: unset;
+}
+
+a.button.primary,
+button.button.primary {
+  border-color: var(--color-brand-500);
+  background-color: var(--color-brand-500);
+  color: var(--color-neutral-50);
+}
+
+a.button.primary:hover,
+a.button.primary:focus-visible,
+button.button.primary:hover,
+button.button.primary:focus-visible {
+  border-color: var(--color-brand-600);
+  background-color: var(--color-brand-600);
+}
+
+a.button.primary[aria-disabled="true"],
+a.button.primary[aria-disabled="true"]:hover,
+a.button.primary[aria-disabled="true"]:focus-visible,
+button.button.primary:disabled,
+button.button.primary:disabled:hover,
+button.button.primary:disabled:focus-visible {
+  background-color: var(--color-neutral-300);
+  border-color: var(--color-neutral-300);
+  color: var(--color-neutral-50);
 }
 
 main a.button.secondary,
@@ -351,13 +388,60 @@ main blockquote {
 }
 
 main blockquote p::before {
-  content: '“';
+  content: ‘;
   line-height: 0;
 }
 
 main blockquote p::after {
-  content: '”';
+  content: ’;
   line-height: 0;
+}
+
+a.button.secondary:hover,
+a.button.secondary:focus-visible,
+button.button.secondary:hover,
+button.button.secondary:focus-visible {
+  border-color: var(--dark-color);
+  background-color: var(--light-color);
+  color: var(--dark-color);
+}
+
+a.button.secondary[aria-disabled="true"],
+a.button.secondary[aria-disabled="true"]:hover,
+a.button.secondary[aria-disabled="true"]:focus-visible,
+button.button.secondary:disabled,
+button.button.secondary:disabled:hover,
+button.button.secondary:disabled:focus-visible {
+  background-color: var(--light-color);
+  border-color: var(--light-color);
+  color: var(--dark-color);
+}
+
+/* high-impact call-to-action */
+a.button.accent,
+button.button.accent {
+  border-color: var(--link-color);
+  background-color: var(--link-color);
+  color: var(--background-color);
+}
+
+a.button.accent:hover,
+a.button.accent:focus-visible,
+button.button.accent:hover,
+button.button.accent:focus-visible {
+  border-color: var(--link-hover-color);
+  background-color: var(--link-hover-color);
+}
+
+a.button.accent[aria-disabled="true"],
+a.button.accent[aria-disabled="true"]:hover,
+a.button.accent[aria-disabled="true"]:focus-visible,
+button.button.accent:disabled,
+button.button.accent:disabled:hover,
+button.button.accent:disabled:focus-visible {
+  background-color: var(--light-color);
+  border-color: var(--light-color);
+  color: var(--dark-color);
 }
 
 main img {

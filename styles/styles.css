@@ -372,9 +372,12 @@ button.button.secondary {
 }
 
 main a.button.secondary:hover,
-button.button.secondary:hover {
+main a.button.secondary:focus-visible,
+button.button.secondary:hover,
+button.button.secondary:focus-visible {
   color: var(--color-brand-600);
 }
+
 
 main input:hover {
   border: var(--shape-border-width-1) solid var(--color-neutral-700);
@@ -388,22 +391,13 @@ main blockquote {
 }
 
 main blockquote p::before {
-  content: ‘;
+  content: '\201C';
   line-height: 0;
 }
 
 main blockquote p::after {
-  content: ’;
+  content: '\201D';
   line-height: 0;
-}
-
-a.button.secondary:hover,
-a.button.secondary:focus-visible,
-button.button.secondary:hover,
-button.button.secondary:focus-visible {
-  border-color: var(--dark-color);
-  background-color: var(--light-color);
-  color: var(--dark-color);
 }
 
 a.button.secondary[aria-disabled="true"],

@@ -444,6 +444,17 @@
           }
         },
         {
+          "title": "Commerce Order Comments",
+          "id": "commerce-order-comments",
+          "model": "commerce-order-comments",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 2
+            }
+          }
+        },
+        {
           "title": "Commerce Order Cost Summary",
           "id": "commerce-order-cost-summary",
           "model": "commerce-order-cost-summary",

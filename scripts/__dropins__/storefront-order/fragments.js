@@ -1,4 +1,4 @@
-const d = `fragment REQUEST_RETURN_ORDER_FRAGMENT on Return {
+const u = `fragment REQUEST_RETURN_ORDER_FRAGMENT on Return {
   __typename
   uid
   status
@@ -119,7 +119,7 @@ const d = `fragment REQUEST_RETURN_ORDER_FRAGMENT on Return {
       product_name
     }
   }
-}`, u = ``, E = `fragment ORDER_ITEM_FRAGMENT on OrderItemInterface {
+}`, s = ``, E = `fragment ORDER_ITEM_FRAGMENT on OrderItemInterface {
   ...ORDER_ITEM_DETAILS_FRAGMENT
   ... on BundleOrderItem {
     ...BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT
@@ -131,7 +131,7 @@ const d = `fragment REQUEST_RETURN_ORDER_FRAGMENT on Return {
     }
   }
 }
-${u}`, i = `fragment ORDER_SUMMARY_FRAGMENT on OrderTotal {
+${s}`, i = `fragment ORDER_SUMMARY_FRAGMENT on OrderTotal {
   gift_options {
     gift_wrapping_for_items {
       currency
@@ -201,7 +201,7 @@ ${u}`, i = `fragment ORDER_SUMMARY_FRAGMENT on OrderTotal {
     }
     label
   }
-}`, o = (`fragment RETURNS_FRAGMENT on Returns {
+}`, d = (`fragment RETURNS_FRAGMENT on Returns {
   __typename
   items {
     number
@@ -289,6 +289,10 @@ ${u}`, i = `fragment ORDER_SUMMARY_FRAGMENT on OrderTotal {
   shipping_method
   available_actions
   is_virtual
+  comments {
+    message
+    timestamp
+  }
   payment_methods {
     name
     type
@@ -352,7 +356,7 @@ ${a}
 ${E}
 ${i}
 ${t}
-${_}`, s = `fragment CUSTOMER_ORDER_FRAGMENT on CustomerOrder {
+${_}`, o = `fragment CUSTOMER_ORDER_FRAGMENT on CustomerOrder {
   printed_card_included
   gift_receipt_included
   gift_wrapping {
@@ -377,6 +381,10 @@ ${_}`, s = `fragment CUSTOMER_ORDER_FRAGMENT on CustomerOrder {
   shipping_method
   available_actions
   is_virtual
+  comments {
+    message
+    timestamp
+  }
   payment_methods {
     name
     type
@@ -463,8 +471,8 @@ export {
 e as ADDRESS_FRAGMENT,
 R as APPLIED_GIFT_CARDS_FRAGMENT,
 n as BUNDLE_ORDER_ITEM_DETAILS_FRAGMENT,
-s as CUSTOMER_ORDER_FRAGMENT,
-u as DOWNLOADABLE_ORDER_ITEMS_FRAGMENT,
+o as CUSTOMER_ORDER_FRAGMENT,
+s as DOWNLOADABLE_ORDER_ITEMS_FRAGMENT,
 r as GIFT_CARD_DETAILS_FRAGMENT,
 T as GIFT_MESSAGE_FRAGMENT,
 c as GIFT_WRAPPING_FRAGMENT,
@@ -476,6 +484,6 @@ G as PLACE_NEGOTIABLE_QUOTE_ORDER_FRAGMENT,
 m as PLACE_ORDER_FRAGMENT,
 t as PRICE_DETAILS_FRAGMENT,
 _ as PRODUCT_DETAILS_FRAGMENT,
-d as REQUEST_RETURN_ORDER_FRAGMENT,
-o as RETURNS_FRAGMENT
+u as REQUEST_RETURN_ORDER_FRAGMENT,
+d as RETURNS_FRAGMENT
 };

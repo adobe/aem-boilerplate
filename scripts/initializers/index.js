@@ -101,6 +101,42 @@ export default async function initializeDropins() {
     // Fetch global placeholders
     await fetchPlaceholders('placeholders/global.json');
 
+    /**
+     * Persist sessionStorage across tabs via localStorage proxy
+     * This ensures that the company context is available in all tabs
+     * and that the company context is not lost when the tab is closed
+     * or the browser is closed.
+     */
+    const SYNC_KEYS = [
+      'DROPIN__COMPANYSWITCHER__COMPANY__CONTEXT',
+      'DROPIN__COMPANYSWITCHER__GROUP__CONTEXT',
+    ];
+
+    SYNC_KEYS.forEach((key) => {
+      const sessionValue = sessionStorage.getItem(key);
+      if (sessionValue) {
+        // Session has value — mirror it to localStorage for other tabs
+        localStorage.setItem(key, sessionValue);
+      } else {
+        // Session is empty (new tab) — restore from localStorage if available
+        const localValue = localStorage.getItem(key);
+        if (localValue) {
+          sessionStorage.setItem(key, localValue);
+        }
+      }
+    });
+
+    // Sync cross-tab changes in localStorage to sessionStorage
+    window.addEventListener('storage', (event) => {
+      if (event.key && SYNC_KEYS.includes(event.key)) {
+        if (event.newValue === null) {
+          sessionStorage.removeItem(event.key);
+        } else {
+          sessionStorage.setItem(event.key, event.newValue);
+        }
+      }
+    });
+
     /*
      * Set the company context before initializing the auth drop-in
      * This ensures proper permissions are retrieved, and the auth/permissions event includes
@@ -113,6 +149,15 @@ export default async function initializeDropins() {
 
     // Initialize Global Drop-ins
     await import('./auth.js');
+
+    // Clear company context from localStorage when not authenticated
+    events.on('authenticated', (isAuthenticated) => {
+      if (!isAuthenticated) {
+        SYNC_KEYS.forEach((key) => {
+          localStorage.removeItem(key);
+        });
+      }
+    }, { eager: true });
 
     // Initialize Company Switcher
     const authenticated = events.lastPayload('authenticated');

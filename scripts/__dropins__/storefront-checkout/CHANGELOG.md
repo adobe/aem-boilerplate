@@ -1,5 +1,11 @@
 # @dropins/storefront-checkout
 
+## 3.2.1-beta.0
+
+### Patch Changes
+
+- 5c0df16: Pass `additionalData` to `setPaymentMethodOnCart` to support Payment Services vault and other methods requiring extra mutation fields.
+
 ## 3.2.0
 
 ### Minor Changes

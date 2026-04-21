@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const GET_RECOMMENDATIONS_QUERY: string;
-//# sourceMappingURL=GetRecommendationsQuery.d.ts.map
+export declare const GET_RECOMMENDATIONS_BY_UNIT_IDS_QUERY: string;
+//# sourceMappingURL=GetRecommendationsByUnitIdsQuery.d.ts.map

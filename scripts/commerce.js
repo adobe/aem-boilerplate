@@ -739,14 +739,14 @@ function trackHistory() {
   const storeViewCode = getConfigValue('headers.cs.Magento-Store-View-Code');
   window.adobeDataLayer.push((dl) => {
     dl.addEventListener('adobeDataLayer:change', (event) => {
-      if (!event.productContext) {
+      if (!event.productContext || !event.productContext.sku) {
         return;
       }
       const key = `${storeViewCode}:productViewHistory`;
       let viewHistory = JSON.parse(window.localStorage.getItem(key) || '[]');
       viewHistory = viewHistory.filter((item) => item.sku !== event.productContext.sku);
       viewHistory.push({ date: new Date().toISOString(), sku: event.productContext.sku });
-      window.localStorage.setItem(key, JSON.stringify(viewHistory.slice(-10)));
+      window.localStorage.setItem(key, JSON.stringify(viewHistory.slice(-20)));
     }, { path: 'productContext' });
     dl.addEventListener('place-order', () => {
       const shoppingCartContext = dl.getState('shoppingCartContext');

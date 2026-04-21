@@ -37,18 +37,13 @@
       {
         "component": "reference",
         "name": "image",
-        "hidden": true,
-        "multi": false
-      },
-      {
-        "component": "reference",
-        "name": "img:nth-child(3)[src]",
         "label": "Image",
-        "multi": false
+        "multi": false,
+        "valueType": "string"
       },
       {
         "component": "text",
-        "name": "img:nth-child(3)[alt]",
+        "name": "imageAlt",
         "label": "Alt Text"
       }
     ]

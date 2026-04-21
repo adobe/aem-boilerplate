@@ -21,7 +21,8 @@ import {
   assertOrderConfirmationShippingMethod,
   assertSelectedPaymentMethod,
   assertAuthUser,
-  assertOrderImageDisplay
+  assertOrderImageDisplay,
+  assertOrderCommentsVisible,
 } from "../../assertions";
 import {
   customerShippingAddress,
@@ -238,6 +239,10 @@ describe("Verify auth user can place order", () => {
       const orderRef = url.split("?")[1];
       cy.visit("/order-details?" + orderRef);
     });
+
+    // ORDER COMMENTS
+    assertOrderCommentsVisible();
+
     // CANCEL ORDER
     cy.get(fields.cancelButton).should("exist");
     cy.percyTakeSnapshot('Order Details');

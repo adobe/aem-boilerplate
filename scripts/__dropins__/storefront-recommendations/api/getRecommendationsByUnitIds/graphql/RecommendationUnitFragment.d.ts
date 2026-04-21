@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export * from './getRecommendations';
-//# sourceMappingURL=index.d.ts.map
+export declare const RECOMMENDATION_UNIT_FRAGMENT: string;
+//# sourceMappingURL=RecommendationUnitFragment.d.ts.map

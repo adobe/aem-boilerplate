@@ -16,8 +16,9 @@ import {
   assertOrderConfirmationShippingDetails,
   assertOrderConfirmationBillingDetails,
   assertOrderConfirmationShippingMethod,
+  assertSelectedPaymentMethod,
+  assertOrderCommentsVisible,
 } from "../../assertions";
-import { assertSelectedPaymentMethod } from "../../assertions";
 import {
   customerShippingAddress,
   paymentServicesCreditCard,
@@ -125,6 +126,9 @@ describe("Verify guest user can place order", () => {
       const orderRef = url.split("?")[1];
       cy.visit("/order-details?" + orderRef);
     });
+
+    // ORDER COMMENTS
+    assertOrderCommentsVisible();
 
     // CANCEL ORDER
     cy.get(fields.cancelButton).should("exist");

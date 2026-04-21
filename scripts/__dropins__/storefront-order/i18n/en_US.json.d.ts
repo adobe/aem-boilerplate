@@ -27,6 +27,10 @@ declare const _default: {
         "backStore": "Back to order"
       }
     },
+    "OrderComments": {
+      "emptyState": "No order comments.",
+      "title": "Order comments"
+    },
     "OrderCostSummary": {
       "headerText": "Order summary",
       "headerReturnText": "Return summary",

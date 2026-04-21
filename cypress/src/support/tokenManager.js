@@ -1,5 +1,5 @@
 // tokenManager.js
-const axios = require('axios');
+const httpClient = require('./httpClient');
 const path = require('path');
 
 // Safe dotenv configuration that handles missing TTY
@@ -40,7 +40,7 @@ class TokenManager {
 
   async generateToken() {
     try {
-      const response = await axios({
+      const response = await httpClient({
         method: 'POST',
         url: 'https://ims-na1.adobelogin.com/ims/token/v3',
         headers: {
@@ -61,7 +61,7 @@ class TokenManager {
       safeLog('Token generation failed:', error.message);
       
       // If this is a CORS error, provide helpful message
-      if (error.code === 'ERR_NETWORK' || error.message.includes('CORS')) {
+      if (error.message.includes('Failed to fetch') || error.message.includes('CORS')) {
         safeLog('🚨 CORS Error: Adobe IMS requests must run in Node.js context');
       }
       

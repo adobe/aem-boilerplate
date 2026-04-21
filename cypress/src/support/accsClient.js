@@ -1,5 +1,5 @@
 // accsClient.js
-const axios = require('axios');
+const httpClient = require('./httpClient');
 const TokenManager = require('./tokenManager');
 
 class ACCSApiClient {
@@ -33,7 +33,7 @@ class ACCSApiClient {
         }
 
         try {
-            const response = await axios({
+            const response = await httpClient({
                 method,
                 url,
                 headers,

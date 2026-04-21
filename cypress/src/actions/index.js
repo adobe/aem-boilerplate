@@ -1,5 +1,5 @@
-import * as fields from '../fields/index';
 import * as selectors from '../fields';
+import * as fields from '../fields/index';
 
 export const setGuestEmail = (customerEmail) => {
   cy.get(fields.shippingFormGuestEmail).clear().type(customerEmail);
@@ -447,16 +447,13 @@ export const typeInFieldBasedOnText = (textToSearch, enterInput) => {
 export const login = (user, urls) => {
   cy.visit(urls.login);
   cy.get(fields.poLoginForm).within(() => {
-    cy.get(fields.poEmailInput).type(user.email);
-    cy.wait(1500);
-    cy.get(fields.poPasswordInput).type(user.password);
-    cy.wait(1500);
+    cy.get(fields.poEmailInput).type(user.email)
+      .should('have.value', user.email);
+    cy.get(fields.poPasswordInput).type(user.password)
+      .should('have.value', user.password);
     cy.get(fields.poSubmitButton).click();
-    cy.wait(8000);
   });
-  cy.url().should('include', urls.account);
-  // Waiting for session and permissions to initialize
-  cy.wait(3000);
+  cy.url({ timeout: 15000 }).should('include', urls.account);
 };
 
 export const logout = (texts) => {

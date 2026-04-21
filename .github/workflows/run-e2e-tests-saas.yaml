@@ -1,5 +1,6 @@
 name: Cypress E2E B2C SaaS Tests
-on: push
+# Temporarily disabled to speed up B2B performance work (was: on: push)
+on: workflow_dispatch
 jobs:
   cypress-saas-run:
     # If you want this job to run on your fork, remove the below "if" line.

@@ -7,6 +7,35 @@ jobs:
     # demo backend.
     if: github.repository == 'hlxsites/aem-boilerplate-commerce'
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Group A: Isolated company management tests (each creates its own company)
+          - group: group-a
+            specs: >-
+              src/tests/b2b/verifyCompanyRegistration.spec.js,
+              src/tests/b2b/verifyCompanyProfile.spec.js,
+              src/tests/b2b/verifyCompanyUsers.spec.js,
+              src/tests/b2b/verifyCompanyRolesAndPermissions.spec.js,
+              src/tests/b2b/verifyCompanyStructure.spec.js,
+              src/tests/b2b/verifyCompanySwitcher.spec.js,
+              src/tests/b2b/verifyCompanyCredit.spec.js
+          # Group B: Read-only / stateless tests (no company creation, no backend mutation)
+          - group: group-b
+            specs: >-
+              src/tests/b2b/verifyB2BQuickOrder.spec.js,
+              src/tests/b2b/verifyB2BGridOrdering.spec.js
+          # Group C: Hardcoded company tests (both use company_id=13, must run together)
+          - group: group-c
+            specs: >-
+              src/tests/b2b/verifyPurchaseOrders.spec.js,
+              src/tests/b2b/verifyB2BQuoteToOrderPlacement.spec.js
+          # Group D: User-level tests
+          - group: group-d
+            specs: >-
+              src/tests/b2b/verifyB2BRequisitionLists.spec.js,
+              src/tests/b2b/runB2CTests.spec.js
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
@@ -20,12 +49,12 @@ jobs:
         run: npm install -g @adobe/aem-cli
       - name: Start server in the background
         run: aem up --url https://main--boilerplate-b2b-accs--adobe-commerce.aem.live &
-      - name: Install Cypress and run tests
+      - name: Install Cypress and run tests (${{ matrix.group }})
         uses: cypress-io/github-action@v6
         with:
           working-directory: cypress
           wait-on: 'http://localhost:3000'
-          command: npm run cypress:b2b:saas:run
+          command: npx cypress run --config-file cypress.b2b.saas.config.js --env grepTags=@B2BSaas --spec '${{ matrix.specs }}'
         env:
           AEM_ASSETS_PRIVATE_USER: ${{ secrets.AEM_ASSETS_PRIVATE_USER }}
           CYPRESS_API_ENDPOINT: ${{ secrets.CYPRESS_API_ENDPOINT }}
@@ -35,6 +64,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: cypress-screenshots
+          name: cypress-screenshots-${{ matrix.group }}
           path: cypress/screenshots
           if-no-files-found: ignore

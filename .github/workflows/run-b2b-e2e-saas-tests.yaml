@@ -13,29 +13,29 @@ jobs:
         include:
           # Group A: Isolated company management tests (each creates its own company)
           - group: group-a
-            specs: >-
-              src/tests/b2b/verifyCompanyRegistration.spec.js,
-              src/tests/b2b/verifyCompanyProfile.spec.js,
-              src/tests/b2b/verifyCompanyUsers.spec.js,
-              src/tests/b2b/verifyCompanyRolesAndPermissions.spec.js,
-              src/tests/b2b/verifyCompanyStructure.spec.js,
-              src/tests/b2b/verifyCompanySwitcher.spec.js,
-              src/tests/b2b/verifyCompanyCredit.spec.js
+            specs:
+              - src/tests/b2b/verifyCompanyRegistration.spec.js
+              - src/tests/b2b/verifyCompanyProfile.spec.js
+              - src/tests/b2b/verifyCompanyUsers.spec.js
+              - src/tests/b2b/verifyCompanyRolesAndPermissions.spec.js
+              - src/tests/b2b/verifyCompanyStructure.spec.js
+              - src/tests/b2b/verifyCompanySwitcher.spec.js
+              - src/tests/b2b/verifyCompanyCredit.spec.js
           # Group B: Read-only / stateless tests (no company creation, no backend mutation)
           - group: group-b
-            specs: >-
-              src/tests/b2b/verifyB2BQuickOrder.spec.js,
-              src/tests/b2b/verifyB2BGridOrdering.spec.js
+            specs:
+              - src/tests/b2b/verifyB2BQuickOrder.spec.js
+              - src/tests/b2b/verifyB2BGridOrdering.spec.js
           # Group C: Hardcoded company tests (both use company_id=13, must run together)
           - group: group-c
-            specs: >-
-              src/tests/b2b/verifyPurchaseOrders.spec.js,
-              src/tests/b2b/verifyB2BQuoteToOrderPlacement.spec.js
+            specs:
+              - src/tests/b2b/verifyPurchaseOrders.spec.js
+              - src/tests/b2b/verifyB2BQuoteToOrderPlacement.spec.js
           # Group D: User-level tests
           - group: group-d
-            specs: >-
-              src/tests/b2b/verifyB2BRequisitionLists.spec.js,
-              src/tests/b2b/runB2CTests.spec.js
+            specs:
+              - src/tests/b2b/verifyB2BRequisitionLists.spec.js
+              - src/tests/b2b/runB2CTests.spec.js
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
@@ -54,7 +54,7 @@ jobs:
         with:
           working-directory: cypress
           wait-on: 'http://localhost:3000'
-          command: npx cypress run --config-file cypress.b2b.saas.config.js --env grepTags=@B2BSaas --spec '${{ matrix.specs }}'
+          command: npx cypress run --config-file cypress.b2b.saas.config.js --env grepTags=@B2BSaas --spec '${{ join(matrix.specs, ',') }}'
         env:
           AEM_ASSETS_PRIVATE_USER: ${{ secrets.AEM_ASSETS_PRIVATE_USER }}
           CYPRESS_API_ENDPOINT: ${{ secrets.CYPRESS_API_ENDPOINT }}
@@ -67,3 +67,15 @@ jobs:
           name: cypress-screenshots-${{ matrix.group }}
           path: cypress/screenshots
           if-no-files-found: ignore
+
+  cypress-b2b-saas-result:
+    if: always()
+    needs: cypress-b2b-saas-run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check matrix result
+        run: |
+          if [ "${{ needs.cypress-b2b-saas-run.result }}" != "success" ]; then
+            echo "One or more test groups failed: ${{ needs.cypress-b2b-saas-run.result }}"
+            exit 1
+          fi

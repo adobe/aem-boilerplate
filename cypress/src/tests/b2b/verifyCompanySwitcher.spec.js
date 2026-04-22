@@ -56,7 +56,8 @@ import {
   createCompanyRole,
   assignRoleToUser,
   assignCustomerToCompany,
-  cleanupTestCompany,
+  deleteCompanyByEmail,
+  deleteCustomerByEmail,
 } from '../../support/b2bCompanyAPICalls';
 import { baseCompanyData, fullAdminPermissions } from '../../fixtures/companyManagementData';
 
@@ -92,7 +93,33 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
     cy.logToTerminal('🗑️ Cleaning up test data');
     cy.then(async () => {
       try {
-        await cleanupTestCompany();
+        const companyEmails = Cypress.env('createdCompanyEmails') || [];
+        const userEmails = Cypress.env('createdUserEmails') || [];
+
+        // Delete users first (they are assigned to companies)
+        for (const email of userEmails) {
+          try {
+            await deleteCustomerByEmail(email);
+            cy.logToTerminal(`✅ Deleted user: ${email}`);
+          } catch (error) {
+            cy.logToTerminal(`⚠️ User cleanup failed for ${email}: ${error.message}`);
+          }
+        }
+
+        // Then delete companies (and their admins)
+        for (const email of companyEmails) {
+          try {
+            await deleteCompanyByEmail(email);
+            cy.logToTerminal(`✅ Deleted company: ${email}`);
+          } catch (error) {
+            cy.logToTerminal(`⚠️ Company cleanup failed for ${email}: ${error.message}`);
+          }
+        }
+
+        // Clear tracked entities
+        Cypress.env('createdCompanyEmails', null);
+        Cypress.env('createdUserEmails', null);
+
         cy.logToTerminal('✅ Test data cleanup completed');
       } catch (error) {
         cy.logToTerminal(`⚠️ Cleanup failed: ${error.message}`);
@@ -119,6 +146,10 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
       const timestamp = Date.now();
       const randomStr = Math.random().toString(36).substring(2, 8);
 
+      // Track all created entities for cleanup
+      const companyEmails = [];
+      const userEmails = [];
+
       // Use short, unique company names to avoid truncation issues
       const companyAName = `SwitchTestA ${randomStr}`;
       const companyBName = `SwitchTestB ${randomStr}`;
@@ -143,6 +174,8 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
         status: 1,
       });
 
+      companyEmails.push(companyA.company_email);
+      userEmails.push(companyA.company_admin.email);
       cy.logToTerminal(`✅ Company A created: ${companyA.name} (ID: ${companyA.id})`);
 
       // Create Company B
@@ -165,6 +198,8 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
         status: 1,
       });
 
+      companyEmails.push(companyB.company_email);
+      userEmails.push(companyB.company_admin.email);
       cy.logToTerminal(`✅ Company B created: ${companyB.name} (ID: ${companyB.id})`);
 
       // Create shared user
@@ -175,6 +210,7 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
         password: 'Test123!',
       });
 
+      userEmails.push(sharedUser.email);
       cy.logToTerminal(`✅ Shared user created: ${sharedUser.email} (ID: ${sharedUser.id})`);
 
       // Assign shared user to Company A with admin role
@@ -188,10 +224,8 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
       cy.logToTerminal('✅ Shared user assigned to Company B as DEFAULT USER');
 
       // Store for cleanup and tests
-      Cypress.env('currentTestCompanyEmail', companyA.company_email);
-      Cypress.env('currentTestAdminEmail', companyA.company_admin.email);
-      Cypress.env('testCompanyId', companyA.id);
-      Cypress.env('testCompanyName', companyA.name);
+      Cypress.env('createdCompanyEmails', companyEmails);
+      Cypress.env('createdUserEmails', userEmails);
       Cypress.env('companyAId', companyA.id);
       Cypress.env('companyAName', companyA.name);
       Cypress.env('companyAAdminEmail', companyA.company_admin.email);
@@ -534,6 +568,10 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
       const timestamp = Date.now();
       const randomStr = Math.random().toString(36).substring(2, 8);
 
+      // Track all created entities for cleanup
+      const companyEmails = [];
+      const userEmails = [];
+
       // Use short, unique company names to avoid truncation issues
       const companyApprovedName = `Approved ${randomStr}`;
       const companyPendingName = `Pending ${randomStr}`;
@@ -562,6 +600,8 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
         adminPassword: 'Test123!',
         status: 1, // APPROVED
       });
+      companyEmails.push(companyApproved.company_email);
+      userEmails.push(companyApproved.company_admin.email);
       cy.logToTerminal(`✅ Company APPROVED created: ${companyApproved.name} (ID: ${companyApproved.id})`);
 
       // Company 2: PENDING (status: 0)
@@ -583,6 +623,8 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
         adminPassword: 'Test123!',
         status: 0, // PENDING
       });
+      companyEmails.push(companyPending.company_email);
+      userEmails.push(companyPending.company_admin.email);
       cy.logToTerminal(`✅ Company PENDING created: ${companyPending.name} (ID: ${companyPending.id})`);
 
       // Company 3: REJECTED (status: 2) - requires reject_reason
@@ -605,6 +647,8 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
         status: 2, // REJECTED (correct: 0=PENDING, 1=APPROVED, 2=REJECTED, 3=BLOCKED)
         rejectReason: 'Test rejection - company does not meet requirements',
       });
+      companyEmails.push(companyRejected.company_email);
+      userEmails.push(companyRejected.company_admin.email);
       cy.logToTerminal(`✅ Company REJECTED created: ${companyRejected.name} (ID: ${companyRejected.id})`);
 
       // Company 4: BLOCKED (status: 3)
@@ -626,6 +670,8 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
         adminPassword: 'Test123!',
         status: 3, // BLOCKED (correct: 0=PENDING, 1=APPROVED, 2=REJECTED, 3=BLOCKED)
       });
+      companyEmails.push(companyBlocked.company_email);
+      userEmails.push(companyBlocked.company_admin.email);
       cy.logToTerminal(`✅ Company BLOCKED created: ${companyBlocked.name} (ID: ${companyBlocked.id})`);
 
       // Create shared user
@@ -636,6 +682,7 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
         password: 'Test123!',
       });
 
+      userEmails.push(testUser.email);
       cy.logToTerminal(`✅ Test user created: ${testUser.email} (ID: ${testUser.id})`);
 
       // Assign user to all 4 companies
@@ -652,9 +699,8 @@ describe('Company Switcher (Optimized Journey)', { tags: ['@B2BSaas'] }, () => {
       cy.logToTerminal('✅ User assigned to BLOCKED company');
 
       // Store for cleanup and tests
-      Cypress.env('currentTestCompanyEmail', companyApproved.company_email);
-      Cypress.env('currentTestAdminEmail', companyApproved.company_admin.email);
-      Cypress.env('testCompanyId', companyApproved.id);
+      Cypress.env('createdCompanyEmails', companyEmails);
+      Cypress.env('createdUserEmails', userEmails);
       Cypress.env('companyApprovedId', companyApproved.id);
       Cypress.env('companyApprovedName', companyApproved.name);
       Cypress.env('companyPendingName', companyPending.name);

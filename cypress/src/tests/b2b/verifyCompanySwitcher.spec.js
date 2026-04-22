@@ -50,16 +50,16 @@
  * ==========================================================================
  */
 
+import { baseCompanyData, fullAdminPermissions } from '../../fixtures/companyManagementData';
 import {
-  createCompany,
-  createStandaloneCustomer,
-  createCompanyRole,
-  assignRoleToUser,
   assignCustomerToCompany,
+  assignRoleToUser,
+  createCompany,
+  createCompanyRole,
+  createStandaloneCustomer,
   deleteCompanyByEmail,
   deleteCustomerByEmail,
 } from '../../support/b2bCompanyAPICalls';
-import { baseCompanyData, fullAdminPermissions } from '../../fixtures/companyManagementData';
 
 /**
  * Create an admin role with full permissions for a company.

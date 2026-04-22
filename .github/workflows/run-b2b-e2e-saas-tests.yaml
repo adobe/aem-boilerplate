@@ -1,7 +1,7 @@
 name: Cypress E2E B2B SaaS Tests
 on: push
 jobs:
-  cypress-b2b-saas-run:
+  cypress-b2b-saas-groups:
     # If you want this job to run on your fork, remove the below "if" line.
     # You will need to "fix" the tests as they are specific to Adobe Commmerce's
     # demo backend.
@@ -21,21 +21,18 @@ jobs:
               - src/tests/b2b/verifyCompanyStructure.spec.js
               - src/tests/b2b/verifyCompanySwitcher.spec.js
               - src/tests/b2b/verifyCompanyCredit.spec.js
-          # Group B: Read-only / stateless tests (no company creation, no backend mutation)
+          # Group B: Stateless or isolated tests (no shared backend state)
           - group: group-b
             specs:
               - src/tests/b2b/verifyB2BQuickOrder.spec.js
               - src/tests/b2b/verifyB2BGridOrdering.spec.js
-          # Group C: Hardcoded company tests (both use company_id=13, must run together)
+              - src/tests/b2b/verifyB2BRequisitionLists.spec.js
+              - src/tests/b2b/runB2CTests.spec.js
+          # Group C: Dependent tests (share company_id=13, must run together)
           - group: group-c
             specs:
               - src/tests/b2b/verifyPurchaseOrders.spec.js
               - src/tests/b2b/verifyB2BQuoteToOrderPlacement.spec.js
-          # Group D: User-level tests
-          - group: group-d
-            specs:
-              - src/tests/b2b/verifyB2BRequisitionLists.spec.js
-              - src/tests/b2b/runB2CTests.spec.js
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
@@ -68,14 +65,14 @@ jobs:
           path: cypress/screenshots
           if-no-files-found: ignore
 
-  cypress-b2b-saas-result:
+  cypress-b2b-saas-run:
     if: always()
-    needs: cypress-b2b-saas-run
+    needs: cypress-b2b-saas-groups
     runs-on: ubuntu-latest
     steps:
       - name: Check matrix result
         run: |
-          if [ "${{ needs.cypress-b2b-saas-run.result }}" != "success" ]; then
-            echo "One or more test groups failed: ${{ needs.cypress-b2b-saas-run.result }}"
+          if [ "${{ needs.cypress-b2b-saas-groups.result }}" != "success" ]; then
+            echo "One or more test groups failed: ${{ needs.cypress-b2b-saas-groups.result }}"
             exit 1
           fi

@@ -175,9 +175,25 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
-  // eslint-disable-next-line import/no-cycle
-  window.setTimeout(() => import('./delayed.js'), 3000);
-  // load anything that can be postponed to the latest here
+  let delayedTimeout;
+  let loaded = false;
+
+  const loadOnce = () => {
+    if (loaded) return;
+    loaded = true;
+    if (delayedTimeout) clearTimeout(delayedTimeout);
+    // eslint-disable-next-line import/no-cycle
+    import('./delayed.js');
+  };
+
+  // load after 3 seconds fallback
+  delayedTimeout = window.setTimeout(loadOnce, 3000);
+
+  // load on any active user interaction
+  const events = ['scroll', 'click', 'keydown', 'touchstart'];
+  events.forEach((e) => {
+    document.addEventListener(e, loadOnce, { once: true, passive: true });
+  });
 }
 
 async function loadPage() {

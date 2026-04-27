@@ -53,7 +53,7 @@ export default async function decorate(block) {
   const placeholders = await fetchPlaceholders();
 
   const _cart = Cart.getCartDataFromCache();
-
+console.log('Manish:' + JSON.stringify(_cart));
   // Modal state
   let currentModal = null;
   let currentNotification = null;
@@ -201,6 +201,21 @@ export default async function decorate(block) {
         },
 
         Footer: (ctx) => {
+          // Promotion / discount rule labels
+          const promotionsWrapper = document.createElement('div');
+          promotionsWrapper.className = 'cart-item-promotions';
+          ctx.appendChild(promotionsWrapper);
+
+          ctx.onChange((next) => {
+            promotionsWrapper.innerHTML = '';
+            next.item?.discount?.label?.forEach((label) => {
+              const promoDiv = document.createElement('div');
+              promoDiv.className = 'cart-item-promotion-label';
+              promoDiv.textContent = label;
+              promotionsWrapper.appendChild(promoDiv);
+            });
+          });
+
           // Edit Link
           if (ctx.item?.itemType === 'ConfigurableCartItem' && enableUpdatingProduct === 'true') {
             const editLink = document.createElement('div');

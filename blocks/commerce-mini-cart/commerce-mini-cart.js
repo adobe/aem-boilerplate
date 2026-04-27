@@ -204,6 +204,22 @@ export default async function decorate(block) {
           ctx.appendChild(editLinkContainer);
         }
       },
+
+      Footer: (ctx) => {
+        const promotionsWrapper = document.createElement('div');
+        promotionsWrapper.className = 'cart-item-promotions';
+        ctx.appendChild(promotionsWrapper);
+
+        ctx.onChange((next) => {
+          promotionsWrapper.innerHTML = '';
+          next.item?.discount?.label?.forEach((label) => {
+            const promoDiv = document.createElement('div');
+            promoDiv.className = 'cart-item-promotion-label';
+            promoDiv.textContent = label;
+            promotionsWrapper.appendChild(promoDiv);
+          });
+        });
+      },
     },
   })(block);
 

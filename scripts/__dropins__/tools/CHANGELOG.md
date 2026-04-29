@@ -1,5 +1,12 @@
 # @adobe-commerce/elsie
 
+## 1.8.1
+
+### Patch Changes
+
+- e44f618: Fixed `srcset w` descriptors to use actual image widths instead of viewport breakpoints, preventing blurry product images.
+- 46d57ca: Add optional `sizes` prop to the `Image` component so dropins can provide layout-aware sizing hints for more accurate srcset image source selection.
+
 ## 1.8.1-beta.0
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @dropins/storefront-account
 
+## 3.3.0
+
+### Minor Changes
+
+- 573f3e7: Add fieldIdPrefix prop support to the Addresses container
+- 98d4563: Adds stored payment methods to My Account: customers can see saved cards (and similar methods), remove a stored method, and optionally filter by payment method code. Data comes from GraphQL (getCustomerPaymentTokens, deletePaymentToken) or from the event bus when tokens are already on the client. The UI reuses and extends PaymentCard, introduces PaymentMethods / PaymentMethodsWrapper, and includes Storybook, html-host, and unit test coverage across API, transforms, hooks, fixtures, and containers.
+- 3cbdd4f: Adds a confirmation step before removing a stored payment method in My Account: choosing Remove opens a PaymentModal with copy and a preview of the card; Cancel closes without deleting, and Remove confirms and runs the existing delete flow (deletePaymentToken via removeToken). Introduces PaymentModal (component, styles, Storybook, and tests), wires PaymentMethodsWrapper to pending-removal state, extends payment card modal props and English strings, and adds unit tests for the modal and delete confirmation behavior.
+- 01c919b: Add a new component for a Payment Card
+
 ## 3.3.0-beta.0
 
 ### Minor Changes

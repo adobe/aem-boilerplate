@@ -1,0 +1,4 @@
+mountpoints:
+  /:
+    url: https://content.da.live/diva-e-aem/meag-test
+    type: markup

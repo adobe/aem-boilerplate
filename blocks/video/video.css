@@ -1,0 +1,171 @@
+.video {
+  margin: 32px 0;
+}
+
+.video-wrapper {
+  overflow: hidden;
+}
+
+.video-header {
+  background-color: #e4e9ec;
+  padding: 16px 24px;
+}
+
+.video-header h3 {
+  font-family: var(--heading-font-family);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text-color, #353535);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.video-player {
+  position: relative;
+  background: #000;
+}
+
+.video-element {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  bottom: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 20%);
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.video-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.video-big-play {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  line-height: 0;
+  transition: transform 0.2s ease;
+}
+
+.video-big-play svg {
+  width: 72px;
+  height: 72px;
+}
+
+.video-big-play:hover {
+  transform: scale(1.1);
+}
+
+.video-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--accent-color, #003d3f);
+  color: #fff;
+}
+
+.video-controls button {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 4px;
+  line-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.video-controls button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.video-controls button:hover {
+  opacity: 0.8;
+}
+
+.video-time {
+  font-size: 12px;
+  font-family: var(--body-font-family);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.video-separator {
+  margin: 0 2px;
+  opacity: 0.6;
+}
+
+.video-progress {
+  flex: 1;
+  height: 4px;
+  background: rgb(255 255 255 / 30%);
+  cursor: pointer;
+  border-radius: 2px;
+  overflow: hidden;
+  min-width: 60px;
+}
+
+.video-progress-bar {
+  height: 100%;
+  width: 0;
+  background: #fff;
+  transition: width 0.1s linear;
+}
+
+@media (width >= 600px) {
+  .video-header {
+    padding: 20px 32px;
+  }
+
+  .video-header h3 {
+    font-size: 22px;
+  }
+
+  .video-controls {
+    padding: 14px 24px;
+    gap: 16px;
+  }
+
+  .video-time {
+    font-size: 13px;
+  }
+}
+
+@media (width >= 900px) {
+  .video-header {
+    padding: 24px 40px;
+  }
+
+  .video-header h3 {
+    font-size: 24px;
+  }
+
+  .video-controls {
+    padding: 16px 32px;
+    gap: 20px;
+  }
+
+  .video-controls button svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .video-time {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "url": "https://www.meag.com/index_en.html",
+  "path": "index-en",
+  "timestamp": "2026-04-29T17:01:00.297Z",
+  "title": "A Munich Re company – MEAG MUNICH ERGO AssetManagement",
+  "template": "homepage",
+  "blocks": [
+    "hero-carousel",
+    "embed",
+    "carousel-quotes",
+    "cards-teaser",
+    "columns-nav",
+    "cards-icon"
+  ]
+}

@@ -1,36 +1,41 @@
-/* stylelint-disable max-line-length */
-@font-face {
-  font-family: roboto-condensed;
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('../fonts/roboto-condensed-bold.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
+/* MEAG Fonts - FF Meta and Meta Serif (self-hosted) */
 
 @font-face {
-  font-family: roboto;
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url('../fonts/roboto-bold.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: roboto;
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('../fonts/roboto-medium.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: roboto;
+  font-family: meta;
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('../fonts/roboto-regular.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url('https://www.meag.com/data/medien/MetaCompPro-Book-W01-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: meta;
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('https://www.meag.com/data/medien/MetaCompPro-Medium-W01-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: meta;
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('https://www.meag.com/data/medien/MetaCompPro-Bold-W01-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: meta;
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://www.meag.com/data/medien/MetaCompPro-BookIta.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: metaserif;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://www.meag.com/data/medien/Meta-Serif-W01-Book.woff2') format('woff2');
 }

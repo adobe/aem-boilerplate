@@ -1,0 +1,128 @@
+{
+  "metadata": {
+    "projectType": "da"
+  },
+  "templates": [
+    {
+      "name": "homepage",
+      "urls": [
+        "https://www.meag.com/index_en.html"
+      ],
+      "description": "MEAG homepage - main landing page with company overview and key information",
+      "blocks": [
+        {
+          "name": "hero-carousel",
+          "instances": [
+            ".stageHome"
+          ]
+        },
+        {
+          "name": "embed",
+          "instances": [
+            ".videoplayer"
+          ]
+        },
+        {
+          "name": "carousel-quotes",
+          "instances": [
+            ".sliderCite"
+          ]
+        },
+        {
+          "name": "cards-teaser",
+          "instances": [
+            ".full-width-image-text-teaser"
+          ]
+        },
+        {
+          "name": "columns-nav",
+          "instances": [
+            ".quickNavigation"
+          ]
+        },
+        {
+          "name": "cards-icon",
+          "instances": [
+            ".image-text-teaser"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Hero Stage",
+          "selector": ".stageHome",
+          "style": null,
+          "blocks": [
+            "hero-carousel"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-2",
+          "name": "Company Introduction",
+          "selector": ".text-with-initial",
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            ".text-with-initial__header",
+            ".text-with-initial__content-wrapper"
+          ]
+        },
+        {
+          "id": "section-3",
+          "name": "Video Section",
+          "selector": ".videoplayer",
+          "style": null,
+          "blocks": [
+            "embed"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-4",
+          "name": "Employee Quotes",
+          "selector": ".sliderCite",
+          "style": null,
+          "blocks": [
+            "carousel-quotes"
+          ],
+          "defaultContent": [
+            ".rich-text-content",
+            ".sliderCite__links"
+          ]
+        },
+        {
+          "id": "section-5",
+          "name": "Awarded Expertise",
+          "selector": ".full-width-image-text-teaser",
+          "style": null,
+          "blocks": [
+            "cards-teaser"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-6",
+          "name": "Quick Navigation",
+          "selector": ".quickNavigation",
+          "style": null,
+          "blocks": [
+            "columns-nav"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "section-7",
+          "name": "Commitment and Values",
+          "selector": ".image-text-teaser",
+          "style": null,
+          "blocks": [
+            "cards-icon"
+          ],
+          "defaultContent": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,187 @@
+.carousel-quotes {
+  background-color: var(--accent-color, #003d3f);
+  padding: 48px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-quotes-wrapper {
+  max-width: unset;
+  padding: 0;
+}
+
+.carousel-quotes-wrapper .carousel-quotes {
+  max-width: unset;
+}
+
+.carousel-quotes-heading {
+  font-family: var(--heading-font-family);
+  font-size: clamp(24px, 4vw, 38px);
+  font-weight: 400;
+  color: #fff;
+  margin: 0 0 32px;
+  max-width: var(--content-max-width, 1024px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.carousel-quotes-slider {
+  position: relative;
+  max-width: var(--content-max-width, 1024px);
+  margin: 0 auto;
+  min-height: 300px;
+}
+
+.carousel-quotes-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+
+.carousel-quotes-slide.active {
+  position: relative;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.carousel-quotes-image {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 280px;
+}
+
+.carousel-quotes-image img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-quotes-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+}
+
+.carousel-quotes-content blockquote {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.carousel-quotes-content blockquote p {
+  font-family: var(--heading-font-family);
+  font-size: clamp(16px, 2.5vw, 20px);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.5;
+  color: #fff;
+  margin: 0;
+}
+
+.carousel-quotes-content cite {
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  color: #fff;
+  display: block;
+}
+
+.carousel-quotes-nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 32px;
+  max-width: var(--content-max-width, 1024px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.carousel-quotes-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgb(255 255 255 / 50%);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.carousel-quotes-dot.active {
+  background: #fff;
+  border-color: #fff;
+}
+
+.carousel-quotes-dot:hover {
+  border-color: #fff;
+}
+
+@media (width >= 600px) {
+  .carousel-quotes {
+    padding: 64px 48px;
+  }
+
+  .carousel-quotes-slide {
+    flex-direction: row;
+    gap: 40px;
+    align-items: stretch;
+  }
+
+  .carousel-quotes-image {
+    width: 40%;
+    max-width: 320px;
+  }
+
+  .carousel-quotes-image img {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+
+  .carousel-quotes-content blockquote p {
+    font-size: 18px;
+  }
+
+  .carousel-quotes-nav {
+    justify-content: flex-start;
+    margin-top: 40px;
+  }
+}
+
+@media (width >= 900px) {
+  .carousel-quotes {
+    padding: 80px 64px;
+  }
+
+  .carousel-quotes-heading {
+    margin-bottom: 48px;
+  }
+
+  .carousel-quotes-slide {
+    gap: 60px;
+  }
+
+  .carousel-quotes-image {
+    width: 35%;
+    max-width: 360px;
+  }
+
+  .carousel-quotes-content blockquote p {
+    font-size: 20px;
+  }
+
+  .carousel-quotes-content cite {
+    font-size: 16px;
+  }
+
+  .carousel-quotes-slider {
+    min-height: 350px;
+  }
+}

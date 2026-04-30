@@ -107,6 +107,9 @@ declare const _default: {
         },
         "OrdersList": {
           "message": "No orders"
+        },
+        "Payments": {
+          "message": "No saved payments"
         }
       }
     },
@@ -170,6 +173,9 @@ declare const _default: {
         },
         "OrdersList": {
           "message": "No orders"
+        },
+        "Payments": {
+          "message": "No saved payments"
         }
       }
     },
@@ -209,6 +215,22 @@ declare const _default: {
       "subtitle": "To ensure accurate delivery, we suggest the changes highlighted below. Please choose which address you would like to use. If neither option is correct, edit your address.",
       "suggestedAddress": "Suggested Address",
       "originalAddress": "Original Address"
+    },
+    "Payments": {
+      "containerTitle": "Payments",
+      "loadError": "We couldn’t load your saved payment methods. Try again later.",
+      "removeError": "We couldn’t remove this payment method. Try again.",
+      "paymentCard": {
+        "actionRemove": "Remove",
+        "cardEndingIn": "Credit card ending in",
+        "expiredLabel": "Expired"
+      },
+      "removePaymentModal": {
+        "title": "Remove Payment Method",
+        "description": "Are you sure you would like to remove this payment method?",
+        "actionCancel": "Cancel",
+        "actionConfirm": "Remove"
+      }
     }
   }
 }

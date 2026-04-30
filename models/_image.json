@@ -3,33 +3,39 @@
     {
       "title": "Image",
       "id": "image",
+      "model": "image",
       "plugins": {
         "da": {
           "name": "image",
-          "type": "image"
+          "type": "image",
+          "fields": [
+            {
+              "name": "imageAlt",
+              "selector": "img[alt]"
+            },
+            {
+              "name": "image",
+              "selector": "img[src]"
+            }
+          ]
         }
       }
     }
   ],
-  "models": [
+"models": [
     {
       "id": "image",
       "fields": [
         {
           "component": "reference",
           "name": "image",
-          "hidden": true,
-          "multi": false
-        },
-        {
-          "component": "reference",
-          "name": "img:nth-child(3)[src]",
           "label": "Image",
-          "multi": false
+          "multi": false,
+          "valueType": "string"
         },
         {
           "component": "text",
-          "name": "img:nth-child(3)[alt]",
+          "name": "imageAlt",
           "label": "Alt Text"
         }
       ]

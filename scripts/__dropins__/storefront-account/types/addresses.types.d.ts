@@ -14,6 +14,7 @@ export interface AddressCardContext {
 }
 export interface AddressesProps {
     hideActionFormButtons?: boolean;
+    fieldIdPrefix?: string;
     formName?: string;
     slots?: {
         [key: string]: SlotProps;

@@ -1,4 +1,4 @@
-import { AvailableActionsProps, MoneyProps, QueryType } from '../../types';
+import { AvailableActionsProps, MoneyProps, OrderCommentItem, QueryType } from '../../types';
 import { OrdersReturnPropsModel } from './customer-orders-return';
 
 export type OrderAddressModel = {
@@ -170,10 +170,7 @@ export type ShipmentsModel = {
     id: string;
     number: string;
     tracking: ShipmentsTracingModel[];
-    comments: {
-        message: string;
-        timestamp: string;
-    }[];
+    comments: OrderCommentItem[];
     items: ShipmentItemsModel[];
 };
 export type OrderDataModel = {
@@ -196,6 +193,7 @@ export type OrderDataModel = {
     shippingMethod?: string;
     carrier?: string;
     orderDate: string;
+    comments: OrderCommentItem[];
     returns: OrdersReturnPropsModel[];
     discounts: {
         amount: MoneyProps;

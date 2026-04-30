@@ -22,6 +22,7 @@ export interface ProductModel {
     externalId?: string;
     externalParentId?: string;
     variantSku?: string;
+    variantName?: string;
     productType?: ProductType | undefined;
 }
 interface Image {

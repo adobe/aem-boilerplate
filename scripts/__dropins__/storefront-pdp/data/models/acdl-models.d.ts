@@ -22,6 +22,7 @@ export type Product = {
     name: string;
     sku: string;
     topLevelSku?: string | null;
+    variantName?: string | null;
     specialToDate?: string | null;
     specialFromDate?: string | null;
     newToDate?: string | null;

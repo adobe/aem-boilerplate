@@ -35,6 +35,7 @@ export * from './orderCostSummary.types';
 export * from './orderHeader.types';
 export * from './orderProductList.types';
 export * from './orderSearch.types';
+export * from './orderComments.types';
 export * from './orderStatus.types';
 export * from './reorder.types';
 export * from './returnsList.types';

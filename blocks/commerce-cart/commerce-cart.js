@@ -201,30 +201,6 @@ console.log('Manish:' + JSON.stringify(_cart));
           });
         },
 
-        ItemTotal: (ctx) => {
-          if (!ctx.item?.isFreeGift) return;
-          const { item } = ctx;
-          const currency = item.total?.currency || item.regularPrice?.currency;
-          const originalTotal = (item.regularPrice?.value ?? 0) * (item.quantity ?? 1);
-
-          ctx.replaceWith(document.createRange().createContextualFragment('<span></span>').firstChild);
-          const wrapper = ctx.parentElement ?? ctx;
-
-          UI.render(Price, {
-            amount: originalTotal,
-            currency,
-            variant: 'strikethrough',
-          })(wrapper);
-
-          const saleEl = document.createElement('span');
-          wrapper.appendChild(saleEl);
-          UI.render(Price, {
-            amount: 0,
-            currency,
-            sale: true,
-          })(saleEl);
-        },
-
         Footer: (ctx) => {
           // Promotion / discount rule labels
           const promotionsWrapper = document.createElement('div');

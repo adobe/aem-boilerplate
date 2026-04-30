@@ -19,7 +19,7 @@
   display: block;
 }
 
-@media (width >= 900px) {
+@media (min-width: 900px) {
   .columns > div {
     align-items: center;
     flex-direction: unset;

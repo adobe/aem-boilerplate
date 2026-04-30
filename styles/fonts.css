@@ -5,7 +5,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://www.meag.com/data/medien/MetaCompPro-Book-W01-Regular.woff2') format('woff2');
+  src: url('../fonts/meta-book.woff2') format('woff2');
 }
 
 @font-face {
@@ -13,7 +13,7 @@
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('https://www.meag.com/data/medien/MetaCompPro-Medium-W01-Regular.woff2') format('woff2');
+  src: url('../fonts/meta-medium.woff2') format('woff2');
 }
 
 @font-face {
@@ -21,7 +21,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('https://www.meag.com/data/medien/MetaCompPro-Bold-W01-Regular.woff2') format('woff2');
+  src: url('../fonts/meta-bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -29,7 +29,7 @@
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url('https://www.meag.com/data/medien/MetaCompPro-BookIta.woff2') format('woff2');
+  src: url('../fonts/meta-book-italic.woff2') format('woff2');
 }
 
 @font-face {
@@ -37,5 +37,5 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://www.meag.com/data/medien/Meta-Serif-W01-Book.woff2') format('woff2');
+  src: url('../fonts/meta-serif-book.woff2') format('woff2');
 }

@@ -529,7 +529,23 @@ export const renderCartSummaryList = async (container) => renderContainer(
             },
           });
         },
-        Footer: renderCartGiftOptions,
+        Footer: (ctx) => {
+          // Promotion / discount rule labels
+          const promotionsWrapper = document.createElement('div');
+          promotionsWrapper.className = 'cart-item-promotions';
+          ctx.onChange((next) => {
+            promotionsWrapper.innerHTML = '';
+            next.item?.discount?.label?.forEach((label) => {
+              const promoDiv = document.createElement('div');
+              promoDiv.className = 'cart-item-promotion-label';
+              promoDiv.textContent = label;
+              promotionsWrapper.appendChild(promoDiv);
+            });
+          });
+          ctx.appendChild(promotionsWrapper);
+          // Gift Options
+          renderCartGiftOptions(ctx);
+        },
       },
     })(container);
   },

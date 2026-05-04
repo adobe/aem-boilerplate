@@ -54,7 +54,7 @@ export default async function decorate(block) {
   const placeholders = await fetchPlaceholders();
 
   const _cart = Cart.getCartDataFromCache();
-console.log('Manish:' + JSON.stringify(_cart));
+  
   // Modal state
   let currentModal = null;
   let currentNotification = null;

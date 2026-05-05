@@ -24,6 +24,8 @@ export * from './getRegions';
 export * from './updateCustomerAddress';
 export * from './getCustomer';
 export * from './removeCustomerAddress';
+export * from './getCustomerPaymentTokens';
+export * from './deletePaymentToken';
 export * from './getOrderHistoryList';
 export * from './updateCustomerPassword';
 export * from './getStoreConfig';

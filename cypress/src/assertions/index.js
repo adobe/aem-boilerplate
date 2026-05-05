@@ -384,6 +384,22 @@ export const assertImageListDisplay = (selector, limit = null) => {
 };
 
 
+export const assertOrderCommentsVisible = () => {
+  cy.get('.commerce-order-comments').should('exist');
+  cy.get(fields.orderCommentsContainer).should('be.visible');
+};
+
+export const assertOrderCommentsEmpty = () => {
+  cy.get(fields.orderCommentsEmpty).should('exist');
+  cy.get(fields.orderCommentsEmptyState).should('be.visible');
+};
+
+export const assertOrderCommentItem = (text) => {
+  cy.get(fields.orderCommentsItem)
+    .should('exist')
+    .and('contain.text', text);
+};
+
 export const assertSearchResults = () => {
   // Check if search results are displayed
   cy.get(fields.productListGrid)

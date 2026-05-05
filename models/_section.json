@@ -147,6 +147,7 @@
         "commerce-gift-options",
         "commerce-login",
         "commerce-mini-cart",
+        "commerce-order-comments",
         "commerce-order-cost-summary",
         "commerce-order-header",
         "commerce-order-product-list",

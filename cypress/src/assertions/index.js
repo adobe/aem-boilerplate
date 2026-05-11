@@ -400,6 +400,21 @@ export const assertOrderCommentItem = (text) => {
     .and('contain.text', text);
 };
 
+/**
+ * Each cart line should include the promotion-labels region (may be empty when no rules apply).
+ */
+export const assertEachCartLineHasPromotionLabelsRegion = (rootSelector) => {
+  cy.get(rootSelector).should('exist');
+  cy.get(rootSelector)
+    .find('.dropin-cart-item')
+    .should('have.length.at.least', 1);
+  cy.get(rootSelector)
+    .find('.dropin-cart-item')
+    .each(($item) => {
+      cy.wrap($item).find(fields.cartItemPromotions).should('exist');
+    });
+};
+
 export const assertSearchResults = () => {
   // Check if search results are displayed
   cy.get(fields.productListGrid)

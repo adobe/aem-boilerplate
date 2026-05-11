@@ -23,6 +23,7 @@ No localStorage keys are used by this block. -->
 
 #### Event Listeners
 
+- `events.on('pdp/data', callback)` - Listens for product/variant data changes to track stock status (`inStock`) and gate the add to cart button when out of stock
 - `events.on('pdp/valid', callback)` - Listens for product configuration validity changes to enable/disable add to cart button
 - `events.on('pdp/values', callback)` - Listens for product option value changes to update wishlist context
 - `events.on('wishlist/alert', callback)` - Listens for wishlist action alerts to show notifications
@@ -40,6 +41,7 @@ No events are emitted by this block. -->
 - **Add Mode**: When no itemUid in URL, operates in add-to-cart mode
 - **Update Mode**: When itemUid in URL, operates in update-cart mode with different button text and behavior
 - **Product Configuration**: Validates product options and enables/disables add to cart button accordingly
+- **Stock Status**: Disables the add to cart button when the current product or refined variant is out of stock. Stock gating is layered on top of configuration validity, so the button is disabled if either signal indicates the product cannot be added.
 - **Wishlist Context**: Updates wishlist context based on current product configuration
 
 ### User Interaction Flows

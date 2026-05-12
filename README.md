@@ -11,6 +11,7 @@ Before using the aem-boilerplate, we recommend you to go through the documentati
 1. [AEM Authoring](https://www.aem.live/docs/aem-authoring)
 2. [Universal Editor Tutorial](https://www.aem.live/developer/ue-tutorial)
 3. [Component Model Definitions](https://www.aem.live/developer/component-model-definitions)
+4. [Authoring Path Mapping](https://www.aem.live/developer/authoring-path-mapping)
 
 ## Prerequisites
 

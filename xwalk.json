@@ -1,0 +1,14 @@
+{
+  "public": {
+    "xwalk": {
+      "multi-field": {
+        "enabled": true
+      },
+      "content-fragment-overlay": {
+        "/content/dam/aem-boilerplate-xwalk/**": {
+          "includes": ["*"]
+        }
+      }
+    }
+  }
+}

@@ -10,8 +10,7 @@ Your project's description...
 Before using the aem-boilerplate, we recommend you to go through the documentation on [www.aem.live](https://www.aem.live/docs/), more specifically:
 1. [AEM Authoring](https://www.aem.live/docs/aem-authoring)
 2. [Universal Editor Tutorial](https://www.aem.live/developer/ue-tutorial)
-3. [The Anatomy of a Project](https://www.aem.live/developer/anatomy-of-a-project)
-4. [Component Model Definitions](https://www.aem.live/developer/component-model-definitions)
+3. [Component Model Definitions](https://www.aem.live/developer/component-model-definitions)
 
 ## Prerequisites
 

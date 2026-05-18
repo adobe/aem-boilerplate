@@ -186,29 +186,32 @@ export default async function decorate(block) {
                 UI.render(Button, {
                   children: labels.Global?.AddProductToCart,
                   icon: Icon({ source: 'Cart' }),
-                  onClick: (event) => {
-                    cartApi.addProductsToCart([
-                      { sku: ctx.item.sku, quantity: 1 },
-                    ]);
-                    // Prevent the click event from bubbling up to the parent span
-                    // to avoid triggering the recs-item-click event
-                    event.stopPropagation();
-                    // Publish ACDL event for add to cart click
-                    const recommendationUnit = recommendationsData?.find(
-                      (unit) => unit.items?.some(
-                        (unitItem) => unitItem.sku === ctx.item.sku,
-                      ),
-                    );
-                    publishRecsItemAddToCartClick({
-                      recommendationUnit,
-                      pagePlacement: 'product-list',
-                      yOffsetTop: addToCart.getBoundingClientRect().top ?? 0,
-                      yOffsetBottom:
-                        addToCart.getBoundingClientRect().bottom ?? 0,
-                      productId: ctx.index,
-                    });
-                  },
+                  onClick: ctx.item.inStock
+                    ? (event) => {
+                      cartApi.addProductsToCart([
+                        { sku: ctx.item.sku, quantity: 1 },
+                      ]);
+                      // Prevent the click event from bubbling up to the parent span
+                      // to avoid triggering the recs-item-click event
+                      event.stopPropagation();
+                      // Publish ACDL event for add to cart click
+                      const recommendationUnit = recommendationsData?.find(
+                        (unit) => unit.items?.some(
+                          (unitItem) => unitItem.sku === ctx.item.sku,
+                        ),
+                      );
+                      publishRecsItemAddToCartClick({
+                        recommendationUnit,
+                        pagePlacement: 'product-list',
+                        yOffsetTop: addToCart.getBoundingClientRect().top ?? 0,
+                        yOffsetBottom:
+                          addToCart.getBoundingClientRect().bottom ?? 0,
+                        productId: ctx.index,
+                      });
+                    }
+                    : undefined,
                   variant: 'primary',
+                  disabled: !ctx.item.inStock,
                 })(addToCart);
               } else {
                 // Select Options Button

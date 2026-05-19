@@ -7,6 +7,7 @@ const e=`
     sku
     queryType
     visibility
+    inStock
     images {
       url
     }

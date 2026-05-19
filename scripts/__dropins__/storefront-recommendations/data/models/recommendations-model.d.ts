@@ -39,6 +39,7 @@ export interface Item {
     visibility: string;
     queryType: string;
     itemType: string;
+    inStock?: boolean;
 }
 interface ItemImage {
     label: string;

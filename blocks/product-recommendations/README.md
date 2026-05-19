@@ -10,8 +10,9 @@ The Product Recommendations block provides personalized product recommendations 
 
 | Configuration Key | Type | Default | Description | Required | Side Effects |
 |-------------------|------|---------|-------------|----------|--------------|
-| `currentsku` | string | undefined | Current product SKU for recommendation context | No | Sets the current product context for recommendations |
-| `recid` | string | undefined | Recommendation ID for targeting specific recommendation types | No | Identifies which recommendation algorithm to use |
+| `currentsku` | string | undefined | Explicit current product SKU. On a PDP this is sourced automatically from ACDL `productContext`; use this field on non-PDP pages only. | No | Overrides ACDL-derived SKU |
+| `currentprice` | number | undefined | Explicit current product price (anchor price for filtering). On a PDP price is sourced automatically from ACDL `productContext.pricing` (`specialPrice ?? regularPrice`); use this field on non-PDP pages only. | No | Overrides ACDL-derived price; enables price-based recommendation filtering |
+| `recid` | string | undefined | Recommendation unit ID to render | No | Identifies which recommendation unit to fetch |
 
 <!-- ### URL Parameters
 
@@ -26,12 +27,12 @@ No URL parameters directly affect this block's behavior. -->
 
 #### Event Listeners
 
-- `events.on('recommendations/data', callback)` - Listens for recommendation data updates with eager loading
-- Adobe Data Layer event listeners for page context, product context, category context, and shopping cart context changes
+- Adobe Data Layer (`adobeDataLayer:change`) for `pageContext`, `productContext`, `categoryContext`, and `shoppingCartContext` — triggers recommendation reload on significant changes
+- `productContext` changes also extract `pricing` (SKU + `specialPrice ?? regularPrice`) and pass it to the dropin as the `currentProduct` prop
 
 #### Event Emitters
 
-- `publishRecsItemAddToCartClick()` - Emits recommendation analytics events when items are added to cart
+- `publishRecsItemAddToCartClick()` — emits recommendation analytics events when items are added to cart
 
 ## Behavior Patterns
 

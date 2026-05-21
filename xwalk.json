@@ -1,9 +1,0 @@
-{
-  "public": {
-    "xwalk": {
-      "multi-field": {
-        "enabled": true
-      }
-    }
-  }
-}

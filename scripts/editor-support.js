@@ -1,6 +1,7 @@
 import {
   decorateBlock,
   decorateBlocks,
+  decorateButtons,
   decorateIcons,
   decorateSections,
   loadBlock,
@@ -8,7 +9,7 @@ import {
   loadSections,
 } from './aem.js';
 import { decorateRichtext } from './editor-support-rte.js';
-import { decorateButtons, decorateMain } from './scripts.js';
+import { decorateMain } from './scripts.js';
 
 let promiseChanges$ = Promise.resolve();
 

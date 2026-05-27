@@ -614,18 +614,32 @@ async function waitForFirstImage(section) {
 }
 
 /**
- * Loads all blocks in a section.
+ * Loads all blocks in a section, applying a per-section timeout. If the
+ * section's blocks do not all finish within `timeout`, the section is unhidden
+ * anyway and remaining block awaits resolve immediately.
  * @param {Element} section The section element
+ * @param {Object} [opts] Options
+ * @param {Function} [opts.loadCallback] Callback awaited after all blocks
+ * @param {number} [opts.timeout=5000] Per-section timeout in milliseconds
  */
-
-async function loadSection(section, loadCallback) {
+async function loadSection(section, { loadCallback, timeout = 5000 } = {}) {
   const status = section.dataset.sectionStatus;
   if (!status || status === 'initialized') {
     section.dataset.sectionStatus = 'loading';
+    let timedOut = false;
+    const timer = new Promise((resolve) => {
+      setTimeout(() => { timedOut = true; resolve(); }, timeout);
+    });
     const blocks = [...section.querySelectorAll('div.block')];
     for (let i = 0; i < blocks.length; i += 1) {
+      const block = blocks[i];
       // eslint-disable-next-line no-await-in-loop
-      await loadBlock(blocks[i]);
+      await Promise.race([loadBlock(block), timer]);
+      if (timedOut) {
+        // eslint-disable-next-line no-console
+        console.warn(`section load timed out after ${timeout}ms at block: ${block.dataset.blockName}`);
+        break;
+      }
     }
     if (loadCallback) await loadCallback(section);
     section.dataset.sectionStatus = 'loaded';
@@ -634,15 +648,16 @@ async function loadSection(section, loadCallback) {
 }
 
 /**
- * Loads all sections.
+ * Loads all sections, applying a per-section timeout via loadSection.
  * @param {Element} element The parent element of sections to load
+ * @param {Object} [opts] Options
+ * @param {number} [opts.timeout=5000] Per-section timeout in milliseconds
  */
-
-async function loadSections(element) {
+async function loadSections(element, { timeout = 5000 } = {}) {
   const sections = [...element.querySelectorAll('div.section')];
   for (let i = 0; i < sections.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
-    await loadSection(sections[i]);
+    await loadSection(sections[i], { timeout });
     if (i === 0 && sampleRUM.enhance) {
       sampleRUM.enhance();
     }

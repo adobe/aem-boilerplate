@@ -165,13 +165,20 @@ export default async function decorate(block) {
     );
 
     try {
+      const skuFromConfig = !!currentsku;
       const resolvedSku = currentsku || context.currentSku;
       const isACO = getConfigValue('adobe-commerce-optimizer') === true
         || getConfigValue('adobe-commerce-optimizer') === 'true';
-      const contextPrice = currentprice != null
-        ? Number(currentprice)
-        : context.currentProductPrice;
-      const resolvedPrice = isACO ? contextPrice : null;
+      // Price source must match SKU source: if SKU is pinned via block config,
+      // do not pull price from ACDL context (it would belong to a different product).
+      let resolvedPrice = null;
+      if (isACO) {
+        if (currentprice != null) {
+          resolvedPrice = Number(currentprice);
+        } else if (!skuFromConfig) {
+          resolvedPrice = context.currentProductPrice ?? null;
+        }
+      }
       const currentProduct = resolvedSku
         ? { sku: resolvedSku, ...(resolvedPrice != null && { price: resolvedPrice }) }
         : undefined;

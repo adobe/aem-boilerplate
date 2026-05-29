@@ -10,9 +10,9 @@ The Product Recommendations block provides personalized product recommendations 
 
 | Configuration Key | Type | Default | Description | Required | Side Effects |
 |-------------------|------|---------|-------------|----------|--------------|
-| `currentsku` | string | undefined | Explicit current product SKU. On a PDP this is sourced automatically from ACDL `productContext`; use this field on non-PDP pages only. | No | Overrides ACDL-derived SKU |
-| `currentprice` | number | undefined | Explicit current product price (anchor price for filtering). On a PDP price is sourced automatically from ACDL `productContext.pricing` (`specialPrice ?? regularPrice`); use this field on non-PDP pages only. | No | Overrides ACDL-derived price; enables price-based recommendation filtering |
-| `recid` | string | undefined | Recommendation unit ID to render | No | Identifies which recommendation unit to fetch |
+| `recid` | string | — | Recommendation unit ID to render. | **Yes** | Identifies which recommendation unit to fetch |
+| `currentsku` | string | undefined | Current product SKU. Only set this on pages where ACDL `productContext` is not populated. For cross-sell and upsell recommendation types (`viewed-viewed`, `viewed-bought`, `bought-bought`, `more-like-this`, `visual`) this value (from config or ACDL) is required for the unit to return results. | No | Takes precedence over ACDL-derived SKU; if set without `currentprice`, no price is passed to the service |
+| `currentprice` | number | undefined | Current product price as an anchor for dynamic/relative price filter operators. **May only be set together with `currentsku`.** Only needed for SKU-related recommendation types with dynamic or relative price filters when ACDL product context is unavailable. The value should match the effective price shown to the shopper (`specialPrice ?? regularPrice`). | No | Takes precedence over ACDL-derived price; has no effect if `currentsku` is not also set |
 
 <!-- ### URL Parameters
 
@@ -57,5 +57,6 @@ No URL parameters directly affect this block's behavior. -->
 - **Context Errors**: If context data is invalid, falls back to empty arrays for view/purchase history
 - **API Errors**: If recommendation API fails, the ProductList container handles error display
 - **Configuration Errors**: If `readBlockConfig()` fails, uses undefined values for configuration
+- **Missing SKU**: If the recommendation type requires a current SKU but none is available (neither from block config nor from ACDL), an error is logged to the browser console
 - **Image Rendering Errors**: If product images fail to load, the image slots handle fallback behavior
 - **Fallback Behavior**: Always falls back to appropriate default values for missing or invalid configuration

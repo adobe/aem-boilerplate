@@ -11,8 +11,6 @@ import { FetchGraphQL } from '@dropins/tools/fetch-graphql.js';
 import {
   getMetadata,
   readBlockConfig,
-  toCamelCase,
-  toClassName,
 } from './aem.js';
 import initializeDropins from './initializers/index.js';
 

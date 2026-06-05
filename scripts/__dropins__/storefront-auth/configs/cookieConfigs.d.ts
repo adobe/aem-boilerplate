@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2026 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -17,6 +17,8 @@
 declare const COOKIE_NAMES: {
     auth_dropin_user_token: string;
     auth_dropin_firstname: string;
+    auth_dropin_lastname: string;
+    auth_dropin_admin_session: string;
 };
 declare const LOCALHOST: string[];
 declare const COOKIE_LIFETIME = 3600;

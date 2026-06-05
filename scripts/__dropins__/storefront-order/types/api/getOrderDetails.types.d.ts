@@ -236,6 +236,7 @@ export interface OrderProps {
     number: string;
     order_date: string;
     printed_card_included: boolean;
+    admin_assisted_order?: number;
     applied_coupons: {
         code: string;
     }[];

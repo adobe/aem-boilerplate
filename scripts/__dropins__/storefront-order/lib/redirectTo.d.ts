@@ -14,5 +14,8 @@
  * from Adobe.
  *******************************************************************/
 export type QueryParams = Record<string, string | number | boolean>;
+export declare const navigation: {
+    setHref: (url: string) => void;
+};
 export declare const redirectTo: (getUrl?: (params?: any) => string, queryParams?: QueryParams, functionParams?: any) => void;
 //# sourceMappingURL=redirectTo.d.ts.map

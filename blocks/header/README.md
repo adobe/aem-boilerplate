@@ -93,6 +93,14 @@ The header creates three main sections from the nav fragment:
    - All other pages simply reload to reflect the logged-out state
 3. **User Display**: Dropdown shows "Hi, {firstname}" for authenticated users
 
+#### Seller Assisted Buying Banner
+1. **Display Conditions**: Banner appears when user is authenticated and `auth_dropin_admin_session` cookie is present
+2. **Session Information**: Displays customer name (bold) and website name from store config
+3. **Store Config Caching**: Fetches store config from sessionStorage if available, otherwise calls API and caches result
+4. **Close Session**: Button revokes customer token and redirects to home page
+5. **Event Handling**: Automatically removes banner when authentication state changes or admin session cookie is cleared
+6. **Error Handling**: Gracefully handles JSON parse errors and API failures with console warnings
+
 ### State Management
 
 #### Panel Loading States
@@ -120,4 +128,5 @@ The header creates three main sections from the nav fragment:
 - `header.css` - Styles for navigation, panels, and responsive layouts
 - `renderAuthCombine.js` - Authentication modal for mobile with sign in/sign up/reset password forms
 - `renderAuthDropdown.js` - Authentication dropdown for desktop with sign in form and user menu
+- `renderSellerAssistedBuyingBanner.js` - Banner component for seller assisted buying sessions with session management
 

@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2026 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -24,7 +24,8 @@ export interface CustomerDataModelShort {
     suffix: string;
     email: string;
     createdAt: string;
-    [key: string]: string | boolean | number;
+    allowRemoteShoppingAssistance?: boolean;
+    [key: string]: string | boolean | number | undefined;
 }
 export interface AccountModel {
     firstName?: string;

@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2026 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const updateCustomer: (form: Record<string, string>) => Promise<string>;
+export declare const updateCustomer: (form: Record<string, string | boolean>) => Promise<string>;
 //# sourceMappingURL=updateCustomer.d.ts.map

@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2026 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const GET_CUSTOMER_DATA = "\n  query GET_CUSTOMER_DATA {\n    customer {\n      ...CUSTOMER_INFORMATION_FRAGMENT\n    }\n  }\n  \n  fragment CUSTOMER_INFORMATION_FRAGMENT on Customer {\n    __typename\n    firstname\n    lastname\n    email\n    group {\n      uid\n    }\n  }\n\n";
+export declare const GET_CUSTOMER_DATA = "\n  query GET_CUSTOMER_DATA {\n    customer {\n      ...CUSTOMER_INFORMATION_FRAGMENT\n    }\n  }\n  \n  fragment CUSTOMER_INFORMATION_FRAGMENT on Customer {\n    __typename\n    firstname\n    lastname\n    email\n    allow_remote_shopping_assistance\n    group {\n      uid\n    }\n  }\n\n";
 //# sourceMappingURL=getCustomerData.graphql.d.ts.map

@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2026 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -30,6 +30,8 @@ export * from './ChangePassword';
 export * from './EditCustomerInformation';
 export * from './CustomerInformationCard';
 export * from './AddressValidation';
+export * from './SellerAssistedBuyingSettingsControl';
+export * from './SellerAssistedBuyingActivityTable';
 export * from './PaymentCard';
 export * from './PaymentMethodsWrapper';
 export * from './PaymentModal';

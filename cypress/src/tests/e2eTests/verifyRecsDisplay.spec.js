@@ -2,7 +2,7 @@ import {
     assertImageListDisplay
 } from "../../assertions";
 
-describe("Verify Product Recommendation dropin display", { tags: "@skipSaas" }, () => {
+describe("Verify Product Recommendation dropin display", { tags: ["@skipSaas", "@skipPaas"] }, () => {
     it("Verify recs dropin loads on PLP", () => {
         //Navaigate to draft page 
         cy.visit("/drafts/tests/apparel");

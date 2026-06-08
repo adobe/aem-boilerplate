@@ -23,6 +23,7 @@ export interface RecommendationUnitModel {
     typeId: string;
     unitId: string;
     unitName: string;
+    userError: string;
 }
 export type PageType = 'Product';
 export interface Item {

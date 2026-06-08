@@ -1,5 +1,11 @@
 # @dropins/storefront-auth
 
+## 4.0.0-beta.4
+
+### Patch Changes
+
+- 1c0576b: Bump @adobe-commerce/elsie to v1.9.0-beta.3
+
 ## 4.0.0-beta.3
 
 ### Major Changes

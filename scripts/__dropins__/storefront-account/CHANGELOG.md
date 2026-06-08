@@ -1,5 +1,23 @@
 # @dropins/storefront-account
 
+## 4.0.0-beta.3
+
+### Patch Changes
+
+- bc7c440: Fix .elsie.js import path for fragments
+
+## 4.0.0-beta.2
+
+### Patch Changes
+
+- 76482fa: Bump @adobe-commerce/elsie to v1.9.0-beta.3
+
+## 4.0.0-beta.1
+
+### Patch Changes
+
+- c36188c:
+
 ## 4.0.0-beta.0
 
 ### Major Changes

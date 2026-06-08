@@ -1,4 +1,4 @@
 /*! Copyright 2026 Adobe
 All Rights Reserved. */
-import{O,O as d}from"../chunks/OrderSummaryLine.js";import"@dropins/tools/preact-jsx-runtime.js";import"@dropins/tools/lib.js";import"@dropins/tools/components.js";/* empty css                        */import"@dropins/tools/preact-compat.js";import"@dropins/tools/preact-hooks.js";export{O as OrderSummaryLine,d as default};
+import{O as u,O as l}from"../chunks/components.js";import"@dropins/tools/lib.js";import"@dropins/tools/i18n.js";import"@dropins/tools/preact-compat.js";import"@dropins/tools/preact-jsx-runtime.js";import"@dropins/tools/components.js";import"@dropins/tools/preact-hooks.js";import"../api.js";import"@dropins/tools/event-bus.js";import"../fragments.js";import"@dropins/tools/fetch-graphql.js";export{u as OrderSummaryLine,l as default};
 //# sourceMappingURL=OrderSummaryLine.js.map

@@ -1,5 +1,17 @@
 # @dropins/storefront-order
 
+## 4.0.0-beta.2
+
+### Patch Changes
+
+- ab3d4d6: Bump @adobe-commerce/elsie to v1.9.0-beta.3
+
+## 4.0.0-beta.1
+
+### Patch Changes
+
+- 1714bd1:
+
 ## 4.0.0-beta.0
 
 ### Major Changes

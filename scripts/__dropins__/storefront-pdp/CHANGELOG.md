@@ -1,5 +1,17 @@
 # @dropins/storefront-pdp
 
+## 3.2.0-beta.3
+
+### Patch Changes
+
+- b58d460: Bump @adobe-commerce/elsie to 1.9.0-beta.3, which includes the SDK fix for generating `api.js` and `fragments.js` during the build process.
+
+## 3.2.0-beta.2
+
+### Patch Changes
+
+- ceaba76: Bump @adobe-commerce/elsie to 1.9.0-beta.1, which lowers the minimum Node.js requirement back to 22 LTS. Relax `engines.node` to `>=22` and align `.nvmrc` to 22.12.0.
+
 ## 3.2.0-beta.1
 
 ### Minor Changes

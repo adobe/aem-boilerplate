@@ -1,0 +1,83 @@
+/* stylelint-disable selector-class-pattern */
+
+.pay-by-link {
+  display: grid;
+  row-gap: var(--spacing-medium);
+  padding-top: var(--spacing-medium);
+  margin-bottom: var(--spacing-xbig);
+}
+
+/* --- Error state (missing or malformed token) --- */
+
+.pay-by-link.pay-by-link--error {
+  min-height: 60vh;
+  align-content: center;
+  justify-items: center;
+  padding-left: var(--spacing-small);
+  padding-right: var(--spacing-small);
+}
+
+.pay-by-link .pay-by-link__error-card {
+  width: 100%;
+  max-width: 480px;
+  display: grid;
+  row-gap: var(--spacing-medium);
+  text-align: center;
+}
+
+.pay-by-link .pay-by-link__error-title {
+  margin: 0;
+  font: var(--type-headline-2-strong-font);
+  letter-spacing: var(--type-headline-2-strong-letter-spacing);
+  color: var(--color-neutral-900);
+  outline: none;
+}
+
+.pay-by-link .pay-by-link__error-title:focus-visible {
+  outline: var(--shape-border-width-3) solid var(--color-brand-500);
+  outline-offset: 4px;
+  border-radius: var(--shape-border-radius-2);
+}
+
+.pay-by-link .pay-by-link__error-body {
+  margin: 0;
+  font: var(--type-body-1-default-font);
+  letter-spacing: var(--type-body-1-default-letter-spacing);
+  color: var(--color-neutral-700);
+}
+
+.pay-by-link .pay-by-link__error-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-small);
+}
+
+/* --- Shell layout (valid token; slots filled by downstream stories) --- */
+
+.pay-by-link__main,
+.pay-by-link__aside {
+  display: grid;
+  row-gap: var(--spacing-big);
+}
+
+.pay-by-link__main > div:empty,
+.pay-by-link__aside > div:empty {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .pay-by-link:not(.pay-by-link--error) {
+    grid-template-columns: repeat(var(--grid-4-columns), 1fr);
+    grid-template-areas: 'main aside';
+    column-gap: var(--grid-4-gutters);
+    padding-top: var(--spacing-xxlarge);
+  }
+
+  .pay-by-link:not(.pay-by-link--error) .pay-by-link__main {
+    grid-column: 1 / span 7;
+  }
+
+  .pay-by-link:not(.pay-by-link--error) .pay-by-link__aside {
+    grid-column: 9 / span 4;
+  }
+}

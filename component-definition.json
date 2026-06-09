@@ -520,6 +520,17 @@
           }
         },
         {
+          "title": "Commerce Pay By Link",
+          "id": "commerce-pay-by-link",
+          "model": "commerce-pay-by-link",
+          "plugins": {
+            "da": {
+              "rows": 1,
+              "columns": 2
+            }
+          }
+        },
+        {
           "title": "Commerce Return Header",
           "id": "commerce-return-header",
           "model": "commerce-return-header",

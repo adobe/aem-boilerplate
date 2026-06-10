@@ -9,6 +9,7 @@
           "Store": "default"
         },
         "cs": {
+          "Magento-Store-Code": "main_website_store",
           "Magento-Store-View-Code": "default",
           "Magento-Website-Code": "base"
         }

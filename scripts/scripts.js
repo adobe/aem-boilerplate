@@ -9,6 +9,7 @@ import {
   loadSection,
   loadSections,
   loadCSS,
+  buildBlock,
 } from './aem.js';
 
 /**

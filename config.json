@@ -3,7 +3,7 @@
     "default": {
       "commerce-core-endpoint": "https://na1-qa.api.commerce.adobe.com/2o26hwKuPKPB9r9ym2LY52/graphql",
       "commerce-endpoint": "https://na1-qa.api.commerce.adobe.com/2o26hwKuPKPB9r9ym2LY52/graphql",
-      "commerce-assets-enabled": false,
+      "commerce-assets-enabled": true,
       "headers": {
         "all": {
           "Store": "default"

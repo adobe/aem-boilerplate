@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2026 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -23,6 +23,7 @@ export * from './getCountries';
 export * from './getRegions';
 export * from './updateCustomerAddress';
 export * from './getCustomer';
+export * from './getAdminAssistanceActions';
 export * from './removeCustomerAddress';
 export * from './getCustomerPaymentTokens';
 export * from './deletePaymentToken';

@@ -15,4 +15,5 @@
  * from Adobe.
  *******************************************************************/
 export declare const GET_RECOMMENDATIONS_BY_UNIT_IDS_QUERY: string;
+export declare const GET_RECOMMENDATIONS_BY_UNIT_IDS_WITH_PRODUCT_QUERY: string;
 //# sourceMappingURL=GetRecommendationsByUnitIdsQuery.d.ts.map

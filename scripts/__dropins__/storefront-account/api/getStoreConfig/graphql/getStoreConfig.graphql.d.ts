@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2026 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const GET_STORE_CONFIG = "\n  query GET_STORE_CONFIG {\n    storeConfig {\n      base_media_url\n      autocomplete_on_storefront\n      minimum_password_length\n      required_character_classes_number\n      store_code\n    }\n  }\n";
+export declare const GET_STORE_CONFIG = "\n  query GET_STORE_CONFIG {\n    storeConfig {\n      base_media_url\n      autocomplete_on_storefront\n      minimum_password_length\n      required_character_classes_number\n      store_code\n      shopping_assistance_enabled\n      shopping_assistance_checkbox_title\n      shopping_assistance_checkbox_tooltip\n    }\n  }\n";
 //# sourceMappingURL=getStoreConfig.graphql.d.ts.map

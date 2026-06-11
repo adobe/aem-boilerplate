@@ -1,5 +1,33 @@
 # @dropins/storefront-wishlist
 
+## 3.3.0
+
+### Minor Changes
+
+- ebcbb7e: Removed the `engines.node` constraint from `package.json`. This package targets browser environments exclusively and does not depend on a specific Node.js runtime version. The package is now built and distributed using Node.js 22 LTS.
+
+### Patch Changes
+
+- ebcbb7e: Replaced PaaS & SaaS instances and some products to fix Cypress tests
+- 5f367fe: Bump @adobe-commerce/elsie to v1.9.0-beta.3
+- 30a28da: Bump commerce packages
+
+## 3.3.0-beta.1
+
+### Patch Changes
+
+- 5f367fe: Bump @adobe-commerce/elsie to v1.9.0-beta.3
+
+## 3.3.0-beta.0
+
+### Minor Changes
+
+- ebcbb7e: Removed the `engines.node` constraint from `package.json`. This package targets browser environments exclusively and does not depend on a specific Node.js runtime version. The package is now built and distributed using Node.js 22 LTS.
+
+### Patch Changes
+
+- ebcbb7e: Replaced PaaS & SaaS instances and some products to fix Cypress tests
+
 ## 3.2.0
 
 ### Minor Changes

@@ -29,5 +29,21 @@ afterEach(() => {
     return;
   }
 
+  // If a suite shares one customer between its two tests - automatic afterEach cleanup should be skipped
+  const currentTestTitle = Cypress.currentTest?.title || '';
+  const currentSuiteName = Cypress.currentTest?.titlePath?.[0] || '';
+
+  const skipDeleteSuites = ['Seller Assisted Buying'];
+
+  const shouldSkip = skipDeleteSuites.some(
+    (suiteName) =>
+      currentTestTitle.includes(suiteName) || currentSuiteName.includes(suiteName)
+  );
+
+  if (shouldSkip) {
+    cy.log(`Skipping automatic customer deletion for ${currentSuiteName} suite`);
+    return;
+  }
+
   cy.deleteCustomer();
 });

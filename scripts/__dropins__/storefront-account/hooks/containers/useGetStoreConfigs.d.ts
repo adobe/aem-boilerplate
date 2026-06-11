@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2026 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -15,9 +15,15 @@
  * from Adobe.
  *******************************************************************/
 export declare const useGetStoreConfigs: () => {
+    loading: boolean;
     passwordConfigs: {
         minLength: number;
         requiredCharacterClasses: number;
+    } | null;
+    remoteShoppingAssistanceConfigs: {
+        shoppingAssistanceEnabled: boolean;
+        shoppingAssistanceCheckboxTitle: string;
+        shoppingAssistanceCheckboxTooltip: string;
     } | null;
 };
 //# sourceMappingURL=useGetStoreConfigs.d.ts.map

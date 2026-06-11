@@ -28,6 +28,8 @@ async function initAnalytics() {
             websiteId: parseInt(analyticsConfig['website-id'], 10),
             websiteName: analyticsConfig['website-name'],
             viewId: analyticsConfig['view-id'], // applicable for ACO storefronts
+            // setting locale if defined, applicable for ACO storefronts
+            ...(analyticsConfig.locale && { locale: analyticsConfig.locale }),
           },
         },
         {

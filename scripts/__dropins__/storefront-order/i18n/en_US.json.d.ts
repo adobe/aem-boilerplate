@@ -191,6 +191,7 @@ declare const _default: {
     },
     "OrderStatusContent": {
       "noInfoTitle": "Check back later for more details.",
+      "adminAssistedLabel": "Order placed by an administrator",
       "returnMessage": "The order was placed on {ORDER_CREATE_DATE} and your return process started on {RETURN_CREATE_DATE}",
       "returnStatus": {
         "pending": "Pending",

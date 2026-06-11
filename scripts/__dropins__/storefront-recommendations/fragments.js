@@ -7,6 +7,7 @@ const e=`
     sku
     queryType
     visibility
+    inStock
     images {
       url
     }
@@ -53,6 +54,7 @@ const e=`
     typeId
     unitId
     unitName
+    userError
   }
 
   ${e}

@@ -15,10 +15,10 @@
  * from Adobe.
  *******************************************************************/
 export * from './api';
+export * from './dom';
 export * from './events';
 export * from './forms';
 export * from './fragments';
 export * from './meta';
 export * from './transformers';
-export * from './dom';
 //# sourceMappingURL=index.d.ts.map

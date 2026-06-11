@@ -2,6 +2,7 @@ import { HTMLAttributes } from 'preact/compat';
 import { Container, SlotProps } from '@dropins/tools/types/elsie/src/lib';
 import { ImageProps } from '@dropins/tools/types/elsie/src/components';
 import { Item, RecommendationUnitModel } from '../../data/models';
+import { CurrentProduct } from '../../api/getRecommendationsByUnitIds/getRecommendationsByUnitIds';
 
 export interface ProductListProps extends HTMLAttributes<HTMLDivElement> {
     recId: string;
@@ -13,7 +14,10 @@ export interface ProductListProps extends HTMLAttributes<HTMLDivElement> {
     };
     hideHeading?: boolean;
     routeProduct?: (item: Item) => string;
-    currentSku: string;
+    /** @deprecated Pass `currentProduct` with `sku` instead. Kept for backward compatibility. */
+    currentSku?: string;
+    /** Current product SKU and optional price for recommendation filtering. */
+    currentProduct?: CurrentProduct;
     cartSkus?: string[];
     userPurchaseHistory?: any[];
     userViewHistory?: any[];

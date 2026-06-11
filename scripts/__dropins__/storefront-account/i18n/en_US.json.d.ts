@@ -93,7 +93,8 @@ declare const _default: {
           "itemsAmount": "items",
           "carrier": "Carrier:",
           "returns": "Return(s):",
-          "orderDate": "Placed on"
+          "orderDate": "Placed on",
+          "placedByAdministrator": "Placed by an administrator"
         },
         "OrdersListSelectDate": {
           "pastSixMonths": "Past 6 months",
@@ -159,7 +160,8 @@ declare const _default: {
           "itemsAmount": "items",
           "carrier": "Carrier:",
           "returns": "Return(s):",
-          "orderDate": "Placed on"
+          "orderDate": "Placed on",
+          "placedByAdministrator": "Placed by an administrator"
         },
         "OrdersListSelectDate": {
           "pastSixMonths": "Past 6 months",
@@ -215,6 +217,37 @@ declare const _default: {
       "subtitle": "To ensure accurate delivery, we suggest the changes highlighted below. Please choose which address you would like to use. If neither option is correct, edit your address.",
       "suggestedAddress": "Suggested Address",
       "originalAddress": "Original Address"
+    },
+    "sellerAssistedBuyingSettings": {
+      "checkboxLabel": "Enable seller assisted purchasing",
+      "checkboxTooltip": "This allows merchants to \"see what you see\" and take actions on your behalf in order to provide better assistance.",
+      "alertMessage": "Seller assisted purchasing is currently disabled. New sessions cannot be started.",
+      "featureDisabledMessage": "Seller assisted purchasing is unavailable. This feature has been disabled by the store administrator."
+    },
+    "sellerAssistedBuyingActivity": {
+      "tableHeaders": {
+        "action": "Action",
+        "date": "Date",
+        "details": "Details"
+      },
+      "actionTypes": {
+        "place_order": "Order Placed",
+        "add_to_cart": "Added to Cart",
+        "remove_from_cart": "Removed from Cart",
+        "remove_cart_item": "Cart Item Removed",
+        "update_qty": "Quantity Updated",
+        "apply_coupon": "Coupon Applied",
+        "remove_coupon": "Coupon Removed",
+        "update_address": "Address Updated",
+        "update_payment": "Payment Method Updated",
+        "update_shipping": "Shipping Method Updated",
+        "add_product_note": "Product Note Added",
+        "update_customer_info": "Customer Info Updated",
+        "save": "Saved"
+      },
+      "emptyStateMessage": "No administrator-assisted actions yet.",
+      "errorMessage": "Couldn't load administrator-assisted actions. Please try again later.",
+      "featureDisabledMessage": "Seller assisted activity log is unavailable. This feature has been disabled by the store administrator."
     },
     "Payments": {
       "containerTitle": "Payments",

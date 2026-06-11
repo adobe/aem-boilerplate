@@ -1,5 +1,50 @@
 # @dropins/storefront-account
 
+## 4.0.0
+
+### Major Changes
+
+- dd20d14: Add support for Seller Assisted Buying feature that allows store administrators to place orders on behalf of customers. Orders placed by administrators are marked with a visible "Order placed by an administrator" label on the order details page. The feature also integrates with order comments to track admin actions and provide a history of administrative assistance throughout the order lifecycle.
+
+### Minor Changes
+
+- 2ced9f4: Removed the `engines.node` constraint from `package.json`. This package targets browser environments exclusively and does not depend on a specific Node.js runtime version. The package is now built and distributed using Node.js 22 LTS.
+
+### Patch Changes
+
+- bc7c440: Fix .elsie.js import path for fragments
+- c36188c:
+- e5b4aa0: Bump to StorefrontSDK stable version
+- 76482fa: Bump @adobe-commerce/elsie to v1.9.0-beta.3
+
+## 4.0.0-beta.4
+
+### Patch Changes
+
+- e5b4aa0: Bump to StorefrontSDK stable version
+
+## 4.0.0-beta.3
+
+### Patch Changes
+
+- bc7c440: Fix .elsie.js import path for fragments
+
+## 4.0.0-beta.2
+
+### Patch Changes
+
+- 76482fa: Bump @adobe-commerce/elsie to v1.9.0-beta.3
+
+## 4.0.0-beta.0
+
+### Major Changes
+
+- dd20d14: Add support for Seller Assisted Buying feature that allows store administrators to place orders on behalf of customers. Orders placed by administrators are marked with a visible "Order placed by an administrator" label on the order details page. The feature also integrates with order comments to track admin actions and provide a history of administrative assistance throughout the order lifecycle.
+
+### Minor Changes
+
+- 2ced9f4: Removed the `engines.node` constraint from `package.json`. This package targets browser environments exclusively and does not depend on a specific Node.js runtime version. The package is now built and distributed using Node.js 22 LTS.
+
 ## 3.3.0
 
 ### Minor Changes

@@ -1,5 +1,34 @@
 # @dropins/storefront-personalization
 
+## 3.2.0
+
+### Minor Changes
+
+- 91f0fc2: Removed the `engines.node` constraint from `package.json`. This package targets browser environments exclusively and does not depend on a specific Node.js runtime version. The package is now built and distributed using Node.js 22 LTS.
+
+### Patch Changes
+
+- 7e248fb: Bump storefront SDK stable version
+- c43a252: Bump @adobe-commerce/elsie to v1.9.0-beta.3
+
+## 3.2.0-beta.2
+
+### Patch Changes
+
+- 7e248fb: Bump storefront SDK stable version
+
+## 3.2.0-beta.1
+
+### Patch Changes
+
+- c43a252: Bump @adobe-commerce/elsie to v1.9.0-beta.3
+
+## 3.2.0-beta.0
+
+### Minor Changes
+
+- 91f0fc2: Removed the `engines.node` constraint from `package.json`. This package targets browser environments exclusively and does not depend on a specific Node.js runtime version. The package is now built and distributed using Node.js 22 LTS.
+
 ## 3.1.1
 
 ### Patch Changes

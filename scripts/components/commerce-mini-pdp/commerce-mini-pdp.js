@@ -45,6 +45,109 @@ async function getFreshCartItem(cartItemUid) {
   }
 }
 
+/**
+ * Resolves a pending free-gift rule for the parent SKU after the current line is removed.
+ *
+ * @param {object | null} cartData
+ * @param {string} sku
+ */
+function findAvailableFreeGiftRule(cartData, sku) {
+  const rules = cartData?.availableFreeGifts ?? [];
+  return rules.find(
+    (rule) => rule.availableSkus?.includes(sku)
+      || rule.products?.some((product) => product.sku === sku),
+  );
+}
+
+/**
+ * Loads cart state until the free-gift rule is pending again after line removal.
+ *
+ * @param {string} sku
+ * @param {object | null} [cartHint]
+ */
+async function loadCartWithPendingFreeGiftRule(sku, cartHint = null) {
+  const maxAttempts = 4;
+  let cart = cartHint;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    if (attempt > 0 || !cart) {
+      if (typeof Cart.refreshCart === 'function') {
+        cart = await Cart.refreshCart();
+      } else {
+        cart = await Cart.getCartData();
+      }
+    }
+
+    const rule = findAvailableFreeGiftRule(cart, sku);
+    if (rule?.ruleId) {
+      return { cart, rule };
+    }
+
+    if (attempt < maxAttempts - 1) {
+      await new Promise((resolve) => {
+        setTimeout(resolve, 150);
+      });
+    }
+  }
+
+  return { cart, rule: undefined };
+}
+
+/**
+ * Re-applies a free-gift line via selectFreeGiftForCart (SalesRuleFreeGift).
+ * Removes the existing line first so the rule returns to pending selection.
+ *
+ * @param {object} cartItem
+ * @param {{ sku: string, quantity?: number, optionsUIDs?: string[] }} config
+ */
+async function updateFreeGiftCartItem(cartItem, { sku, quantity, optionsUIDs }) {
+  if (typeof Cart.selectFreeGiftForCart !== 'function') {
+    throw new Error(
+      'Free gift updates require storefront-cart with selectFreeGiftForCart.',
+    );
+  }
+
+  const selectedOptions = (optionsUIDs ?? []).filter(Boolean);
+  const needsSelectedOptions = cartItem.itemType === 'ConfigurableCartItem'
+    || cartItem.itemType === 'BundleCartItem';
+
+  if (needsSelectedOptions && !selectedOptions.length) {
+    throw new Error('Please select all required options');
+  }
+
+  const removeResult = await Cart.updateProductsFromCart([
+    { uid: cartItem.uid, quantity: 0 },
+  ]);
+
+  const itemStillPresent = removeResult?.items?.some(
+    (item) => item.uid === cartItem.uid,
+  );
+  if (itemStillPresent) {
+    throw new Error('Unable to remove the current free gift before updating.');
+  }
+
+  const { rule } = await loadCartWithPendingFreeGiftRule(sku, removeResult);
+  if (!rule?.ruleId) {
+    throw new Error('Unable to update free gift: qualifying rule not found.');
+  }
+
+  const giftQty = rule.giftQty ?? cartItem.quantity ?? 1;
+  const requestedQty = quantity ?? giftQty;
+
+  const payload = await Cart.selectFreeGiftForCart({
+    ruleId: rule.ruleId,
+    sku,
+    quantity: Math.min(requestedQty, giftQty),
+    ...(selectedOptions.length ? { selectedOptions } : {}),
+  });
+
+  if (payload) {
+    events.emit('cart/updated', payload);
+  }
+
+  return payload;
+}
+
 export default async function createMiniPDP(cartItem, onUpdate, onClose) {
   await loadCSS(
     `${window.hlx.codeBasePath}/scripts/components/commerce-mini-pdp/commerce-mini-pdp.css`,
@@ -56,6 +159,7 @@ export default async function createMiniPDP(cartItem, onUpdate, onClose) {
   const freshCartItem = await getFreshCartItem(cartItem.uid) || cartItem;
 
   const sku = freshCartItem.topLevelSku || freshCartItem.sku;
+  const isFreeGift = Boolean(freshCartItem.isFreeGift);
 
   const optionsUIDs = freshCartItem.selectedOptionsUIDs
     ? Object.values(freshCartItem.selectedOptionsUIDs).filter(Boolean)
@@ -133,7 +237,7 @@ export default async function createMiniPDP(cartItem, onUpdate, onClose) {
         <div class="mini-pdp__right-column">
           <div class="mini-pdp__configuration">
             <div class="mini-pdp__options"></div>
-            <div class="mini-pdp__quantity-wrapper">
+            <div class="mini-pdp__quantity-wrapper${isFreeGift ? ' mini-pdp__quantity-wrapper--disabled' : ''}">
               <div class="mini-pdp__quantity-label">
                 ${placeholders?.Global?.quantityLabel}
               </div>
@@ -202,7 +306,10 @@ export default async function createMiniPDP(cartItem, onUpdate, onClose) {
 
       pdpRender.render(ProductOptions, { hideSelectedValue: false, scope: 'modal' })($options),
 
-      pdpRender.render(ProductQuantity, { scope: 'modal' })($quantity),
+      pdpRender.render(ProductQuantity, {
+        scope: 'modal',
+        ...(isFreeGift ? { disabled: true } : {}),
+      })($quantity),
 
       // Update button
       UI.render(Button, {
@@ -238,12 +345,20 @@ export default async function createMiniPDP(cartItem, onUpdate, onClose) {
               }),
             };
 
-            const updateResponse = await Cart.updateProductsFromCart([
-              updateData,
-            ]);
+            if (freshCartItem.isFreeGift) {
+              await updateFreeGiftCartItem(freshCartItem, {
+                sku,
+                quantity: freshCartItem.quantity,
+                optionsUIDs: updateData.optionsUIDs ?? [],
+              });
+            } else {
+              const updateResponse = await Cart.updateProductsFromCart([
+                updateData,
+              ]);
 
-            // Trigger cart refresh to ensure UI updates
-            events.emit('cart/updated', updateResponse);
+              // Trigger cart refresh to ensure UI updates
+              events.emit('cart/updated', updateResponse);
+            }
 
             inlineAlert?.remove();
 

@@ -17,5 +17,11 @@ await initializeDropin(async () => {
   };
 
   // Initialize cart
-  return initializers.mountImmediately(initialize, { langDefinitions });
+  return initializers.mountImmediately(initialize, {
+    langDefinitions,
+    features: {
+      /** Requires Magento_SalesRuleFreeGiftGraphQl on the backend. */
+      isFreeGiftsCartPriceRulesEnabled: true,
+    },
+  });
 })();

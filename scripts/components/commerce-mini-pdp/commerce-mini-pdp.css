@@ -115,6 +115,11 @@
     color: inherit;
 }
 
+#mini-pdp-modal .mini-pdp__quantity-wrapper--disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
 #mini-pdp-modal .mini-pdp__quantity-label {
     font: var(--type-details-caption-1-font);
     letter-spacing: var(--type-details-caption-1-letter-spacing);

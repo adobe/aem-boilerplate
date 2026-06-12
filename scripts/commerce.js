@@ -448,7 +448,9 @@ export async function fetchPlaceholders(path) {
       }
 
       // Create new fetch promise
-      const resourceFetchPromise = fetch(`${url}?sheet=data`).then(async (response) => {
+      // Use force-cache to serve any available cache entry without revalidation,
+      // reducing CDN traffic for static localization assets past their max-age.
+      const resourceFetchPromise = fetch(`${url}?sheet=data`, { cache: 'force-cache' }).then(async (response) => {
         if (response.ok) {
           const data = await response.json();
           // Cache the response

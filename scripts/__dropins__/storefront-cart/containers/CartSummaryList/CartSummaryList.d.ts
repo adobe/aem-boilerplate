@@ -39,6 +39,12 @@ export interface CartSummaryListProps extends HTMLAttributes<HTMLDivElement> {
             onUndo: () => void;
             onDismiss: () => void;
         }>;
+        ConfirmDeleteBanner?: SlotProps<{
+            item: CartModel['items'][0];
+            loading: boolean;
+            onConfirm: () => void;
+            onCancel: () => void;
+        }>;
         ItemTitle?: SlotProps<{
             item: CartModel['items'][number];
         }>;
@@ -47,7 +53,9 @@ export interface CartSummaryListProps extends HTMLAttributes<HTMLDivElement> {
         }>;
         ItemQuantity?: SlotProps<{
             item: CartModel['items'][number];
-            enableUpdateItemQuantity: boolean;
+            enableUpdateItemQuantity: boolean | {
+                removeOnZero?: boolean;
+            };
             handleItemQuantityUpdate: (item: CartModel['items'][number], quantity: number) => void;
             itemsLoading: Set<string>;
             handleItemsError: (uid: string, message?: string) => void;
@@ -75,7 +83,9 @@ export interface CartSummaryListProps extends HTMLAttributes<HTMLDivElement> {
         }>;
     };
     enableRemoveItem?: boolean;
-    enableUpdateItemQuantity?: boolean;
+    enableUpdateItemQuantity?: boolean | {
+        removeOnZero?: boolean;
+    };
     onItemsErrorsChange?: (errors: Map<string, string>) => void;
     accordion?: boolean;
     variant?: 'primary' | 'secondary';
@@ -88,6 +98,7 @@ export interface CartSummaryListProps extends HTMLAttributes<HTMLDivElement> {
         text: string;
     }[];
     undo?: boolean;
+    confirmBeforeDelete?: boolean;
     includeOutOfStockItems?: boolean;
     /**
      * TEST ONLY: Allows test to inject recentlyRemovedItems for coverage

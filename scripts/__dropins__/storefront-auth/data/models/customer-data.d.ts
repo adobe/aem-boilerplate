@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2026 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -19,6 +19,7 @@ export interface CustomerModel {
     lastName: string;
     email: string;
     groupUid: string;
+    allowRemoteShoppingAssistance?: boolean;
     customAttributes?: Record<string, string>[];
     errors?: {
         message: string;

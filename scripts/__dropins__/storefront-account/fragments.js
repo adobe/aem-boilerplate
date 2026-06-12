@@ -11,6 +11,7 @@ const e=`
     prefix
     suffix
     created_at
+    allow_remote_shopping_assistance
   }
 `,t=`
   fragment ADDRESS_FRAGMENT on OrderAddress {
@@ -78,6 +79,7 @@ const e=`
   }
 `,a=`
   fragment CUSTOMER_ORDER_FRAGMENT on CustomerOrder {
+    admin_assisted_order
     token
     email
     shipping_method

@@ -1,5 +1,48 @@
 # @dropins/storefront-checkout
 
+## 3.3.0
+
+### Minor Changes
+
+- 551ddae: Removed the `engines.node` constraint from `package.json`. This package targets browser environments exclusively and does not depend on a specific Node.js runtime version. The package is now built and distributed using Node.js 22 LTS.
+
+### Patch Changes
+
+- a1517e1: Add `checkout/layout` extension hook to allow customizing the checkout page structure (reorder, hide, move, group, or inject sections) without modifying the base block code. Includes a `custom-layout` example extension.
+- 90e7dcc: Bump @adobe-commerce/elsie to v1.9.0-beta.3
+- ab1424a: Bump to StorefrontSDK stable version
+- 15c9fdc: Replace deprecated grid gap properties in checkout block CSS
+- b946af8: Fix custom vite config compatibility with elsie
+
+## 3.3.0-beta.3
+
+### Patch Changes
+
+- ab1424a: Bump to StorefrontSDK stable version
+
+## 3.3.0-beta.2
+
+### Patch Changes
+
+- b946af8: Fix custom vite config compatibility with elsie
+
+## 3.3.0-beta.1
+
+### Patch Changes
+
+- 90e7dcc: Bump @adobe-commerce/elsie to v1.9.0-beta.3
+
+## 3.3.0-beta.0
+
+### Minor Changes
+
+- 551ddae: Removed the `engines.node` constraint from `package.json`. This package targets browser environments exclusively and does not depend on a specific Node.js runtime version. The package is now built and distributed using Node.js 22 LTS.
+
+### Patch Changes
+
+- a1517e1: Add `checkout/layout` extension hook to allow customizing the checkout page structure (reorder, hide, move, group, or inject sections) without modifying the base block code. Includes a `custom-layout` example extension.
+- 15c9fdc: Replace deprecated grid gap properties in checkout block CSS
+
 ## 3.2.1
 
 ### Patch Changes

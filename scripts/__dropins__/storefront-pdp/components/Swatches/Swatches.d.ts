@@ -1,7 +1,9 @@
 import { FunctionComponent, VNode } from 'preact';
 import { HTMLAttributes, JSX } from 'preact/compat';
 import { ImageNodeRenderProps } from '@dropins/tools/types/elsie/src/components';
+import { ProductOptionSelectionMap } from '../../lib/product-option-selection';
 
+export type { ProductOptionSelectionEntry as SelectionEntry, ProductOptionSelectionMap as Selection, } from '../../lib/product-option-selection';
 declare const supportedTypes: string[];
 type OptionValue = {
     id: string;
@@ -18,19 +20,13 @@ export type Option = {
     multiple?: boolean;
     items: OptionValue[];
 };
-type Selection = {
-    [id: string]: {
-        label: string;
-        value: string;
-    };
-};
 export interface SwatchesProps extends HTMLAttributes<HTMLDivElement> {
     options: Array<Option>;
     hideSelectedValue?: boolean;
     disablePreselections?: boolean;
     defaultOptions?: string[];
     selectionsToUpdate?: Option[];
-    onValues?: (uids: Selection, current: string) => void;
+    onValues?: (uids: ProductOptionSelectionMap, current: string) => void;
     onErrors?: (errors: {
         [id: string]: string;
     }) => void;
@@ -38,5 +34,4 @@ export interface SwatchesProps extends HTMLAttributes<HTMLDivElement> {
     imageSwatchNode?: VNode | ((props: ImageNodeRenderProps) => JSX.Element);
 }
 export declare const Swatches: FunctionComponent<SwatchesProps>;
-export {};
 //# sourceMappingURL=Swatches.d.ts.map

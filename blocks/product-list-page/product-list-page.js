@@ -115,6 +115,7 @@ export default async function decorate(block) {
       icon: Icon({ source: 'Cart' }),
       onClick: () => cartApi.addProductsToCart([{ sku: product.sku, quantity: 1 }]),
       variant: 'primary',
+      disabled: !product.inStock,
     })(button);
     return button;
   };

@@ -193,6 +193,7 @@ export type OrderDataModel = {
     shippingMethod?: string;
     carrier?: string;
     orderDate: string;
+    adminAssistedOrder?: boolean;
     comments: OrderCommentItem[];
     returns: OrdersReturnPropsModel[];
     discounts: {

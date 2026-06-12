@@ -2,7 +2,7 @@
  * ADOBE CONFIDENTIAL
  * __________________
  *
- *  Copyright 2024 Adobe
+ *  Copyright 2026 Adobe
  *  All Rights Reserved.
  *
  * NOTICE:  All information contained herein is, and remains
@@ -14,5 +14,5 @@
  * is strictly forbidden unless prior written permission is obtained
  * from Adobe.
  *******************************************************************/
-export declare const UPDATE_CUSTOMER_V2 = "\n  mutation UPDATE_CUSTOMER_V2($input: CustomerUpdateInput!) {\n    updateCustomerV2(input: $input) {\n      customer {\n        email\n      }\n    }\n  }\n";
+export declare const UPDATE_CUSTOMER_V2 = "\n  mutation UPDATE_CUSTOMER_V2($input: CustomerUpdateInput!) {\n    updateCustomerV2(input: $input) {\n      customer {\n        email\n        allow_remote_shopping_assistance\n      }\n    }\n  }\n";
 //# sourceMappingURL=updateCustomer.graphql.d.ts.map

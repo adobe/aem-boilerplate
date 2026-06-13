@@ -268,3 +268,22 @@
         margin-top: 0;
     }
 }
+
+.checkout__adyen-skeleton {
+    height: 220px;
+    background: #f0f0f0;
+    border-radius: 8px;
+    animation: adyen-pulse 1.5s ease-in-out infinite;
+}
+
+.checkout__adyen-error {
+    padding: 16px;
+    color: var(--color-alert-red, #c00);
+    font-size: 0.875rem;
+}
+
+@keyframes adyen-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+}
+

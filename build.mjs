@@ -12,10 +12,33 @@ overrideGQLOperations([
     skipFragments: ['DOWNLOADABLE_ORDER_ITEMS_FRAGMENT'],
     operations: [],
   },
-  // {
-  //   npm: '@dropins/storefront-checkout',
-  //   operations: [],
-  // },
+  {
+    npm: '@dropins/storefront-checkout',
+    operations: [
+      `
+      fragment AVAILABLE_PAYMENT_METHOD_FRAGMENT on AvailablePaymentMethod {
+        oope_payment_method_config {
+          backend_integration_url
+          custom_config {
+            key
+            value
+          }
+        }
+      }
+      `,
+      `
+      fragment SELECTED_PAYMENT_METHOD_FRAGMENT on SelectedPaymentMethod {
+        oope_payment_method_config {
+          backend_integration_url
+          custom_config {
+            key
+            value
+          }
+        }
+      }
+      `,
+    ],
+  },
   // {
   //   npm: '@dropins/storefront-pdp',
   //   operations: [

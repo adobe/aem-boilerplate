@@ -7,6 +7,7 @@ import { initReCaptcha } from '@dropins/tools/recaptcha.js';
 
 // Order Dropin Modules
 import * as orderApi from '@dropins/storefront-order/api.js';
+import * as checkoutApi from '@dropins/storefront-checkout/api.js';
 
 // Checkout Dropin Libraries
 import {
@@ -18,6 +19,8 @@ import {
 
 // Payment Services Dropin
 import { PaymentMethodCode } from '@dropins/storefront-payment-services/api.js';
+
+import { ADYEN_PAYMENT_CODE, submitAdyenPayment } from '../adyen-payment/session.js';
 
 // Block Utilities
 import {
@@ -159,6 +162,17 @@ export default async function decorate(block) {
         }
         // Submit Payment Services credit card form
         await creditCardFormRef.current.submit();
+      } else if (code === ADYEN_PAYMENT_CODE) {
+        const result = await submitAdyenPayment();
+        await checkoutApi.setPaymentMethod({
+          code: ADYEN_PAYMENT_CODE,
+          additional_data: [
+            { key: 'sessionId', value: result.sessionId },
+            { key: 'resultCode', value: result.resultCode },
+            { key: 'sessionData', value: result.sessionData },
+            { key: 'sessionResult', value: result.sessionResult },
+          ],
+        });
       }
       // Place order
       await orderApi.placeOrder(cartId);

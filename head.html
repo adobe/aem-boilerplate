@@ -4,11 +4,24 @@
   move-to-http-header="true"
 >
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link rel="preconnect" href="https://checkoutshopper-test.adyen.com" crossorigin />
+<link rel="dns-prefetch" href="https://checkoutshopper-test.adyen.com" />
+<link rel="preconnect" href="https://checkoutshopper-live.adyen.com" crossorigin />
+<link rel="dns-prefetch" href="https://checkoutshopper-live.adyen.com" />
+
+
 <script nonce="aem" type="speculationrules">
     {
         "prerender": [{
             "where": {
-                "href_matches": "/*"
+                "and": [
+                    { "href_matches": "/*" },
+                    { "not": { "href_matches": "/checkout*" } },
+                    { "not": { "href_matches": "/cart*" } },
+                    { "not": { "href_matches": "/customer/*" } },
+                    { "not": { "href_matches": "/order*" } }
+                ]
             },
             "eagerness": "moderate"
         }]

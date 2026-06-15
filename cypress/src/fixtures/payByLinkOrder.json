@@ -1,0 +1,50 @@
+{
+  "data": {
+    "payByLinkOrder": {
+      "customer_email": "jane.doe@example.com",
+      "expires_at": "2099-12-31 23:59:59",
+      "items": [
+        {
+          "name": "Joust Duffle Bag",
+          "sku": "24-MB01",
+          "quantity": 1,
+          "price": { "value": 34.00, "currency": "USD" }
+        },
+        {
+          "name": "Chaz Kangeroo Hoodie",
+          "sku": "MH01-XS-Black",
+          "quantity": 2,
+          "price": { "value": 52.00, "currency": "USD" }
+        }
+      ],
+      "totals": {
+        "subtotal": { "value": 138.00, "currency": "USD" },
+        "tax": { "value": 10.35, "currency": "USD" },
+        "shipping": { "value": 5.00, "currency": "USD" },
+        "grand_total": { "value": 153.35, "currency": "USD" }
+      },
+      "shipping_address": {
+        "firstname": "Jane",
+        "lastname": "Doe",
+        "street": ["123 Main St", "Suite 400"],
+        "city": "Austin",
+        "region": "Texas",
+        "region_code": "TX",
+        "country_code": "US",
+        "postcode": "78701",
+        "telephone": "512-555-0100"
+      },
+      "billing_address": {
+        "firstname": "Jane",
+        "lastname": "Doe",
+        "street": ["456 Billing Ave"],
+        "city": "Austin",
+        "region": "Texas",
+        "region_code": "TX",
+        "country_code": "US",
+        "postcode": "78702",
+        "telephone": null
+      }
+    }
+  }
+}

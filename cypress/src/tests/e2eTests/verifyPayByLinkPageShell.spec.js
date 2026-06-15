@@ -49,23 +49,27 @@ describe('Pay By Link — /pay route & page shell (ACCS-869)', () => {
     cy.then(() => expect(payByLinkOrderCalls).to.have.length(0));
   });
 
-  it('renders the shell with empty mount points when /pay has a structurally valid token', () => {
+  it('renders the shell and fires one payByLinkOrder query when /pay has a structurally valid token', () => {
+    cy.intercept('POST', '**/graphql*', (req) => {
+      const body = typeof req.body === 'string' ? req.body : JSON.stringify(req.body || '');
+      if (body.includes('PAY_BY_LINK_ORDER')) {
+        req.reply({ fixture: 'payByLinkOrder' });
+      }
+    }).as('payByLinkOrder');
+
     cy.visit(`${PAY_PATH}?token=${VALID_TOKEN}`);
+    cy.wait('@payByLinkOrder');
 
     cy.get('.pay-by-link').should('exist').should('not.have.class', 'pay-by-link--error');
     cy.get('.pay-by-link__main').should('exist');
     cy.get('.pay-by-link__aside').should('exist');
 
-    // Slot DOM contract — downstream stories (ACCS-873 +) fill these.
+    // Slot DOM contract — populated by ACCS-873.
     cy.get('.pay-by-link__order-header').should('exist');
     cy.get('.pay-by-link__order-summary').should('exist');
     cy.get('.pay-by-link__addresses').should('exist');
     cy.get('.pay-by-link__order-totals').should('exist');
     cy.get('.pay-by-link__payment').should('exist');
     cy.get('.pay-by-link__footer').should('exist');
-
-    // Story 1 has no payByLinkOrder call yet; downstream stories will replace
-    // this assertion with positive ones.
-    cy.then(() => expect(payByLinkOrderCalls).to.have.length(0));
   });
 });

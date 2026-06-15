@@ -857,3 +857,18 @@ body:has(.seller-assisted-buying-banner) {
   }
 }
 
+/* --- Simplified header for the pay-by-link page --- */
+
+body.pay-by-link-page header :is(.nav-sections, .nav-tools, .nav-hamburger) {
+  display: none;
+}
+
+body.pay-by-link-page header nav {
+  display: flex;
+  justify-content: center;
+}
+
+body.pay-by-link-page header .nav-brand {
+  padding: var(--spacing-small) 0;
+}
+

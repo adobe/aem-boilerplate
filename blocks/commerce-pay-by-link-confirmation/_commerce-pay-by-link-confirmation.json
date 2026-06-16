@@ -1,0 +1,15 @@
+{
+  "definitions": [{
+    "title": "Commerce Pay By Link Confirmation",
+    "id": "commerce-pay-by-link-confirmation",
+    "model": "commerce-pay-by-link-confirmation",
+    "plugins": {
+      "da": {
+        "rows": 1,
+        "columns": 2
+      }
+    }
+  }],
+  "models": [],
+  "filters": []
+}

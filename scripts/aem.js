@@ -28,9 +28,10 @@ function sampleRUM(checkpoint, data) {
         on: 1,
         off: 0,
         high: 10,
+        medium: 100,
         low: 1000,
       }[rate];
-      const weight = rateValue !== undefined ? rateValue : 100;
+      const weight = rateValue !== undefined ? rateValue : 1000;
       const id = (window.hlx.rum && window.hlx.rum.id) || crypto.randomUUID().slice(-9);
       const isSelected = (window.hlx.rum && window.hlx.rum.isSelected)
         || (weight > 0 && Math.random() * weight < 1);
@@ -124,7 +125,9 @@ function sampleRUM(checkpoint, data) {
 
         sampleRUM.enhance = () => {
           // only enhance once
-          if (document.querySelector('script[src*="rum-enhancer"]')) return;
+          if (document.querySelector('script[src*="rum-enhancer"]')) {
+            return;
+          }
           const { enhancerVersion, enhancerHash } = sampleRUM.enhancerContext || {};
           const script = document.createElement('script');
           if (enhancerHash) {

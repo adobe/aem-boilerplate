@@ -21,6 +21,7 @@ export default [
     rules: {
       'import/extensions': ['error', { js: 'always' }],
       'linebreak-style': ['error', 'unix'],
+      'no-console': ['warn'],
       'no-param-reassign': [2, { props: false }],
     },
   },

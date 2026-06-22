@@ -111,21 +111,20 @@
   color: var(--color-neutral-900);
 }
 
-/* --- Order header: customer email --- */
+/* --- Order header: customer name + expiry --- */
 
-.pay-by-link .pay-by-link__customer-email {
+.pay-by-link .pay-by-link__customer-name {
   margin: 0;
-  font: var(--type-body-1-default-font);
-  letter-spacing: var(--type-body-1-default-letter-spacing);
-  color: var(--color-neutral-700);
+  font: var(--type-headline-3-strong-font);
+  letter-spacing: var(--type-headline-3-strong-letter-spacing);
+  color: var(--color-neutral-900);
 }
 
-.pay-by-link .pay-by-link__customer-email-label {
+.pay-by-link .pay-by-link__expires-at {
+  margin: var(--spacing-xsmall) 0 0;
+  font: var(--type-body-2-default-font);
+  letter-spacing: var(--type-body-2-default-letter-spacing);
   color: var(--color-neutral-500);
-}
-
-.pay-by-link .pay-by-link__customer-email-value {
-  color: var(--color-brand-500);
 }
 
 /* --- Line items table --- */
@@ -134,6 +133,21 @@
   width: 100%;
   border-collapse: collapse;
 }
+
+.pay-by-link .pay-by-link__items thead th {
+  padding-bottom: var(--spacing-small);
+  font: var(--type-body-2-strong-font);
+  letter-spacing: var(--type-body-2-strong-letter-spacing);
+  color: var(--color-neutral-600);
+  text-align: left;
+  border-bottom: var(--shape-border-width-1) solid var(--color-neutral-200);
+}
+
+/* columns: Product | SKU | Qty | Price | Subtotal */
+.pay-by-link .pay-by-link__items thead th:nth-child(3) { text-align: center; }
+
+.pay-by-link .pay-by-link__items thead th:nth-child(4),
+.pay-by-link .pay-by-link__items thead th:nth-child(5) { text-align: right; }
 
 .pay-by-link .pay-by-link__item {
   border-bottom: var(--shape-border-width-1) solid var(--color-neutral-200);
@@ -148,19 +162,16 @@
   font: var(--type-body-2-default-font);
   letter-spacing: var(--type-body-2-default-letter-spacing);
   color: var(--color-neutral-800);
-  vertical-align: top;
+  vertical-align: middle;
 }
 
 .pay-by-link .pay-by-link__item-name {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xsmall);
-  width: 60%;
+  width: 30%;
 }
 
 .pay-by-link .pay-by-link__item-sku {
-  font: var(--type-body-2-default-font);
   color: var(--color-neutral-500);
+  white-space: nowrap;
 }
 
 .pay-by-link .pay-by-link__item-qty {
@@ -168,7 +179,8 @@
   color: var(--color-neutral-600);
 }
 
-.pay-by-link .pay-by-link__item-price {
+.pay-by-link .pay-by-link__item-price,
+.pay-by-link .pay-by-link__item-subtotal {
   text-align: right;
   white-space: nowrap;
 }
@@ -205,29 +217,31 @@
   color: var(--color-neutral-600);
 }
 
-/* --- Order totals --- */
+/* --- Order totals (tfoot rows inside items table) --- */
 
-.pay-by-link .pay-by-link__totals {
-  display: grid;
-  gap: var(--spacing-xsmall);
-  margin: 0;
+.pay-by-link .pay-by-link__totals tr:first-child td {
+  padding-top: var(--spacing-medium);
+  border-top: var(--shape-border-width-1) solid var(--color-neutral-200);
 }
 
-.pay-by-link .pay-by-link__totals-row {
-  display: flex;
-  justify-content: space-between;
+.pay-by-link .pay-by-link__total-row td {
+  padding: var(--spacing-xsmall) 0;
   font: var(--type-body-1-default-font);
   letter-spacing: var(--type-body-1-default-letter-spacing);
   color: var(--color-neutral-700);
 }
 
-.pay-by-link .pay-by-link__totals-row dt,
-.pay-by-link .pay-by-link__totals-row dd {
-  margin: 0;
+.pay-by-link .pay-by-link__total-label {
+  text-align: right;
+  padding-right: var(--spacing-small);
 }
 
-.pay-by-link .pay-by-link__totals-row--grand {
-  margin-top: var(--spacing-small);
+.pay-by-link .pay-by-link__total-value {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.pay-by-link .pay-by-link__total-row--grand td {
   padding-top: var(--spacing-small);
   border-top: var(--shape-border-width-1) solid var(--color-neutral-200);
   font: var(--type-body-1-strong-font);

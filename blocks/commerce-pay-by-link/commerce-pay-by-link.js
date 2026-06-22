@@ -115,7 +115,6 @@ function renderShell(block) {
         <div class="pay-by-link__addresses"></div>
       </div>
       <aside class="pay-by-link__aside">
-        <div class="pay-by-link__order-totals"></div>
         <div class="pay-by-link__payment"></div>
         <div class="pay-by-link__footer"></div>
       </aside>
@@ -125,7 +124,7 @@ function renderShell(block) {
 
 function setSkeleton(block, on) {
   block.querySelectorAll(
-    '.pay-by-link__order-header, .pay-by-link__order-summary, .pay-by-link__addresses, .pay-by-link__order-totals',
+    '.pay-by-link__order-header, .pay-by-link__order-summary, .pay-by-link__addresses',
   ).forEach((slot) => {
     slot.classList.toggle('pay-by-link__skeleton', on);
     slot.setAttribute('aria-busy', String(on));
@@ -181,91 +180,111 @@ function buildAddress(addr) {
 }
 
 function populateSlots(block, data, ns) {
-  // Customer email
+  // Customer name (derived from address, fallback to email)
   const header = block.querySelector('.pay-by-link__order-header');
-  const emailPara = document.createElement('p');
-  emailPara.className = 'pay-by-link__customer-email';
-  const emailLabel = document.createElement('span');
-  emailLabel.className = 'pay-by-link__customer-email-label';
-  emailLabel.textContent = ns.CustomerEmailLabel || '';
-  const emailLink = document.createElement('a');
-  emailLink.className = 'pay-by-link__customer-email-value';
-  emailLink.href = `mailto:${data.customer_email}`;
-  emailLink.textContent = data.customer_email;
-  emailPara.append(emailLabel, ' ', emailLink);
-  header.append(emailPara);
+  const addr = data.shipping_address || data.billing_address;
+  const customerName = addr ? `${addr.firstname} ${addr.lastname}`.trim() : data.customer_email;
+  const namePara = document.createElement('p');
+  namePara.className = 'pay-by-link__customer-name';
+  namePara.textContent = customerName + ',';
+  header.append(namePara);
+
+  // Expiration date
+  const expiryDate = new Date(data.expires_at.replace(' ', 'T') + 'Z');
+  const formattedExpiry = new Intl.DateTimeFormat(document.documentElement.lang || 'en', {
+    month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit',
+  }).format(expiryDate);
+  const expiryPara = document.createElement('p');
+  expiryPara.className = 'pay-by-link__expires-at';
+  expiryPara.textContent = `${ns.ExpiresOnPrefix || 'This link expires on'} ${formattedExpiry}.`;
+  header.append(expiryPara);
 
   // Line items
   const summary = block.querySelector('.pay-by-link__order-summary');
-  const itemsSection = buildSection('pay-by-link-items-heading', ns.OrderItemsHeading || '');
+  const itemsSection = buildSection('pay-by-link-items-heading', ns.OrderItemsHeading || 'Your order');
   const table = document.createElement('table');
   table.className = 'pay-by-link__items';
+
+  const thead = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  [
+    ns.ItemNameLabel || 'Product',
+    ns.SkuLabel || 'SKU',
+    ns.QtyLabel || 'Qty',
+    ns.PriceLabel || 'Price',
+    ns.LineSubtotalLabel || 'Subtotal',
+  ].forEach((label) => {
+    const th = document.createElement('th');
+    th.textContent = label;
+    headerRow.append(th);
+  });
+  thead.append(headerRow);
+
   const tbody = document.createElement('tbody');
-  data.items.forEach(({
-    name, sku, quantity, price,
-  }) => {
+  data.items.forEach(({ name, sku, quantity, price }) => {
     const tr = document.createElement('tr');
     tr.className = 'pay-by-link__item';
 
     const tdName = document.createElement('td');
     tdName.className = 'pay-by-link__item-name';
-    const nameSpan = document.createElement('span');
-    nameSpan.textContent = name;
-    const skuSpan = document.createElement('span');
-    skuSpan.className = 'pay-by-link__item-sku';
-    skuSpan.textContent = sku;
-    tdName.append(nameSpan, skuSpan);
+    tdName.textContent = name;
+
+    const tdSku = document.createElement('td');
+    tdSku.className = 'pay-by-link__item-sku';
+    tdSku.textContent = sku;
 
     const tdQty = document.createElement('td');
     tdQty.className = 'pay-by-link__item-qty';
-    tdQty.textContent = `${ns.QtyLabel || 'Qty'}: ${quantity}`;
+    tdQty.textContent = quantity;
 
     const tdPrice = document.createElement('td');
     tdPrice.className = 'pay-by-link__item-price';
     tdPrice.textContent = formatMoney(price);
 
-    tr.append(tdName, tdQty, tdPrice);
+    const tdSubtotal = document.createElement('td');
+    tdSubtotal.className = 'pay-by-link__item-subtotal';
+    tdSubtotal.textContent = formatMoney({ value: price.value * quantity, currency: price.currency });
+
+    tr.append(tdName, tdSku, tdQty, tdPrice, tdSubtotal);
     tbody.append(tr);
   });
-  table.append(tbody);
+  const tfoot = document.createElement('tfoot');
+  tfoot.className = 'pay-by-link__totals';
+  [
+    [ns.SubtotalLabel || 'Subtotal', data.totals.subtotal],
+    ...(data.totals.tax?.value > 0 ? [[ns.TaxLabel || 'Tax', data.totals.tax]] : []),
+    [ns.ShippingLabel || 'Shipping & Handling', data.totals.shipping],
+    [ns.GrandTotalLabel || 'Grand Total', data.totals.grand_total, true],
+  ].forEach(([rowLabel, money, grand = false]) => {
+    const tr = document.createElement('tr');
+    tr.className = `pay-by-link__total-row${grand ? ' pay-by-link__total-row--grand' : ''}`;
+    const tdLabel = document.createElement('td');
+    tdLabel.className = 'pay-by-link__total-label';
+    tdLabel.colSpan = 4;
+    tdLabel.textContent = rowLabel;
+    const tdValue = document.createElement('td');
+    tdValue.className = 'pay-by-link__total-value';
+    tdValue.textContent = formatMoney(money);
+    tr.append(tdLabel, tdValue);
+    tfoot.append(tr);
+  });
+
+  table.append(thead, tbody, tfoot);
   itemsSection.append(table);
   summary.append(itemsSection);
 
   // Addresses
   const addresses = block.querySelector('.pay-by-link__addresses');
   if (data.shipping_address) {
-    const section = buildSection('pay-by-link-shipping-heading', ns.ShippingAddressHeading || '');
+    const section = buildSection('pay-by-link-shipping-heading', ns.ShippingAddressHeading || 'Shipping Address');
     section.append(buildAddress(data.shipping_address));
     addresses.append(section);
   }
   if (data.billing_address) {
-    const section = buildSection('pay-by-link-billing-heading', ns.BillingAddressHeading || '');
+    const section = buildSection('pay-by-link-billing-heading', ns.BillingAddressHeading || 'Billing Address');
     section.append(buildAddress(data.billing_address));
     addresses.append(section);
   }
-
-  // Totals
-  const totalsSlot = block.querySelector('.pay-by-link__order-totals');
-  const totalsSection = buildSection('pay-by-link-totals-heading', ns.OrderTotalsHeading || '');
-  const dl = document.createElement('dl');
-  dl.className = 'pay-by-link__totals';
-  [
-    [ns.SubtotalLabel, data.totals.subtotal],
-    [ns.TaxLabel, data.totals.tax],
-    [ns.ShippingLabel, data.totals.shipping],
-    [ns.GrandTotalLabel, data.totals.grand_total, true],
-  ].forEach(([rowLabel, money, grand = false]) => {
-    const div = document.createElement('div');
-    div.className = `pay-by-link__totals-row${grand ? ' pay-by-link__totals-row--grand' : ''}`;
-    const dt = document.createElement('dt');
-    dt.textContent = rowLabel || '';
-    const dd = document.createElement('dd');
-    dd.textContent = formatMoney(money);
-    div.append(dt, dd);
-    dl.append(div);
-  });
-  totalsSection.append(dl);
-  totalsSlot.append(totalsSection);
 }
 
 function createCtx(element, order, token) {

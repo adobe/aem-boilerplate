@@ -23,6 +23,7 @@ export default [
       'linebreak-style': ['error', 'unix'],
       'no-console': ['warn'],
       'no-param-reassign': [2, { props: false }],
+      'no-use-before-define': ['error', { functions: false, classes: true, variables: true }],
     },
   },
 ];

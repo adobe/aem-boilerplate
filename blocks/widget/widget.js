@@ -61,7 +61,7 @@ export default async function decorate(widget) {
       container.classList.remove('widget-container');
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
+     
     console.error(`failed to load widget ${widgetPath}/${widgetName}`, error);
   }
 }

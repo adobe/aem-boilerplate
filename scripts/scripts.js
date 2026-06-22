@@ -57,7 +57,7 @@ function buildAutoBlocks(main) {
     // auto load `*/fragments/*` references
     const fragments = [...main.querySelectorAll('a[href*="/fragments/"]')].filter((f) => !f.closest('.fragment'));
     if (fragments.length > 0) {
-      // eslint-disable-next-line import/no-cycle
+       
       import('../blocks/fragment/fragment.js').then(({ loadFragment }) => {
         fragments.forEach(async (fragment) => {
           try {
@@ -65,7 +65,7 @@ function buildAutoBlocks(main) {
             const frag = await loadFragment(pathname);
             fragment.parentElement.replaceWith(...frag.children);
           } catch (error) {
-            // eslint-disable-next-line no-console
+             
             console.error('Fragment loading failed', error);
           }
         });
@@ -73,7 +73,7 @@ function buildAutoBlocks(main) {
     }
     buildWidgetAutoBlocks(main);
   } catch (error) {
-    // eslint-disable-next-line no-console
+     
     console.error('Auto Blocking failed', error);
   }
 }
@@ -121,7 +121,7 @@ function decorateButtons(main) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-// eslint-disable-next-line import/prefer-default-export
+ 
 export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);

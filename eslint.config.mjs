@@ -1,18 +1,16 @@
-import { FlatCompat } from '@eslint/eslintrc';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import js from '@eslint/js';
+import importPlugin from 'eslint-plugin-import';
 import globals from 'globals';
-
-const compat = new FlatCompat({
-  baseDirectory: dirname(fileURLToPath(import.meta.url)),
-});
 
 export default [
   {
     ignores: ['helix-importer-ui/**', '**/*.min.js', 'scripts/aem.js'],
   },
-  ...compat.extends('airbnb-base'),
+  js.configs.recommended,
   {
+    plugins: {
+      import: importPlugin,
+    },
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
@@ -24,12 +22,6 @@ export default [
       'import/extensions': ['error', { js: 'always' }],
       'linebreak-style': ['error', 'unix'],
       'no-param-reassign': [2, { props: false }],
-    },
-  },
-  {
-    files: ['eslint.config.mjs'],
-    rules: {
-      'import/no-extraneous-dependencies': 'off',
     },
   },
 ];

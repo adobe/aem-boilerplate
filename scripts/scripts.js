@@ -14,28 +14,17 @@ import {
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
   const innerTT = window.trustedTypes.createPolicy('tt-inner', {
-    // avoid stack overflow
-    createHTML: (s) => s,
+    createHTML: (s) => s, // avoid stack overflow
   });
 
   window.trustedTypes.createPolicy('default', {
-    /**
-     * All HTML creation goes through this function, so we can sanitize it for known attack vectors.
-     * @param {string} input The HTML input string
-     * @param {string} type The type of HTML being created
-     * @param {string} sink The sink where the HTML will be used
-     * @returns {undefined|string} The sanitized HTML string or undefined if the input is unsafe
-     */
     createHTML: (input, type, sink) => {
-      // DOMPurify or similar sanitization library may be implemented here
-      // if a harder policy is desired, with a tradeoff on performance.
       let processedInput = input;
       if (/srcdoc\s*=/i.test(processedInput)) {
         const doc = new DOMParser().parseFromString(innerTT.createHTML(processedInput), 'text/html');
         doc.querySelectorAll('[srcdoc]').forEach((el) => el.removeAttribute('srcdoc'));
         processedInput = doc.body.innerHTML;
       }
-
       if (sink.includes('createContextualFragment') || sink.includes('Document write')) {
         const doc = new DOMParser().parseFromString(innerTT.createHTML(processedInput), 'text/html');
         doc.querySelectorAll('script').forEach((el) => el.remove());
@@ -43,30 +32,8 @@ if (window.trustedTypes && window.trustedTypes.createPolicy) {
       }
       return processedInput;
     },
-
-    /**
-     * All script URL creation goes through this function,
-     * so we can sanitize it for known attack vectors.
-     * @param {string} input The script URL input string
-     * @returns {string} The sanitized script URL string
-     */
-    createScriptURL(input) {
-      // a trusted origin allowlist approach may be implemented here if a harder policy is desired
-      return input;
-    },
-
-    /**
-     * All script creation goes through this function,
-     * so we can sanitize it for known attack vectors.
-     * @param {string} input The script input string
-     * @returns {string} The sanitized script string
-     */
-    createScript(input) {
-      // Uncomment to block eval and script.text= assignments entirely
-      // (needs testing with your website code and martech stack):
-      // throw new TypeError('Inline script execution blocked by policy');
-      return input;
-    },
+    createScriptURL: (input) => input,
+    createScript: (input) => input,
   });
 }
 

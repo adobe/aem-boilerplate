@@ -22,7 +22,7 @@ if (window.trustedTypes && window.trustedTypes.createPolicy) {
       let processedInput = input;
       if (/srcdoc\s*=/i.test(processedInput)) {
         const doc = new DOMParser().parseFromString(innerTT.createHTML(processedInput), 'text/html');
-        doc.querySelectorAll('[srcdoc]').forEach((el) => el.removeAttribute('srcdoc'));
+        doc.querySelectorAll('iframe[srcdoc]').forEach((el) => el.removeAttribute('srcdoc'));
         processedInput = doc.body.innerHTML;
       }
       if (sink.includes('createContextualFragment') || sink.includes('Document write')) {

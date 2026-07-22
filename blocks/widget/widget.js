@@ -24,6 +24,34 @@ function widgetUrl(widgetPath, widgetName, extension) {
 }
 
 /**
+ * Applies widget metadata, block classes, and section shell classes.
+ * Must run before widget HTML/JS load so decorate can read config from the DOM.
+ * @param {Element} widget The widget block element
+ * @param {HTMLAnchorElement} source The authored widget link
+ * @param {string} widgetName Widget file name without extension
+ * @param {URLSearchParams} searchParams Query params from the widget href
+ */
+function applyWidgetShell(widget, source, widgetName, searchParams) {
+  widget.classList.add(widgetName);
+  widget.classList.remove('block');
+  widget.dataset.source = source.href;
+  searchParams.forEach((value, key) => {
+    widget.dataset[key] = value;
+  });
+
+  const wrapper = widget.closest('.widget-wrapper');
+  if (wrapper) {
+    wrapper.classList.add(`${widgetName}-wrapper`);
+    wrapper.classList.remove('widget-wrapper');
+  }
+  const container = widget.closest('.widget-container');
+  if (container) {
+    container.classList.add(`${widgetName}-container`);
+    container.classList.remove('widget-container');
+  }
+}
+
+/**
  * Loads and decorates a widget block.
  * @param {Element} widget The widget block element
  */
@@ -33,6 +61,8 @@ export default async function decorate(widget) {
   const { widgetPath, widgetName } = parseWidgetHref(pathname);
 
   try {
+    applyWidgetShell(widget, source, widgetName, searchParams);
+
     const resp = await fetch(widgetUrl(widgetPath, widgetName, 'html'));
     widget.innerHTML = await resp.text();
 
@@ -42,24 +72,6 @@ export default async function decorate(widget) {
       if (mod.default) await mod.default(widget);
     })();
     await Promise.all([cssLoaded, decorationComplete]);
-
-    widget.classList.add(widgetName);
-    widget.classList.remove('block');
-    widget.dataset.source = source.href;
-    searchParams.forEach((value, key) => {
-      widget.dataset[key] = value;
-    });
-
-    const wrapper = widget.closest('.widget-wrapper');
-    if (wrapper) {
-      wrapper.classList.add(`${widgetName}-wrapper`);
-      wrapper.classList.remove('widget-wrapper');
-    }
-    const container = widget.closest('.widget-container');
-    if (container) {
-      container.classList.add(`${widgetName}-container`);
-      container.classList.remove('widget-container');
-    }
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(`failed to load widget ${widgetPath}/${widgetName}`, error);

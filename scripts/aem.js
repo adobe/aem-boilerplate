@@ -394,6 +394,7 @@ function wrapTextNodes(block) {
     'OL',
     'PICTURE',
     'TABLE',
+    'BLOCKQUOTE',
     'H1',
     'H2',
     'H3',

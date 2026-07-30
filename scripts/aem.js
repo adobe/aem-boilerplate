@@ -28,6 +28,7 @@ function sampleRUM(checkpoint, data) {
         on: 1,
         off: 0,
         high: 10,
+        medium: 100,
         low: 1000,
       }[rate];
       const weight = rateValue !== undefined ? rateValue : 100;
@@ -581,7 +582,12 @@ function decorateBlocks(main) {
  */
 async function loadHeader(header) {
   const headerBlock = buildBlock('header', '');
-  header.append(headerBlock);
+  const existingHeaderBlock = header.querySelector(':scope > .header');
+  if (existingHeaderBlock) {
+    existingHeaderBlock.replaceWith(headerBlock);
+  } else {
+    header.append(headerBlock);
+  }
   decorateBlock(headerBlock);
   return loadBlock(headerBlock);
 }
@@ -593,7 +599,12 @@ async function loadHeader(header) {
  */
 async function loadFooter(footer) {
   const footerBlock = buildBlock('footer', '');
-  footer.append(footerBlock);
+  const existingFooterBlock = footer.querySelector(':scope > .footer');
+  if (existingFooterBlock) {
+    existingFooterBlock.replaceWith(footerBlock);
+  } else {
+    footer.append(footerBlock);
+  }
   decorateBlock(footerBlock);
   return loadBlock(footerBlock);
 }

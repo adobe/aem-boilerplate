@@ -19,4 +19,4 @@ Edge Delivery Services. Read a block first. Omissions are in the repo or known.
 - Merging `main` ships code; content publishes separately.
 - A PR without a `{branch}--{repo}--{owner}.aem.page/{path}` link is rejected.
 - All committed files are served. Use `.hlxignore`.
-- Docs: `curl -s https://www.aem.live/docpages-index.json | jq -r '.data[]|select(.content|test("KW";"i")).path'`
+- Skills: `/plugin marketplace add adobe/skills`, then `aem-edge-delivery-services` (24 skills, incl. `docs-search`).

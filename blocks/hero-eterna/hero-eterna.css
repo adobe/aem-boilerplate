@@ -1,0 +1,51 @@
+/*
+ * hero-eterna — full-width top banner (a single linked banner image).
+ * Source: https://www.bobcard.co.in/credit-card-types/eterna
+ *         .CardBannersWrapp article.card_banner
+ *
+ * The source banner spans the full viewport (left:0, width:100vw) at a
+ * 2:1 aspect ratio (natural image 1440x720). It is a single <a><img> with
+ * no padding, margin, border-radius or overlaid text.
+ */
+
+/* Break out of the section's max-width so the banner is edge-to-edge. */
+.section.hero-eterna-container {
+  margin: 0;
+  padding: 0;
+}
+
+.section.hero-eterna-container > .hero-eterna-wrapper {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hero-eterna {
+  /* fallback shown only if the image fails to load (source: rgb(243 243 243)) */
+  background-color: rgb(243 243 243);
+}
+
+/* Rows and cells carry no spacing — the image is the entire banner. */
+.hero-eterna > div,
+.hero-eterna > div > div {
+  margin: 0;
+  padding: 0;
+}
+
+/* decorateMain() wraps the <a> image link in a <p>; strip its default margins. */
+.hero-eterna p {
+  margin: 0;
+}
+
+.hero-eterna a,
+.hero-eterna picture {
+  display: block;
+}
+
+/* Linked banner image: full-width, keeps its natural 2:1 aspect ratio. */
+.hero-eterna img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+}

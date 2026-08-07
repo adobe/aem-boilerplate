@@ -1,0 +1,117 @@
+/*
+ * cards-additional — "Additional Benefits with ETERNA"
+ * Values extracted from source: article.benefit-eterna.additional-benefit @ 1440px.
+ * On the source these 9 benefit cards live in a horizontal slick slider inside a
+ * rounded light-grey "wrapper" box. In EDS the slider is dropped and the cards
+ * render as a responsive grid (4-up on desktop == the slider's 4 visible cards
+ * at 274px each). The rounded grey box moves onto the block element itself.
+ * The "Additional Benefits with ETERNA" h2 and the trailing disclaimer/"Read more"
+ * are DEFAULT CONTENT siblings outside this block, so they are not styled here.
+ */
+
+/* Rounded light-grey container (source div.wrapper) */
+.cards-additional {
+  background-color: var(--brand-light-grey);
+  border-radius: 40px;
+  padding: 32px 24px;
+}
+
+/* Card list — mobile-first single column */
+.cards-additional > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+/* Card: transparent, no chrome (source li has no background/border/radius) */
+.cards-additional > ul > li {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+  text-align: start;
+}
+
+/* Icon cell: 60x60 line icon, left-aligned, contained (never rasterised/cropped) */
+.cards-additional .cards-additional-card-image {
+  line-height: 0;
+}
+
+.cards-additional .cards-additional-card-image img {
+  width: 60px;
+  height: 60px;
+  aspect-ratio: auto;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+/* Text cell */
+.cards-additional .cards-additional-card-body {
+  margin: 0;
+}
+
+/* Title */
+.cards-additional .cards-additional-card-body h3 {
+  margin: 24px 0 16px;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-l); /* 23px desktop / source h3 */
+  font-weight: 600;
+  line-height: 1.2; /* 27.6px at 23px */
+  color: var(--text-color);
+}
+
+/* Description paragraphs — source p-to-p gap is 24px */
+.cards-additional .cards-additional-card-body p {
+  margin: 0 0 24px;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs); /* 14px */
+  line-height: 1.5; /* 21px at 14px */
+  color: var(--text-color);
+}
+
+.cards-additional .cards-additional-card-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Inline links inside descriptions ("Know more") are orange, no underline */
+.cards-additional .cards-additional-card-body a:any-link {
+  color: var(--brand-orange);
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.cards-additional .cards-additional-card-body a:hover {
+  text-decoration: underline;
+}
+
+/* Tablet: 2-up */
+@media (width >= 600px) {
+  .cards-additional > ul {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 30px;
+  }
+}
+
+/* Desktop: rounded box grows, 4-up grid (matches source slider's 4 visible cards).
+   Card internal spacing: 64px icon->title gap and 48px title->text gap on source. */
+@media (width >= 900px) {
+  .cards-additional {
+    border-radius: 90px;
+    padding: 48px 57.6px;
+  }
+
+  .cards-additional > ul {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 48px 30px;
+    align-items: start;
+  }
+
+  .cards-additional .cards-additional-card-body h3 {
+    margin: 64px 0 48px;
+  }
+}

@@ -368,3 +368,22 @@ main .section.dark {
   margin: 0;
   padding: 40px 0;
 }
+
+/*
+ * FAQ card — the source wraps the "Have queries?" heading, accordion and
+ * "View More" in a white rounded card with a soft navy-tinted shadow
+ * (source .faq-wrapper .wrapper: bg #fff, radius 50px, box-shadow
+ * rgba(22,43,117,.1) 0 10px 30px, padding 20px 70px 60px).
+ */
+main .section.faq-card > div {
+  background-color: #fff;
+  border-radius: 50px;
+  box-shadow: 0 10px 30px 0 rgb(22 43 117 / 10%);
+  padding: 20px 40px 48px;
+}
+
+@media (width >= 900px) {
+  main .section.faq-card > div {
+    padding: 20px 70px 60px;
+  }
+}

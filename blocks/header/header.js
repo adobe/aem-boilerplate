@@ -133,6 +133,29 @@ export default async function decorate(block) {
 
   nav.append(topRow, bottomRow);
 
+  // Mobile drawer: a single left slide-in panel that holds all nav links.
+  // On mobile the utility group + bottom row are relocated into the drawer; on
+  // desktop they return to their rows. This keeps ONE copy of every link
+  // (no duplication) so content stays faithful in both layouts.
+  const drawer = document.createElement('div');
+  drawer.className = 'nav-drawer';
+  topRow.append(drawer);
+
+  const applyLayout = (desktop) => {
+    if (desktop) {
+      // restore desktop rows
+      if (utility || login) topInner.append(topTools);
+      bottomInner.append(primary);
+      bottomInner.append(bottomTools);
+    } else {
+      // move drawer content into the slide-in panel. Order matches the source
+      // mobile drawer: main nav links, then apply/track + search, then utility
+      // links + login.
+      drawer.append(primary, bottomTools, topTools);
+    }
+  };
+  applyLayout(isDesktop.matches);
+
   // hamburger for mobile — lives in the top row's inner container
   const hamburger = document.createElement('div');
   hamburger.classList.add('nav-hamburger');
@@ -143,8 +166,11 @@ export default async function decorate(block) {
   topInner.prepend(hamburger);
   nav.setAttribute('aria-expanded', 'false');
 
-  // reset menu state when crossing the desktop/mobile breakpoint
-  isDesktop.addEventListener('change', () => closeMobileMenu(nav));
+  // reset menu state + reflow when crossing the desktop/mobile breakpoint
+  isDesktop.addEventListener('change', () => {
+    closeMobileMenu(nav);
+    applyLayout(isDesktop.matches);
+  });
 
   // close on escape
   window.addEventListener('keydown', (e) => {

@@ -35,6 +35,17 @@ export default function parse(element, { document }) {
     ? Array.from(row.children)
     : Array.from(element.querySelectorAll('.wrapper > *'));
 
+  // Accessibility: the source's fee column uses an <h4> that directly follows
+  // the intro <h2>, skipping h3 (a WCAG heading-order flag). Promote every h4
+  // in this block to h3 up front so the hierarchy is h2 -> h3 with no skipped
+  // level. Done before cells are collected so the emitted table references the
+  // new h3 nodes. Text is unchanged; block CSS controls the visual size.
+  element.querySelectorAll('h4').forEach((h4) => {
+    const h3 = document.createElement('h3');
+    h3.innerHTML = h4.innerHTML;
+    h4.replaceWith(h3);
+  });
+
   // Build one cell per source column, preserving each column's inner content
   // (headings, paragraphs, notes, buttons) as-is.
   const cells = [];

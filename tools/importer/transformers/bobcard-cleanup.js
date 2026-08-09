@@ -34,5 +34,13 @@ export default function transform(hookName, element, payload) {
       'next-route-announcer', // Next.js route-change a11y live region
       '.progress-wrap', // scroll progress / back-to-top widget
     ]);
+
+    // "Read more" / "View More" are source-side JS toggles that expand truncated
+    // text in place. They carry no href (href=""), so in a static import they
+    // become dead links that reload the page. Unwrap them to plain text so no
+    // broken anchor ships. (Accessibility + link-integrity fix.)
+    element.querySelectorAll('a[href=""], a:not([href])').forEach((a) => {
+      a.replaceWith(...a.childNodes);
+    });
   }
 }

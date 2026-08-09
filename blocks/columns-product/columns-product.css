@@ -18,10 +18,14 @@
   color: var(--text-color);
 }
 
-.columns-product h4 {
+/* Fee heading — authored as h3 for heading-order a11y; sized to match the
+   source's original h4 (20px) so the visual design is unchanged. */
+.columns-product h3 {
   margin: 0 0 12px;
+  font-size: var(--heading-font-size-m);
   font-weight: 400;
   line-height: 1.2;
+  color: rgb(13 13 13);
 }
 
 .columns-product p {

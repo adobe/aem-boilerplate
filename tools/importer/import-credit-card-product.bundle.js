@@ -102,6 +102,11 @@ var CustomImportScript = (() => {
   function parse3(element, { document }) {
     const row = element.querySelector(".row");
     let columns = row ? Array.from(row.children) : Array.from(element.querySelectorAll(".wrapper > *"));
+    element.querySelectorAll("h4").forEach((h4) => {
+      const h3 = document.createElement("h3");
+      h3.innerHTML = h4.innerHTML;
+      h4.replaceWith(h3);
+    });
     const cells = [];
     const rowCells = [];
     columns.forEach((col) => {
@@ -293,6 +298,9 @@ var CustomImportScript = (() => {
         ".progress-wrap"
         // scroll progress / back-to-top widget
       ]);
+      element.querySelectorAll('a[href=""], a:not([href])').forEach((a) => {
+        a.replaceWith(...a.childNodes);
+      });
     }
   }
 

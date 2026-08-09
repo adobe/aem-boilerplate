@@ -259,6 +259,11 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
   transform: rotate(-45deg);
 }
 
+/* ─── Drawer (populated on mobile only) ────────────────── */
+header nav .nav-drawer {
+  display: none;
+}
+
 /* ─── Mobile layout (< 900px) ──────────────────────────── */
 @media (width < 900px) {
   header nav .nav-hamburger {
@@ -266,70 +271,112 @@ header nav[aria-expanded='true'] .nav-hamburger-icon::after {
     order: -1;
   }
 
+  /* single-bar top row on mobile: hamburger + centered logo */
   header nav .nav-row-top .nav-row-inner {
     min-height: 60px;
     gap: 12px;
+    justify-content: flex-start;
+  }
+
+  header nav .nav-brand {
+    flex: 1;
+    text-align: center;
   }
 
   header nav .nav-brand img {
     width: 150px;
   }
 
-  /* utility group + primary + tools collapse into a drawer */
-  header nav .nav-utility-group,
+  /* the orange bottom bar is not shown as a bar on mobile — its links live in the drawer */
   header nav .nav-row-bottom {
     display: none;
   }
 
-  header nav[aria-expanded='true'] .nav-utility-group {
+  /* left slide-in drawer (full viewport width) */
+  header nav .nav-drawer {
+    display: block;
+    position: fixed;
+    inset: 60px 0 0;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 15%);
+    transform: translateX(-105%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    padding: 8px 0;
+    z-index: 5;
+  }
+
+  header nav[aria-expanded='true'] .nav-drawer {
+    transform: translateX(0);
+  }
+
+  /* every drawer list + group stacks vertically, full width */
+  header nav .nav-drawer > div,
+  header nav .nav-drawer .nav-utility-group,
+  header nav .nav-drawer .nav-tools,
+  header nav .nav-drawer .nav-utility,
+  header nav .nav-drawer .nav-primary,
+  header nav .nav-drawer .nav-actions {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
+    align-items: stretch;
+    gap: 0;
     width: 100%;
-    order: 3;
-    padding: 16px 0 4px;
+    margin: 0;
+    padding: 0;
   }
 
-  header nav[aria-expanded='true'] .nav-utility ul {
+  header nav .nav-drawer ul {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  header nav[aria-expanded='true'] .nav-row-top .nav-row-inner {
-    flex-wrap: wrap;
-    align-items: center;
+  header nav .nav-drawer li,
+  header nav .nav-drawer .nav-login,
+  header nav .nav-drawer .nav-search {
+    width: 100%;
+    margin: 0;
+    border-bottom: 1px solid rgb(233 233 233);
   }
 
-  header nav[aria-expanded='true'] .nav-row-bottom {
+  header nav .nav-drawer a,
+  header nav .nav-drawer .nav-utility a,
+  header nav .nav-drawer .nav-primary a,
+  header nav .nav-drawer .nav-actions a {
     display: block;
-  }
-
-  header nav[aria-expanded='true'] .nav-row-bottom .nav-row-inner {
-    display: block;
-    padding: 12px 24px 16px;
-  }
-
-  header nav[aria-expanded='true'] .nav-primary ul,
-  header nav[aria-expanded='true'] .nav-actions ul {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 14px;
-  }
-
-  header nav[aria-expanded='true'] .nav-tools {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
     width: 100%;
+    box-sizing: border-box;
+    padding: 16px 24px;
+    color: rgb(40 39 40);
+    font-size: 16px;
+    font-weight: 600;
   }
 
-  header nav[aria-expanded='true'] .nav-search form {
+  /* login inside drawer becomes a plain full-width row (not a pill) */
+  header nav .nav-drawer .nav-login a {
+    background: transparent;
+    color: rgb(40 39 40);
+    border-radius: 0;
+    justify-content: flex-start;
+    padding: 16px 24px;
+  }
+
+  /* search inside drawer */
+  header nav .nav-drawer .nav-search {
+    padding: 12px 24px;
+  }
+
+  header nav .nav-drawer .nav-search form {
     width: 100%;
+    background: rgb(245 245 245);
   }
 
-  header nav[aria-expanded='true'] .nav-search input {
+  header nav .nav-drawer .nav-search input {
     width: 100%;
   }
 }

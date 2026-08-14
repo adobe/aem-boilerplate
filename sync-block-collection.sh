@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 ORG=adobe
 REPO=aem-block-collection
 FILES=(scripts/aem.js scripts/scripts.js head.html)
@@ -13,6 +14,9 @@ for f in "${FILES[@]}"; do
 done
 
 cd $REPO
+
+git config --local user.email "helix@adobe.com"
+git config --local user.name "AEM Bot"
 
 echo "Creating branch $BRANCH"
 git checkout -b $BRANCH

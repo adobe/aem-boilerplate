@@ -31,6 +31,7 @@ echo "Committing changes"
 git commit -m "chore: sync scripts/aem.js, scripts/scripts.js, head.html from aem-boilerplate@$SHA
 
 Source: https://github.com/$ORG/aem-boilerplate/commit/$SHA
+Test URL: https://$BRANCH--$REPO--$ORG.aem.live/
 "
 
 echo "Ready to create PR"

@@ -1,0 +1,37 @@
+{
+  "variantName": "hero-cta",
+  "baseBlock": "hero",
+  "version": "1.0.0",
+  "created": "2026-08-07T08:15:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.bobcard.co.in/credit-card-types/eterna",
+    "originPage": "credit card product detail page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "accent",
+    "density": "wide",
+    "purpose": "cta-banner",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "background image + heading + paragraph + CTA",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "mid-page or end-of-page call-to-action banners",
+      "promotional banners with a colored/photo background, headline, supporting text and a button"
+    ],
+    "notSuitableFor": [
+      "top-of-page product heroes where all copy is baked into the image",
+      "plain text sections without a background image"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/credit-card-types/eterna"],
+    "reuseCount": 1,
+    "lastUsed": "2026-08-07T08:15:00.000Z"
+  }
+}

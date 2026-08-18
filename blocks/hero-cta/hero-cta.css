@@ -1,0 +1,119 @@
+/*
+ * hero-cta — mid/end-of-page promotional CTA banner.
+ * Source: article.transaction-banner on
+ * https://www.bobcard.co.in/credit-card-types/eterna
+ *
+ * Design: a rounded card whose lifestyle image fills the whole banner as a
+ * background, with heading + copy + offer note + CTA overlaid on the left.
+ * In EDS the image arrives as an inline <img> in the first row, so the image
+ * row is positioned to fill the block and the content row is layered on top.
+ */
+
+.hero-cta {
+  position: relative;
+  margin: 0 0 40px;
+  border-radius: 20px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Row 1 — banner image, stretched to fill the whole card as a background. */
+.hero-cta.has-image .hero-cta-image {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  margin: 0;
+}
+
+.hero-cta.has-image .hero-cta-image > div,
+.hero-cta.has-image .hero-cta-image picture {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.hero-cta.has-image .hero-cta-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+/* Row 2 — text content overlaid on the left of the banner. */
+.hero-cta .hero-cta-content {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 32px 24px;
+}
+
+/* When there is no background image, let the content flow normally. */
+.hero-cta:not(.has-image) {
+  border-radius: 0;
+}
+
+.hero-cta h2 {
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-color);
+}
+
+.hero-cta .hero-cta-content p {
+  margin: 12px 0;
+  font-family: var(--body-font-family);
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text-color);
+  max-width: 480px;
+}
+
+/* "Limited Period Lifetime Free Card Offer." offer callout. */
+.hero-cta .hero-cta-content p.note {
+  margin: 0;
+  padding-top: 10px;
+  max-width: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgb(69 26 14);
+}
+
+/* "Apply Now" — orange pill CTA (reuses the global a.button pill). */
+.hero-cta .hero-cta-content p.button-wrapper {
+  margin-top: 16px;
+}
+
+.hero-cta .hero-cta-content a.button:any-link {
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.hero-cta .hero-cta-content a.button:any-link::after {
+  content: "→";
+  margin-left: 12px;
+  font-weight: 400;
+}
+
+@media (width >= 900px) {
+  .hero-cta {
+    margin: 0 0 56px;
+    border-radius: 35px;
+  }
+
+  .hero-cta .hero-cta-content {
+    padding: 56px 64px;
+  }
+
+  .hero-cta.has-image .hero-cta-content > div {
+    max-width: 62%;
+  }
+
+  .hero-cta h2 {
+    font-size: 36px;
+    line-height: 1.2;
+  }
+}

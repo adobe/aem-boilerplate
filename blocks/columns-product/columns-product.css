@@ -1,0 +1,112 @@
+/*
+ * columns-product -- product intro for credit card pages.
+ * Source: article.feature-benefit on bobcard.co.in credit-card-types/*
+ * Layout: 3 columns (card image / headline+CTA / fee+CTA) with a vertical
+ * divider between the content and fee columns. Column ratio ~4:5:3.
+ * Values extracted from source computed styles.
+ */
+
+.columns-product {
+  padding: 16px 0 24px;
+}
+
+/* --- typography (source values; headings already match global brand tokens) --- */
+.columns-product h2 {
+  margin: 0 0 24px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--text-color);
+}
+
+/* Fee heading — authored as h3 for heading-order a11y; sized to match the
+   source's original h4 (20px) so the visual design is unchanged. */
+.columns-product h3 {
+  margin: 0 0 12px;
+  font-size: var(--heading-font-size-m);
+  font-weight: 400;
+  line-height: 1.2;
+  color: rgb(13 13 13);
+}
+
+.columns-product p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-color);
+}
+
+/* --- CTA buttons: primary orange pill comes from global a.button styles.
+   Only spacing above the button is tuned here. --- */
+.columns-product .button-wrapper {
+  margin: 24px 0 0;
+}
+
+/* --- images --- */
+.columns-product img {
+  width: 100%;
+}
+
+/* --- mobile-first stacking (image on top, content, then fee) --- */
+.columns-product > div {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.columns-product > div > div {
+  order: 1;
+}
+
+.columns-product > div > .columns-product-img-col {
+  order: 0;
+}
+
+.columns-product > div > .columns-product-img-col img {
+  display: block;
+}
+
+/* --- desktop: 3 columns side by side, vertically centered, with divider --- */
+@media (width >= 900px) {
+  .columns-product {
+    padding: 24px 0 40px;
+  }
+
+  .columns-product > div {
+    flex-direction: row;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .columns-product > div > div {
+    order: unset;
+  }
+
+  /* card image column (~4/12) */
+  .columns-product > div > div:nth-child(1) {
+    flex: 4;
+  }
+
+  /* headline + CTA column (~5/12) with the divider on its right edge */
+  .columns-product > div > div:nth-child(2) {
+    flex: 5;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 40px;
+    border-right: 1px solid rgb(133 133 133);
+  }
+
+  /* fee + CTA column (~3/12) */
+  .columns-product > div > div:nth-child(3) {
+    flex: 3;
+  }
+
+  .columns-product h2 {
+    margin-bottom: 48px;
+  }
+
+  .columns-product .button-wrapper {
+    margin-top: 48px;
+  }
+}

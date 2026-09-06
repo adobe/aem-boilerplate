@@ -10,7 +10,7 @@ jobs:
     # never run in a repo derived from this template — only the canonical source
     if: github.repository == 'adobe/aem-boilerplate'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - run: ./sync-block-collection.sh
         env:
           GITHUB_TOKEN: ${{ secrets.BLOCK_COLLECTION_SYNC_TOKEN }}

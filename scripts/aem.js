@@ -157,31 +157,21 @@ function sampleRUM(checkpoint, data) {
 /**
  * Setup block utils.
  */
-function setup() {
+function setup(importUrl = import.meta.url) {
   window.hlx = window.hlx || {};
   window.hlx.RUM_MASK_URL = 'full';
   window.hlx.RUM_MANUAL_ENHANCE = true;
-  window.hlx.codeBasePath = '';
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
 
-  const scriptEl = document.querySelector('script[src$="/scripts/scripts.js"]');
-  if (scriptEl) {
-    try {
-      [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
-  }
+  [window.hlx.codeBasePath] = new URL(importUrl).pathname.split('/scripts/');
 }
 
 /**
  * Auto initialization.
  */
-
 function init() {
   setup();
-  sampleRUM.collectBaseURL = window.origin;
+  sampleRUM.collectBaseURL = new URL(`${window.hlx.codeBasePath}/`, window.origin);
   sampleRUM();
 }
 

@@ -143,6 +143,41 @@ function decorateButtons(main) {
 }
 
 /**
+ * Applies section metadata as classes/data-attributes on the parent section.
+ * This project's aem.js decorateSections does not process section-metadata
+ * blocks, so we handle them here (before decorateBlocks) to apply section
+ * styles (e.g. `light-grey`) and avoid a 404 loading a non-existent block.
+ * @param {Element} main The main element
+ */
+function decorateSectionMetadata(main) {
+  main.querySelectorAll(':scope > .section div.section-metadata').forEach((metaBlock) => {
+    const section = metaBlock.closest('.section');
+    if (!section) return;
+    [...metaBlock.children].forEach((row) => {
+      const cells = row.children;
+      if (cells.length < 2) return;
+      const key = cells[0].textContent.trim().toLowerCase();
+      const value = cells[1].textContent.trim();
+      if (!key || !value) return;
+      if (key === 'style') {
+        value.split(',').forEach((style) => {
+          const cls = style.trim().toLowerCase().replace(/[^0-9a-z]+/g, '-').replace(/^-+|-+$/g, '');
+          if (cls) section.classList.add(cls);
+        });
+      } else {
+        const dataKey = key.replace(/[^0-9a-z]+([a-z0-9])/g, (m, c) => c.toUpperCase());
+        section.dataset[dataKey] = value;
+      }
+    });
+    // remove the block (and its now-empty section wrapper) so decorateBlocks
+    // doesn't try to fetch a non-existent section-metadata block
+    const wrapper = metaBlock.parentElement;
+    metaBlock.remove();
+    if (wrapper && wrapper.children.length === 0) wrapper.remove();
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -151,6 +186,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  decorateSectionMetadata(main);
   decorateBlocks(main);
   decorateButtons(main);
 }

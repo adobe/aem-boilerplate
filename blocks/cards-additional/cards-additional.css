@@ -1,0 +1,171 @@
+/*
+ * cards-additional — "Additional Benefits with ETERNA"
+ * Source: article.benefit-eterna.additional-benefit @ 1440px — a horizontal
+ * slick slider (prev/next arrows) of 9 benefit cards inside a rounded
+ * light-grey box, ~4 cards visible on desktop. Rebuilt here as a native
+ * scroll-snap carousel with prev/next arrow buttons (see cards-additional.js).
+ * The "Additional Benefits with ETERNA" h2 and the trailing disclaimer/"Read
+ * more" are DEFAULT CONTENT siblings outside this block, so not styled here.
+ */
+
+/* Rounded light-grey container with arrows flanking the scroll track */
+.cards-additional {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--brand-light-grey);
+  border-radius: 40px;
+  padding: 32px 16px;
+}
+
+/* Scroll-snap track — horizontal, one card snaps into view */
+.cards-additional .cards-additional-track {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox — hide scrollbar, arrows drive it */
+}
+
+.cards-additional .cards-additional-track::-webkit-scrollbar {
+  display: none; /* WebKit — hide scrollbar */
+}
+
+/* Card: fixed width so several show at once; transparent, no chrome */
+.cards-additional .cards-additional-track > li {
+  flex: 0 0 auto;
+  width: 80%;
+  scroll-snap-align: start;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: start;
+}
+
+/* Icon cell: 60x60 line icon, left-aligned, contained (never rasterised) */
+.cards-additional .cards-additional-card-image {
+  line-height: 0;
+}
+
+.cards-additional .cards-additional-card-image img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 0;
+}
+
+/* Text cell */
+.cards-additional .cards-additional-card-body {
+  margin: 0;
+}
+
+.cards-additional .cards-additional-card-body h3 {
+  margin: 24px 0 16px;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-l);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-color);
+}
+
+.cards-additional .cards-additional-card-body p {
+  margin: 0 0 24px;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+  line-height: 1.5;
+  color: var(--text-color);
+}
+
+.cards-additional .cards-additional-card-body p:last-child {
+  margin-bottom: 0;
+}
+
+.cards-additional .cards-additional-card-body a:any-link {
+  color: var(--brand-orange);
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.cards-additional .cards-additional-card-body a:hover {
+  text-decoration: underline;
+}
+
+/* Prev/next arrow buttons — orange circular, matching source slider arrows */
+.cards-additional .cards-additional-arrow {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--brand-orange);
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.cards-additional .cards-additional-arrow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 9px;
+  height: 9px;
+  border-top: 2px solid #fff;
+  border-right: 2px solid #fff;
+}
+
+.cards-additional .cards-additional-prev::before {
+  transform: translateX(2px) rotate(-135deg);
+}
+
+.cards-additional .cards-additional-next::before {
+  transform: translateX(-2px) rotate(45deg);
+}
+
+.cards-additional .cards-additional-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.cards-additional .cards-additional-arrow:hover:not(:disabled) {
+  background-color: var(--brand-orange-hover);
+}
+
+/* Tablet: ~2.2 cards visible */
+@media (width >= 600px) {
+  .cards-additional {
+    padding: 40px 24px;
+    gap: 16px;
+  }
+
+  .cards-additional .cards-additional-track > li {
+    width: calc((100% - 24px) / 2.2);
+  }
+}
+
+/* Desktop: rounded box grows; ~4 cards visible (matches source slider) */
+@media (width >= 900px) {
+  .cards-additional {
+    border-radius: 90px;
+    padding: 48px 32px;
+    gap: 20px;
+  }
+
+  .cards-additional .cards-additional-track {
+    gap: 30px;
+  }
+
+  .cards-additional .cards-additional-track > li {
+    width: calc((100% - 90px) / 4);
+  }
+
+  .cards-additional .cards-additional-card-body h3 {
+    margin: 48px 0 24px;
+  }
+}

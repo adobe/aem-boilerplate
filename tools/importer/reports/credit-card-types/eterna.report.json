@@ -1,0 +1,17 @@
+{
+  "status": "success",
+  "url": "https://www.bobcard.co.in/credit-card-types/eterna",
+  "path": "credit-card-types/eterna",
+  "timestamp": "2026-08-09T13:19:50.696Z",
+  "title": "Credit Card with Domestic Lounge Access, Dining & Movie Tickets | BOBCARD Eterna",
+  "template": "credit-card-product",
+  "blocks": [
+    "hero-eterna",
+    "cards-benefit",
+    "columns-product",
+    "cards-additional",
+    "cards-steps",
+    "hero-cta",
+    "accordion-faq"
+  ]
+}

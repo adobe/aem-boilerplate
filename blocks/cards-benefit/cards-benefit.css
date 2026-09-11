@@ -1,0 +1,84 @@
+/*
+ * cards-benefit — "Discover how it fits your lifestyle"
+ * Values extracted from source: .CardBenefitesWrapp article.benefit-eterna
+ * Source layout: 3 benefit cards, each ~260px wide, left-packed with a 20px
+ * gap. Each card stacks a 60x60 line icon, an H3 title, then description
+ * paragraphs. The light-grey section background is provided by section metadata.
+ */
+
+.cards-benefit > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px 20px;
+}
+
+/* Cards have no card chrome on the source — transparent, borderless, no radius */
+.cards-benefit > ul > li {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: 0;
+}
+
+/* Icon cell: 60x60 line icon, left-aligned, contained (never cropped) */
+.cards-benefit .cards-benefit-card-image {
+  line-height: 0;
+  margin-bottom: 16px;
+}
+
+.cards-benefit .cards-benefit-card-image img {
+  width: 60px;
+  height: 60px;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+
+/* Text cell */
+.cards-benefit .cards-benefit-card-body {
+  margin: 0;
+}
+
+.cards-benefit .cards-benefit-card-body h3 {
+  margin: 0 0 16px;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-l); /* 23px desktop / source h3 */
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-color);
+}
+
+.cards-benefit .cards-benefit-card-body p {
+  margin: 0 0 18px;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs); /* 14px */
+  line-height: 1.5; /* 21px at 14px */
+  color: var(--text-color);
+}
+
+.cards-benefit .cards-benefit-card-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Inline links inside descriptions are orange, no underline */
+.cards-benefit .cards-benefit-card-body a:any-link {
+  color: var(--brand-orange);
+  font-weight: 400;
+  text-decoration: none;
+}
+
+.cards-benefit .cards-benefit-card-body a:hover {
+  text-decoration: underline;
+}
+
+/* Desktop: 3 fixed-width cards, left-packed */
+@media (width >= 900px) {
+  .cards-benefit > ul {
+    grid-template-columns: repeat(3, minmax(0, 260px));
+    justify-content: start;
+    gap: 20px;
+  }
+}

@@ -1,0 +1,148 @@
+{
+  "metadata": {
+    "projectType": "doc"
+  },
+  "templates": [
+    {
+      "name": "credit-card-product",
+      "urls": [
+        "https://www.bobcard.co.in/credit-card-types/eterna"
+      ],
+      "coverageGaps": [],
+      "description": "Credit card product detail page with hero banner, card benefits, additional benefits carousel, application guidelines, and FAQ sections",
+      "blocks": [
+        {
+          "name": "hero-eterna",
+          "instances": [
+            ".CardBannersWrapp article.card_banner",
+            "article.card_banner"
+          ]
+        },
+        {
+          "name": "cards-benefit",
+          "instances": [
+            ".CardBenefitesWrapp article.benefit-eterna"
+          ]
+        },
+        {
+          "name": "columns-product",
+          "instances": [
+            "article.feature-benefit"
+          ]
+        },
+        {
+          "name": "cards-additional",
+          "instances": [
+            "article.benefit-eterna.additional-benefit"
+          ]
+        },
+        {
+          "name": "cards-steps",
+          "instances": [
+            "article.document-req"
+          ]
+        },
+        {
+          "name": "hero-cta",
+          "instances": [
+            "article.transaction-banner"
+          ]
+        },
+        {
+          "name": "accordion-faq",
+          "instances": [
+            ".faq-pg article.faq-wrapper",
+            "article.faq-wrapper"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "rc1",
+          "name": "Hero Banner",
+          "selector": [
+            ".CardBannersWrapp"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-eterna"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "rc2",
+          "name": "Page Heading",
+          "selector": [
+            "h1.headingtext_headingH1Text__XffKe"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            "h1.headingtext_headingH1Text__XffKe"
+          ]
+        },
+        {
+          "id": "rc3",
+          "name": "Card Benefits",
+          "selector": [
+            ".CardBenefitesWrapp"
+          ],
+          "style": "light-grey",
+          "blocks": [
+            "cards-benefit"
+          ],
+          "defaultContent": [
+            ".CardBenefitesWrapp article.benefit-eterna h2"
+          ]
+        },
+        {
+          "id": "rc4",
+          "name": "Additional Benefits",
+          "selector": [
+            ".AdditionalBenefitsWrapp"
+          ],
+          "style": null,
+          "blocks": [
+            "columns-product",
+            "cards-additional"
+          ],
+          "defaultContent": [
+            "article.benefit-eterna.additional-benefit h2",
+            ".disclaimer_descrip"
+          ]
+        },
+        {
+          "id": "rc5",
+          "name": "Application Guidelines",
+          "selector": [
+            ".ApplicationGuidelinesWrapp"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-steps",
+            "hero-cta"
+          ],
+          "defaultContent": [
+            "article.document-req h2",
+            "article.document-req > .container > .wrapper > p"
+          ]
+        },
+        {
+          "id": "rc6",
+          "name": "FAQ",
+          "selector": [
+            ".faq-pg.rupayFaq"
+          ],
+          "style": null,
+          "blocks": [
+            "accordion-faq"
+          ],
+          "defaultContent": [
+            "article.faq-wrapper h3",
+            ".moreBtnBox"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -2,8 +2,10 @@
 # all files that are not strictly required to build an AEM Live project
 # but that we use to develop the project template. This includes this
 # particular workflow file.
+# Note: `on: create` is not delivered when a repository is generated from a
+# template, so we listen to the initial push instead.
 on:
-  create:
+  push:
     branches:
       - main
   workflow_dispatch:
@@ -13,8 +15,9 @@ jobs:
     permissions:
       contents: write
       actions: write
-    # only run if commit message is "Initial commit" on main branch
-    if: ${{ github.event_name == 'workflow_dispatch' || ( github.ref == 'refs/heads/main' && !(contains(github.event, 'head_commit') || github.event.head_commit.message == 'Initial commit' )) }}
+    # never run in the template repository itself, and otherwise only for the
+    # initial commit created when generating a repository from this template
+    if: ${{ github.repository != 'adobe/aem-boilerplate' && ( github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Initial commit' ) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7

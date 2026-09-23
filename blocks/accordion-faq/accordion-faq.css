@@ -1,0 +1,133 @@
+/*
+ * accordion-faq block
+ * Visual design migrated from:
+ * https://www.bobcard.co.in/credit-card-types/eterna  (.faq-pg article.faq-wrapper)
+ * Values extracted from source computed styles. Single-open accordion.
+ */
+
+/* ---- Item (details) --------------------------------------------------- */
+.accordion-faq .accordion-faq-item {
+  background-color: #fff;
+  border-bottom: 2px solid rgb(233 233 233); /* divider between items */
+  border-radius: 4px 4px 0 0;
+  padding: 11px 8px;
+}
+
+/* ---- Question (summary + h2) ------------------------------------------ */
+.accordion-faq .accordion-faq-item-label {
+  position: relative;
+  display: block;
+  list-style: none;
+  padding: 5px 48px 5px 12px; /* reserve room on the right for the indicator */
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.accordion-faq .accordion-faq-item-label::-webkit-details-marker {
+  display: none;
+}
+
+.accordion-faq .accordion-faq-item-label h2 {
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: rgb(40 39 40);
+  transition: color 0.2s ease;
+}
+
+/* Open state -> question turns brand-orange */
+.accordion-faq .accordion-faq-item[open] .accordion-faq-item-label h2 {
+  color: var(--brand-orange);
+}
+
+/* ---- Indicator circle (::before) + chevron (::after) ------------------ */
+.accordion-faq .accordion-faq-item-label::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: rgb(239 239 239);
+  transition: background-color 0.2s ease;
+}
+
+.accordion-faq .accordion-faq-item-label::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 15px; /* centres the chevron over the 30px circle */
+  width: 8px;
+  height: 8px;
+  border: solid rgb(40 39 40);
+  border-width: 0 2px 2px 0;
+  transform: translateY(-75%) rotate(45deg); /* down chevron (closed) */
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+/* Open state -> orange circle + white up chevron */
+.accordion-faq .accordion-faq-item[open] .accordion-faq-item-label::before {
+  background-color: var(--brand-orange);
+}
+
+.accordion-faq .accordion-faq-item[open] .accordion-faq-item-label::after {
+  border-color: #fff;
+  transform: translateY(-25%) rotate(-135deg); /* up chevron (open) */
+}
+
+/* Focus ring for keyboard users */
+.accordion-faq .accordion-faq-item-label:focus-visible {
+  outline: 2px solid var(--brand-orange);
+  outline-offset: 2px;
+}
+
+/* ---- Answer body ------------------------------------------------------ */
+.accordion-faq .accordion-faq-item-body {
+  margin: 10px 20px 0;
+  padding: 0;
+}
+
+.accordion-faq .accordion-faq-item-body p {
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: 16px;
+  line-height: 1.7;
+  color: rgb(40 39 40);
+}
+
+.accordion-faq .accordion-faq-item-body strong {
+  font-weight: 700;
+}
+
+/* ---- Desktop ---------------------------------------------------------- */
+@media (width >= 900px) {
+  .accordion-faq .accordion-faq-item {
+    padding: 16px 29px;
+  }
+
+  .accordion-faq .accordion-faq-item-label {
+    padding-right: 56px;
+  }
+
+  .accordion-faq .accordion-faq-item-label h2 {
+    font-size: 17px;
+    line-height: 1.2;
+  }
+
+  .accordion-faq .accordion-faq-item-label::before {
+    width: 36px;
+    height: 36px;
+  }
+
+  .accordion-faq .accordion-faq-item-label::after {
+    right: 20px; /* centre over the 36px circle */
+  }
+
+  .accordion-faq .accordion-faq-item-body {
+    margin: 10px 60px 0 20px;
+  }
+}

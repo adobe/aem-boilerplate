@@ -1,0 +1,10 @@
+{
+  "type": "doc",
+  "sites": {
+    "aem-boilerplate-bob": {
+      "previewOrg": "rahuldwao",
+      "previewSite": "aem-boilerplate-bob",
+      "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json"
+    }
+  }
+}

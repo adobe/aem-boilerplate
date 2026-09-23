@@ -1,0 +1,94 @@
+/*
+ * cards-steps — "Application Guidelines" numbered steps.
+ * Values extracted from https://www.bobcard.co.in/credit-card-types/eterna
+ * Each step = a large orange step number (left) + a text column (right):
+ * bold orange title + grey description. Cards stack on mobile, sit in a
+ * row on desktop.
+ *
+ * Decorated DOM (from cards-steps.js — flat siblings inside the body div):
+ *   .cards-steps > ul > li > .cards-steps-card-body > (h3 number, h4 title, p…)
+ */
+
+.cards-steps > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+}
+
+.cards-steps > ul > li {
+  border: none;
+  background: transparent;
+}
+
+/* card = number column (auto) + text column (1fr) */
+.cards-steps .cards-steps-card-body {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 12px;
+  align-items: start;
+  margin: 0;
+}
+
+/* the big step number */
+.cards-steps .cards-steps-card-body h3 {
+  grid-column: 1;
+  grid-row: 1 / span 50;
+  align-self: start;
+  margin: 0;
+  font-family: var(--heading-font-family);
+  font-size: 112px;
+  font-weight: 700;
+  line-height: 0.7;
+  color: var(--brand-orange);
+}
+
+/* everything after the number flows in the text column */
+.cards-steps .cards-steps-card-body > :not(h3) {
+  grid-column: 2;
+}
+
+/* step title */
+.cards-steps .cards-steps-card-body h4 {
+  margin: 0 0 33.6px;
+  font-family: var(--heading-font-family);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--brand-orange);
+}
+
+/* step description */
+.cards-steps .cards-steps-card-body p {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-color);
+}
+
+@media (width >= 900px) {
+  .cards-steps > ul {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px 24px;
+  }
+
+  .cards-steps .cards-steps-card-body h3 {
+    font-size: 240px;
+    line-height: 0.7;
+  }
+
+  .cards-steps .cards-steps-card-body h4 {
+    margin: 0 0 48px;
+    font-size: 19px;
+    line-height: 1.2;
+  }
+
+  .cards-steps .cards-steps-card-body p {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}

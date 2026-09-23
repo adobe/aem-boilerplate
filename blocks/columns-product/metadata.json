@@ -1,0 +1,37 @@
+{
+  "variantName": "columns-product",
+  "baseBlock": "columns",
+  "version": "1.0.0",
+  "created": "2026-08-07T08:15:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://www.bobcard.co.in/credit-card-types/eterna",
+    "originPage": "credit card product detail page",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "wide",
+    "purpose": "product",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "image column + heading/paragraph/CTA column + fee/CTA column",
+    "buttonCount": 2,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "product intro sections combining a product image with two text/CTA columns",
+      "3-column side-by-side layouts mixing an image and copy"
+    ],
+    "notSuitableFor": [
+      "repeating card grids",
+      "single-column stacked content"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/credit-card-types/eterna"],
+    "reuseCount": 1,
+    "lastUsed": "2026-08-07T08:15:00.000Z"
+  }
+}

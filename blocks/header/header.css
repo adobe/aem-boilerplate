@@ -212,10 +212,8 @@ header nav .nav-sections ul > li > ul > li {
   font-weight: 400;
 }
 
-@media (width < 900px) {
-  header nav .nav-sections .nav-drop > button[aria-expanded='false'] + ul {
-    display: none;
-  }
+header nav .nav-sections .nav-drop > button[aria-expanded='false'] + ul {
+  display: none;
 }
 
 @media (width >= 900px) {

@@ -181,6 +181,18 @@ header nav .nav-sections ul > li > ul {
   margin-top: 0;
 }
 
+header nav .nav-drop > button {
+  all: unset;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+header nav .nav-drop > button:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
 header nav .nav-sections ul > li > ul > li {
   font-weight: 400;
 }
@@ -196,13 +208,12 @@ header nav .nav-sections ul > li > ul > li {
     align-self: unset;
   }
 
-  header nav .nav-sections .nav-drop {
+  header nav .nav-drop > button {
     position: relative;
     padding-right: 16px;
-    cursor: pointer;
   }
 
-  header nav .nav-sections .nav-drop::after {
+  header nav .nav-drop > button::after {
     content: '';
     display: inline-block;
     position: absolute;
@@ -216,7 +227,7 @@ header nav .nav-sections ul > li > ul > li {
     border-width: 2px 2px 0 0;
   }
 
-  header nav .nav-sections .nav-drop[aria-expanded='true']::after {
+  header nav .nav-drop > button[aria-expanded='true']::after {
     top: unset;
     bottom: 0.5em;
     transform: rotate(315deg);
@@ -228,17 +239,17 @@ header nav .nav-sections ul > li > ul > li {
     margin: 0;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li {
+  header nav .nav-sections > * > ul > li {
     flex: 0 1 auto;
     position: relative;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li > ul {
+  header nav .nav-drop > ul {
     display: none;
     position: relative;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li[aria-expanded='true'] > ul {
+  header nav .nav-drop > button[aria-expanded='true'] + ul {
     display: block;
     position: absolute;
     left: -24px;
@@ -249,7 +260,7 @@ header nav .nav-sections ul > li > ul > li {
     white-space: initial;
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li > ul::before {
+  header nav .nav-drop > ul::before {
     content: '';
     position: absolute;
     top: -8px;
@@ -261,7 +272,7 @@ header nav .nav-sections ul > li > ul > li {
     border-bottom: 8px solid var(--light-color);
   }
 
-  header nav .nav-sections .default-content-wrapper > ul > li > ul > li {
+  header nav .nav-drop > ul > li {
     padding: 8px 0;
   }
 }

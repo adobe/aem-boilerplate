@@ -12,6 +12,12 @@ Rules of precedence:
 
 ## Page migration
 
+### Language paths
+
+If the source pages do not have a language designation in their paths (for example, `/en/` or `/en-us/`), migrate the site's root into a folder called `en` and place its pages beneath it. For example, `/` becomes `/en/` and `/about` becomes `/en/about`. This structure makes it easier to translate the site in the future.
+
+If the source pages already have a language designation in their paths, preserve and use that existing designation instead of adding an `en` folder.
+
 ### Capturing section styling with `section-metadata`
 
 Split each source page into sections wherever its visual treatment changes: a new background, a change in width or column count, or a change in spacing. Each section becomes a block of content between section breaks (`---`) in the migrated document. Capture that section's styling in a `section-metadata` block placed **inside that same section**. The block removes itself at runtime and applies its settings to the section around it.

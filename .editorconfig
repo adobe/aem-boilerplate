@@ -2,4 +2,4 @@
 indent_size = 2
 
 [*.css]
-indent_size = 4
+indent_size = 2

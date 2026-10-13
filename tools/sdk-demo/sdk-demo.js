@@ -36,8 +36,37 @@ function log(kind, message) {
   list.scrollTop = list.scrollHeight;
 }
 
-// eslint-disable-next-line no-unused-vars
-function wireDemos(actions) {}
+function truncate(value, max = 80) {
+  return value.length > max ? `${value.slice(0, max)}…` : value;
+}
+
+// sendText: the editor inserts `text` as a plain text node, so markup characters
+// appear literally. It replaces the current selection, or inserts at the cursor.
+function demoSendText(actions, text) {
+  actions.sendText(text);
+  log('out', `sendText("${truncate(text)}")`);
+}
+
+// sendHTML: the editor parses `html` into its own document schema, so tags or
+// attributes the schema doesn't support are dropped. It also replaces the selection.
+function demoSendHTML(actions, html) {
+  actions.sendHTML(html);
+  log('out', `sendHTML("${truncate(html)}")`);
+}
+
+function onSend(inputId, send) {
+  const { value } = $(inputId);
+  if (!value.trim()) {
+    log('warn', 'Nothing to send — the textarea is empty.');
+    return;
+  }
+  send(value);
+}
+
+function wireDemos(actions) {
+  $('send-text').addEventListener('click', () => onSend('text-input', (v) => demoSendText(actions, v)));
+  $('send-html').addEventListener('click', () => onSend('html-input', (v) => demoSendHTML(actions, v)));
+}
 
 async function init() {
   $('clear-log').addEventListener('click', () => $('log').replaceChildren());

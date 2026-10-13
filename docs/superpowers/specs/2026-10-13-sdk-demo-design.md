@@ -100,10 +100,16 @@ For getSelection: editor → `window` message → SDK resolves the promise → r
 In `https://da.live/config#/demoamer275/da-base/`, add a row to the `library` sheet:
 
 - `title`: `SDK Demo`
-- `path`: `https://main--da-base--demoamer275.aem.live/tools/sdk-demo`
+- `path`: `/tools/sdk-demo.html`
 
-For a feature branch, use `{branch}--da-base--demoamer275`, or open the editor with
-`?ref=local` for localhost.
+The path must be relative and keep `.html`.
+
+- DA's `calculateSources` rewrites only paths that start with `/`. It resolves them to
+  `https://{ref}--da-base--demoamer275.aem.live{path}`, where `{ref}` is the editor's
+  `?ref=` value (default `main`). With `?ref=local` it resolves to
+  `http://localhost:3000{path}`.
+- Absolute URLs are used as-is and ignore `?ref`.
+- aem.live returns 404 for code `.html` files requested without the extension.
 
 ## Verification
 

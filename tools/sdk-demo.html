@@ -6,9 +6,12 @@
   Registration (content step, done once per site):
   In https://da.live/config#/demoamer275/da-base/ add a row to the `library` sheet:
     title: SDK Demo
-    path:  https://main--da-base--demoamer275.aem.live/tools/sdk-demo
-  For a feature branch use {branch}--da-base--demoamer275, or open the editor
-  with ?ref=local to load this plugin from http://localhost:3000.
+    path:  /tools/sdk-demo.html
+  The path must be relative and keep `.html`. DA resolves a relative path to
+  https://{ref}--da-base--demoamer275.aem.live/tools/sdk-demo.html, where {ref}
+  comes from the editor's ?ref= query (default main). With ?ref=local it loads
+  http://localhost:3000/tools/sdk-demo.html. Absolute URLs are used as-is and
+  ignore ?ref.
 -->
 <html lang="en">
   <head>

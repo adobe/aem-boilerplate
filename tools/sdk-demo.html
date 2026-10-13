@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+  SDK Demo — DA library plugin demonstrating actions.sendText, actions.sendHTML
+  and actions.getSelection from the DA App SDK.
+
+  Registration (content step, done once per site):
+  In https://da.live/config#/demoamer275/da-base/ add a row to the `library` sheet:
+    title: SDK Demo
+    path:  https://main--da-base--demoamer275.aem.live/tools/sdk-demo
+  For a feature branch use {branch}--da-base--demoamer275, or open the editor
+  with ?ref=local to load this plugin from http://localhost:3000.
+-->
+<html lang="en">
+  <head>
+    <title>SDK Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="/tools/sdk-demo/sdk-demo.css">
+    <!-- Import DA App SDK first so the plugin is ready to receive DA's init message -->
+    <script src="https://da.live/nx/utils/sdk.js" type="module"></script>
+    <script src="/tools/sdk-demo/sdk-demo.js" type="module"></script>
+  </head>
+  <body>
+    <main>
+      <p id="status" class="status">Waiting for DA…</p>
+
+      <section class="panel">
+        <h2>actions.sendText</h2>
+        <p class="note">Inserted as plain text — markup appears literally. Replaces the current editor selection, or inserts at the cursor.</p>
+        <textarea id="text-input" rows="3">Hello from the SDK demo!</textarea>
+        <button id="send-text" class="sdk-action" type="button" disabled>Send text</button>
+      </section>
+
+      <section class="panel">
+        <h2>actions.sendHTML</h2>
+        <p class="note">Parsed into the editor schema — unsupported tags and attributes are dropped. Replaces the current editor selection, or inserts at the cursor.</p>
+        <textarea id="html-input" rows="4">&lt;h2&gt;Demo heading&lt;/h2&gt;&lt;p&gt;Some &lt;strong&gt;bold&lt;/strong&gt; text.&lt;/p&gt;</textarea>
+        <button id="send-html" class="sdk-action" type="button" disabled>Send HTML</button>
+      </section>
+
+      <section class="panel">
+        <h2>actions.getSelection</h2>
+        <p class="note">Returns the editor selection serialized as an HTML string. Select something in the document first.</p>
+        <button id="get-selection" class="sdk-action" type="button" disabled>Get selection</button>
+        <h3>Raw HTML</h3>
+        <pre id="selection-html" class="output"></pre>
+        <h3>Plain text</h3>
+        <pre id="selection-text" class="output"></pre>
+      </section>
+
+      <section class="panel">
+        <h2>Round trip</h2>
+        <p class="note">Read the selection, transform it, write it back. Both replace the selection still held by the editor.</p>
+        <button id="rt-upper" class="sdk-action" type="button" disabled>UPPERCASE → sendText</button>
+        <button id="rt-strong" class="sdk-action" type="button" disabled>Wrap in &lt;strong&gt; → sendHTML</button>
+      </section>
+
+      <section class="panel">
+        <h2>Log</h2>
+        <p class="note">Every SDK call and result, newest last.</p>
+        <ol id="log" class="log"></ol>
+        <button id="clear-log" type="button">Clear</button>
+      </section>
+    </main>
+  </body>
+</html>

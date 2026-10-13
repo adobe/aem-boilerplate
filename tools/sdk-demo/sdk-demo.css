@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  padding: 12px;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #222;
+  background: #fff;
+}
+
+body h2 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+}
+
+body h3 {
+  margin: 8px 0 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #555;
+}
+
+body textarea,
+body button {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 4px 0;
+  font: inherit;
+}
+
+body textarea {
+  padding: 6px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  resize: vertical;
+}
+
+body button {
+  padding: 6px 8px;
+  border: 1px solid #3b63fb;
+  border-radius: 4px;
+  background: #3b63fb;
+  color: #fff;
+  cursor: pointer;
+}
+
+body button:disabled {
+  border-color: #ccc;
+  background: #eee;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.status {
+  margin: 0 0 12px;
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: #f2f4ff;
+}
+
+.panel {
+  margin: 0 0 12px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.note {
+  margin: 0 0 6px;
+  color: #666;
+  font-size: 12px;
+}
+
+.output {
+  min-height: 1.4em;
+  max-height: 120px;
+  margin: 0;
+  padding: 6px;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: #f6f6f6;
+  font-size: 12px;
+}
+
+.log {
+  max-height: 200px;
+  margin: 4px 0;
+  padding: 6px 6px 6px 28px;
+  overflow: auto;
+  background: #f6f6f6;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.log .log-warn {
+  color: #9a6700;
+}
+
+.log .log-error {
+  color: #c62828;
+}

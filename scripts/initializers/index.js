@@ -150,8 +150,8 @@ const setupAemAssetsImageParams = () => {
   if (isAemAssetsEnabled()) {
     // Convert decimal values to integers for AEM Assets compatibility
     initializers.setImageParamKeys({
-      width: (value) => ['width', Math.floor(value)],
-      height: (value) => ['height', Math.floor(value)],
+      width: (value) => ['width', value === undefined ? undefined : Math.floor(value)],
+      height: (value) => ['height', value === undefined ? undefined : Math.floor(value)],
       quality: 'quality',
       auto: 'auto',
       crop: 'crop',

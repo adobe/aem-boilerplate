@@ -10,7 +10,17 @@ import {
   loadSections,
   loadCSS,
   buildBlock,
+  getMetadata,
 } from './aem.js';
+import {
+  loadMartechEager,
+  loadMartechLazy,
+  loadMartechDelayed,
+} from './martech.js';
+import {
+  decoratePersonalizationMetadata,
+  watchPersonalizedBlocks,
+} from './personalization.js';
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
   const innerTT = window.trustedTypes.createPolicy('tt-inner', {
@@ -151,6 +161,7 @@ export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
+  decoratePersonalizationMetadata(main);
   decorateBlocks(main);
   decorateButtons(main);
 }
@@ -162,11 +173,18 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+  const martechLoaded = loadMartechEager();
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
+    if (getMetadata('target').toLowerCase() === 'true') {
+      watchPersonalizedBlocks(main, decorateButtons);
+    }
     document.body.classList.add('appear');
-    await loadSection(main.querySelector('.section'), waitForFirstImage);
+    await Promise.all([
+      martechLoaded,
+      loadSection(main.querySelector('.section'), waitForFirstImage),
+    ]);
   }
 
   try {
@@ -194,6 +212,7 @@ async function loadLazy(doc) {
   if (hash && element) element.scrollIntoView();
 
   loadFooter(doc.querySelector('body > footer'));
+  loadMartechLazy();
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
@@ -204,7 +223,8 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
-  import('./consent-check.js');
+  // MarTech: Launch waits for the delayed phase and explicit consent.
+  window.setTimeout(loadMartechDelayed, 3000);
   // load anything that can be postponed to the latest here
 }
 

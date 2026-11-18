@@ -6,3 +6,6 @@ package.json
 package-lock.json
 test/*
 sync-block-collection.sh
+.env
+.env.*
+plugins/martech/LICENSE
